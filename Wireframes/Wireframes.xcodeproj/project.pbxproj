@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		195B3A6A1FFE79B700F8DAB4 /* WFSlideViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */; };
+		195B3A6E1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B3A6C1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm */; };
 		1984C7421FE675D900873DA0 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1909714E1FBD773C00AD5B91 /* libLTKitTestUtils.a */; };
+		19C43D101FFA1C70007BB06E /* WFSlideView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19C43D0E1FFA1C70007BB06E /* WFSlideView.mm */; };
 		284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */; };
 		28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 		65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65322E061D465479002D5F17 /* libextobjc_iOS.a */; };
@@ -394,6 +397,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideViewSpec.mm; sourceTree = "<group>"; };
+		195B3A6C1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaKeyWindowViewHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.mm; sourceTree = "<group>"; };
+		195B3A6D1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaKeyWindowViewHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.h; sourceTree = "<group>"; };
+		19C43D0D1FFA1C70007BB06E /* WFSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFSlideView.h; sourceTree = "<group>"; };
+		19C43D0E1FFA1C70007BB06E /* WFSlideView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideView.mm; sourceTree = "<group>"; };
 		284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+RetrievalSpec.mm"; sourceTree = "<group>"; };
 		65322DFC1D465479002D5F17 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
@@ -844,6 +852,8 @@
 			children = (
 				8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */,
 				8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */,
+				195B3A6D1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.h */,
+				195B3A6C1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm */,
 				8BC7B6531CF1EE280047BEDE /* LTSpectaObjectionHook.h */,
 				8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */,
 				CDAC8C261FC44F5600B197B3 /* WFFakeVideoViewDelegate.h */,
@@ -907,6 +917,8 @@
 			children = (
 				8BB234A71CDCB45B00057F11 /* WFGradientView.h */,
 				8BB234A81CDCB45B00057F11 /* WFGradientView.m */,
+				19C43D0D1FFA1C70007BB06E /* WFSlideView.h */,
+				19C43D0E1FFA1C70007BB06E /* WFSlideView.mm */,
 				8B283FFD1CBE33B200B745AE /* WFTransparentView.h */,
 				8B283FFE1CBE33B200B745AE /* WFTransparentView.m */,
 				CDAC8C241FC44EEA00B197B3 /* WFVideoView.h */,
@@ -919,6 +931,7 @@
 			isa = PBXGroup;
 			children = (
 				8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */,
+				195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */,
 				8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */,
 				CDAC8C211FC44EC900B197B3 /* WFVideoViewSpec.mm */,
 			);
@@ -1367,6 +1380,7 @@
 				6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */,
 				28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */,
 				6AAEDB8A1CD77B9800B3C62F /* UIButton+ViewModel.mm in Sources */,
+				19C43D101FFA1C70007BB06E /* WFSlideView.mm in Sources */,
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
@@ -1389,6 +1403,7 @@
 				6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */,
 				6AAED9F81CC62ABE00B3C62F /* WFAssetCatalogImageProviderSpec.mm in Sources */,
 				6A34F60A1CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm in Sources */,
+				195B3A6A1FFE79B700F8DAB4 /* WFSlideViewSpec.mm in Sources */,
 				CDAC8C221FC44EC900B197B3 /* WFVideoViewSpec.mm in Sources */,
 				6AAEDB8C1CD7861100B3C62F /* UIButton+ViewModelSpec.mm in Sources */,
 				6AAED9F91CC62ABE00B3C62F /* WFPaintCodeImageProviderSpec.mm in Sources */,
@@ -1408,6 +1423,7 @@
 				284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */,
 				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,
 				8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */,
+				195B3A6E1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm in Sources */,
 				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.mm in Sources */,
 				CDAC8C281FC44F5700B197B3 /* WFFakeVideoViewDelegate.mm in Sources */,
 			);
