@@ -19,4 +19,6 @@
 
   // Pinky.
   #import "LTRef+Pinky.h"
+  #import "MPSImage+Size.h"
+
 #endif
