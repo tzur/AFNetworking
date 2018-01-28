@@ -375,14 +375,17 @@ message NeuralNetworkLayer {
         SplitLayerParams split = 330;
         SequenceRepeatLayerParams sequenceRepeat = 340;
 		
-		ReorganizeDataLayerParams reorganizeData = 345;
-		SliceLayerParams slice = 350;
+        ReorganizeDataLayerParams reorganizeData = 345;
+        SliceLayerParams slice = 350;
 
         //Recurrent Layers
         SimpleRecurrentLayerParams simpleRecurrent = 400;
         GRULayerParams gru = 410;
         UniDirectionalLSTMLayerParams uniDirectionalLSTM = 420;
         BiDirectionalLSTMLayerParams biDirectionalLSTM = 430;
+
+        // Custom (user-implemented) Layer
+        CustomLayerParams custom = 500;
     }
 }
 
@@ -2104,6 +2107,24 @@ message BiDirectionalLSTMLayerParams {
      * for the forward and backward LSTM respectively.
      */
     repeated LSTMWeightParams weightParams = 20;
+}
+
+message CustomLayerParams {
+
+    message CustomLayerParamValue {
+        oneof value {
+            double doubleValue = 10;
+            string stringValue = 20;
+            int32 intValue = 30;
+            int64 longValue = 40;
+            bool boolValue = 50;
+        }
+    }
+
+    string className = 10; // The name of the class (conforming to MLCustomLayer) corresponding to this layer
+    repeated WeightParams weights = 20; // Any weights -- these are serialized in binary format and memmapped at runtime
+    map<string, CustomLayerParamValue> parameters = 30; // these may be handled as strings, so this should not be large
+    string description = 40; // An (optional) description of the layer provided by the model creator. This information is displayed when viewing the model, but does not affect the model's execution on device.
 }
 
 /// Neural Network Specializations
