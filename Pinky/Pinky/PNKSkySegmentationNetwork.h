@@ -21,7 +21,7 @@ namespace pnk {
 /// convolution for enlarged receptive fields. The tensor is then upsampled and concatenated with
 /// tensors from the downsampling stage via skip connections. Finally the last tensor passes through
 /// a pixel-wise convolution to create the confidence maps per class.
-@interface PNKSkySegmentationNetwork : NSObject <PNKNeuralNetwork>
+@interface PNKSkySegmentationNetwork : NSObject
 
 /// Initializes a new network that runs on \c device and performs segmentation of skies in images.
 /// The parameters of the network are described by \c networkModel and the shape model used as input
@@ -51,6 +51,11 @@ namespace pnk {
                                   inputImage:(MPSImage *)inputImage
                                  outputImage:(MPSImage *)outputImage
                                   completion:(LTCompletionBlock)completion;
+
+/// Returns the optimal size for an image of a given \c size to be resized to in order to be used as
+/// an input image for the network. Optimality is in the sense of the task which the network is
+/// meant to perform and not in terms of runtime.
+- (CGSize)optimalInputSizeWithSize:(CGSize)size;
 
 @end
 
