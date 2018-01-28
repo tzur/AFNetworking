@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                               buttonsFactory:(id<SPXSubscriptionButtonsFactory>)buttonsFactory {
   auto pageView = [[SPXSubscriptionButtonsPageView alloc] init];
 
-  pageView.backgroundVideoView.videoURL = pageViewModel.backgroundVideoURL;
+  [pageView.backgroundVideoView loadVideoFromURL:pageViewModel.backgroundVideoURL];
   pageView.buttonsContainer.title = pageViewModel.title;
   pageView.buttonsContainer.subtitle = pageViewModel.subtitle;
   [pageView createButtonsWithViewModel:pageViewModel buttonsFactory:buttonsFactory];

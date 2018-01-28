@@ -7,14 +7,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFFakeVideoViewDelegate
 
-- (void)videoDidLoad:(WFVideoView __unused *)videoView {
+- (void)videoViewDidLoadVideo:(WFVideoView __unused *)videoView {
 }
 
-- (void)videoDidFinishPlayback:(WFVideoView __unused *)videoView {
+- (void)videoViewDidFinishPlayback:(WFVideoView __unused *)videoView {
 }
 
-- (void)videoProgress:(WFVideoView __unused *)videoView progressTime:(__unused CGFloat)progressTime
-    videoDurationTime:(__unused CGFloat)videoDurationTime {
+- (void)videoView:(WFVideoView __unused *)videoView
+    didPlayVideoAtTime:(__unused NSTimeInterval)time {
 }
 
 @end

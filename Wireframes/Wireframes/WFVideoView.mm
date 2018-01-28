@@ -7,35 +7,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WFVideoView ()
 
+/// \c YES if \c play was called and no calls to \c stop or \c pause were done after it.
+@property (readwrite, nonatomic) BOOL playbackRequested;
+
+/// URL of the current video of this view.
+@property (readwrite, nonatomic, nullable) NSURL *currentVideoURL;
+
 /// Video player for playing the video.
 @property (strong, nonatomic, nullable) AVPlayer *player;
-
-/// \c YES if the video should be playing.
-@property (readwrite, nonatomic) BOOL isPlaying;
-
-/// \c YES if the playback should automatically restart after video ends.
-@property (readonly, nonatomic) BOOL playInLoop;
 
 /// The queue on which the video player is created.
 @property (readonly, nonatomic) dispatch_queue_t playerCreationQueue;
 
-/// Time interval (in seconds) between each call to the
-/// <tt>[delgate videoProgressTime:videoDurationTime:]</tt> while the video is playing if the
-/// \c delgate implements the method.
-@property (readonly, nonatomic) CGFloat videoProgresssIntervalTime;
-
-/// The queue on which the video progress updates are being sent.
-@property (readonly, nonatomic) dispatch_queue_t videoProgressQueue;
-
-/// Tuple of <tt>(AVPlayer *, id)</tt> with the player that currently has a video progress
-/// observation along with an observer token. Set to \c nil when no video progress observation is
-/// taking place.
+/// Progress observation token to be used in order to remove progress observation from player.
+/// Set to \c nil when no video progress observation is taking place.
 ///
 /// @see <tt>[AVPlayer addPeriodicTimeObserverForInterval:queue:usingBlock:]</tt> for more
 /// information on the token's role.
-@property (readonly, nonatomic, nullable) RACTuple *playerToProgressObserverToken;
+@property (strong, nonatomic, nullable) id progressObserverToken;
 
-/// Size of the current displayed video. If \c videoURL is \c nil, \c CGSizeZero is returned.
+/// Size of the current displayed video. If \c currentVideoURL is \c nil, \c CGSizeZero is returned.
 @property (readwrite, nonatomic) CGSize videoSize;
 
 /// View's layer.
@@ -48,103 +39,29 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic layer;
 
 #pragma mark -
-#pragma mark Initialization
+#pragma mark Lifecycle
 #pragma mark -
 
-- (instancetype)initWithVideoProgressIntervalTime:(CGFloat)videoProgresssIntervalTime
-                                       playInLoop:(BOOL)playInLoop {
-  LTParameterAssert(videoProgresssIntervalTime > 0, @"videoProgresssIntervalTime (%g) must be "
-                    "positive", videoProgresssIntervalTime);
-
-  if (self = [super initWithFrame:CGRectZero]) {
-    _videoProgresssIntervalTime = videoProgresssIntervalTime;
-    _playerCreationQueue =
-        dispatch_queue_create("com.lightricks.Wireframes.VideoView.PlayerCreation",
-                              DISPATCH_QUEUE_SERIAL);
-    _videoProgressQueue =
-        dispatch_queue_create("com.lightricks.Wireframes.VideoView.VideoProgress",
-                              DISPATCH_QUEUE_SERIAL);
-    _playInLoop = playInLoop;
-
-    [self bindDelegateToVideoProgress];
-    [self observePlayerStatus];
-    [self observeAppActiveState];
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    [self setup];
   }
   return self;
 }
 
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+  if (self = [super initWithCoder:aDecoder]) {
+    [self setup];
+  }
+  return self;
 }
 
-- (AVPlayer *)createPlayerForURL:(NSURL *)videoURL {
-  AVPlayer *player = [AVPlayer playerWithURL:videoURL];
-  return player;
-}
-
-- (void)observePlayerStatus {
-  @weakify(self)
-  [RACObserve(self, player.status) subscribeNext:^(NSNumber * _Nullable status) {
-    if (!status) {
-      return;
-    }
-    AVPlayerItemStatus playerStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
-    @strongify(self)
-    if (playerStatus == AVPlayerItemStatusReadyToPlay) {
-      [self playerItemReady];
-    } else if (playerStatus == AVPlayerItemStatusFailed) {
-      [self playerError];
-    }
-  }];
-}
-
-- (void)bindDelegateToVideoProgress {
-  @weakify(self);
-
-  RAC(self, playerToProgressObserverToken) = [[[RACObserve(self, delegate)
-      map:^RACSignal *(id<WFVideoViewDelegate> _Nullable delegate) {
-        if (![delegate respondsToSelector:
-             @selector(videoProgress:progressTime:videoDurationTime:)]) {
-          return [RACSignal return:nil];
-        }
-
-        @strongify(self);
-        RACSignal *playerSignal = RACObserve(self, player);
-
-        @weakify(delegate);
-        return [playerSignal
-            map:^RACTuple * _Nullable(AVPlayer * _Nullable player) {
-              @strongify(self);
-
-              if (!player) {
-                return nil;
-              }
-
-              CGFloat videoDurationTime = CMTimeGetSeconds(player.currentItem.asset.duration);
-              CMTime progressInterval = CMTimeMakeWithSeconds(self.videoProgresssIntervalTime,
-                                                              NSEC_PER_SEC);
-              dispatch_queue_t videoProgressQueue = self.videoProgressQueue;
-
-              id observerToken = [player addPeriodicTimeObserverForInterval:progressInterval
-                                                                      queue:videoProgressQueue
-                                                                 usingBlock:^(CMTime time) {
-                @strongify(self);
-                @strongify(delegate);
-                [delegate videoProgress:self progressTime:CMTimeGetSeconds(time)
-                      videoDurationTime:videoDurationTime];
-              }];
-              return RACTuplePack(player, observerToken);
-            }];
-      }]
-      switchToLatest]
-      combinePreviousWithStart:nil reduce:^RACTuple * __nullable(RACTuple * __nullable previous,
-                                                                 RACTuple * __nullable current) {
-        if (previous) {
-          RACTupleUnpack(AVPlayer *previousPlayer, id previousObserverToken) = previous;
-          [previousPlayer removeTimeObserver:previousObserverToken];
-        }
-        return current;
-      }];
+- (void)setup {
+  self.progressSamplingInterval = 1.0;
+  _playerCreationQueue = dispatch_queue_create("com.lightricks.Wireframes.VideoView.PlayerCreation",
+                                               DISPATCH_QUEUE_SERIAL);
+  [self observeAppActiveState];
+  [self observePlayerStatus];
 }
 
 - (void)observeAppActiveState {
@@ -159,13 +76,79 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)applicationDidBecomeActive {
-  if (self.isPlaying) {
+  if (self.playbackRequested) {
     [self.player play];
   }
 }
 
 - (void)applicationWillResignActive {
   [self.player pause];
+}
+
+- (void)observePlayerStatus {
+  @weakify(self);
+  [RACObserve(self, player.status) subscribeNext:^(NSNumber * _Nullable status) {
+    if (!status) {
+      return;
+    }
+    AVPlayerItemStatus playerStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
+    @strongify(self)
+    if (playerStatus == AVPlayerItemStatusReadyToPlay) {
+      [self addPlaybackFinishedObservation];
+      [self addProgressObservation];
+      [self reportVideoDidLoad];
+    } else if (playerStatus == AVPlayerItemStatusFailed) {
+      [self reportVideoError];
+    }
+  }];
+}
+
+- (void)addPlaybackFinishedObservation {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:)
+                                               name:AVPlayerItemDidPlayToEndTimeNotification
+                                             object:self.player.currentItem];
+}
+
+- (void)addProgressObservation {
+  if (![self shouldAddProgressObservation]) {
+    return;
+  }
+  CMTime progressInterval = CMTimeMakeWithSeconds(self.progressSamplingInterval, 600);
+  @weakify(self);
+  self.progressObserverToken = [self.player addPeriodicTimeObserverForInterval:progressInterval
+                                                                         queue:nil
+                                                                    usingBlock:^(CMTime time) {
+    @strongify(self);
+    [self.delegate videoView:self didPlayVideoAtTime:CMTimeGetSeconds(time)];
+  }];
+}
+
+- (BOOL)shouldAddProgressObservation {
+  return [self.delegate respondsToSelector:@selector(videoView:didPlayVideoAtTime:)] && self.player;
+}
+
+- (void)reportVideoDidLoad {
+  if ([self.delegate respondsToSelector:@selector(videoViewDidLoadVideo:)]) {
+    [self.delegate videoViewDidLoadVideo:self];
+  }
+}
+
+- (void)reportVideoError {
+  if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
+    [self.delegate videoView:self didEncounterVideoError:self.player.error];
+  }
+}
+
+- (void)dealloc {
+  [self removeProgressObservation];
+}
+
+- (void)removeProgressObservation {
+  if (!self.progressObserverToken) {
+    return;
+  }
+  [self.player removeTimeObserver:self.progressObserverToken];
+  self.progressObserverToken = nil;
 }
 
 #pragma mark -
@@ -177,29 +160,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Playback
-#pragma mark -
-
-- (void)setPlayer:(nullable AVPlayer *)player {
-  [[NSNotificationCenter defaultCenter]
-   removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-
-  _player = player;
-
-  [self.layer setPlayer:player];
-}
-
-#pragma mark -
 #pragma mark Public
 #pragma mark -
 
-- (void)setVideoURL:(nullable NSURL *)videoURL {
-  [self pause];
-
-  _videoURL = videoURL;
-
+- (void)loadVideoFromURL:(nullable NSURL *)videoURL {
   if (!videoURL) {
-    self.player = nil;
+    [self setPlayer:nil videoSize:CGSizeZero videoURL:nil];
     return;
   }
 
@@ -210,18 +176,13 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    AVPlayer *player = [self createPlayerForURL:videoURL];
-    CGSize videoSize = [self.class videoSizeWithPlayer:player];
+    auto player = [AVPlayer playerWithURL:nn(videoURL)];
+    auto videoSize = [self.class videoSizeWithPlayer:player];
 
     dispatch_async(dispatch_get_main_queue(), ^{
       @strongify(self);
-      if (![self.videoURL isEqual:videoURL]) {
-        return;
-      }
-
-      self.player = player;
-      self.videoSize = videoSize;
-      if (self.isPlaying) {
+      [self setPlayer:player videoSize:videoSize videoURL:videoURL];
+      if (self.playbackRequested) {
         [self.player play];
       } else {
         [self.player pause];
@@ -230,13 +191,19 @@ NS_ASSUME_NONNULL_BEGIN
   });
 }
 
+- (void)setPlayer:(nullable AVPlayer *)player videoSize:(CGSize)videoSize
+         videoURL:(nullable NSURL *)videoURL {
+  self.player = player;
+  self.videoSize = videoSize;
+  self.currentVideoURL = videoURL;
+}
+
 + (CGSize)videoSizeWithPlayer:(nullable AVPlayer *)player {
   if (!player) {
     return CGSizeZero;
   }
 
-  AVAssetTrack *videoTrack =
-      [player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+  auto videoTrack = [player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
   if (!videoTrack) {
     return CGSizeZero;
   }
@@ -244,17 +211,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)play {
-  self.isPlaying = YES;
+  self.playbackRequested = YES;
   [self.player play];
 }
 
 - (void)pause {
-  self.isPlaying = NO;
+  self.playbackRequested = NO;
   [self.player pause];
 }
 
 - (void)stop {
-  self.isPlaying = NO;
+  self.playbackRequested = NO;
   [self.player pause];
   [self.player seekToTime:kCMTimeZero];
 }
@@ -263,31 +230,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Video Handling
 #pragma mark -
 
-- (void)playerItemReady {
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:)
-                                               name:AVPlayerItemDidPlayToEndTimeNotification
-                                             object:self.player.currentItem];
-
-  if ([self.delegate respondsToSelector:@selector(videoDidLoad:)]) {
-    [self.delegate videoDidLoad:self];
-  }
-}
-
-- (void)playerError {
-  if ([self.delegate respondsToSelector:@selector(video:didFailWithError:)]) {
-    [self.delegate video:self didFailWithError:self.player.error];
-  }
-}
-
 - (void)playerItemDidPlayToEnd:(NSNotification __unused *)notification {
-  if ([self.delegate respondsToSelector:@selector(videoDidFinishPlayback:)]) {
-    [self.delegate videoDidFinishPlayback:self];
+  if ([self.delegate respondsToSelector:@selector(videoViewDidFinishPlayback:)]) {
+    [self.delegate videoViewDidFinishPlayback:self];
   }
 
-  if (self.playInLoop) {
+  if (self.repeatsOnEnd) {
     [self.player seekToTime:kCMTimeZero];
 
-    if (self.isPlaying) {
+    if (self.playbackRequested) {
       [self.player play];
     }
   }
@@ -311,6 +262,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (AVLayerVideoGravity)videoGravity {
   return self.layer.videoGravity;
+}
+
+- (void)setProgressSamplingInterval:(NSTimeInterval)progressSamplingInterval {
+  LTParameterAssert(progressSamplingInterval > 0, @"progressSamplingInterval (%g) must be positive",
+                    progressSamplingInterval);
+  _progressSamplingInterval = progressSamplingInterval;
+  [self removeProgressObservation];
+  [self addProgressObservation];
+}
+
+- (void)setDelegate:(id<WFVideoViewDelegate> _Nullable)delegate {
+  // Removing observation before setting delegate so that the new delegate won't get the first
+  // progress event at a wrong interval.
+  [self removeProgressObservation];
+  _delegate = delegate;
+  [self addProgressObservation];
+}
+
+- (void)setPlayer:(nullable AVPlayer *)player {
+  [self removePlaybackFinishedObservation];
+  [self removeProgressObservation];
+  self.layer.player = player;
+}
+
+- (void)removePlaybackFinishedObservation {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:AVPlayerItemDidPlayToEndTimeNotification
+                                                object:self.player.currentItem];
+}
+
+- (nullable AVPlayer *)player {
+  return self.layer.player;
 }
 
 @end
