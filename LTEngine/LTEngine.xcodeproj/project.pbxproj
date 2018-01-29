@@ -1144,7 +1144,6 @@
 		8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3818B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm */; };
 		8BAE3A3F18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A3E18B2326700DA79E1 /* NSValue+OpenCVExtensions.mm */; };
 		8BAE3A4218B2354E00DA79E1 /* EXPMatchers+equalMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A4118B2354E00DA79E1 /* EXPMatchers+equalMat.mm */; };
-		8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */ = {isa = PBXBuildFile; fileRef = 8BAE3A4318B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h */; };
 		8BAE3A4718B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A4618B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm */; };
 		8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A4918B2668900DA79E1 /* EXPMatchers+equalScalar.mm */; };
 		8BAE3A4D18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3A4C18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm */; };
@@ -6680,7 +6679,6 @@
 				03BCFD49191FA6E200529AD6 /* NoisyBorder.png in Resources */,
 				C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */,
 				E412C8A61F6144310070FCBC /* GuidedFilterBWMask.png in Resources */,
-				8BAE3A4418B236F000DA79E1 /* LTEasyBoxing+OpenCVExtensions.h in Resources */,
 				031338C3191238050095F99B /* ShiftedTiledFrame.png in Resources */,
 				03C192C418F6F3B200DC6CA6 /* LinearMaskTiltedCenter.png in Resources */,
 				A8BDC6441AC9DA64005FC392 /* CircularPatchDrawerRotation.png in Resources */,
