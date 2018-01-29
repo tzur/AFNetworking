@@ -9,6 +9,7 @@
 #import <LTKit/LTRandom.h>
 
 #import "DVNBlendMode.h"
+#import "DVNBrushTestQuads.h"
 #import "DVNJitteredColorAttributeProviderModel.h"
 #import "DVNQuadCenterAttributeProvider.h"
 #import "LTShaderStorage+DVNBrushFsh.h"
@@ -203,6 +204,31 @@ context(@"rendering", ^{
     expect($(targetTexture.image)).to.equalMat($(expectedMat));
   });
 
+  it(@"should render with non-trivial modelview matrix", ^{
+    std::vector<lt::Quad> quads;
+    std::vector<lt::Quad> texcoordQuads;
+
+    for (const LTQuadCorners &corners : kCornersOfOverlappingQuads) {
+      quads.push_back(lt::Quad(corners));
+      texcoordQuads.push_back(lt::Quad::canonicalSquare());
+    }
+
+    NSMutableDictionary<NSString *, NSValue *> *mutableUniforms = [uniforms mutableCopy];
+    mutableUniforms[[DVNBrushVsh modelview]] = $(kQuadTransformForTesting);
+    uniforms = [mutableUniforms copy];
+
+    attributeData = DVNTestAttributeDataForQuads(quads, LTVector3::ones());
+
+    [fbo bindAndDraw:^{
+      [drawer drawQuads:quads textureMapQuads:texcoordQuads
+          attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
+               uniforms:uniforms];
+    }];
+
+    cv::Mat expectedMat(LTLoadMat([self class], @"DVNBrushTipNonTrivialModelview.png"));
+    expect($(targetTexture.image)).to.equalMat($(expectedMat));
+  });
+
   context(@"edge avoidance", ^{
     __block LTTexture *edgeAvoidanceGuideTexture;
     __block NSDictionary<NSString *, LTTexture *> *auxiliaryTextures;
@@ -302,8 +328,8 @@ context(@"rendering", ^{
 
         [fbo bindAndDraw:^{
           [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
-              attributeData:attributeData texture:brushTipTexture auxiliaryTextures:auxiliaryTextures
-                   uniforms:mutableUniforms];
+           attributeData:attributeData texture:brushTipTexture auxiliaryTextures:auxiliaryTextures
+           uniforms:mutableUniforms];
         }];
 
         cv::Mat expectedMat = LTLoadMat([self class], @"DVNBrushEdgeAvoidance1WithOffset.png");

@@ -84,6 +84,7 @@
 		500FC9A720177DA00005D295 /* DVNBrushModelVersionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FC9A620177DA00005D295 /* DVNBrushModelVersionSpec.mm */; };
 		500FCE102018725D0005D295 /* DVNBrushModelErrorCode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FCDED2018725C0005D295 /* DVNBrushModelErrorCode.mm */; };
 		500FCE11201893D70005D295 /* DVNTestBrushModelV1.json in Resources */ = {isa = PBXBuildFile; fileRef = 500FC8F3201755EE0005D295 /* DVNTestBrushModelV1.json */; };
+		500FD0F32018C1090005D295 /* DVNBrushTipNonTrivialModelview.png in Resources */ = {isa = PBXBuildFile; fileRef = 500FD0D12018C1090005D295 /* DVNBrushTipNonTrivialModelview.png */; };
 		50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */; };
 		50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50163CCC1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm */; };
 		5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154BD1D1AEB0300420FA9 /* Mantle.framework */; };
@@ -580,6 +581,8 @@
 		500FC9A620177DA00005D295 /* DVNBrushModelVersionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelVersionSpec.mm; sourceTree = "<group>"; };
 		500FCDED2018725C0005D295 /* DVNBrushModelErrorCode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelErrorCode.mm; sourceTree = "<group>"; };
 		500FCE0F2018725D0005D295 /* DVNBrushModelErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushModelErrorCode.h; sourceTree = "<group>"; };
+		500FD0342018C0060005D295 /* DVNBrushTestQuads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNBrushTestQuads.h; sourceTree = "<group>"; };
+		500FD0D12018C1090005D295 /* DVNBrushTipNonTrivialModelview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTipNonTrivialModelview.png; path = Resources/DVNBrushTipNonTrivialModelview.png; sourceTree = "<group>"; };
 		50163CAE1D3381F700590860 /* DVNAttributeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNAttributeProvider.h; sourceTree = "<group>"; };
 		50163CC91D3381FE00590860 /* DVNAttributeStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNAttributeStageConfiguration.h; sourceTree = "<group>"; };
 		50163CCA1D3381FE00590860 /* DVNAttributeStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNAttributeStageConfiguration.mm; sourceTree = "<group>"; };
@@ -938,6 +941,7 @@
 				5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */,
 				5001CB971F27785B00C70D23 /* DVNBrushTip.png */,
 				509234261F277AE900CCA727 /* DVNBrushTipModelview.png */,
+				500FD0D12018C1090005D295 /* DVNBrushTipNonTrivialModelview.png */,
 				285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */,
 				285A79061DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png */,
 				285A79071DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png */,
@@ -1023,6 +1027,7 @@
 			children = (
 				50B00D841FB4B92F003E6CAF /* DVNBrushSourceTypeSpec.mm */,
 				5001CB2A1F2745A700C70D23 /* DVNBrushSpec.mm */,
+				500FD0342018C0060005D295 /* DVNBrushTestQuads.h */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -1820,6 +1825,7 @@
 				500FCE11201893D70005D295 /* DVNTestBrushModelV1.json in Resources */,
 				5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */,
 				50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */,
+				500FD0F32018C1090005D295 /* DVNBrushTipNonTrivialModelview.png in Resources */,
 				508814711FA8966B001C2BDD /* DVNBrushColorWithMask.png in Resources */,
 				285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */,
 				5092344D1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png in Resources */,
