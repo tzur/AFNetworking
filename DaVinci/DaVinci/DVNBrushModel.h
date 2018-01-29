@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// b) "Vector stroke geometry": the geometry is constructed as a consecutive set of non-overlapping
 /// geometries.
 ///
-/// Brush models have a unique version, the so-called \c brushModelVersion, used to determine all
+/// Brush models have a unique version, the so-called brush model \c version, used to determine all
 /// derived objects.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
@@ -26,20 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// strokes defined by the receiver.
 + (NSArray<NSString *> *)imageURLPropertyKeys;
 
-/// String used as serialization string of the \c brushModelVersion property of \c DVNBrushModel
-/// objects.
-extern NSString * const kDVNBrushModelVersionString;
-
 /// Mapping between the enum values and the corresponding serialization strings used for
-/// serialization of the \c brushModelVersion property of \c DVNBrushModel objects.
+/// serialization of the \c version property of \c DVNBrushModel objects.
 extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping;
 
 /// Version of this brush model. Value, when initializing with \c init method, is
 /// \c DVNBrushModelVersionV1.
 ///
-/// @important Serialization string is \c kDVNBrushModelVersionString. The mapping between the enum
-/// values and the corresponding serialization strings is \c kDVNBrushModelVersionMapping.
-@property (readonly, nonatomic) DVNBrushModelVersion *brushModelVersion;
+/// @note The mapping between the enum values and the corresponding serialization strings is
+/// \c kDVNBrushModelVersionMapping.
+@property (readonly, nonatomic) DVNBrushModelVersion *version;
 
 /// Scale of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips with size
 /// <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate system, in case
