@@ -18,6 +18,41 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
+#pragma mark BZRSubscriptionPendingRenewalInfo
+#pragma mark -
+
+LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
+  BZRSubscriptionExpirationReasonDiscontinuedByUser,
+  BZRSubscriptionExpirationReasonBillingError,
+  BZRSubscriptionExpirationReasonPriceChangeNotAgreed,
+  BZRSubscriptionExpirationReasonProductWasUnavailable,
+  BZRSubscriptionExpirationReasonUnknownError
+);
+
+@implementation BZRSubscriptionPendingRenewalInfo
+
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    optionalPropertyKeys = [NSSet setWithArray:@[
+      @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expectedRenewalProductId),
+      @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isPendingPriceIncreaseConsent),
+      @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expirationReason),
+      @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isInBillingRetryPeriod)
+    ]];
+  });
+
+  return optionalPropertyKeys;
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+@end
+
+#pragma mark -
 #pragma mark BZRReceiptSubscriptionInfo
 #pragma mark -
 
@@ -29,7 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
   dispatch_once(&onceToken, ^{
     optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRReceiptSubscriptionInfo, lastPurchaseDateTime),
-      @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime)
+      @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime),
+      @instanceKeypath(BZRReceiptSubscriptionInfo, pendingRenewalInfo)
     ]];
   });
 

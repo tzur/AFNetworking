@@ -4,6 +4,7 @@
 #import "BZRValidatricksReceiptModel.h"
 
 #import "BZRReceiptEnvironment.h"
+#import "NSErrorCodes+Bazaar.h"
 #import "NSValueTransformer+Validatricks.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -31,6 +32,56 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
+#pragma mark BZRValidatricksSubscriptionPendingRenewalInfo
+#pragma mark -
+
+@implementation BZRValidatricksSubscriptionPendingRenewalInfo
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{
+    @instanceKeypath(BZRValidatricksSubscriptionPendingRenewalInfo, willAutoRenew):
+        @"willAutoRenew",
+    @instanceKeypath(BZRValidatricksSubscriptionPendingRenewalInfo, expectedRenewalProductId):
+        @"expectedRenewalProductId",
+    @instanceKeypath(BZRValidatricksSubscriptionPendingRenewalInfo, isPendingPriceIncreaseConsent):
+        @"isPendingPriceIncreaseConsent",
+    @instanceKeypath(BZRValidatricksSubscriptionPendingRenewalInfo, expirationReason):
+        @"expirationReason",
+    @instanceKeypath(BZRValidatricksSubscriptionPendingRenewalInfo, isInBillingRetryPeriod):
+        @"isInBillingRetryPeriod"
+  };
+}
+
++ (NSValueTransformer *)expirationReasonJSONTransformer {
+  return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
+    @"discontinuedByUser": $(BZRSubscriptionExpirationReasonDiscontinuedByUser),
+    @"billingError": $(BZRSubscriptionExpirationReasonBillingError),
+    @"priceIncreased": $(BZRSubscriptionExpirationReasonPriceChangeNotAgreed),
+    @"productWasUnavailable": $(BZRSubscriptionExpirationReasonProductWasUnavailable),
+    @"unknownError": $(BZRSubscriptionExpirationReasonUnknownError)
+  } defaultValue:$(BZRSubscriptionExpirationReasonUnknownError)
+    reverseDefaultValue:@"unknownError"];
+}
+
+- (BOOL)validate:(NSError *__autoreleasing *)error {
+  BOOL isModelValid = self.willAutoRenew ?
+      (self.expectedRenewalProductId && !self.isPendingPriceIncreaseConsent &&
+       !self.expirationReason && !self.isInBillingRetryPeriod) :
+      (!self.expectedRenewalProductId && self.expirationReason);
+  if (!isModelValid) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                             description:@"Invalid model state"];
+    }
+    return NO;
+  }
+
+  return YES;
+}
+
+@end
+
+#pragma mark -
 #pragma mark BZRValidatricksReceiptSubscriptionInfo
 #pragma mark -
 
@@ -49,7 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
     @instanceKeypath(BZRValidatricksReceiptSubscriptionInfo, expirationDateTime):
         @"expiresDateTime",
     @instanceKeypath(BZRValidatricksReceiptSubscriptionInfo, cancellationDateTime):
-        @"cancellationDateTime"
+        @"cancellationDateTime",
+    @instanceKeypath(BZRValidatricksReceiptSubscriptionInfo, pendingRenewalInfo):
+        @"pendingRenewalInfo"
   };
 }
 
@@ -67,6 +120,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSValueTransformer *)cancellationDateTimeJSONTransformer {
   return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)pendingRenewalInfoJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
+          [BZRValidatricksSubscriptionPendingRenewalInfo class]];
 }
 
 @end

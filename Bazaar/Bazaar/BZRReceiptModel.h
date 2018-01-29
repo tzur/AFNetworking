@@ -26,6 +26,53 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
+#pragma mark BZRSubscriptionPendingRenewalInfo
+#pragma mark -
+
+/// Enumerates a set of possible reasons for a subscription to stop being automatically renewed.
+LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
+  /// Subscription auto-renewal stopped since it was manually discontinued by the user.
+  BZRSubscriptionExpirationReasonDiscontinuedByUser,
+  /// Subscription auto-renewal stopped due to billing issues.
+  BZRSubscriptionExpirationReasonBillingError,
+  /// Subscription auto-renewal stopped because the user did not agree to price increase.
+  BZRSubscriptionExpirationReasonPriceChangeNotAgreed,
+  /// Subscription auto-renewal stopped because the product was not available at the time of the
+  /// renewal.
+  BZRSubscriptionExpirationReasonProductWasUnavailable,
+  /// Subscription auto-renewal stopped due to an unknown error.
+  BZRSubscriptionExpirationReasonUnknownError
+);
+
+/// Describes the renewal status of a subscription product.
+@interface BZRSubscriptionPendingRenewalInfo : BZRModel <NSSecureCoding>
+
+/// \c YES if the subscription will auto-renew. If the value is \c YES then
+/// \c expectedRenewalProductId will specify the product identifier of the subscription that will
+/// auto-renew, otherwise check the \c isPendingPriceIncreaseConsent and \c expirationReason
+/// properties to figure out why the subscription will not auto-renew.
+@property (readonly, nonatomic) BOOL willAutoRenew;
+
+/// Product identifier of the subscription that will auto-renew, or \c nil if subscription will not
+/// auto-renew.
+@property (readonly, nonatomic, nullable) NSString *expectedRenewalProductId;
+
+/// \c YES if there was a price increase and the user has not agreed to it yet. If this is \c YES
+/// then the subscription is expected to not auto-renew unless the user agrees to the price
+/// increase.
+@property (readonly, nonatomic) BOOL isPendingPriceIncreaseConsent;
+
+/// In case the subscription is already expired this will specify the expiration reason, otherwise
+/// it will be \c nil.
+@property (readonly, nonatomic, nullable) BZRSubscriptionExpirationReason *expirationReason;
+
+/// \c YES if the subscription was not renewed due to billing issues and Apple is still trying to
+/// renew the subscription, \c NO otherwise.
+@property (readonly, nonatomic) BOOL isInBillingRetryPeriod;
+
+@end
+
+#pragma mark -
 #pragma mark BZRReceiptSubscriptionInfo
 #pragma mark -
 
@@ -52,6 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if the subscription has already expired.
 @property (readonly, nonatomic) BOOL isExpired;
+
+/// Renewal information for this subscription.
+@property (readonly, nonatomic, nullable) BZRSubscriptionPendingRenewalInfo *pendingRenewalInfo;
 
 @end
 

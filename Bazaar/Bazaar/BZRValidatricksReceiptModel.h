@@ -16,6 +16,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
+#pragma mark BZRValidatricksSubscriptionPendingRenewalInfo
+#pragma mark -
+
+@interface BZRValidatricksSubscriptionPendingRenewalInfo : BZRSubscriptionPendingRenewalInfo
+    <MTLJSONSerializing>
+@end
+
+#pragma mark -
 #pragma mark BZRValidatricksReceiptSubscriptionInfo
 #pragma mark -
 

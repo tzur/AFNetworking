@@ -27,11 +27,13 @@ context(@"initialization", ^{
   it(@"should correctly specify optional properties", ^{
     NSSet<NSString *> *nullableProperties = [BZRReceiptSubscriptionInfo optionalPropertyKeys];
 
-    expect(nullableProperties.count).to.equal(2);
+    expect(nullableProperties.count).to.equal(3);
     expect(nullableProperties).to
         .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, lastPurchaseDateTime));
     expect(nullableProperties).to
         .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime));
+    expect(nullableProperties).to
+        .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, pendingRenewalInfo));
   });
 });
 
