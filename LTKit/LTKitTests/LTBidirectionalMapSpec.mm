@@ -140,6 +140,11 @@ context(@"retrieving keys and values", ^{
     map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
     expect([[map allValues] sortedArrayUsingSelector:@selector(compare:)]).to.equal(@[@1, @2, @7]);
   });
+
+  it(@"should return all key-value pairs", ^{
+    map = [LTBidirectionalMap mapWithDictionary:kSampleDict];
+    expect([map dictionary]).to.equal(kSampleDict);
+  });
 });
 
 context(@"memory management", ^{

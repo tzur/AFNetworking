@@ -1,9 +1,9 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-NS_ASSUME_NONNULL_BEGIN
+#import "DVNBrushModelVersion.h"
 
-@class DVNBrushModelVersion;
+NS_ASSUME_NONNULL_BEGIN
 
 /// Immutable model representing a brush. A brush is determined by a set of well-defined parameters
 /// in form of a model which can be used to construct corresponding objects capable of rendering
@@ -18,18 +18,30 @@ NS_ASSUME_NONNULL_BEGIN
 /// b) "Vector stroke geometry": the geometry is constructed as a consecutive set of non-overlapping
 /// geometries.
 ///
-/// Brush models have a unique version, the so-called \c brushModelVersion, used to determine all
+/// Brush models have a unique version, the so-called brush model \c version, used to determine all
 /// derived objects.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
-/// Version of this brush model. Value, when initializing with \c init method, is \c 1.
-@property (readonly, nonatomic) NSUInteger brushModelVersion;
+/// Returns the keys of the properties holding the URLs to the images required for rendering brush
+/// strokes defined by the receiver.
++ (NSArray<NSString *> *)imageURLPropertyKeys;
 
-/// Scale of the brush stroke. A value of \c 1 yields square brush tips with size <tt>(1, 1)</tt>,
-/// in floating-point units of the brush stroke geometry coordinate system, in case of brush tip
-/// geometry. In case of vector stroke geometry, a value of \c 1 yields geometry for a brush stroke
-/// with width \c 1, in floating-point units of the brush stroke geometry coordinate system. When
-/// initializing with \c init method, this value is \c 1.
+/// Mapping between the enum values and the corresponding serialization strings used for
+/// serialization of the \c version property of \c DVNBrushModel objects.
+extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping;
+
+/// Version of this brush model. Value, when initializing with \c init method, is
+/// \c DVNBrushModelVersionV1.
+///
+/// @note The mapping between the enum values and the corresponding serialization strings is
+/// \c kDVNBrushModelVersionMapping.
+@property (readonly, nonatomic) DVNBrushModelVersion *version;
+
+/// Scale of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips with size
+/// <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate system, in case
+/// of brush tip geometry. In case of vector stroke geometry, a value of \c 1 yields geometry for a
+/// brush stroke with width \c 1, in floating-point units of the brush stroke geometry coordinate
+/// system. When initializing with \c init method, this value is \c 1.
 ///
 /// @important This value is the reference point for all additional manipulations applied to the
 /// geometry, such as rotations, random scalings based on additional parameters, distorations, etc.

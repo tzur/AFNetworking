@@ -86,6 +86,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.keysToValues allValues];
 }
 
+- (NSDictionary *)dictionary {
+  return [self.keysToValues copy];
+}
+
 - (NSUInteger)count {
   return self.keysToValues.count;
 }
