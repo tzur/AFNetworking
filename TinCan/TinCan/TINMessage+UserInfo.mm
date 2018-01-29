@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kTINMessageFileNamesKey = @"TINMessageFileNames";
 NSString * const kTINMessageContextKey = @"TINMessageContext";
+NSString * const kTINMessageAppDisplayName = @"TINAppDisplayName";
 
 - (nullable NSArray<NSString *> *)fileNames {
   auto fileNames = (NSArray<NSString *> * _Nullable)self.userInfo[kTINMessageFileNamesKey];
