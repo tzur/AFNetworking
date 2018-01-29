@@ -2153,8 +2153,8 @@
 		2843B78218ACC08B0044B87A /* LTTextureDrawerExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureDrawerExamples.mm; sourceTree = "<group>"; };
 		2843B78418ACF4F10044B87A /* LTSingleRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSingleRectDrawerSpec.h; sourceTree = "<group>"; };
 		2843B78518ACF5030044B87A /* LTMultiRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMultiRectDrawerSpec.h; sourceTree = "<group>"; };
-		284429C11F98DEB700355576 /* LTColorTransferResultTransparentInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LTColorTransferResultTransparentInput.png; sourceTree = "<group>"; };
-		284429F51F98E05E00355576 /* LTColorTransferResultTransparentReference.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LTColorTransferResultTransparentReference.png; sourceTree = "<group>"; };
+		284429C11F98DEB700355576 /* LTColorTransferResultTransparentInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTColorTransferResultTransparentInput.png; path = Resources/LTColorTransferResultTransparentInput.png; sourceTree = "<group>"; };
+		284429F51F98E05E00355576 /* LTColorTransferResultTransparentReference.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTColorTransferResultTransparentReference.png; path = Resources/LTColorTransferResultTransparentReference.png; sourceTree = "<group>"; };
 		284574761D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTContentTouchEventStateFilter+DefaultFilters.h"; sourceTree = "<group>"; };
 		284574771D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFilters.mm"; sourceTree = "<group>"; };
 		284574D41D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFiltersSpec.mm"; sourceTree = "<group>"; };
@@ -2165,7 +2165,7 @@
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
 		2847921A186315D100A70AF5 /* LTGridDrawer.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.fsh; sourceTree = "<group>"; };
 		2847921B186315D100A70AF5 /* LTGridDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGridDrawer.vsh; sourceTree = "<group>"; };
-		28495A421F988F94005D1107 /* LTColorTransferResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LTColorTransferResult.png; sourceTree = "<group>"; };
+		28495A421F988F94005D1107 /* LTColorTransferResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTColorTransferResult.png; path = Resources/LTColorTransferResult.png; sourceTree = "<group>"; };
 		284AA2A21AC99DD1007F86DB /* CircularCloneAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularCloneAlpha.png; path = Resources/CircularCloneAlpha.png; sourceTree = "<group>"; };
 		284AA2A31AC99DD1007F86DB /* CircularCloneDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularCloneDefault.png; path = Resources/CircularCloneDefault.png; sourceTree = "<group>"; };
 		284AA2A41AC99DD1007F86DB /* CircularCloneFeathering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularCloneFeathering.png; path = Resources/CircularCloneFeathering.png; sourceTree = "<group>"; };
@@ -2601,7 +2601,7 @@
 		65057CA61B7773400029A164 /* Island.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Island.png; path = Resources/Island.png; sourceTree = "<group>"; };
 		65057CC21B7773BC0029A164 /* Meal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Meal.png; path = Resources/Meal.png; sourceTree = "<group>"; };
 		65057CC41B7778200029A164 /* SanFrancisco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SanFrancisco.png; path = Resources/SanFrancisco.png; sourceTree = "<group>"; };
-		651286921B777C2D007A8385 /* MacbethSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MacbethSmall.png; sourceTree = "<group>"; };
+		651286921B777C2D007A8385 /* MacbethSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethSmall.png; path = Resources/MacbethSmall.png; sourceTree = "<group>"; };
 		656155701D4649E2009E701C /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		6561558B1D4649F0009E701C /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
