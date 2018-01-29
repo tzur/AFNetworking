@@ -5,19 +5,21 @@
 
 using namespace metal;
 
-/// Padding in both dimensions.
-constant ushort2 paddingSize [[function_constant(0)]];
+/// Left and top padding.
+constant short2 paddingLeftTop [[function_constant(0)]];
+/// Right and bottom padding.
+constant short2 paddingRightBottom [[function_constant(1)]];
 
-inline ushort2 calculateReadCoordinates(ushort2 gridIndex, const ushort2 outputSize) {
-  short2 readCoordinates = short2(gridIndex) - short2(paddingSize);
-  const short2 inputSize = short2(outputSize) - short2(paddingSize) * 2;
+ushort2 calculateReadCoordinates(ushort2 gridIndex, const ushort2 outputSize) {
+  short2 inputSize = (short2)outputSize - paddingLeftTop - paddingRightBottom;
 
-  readCoordinates = abs(readCoordinates);
+  short2 readCoordinates = abs((short2)gridIndex - paddingLeftTop);
   readCoordinates = min(readCoordinates, 2 * inputSize - readCoordinates - 2);
-  return ushort2(readCoordinates);
+
+  return ushort2((ushort)readCoordinates.x, (ushort)readCoordinates.y);
 }
 
-kernel void reflectionPadding(texture2d<half, access::read> inputImage [[texture(0)]],
+kernel void reflectionPaddingSingle(texture2d<half, access::read> inputImage [[texture(0)]],
                               texture2d<half, access::write> outputImage [[texture(1)]],
                               ushort2 gridIndex [[thread_position_in_grid]]) {
   const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());

@@ -5,6 +5,8 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
+#import "PNKPaddingSize.h"
+
 DeviceSpecBegin(PNKReflectionPadding)
 
 static const NSUInteger kInputWidth = 8;
@@ -12,9 +14,9 @@ static const NSUInteger kInputHeight = 8;
 static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
-static const pnk::SymmetricPadding kPadding = {.width = 3, .height = 6};
-static const NSUInteger kOutputWidth = kInputWidth + kPadding.width * 2;
-static const NSUInteger kOutputHeight = kInputHeight + kPadding.height * 2;
+static const pnk::PaddingSize kPadding = {2, 3, 4, 5};
+static const NSUInteger kOutputWidth = kInputWidth + kPadding.left + kPadding.right;
+static const NSUInteger kOutputHeight = kInputHeight + kPadding.top + kPadding.bottom;
 
 __block id<MTLDevice> device;
 __block id<MTLCommandBuffer> commandBuffer;
@@ -28,9 +30,7 @@ beforeEach(^{
 
 context(@"kernel input verification", ^{
   beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputFeatureChannels
-                                                         paddingSize:kPadding];
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
   });
 
   it(@"should raise an exception when input feature channels mismatch", ^{
@@ -43,21 +43,33 @@ context(@"kernel input verification", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should raise an exception when input is array for non-array kernel", ^{
-    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
-                                        kInputArrayFeatureChannels);
-    auto outputImage = PNKImageMakeUnorm(device, kOutputWidth, kOutputHeight,
-                                         kInputArrayFeatureChannels);
+  it(@"should raise an exception when input width is smaller than left padding", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kPadding.left - 1, kInputHeight,
+                                        kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, 2 * kPadding.left + kPadding.right - 1,
+                                         kOutputHeight, kInputFeatureChannels);
     expect(^{
       [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                                  outputTexture:outputImage.texture];
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should raise an exception when input width is smaller than padding width", ^{
-    auto inputImage = PNKImageMakeUnorm(device, kPadding.width - 1, kInputHeight,
+  it(@"should raise an exception when input width is smaller than right padding", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kPadding.right - 1, kInputHeight,
                                         kInputFeatureChannels);
-    auto outputImage = PNKImageMakeUnorm(device, 3 * kPadding.width - 1, kOutputHeight,
+    auto outputImage = PNKImageMakeUnorm(device, kPadding.left + 2 * kPadding.right - 1,
+                                         kOutputHeight, kInputFeatureChannels);
+    expect(^{
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
+                                 outputTexture:outputImage.texture];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise an exception when input height is smaller than top padding", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kPadding.top - 1,
+                                        kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kOutputWidth,
+                                         2 * kPadding.top + kPadding.bottom - 1,
                                          kInputFeatureChannels);
     expect(^{
       [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
@@ -65,10 +77,11 @@ context(@"kernel input verification", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should raise an exception when input height is smaller than padding height", ^{
-    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kPadding.height - 1,
+  it(@"should raise an exception when input height is smaller than bottom padding", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kPadding.bottom - 1,
                                         kInputFeatureChannels);
-    auto outputImage = PNKImageMakeUnorm(device, kOutputWidth, 3 * kPadding.height - 1,
+    auto outputImage = PNKImageMakeUnorm(device, kOutputWidth,
+                                         kPadding.top + 2 * kPadding.bottom - 1,
                                          kInputFeatureChannels);
     expect(^{
       [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
@@ -99,18 +112,12 @@ context(@"kernel input verification", ^{
 
 context(@"kernel input region", ^{
   beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputFeatureChannels
-                                                         paddingSize:kPadding];
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
   });
 
   it(@"should calculate input region correctly", ^{
     MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
-    MTLSize outputSize = {
-      kInputWidth + kPadding.width * 2,
-      kInputHeight + kPadding.height * 2,
-      kInputFeatureChannels
-    };
+    MTLSize outputSize = {kOutputWidth, kOutputHeight, kInputFeatureChannels};
     MTLRegion inputRegion = [reflectionPadding inputRegionForOutputSize:outputSize];
 
     expect($(inputRegion.size)).to.equalMTLSize($(inputSize));
@@ -118,11 +125,7 @@ context(@"kernel input region", ^{
 
   it(@"should calculate output size correctly", ^{
     MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
-    MTLSize expectedSize = {
-      kInputWidth + kPadding.width * 2,
-      kInputHeight + kPadding.height * 2,
-      kInputFeatureChannels
-    };
+    MTLSize expectedSize = {kOutputWidth, kOutputHeight, kInputFeatureChannels};
     MTLSize outputSize = [reflectionPadding outputSizeForInputSize:inputSize];
     expect($(outputSize)).to.equalMTLSize($(expectedSize));
   });
@@ -134,17 +137,14 @@ context(@"reflection padding with Unorm8 channel format", ^{
 
   beforeEach(^{
     inputMat = LTLoadMat([self class], @"Lena128.png");
-    expected = cv::Mat4b(inputMat.rows + (int)kPadding.height * 2,
-                         inputMat.cols + (int)kPadding.width * 2);
-    cv::copyMakeBorder(inputMat, expected, (int)kPadding.height, (int)kPadding.height,
-                       (int)kPadding.width, (int)kPadding.width,
-                       cv::BORDER_REFLECT_101);
+    expected = cv::Mat4b(inputMat.rows + (int)kPadding.top + (int)kPadding.bottom,
+                         inputMat.cols + (int)kPadding.left + (int)kPadding.right);
+    cv::copyMakeBorder(inputMat, expected, (int)kPadding.top, (int)kPadding.bottom,
+                       (int)kPadding.left, (int)kPadding.right, cv::BORDER_REFLECT_101);
   });
 
-  it(@"should add inputs correctly for non-array textures", ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputFeatureChannels
-                                                         paddingSize:kPadding];
+  it(@"should do reflection correctly for non-array textures", ^{
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
 
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputFeatureChannels);
@@ -163,9 +163,7 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputArrayFeatureChannels
-                                                         paddingSize:kPadding];
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
 
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputArrayFeatureChannels);
@@ -190,9 +188,7 @@ context(@"reflection padding with Unorm8 channel format", ^{
 
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputFeatureChannels
-                                                         paddingSize:kPadding];
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
@@ -201,9 +197,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   });
 
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
-                                                inputFeatureChannels:kInputArrayFeatureChannels
-                                                         paddingSize:kPadding];
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,

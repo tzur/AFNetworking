@@ -5,28 +5,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+namespace pnk {
+  struct PaddingSize;
+};
+
 #if PNK_USE_MPS
 
-namespace pnk {
-  /// Parameters for symmetric padding.
-  struct SymmetricPadding {
-    NSUInteger width;
-    NSUInteger height;
-  };
-} // namespace pnk
-
-/// Kernel that performs a symmetric reflection padding of textures. Padding is done in a manner
-/// such that the value at the border is not repeated, i.e. <tt>dcb|abcdefgh|gfe</tt>. Padding is
-/// done up to the size of the original input in each side, larger paddings require multiple passes.
+/// Kernel that performs reflection padding of textures. Padding is done in a manner such that the
+/// value at the border is not repeated, i.e. <tt>dcb|abcdefgh|gfe</tt>. Padding is done up to the
+/// size of the original input in each direction, larger paddings require multiple passes.
 @interface PNKReflectionPadding : NSObject <PNKUnaryImageKernel>
 
-/// Initializes a new kernel that runs on \c device and applies \c padding to the width and height
-/// of each channel.
-- (instancetype)initWithDevice:(id<MTLDevice>)device
-          inputFeatureChannels:(NSUInteger)inputFeatureChannels
-                   paddingSize:(pnk::SymmetricPadding)padding NS_DESIGNATED_INITIALIZER;
-
 - (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes a new kernel that runs on \c device and applies left, top, right and bottom padding
+/// as defined by \c paddingSize.
+- (instancetype)initWithDevice:(id<MTLDevice>)device paddingSize:(pnk::PaddingSize)paddingSize
+    NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputTexture as
 /// input. Output is written asynchronously to \c outputTexture.
@@ -48,9 +43,6 @@ namespace pnk {
 /// in each dimension.
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
-
-/// Padding to apply.
-@property (readonly, nonatomic) pnk::SymmetricPadding padding;
 
 @end
 

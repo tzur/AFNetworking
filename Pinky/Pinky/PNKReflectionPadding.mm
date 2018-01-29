@@ -5,6 +5,7 @@
 
 #import "PNKComputeDispatch.h"
 #import "PNKComputeState.h"
+#import "PNKPaddingSize.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,11 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Device to encode this kernel operation.
 @property (readonly, nonatomic) id<MTLDevice> device;
 
-/// Kernel state to encode.
-@property (readonly, nonatomic) id<MTLComputePipelineState> state;
+/// Kernel state to encode padding of a single texture.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateSingle;
+
+/// Kernel state to encode padding of texture array.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateArray;
 
 /// Kernel function name.
 @property (readonly, nonatomic) NSString *functionName;
+
+/// Padding to apply.
+@property (readonly, nonatomic) pnk::PaddingSize paddingSize;
 
 @end
 
@@ -28,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize inputFeatureChannels = _inputFeatureChannels;
 
 /// Kernel function name for texture.
-static NSString * const kKernelFunctionName = @"reflectionPadding";
+static NSString * const kKernelSingleFunctionName = @"reflectionPaddingSingle";
 
 /// Kernel function name for texture array.
 static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
@@ -38,28 +45,30 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 #pragma mark -
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
-          inputFeatureChannels:(NSUInteger)inputFeatureChannels
-                   paddingSize:(pnk::SymmetricPadding)padding {
+                   paddingSize:(pnk::PaddingSize)paddingSize {
   if (self = [super init]) {
     _device = device;
-    _inputFeatureChannels = inputFeatureChannels;
-    _padding = padding;
+    _paddingSize = paddingSize;
 
-    [self createState];
+    [self createStates];
   }
   return self;
 }
 
-- (void)createState {
+- (void)createStates {
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  unsigned short paddingSize[2] = {
-    (unsigned short)self.padding.width,
-    (unsigned short)self.padding.height
-  };
-  [functionConstants setConstantValue:&paddingSize type:MTLDataTypeUShort2 withName:@"paddingSize"];
+  short paddingLeftTop[] = {(short)self.paddingSize.left, (short)self.paddingSize.top};
+  short paddingRightBottom[] = {(short)self.paddingSize.right, (short)self.paddingSize.bottom};
 
-  _functionName = self.inputFeatureChannels > 4 ? kKernelArrayFunctionName : kKernelFunctionName;
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  [functionConstants setConstantValue:paddingLeftTop type:MTLDataTypeShort2
+                             withName:@"paddingLeftTop"];
+  [functionConstants setConstantValue:paddingRightBottom type:MTLDataTypeShort2
+                             withName:@"paddingRightBottom"];
+
+  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
+                                                    functionConstants);
+  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
+                                                   functionConstants);
 }
 
 #pragma mark -
@@ -78,7 +87,8 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 
   MTLSize workingSpaceSize = {outputTexture.width, outputTexture.height, outputTexture.arrayLength};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[], textures, self.functionName,
+  auto state = (inputTexture.arrayLength <= 1) ? self.stateSingle : self.stateArray;
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[], textures, self.functionName,
                                        workingSpaceSize);
 }
 
@@ -88,28 +98,38 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                     "arrayLength must match output texture arrayLength, got: (%lu, %lu)",
                     (unsigned long)inputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert(inputTexture.arrayLength == (self.inputFeatureChannels - 1) / 4 + 1,
-                    @"Input texture arrayLength must be %lu, got: %lu)",
-                    (unsigned long)((self.inputFeatureChannels - 1) / 4 + 1),
-                    (unsigned long)inputTexture.arrayLength);
-  LTParameterAssert(inputTexture.width > self.padding.width,
-                    @"Input texture width must be larger than padding width, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.width, (unsigned long)self.padding.width);
-  LTParameterAssert(inputTexture.height > self.padding.height,
-                    @"Input texture height must be larger than padding height, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.height, (unsigned long)self.padding.height);
-  LTParameterAssert(outputTexture.width == inputTexture.width + self.padding.width * 2,
-                    @"Output texture width must be that of twice the width padding added to the "
-                    "input texture width, got: (%lu, %lu)", (unsigned long)outputTexture.width,
-                    (unsigned long)(inputTexture.width + self.padding.width * 2));
-  LTParameterAssert(outputTexture.height == inputTexture.height + self.padding.height * 2,
-                    @"Output texture height must be that of twice the height padding added to the "
-                    "input texture height, got: (%lu, %lu)", (unsigned long)outputTexture.height,
-                    (unsigned long)(inputTexture.height + self.padding.height * 2));
+  LTParameterAssert(inputTexture.width > self.paddingSize.left,
+                    @"Input texture width must be larger than left padding, got: (%lu, %lu)",
+                    (unsigned long)inputTexture.width, (unsigned long)self.paddingSize.left);
+  LTParameterAssert(inputTexture.width > self.paddingSize.right,
+                    @"Input texture width must be larger than right padding, got: (%lu, %lu)",
+                    (unsigned long)inputTexture.width, (unsigned long)self.paddingSize.right);
+  LTParameterAssert(inputTexture.height > self.paddingSize.top,
+                    @"Input texture height must be larger than top padding, got: (%lu, %lu)",
+                    (unsigned long)inputTexture.height, (unsigned long)self.paddingSize.top);
+  LTParameterAssert(inputTexture.height > self.paddingSize.bottom,
+                    @"Input texture height must be larger than bottom padding, got: (%lu, %lu)",
+                    (unsigned long)inputTexture.height, (unsigned long)self.paddingSize.bottom);
+  LTParameterAssert(outputTexture.width == inputTexture.width + self.paddingSize.left +
+                    self.paddingSize.right, @"Output texture width must equal the sum of input "
+                    "texture width with left and right padding, got: (%lu, %lu)",
+                    (unsigned long)outputTexture.width,
+                    (unsigned long)(inputTexture.width + self.paddingSize.left +
+                                    self.paddingSize.right));
+  LTParameterAssert(outputTexture.height == inputTexture.height + self.paddingSize.top +
+                    self.paddingSize.bottom, @"Output texture height must equal the sum of input "
+                    "texture height with top and right padding, got: (%lu, %lu)",
+                    (unsigned long)outputTexture.height,
+                    (unsigned long)(inputTexture.height + self.paddingSize.bottom +
+                                    self.paddingSize.bottom));
 }
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  LTParameterAssert(inputImage.featureChannels == outputImage.featureChannels, @"Input image "
+                    "featureChannels must match output image featureChannels, got: (%lu, %lu)",
+                    (unsigned long)inputImage.featureChannels,
+                    (unsigned long)outputImage.featureChannels);
   [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                 outputTexture:outputImage.texture];
 
@@ -122,8 +142,8 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
   return {
     .origin = {0, 0, 0},
     .size = {
-      outputSize.width - self.padding.width * 2,
-      outputSize.height - self.padding.height * 2,
+      outputSize.width - self.paddingSize.left - self.paddingSize.right,
+      outputSize.height - self.paddingSize.top - self.paddingSize.bottom,
       outputSize.depth
     }
   };
@@ -131,8 +151,8 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 
 - (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
   return {
-    inputSize.width + self.padding.width * 2,
-    inputSize.height + self.padding.height * 2,
+    inputSize.width + self.paddingSize.left + self.paddingSize.right,
+    inputSize.height + self.paddingSize.top + self.paddingSize.bottom,
     inputSize.depth
   };
 }
