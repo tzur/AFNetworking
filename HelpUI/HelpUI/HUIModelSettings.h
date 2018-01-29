@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Type for block that localizes an \c NSString.
 typedef NSString *_Nullable(^HUILocalizationBlock)(NSString *);
 
-/// localizes the given \c text using the \c localizationBlock. If \c localizationBlock is \c nil,
+/// Localizes the given \c text using the \c localizationBlock. If \c localizationBlock is \c nil,
 /// returns the given \c text.
 + (NSString *)localize:(NSString *)text;
 

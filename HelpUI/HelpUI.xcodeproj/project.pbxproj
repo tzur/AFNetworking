@@ -34,6 +34,8 @@
 		1970B13F2010C17200E81A5F /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1970B13E2010C17200E81A5F /* GLKit.framework */; };
 		1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */; };
 		1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */; };
+		198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD52018DCDA00F85E75 /* HUISection.mm */; };
+		198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */; };
 		19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E518A0200CCD9A008A9EA5 /* HUIItem.mm */; };
 /* End PBXBuildFile section */
 
@@ -418,6 +420,9 @@
 		1970BAC32014C5E900E81A5F /* HUIModelSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIModelSettings.h; sourceTree = "<group>"; };
 		1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIModelSettings.mm; sourceTree = "<group>"; };
 		1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIItemSpec.mm; sourceTree = "<group>"; };
+		198FDCAB2018DCDA00F85E75 /* HUISection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISection.h; sourceTree = "<group>"; };
+		198FDCD52018DCDA00F85E75 /* HUISection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISection.mm; sourceTree = "<group>"; };
+		198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISectionSpec.mm; sourceTree = "<group>"; };
 		19C43CD51FF9310E007BB06E /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		19C43CD61FF9310E007BB06E /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		19C43CD71FF9310E007BB06E /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
@@ -496,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */,
+				198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -734,6 +740,8 @@
 				19E518A0200CCD9A008A9EA5 /* HUIItem.mm */,
 				1970BAC32014C5E900E81A5F /* HUIModelSettings.h */,
 				1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */,
+				198FDCAB2018DCDA00F85E75 /* HUISection.h */,
+				198FDCD52018DCDA00F85E75 /* HUISection.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1227,6 +1235,7 @@
 				195B37941FFCB3E500F8DAB4 /* LTSpectaObjectionHook.mm in Sources */,
 				195B378F1FFCAEC100F8DAB4 /* WFTestUtils.mm in Sources */,
 				195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */,
+				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
 				195B37961FFCB42600F8DAB4 /* LTObjectionModule.mm in Sources */,
 				1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */,
 			);
@@ -1236,6 +1245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */,
 			);
