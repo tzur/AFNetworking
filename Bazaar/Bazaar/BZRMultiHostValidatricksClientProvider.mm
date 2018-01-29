@@ -28,7 +28,9 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
   @"virginia-api.lightricks.com",
   @"hk-api.lightricks.com",
   @"frankfurt-api.lightricks.com",
-  @"ireland-api.lightricks.com"
+  @"ireland-api.lightricks.com",
+  @"tokyo-api.lightricks.com",
+  @"sydney-api.lightricks.com"
 ];
 
 - (instancetype)init {
