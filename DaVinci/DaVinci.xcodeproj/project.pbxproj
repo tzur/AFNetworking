@@ -79,6 +79,8 @@
 		500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */; };
 		500F77F11D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */; };
 		500FC56620173BBD0005D295 /* DVNBrushModelV1Spec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FC54420173BBD0005D295 /* DVNBrushModelV1Spec.mm */; };
+		500FC8F02017546A0005D295 /* DVNBrushModel+Deserialization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FC8EE2017546A0005D295 /* DVNBrushModel+Deserialization.mm */; };
+		500FC8F2201755110005D295 /* DVNBrushModel+DeserializationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FC8F1201755110005D295 /* DVNBrushModel+DeserializationSpec.mm */; };
 		500FC9A720177DA00005D295 /* DVNBrushModelVersionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FC9A620177DA00005D295 /* DVNBrushModelVersionSpec.mm */; };
 		500FCE102018725D0005D295 /* DVNBrushModelErrorCode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500FCDED2018725C0005D295 /* DVNBrushModelErrorCode.mm */; };
 		500FCE11201893D70005D295 /* DVNTestBrushModelV1.json in Resources */ = {isa = PBXBuildFile; fileRef = 500FC8F3201755EE0005D295 /* DVNTestBrushModelV1.json */; };
@@ -571,6 +573,9 @@
 		500F77EE1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlas.mm"; sourceTree = "<group>"; };
 		500F77F01D2D59C500023343 /* DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNTextureMappingStageConfiguration+TextureAtlasSpec.mm"; sourceTree = "<group>"; };
 		500FC54420173BBD0005D295 /* DVNBrushModelV1Spec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelV1Spec.mm; sourceTree = "<group>"; };
+		500FC8EE2017546A0005D295 /* DVNBrushModel+Deserialization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNBrushModel+Deserialization.mm"; sourceTree = "<group>"; };
+		500FC8EF2017546A0005D295 /* DVNBrushModel+Deserialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DVNBrushModel+Deserialization.h"; sourceTree = "<group>"; };
+		500FC8F1201755110005D295 /* DVNBrushModel+DeserializationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "DVNBrushModel+DeserializationSpec.mm"; sourceTree = "<group>"; };
 		500FC8F3201755EE0005D295 /* DVNTestBrushModelV1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = DVNTestBrushModelV1.json; path = Resources/DVNTestBrushModelV1.json; sourceTree = "<group>"; };
 		500FC9A620177DA00005D295 /* DVNBrushModelVersionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelVersionSpec.mm; sourceTree = "<group>"; };
 		500FCDED2018725C0005D295 /* DVNBrushModelErrorCode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelErrorCode.mm; sourceTree = "<group>"; };
@@ -1307,6 +1312,7 @@
 			isa = PBXGroup;
 			children = (
 				500FC56720173BC30005D295 /* Versions */,
+				500FC8F1201755110005D295 /* DVNBrushModel+DeserializationSpec.mm */,
 				5005E4D820065D910086A79A /* DVNBrushModelSpec.mm */,
 			);
 			name = "Brush Models";
@@ -1327,6 +1333,8 @@
 				50053133200FB38500B72186 /* Versions */,
 				5005E4B420065D8A0086A79A /* DVNBrushModel.h */,
 				5005E4D620065D8B0086A79A /* DVNBrushModel.mm */,
+				500FC8EF2017546A0005D295 /* DVNBrushModel+Deserialization.h */,
+				500FC8EE2017546A0005D295 /* DVNBrushModel+Deserialization.mm */,
 				500FCE0F2018725D0005D295 /* DVNBrushModelErrorCode.h */,
 				500FCDED2018725C0005D295 /* DVNBrushModelErrorCode.mm */,
 			);
@@ -1845,6 +1853,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50CDE7BC1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm in Sources */,
+				500FC8F02017546A0005D295 /* DVNBrushModel+Deserialization.mm in Sources */,
 				285FB4ED1E1D180C0021A116 /* DVNBrush.fsh in Sources */,
 				285FB4EE1E1D180C0021A116 /* DVNBrush.vsh in Sources */,
 				28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */,
@@ -1923,6 +1932,7 @@
 				28662D5C1DF57D8A0051B9DA /* DVNPainterSpec.mm in Sources */,
 				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
 				257344FA1D3795D500E852B2 /* DVNGeometryProviderExamples.mm in Sources */,
+				500FC8F2201755110005D295 /* DVNBrushModel+DeserializationSpec.mm in Sources */,
 				50B00D851FB4B92F003E6CAF /* DVNBrushSourceTypeSpec.mm in Sources */,
 				258341BE1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm in Sources */,
 				28FA4D671DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm in Sources */,
