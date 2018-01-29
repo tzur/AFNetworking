@@ -3,8 +3,6 @@
 
 #import "HUIItem.h"
 
-#import "HUIModelSettings.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
@@ -46,10 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
   return itemClass;
 }
 
-+ (NSString *)localize:(NSString *)text {
-  return HUIModelSettings.localizationBlock ?  HUIModelSettings.localizationBlock(text) : text;
-}
-
 @end
 
 #pragma mark -
@@ -59,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUITextItem
 
 - (void)setText:(NSString *)text {
-  _text = [HUIItem localize:text];
+  _text = [HUIModelSettings localize:text];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -80,11 +74,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIItem localize:title];
+  _title = [HUIModelSettings localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIItem localize:body];
+  _body = [HUIModelSettings localize:body];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -105,11 +99,11 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUIVideoItem
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIItem localize:title];
+  _title = [HUIModelSettings localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIItem localize:body];
+  _body = [HUIModelSettings localize:body];
 }
 
 + (NSValueTransformer *)iconURLJSONTransformer {
@@ -185,11 +179,11 @@ static NSDictionary * const kSlideshowItemDefaultsForFade = @{
 }
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIItem localize:title];
+  _title = [HUIModelSettings localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIItem localize:body];
+  _body = [HUIModelSettings localize:body];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {

@@ -3,8 +3,6 @@
 
 #import "HUIItem.h"
 
-#import "HUIModelSettings.h"
-
 SpecBegin(HUIItem)
 
 context(@"base", ^{
