@@ -77,6 +77,16 @@ auxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)uniformsToAuxiliaryTe
                     "mapping (%@).", uniformsToAuxiliaryTextures,
                     kLTQuadDrawerSamplerUniformTextureMap);
   LTParameterAssert(uniforms);
+#if defined(DEBUG) && DEBUG
+  LTParameterAssert(!uniforms[kLTQuadDrawerUniformProjection], @"Uniforms (%@) must not contain "
+                    "entry for projection matrix (key: %@)", uniforms,
+                    kLTQuadDrawerUniformProjection);
+#else
+  if (uniforms[kLTQuadDrawerUniformProjection]) {
+    LogError(@"Uniforms (%@) must not contain entry for projection matrix (key: %@)", uniforms,
+             kLTQuadDrawerUniformProjection);
+  }
+#endif
 
   if (!quads.size()) {
     return;

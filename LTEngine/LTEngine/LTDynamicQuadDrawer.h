@@ -44,6 +44,12 @@ extern NSString * const kLTQuadDrawerGPUStructName;
 /// quadrilateral is texture-mapped with values retrieved from a quadrilateral region of a given
 /// texture. The geometry is rendered into an already bound framebuffer. The geometry is allowed to
 /// overlap.
+///
+/// @important This class assumes that the quadrilateral geometry is rendered with an orthographic
+/// projection perpendicular to the plane in which the geometry resides. Vertex shaders using an
+/// additional projection and/or a modelview matrix which do not have the aforementioned properties
+/// must zero out the z-coordinate of the vertex position before multiplying the position with the
+/// matrices. Note that this adaptation does only work if no z-buffer is used during rendering.
 @interface LTDynamicQuadDrawer : NSObject
 
 /// Initializes with the given \c vertexSource, \c fragmentSource, and \c gpuStructs.
@@ -96,7 +102,8 @@ extern NSString * const kLTQuadDrawerGPUStructName;
 /// the shaders provided upon initialization to corresponding textures.
 ///
 /// @param uniforms Mapping of \c uniform variable names used by the shaders provided upon
-/// initialization to corresponding values.
+/// initialization to corresponding values. Must not contain an entry for key
+/// \c kLTQuadDrawerUniformProjection.
 ///
 /// @important This object assumes the existence of a valid render target. Hence, a framebuffer must
 /// be bound before calling this method.
