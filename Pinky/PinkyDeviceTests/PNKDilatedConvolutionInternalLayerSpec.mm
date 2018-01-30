@@ -288,7 +288,7 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: convolutionKernel,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(convolutionKernelModel.outputFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(convolutionKernelModel.outputFeatureChannels)
     };
   });
 });

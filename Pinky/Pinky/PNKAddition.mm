@@ -3,9 +3,6 @@
 
 #import "PNKAddition.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -55,7 +52,7 @@ static NSString * const kDebugGroupName = @"addition";
 }
 
 #pragma mark -
-#pragma mark PNKBinaryImageKernel
+#pragma mark PNKBinaryKernel
 #pragma mark -
 
 - (void)verifyParametersWithPrimaryInputImage:(MPSImage *)primaryInputImage
@@ -92,28 +89,15 @@ static NSString * const kDebugGroupName = @"addition";
   [self verifyParametersWithPrimaryInputImage:primaryInputImage
                           secondaryInputImage:secondaryInputImage outputImage:outputImage];
 
-  NSArray<id<MTLTexture>> *textures = @[
-    primaryInputImage.texture,
-    secondaryInputImage.texture,
-    outputImage.texture
-  ];
+  NSArray<MPSImage *> *inputImages = @[primaryInputImage, secondaryInputImage];
+  NSArray<MPSImage *> *outputImages = @[outputImage];
 
-  MTLSize workingSpaceSize = {
-    outputImage.width,
-    outputImage.height,
-    outputImage.texture.arrayLength};
+  MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
-  auto state = outputImage.featureChannels <= 4 ? self.stateSingle : self.stateArray;
+  auto state = outputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[], textures, kDebugGroupName,
-                                       workingSpaceSize);
-
-  if ([primaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)primaryInputImage).readCount -= 1;
-  }
-  if ([secondaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)secondaryInputImage).readCount -= 1;
-  }
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, inputImages, outputImages,
+                                       kDebugGroupName, workingSpaceSize);
 }
 
 - (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize {

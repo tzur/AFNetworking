@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that reshuffles the feature channels of the input image in arbitrary order. Omissions and
 /// duplications of channels are permitted.
-@interface PNKGather : NSObject <PNKUnaryImageKernel>
+@interface PNKGather : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
 

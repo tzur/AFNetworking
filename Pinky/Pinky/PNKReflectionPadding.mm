@@ -3,8 +3,6 @@
 
 #import "PNKReflectionPadding.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKPaddingSize.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -76,66 +74,45 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self verifyParametersWithInputTexture:inputTexture outputTexture:outputTexture];
-
-  NSArray<id<MTLTexture>> *textures = @[
-    inputTexture,
-    outputTexture
-  ];
-
-  MTLSize workingSpaceSize = {outputTexture.width, outputTexture.height, outputTexture.arrayLength};
-
-  auto state = (inputTexture.arrayLength <= 1) ? self.stateSingle : self.stateArray;
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[], textures, self.functionName,
-                                       workingSpaceSize);
-}
-
-- (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
-                           outputTexture:(id<MTLTexture>)outputTexture {
-  LTParameterAssert(inputTexture.arrayLength == outputTexture.arrayLength, @"Input texture "
-                    "arrayLength must match output texture arrayLength, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.arrayLength,
-                    (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert(inputTexture.width > self.paddingSize.left,
-                    @"Input texture width must be larger than left padding, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.width, (unsigned long)self.paddingSize.left);
-  LTParameterAssert(inputTexture.width > self.paddingSize.right,
-                    @"Input texture width must be larger than right padding, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.width, (unsigned long)self.paddingSize.right);
-  LTParameterAssert(inputTexture.height > self.paddingSize.top,
-                    @"Input texture height must be larger than top padding, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.height, (unsigned long)self.paddingSize.top);
-  LTParameterAssert(inputTexture.height > self.paddingSize.bottom,
-                    @"Input texture height must be larger than bottom padding, got: (%lu, %lu)",
-                    (unsigned long)inputTexture.height, (unsigned long)self.paddingSize.bottom);
-  LTParameterAssert(outputTexture.width == inputTexture.width + self.paddingSize.left +
-                    self.paddingSize.right, @"Output texture width must equal the sum of input "
-                    "texture width with left and right padding, got: (%lu, %lu)",
-                    (unsigned long)outputTexture.width,
-                    (unsigned long)(inputTexture.width + self.paddingSize.left +
-                                    self.paddingSize.right));
-  LTParameterAssert(outputTexture.height == inputTexture.height + self.paddingSize.top +
-                    self.paddingSize.bottom, @"Output texture height must equal the sum of input "
-                    "texture height with top and right padding, got: (%lu, %lu)",
-                    (unsigned long)outputTexture.height,
-                    (unsigned long)(inputTexture.height + self.paddingSize.bottom +
-                                    self.paddingSize.bottom));
-}
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage];
+
+  MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
+
+  auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+                                       self.functionName, workingSpaceSize);
+}
+
+- (void)verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   LTParameterAssert(inputImage.featureChannels == outputImage.featureChannels, @"Input image "
                     "featureChannels must match output image featureChannels, got: (%lu, %lu)",
                     (unsigned long)inputImage.featureChannels,
                     (unsigned long)outputImage.featureChannels);
-  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                outputTexture:outputImage.texture];
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  LTParameterAssert(inputImage.width > self.paddingSize.left,
+                    @"Input image width must be larger than left padding, got: (%lu, %lu)",
+                    (unsigned long)inputImage.width, (unsigned long)self.paddingSize.left);
+  LTParameterAssert(inputImage.width > self.paddingSize.right,
+                    @"Input image width must be larger than right padding, got: (%lu, %lu)",
+                    (unsigned long)inputImage.width, (unsigned long)self.paddingSize.right);
+  LTParameterAssert(inputImage.height > self.paddingSize.top,
+                    @"Input image height must be larger than top padding, got: (%lu, %lu)",
+                    (unsigned long)inputImage.height, (unsigned long)self.paddingSize.top);
+  LTParameterAssert(inputImage.height > self.paddingSize.bottom,
+                    @"Input image height must be larger than bottom padding, got: (%lu, %lu)",
+                    (unsigned long)inputImage.height, (unsigned long)self.paddingSize.bottom);
+  LTParameterAssert(outputImage.width == inputImage.width + self.paddingSize.left +
+                    self.paddingSize.right, @"Output image width must equal the sum of input "
+                    "image width with left and right padding, got: (%lu, %lu)",
+                    (unsigned long)outputImage.width,
+                    (unsigned long)(inputImage.width + self.paddingSize.left +
+                                    self.paddingSize.right));
+  LTParameterAssert(outputImage.height == inputImage.height + self.paddingSize.top +
+                    self.paddingSize.bottom, @"Output image height must equal the sum of input "
+                    "image height with top and right padding, got: (%lu, %lu)",
+                    (unsigned long)outputImage.height,
+                    (unsigned long)(inputImage.height + self.paddingSize.bottom +
+                                    self.paddingSize.bottom));
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

@@ -5,8 +5,6 @@
 
 #import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -157,14 +155,9 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
     kernelBuffers = @[self.scaleBuffer, self.shiftBuffer];
   }
 
-  MTLSize workingSpaceSize = {inputImage.width, inputImage.height, inputImage.texture.arrayLength};
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers,
-                                       @[inputImage.texture, outputImage.texture],
-                                       self.functionName, workingSpaceSize);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
+  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers, @[inputImage],
+                                       @[outputImage], self.functionName, workingSpaceSize);
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage

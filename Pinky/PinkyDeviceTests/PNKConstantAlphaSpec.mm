@@ -25,8 +25,7 @@ it(@"should raise an exception when input width mismatch", ^{
   auto outputImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
                                        kInputFeatureChannels);
   expect(^{
-    [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                        outputTexture:outputImage.texture];
+    [alphaLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -35,8 +34,7 @@ it(@"should raise an exception when input height mismatch", ^{
   auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
                                        kInputFeatureChannels);
   expect(^{
-    [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                        outputTexture:outputImage.texture];
+    [alphaLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -44,8 +42,7 @@ it(@"should raise an exception when input texture is an array", ^{
   auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
   auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
   expect(^{
-    [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                        outputTexture:outputImage.texture];
+    [alphaLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -53,8 +50,7 @@ it(@"should raise an exception when output texture is an array", ^{
   auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
   auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
   expect(^{
-    [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                        outputTexture:outputImage.texture];
+    [alphaLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -84,8 +80,7 @@ context(@"processing", ^{
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
 
-    [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                        outputTexture:outputImage.texture];
+    [alphaLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -100,7 +95,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: alphaLayer,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kInputFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 });

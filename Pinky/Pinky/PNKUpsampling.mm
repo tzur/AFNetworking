@@ -3,8 +3,6 @@
 
 #import "PNKUpsampling.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKSharedDefinitions.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -99,36 +97,20 @@ static NSString * const kDebugGroupName = @"upsample";
                   outputImage:(MPSImage *)outputImage {
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
-  id<MTLComputePipelineState> state = inputImage.featureChannels <= 4 ?
-      self.stateSingle : self.stateArray;
+  auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  NSArray<id<MTLTexture>> *textures = @[inputImage.texture, outputImage.texture];
-
-  NSArray<id<MTLBuffer>> *buffers;
   MTLSize workingSpaceSize;
   if (self.bufferForSamplingCoefficients) {
-    MTLSize outputTextureSize = {
-      outputImage.width,
-      outputImage.height,
-      outputImage.texture.arrayLength
-    };
+    MTLSize outputTextureSize = outputImage.pnk_textureArraySize;
     [self fillBufferWithSamplingCoefficients:outputTextureSize];
-    buffers = @[self.bufferForSamplingCoefficients];
     workingSpaceSize = outputTextureSize;
-  } else {
-    buffers = @[];
-    workingSpaceSize = {
-      .width = inputImage.width,
-      .height = inputImage.height,
-      .depth = inputImage.texture.arrayLength
-    };
-  }
-
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, textures, kDebugGroupName,
-                                       workingSpaceSize);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
+    PNKComputeDispatchWithDefaultThreads(state, commandBuffer,
+                                         @[self.bufferForSamplingCoefficients], @[inputImage],
+                                         @[outputImage], kDebugGroupName, workingSpaceSize);
+ } else {
+    workingSpaceSize = inputImage.pnk_textureArraySize;
+   PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+                                        kDebugGroupName, workingSpaceSize);
   }
 }
 

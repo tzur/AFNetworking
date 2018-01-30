@@ -38,8 +38,8 @@ context(@"kernel input verification", ^{
     auto outputImage = PNKImageMakeUnorm(device, kOutputWidth, kOutputHeight,
                                          kInputFeatureChannels * 2);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -49,8 +49,8 @@ context(@"kernel input verification", ^{
     auto outputImage = PNKImageMakeUnorm(device, 2 * kPadding.left + kPadding.right - 1,
                                          kOutputHeight, kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -60,8 +60,8 @@ context(@"kernel input verification", ^{
     auto outputImage = PNKImageMakeUnorm(device, kPadding.left + 2 * kPadding.right - 1,
                                          kOutputHeight, kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -72,8 +72,8 @@ context(@"kernel input verification", ^{
                                          2 * kPadding.top + kPadding.bottom - 1,
                                          kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -84,8 +84,8 @@ context(@"kernel input verification", ^{
                                          kPadding.top + 2 * kPadding.bottom - 1,
                                          kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -94,8 +94,8 @@ context(@"kernel input verification", ^{
     auto outputImage = PNKImageMakeUnorm(device, kOutputWidth + 1, kOutputHeight,
                                          kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -104,8 +104,8 @@ context(@"kernel input verification", ^{
     auto outputImage = PNKImageMakeUnorm(device, kOutputWidth, kOutputHeight + 1,
                                          kInputFeatureChannels);
     expect(^{
-      [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                                 outputTexture:outputImage.texture];
+      [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -153,8 +153,8 @@ context(@"reflection padding with Unorm8 channel format", ^{
 
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-    [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                               outputTexture:outputImage.texture];
+    [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -174,8 +174,8 @@ context(@"reflection padding with Unorm8 channel format", ^{
       PNKCopyMatToMTLTexture(inputImage.texture, inputMat, i);
     }
 
-    [reflectionPadding encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                               outputTexture:outputImage.texture];
+    [reflectionPadding encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -192,7 +192,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kInputFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 
@@ -201,7 +201,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kInputArrayFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });

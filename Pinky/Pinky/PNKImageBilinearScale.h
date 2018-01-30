@@ -32,13 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
                    inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage;
 
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputTexture as
-/// input. Output is written asynchronously to \c outputTexture.  \c inputImage and \c outputImage
-/// must have \c arrayLength property equal to \c 1.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
-
 @end
 
 #endif

@@ -4,8 +4,6 @@
 #import "PNKSoftMaxLayer.h"
 
 #import "MPSTemporaryImage+Factory.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -53,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark PNKUnaryImageKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer

@@ -3,10 +3,6 @@
 
 #import "PNKConcatenation.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-#import "PNKOpenCVExtensions.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -60,9 +56,6 @@ static NSString * const kKernelFunctionArrayAndArrayToArray = @"concatArrayAndAr
 /// Family name of the kernel functions for debug purposes.
 static NSString * const kDebugGroupName = @"concat";
 
-/// Number of channels in each texture in array.
-static NSUInteger kChannelsPerTexture = 4;
-
 @synthesize primaryInputFeatureChannels = _primaryInputFeatureChannels;
 @synthesize secondaryInputFeatureChannels = _secondaryInputFeatureChannels;
 
@@ -99,60 +92,26 @@ static NSUInteger kChannelsPerTexture = 4;
 }
 
 #pragma mark -
-#pragma mark PNKBinaryImageKernel
+#pragma mark PNKBinaryKernel
 #pragma mark -
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-          primaryInputTexture:(id<MTLTexture>)primaryInputTexture
-        secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self encodeToCommandBuffer:commandBuffer primaryInputTexture:primaryInputTexture
-  primaryInputFeatureChannels:PNKChannelCountForTexture(primaryInputTexture)
-        secondaryInputTexture:secondaryInputTexture
-secondaryInputFeatureChannels:PNKChannelCountForTexture(secondaryInputTexture)
-                outputTexture:outputTexture];
-}
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
             primaryInputImage:(MPSImage *)primaryInputImage
           secondaryInputImage:(MPSImage *)secondaryInputImage outputImage:(MPSImage *)outputImage {
-  [self encodeToCommandBuffer:commandBuffer primaryInputTexture:primaryInputImage.texture
-  primaryInputFeatureChannels:primaryInputImage.featureChannels
-        secondaryInputTexture:secondaryInputImage.texture
-secondaryInputFeatureChannels:secondaryInputImage.featureChannels
-                outputTexture:outputImage.texture];
+  [self verifyParametersWithPrimaryInputImage:primaryInputImage
+                          secondaryInputImage:secondaryInputImage outputImage:outputImage];
 
-  if ([primaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)primaryInputImage).readCount -= 1;
-  }
-  if ([secondaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)secondaryInputImage).readCount -= 1;
-  }
-}
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-          primaryInputTexture:(id<MTLTexture>)primaryInputTexture
-  primaryInputFeatureChannels:(NSUInteger)primaryInputFeatureChannels
-        secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self verifyParametersWithPrimaryInputTexture:primaryInputTexture
-                          secondaryInputTexture:secondaryInputTexture outputTexture:outputTexture];
-
-  [self fillBuffer:self.bufferForFeatureChannelCounts withFirst:primaryInputFeatureChannels
-            second:secondaryInputFeatureChannels];
+  [self fillBuffer:self.bufferForFeatureChannelCounts withFirst:primaryInputImage.featureChannels
+            second:secondaryInputImage.featureChannels];
   NSArray<id<MTLBuffer>> *buffers = @[self.bufferForFeatureChannelCounts];
 
-  NSArray<id<MTLTexture>> *textures = @[
-    primaryInputTexture,
-    secondaryInputTexture,
-    outputTexture
-  ];
+  NSArray<MPSImage *> *inputImages = @[primaryInputImage, secondaryInputImage];
+  NSArray<MPSImage *> *outputImages = @[outputImage];
 
   id<MTLComputePipelineState> state;
-  if (primaryInputFeatureChannels <= kChannelsPerTexture) {
-    if (secondaryInputFeatureChannels <= kChannelsPerTexture) {
-      if (primaryInputFeatureChannels + secondaryInputFeatureChannels <= kChannelsPerTexture) {
+  if (primaryInputImage.pnk_isSingleTexture) {
+    if (secondaryInputImage.pnk_isSingleTexture) {
+      if (outputImage.pnk_isSingleTexture) {
         state = self.stateSingleAndSingleToSingle;
       } else {
         state = self.stateSingleAndSingleToArray;
@@ -161,38 +120,45 @@ secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
       state = self.stateSingleAndArrayToArray;
     }
   } else {
-    if (secondaryInputFeatureChannels <= kChannelsPerTexture) {
+    if (secondaryInputImage.pnk_isSingleTexture) {
       state = self.stateArrayAndSingleToArray;
     } else {
       state = self.stateArrayAndArrayToArray;
     }
   }
 
-  MTLSize workingSpaceSize = {outputTexture.width, outputTexture.height, 1};
+  MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, textures, kDebugGroupName,
-                                       workingSpaceSize);
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, inputImages, outputImages,
+                                       kDebugGroupName, workingSpaceSize);
 }
 
-- (void)verifyParametersWithPrimaryInputTexture:(id<MTLTexture>)primaryInputTexture
-                          secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-                                  outputTexture:(id<MTLTexture>)outputTexture {
-  LTParameterAssert(primaryInputTexture.width == secondaryInputTexture.width, @"Primary input "
-                    "texture width must match secondary input texture width. got: (%lu, %lu)",
-                    (unsigned long)primaryInputTexture.width,
-                    (unsigned long)secondaryInputTexture.width);
-  LTParameterAssert(primaryInputTexture.height == secondaryInputTexture.height, @"Primary input "
-                    "texture height must match secondary input texture height. got: (%lu, %lu)",
-                    (unsigned long)primaryInputTexture.height,
-                    (unsigned long)secondaryInputTexture.height);
-  LTParameterAssert(primaryInputTexture.width == outputTexture.width,
-                    @"Primary input texture width must match output texture width. got: (%lu, %lu)",
-                    (unsigned long)primaryInputTexture.width,
-                    (unsigned long)outputTexture.width);
-  LTParameterAssert(primaryInputTexture.height == outputTexture.height, @"Primary input texture "
-                    "height must match output texture height. got: (%lu, %lu)",
-                    (unsigned long)primaryInputTexture.height,
-                    (unsigned long)outputTexture.height);
+- (void)verifyParametersWithPrimaryInputImage:(MPSImage *)primaryInputImage
+                          secondaryInputImage:(MPSImage *)secondaryInputImage
+                                  outputImage:(MPSImage *)outputImage {
+  LTParameterAssert(primaryInputImage.width == secondaryInputImage.width, @"Primary input image "
+                    "width must match secondary input image width. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.width,
+                    (unsigned long)secondaryInputImage.width);
+  LTParameterAssert(primaryInputImage.height == secondaryInputImage.height, @"Primary input image "
+                    "height must match secondary input image height. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.height,
+                    (unsigned long)secondaryInputImage.height);
+  LTParameterAssert(primaryInputImage.width == outputImage.width,
+                    @"Primary input image width must match output image width. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.width,
+                    (unsigned long)outputImage.width);
+  LTParameterAssert(primaryInputImage.height == outputImage.height, @"Primary input image "
+                    "height must match output image height. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.height,
+                    (unsigned long)outputImage.height);
+  LTParameterAssert(primaryInputImage.featureChannels + secondaryInputImage.featureChannels ==
+                    outputImage.featureChannels, @"The sum of feature channel counts of primary "
+                    "and secondary input images should equal feature channel count of output "
+                    "image. got: (%lu, %lu, %lu)",
+                    (unsigned long)primaryInputImage.featureChannels,
+                    (unsigned long)secondaryInputImage.featureChannels,
+                    (unsigned long)outputImage.featureChannels);
 }
 
 - (void)fillBuffer:(id<MTLBuffer>)buffer withFirst:(NSUInteger)first second:(NSUInteger)second {

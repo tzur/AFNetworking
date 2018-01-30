@@ -4,8 +4,6 @@
 #import "PNKInstanceNormInternalKernel.h"
 
 #import "PNKBufferExtensions.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -153,19 +151,14 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   auto threadWidth = std::min(kMaxThreadsInGroup, outputImage.width);
   auto threadHeight = std::min(kMaxThreadsInGroup / threadWidth, outputImage.height);
   MTLSize threadsInGroup = MTLSizeMake(threadWidth, threadHeight, 1);
-  MTLSize threadgroupsPerGrid = {1, 1, outputImage.texture.arrayLength};
+  MTLSize threadgroupsPerGrid = {1, 1, outputImage.pnk_textureArrayDepth};
 
   auto kernelBuffers = self.preluBuffer ?
-  @[self.scaleBuffer, self.shiftBuffer, self.preluBuffer] :
-  @[self.scaleBuffer, self.shiftBuffer];
+      @[self.scaleBuffer, self.shiftBuffer, self.preluBuffer] :
+      @[self.scaleBuffer, self.shiftBuffer];
 
-  PNKComputeDispatch(self.state, commandBuffer, kernelBuffers,
-                     @[inputImage.texture, outputImage.texture], self.functionName, threadsInGroup,
-                     threadgroupsPerGrid);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  PNKComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
+                     self.functionName, threadsInGroup, threadgroupsPerGrid);
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage

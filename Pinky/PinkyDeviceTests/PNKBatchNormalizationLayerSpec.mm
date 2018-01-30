@@ -362,7 +362,7 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: batchNormKernel,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(normalizationModel.inputFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(normalizationModel.inputFeatureChannels)
     };
   });
 });

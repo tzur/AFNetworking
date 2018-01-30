@@ -5,8 +5,6 @@
 
 #import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -98,8 +96,7 @@ static NSString * const kDebugGroupName = @"activation";
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
-  id<MTLComputePipelineState> state = outputImage.featureChannels <= 4 ?
-      self.stateSingle : self.stateArray;
+  auto state = outputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
   NSArray<id<MTLBuffer>> *kernelBuffers;
   if (self.hasBetaBuffer) {
@@ -110,14 +107,9 @@ static NSString * const kDebugGroupName = @"activation";
     kernelBuffers = @[];
   }
 
-  MTLSize workingSpaceSize = {inputImage.width, inputImage.height, inputImage.texture.arrayLength};
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers,
-                                       @[inputImage.texture, outputImage.texture],
-                                       kDebugGroupName, workingSpaceSize);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
+                                       @[outputImage], kDebugGroupName, workingSpaceSize);
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage
@@ -154,4 +146,3 @@ static NSString * const kDebugGroupName = @"activation";
 #endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END
-
