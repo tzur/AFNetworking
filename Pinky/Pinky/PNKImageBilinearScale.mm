@@ -49,9 +49,13 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   bool yToRGBA;
 
   if ((self.inputFeatureChannels == 1 && self.outputFeatureChannels == 1) ||
+      (self.inputFeatureChannels == 3 && self.outputFeatureChannels == 3) ||
+      (self.inputFeatureChannels == 3 && self.outputFeatureChannels == 4) ||
+      (self.inputFeatureChannels == 4 && self.outputFeatureChannels == 3) ||
       (self.inputFeatureChannels == 4 && self.outputFeatureChannels == 4)) {
     yToRGBA = false;
-  } else if (self.inputFeatureChannels == 1 && self.outputFeatureChannels == 4) {
+  } else if ((self.inputFeatureChannels == 1 && self.outputFeatureChannels == 3) ||
+             (self.inputFeatureChannels == 1 && self.outputFeatureChannels == 4)){
     yToRGBA = true;
   } else {
     LTParameterAssert(NO, @"Invalid input/output feature channels combination - (%lu, %lu)",

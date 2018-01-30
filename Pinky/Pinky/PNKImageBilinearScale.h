@@ -17,8 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes a new kernel that runs on \c device and scales images using bilinear interpolation.
 /// The actual scale is defined by input and output image sizes and does not necessarily preserve
 /// the aspect ratio. The permitted <tt>(inputFeatureChannels, outputFeatureChannels)</tt>
-/// combinations are <tt>(1, 1), (4, 4) and (1, 4)</tt>; in the last case the Y->RGBA transformation
-/// is applied.
+/// combinations are <tt>(1, 1), (1, 3), (1, 4), (3, 3), (3, 4), (4, 3) and (4, 4)</tt>. When
+/// \c inputFeatureChannels is \c 1 and \c outputFeatureChannels is either \c 3 or \c 4 the
+/// Y->RGB(A) transformation is applied.
 - (instancetype)initWithDevice:(id<MTLDevice>)device
           inputFeatureChannels:(NSUInteger)inputFeatureChannels
          outputFeatureChannels:(NSUInteger)outputFeatureChannels
