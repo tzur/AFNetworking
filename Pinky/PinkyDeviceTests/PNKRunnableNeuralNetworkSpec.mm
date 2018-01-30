@@ -51,7 +51,7 @@ it(@"should run the network successfully", ^{
   std::vector<cv::Mat> channels;
   cv::split(outputMat, channels);
 
-  expect($(channels[0])).to.beCloseToMatWithin($(expectedMask), 3);
+  expect($(channels[0])).to.beCloseToMatWithin($(expectedMask), 8);
 });
 
 DeviceSpecEnd
