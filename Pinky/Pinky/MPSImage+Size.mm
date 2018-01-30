@@ -17,6 +17,26 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
+- (NSUInteger)pnk_textureArrayDepth {
+  return (self.featureChannels + 3) / 4;
+}
+
+- (BOOL)pnk_isTextureArray {
+  return self.featureChannels > 4;
+}
+
+- (BOOL)pnk_isSingleTexture {
+  return self.featureChannels <= 4;
+}
+
+- (MTLSize)pnk_textureArraySize {
+  return {
+    .width = self.width,
+    .height = self.height,
+    .depth = self.pnk_textureArrayDepth
+  };
+}
+
 @end
 
 #endif
