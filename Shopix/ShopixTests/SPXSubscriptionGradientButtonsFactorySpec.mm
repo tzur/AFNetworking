@@ -23,10 +23,10 @@ beforeEach(^{
   descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
                                                          discountPercentage:0
                                                        productsInfoProvider:productsInfoProvider];
-  OCMStub([formatter billingPeriodTextForSubscription:descriptor monthlyFormat:YES])
+  OCMStub([formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO])
       .andReturn(subscriptionPeriod);
   OCMStub([formatter joinedPriceTextForSubscription:descriptor
-                                      monthlyFormat:YES]).andReturn(subscriptionPrice);
+                                      monthlyFormat:NO]).andReturn(subscriptionPrice);
 
   buttonsFactory =
       [[SPXSubscriptionGradientButtonsFactory alloc]
