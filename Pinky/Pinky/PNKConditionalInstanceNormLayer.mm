@@ -4,8 +4,6 @@
 #import "PNKConditionalInstanceNormLayer.h"
 
 #import "PNKBufferExtensions.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKInstanceNormInternalKernel.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 

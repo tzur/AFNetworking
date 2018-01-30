@@ -377,7 +377,7 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: poolingKernel,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @1
+      kPNKTemporaryImageExamplesInputChannels: @1
     };
   });
 });

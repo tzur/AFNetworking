@@ -18,5 +18,5 @@ extern NSString * const kPNKTemporaryImageExamplesKernel;
 /// Dictionary key to the \c MTLDevice used to create the kernel to be tested.
 extern NSString * const kPNKTemporaryImageExamplesDevice;
 
-/// Dictionary key stating the number of feature channels in the output image.
-extern NSString * const kPNKTemporaryImageExamplesOutputChannels;
+/// Dictionary key stating the number of feature channels in the input image.
+extern NSString * const kPNKTemporaryImageExamplesInputChannels;

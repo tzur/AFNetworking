@@ -6,8 +6,6 @@
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -118,7 +116,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
               transformBuffer:(nullable id<MTLBuffer>)transformBuffer
                minValueBuffer:(id<MTLBuffer>)minValueBuffer
                maxValueBuffer:(id<MTLBuffer>)maxValueBuffer {
-  PNKComputeDispatch(self.resetMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer], @[],
+  PNKComputeDispatch(self.resetMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer],
                      @"resetMinMax", {1, 1, 1}, {1, 1, 1});
 
   if (@available(iOS 11.0, *)) {
@@ -204,8 +202,8 @@ static const NSUInteger kTemporaryBufferElements = 16384;
     [self.mpsMinMax encodeToCommandBuffer:commandBuffer sourceImage:transformedInput
                          destinationImage:self.mpsMinMaxResults[i]];
 
-    PNKComputeDispatch(self.mergeMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer],
-                       @[self.mpsMinMaxResults[i].texture], @"mergeMinMax", {1, 1, 1}, {1, 1, 1});
+    PNKComputeDispatch(self.mergeMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer], @[],
+                       @[self.mpsMinMaxResults[i]], @"mergeMinMax", {1, 1, 1}, {1, 1, 1});
   }
 }
 

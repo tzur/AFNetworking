@@ -3,9 +3,6 @@
 
 #import "PNKImageBilinearScale.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -52,9 +49,13 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   bool yToRGBA;
 
   if ((self.inputFeatureChannels == 1 && self.outputFeatureChannels == 1) ||
+      (self.inputFeatureChannels == 3 && self.outputFeatureChannels == 3) ||
+      (self.inputFeatureChannels == 3 && self.outputFeatureChannels == 4) ||
+      (self.inputFeatureChannels == 4 && self.outputFeatureChannels == 3) ||
       (self.inputFeatureChannels == 4 && self.outputFeatureChannels == 4)) {
     yToRGBA = false;
-  } else if (self.inputFeatureChannels == 1 && self.outputFeatureChannels == 4) {
+  } else if ((self.inputFeatureChannels == 1 && self.outputFeatureChannels == 3) ||
+             (self.inputFeatureChannels == 1 && self.outputFeatureChannels == 4)){
     yToRGBA = true;
   } else {
     LTParameterAssert(NO, @"Invalid input/output feature channels combination - (%lu, %lu)",
@@ -80,40 +81,22 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self verifyParametersWithInputTexture:inputTexture outputTexture:outputTexture];
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
-  MTLSize outputTextureSize = {outputTexture.width, outputTexture.height, 1};
+  MTLSize outputTextureSize = {outputImage.width, outputImage.height, 1};
   [self fillBufferWithInverseOutputTextureSize:outputTextureSize];
 
   NSArray<id<MTLBuffer>> *buffers = @[self.bufferForInverseOutputTextureSize];
 
-  NSArray<id<MTLTexture>> *textures = @[inputTexture, outputTexture];
+  MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  MTLSize workingSpaceSize = {outputTexture.width, outputTexture.height, 1};
-
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, textures,
-                                       kKernelFunctionBilinearScale, workingSpaceSize);
+  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
+                                       @[outputImage], kKernelFunctionBilinearScale,
+                                       workingSpaceSize);
 }
 
-- (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
-                           outputTexture:(id<MTLTexture>)outputTexture {
-  LTParameterAssert(inputTexture.arrayLength == 1, @"Input texture arrayLength must be 1, got: %lu",
-                    (unsigned long)inputTexture.arrayLength);
-  LTParameterAssert(outputTexture.arrayLength == 1,
-                    @"Output texture arrayLength must be 1, got: %lu",
-                    (unsigned long)outputTexture.arrayLength);
-}
-
-- (void)fillBufferWithInverseOutputTextureSize:(MTLSize)outputTextureSize {
-  float *bufferContents = (float *)self.bufferForInverseOutputTextureSize.contents;
-  bufferContents[0] = 1.0 / (float)outputTextureSize.width;
-  bufferContents[1] = 1.0 / (float)outputTextureSize.height;
-}
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+- (void)verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
                     (unsigned long)self.inputFeatureChannels,
@@ -122,13 +105,12 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
                     @"Output image featureChannels must be %lu, got: %lu",
                     (unsigned long)self.outputFeatureChannels,
                     (unsigned long)outputImage.featureChannels);
+}
 
-  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                outputTexture:outputImage.texture];
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+- (void)fillBufferWithInverseOutputTextureSize:(MTLSize)outputTextureSize {
+  float *bufferContents = (float *)self.bufferForInverseOutputTextureSize.contents;
+  bufferContents[0] = 1.0 / (float)outputTextureSize.width;
+  bufferContents[1] = 1.0 / (float)outputTextureSize.height;
 }
 
 @end

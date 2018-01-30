@@ -70,31 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Protocol implemented by kernels operating on a single input texture and supporting \c MTLTexture
-/// as input in addition to \c MPSImage.
-@protocol PNKUnaryImageKernel <PNKUnaryKernel>
-
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputTexture as
-/// input. Output is written asynchronously to \c outputTexture.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
-
-@end
-
-/// Protocol implemented by kernels operating on two input textures and supporting \c MTLTexture
-/// as inputs in addition to \c MPSImage.
-@protocol PNKBinaryImageKernel <PNKBinaryKernel>
-
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputTexture
-/// and \c secondaryInputTexture as input. Output is written asynchronously to \c outputTexture.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-          primaryInputTexture:(id<MTLTexture>)primaryInputTexture
-        secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
-
-@end
-
 #endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

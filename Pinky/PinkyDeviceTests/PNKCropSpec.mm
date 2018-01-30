@@ -142,7 +142,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: crop,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kInputFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 });

@@ -14,11 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Supported CVPixelFormat types for input images and their corresponding Metal pixel types for
 /// mapping of the \c CVPixelBuffer to a \c MTLTexture.
-static const std::unordered_map<OSType, MTLPixelFormat> kSupportedCVPixelFormatToMTLPixelFormat{
-  {kCVPixelFormatType_OneComponent8, MTLPixelFormatR8Unorm},
-  {kCVPixelFormatType_32BGRA, MTLPixelFormatRGBA8Unorm},
-  {kCVPixelFormatType_OneComponent16Half, MTLPixelFormatR16Float},
-  {kCVPixelFormatType_64RGBAHalf, MTLPixelFormatRGBA16Float}
+static const std::unordered_map<OSType, std::pair<MTLPixelFormat, NSUInteger>>
+    kSupportedCVPixelFormatToMTLPixelFormat = {
+  {kCVPixelFormatType_OneComponent8, {MTLPixelFormatR8Unorm, 1}},
+  {kCVPixelFormatType_32BGRA, {MTLPixelFormatRGBA8Unorm, 4}},
+  {kCVPixelFormatType_OneComponent16Half, {MTLPixelFormatR16Float, 1}},
+  {kCVPixelFormatType_64RGBAHalf, {MTLPixelFormatRGBA16Float, 4}}
 };
 
 static CVMetalTextureCacheRef PNKMetalTextureCacheForDevice(id<MTLDevice> device) {
@@ -55,14 +56,15 @@ void PNKAssertPixelBufferFormat(CVPixelBufferRef pixelBuffer) {
                     @"Input pixel format (%u) is not supported", (unsigned int)inputFormat);
 }
 
-id<MTLTexture> PNKTextureFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device) {
+MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,
+                                  NSUInteger featureChannels) {
   size_t width = CVPixelBufferGetWidth(pixelBuffer);
   size_t height = CVPixelBufferGetHeight(pixelBuffer);
   OSType inputFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
   auto pixelFormatPair = kSupportedCVPixelFormatToMTLPixelFormat.find(inputFormat);
   LTParameterAssert(pixelFormatPair != kSupportedCVPixelFormatToMTLPixelFormat.end(),
                     @"Input pixel format (%u) is not supported", (unsigned int)inputFormat);
-  auto metalPixelFormat = pixelFormatPair->second;
+  auto metalPixelFormat = pixelFormatPair->second.first;
 
   CVMetalTextureCacheRef textureCache = PNKMetalTextureCacheForDevice(device);
 
@@ -76,7 +78,12 @@ id<MTLTexture> PNKTextureFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDev
   id<MTLTexture> metalTexture = CVMetalTextureGetTexture(texture);
   CVBufferRelease(texture);
   CVMetalTextureCacheFlush(textureCache, 0);
-  return metalTexture;
+
+  if (featureChannels == 0) {
+    featureChannels = pixelFormatPair->second.second;
+  }
+  auto mpsImage = [[MPSImage alloc] initWithTexture:metalTexture featureChannels:featureChannels];
+  return mpsImage;
 }
 
 #endif

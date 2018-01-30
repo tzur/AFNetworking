@@ -86,7 +86,7 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
   };
 }
 
-SpecBegin(PNKConcatenation)
+DeviceSpecBegin(PNKConcatenation)
 
 __block id<MTLDevice> device;
 
@@ -225,7 +225,7 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: concatenationOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(2)
+      kPNKTemporaryImageExamplesInputChannels: @(2)
     };
   });
 
@@ -234,9 +234,9 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: concatenationOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(16)
+      kPNKTemporaryImageExamplesInputChannels: @(16)
     };
   });
 });
 
-SpecEnd
+DeviceSpecEnd

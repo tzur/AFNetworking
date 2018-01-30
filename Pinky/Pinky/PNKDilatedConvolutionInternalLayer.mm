@@ -7,8 +7,6 @@
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -191,7 +189,7 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryImageKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
@@ -259,22 +257,18 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                             height:patchedImageHeight
                             channels:self.inputFeatureChannels];
 
-  auto textures = @[inputImage.texture, patchedInputImage.texture];
   MTLSize workingSpaceSize = {
     patchWidthWithGap,
     patchHeightWithGap,
-    inputImage.texture.arrayLength
+    inputImage.pnk_textureArrayDepth
   };
 
   [self fillBuffer:self.bufferForFullPaddingTF withFirst:fullPaddingTF.x second:fullPaddingTF.y];
   auto buffers = @[self.bufferForFullPaddingTF];
 
-  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, textures,
-                                       self.space2PatchFunctionName, workingSpaceSize);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *) inputImage).readCount -= 1;
-  }
+  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, @[inputImage],
+                                       @[patchedInputImage], self.space2PatchFunctionName,
+                                       workingSpaceSize);
 
   auto patchedOutputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                              width:patchedImageWidth
@@ -291,8 +285,6 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:patchedInputImage
                                destinationImage:patchedOutputImage];
 
-  textures = @[patchedOutputImage.texture, outputImage.texture];
-
   if (self.hasBetaBuffer) {
     buffers = @[self.alphaBuffer, self.betaBuffer];
   } else if (self.hasAlphaBuffer) {
@@ -304,12 +296,12 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   workingSpaceSize = {
     patchWidth,
     patchHeight,
-    outputImage.texture.arrayLength
+    outputImage.pnk_textureArrayDepth
   };
 
-  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers, textures,
+  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers,
+                                       @[patchedOutputImage], @[outputImage],
                                        self.patch2SpaceFunctionName, workingSpaceSize);
-  patchedOutputImage.readCount -= 1;
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

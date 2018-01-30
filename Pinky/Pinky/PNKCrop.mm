@@ -3,8 +3,6 @@
 
 #import "PNKCrop.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKPaddingSize.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -38,9 +36,6 @@ static NSString * const kKernelArrayFunctionName = @"cropArray";
 /// Family name of the kernel functions for debug purposes.
 static NSString * const kDebugGroupName = @"crop";
 
-/// Number of channels in each texture in array.
-static NSUInteger kChannelsPerTexture = 4;
-
 @synthesize inputFeatureChannels = _inputFeatureChannels;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device margins:(pnk::PaddingSize)margins {
@@ -72,23 +67,12 @@ static NSUInteger kChannelsPerTexture = 4;
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage {
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
+  MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
-  NSArray<id<MTLTexture>> *textures = @[inputImage.texture, outputImage.texture];
-  MTLSize workingSpaceSize = {
-    outputImage.width,
-    outputImage.height,
-    outputImage.texture.arrayLength
-  };
+  auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  auto state = (inputImage.featureChannels <= kChannelsPerTexture) ?
-      self.stateSingle : self.stateArray;
-
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[], textures, kDebugGroupName,
-                                       workingSpaceSize);
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+                                       kDebugGroupName, workingSpaceSize);
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {

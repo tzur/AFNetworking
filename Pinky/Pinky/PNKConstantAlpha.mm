@@ -3,9 +3,6 @@
 
 #import "PNKConstantAlpha.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
@@ -49,45 +46,29 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryImageKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self verifyParametersWithInputTexture:inputTexture outputTexture:outputTexture];
-
-  MTLSize workingSpaceSize = {inputTexture.width, inputTexture.height, inputTexture.arrayLength};
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[],
-                                       @[inputTexture, outputTexture], kKernelFunctionName,
-                                       workingSpaceSize);
-}
-
-- (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
-                           outputTexture:(id<MTLTexture>)outputTexture {
-  LTParameterAssert(inputTexture.textureType == MTLTextureType2D,
-                    @"Input texture type must be 2D, got: %lu",
-                    (unsigned long)inputTexture.textureType);
-  LTParameterAssert(outputTexture.textureType == MTLTextureType2D,
-                    @"Output texture type must be 2D, got: %lu",
-                    (unsigned long)outputTexture.textureType);
-
-  LTParameterAssert(inputTexture.width == outputTexture.width,
-                    @"Input texture width must match output texture width. got: (%lu, %lu)",
-                    (unsigned long)inputTexture.width, (unsigned long)outputTexture.width);
-  LTParameterAssert(inputTexture.height == outputTexture.height,
-                    @"Input texture height must match output texture height. got: (%lu, %lu)",
-                    (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
-}
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
-  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                outputTexture:outputImage.texture];
+  [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  MTLSize workingSpaceSize = {inputImage.width, inputImage.height, 1};
+  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
+                                       kKernelFunctionName, workingSpaceSize);
+}
+
+- (void)verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  LTParameterAssert(inputImage.width == outputImage.width,
+                    @"Input image width must match output image width. got: (%lu, %lu)",
+                    (unsigned long)inputImage.width, (unsigned long)outputImage.width);
+  LTParameterAssert(inputImage.height == outputImage.height,
+                    @"Input image height must match output image height. got: (%lu, %lu)",
+                    (unsigned long)inputImage.height, (unsigned long)outputImage.height);
+  LTParameterAssert(inputImage.featureChannels == 4, @"Input image feature channels count must be "
+                    "4. got: %lu", (unsigned long)inputImage.featureChannels);
+  LTParameterAssert(outputImage.featureChannels == 4, @"Output image feature channels count must "
+                    "be 4. got: %lu", (unsigned long)outputImage.featureChannels);
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

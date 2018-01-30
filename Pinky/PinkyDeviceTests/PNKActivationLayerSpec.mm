@@ -123,7 +123,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: neuron,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kInputRGBFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
     };
   });
 });

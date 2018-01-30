@@ -114,7 +114,7 @@ context(@"PNKTemporaryImageExamples", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: softMaxOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @(kFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kFeatureChannels)
     };
   });
 });

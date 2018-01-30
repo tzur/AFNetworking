@@ -4,8 +4,6 @@
 #import "PNKColorTransferHistogramSpecification.h"
 
 #import "PNKColorTransferCDF.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

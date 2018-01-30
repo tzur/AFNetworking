@@ -3,9 +3,6 @@
 
 #import "PNKGather.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -112,47 +109,23 @@ static NSUInteger kChannelsPerTexture = 4;
 }
 
 #pragma mark -
-#pragma mark PNKBinaryImageKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture {
-  [self verifyParametersWithInputTexture:inputTexture outputTexture:outputTexture];
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer inputImage:(MPSImage *)inputImage
+                  outputImage:(MPSImage *)outputImage {
+  [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
   NSArray<id<MTLBuffer>> *buffers = _outputFeatureChannelIndices.size() <= kChannelsPerTexture ?
       @[] : @[self.bufferForOutputFeatureChannelIndices];
 
-  NSArray<id<MTLTexture>> *textures = @[inputTexture, outputTexture];
+  MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  MTLSize workingSpaceSize = {outputTexture.width, outputTexture.height, 1};
-
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, textures,
-                                       self.functionName, workingSpaceSize);
+  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
+                                       @[outputImage], self.functionName, workingSpaceSize);
 }
 
-- (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
-                           outputTexture:(id<MTLTexture>)outputTexture {
-  LTParameterAssert(inputTexture.arrayLength ==
-                    (self.inputFeatureChannels - 1) / kChannelsPerTexture + 1,
-                    @"Input texture arrayLength must be %lu, got: %lu",
-                    (unsigned long)((self.inputFeatureChannels - 1) / kChannelsPerTexture + 1),
-                    (unsigned long)inputTexture.arrayLength);
-  LTParameterAssert(outputTexture.arrayLength ==
-                    (_outputFeatureChannelIndices.size() - 1) / kChannelsPerTexture + 1,
-                    @"Output texture arrayLength must be %lu, got: %lu",
-                    (_outputFeatureChannelIndices.size() - 1) / kChannelsPerTexture + 1,
-                    (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert(inputTexture.width == outputTexture.width,
-                    @"Input texture width must match output texture width. got: (%lu, %lu)",
-                    (unsigned long)inputTexture.width, (unsigned long)outputTexture.width);
-  LTParameterAssert(inputTexture.height == outputTexture.height,
-                    @"Input texture  height must match output texture height. got: (%lu, %lu)",
-                    (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
-}
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+- (void)verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
                     (unsigned long)self.inputFeatureChannels,
@@ -161,13 +134,12 @@ static NSUInteger kChannelsPerTexture = 4;
                     @"Output image featureChannels must be %lu, got: %lu",
                     _outputFeatureChannelIndices.size(),
                     (unsigned long)outputImage.featureChannels);
-
-  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
-                outputTexture:outputImage.texture];
-
-  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
-    ((MPSTemporaryImage *)inputImage).readCount -= 1;
-  }
+  LTParameterAssert(inputImage.width == outputImage.width,
+                    @"Input image width must match output image width. got: (%lu, %lu)",
+                    (unsigned long)inputImage.width, (unsigned long)outputImage.width);
+  LTParameterAssert(inputImage.height == outputImage.height,
+                    @"Input image height must match output image height. got: (%lu, %lu)",
+                    (unsigned long)inputImage.height, (unsigned long)outputImage.height);
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

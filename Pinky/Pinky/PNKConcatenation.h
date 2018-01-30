@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Kernel that does channel-wise concatenation of textures.
-@interface PNKConcatenation : NSObject <PNKBinaryImageKernel>
+@interface PNKConcatenation : NSObject <PNKBinaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -25,18 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
             primaryInputImage:(MPSImage *)primaryInputImage
           secondaryInputImage:(MPSImage *)secondaryInputImage
                   outputImage:(MPSImage *)outputImage;
-
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputTexture
-/// and \c secondaryInputTexture as input. Output is written asynchronously to \c outputTexture.
-/// Primary input, secondary input and output textures must have the same width and height. The
-/// \c arrayLength of \c primaryInputTexture must equal
-/// <tt>ceil(primaryInputFeatureChannels/4)</tt>. The \c arrayLength of \c secondaryInputTexture
-/// must equal <tt>ceil(secondaryInputFeatureChannel/4)</tt>. The \c arrayLength of \c outputTexture
-/// must equal <tt>ceil((primaryInputFeatureChannels + secondaryInputFeatureChannels)/4)</tt>.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-          primaryInputTexture:(id<MTLTexture>)primaryInputTexture
-        secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
 
 /// Determines the maximal number of channels that may be read from the primary input. The actual
 /// primary input region is determined by the primary input given to the encode method.
