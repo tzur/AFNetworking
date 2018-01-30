@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _pageViewModels = [pageViewModels copy];
     _activePageIndex = initialPageIndex;
-    _showNonMonthlyBillingFootnote = YES;
+    _showNonMonthlyBillingFootnote = NO;
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;

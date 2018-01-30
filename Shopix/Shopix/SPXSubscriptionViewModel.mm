@@ -78,7 +78,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
   return [self initWithSubscriptionDescriptors:subscriptionDescriptors
                          preferredProductIndex:preferredProductIndex
                                 pageViewModels:pageViewModels
-                 showNonMonthlyBillingFootnote:YES
+                 showNonMonthlyBillingFootnote:NO
                                 termsViewModel:termsViewModel
                                    colorScheme:colorScheme
                            subscriptionManager:[[SPXSubscriptionManager alloc] init]
