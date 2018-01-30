@@ -11,8 +11,6 @@
 #import "PNKColorTransferHistogram.h"
 #import "PNKColorTransferHistogramSpecification.h"
 #import "PNKColorTransferMinAndMax.h"
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
 #import "PNKPixelBufferUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -300,8 +298,8 @@ static const NSUInteger kLatticeGridSize = 16;
                     @"Invalid reference size (%@): expected %@",
                     NSStringFromCGSize(referenceSize), NSStringFromCGSize(self.referenceSize));
 
-  return [self lutForInputMetalTexture:PNKTextureFromPixelBuffer(input, self.device)
-                 referenceMetalTexture:PNKTextureFromPixelBuffer(reference, self.device)];
+  return [self lutForInputMetalImage:PNKImageFromPixelBuffer(input, self.device)
+                 referenceMetalImage:PNKImageFromPixelBuffer(reference, self.device)];
 }
 
 - (void)verifyPixelBufferFormat:(CVPixelBufferRef)pixelBuffer {
@@ -314,8 +312,8 @@ static const NSUInteger kLatticeGridSize = 16;
   return CGSizeMake(CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
 }
 
-- (nullable LT3DLUT *)lutForInputMetalTexture:(id<MTLTexture>)input
-                        referenceMetalTexture:(id<MTLTexture>)reference {
+- (nullable LT3DLUT *)lutForInputMetalImage:(MPSImage *)input
+                        referenceMetalImage:(MPSImage *)reference {
   [self updateBuffersIfNeeded];
   [self updateComputeComponentsIfNeeded];
 
@@ -340,15 +338,15 @@ static const NSUInteger kLatticeGridSize = 16;
 }
 
 - (void)prepareBuffersWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                                  input:(id<MTLTexture>)input reference:(id<MTLTexture>)reference {
+                                  input:(MPSImage *)input reference:(MPSImage *)reference {
   PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
-                                       @[self.inputBuffer], @[input], @"convertByteToFloat: input",
+                                       @[self.inputBuffer], @[input], @[],
+                                       @"convertByteToFloat: input",
                                        {input.width, input.height, 1});
   PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
-                                       @[self.referenceBuffer], @[reference],
+                                       @[self.referenceBuffer], @[reference], @[],
                                        @"convertByteToFloat: reference",
                                        {reference.width, reference.height, 1});
-
   PNKComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
                                        @[self.identityLatticeBuffer, self.currentLatticeBuffer],
                                        @"copyLattice: identity", self.latticeElements);

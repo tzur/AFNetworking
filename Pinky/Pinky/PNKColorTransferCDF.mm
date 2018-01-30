@@ -5,9 +5,6 @@
 
 #import <LTKit/NSArray+Functional.h>
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -160,7 +157,7 @@ static const float kPDFSmoothingKernelSigma = 1;
 
   PNKComputeDispatch(self.calculateCDFState, commandBuffer,
                      [@[self.pdfBuffer] arrayByAddingObjectsFromArray:cdfBuffers],
-                     @[], @"calculateCDF: input", {1, 1, 1}, {1, 1, 1});
+                     @"calculateCDF: input", {1, 1, 1}, {1, 1, 1});
 
   PNKComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
                                        @[referenceHistogramBuffer, self.pdfSmoothingKernelBuffer,
@@ -168,7 +165,7 @@ static const float kPDFSmoothingKernelSigma = 1;
                                        @"calculatePDF: reference", self.histogramBins);
   PNKComputeDispatch(self.calculateCDFState, commandBuffer,
                      [@[self.pdfBuffer] arrayByAddingObjectsFromArray:self.referenceCDFBuffers],
-                     @[], @"calculateCDF: reference", {1, 1, 1}, {1, 1, 1});
+                     @"calculateCDF: reference", {1, 1, 1}, {1, 1, 1});
 
   for (NSUInteger i = 0; i < 3; ++i) {
     auto buffers = @[self.referenceCDFBuffers[i], minValueBuffer,

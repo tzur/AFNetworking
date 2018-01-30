@@ -3,9 +3,6 @@
 
 #import "PNKColorTransferHistogram.h"
 
-#import "PNKComputeDispatch.h"
-#import "PNKComputeState.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -101,12 +98,12 @@ static const NSUInteger kMaxThreadgroupMemoryLength32K = (1 << 15) - 32;
   auto *buffers = @[inputBuffer, transformBuffer, minValueBuffer, maxValueBuffer,
                     self.partialHistogramsBuffer];
   PNKComputeDispatch(self.computePartialHistogramsState, commandBuffer,
-                     buffers, @[], @"computePartialHistograms",
+                     buffers, @"computePartialHistograms",
                      {self.numberOfThreadsPerThreadgroupForComputePartialHistograms, 1, 1},
                      {self.partialHistogramsCount, 1, 1});
 
   PNKComputeDispatch(self.mergeHistogramsState, commandBuffer,
-                     @[self.partialHistogramsBuffer, histogramBuffer], @[], @"mergeHistograms",
+                     @[self.partialHistogramsBuffer, histogramBuffer], @"mergeHistograms",
                      {self.partialHistogramsCount, 1, 1}, {self.histogramBins, 1, 1});
 }
 
