@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
   subscriptionButton.enabled = NO;
   subscriptionButton.topText =
       [self.formatter billingPeriodTextForSubscription:subscriptionDescriptor
-                                         monthlyFormat:YES];
+                                         monthlyFormat:NO];
   subscriptionButton.bottomGradientColors = isHighlighted && self.highlightedBottomColors ?
       self.highlightedBottomColors : self.bottomGradientColors;
   if (isHighlighted) {
@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
       map:^NSAttributedString * _Nullable (BZRProductPriceInfo * _Nullable priceInfo) {
         return priceInfo ?
             [formatter joinedPriceTextForSubscription:subscriptionDescriptor
-                                        monthlyFormat:YES] : nil;
+                                        monthlyFormat:NO] : nil;
       }];
 
   return subscriptionButton;
