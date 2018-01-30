@@ -85,7 +85,7 @@ static const NSUInteger kShapeModelInputSide = 512;
     }
 
     _resizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device inputFeatureChannels:4
-                                       outputFeatureChannels:4];
+                                       outputFeatureChannels:3];
     _gatherer = [[PNKGather alloc] initWithDevice:self.device inputFeatureChannels:2
                       outputFeatureChannelIndices:{0}];
     _ciContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
@@ -93,11 +93,6 @@ static const NSUInteger kShapeModelInputSide = 512;
                                            DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
   }
   return self;
-}
-
-- (NSUInteger)featureChannelsInTexture:(id<MTLTexture>)texture {
-  return (texture.pixelFormat == MTLPixelFormatR8Unorm ||
-          texture.pixelFormat == MTLPixelFormatR16Float) ? 1 : 4;
 }
 
 - (void)segmentWithInput:(CVPixelBufferRef)input output:(CVPixelBufferRef)output
@@ -126,29 +121,29 @@ static const NSUInteger kShapeModelInputSide = 512;
 
 - (void)encodeAndCommitWithInput:(CVPixelBufferRef)input output:(CVPixelBufferRef)output
                       completion:(LTCompletionBlock)completion {
-  id<MTLTexture> inputTexture = PNKTextureFromPixelBuffer(input, self.device);
-  id<MTLTexture> outputTexture = PNKTextureFromPixelBuffer(output, self.device);
+  MPSImage *inputImage = PNKImageFromPixelBuffer(input, self.device);
+  MPSImage *outputImage = PNKImageFromPixelBuffer(output, self.device);
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
   auto netInputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                     width:outputTexture.width
-                                                                    height:outputTexture.height
+                                                                     width:outputImage.width
+                                                                    height:outputImage.height
                                                                   channels:3];
 
-  [self encodePreProcessWithCommandBuffer:commandBuffer input:inputTexture
-                                   output:netInputImage.texture];
+  [self encodePreProcessWithCommandBuffer:commandBuffer inputImage:inputImage
+                              outputImage:netInputImage];
 
   auto netOutputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                      width:outputTexture.width
-                                                                     height:outputTexture.height
+                                                                      width:outputImage.width
+                                                                     height:outputImage.height
                                                                    channels:2];
 
   [self.network encodeWithCommandBuffer:commandBuffer inputImage:netInputImage
                             outputImage:netOutputImage];
 
   [self encodePostProcessWithCommandBuffer:commandBuffer inputImage:netOutputImage
-                             outputTexture:outputTexture];
+                               outputImage:outputImage];
 
   [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer>) {
     completion();
@@ -157,15 +152,15 @@ static const NSUInteger kShapeModelInputSide = 512;
   [commandBuffer commit];
 }
 
-- (void)encodePreProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer input:(id<MTLTexture>)input
-                                   output:(id<MTLTexture>)output {
-  [self.resizer encodeToCommandBuffer:buffer inputTexture:input outputTexture:output];
+- (void)encodePreProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer
+                               inputImage:(MPSImage *)inputImage
+                              outputImage:(MPSImage *)outputImage {
+  [self.resizer encodeToCommandBuffer:buffer inputImage:inputImage outputImage:outputImage];
 }
 
 - (void)encodePostProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer
                                 inputImage:(MPSImage *)inputImage
-                             outputTexture:(id<MTLTexture>)outputTexture {
-  auto outputImage = [[MPSImage alloc] initWithTexture:outputTexture featureChannels:1];
+                               outputImage:(MPSImage *)outputImage {
   [self.gatherer encodeToCommandBuffer:buffer inputImage:inputImage outputImage:outputImage];
 }
 
