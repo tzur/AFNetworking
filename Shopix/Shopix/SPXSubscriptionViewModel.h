@@ -97,7 +97,7 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Same as the designated initializer. \c colorScheme is pulled from Objection,
-/// \c showNonMonthlyBillingFootnote is set to \c YES, \c subscriptionManager is set to the default
+/// \c showNonMonthlyBillingFootnote is set to \c NO, \c subscriptionManager is set to the default
 /// manager and \c fetchProductsStrategy is set to \c SPXFetchProductsStrategyAlways.
 - (instancetype)
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
