@@ -16,8 +16,8 @@ struct NetworkScheme {
   /// Array of neural nodes sorted in the order of their encoding.
   NSArray<PNKNeuralNode *> *nodes;
 
-  /// Array of names of network input images.
-  NSArray<NSString *> *inputImageNames;
+  /// Dictionary that maps names of network input images to their respective read counts.
+  NSDictionary<NSString *, NSNumber *> *inputImagesData;
 
   /// Array of names of network output images.
   NSArray<NSString *> *outputImageNames;
