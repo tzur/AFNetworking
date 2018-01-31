@@ -33,12 +33,14 @@
 		B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B476E91B1FCDA88E007BC81C /* TINMessageFactory.mm */; };
 		B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */; };
 		B476E9271FCE9EA6007BC81C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */; };
-		B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */; };
 		B4D17B161FCFE433002DBF30 /* NSFileManager+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B141FCFE433002DBF30 /* NSFileManager+TinCan.mm */; };
 		B4D17B3B1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */; };
 		B4D17B3E1FCFF69C002DBF30 /* TINMessenger.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B3C1FCFF69C002DBF30 /* TINMessenger.mm */; };
 		B4D17B421FCFF88C002DBF30 /* TINMessengerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B411FCFF88C002DBF30 /* TINMessengerSpec.mm */; };
+		B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */; };
 		BE983572200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE983570200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm */; };
+		C7D2DB6A200D015A00809042 /* TINMessageFactory+Photofox.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7D2DB68200D015A00809042 /* TINMessageFactory+Photofox.mm */; };
+		C7E87784201F19A100542F24 /* TINMessageFactory+PhotofoxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7E87783201F19A100542F24 /* TINMessageFactory+PhotofoxSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -378,16 +380,19 @@
 		B476E91E1FCDA88E007BC81C /* TINMessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TINMessageFactory.h; sourceTree = "<group>"; };
 		B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessageFactorySpec.mm; sourceTree = "<group>"; };
 		B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+TinCan.h"; sourceTree = "<group>"; };
-		B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+TinCan.mm"; sourceTree = "<group>"; };
 		B4D17B141FCFE433002DBF30 /* NSFileManager+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+TinCan.mm"; sourceTree = "<group>"; };
 		B4D17B151FCFE433002DBF30 /* NSFileManager+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+TinCan.h"; sourceTree = "<group>"; };
 		B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+TinCanSpec.mm"; sourceTree = "<group>"; };
 		B4D17B3C1FCFF69C002DBF30 /* TINMessenger.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessenger.mm; sourceTree = "<group>"; };
 		B4D17B3D1FCFF69C002DBF30 /* TINMessenger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TINMessenger.h; sourceTree = "<group>"; };
 		B4D17B411FCFF88C002DBF30 /* TINMessengerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessengerSpec.mm; sourceTree = "<group>"; };
+		B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+TinCan.h"; sourceTree = "<group>"; };
+		B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+TinCan.mm"; sourceTree = "<group>"; };
 		BE983570200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessageFactory+Videoleap.mm"; sourceTree = "<group>"; };
 		BE983571200F4DBB0028CD04 /* TINMessageFactory+Videoleap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TINMessageFactory+Videoleap.h"; sourceTree = "<group>"; };
+		C7D2DB68200D015A00809042 /* TINMessageFactory+Photofox.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessageFactory+Photofox.mm"; sourceTree = "<group>"; };
+		C7D2DB69200D015A00809042 /* TINMessageFactory+Photofox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TINMessageFactory+Photofox.h"; sourceTree = "<group>"; };
+		C7E87783201F19A100542F24 /* TINMessageFactory+PhotofoxSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessageFactory+PhotofoxSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,6 +524,7 @@
 		A14171A31E6EAA93005DBEFF /* TinCan */ = {
 			isa = PBXGroup;
 			children = (
+				C7D2DB40200D009F00809042 /* App-specific categories */,
 				883235611ED861CD0090787D /* Base */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 			);
@@ -660,6 +666,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C7E8775F201F197F00542F24 /* App-specific categories */,
 				883235801ED861DB0090787D /* Base */,
 				B45927031FC6B13D00A70964 /* Common */,
 			);
@@ -687,6 +694,23 @@
 				B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		C7D2DB40200D009F00809042 /* App-specific categories */ = {
+			isa = PBXGroup;
+			children = (
+				C7D2DB69200D015A00809042 /* TINMessageFactory+Photofox.h */,
+				C7D2DB68200D015A00809042 /* TINMessageFactory+Photofox.mm */,
+			);
+			name = "App-specific categories";
+			sourceTree = "<group>";
+		};
+		C7E8775F201F197F00542F24 /* App-specific categories */ = {
+			isa = PBXGroup;
+			children = (
+				C7E87783201F19A100542F24 /* TINMessageFactory+PhotofoxSpec.mm */,
+			);
+			name = "App-specific categories";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1087,6 +1111,7 @@
 				B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */,
 				B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */,
 				B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */,
+				C7D2DB6A200D015A00809042 /* TINMessageFactory+Photofox.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1096,6 +1121,7 @@
 			files = (
 				B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */,
 				B4D17B421FCFF88C002DBF30 /* TINMessengerSpec.mm in Sources */,
+				C7E87784201F19A100542F24 /* TINMessageFactory+PhotofoxSpec.mm in Sources */,
 				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
 				B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */,
 				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,

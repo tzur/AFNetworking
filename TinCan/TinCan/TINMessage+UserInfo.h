@@ -16,6 +16,9 @@ extern NSString * const kTINMessageFileNamesKey;
 /// Key for message's attached user defined context.
 extern NSString * const kTINMessageContextKey;
 
+/// Key for the display name of the app sending the request.
+extern NSString * const kTINMessageAppDisplayName;
+
 /// Message's attached file names, each is resolved as a relative path to the message's directory,
 /// or \c nil if no files name array is provided. It's equivalent to the following code:
 ///
