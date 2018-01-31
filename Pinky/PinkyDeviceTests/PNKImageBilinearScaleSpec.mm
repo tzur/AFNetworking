@@ -17,43 +17,19 @@ beforeEach(^{
 context(@"parameter tests", ^{
   __block PNKImageBilinearScale *scale;
 
-  context(@"initialization", ^{
-    it(@"should raise when called with illegal combination of channels count", ^{
-      expect(^{
-        scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:2
-                                        outputFeatureChannels:4];
-      }).to.raise(NSInvalidArgumentException);
-    });
-  });
-
   context(@"encoding", ^{
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
       device = MTLCreateSystemDefaultDevice();
-      scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:4
-                                      outputFeatureChannels:4];
+      scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
       auto commandQueue = [device newCommandQueue];
       commandBuffer = [commandQueue commandBuffer];
     });
 
-    it(@"should raise when input image channels count differs from value provided on "
-       "initialization", ^{
-      MTLSize inputSize{32, 32, 1};
+    it(@"should raise when called with illegal combination of channels count", ^{
+      MTLSize inputSize{32, 32, 2};
       MTLSize outputSize{32, 32, 4};
-
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
-      expect(^{
-        [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                         outputImage:outputImage];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when output image channels count differs from value provided on "
-       "initialization", ^{
-      MTLSize inputSize{32, 32, 4};
-      MTLSize outputSize{32, 32, 1};
 
       auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
@@ -75,8 +51,7 @@ context(@"resize", ^{
   });
 
   it(@"should resize image correctly", ^{
-    scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:4
-                                    outputFeatureChannels:4];
+    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
 
     auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
     auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
@@ -101,8 +76,7 @@ context(@"resize", ^{
   });
 
   it(@"should resize image and transform Y to RGBA correctly", ^{
-    scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:1
-                                    outputFeatureChannels:4];
+    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
 
     auto inputMatRGBA = LTLoadMat([self class], @"ResizeInput.png");
     cv::Mat inputMat;
@@ -135,8 +109,7 @@ context(@"resize", ^{
 
 context(@"PNKTemporaryImageExamples", ^{
   it(@"should decrement read count of an input image of class MPSTemporaryImage", ^{
-    auto scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:4
-                                        outputFeatureChannels:4];
+    auto scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
 
     auto commandQueue = [device newCommandQueue];
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];

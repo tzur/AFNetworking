@@ -84,8 +84,7 @@ static const NSUInteger kShapeModelInputSide = 512;
       return nil;
     }
 
-    _resizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device inputFeatureChannels:4
-                                       outputFeatureChannels:3];
+    _resizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
     _gatherer = [[PNKGather alloc] initWithDevice:self.device inputFeatureChannels:2
                       outputFeatureChannelIndices:{0}];
     _ciContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
