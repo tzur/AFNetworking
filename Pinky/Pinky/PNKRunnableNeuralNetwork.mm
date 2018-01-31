@@ -62,7 +62,7 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 - (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                     inputImages:(PNKImageCollection *)inputImages
                    outputImages:(PNKImageCollection *)outputImages {
-  [self validateImageCollection:inputImages withNames:self.networkScheme.inputImageNames
+  [self validateImageCollection:inputImages withNames:self.networkScheme.inputImagesData.allKeys
                            type:@"input"];
   [self validateImageCollection:outputImages withNames:self.networkScheme.outputImageNames
                            type:@"output"];
@@ -76,6 +76,8 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
   [allImages addEntriesFromDictionary:inputImages];
   [allImages addEntriesFromDictionary:outputImages];
 
+  [self updateReadCountsOfInputImages:inputImages
+                       withDictionary:self.networkScheme.inputImagesData];
   [self encodeWithCommandBuffer:commandBuffer images:allImages];
 }
 
@@ -153,6 +155,18 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
   return temporaryImages;
 }
 
+- (void)updateReadCountsOfInputImages:(PNKImageCollection *)inputImages
+                       withDictionary:(NSDictionary<NSString *, NSNumber *> *)readCountDictionary {
+  [inputImages enumerateKeysAndObjectsUsingBlock:^(NSString *name, MPSImage *image, BOOL *) {
+    if ([image isKindOfClass:[MPSTemporaryImage class]]) {
+      NSUInteger readCountInNetwork = readCountDictionary[name].unsignedIntegerValue;
+      if (readCountInNetwork > 1) {
+        ((MPSTemporaryImage *)image).readCount += (readCountInNetwork - 1);
+      }
+    }
+  }];
+}
+
 - (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                          images:(PNKImageCollection *)images {
   for (PNKNeuralNode *node in self.networkScheme.nodes) {
@@ -171,7 +185,7 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 }
 
 - (NSArray<NSString *> *)inputImageNames {
-  return self.networkScheme.inputImageNames;
+  return self.networkScheme.inputImagesData.allKeys;
 }
 
 - (NSArray<NSString *> *)outputImageNames {

@@ -17,6 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the network with \c networkScheme.
 - (instancetype)initWithNetworkScheme:(const pnk::NetworkScheme &)networkScheme;
 
+/// Encodes the entire set of operations performed by the neural network onto \c buffer.
+/// \c inputImages is a collection of input images mapped by their names. \c outputImages is a
+/// collection of output images mapped by their names. All input images of type \c MPSTemporaryImage
+/// have their \c readCount property decremented by \c 1 after this method finishes.
+- (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)buffer
+                    inputImages:(NSDictionary<NSString *, MPSImage *> *)inputImages
+                   outputImages:(NSDictionary<NSString *, MPSImage *> *)outputImages;
+
 @end
 
 #endif
