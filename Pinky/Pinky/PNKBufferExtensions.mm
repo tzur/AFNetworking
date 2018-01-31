@@ -27,8 +27,10 @@ void PNKFillHalfFloatBuffer(id<MTLBuffer> buffer, const cv::Mat &parameters) {
   LTConvertMat(parameters, &bufferMat, CV_16FC1);
 }
 
-id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f &parameters) {
-  NSUInteger bufferElements = parameters.total();
+id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f &parameters,
+                                           BOOL imageAlignedBufferSize) {
+  NSUInteger bufferElements = imageAlignedBufferSize ?
+      PNKImageAlignedBufferElementsFromMatrix(parameters) : parameters.total();
   id<MTLBuffer> buffer = [device newBufferWithLength:bufferElements * sizeof(half_float::half)
                                              options:MTLResourceCPUCacheModeWriteCombined];
   PNKFillHalfFloatBuffer(buffer, parameters);
