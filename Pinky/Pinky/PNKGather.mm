@@ -3,6 +3,8 @@
 
 #import "PNKGather.h"
 
+#import "PNKBufferExtensions.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -99,13 +101,8 @@ static NSUInteger kChannelsPerTexture = 4;
 }
 
 - (void)createBuffers {
-  _bufferForOutputFeatureChannelIndices =
-      [self.device newBufferWithLength:sizeof(ushort) * _outputFeatureChannelIndices.size()
-                               options:MTLResourceCPUCacheModeWriteCombined];
-
-  void *bufferContents = (ushort *)self.bufferForOutputFeatureChannelIndices.contents;
-  memcpy(bufferContents, _outputFeatureChannelIndices.data(),
-         _outputFeatureChannelIndices.size() * sizeof(ushort));
+  _bufferForOutputFeatureChannelIndices = PNKUshortBufferFromVector(self.device,
+                                                                    _outputFeatureChannelIndices);
 }
 
 #pragma mark -
