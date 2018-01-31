@@ -189,6 +189,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                        width:width height:height mipmapped:NO];
     auto inputTexture = [inputBuffers[i] newTextureWithDescriptor:descriptor offset:0
                                                       bytesPerRow:bytesPerRow];
+    auto inputImage = [[MPSImage alloc] initWithTexture:inputTexture featureChannels:4];
     auto transformedInput = [MPSTemporaryImage
                              pnk_imageWithDevice:self.device
                              format:MPSImageFeatureChannelFormatFloat32
@@ -196,7 +197,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
 
     PNKComputeDispatchWithDefaultThreads(self.applyTransformState, commandBuffer,
                                          @[transformBuffer],
-                                         @[inputTexture, transformedInput.texture],
+                                         @[inputImage], @[transformedInput],
                                          @"applyTransform", {width, height, 4});
 
     [self.mpsMinMax encodeToCommandBuffer:commandBuffer sourceImage:transformedInput
