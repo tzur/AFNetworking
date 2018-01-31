@@ -9,6 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// formats are 1- and 4-channels non-planar formats with either uchar or half-float channels.
 void PNKAssertPixelBufferFormat(CVPixelBufferRef pixelBuffer);
 
+/// Asserts that the \c pixelBuffer has one of supported pixel formats with exactly
+/// \c channnelCount channels. Currently supported pixel formats are 1- and 4-channels non-planar
+/// formats with either uchar or half-float channels.
+void PNKAssertPixelBufferFormatChannelCount(CVPixelBufferRef pixelBuffer, NSUInteger channelCount);
+
 /// Creates an \c MPSImage wrapper of the \c pixelBuffer for use with \c device and returns it to
 /// the caller. \c pixelBuffer must have one of supported pixel formats. Currently supported pixel
 /// formats are 1- and 4-channels non-planar formats with either uchar or half-float channels. The
