@@ -53,7 +53,17 @@ void PNKAssertPixelBufferFormat(CVPixelBufferRef pixelBuffer) {
   OSType inputFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
   auto pixelFormatPair = kSupportedCVPixelFormatToMTLPixelFormat.find(inputFormat);
   LTParameterAssert(pixelFormatPair != kSupportedCVPixelFormatToMTLPixelFormat.end(),
-                    @"Input pixel format (%u) is not supported", (unsigned int)inputFormat);
+                    @"Pixel format (%u) is not supported", (unsigned int)inputFormat);
+}
+
+void PNKAssertPixelBufferFormatChannelCount(CVPixelBufferRef pixelBuffer, NSUInteger channelCount) {
+  OSType inputFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+  auto pixelFormatPair = kSupportedCVPixelFormatToMTLPixelFormat.find(inputFormat);
+  LTParameterAssert(pixelFormatPair != kSupportedCVPixelFormatToMTLPixelFormat.end(),
+                    @"Pixel format (%u) is not supported", (unsigned int)inputFormat);
+  LTParameterAssert(pixelFormatPair->second.second == channelCount,
+                    @"Pixel format is expected to have %lu channels; got %lu",
+                    (unsigned long)channelCount, (unsigned long)pixelFormatPair->second.second);
 }
 
 MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,

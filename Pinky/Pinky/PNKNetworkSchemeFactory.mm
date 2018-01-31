@@ -128,9 +128,10 @@ struct GraphTraversalData {
     [nodes addObject:node];
   }
 
-  NSMutableArray<NSString *> *inputImageNames = [NSMutableArray array];
+  NSMutableDictionary<NSString *, NSNumber *> *inputImagesData = [NSMutableDictionary dictionary];
   for (const auto &name: metadata.globalInputNames) {
-    [inputImageNames addObject:[NSString stringWithUTF8String:name.c_str()]];
+    size_t readCount = metadata.inputNameToLayers.count(name);
+    [inputImagesData setObject:@(readCount) forKey:[NSString stringWithUTF8String:name.c_str()]];
   }
 
   NSMutableArray<NSString *> *outputImageNames = [NSMutableArray array];
@@ -140,7 +141,7 @@ struct GraphTraversalData {
 
   pnk::NetworkScheme networkScheme = {
     .nodes = nodes,
-    .inputImageNames = inputImageNames,
+    .inputImagesData = inputImagesData,
     .outputImageNames = outputImageNames
   };
   return networkScheme;

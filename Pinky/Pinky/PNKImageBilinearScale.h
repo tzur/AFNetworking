@@ -16,19 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes a new kernel that runs on \c device and scales images using bilinear interpolation.
 /// The actual scale is defined by input and output image sizes and does not necessarily preserve
-/// the aspect ratio. The permitted <tt>(inputFeatureChannels, outputFeatureChannels)</tt>
-/// combinations are <tt>(1, 1), (1, 3), (1, 4), (3, 3), (3, 4), (4, 3) and (4, 4)</tt>. When
-/// \c inputFeatureChannels is \c 1 and \c outputFeatureChannels is either \c 3 or \c 4 the
-/// Y->RGB(A) transformation is applied.
-- (instancetype)initWithDevice:(id<MTLDevice>)device
-          inputFeatureChannels:(NSUInteger)inputFeatureChannels
-         outputFeatureChannels:(NSUInteger)outputFeatureChannels
-    NS_DESIGNATED_INITIALIZER;
+/// the aspect ratio.
+- (instancetype)initWithDevice:(id<MTLDevice>)device NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
-/// Output is written asynchronously to \c outputImage. \c inputImage and \c outputImage must have
-/// the numbers of feature channels fitting the \c inputFeatureChannels and \c outputFeatureChannels
-/// parameters provided at kernel initialization.
+/// Output is written asynchronously to \c outputImage. The permitted feature channels combinations
+/// of input and output image are
+/// <tt>(1, 1), (1, 3), (1, 4), (3, 3), (3, 4), (4, 3) and (4, 4)</tt>. When \c inputFeatureChannels
+/// is \c 1 and \c outputFeatureChannels is either \c 3 or \c 4 the Y->RGB(A) transformation is
+/// applied.
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage;
