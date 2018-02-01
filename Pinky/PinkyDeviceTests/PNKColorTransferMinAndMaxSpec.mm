@@ -29,9 +29,12 @@ beforeEach(^{
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
-    auto minmax = [[PNKColorTransferMinAndMax alloc] initWithDevice:device
-                                                         inputSizes:@[@1024, @1337]];
-    expect(minmax.inputSizes).to.equal(@[@1024, @1337]);
+    static const auto size0 = CGSizeMake(64, 16);
+    static const auto size1 = CGSizeMake(1337, 13);
+    auto minmax = [[PNKColorTransferMinAndMax alloc]
+                   initWithDevice:device inputSizes:@[@(size0), @(size1)]];
+    expect(minmax.inputSizes[0].CGSizeValue).to.equal(size0);
+    expect(minmax.inputSizes[1].CGSizeValue).to.equal(size1);
   });
 
   it(@"should raise if initialized with empty sizes array", ^{
@@ -44,24 +47,27 @@ context(@"initialization", ^{
   it(@"should raise if initialized with invalid sizes", ^{
     expect(^{
       __unused auto minmax = [[PNKColorTransferMinAndMax alloc]
-                              initWithDevice:device inputSizes:@[@1024, @0]];
+                              initWithDevice:device
+                              inputSizes:@[@(CGSizeMake(32, 32)), @(CGSizeMake(0, 1024))]];
     }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       __unused auto minmax = [[PNKColorTransferMinAndMax alloc]
-                              initWithDevice:device inputSizes:@[@-1, @1337]];
+                              initWithDevice:device
+                              inputSizes:@[@(CGSizeMake(32, 32)), @(CGSizeMake(1024, -1))]];
     }).to.raise(NSInvalidArgumentException);
   });
 });
 
 context(@"single input", ^{
-  static const NSUInteger kInputSize = 31337;
+  static const CGSize kInputSize = CGSizeMake(259, 121);
+  static const NSUInteger kInputPixels = kInputSize.width * kInputSize.height;
 
   __block id<MTLBuffer> inputBuffer;
   __block PNKColorTransferMinAndMax *minmax;
 
   beforeEach(^{
-    cv::Mat3f input = cv::Mat3f::zeros(1, kInputSize);
+    cv::Mat3f input = cv::Mat3f::zeros(1, (int)kInputPixels);
     input(0, 11337) = cv::Vec3f(0.75, 0.25, -0.25);
     input(0, 21337) = cv::Vec3f(-0.35, 0.85, 0.25);
     input(0, 27337) = cv::Vec3f(0.25, -0.45, 0.95);
@@ -80,6 +86,7 @@ context(@"single input", ^{
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
+    expect(commandBuffer.error).to.beNil();
     expect(PNKVectorFromBuffer(minValue))
         .to.beCloseToLTVectorWithin(LTVector3(-0.35, -0.45, -0.25), 1e-3);
     expect(PNKVectorFromBuffer(maxValue))
@@ -96,6 +103,7 @@ context(@"single input", ^{
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
+    expect(commandBuffer.error).to.beNil();
     expect(PNKVectorFromBuffer(minValue))
         .to.beCloseToLTVectorWithin(LTVector3(-0.45, -0.25, -0.35), 1e-3);
     expect(PNKVectorFromBuffer(maxValue))
@@ -111,13 +119,15 @@ context(@"single input", ^{
 
     auto transformBuffer = PNKCreateBufferFromTransformMat(device, cv::Mat1f::eye(3, 3));
 
-    minmax = [[PNKColorTransferMinAndMax alloc] initWithDevice:device inputSizes:@[@(input.cols)]];
+    minmax = [[PNKColorTransferMinAndMax alloc]
+              initWithDevice:device inputSizes:@[@(CGSizeMake(input.cols, input.rows))]];
     [minmax encodeToCommandBuffer:commandBuffer inputBuffers:@[inputBuffer]
                   transformBuffer:transformBuffer minValueBuffer:minValue maxValueBuffer:maxValue];
 
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
+    expect(commandBuffer.error).to.beNil();
     expect(PNKVectorFromBuffer(minValue))
         .to.beCloseToLTVectorWithin(LTVector3(-0.35, -0.45, -0.25), 1e-3);
     expect(PNKVectorFromBuffer(maxValue))
@@ -126,7 +136,11 @@ context(@"single input", ^{
 });
 
 context(@"multiple inputs", ^{
-  static const std::vector<NSUInteger> kInputSizes = {31337, 12345, 29112};
+  static const std::vector<CGSize> kInputSizes = {
+    CGSizeMake(259, 121),
+    CGSizeMake(823, 15),
+    CGSizeMake(24, 1213),
+  };
 
   __block NSArray<id<MTLBuffer>> *inputBuffers;
   __block PNKColorTransferMinAndMax *minmax;
@@ -134,7 +148,7 @@ context(@"multiple inputs", ^{
   beforeEach(^{
     std::vector<cv::Mat3f> inputs(3);
     for (NSUInteger i = 0; i < inputs.size(); ++i) {
-      inputs[i] = cv::Mat3f::zeros(1, (int)kInputSizes[i]);
+      inputs[i] = cv::Mat3f::zeros(1, (int)(kInputSizes[i].width * kInputSizes[i].height));
     }
 
     inputs[0](0, 27337) = cv::Vec3f(0.75, 0.25, -0.25);
@@ -160,6 +174,7 @@ context(@"multiple inputs", ^{
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
+    expect(commandBuffer.error).to.beNil();
     expect(PNKVectorFromBuffer(minValue))
         .to.beCloseToLTVectorWithin(LTVector3(-0.35, -0.45, -0.25), 1e-3);
     expect(PNKVectorFromBuffer(maxValue))
@@ -176,6 +191,7 @@ context(@"multiple inputs", ^{
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
+    expect(commandBuffer.error).to.beNil();
     expect(PNKVectorFromBuffer(minValue))
         .to.beCloseToLTVectorWithin(LTVector3(-0.45, -0.25, -0.35), 1e-3);
     expect(PNKVectorFromBuffer(maxValue))

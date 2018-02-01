@@ -129,15 +129,16 @@ kernel void findMinMax(constant float3 *minInputs [[buffer(0)]],
 }
 
 /// Applies a 3x3 transform on each pixel.
-kernel void applyTransformOnTexture(texture2d<float, access::read> input [[texture(0)]],
-                                    texture2d<float, access::write> output [[texture(1)]],
-                                    constant float3x3 *transform [[buffer(0)]],
-                                    uint2 index [[thread_position_in_grid]]) {
-  if (index.x >= input.get_width() || index.y >= input.get_height()) {
+kernel void applyTransformOnBuffer(texture2d<float, access::write> output [[texture(0)]],
+                                   constant float3 *input [[buffer(0)]],
+                                   constant float3x3 *transform [[buffer(1)]],
+                                   uint2 index [[thread_position_in_grid]]) {
+  const uint width = output.get_width();
+  if (index.x >= width || index.y >= output.get_height()) {
     return;
   }
 
-  const float3 color = input.read(index).rgb;
+  const float3 color = input[index.y * width + index.x];
   output.write(float4(*transform * color, 1.0), index);
 }
 

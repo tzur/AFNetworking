@@ -246,7 +246,7 @@ static const NSUInteger kLatticeGridSize = 16;
 
   _findMinMax = [[PNKColorTransferMinAndMax alloc]
                  initWithDevice:self.device
-                 inputSizes:@[@(self.inputPixels), @(self.referencePixels)]];
+                 inputSizes:@[@(self.inputSize), @(self.referenceSize)]];
 
   [self updateComputeComponentsIfNeeded];
 }
