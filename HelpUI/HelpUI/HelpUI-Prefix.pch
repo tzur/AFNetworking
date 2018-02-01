@@ -13,3 +13,5 @@
 #import <LTKit/LTKit-Prefix.pch>
 #import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTCGExtensions.h>
+
+#import "HUIModelSettings.h"
