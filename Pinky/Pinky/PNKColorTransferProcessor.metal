@@ -8,8 +8,12 @@ using namespace metal;
 kernel void convertByteToFloat(texture2d<float, access::read> texture [[texture(0)]],
                                device float4 *output [[buffer(0)]],
                                uint2 index [[thread_position_in_grid]]) {
-  const float4 color = texture.read(index);
   const uint width = texture.get_width();
+  if (index.x >= width || index.y >= texture.get_height()) {
+    return;
+  }
+
+  const float4 color = texture.read(index);
   output[index.y * width + index.x] = color;
 }
 

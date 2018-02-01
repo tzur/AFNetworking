@@ -334,6 +334,11 @@ static const NSUInteger kLatticeGridSize = 16;
   [commandBuffer commit];
   [commandBuffer waitUntilCompleted];
 
+  if (commandBuffer.status == MTLCommandBufferStatusError) {
+    LogError(@"Failed to create color transfer lookup table: %@", commandBuffer.error);
+    return nil;
+  }
+
   return [self lutFromBuffer:self.resultLatticeBuffer];
 }
 

@@ -73,13 +73,21 @@ context(@"pixel buffer formats", ^{
   });
 
   it(@"should not raise if both input and reference are byte RGBA or half-float RGBA", ^{
-    expect(^{
-      [processor lutForInput:byteRGBA.pixelBuffer.get() reference:byteRGBA.pixelBuffer.get()];
-      [processor lutForInput:byteRGBA.pixelBuffer.get() reference:halfFloatRGBA.pixelBuffer.get()];
-      [processor lutForInput:halfFloatRGBA.pixelBuffer.get() reference:byteRGBA.pixelBuffer.get()];
-      [processor lutForInput:halfFloatRGBA.pixelBuffer.get()
-                   reference:halfFloatRGBA.pixelBuffer.get()];
-    }).notTo.raiseAny();
+    auto lut = [processor lutForInput:byteRGBA.pixelBuffer.get()
+                            reference:byteRGBA.pixelBuffer.get()];
+    expect(lut).notTo.beNil();
+
+    lut = [processor lutForInput:byteRGBA.pixelBuffer.get()
+                       reference:halfFloatRGBA.pixelBuffer.get()];
+    expect(lut).notTo.beNil();
+
+    lut = [processor lutForInput:halfFloatRGBA.pixelBuffer.get()
+                       reference:byteRGBA.pixelBuffer.get()];
+    expect(lut).notTo.beNil();
+
+    lut = [processor lutForInput:halfFloatRGBA.pixelBuffer.get()
+                       reference:halfFloatRGBA.pixelBuffer.get()];
+    expect(lut).notTo.beNil();
   });
 
   it(@"should raise if input texture is of incorrect format", ^{
@@ -122,9 +130,8 @@ context(@"incorrect size", ^{
   });
 
   it(@"should not raise if both input and reference are in the correct size", ^{
-    expect(^{
-      [processor lutForInput:small.pixelBuffer.get() reference:small.pixelBuffer.get()];
-    }).notTo.raiseAny();
+    auto lut = [processor lutForInput:small.pixelBuffer.get() reference:small.pixelBuffer.get()];
+    expect(lut).notTo.beNil();
   });
 
   it(@"should raise if input pixelbuffer size doesn't match size provided at initialization", ^{
@@ -163,8 +170,9 @@ context(@"create lut from input and reference textures", ^{
     processor.dampingFactor = 0.5;
     auto lut = [processor lutForInput:inputTexture.pixelBuffer.get()
                             reference:referenceTexture.pixelBuffer.get()];
-    auto output = LTApplyLUT(inputTexture, lut);
+    expect(lut).notTo.beNil();
 
+    auto output = LTApplyLUT(inputTexture, lut);
     auto expected = LTLoadMat(self.class, @"ColorTransferResult.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
   });
