@@ -11,6 +11,12 @@ BOOL PNKSupportsMTLDevice(id<MTLDevice> device) {
   return MPSSupportsMTLDevice(device);
 }
 
+#else
+
+BOOL PNKSupportsMTLDevice(__unused id<MTLDevice> device) {
+  return NO;
+}
+
 #endif
 
 NS_ASSUME_NONNULL_END
