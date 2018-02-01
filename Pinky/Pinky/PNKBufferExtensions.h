@@ -18,4 +18,8 @@ void PNKFillHalfFloatBuffer(id<MTLBuffer> buffer, const cv::Mat &parameters);
 id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f &parameters,
                                            BOOL imageAlignedBufferSize = NO);
 
+/// Creates a new \c MTLBuffer on \c device and fills it with the elements of \c parameters vector.
+id<MTLBuffer> PNKUshortBufferFromVector(id<MTLDevice> device,
+                                        const std::vector<ushort> &parameters);
+
 NS_ASSUME_NONNULL_END

@@ -37,4 +37,16 @@ id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f
   return buffer;
 }
 
+id<MTLBuffer> PNKUshortBufferFromVector(id<MTLDevice> device,
+                                        const std::vector<ushort> &parameters) {
+  NSUInteger bufferElements = (NSUInteger)parameters.size();
+  id<MTLBuffer> buffer = [device newBufferWithLength:bufferElements * sizeof(ushort)
+                                             options:MTLResourceCPUCacheModeWriteCombined];
+
+  void *bufferContents = (ushort *)buffer.contents;
+  memcpy(bufferContents, parameters.data(), bufferElements * sizeof(ushort));
+
+  return buffer;
+}
+
 NS_ASSUME_NONNULL_END
