@@ -72,7 +72,7 @@ context(@"resize", ^{
     cv::Mat expectedMat;
     cv::resize(inputMat, expectedMat, cv::Size(0, 0), 2.5, 2.5);
 
-    expect($(outputMat)).to.beCloseToMatWithin($(expectedMat), @1);
+    expect($(outputMat)).to.beCloseToMat($(expectedMat));
   });
 
   it(@"should resize image and transform Y to RGBA correctly", ^{
@@ -103,7 +103,35 @@ context(@"resize", ^{
     cv::Mat expectedMat;
     cv::cvtColor(resizedInputMat, expectedMat, CV_GRAY2RGBA);
 
-    expect($(outputMat)).to.beCloseToMatWithin($(expectedMat), @1);
+    expect($(outputMat)).to.beCloseToMat($(expectedMat));
+  });
+
+  it(@"should resize image and transform RGBA to Y correctly", ^{
+    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
+
+    auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
+    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+                                                   height:inputMat.rows
+                                                 channels:inputMat.channels()];
+    PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
+
+    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputImage.width * 1.5
+                                                    height:inputImage.height * 1.5 channels:1];
+
+    [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
+
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+
+    auto outputMat = PNKMatFromMTLTexture(outputImage.texture);
+
+    cv::Mat resizedInputMat;
+    cv::resize(inputMat, resizedInputMat, cv::Size(0, 0), 1.5, 1.5);
+
+    cv::Mat expectedMat;
+    cv::cvtColor(resizedInputMat, expectedMat, CV_RGBA2GRAY);
+
+    expect($(outputMat)).to.beCloseToMat($(expectedMat));
   });
 });
 
