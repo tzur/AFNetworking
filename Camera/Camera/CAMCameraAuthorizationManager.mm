@@ -20,8 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMCameraAuthorizationManager
 
-- (instancetype)init {
-  return [self initWithCameraAuthorizer:[[CAMCameraAuthorizer alloc] init]];
++ (instancetype)videoAuthorizationManager {
+  auto authorizer = [[CAMCameraAuthorizer alloc] initWithMediaType:AVMediaTypeVideo];
+  return [[CAMCameraAuthorizationManager alloc] initWithCameraAuthorizer:authorizer];
+}
+
++ (instancetype)audioAuthorizationManager {
+  auto authorizer = [[CAMCameraAuthorizer alloc] initWithMediaType:AVMediaTypeAudio];
+  return [[CAMCameraAuthorizationManager alloc] initWithCameraAuthorizer:authorizer];
 }
 
 - (instancetype)initWithCameraAuthorizer:(CAMCameraAuthorizer *)authorizer {
