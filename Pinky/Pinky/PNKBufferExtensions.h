@@ -13,7 +13,9 @@ NSUInteger PNKImageAlignedBufferElementsFromMatrix(const cv::Mat &matrix);
 void PNKFillHalfFloatBuffer(id<MTLBuffer> buffer, const cv::Mat &parameters);
 
 /// Creates a new \c MTLBuffer on \c device and fills it with the elements of \c parameters matrix
-/// converted to half-float.
-id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f &parameters);
+/// converted to half-float. If \c imageAlignedBufferSize is \c YES then the size of the returned
+/// buffer will be a multiple of 4 as described in \c PNKImageAlignedBufferElementsFromMatrix.
+id<MTLBuffer> PNKHalfBufferFromFloatVector(id<MTLDevice> device, const cv::Mat1f &parameters,
+                                           BOOL imageAlignedBufferSize = NO);
 
 NS_ASSUME_NONNULL_END
