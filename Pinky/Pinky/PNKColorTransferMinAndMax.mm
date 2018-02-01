@@ -60,11 +60,12 @@ NS_ASSUME_NONNULL_BEGIN
 static const NSUInteger kTemporaryBufferElements = 16384;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
-                    inputSizes:(nonnull NSArray<NSNumber *> *)inputSizes {
+                    inputSizes:(nonnull NSArray<NSValue *> *)inputSizes {
   LTParameterAssert(inputSizes.count, @"Invalid input sizes, must be non-empty");
-  for (NSNumber *size in inputSizes) {
-    LTParameterAssert(size.integerValue > 0, @"Invalid input size (%ld), must be greater than zero",
-                      (long)size.integerValue);
+  for (NSValue *size in inputSizes) {
+    LTParameterAssert(std::min(size.CGSizeValue) > 0,
+                      @"Invalid input size (%@), must be greater than zero",
+                      NSStringFromCGSize(size.CGSizeValue));
   }
 
   if (self = [super init]) {
@@ -93,9 +94,10 @@ static const NSUInteger kTemporaryBufferElements = 16384;
 
   auto constants = [[MTLFunctionConstantValues alloc] init];
   auto findMinMaxStates = [NSMutableArray array];
-  for (NSNumber *inputSize in self.inputSizes) {
-    uint size = (uint)inputSize.unsignedIntegerValue;
-    [constants setConstantValue:&size type:MTLDataTypeUInt withName:@"kInputSize"];
+  for (NSValue *inputSize in self.inputSizes) {
+    auto size = inputSize.CGSizeValue;
+    uint elements = size.width * size.height;
+    [constants setConstantValue:&elements type:MTLDataTypeUInt withName:@"kInputSize"];
     auto state =
         PNKCreateComputeStateWithConstants(self.device, @"findMinMaxPerThreadgroup", constants);
     [findMinMaxStates addObject:state];
@@ -145,12 +147,13 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                                          @"resetMinMax temporaryValueBuffers",
                                          kTemporaryBufferElements);
 
+    auto inputSize = self.inputSizes[i].CGSizeValue;
     PNKComputeDispatchWithDefaultThreads(self.findMinMaxPerThreadgroupStates[i], commandBuffer,
                                          @[inputBuffers[i], transformBuffer,
                                            self.minValuesPerThreadgroupBuffer,
                                            self.maxValuesPerThreadgroupBuffer],
                                          @"findMinMaxPerThreadgroup",
-                                         self.inputSizes[i].unsignedIntegerValue / 2);
+                                         inputSize.width * inputSize.height / 2);
 
     PNKComputeDispatchWithDefaultThreads(self.findMinMaxState, commandBuffer,
                                          @[self.minValuesPerThreadgroupBuffer,
@@ -161,7 +164,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
 }
 
 - (void)createFastCompuateStatesAndBuffers NS_AVAILABLE_IOS(11) {
-  _applyTransformState = PNKCreateComputeState(self.device, @"applyTransformOnTexture");
+  _applyTransformState = PNKCreateComputeState(self.device, @"applyTransformOnBuffer");
   _mergeMinMaxState = PNKCreateComputeState(self.device, @"mergeMinMax");
   _mpsMinMax = [[MPSImageStatisticsMinAndMax alloc] initWithDevice:self.device];
   auto mpsMinMaxResults = [NSMutableArray array];
@@ -180,25 +183,18 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                   minValueBuffer:(id<MTLBuffer>)minValueBuffer
                   maxValueBuffer:(id<MTLBuffer>)maxValueBuffer NS_AVAILABLE_IOS(11) {
   for (NSUInteger i = 0; i < inputBuffers.count; ++i) {
-    NSUInteger inputSize = self.inputSizes[i].unsignedIntegerValue;
-    NSUInteger width = std::min((NSUInteger)1024, inputSize);
-    NSUInteger height = (inputSize + width - 1) / width;
-    NSUInteger bytesPerRow = width * 4 * sizeof(float);
-    auto descriptor = [MTLTextureDescriptor
-                       texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA32Float
-                       width:width height:height mipmapped:NO];
-    auto inputTexture = [inputBuffers[i] newTextureWithDescriptor:descriptor offset:0
-                                                      bytesPerRow:bytesPerRow];
-    auto inputImage = [[MPSImage alloc] initWithTexture:inputTexture featureChannels:4];
+    CGSize inputSize = self.inputSizes[i].CGSizeValue;
+    NSUInteger width = inputSize.width;
+    NSUInteger height = inputSize.height;
     auto transformedInput = [MPSTemporaryImage
                              pnk_imageWithDevice:self.device
                              format:MPSImageFeatureChannelFormatFloat32
                              width:width height:height channels:4];
 
     PNKComputeDispatchWithDefaultThreads(self.applyTransformState, commandBuffer,
-                                         @[transformBuffer],
-                                         @[inputImage], @[transformedInput],
-                                         @"applyTransform", {width, height, 4});
+                                         @[inputBuffers[i], transformBuffer], @[],
+                                         @[transformedInput],
+                                         @"applyTransform", {width, height, 1});
 
     [self.mpsMinMax encodeToCommandBuffer:commandBuffer sourceImage:transformedInput
                          destinationImage:self.mpsMinMaxResults[i]];

@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c device, and array with the number of pixels in each of the buffers
-/// that will be given as input.
-- (instancetype)initWithDevice:(id<MTLDevice>)device inputSizes:(NSArray<NSNumber *> *)inputSizes
+/// Initializes with the given \c device, and array of boxed \c CGSize with the original dimensions
+/// in pixels of the buffers that will be given as input.
+- (instancetype)initWithDevice:(id<MTLDevice>)device inputSizes:(NSArray<NSValue *> *)inputSizes
     NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operations performed by the kernels to \c commandBuffer, using \c inputBuffers as
@@ -35,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
                minValueBuffer:(id<MTLBuffer>)minValueBuffer
                maxValueBuffer:(id<MTLBuffer>)maxValueBuffer;
 
-/// Number of pixels in each of the input buffers that will be provided.
-@property (readonly, nonatomic) NSArray<NSNumber *> *inputSizes;
+/// Original dimensions in pixels of the input buffers that will be provided.
+@property (readonly, nonatomic) NSArray<NSValue *> *inputSizes;
 
 @end
 

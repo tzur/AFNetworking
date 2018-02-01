@@ -246,7 +246,7 @@ static const NSUInteger kLatticeGridSize = 16;
 
   _findMinMax = [[PNKColorTransferMinAndMax alloc]
                  initWithDevice:self.device
-                 inputSizes:@[@(self.inputPixels), @(self.referencePixels)]];
+                 inputSizes:@[@(self.inputSize), @(self.referenceSize)]];
 
   [self updateComputeComponentsIfNeeded];
 }
@@ -333,6 +333,11 @@ static const NSUInteger kLatticeGridSize = 16;
 
   [commandBuffer commit];
   [commandBuffer waitUntilCompleted];
+
+  if (commandBuffer.status == MTLCommandBufferStatusError) {
+    LogError(@"Failed to create color transfer lookup table: %@", commandBuffer.error);
+    return nil;
+  }
 
   return [self lutFromBuffer:self.resultLatticeBuffer];
 }
