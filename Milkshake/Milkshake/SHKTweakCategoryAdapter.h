@@ -5,31 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Allows objects expose tweaks related to it.
-@protocol SHKTweakCategory <NSObject>
-
-/// Name of the category.
-@property (readonly, nonatomic) NSString *name;
-
-/// Tweak collections in this category. KVO-compliant.
-@property (readonly, nonatomic) NSArray<FBTweakCollection *> *tweakCollections;
-
-@optional
-
-/// Requests the category to fetch the latest tweak collections. The returned signal completes
-/// when the update completes successfully or errs.
-///
-/// @note This may trigger a change in the \c tweakCollections property.
-///
-/// @note The returned signal sends values on an arbitrary thread.
-- (RACSignal *)update;
-
-/// Reset the receiver to its default state.
-///
-/// @note This may trigger a change in the \c tweakCollections property.
-- (void)reset;
-
-@end
+@protocol SHKTweakCategory;
 
 /// Adapter that takes a \c SHKTweakCategory to expose as a \c FBTweakCategory.
 ///

@@ -5,6 +5,8 @@
 
 #import <FBTweak/FBTweakCollection.h>
 
+#import "SHKTweakCategory.h"
+
 /// Fake category to help test \c SHKTweakCategoryAdapter. Implements all methods.
 @interface SHKFakeTweakCategory : NSObject <SHKTweakCategory>
 
