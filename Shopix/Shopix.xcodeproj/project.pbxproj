@@ -44,6 +44,8 @@
 		CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */; };
 		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */; };
 		CD2E04642029B6040038EC7F /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
+		CD2E00C5202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2E00C3202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm */; };
+		CD2E00F220271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */; };
@@ -532,6 +534,9 @@
 		CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifier.mm"; sourceTree = "<group>"; };
 		CD25F006200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+ProductIdentifier.h"; sourceTree = "<group>"; };
 		CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifierSpec.mm"; sourceTree = "<group>"; };
+		CD2E00C3202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionDescriptor+PriceString.mm"; sourceTree = "<group>"; };
+		CD2E00C4202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXSubscriptionDescriptor+PriceString.h"; sourceTree = "<group>"; };
+		CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionDescriptor+PriceStringSpec.mm"; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
@@ -1179,6 +1184,7 @@
 				CDD9F7A71FE8108200A7A6DB /* Subscription Screens */,
 				CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */,
 				CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */,
+				CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */,
 				EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */,
 				63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
@@ -1246,6 +1252,8 @@
 				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
 				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
 				CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */,
+				CD2E00C4202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.h */,
+				CD2E00C3202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
 				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
 				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
@@ -1846,6 +1854,7 @@
 				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */,
 				EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */,
 				CD3B314A201630ED00E80ED5 /* SPXMultiSubscriptionViewModelSpec.mm in Sources */,
+				CD2E00F220271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm in Sources */,
 				CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */,
 				CDB391E3200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm in Sources */,
 				8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */,
@@ -1896,6 +1905,7 @@
 				CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
 				CDF5FAC31FCECC85007D4AB0 /* UIFont+Shopix.mm in Sources */,
+				CD2E00C5202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm in Sources */,
 				CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */,
 				CDF5F9711FCDC4EB007D4AB0 /* SPXSubscriptionDescriptor.mm in Sources */,
 				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
