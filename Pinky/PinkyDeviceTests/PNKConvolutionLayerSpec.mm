@@ -51,7 +51,7 @@ static const NSUInteger kInputHeight = 15;
 static const NSUInteger kInputWidth = 16;
 static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
-static const NSUInteger kOutputArrayFeatureChannels = 16;
+static const NSUInteger kOutputArrayFeatureChannels = 8;
 
 static const NSUInteger kNoStride = 1;
 static const NSUInteger kNoDilation = 1;
@@ -136,9 +136,9 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
     convolutionModel.kernelWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_kernel_16x3x3x32.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_kernel_8x3x3x32.weights");
     convolutionModel.biasWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_bias_16.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_bias_8.weights");
 
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
@@ -148,7 +148,7 @@ context(@"tensorflow golden standard", ^{
     auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
 
     auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_output_15x16x16.tensor");
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_output_15x16x8.tensor");
     auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
 
     return @{
@@ -180,9 +180,9 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
     convolutionModel.kernelWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_kernel_16x3x3x32.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_kernel_8x3x3x32.weights");
     convolutionModel.biasWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_bias_16.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_bias_8.weights");
 
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
@@ -192,7 +192,7 @@ context(@"tensorflow golden standard", ^{
     auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
 
     auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_output_8x8x16.tensor");
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_output_8x8x8.tensor");
     auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, (int)outputHeight);
 
     return @{
@@ -224,9 +224,9 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
     convolutionModel.kernelWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_kernel_16x3x3x32.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_kernel_8x3x3x32.weights");
     convolutionModel.biasWeights =
-        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_bias_16.weights");
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_bias_8.weights");
 
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
@@ -236,7 +236,7 @@ context(@"tensorflow golden standard", ^{
     auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
 
     auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_output_15x16x16.tensor");
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_output_15x16x8.tensor");
     auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
 
     return @{

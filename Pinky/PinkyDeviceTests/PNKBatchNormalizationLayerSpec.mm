@@ -319,8 +319,9 @@ context(@"tensorflow golden standard", ^{
     pnk::NormalizationKernelModel normalizationModel = {
       .inputFeatureChannels = kInputChannels,
       .computeMeanVar = NO,
-      .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_gamma.weights"),
-      .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_beta.weights"),
+      .scale = PNKLoadFloatTensorFromBundleResource(bundle,
+                                                    @"batch_normalization_gamma_32.weights"),
+      .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_beta_32.weights"),
       .mean = cv::Mat1f::zeros(1, kInputChannels),
       .variance = cv::Mat1f::ones(1, kInputChannels)
     };
@@ -329,11 +330,13 @@ context(@"tensorflow golden standard", ^{
                                                        normalizationModel:normalizationModel
                                                           activationModel:activationModel];
     auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"batch_normalization_input.tensor");
+        PNKLoadHalfFloatTensorFromBundleResource(bundle,
+                                                 @"batch_normalization_input_15x16x32.tensor");
     auto inputMat = inputMatSingleRow.reshape(kInputChannels, kInputHeight);
 
     auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"batch_normalization_output.tensor");
+        PNKLoadHalfFloatTensorFromBundleResource(bundle,
+                                                 @"batch_normalization_output_15x16x32.tensor");
     auto expectedMat = expectedMatSingleRow.reshape(kInputChannels, kInputHeight);
 
     return @{
