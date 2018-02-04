@@ -90,6 +90,9 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   } else if ((inputImage.featureChannels == 1 && outputImage.featureChannels == 3) ||
              (inputImage.featureChannels == 1 && outputImage.featureChannels == 4)){
     colorTransformType[0] = pnk::ColorTransformTypeYToRGBA;
+  } else if ((inputImage.featureChannels == 3 && outputImage.featureChannels == 1) ||
+             (inputImage.featureChannels == 4 && outputImage.featureChannels == 1)) {
+    colorTransformType[0] = pnk::ColorTransformTypeRGBAToY;
   } else {
     LTParameterAssert(NO, @"Invalid input/output feature channels combination - (%lu, %lu)",
                       (unsigned long)inputImage.featureChannels,

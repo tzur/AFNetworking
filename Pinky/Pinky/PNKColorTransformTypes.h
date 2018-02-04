@@ -9,7 +9,9 @@ namespace pnk {
     ColorTransformTypeNone,
     /// Duplicate 1 input channel (Y) into 3 output channels (RGB). If alpha channel presents - set
     /// it to 1.
-    ColorTransformTypeYToRGBA
+    ColorTransformTypeYToRGBA,
+    /// Convert the RGB channels to the luma (Y) channel using the BT.601 standard.
+    ColorTransformTypeRGBAToY
   };
 
 } // namespace pnk
