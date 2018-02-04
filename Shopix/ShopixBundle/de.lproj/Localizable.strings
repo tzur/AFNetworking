@@ -10,6 +10,12 @@
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Kontakt";
 
+/* Label on a button for purchasing subscription that renews every one day */
+"Day" = "Day"; /* MISSING TRANSLATION */
+
+/* Label on a button for purchasing subscription that renews every x days */
+"Days" = "Days"; /* MISSING TRANSLATION */
+
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "Monat";
 
@@ -49,8 +55,17 @@
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Bitte versuche es erneut";
 
+/* Label on a button for purchasing subscription that renews every one week */
+"Week" = "Week"; /* MISSING TRANSLATION */
+
+/* Label on a button for purchasing subscription that renews every x weeks */
+"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "Jahr";
+
+/* Label on a button for purchasing subscription that renews every x years */
+"Years" = "Years"; /* MISSING TRANSLATION */
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Deine Einkäufe wurden wiederhergestellt, kein aktives Abo gefunden";

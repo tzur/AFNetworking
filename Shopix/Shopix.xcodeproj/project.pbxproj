@@ -41,11 +41,11 @@
 		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
 		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
-		CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */; };
-		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */; };
 		CD2E04642029B6040038EC7F /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CD2E00C5202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2E00C3202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm */; };
 		CD2E00F220271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */; };
+		CD25F007200668D4004B0D6F /* BZRBillingPeriod+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+Shopix.mm */; };
+		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ShopixSpec.mm */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */; };
@@ -537,6 +537,9 @@
 		CD2E00C3202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionDescriptor+PriceString.mm"; sourceTree = "<group>"; };
 		CD2E00C4202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXSubscriptionDescriptor+PriceString.h"; sourceTree = "<group>"; };
 		CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionDescriptor+PriceStringSpec.mm"; sourceTree = "<group>"; };
+		CD25F005200668D4004B0D6F /* BZRBillingPeriod+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+Shopix.mm"; sourceTree = "<group>"; };
+		CD25F006200668D4004B0D6F /* BZRBillingPeriod+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+Shopix.h"; sourceTree = "<group>"; };
+		CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ShopixSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ShopixSpec.mm"; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
@@ -1182,7 +1185,7 @@
 				8B7093381FD828CF009393C9 /* AppStore Product Screen */,
 				653D9C341FB742C80035ACEC /* Common Components */,
 				CDD9F7A71FE8108200A7A6DB /* Subscription Screens */,
-				CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */,
+				CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ShopixSpec.mm */,
 				CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */,
 				CD2E00F120271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm */,
 				EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */,
@@ -1246,8 +1249,8 @@
 				639C5AA21FB37C8400937367 /* Common Components */,
 				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
 				CDB5137B1F66B0220013577C /* Subscription Screens */,
-				CD25F006200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.h */,
-				CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */,
+				CD25F006200668D4004B0D6F /* BZRBillingPeriod+Shopix.h */,
+				CD25F005200668D4004B0D6F /* BZRBillingPeriod+Shopix.mm */,
 				CDC8391A1FCFF87D00E9F41A /* SPXColorScheme.h */,
 				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
 				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
@@ -1851,7 +1854,7 @@
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				88CEB4511FB44D1B00E01950 /* SPXVoucherSpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
-				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */,
+				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ShopixSpec.mm in Sources */,
 				EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */,
 				CD3B314A201630ED00E80ED5 /* SPXMultiSubscriptionViewModelSpec.mm in Sources */,
 				CD2E00F220271EC50038EC7F /* SPXSubscriptionDescriptor+PriceStringSpec.mm in Sources */,
@@ -1883,7 +1886,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */,
+				CD25F007200668D4004B0D6F /* BZRBillingPeriod+Shopix.mm in Sources */,
 				639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */,
 				633E793A1FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm in Sources */,
 				CDAC920A1FC5994900B197B3 /* SPXSubscriptionTermsView.mm in Sources */,

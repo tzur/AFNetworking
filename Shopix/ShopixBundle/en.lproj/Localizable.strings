@@ -10,6 +10,12 @@
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Contact Us";
 
+/* Label on a button for purchasing subscription that renews every one day */
+"Day" = "Day";
+
+/* Label on a button for purchasing subscription that renews every x days */
+"Days" = "Days";
+
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "Month";
 
@@ -49,8 +55,17 @@
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Try Again";
 
+/* Label on a button for purchasing subscription that renews every one week */
+"Week" = "Week";
+
+/* Label on a button for purchasing subscription that renews every x weeks */
+"Weeks" = "Weeks";
+
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "Year";
+
+/* Label on a button for purchasing subscription that renews every x years */
+"Years" = "Years";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Your purchases were restored successfully, no active subscription found";
