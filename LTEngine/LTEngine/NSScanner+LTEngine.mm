@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Michael Kimyagarov.
 
-#import "NSScanner+Math.h"
+#import "NSScanner+LTEngine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSScanner (Math)
+@implementation NSScanner (LTEngine)
 
 - (BOOL)lt_scanFloat:(float *)result {
   if ([self scanString:@"nan" intoString:NULL]) {
@@ -70,6 +70,15 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
   return [self isAtEnd];
+}
+
+- (BOOL)lt_scanNSUInteger:(NSUInteger *)result {
+  unsigned long long value;
+  BOOL success = [self scanUnsignedLongLong:&value];
+  if (result && success) {
+    *result = value <= (unsigned long long)NSUIntegerMax ? (NSUInteger)value : NSUIntegerMax;
+  }
+  return success;
 }
 
 @end

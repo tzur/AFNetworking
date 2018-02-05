@@ -3,7 +3,7 @@
 
 #import "LTGLKitExtensions.h"
 
-#import "NSScanner+Math.h"
+#import "NSScanner+LTEngine.h"
 
 const GLKVector2 GLKVector2Zero = {{0, 0}};
 

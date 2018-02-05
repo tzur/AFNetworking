@@ -959,4 +959,129 @@ context(@"description", ^{
   });
 });
 
+context(@"interval from string", ^{
+  context(@"CGFloat intervals", ^{
+    it(@"should return correct open CGFloat interval for a given string", ^{
+      lt::Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"(-0.25, 1.25)");
+      expect(interval == lt::Interval<CGFloat>({-0.25, 1.25}, lt::Interval<CGFloat>::Open))
+          .to.beTruthy();
+    });
+
+    it(@"should return correct left-open CGFloat interval for a given string", ^{
+      lt::Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"(-0.5, 1.5]");
+      expect(interval == lt::Interval<CGFloat>({-0.5, 1.5}, lt::Interval<CGFloat>::Open,
+                                               lt::Interval<CGFloat>::Closed)).to.beTruthy();
+    });
+
+    it(@"should return correct right-open CGFloat interval for a given string", ^{
+      lt::Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"[-0.75, 1.75)");
+      expect(interval == lt::Interval<CGFloat>({-0.75, 1.75}, lt::Interval<CGFloat>::Closed,
+                                               lt::Interval<CGFloat>::Open)).to.beTruthy();
+    });
+
+    it(@"should return correct closed CGFloat interval for a given string", ^{
+      lt::Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"[-1.0, 2.0]");
+      expect(interval == lt::Interval<CGFloat>({-1, 2})).to.beTruthy();
+    });
+
+    context(@"string with invalid format", ^{
+      it(@"should return empty CGFloat intervals for given strings with invalid formats", ^{
+        lt::Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"(-0.25)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTCGFloatIntervalFromString(@"(-0.25, , 2.0)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTCGFloatIntervalFromString(@"()");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+      });
+    });
+  });
+
+  context(@"NSInteger intervals", ^{
+    it(@"should return correct open NSInteger interval for a given string", ^{
+      lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(-7, 8)");
+      expect(interval == lt::Interval<NSInteger>({-7, 8}, lt::Interval<NSInteger>::Open))
+          .to.beTruthy();
+    });
+
+    it(@"should return correct left-open NSInteger interval for a given string", ^{
+      lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(-6, 7]");
+      expect(interval == lt::Interval<NSInteger>({-6, 7}, lt::Interval<NSInteger>::Open,
+                                                 lt::Interval<NSInteger>::Closed)).to.beTruthy();
+    });
+
+    it(@"should return correct right-open NSInteger interval for a given string", ^{
+      lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"[-5, 6)");
+      expect(interval == lt::Interval<NSInteger>({-5, 6}, lt::Interval<NSInteger>::Closed,
+                                                 lt::Interval<NSInteger>::Open)).to.beTruthy();
+    });
+
+    it(@"should return correct closed NSInteger interval for a given string", ^{
+      lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"[-4, 5]");
+      expect(interval == lt::Interval<NSInteger>({-4, 5})).to.beTruthy();
+    });
+
+    context(@"string with invalid format", ^{
+      it(@"should return empty NSInteger intervals for given strings with invalid formats", ^{
+        lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(-4)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTNSIntegerIntervalFromString(@"(-4, , 5)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTNSIntegerIntervalFromString(@"()");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+      });
+    });
+  });
+
+  context(@"NSUInteger intervals", ^{
+    it(@"should return correct open NSUInteger interval for a given string", ^{
+      lt::Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"(7, 8)");
+      expect(interval == lt::Interval<NSUInteger>({7, 8}, lt::Interval<NSUInteger>::Open))
+          .to.beTruthy();
+    });
+
+    it(@"should return correct left-open NSUInteger interval for a given string", ^{
+      lt::Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"(6, 7]");
+      expect(interval == lt::Interval<NSUInteger>({6, 7}, lt::Interval<NSUInteger>::Open,
+                                                  lt::Interval<NSUInteger>::Closed)).to.beTruthy();
+    });
+
+    it(@"should return correct right-open NSUInteger interval for a given string", ^{
+      lt::Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"[5, 6)");
+      expect(interval == lt::Interval<NSUInteger>({5, 6}, lt::Interval<NSUInteger>::Closed,
+                                                  lt::Interval<NSUInteger>::Open)).to.beTruthy();
+    });
+
+    it(@"should return correct closed NSUInteger interval for a given string", ^{
+      lt::Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"[4, 5]");
+      expect(interval == lt::Interval<NSUInteger>({4, 5})).to.beTruthy();
+    });
+
+    context(@"string with invalid format", ^{
+      it(@"should return empty NSInteger intervals for given strings with invalid formats", ^{
+        lt::Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(4)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTNSIntegerIntervalFromString(@"(4, , 5)");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+
+        interval = LTNSIntegerIntervalFromString(@"()");
+        expect(interval.inf()).to.equal(0);
+        expect(interval.isEmpty()).to.beTruthy();
+      });
+    });
+  });
+});
+
 SpecEnd

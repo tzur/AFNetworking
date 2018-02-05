@@ -217,3 +217,21 @@ template <typename T>
 constexpr bool operator!=(lt::Interval<T> lhs, lt::Interval<T> rhs) {
   return !(lhs == rhs);
 }
+
+/// Returns a \c CGFloat interval for the given \c string. The \c string is assumed to be in the
+/// format <tt>@"(%g, %g)"</tt> for an open interval, <tt>@"(%g, %g]"</tt> for a left-open interval,
+/// <tt>@"[%g, %g)"</tt> for a right-open interval, and <tt>@"[%g, %g]"</tt> for a closed interval.
+/// In case an invalid format is given, \c lt::Interval<CGFloat>() is returned.
+lt::Interval<CGFloat> LTCGFloatIntervalFromString(NSString *string);
+
+/// Returns an \c NSInteger interval for the given \c string. The \c string is assumed to be in the
+/// format <tt>@"(%ld, %ld)"</tt> for an open interval, <tt>@"(%ld, %ld]"</tt> for a left-open
+/// interval, <tt>@"[%ld, %ld)"</tt> for a right-open interval, and <tt>@"[%ld, %ld]"</tt> for a
+/// closed interval. In case an invalid format is given, \c lt::Interval<CGFloat>() is returned.
+lt::Interval<NSInteger> LTNSIntegerIntervalFromString(NSString *string);
+
+/// Returns an \c NSUInteger interval for the given \c string. The \c string is assumed to be in the
+/// format <tt>@"(%lu, %lu)"</tt> for an open interval, <tt>@"(%lu, %lu]"</tt> for a left-open
+/// interval, <tt>@"[%lu, %lu)"</tt> for a right-open interval, and <tt>@"[%lu, %lu]"</tt> for a
+/// closed interval. In case an invalid format is given, \c lt::Interval<CGFloat>() is returned.
+lt::Interval<NSUInteger> LTNSUIntegerIntervalFromString(NSString *string);

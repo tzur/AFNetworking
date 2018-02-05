@@ -10,6 +10,7 @@
 #import "LTGLKitExtensions.h"
 #import "LTTestMTLModel.h"
 #import "LTVector.h"
+#import "NSValue+LTInterval.h"
 
 @interface LTTestNonJSONMTLModel : MTLModel
 @end
@@ -25,6 +26,48 @@ LTEnumMake(NSUInteger, LTTestEnum,
 LTEnumMake(NSUInteger, LTAnotherTestEnum,
   LTAnotherTestEnumFoo
 );
+
+static NSString * const kLTInvalidValuesExamples = @"LTInvalidValuesExamples";
+static NSString * const kLTInvalidValuesExamplesTransformer = @"LTInvalidValuesExamplesTransformer";
+static NSString * const kLTInvalidObjectForTransforming = @"LTInvalidObjectForTransforming";
+static NSString * const kLTInvalidObjectForReverseTransforming =
+    @"LTInvalidObjectForReverseTransforming";
+
+SharedExamplesBegin(NSValueTransformer_LTEngine_InvalidValues)
+
+sharedExamplesFor(kLTInvalidValuesExamples, ^(NSDictionary *data) {
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = data[kLTInvalidValuesExamplesTransformer];
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming an object of an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:data[kLTInvalidObjectForTransforming]];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming an object of an invalid class", ^{
+    expect(^{
+      [transformer reverseTransformedValue:data[kLTInvalidObjectForReverseTransforming]];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+SharedExamplesEnd
 
 SpecBegin(NSValueTransformer_LTEngine)
 
@@ -744,28 +787,11 @@ context(@"LTVector2 transformer", ^{
     expect([transformer reverseTransformedValue:$(LTVector2(-0.5, 1))]).to.equal(@"(-0.5, 1)");
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 
@@ -785,28 +811,11 @@ context(@"LTVector3 transformer", ^{
         .to.equal(@"(-0.5, 1, 2)");
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 
@@ -827,28 +836,11 @@ context(@"LTVector4 transformer", ^{
         .to.equal(@"(-0.5, 1, 2, -2)");
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 
@@ -871,28 +863,11 @@ context(@"GLKMatrix2 transformer", ^{
     expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+    itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 
@@ -915,28 +890,11 @@ context(@"GLKMatrix3 transformer", ^{
     expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 
@@ -959,28 +917,114 @@ context(@"GLKMatrix4 transformer", ^{
     expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
   });
 
-  it(@"should raise when transforming an invalid class", ^{
-    expect(^{
-      [transformer transformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
+  });
+});
+
+context(@"CGFloat interval transformer", ^{
+  __block NSValueTransformer *transformer;
+  __block NSString *intervalString;
+  __block NSValue *boxedInterval;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer];
+    intervalString = @"(-0.25, 1.75]";
+    lt::Interval<CGFloat> interval({-0.25, 1.75}, lt::Interval<CGFloat>::Open,
+                                   lt::Interval<CGFloat>::Closed);
+    boxedInterval = [NSValue valueWithLTCGFloatInterval:interval];
   });
 
-  it(@"should raise when transforming a nil value", ^{
-    expect(^{
-      [transformer transformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:intervalString]).to.equal(boxedInterval);
   });
 
-  it(@"should raise when reverse transforming a nil value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:nil];
-    }).to.raise(NSInvalidArgumentException);
+  it(@"should perform forward transform for invalid string", ^{
+    boxedInterval = [NSValue valueWithLTCGFloatInterval:lt::Interval<CGFloat>()];
+    expect([transformer transformedValue:@""]).to.equal(boxedInterval);
   });
 
-  it(@"should raise when reverse transforming a non-vector value", ^{
-    expect(^{
-      [transformer reverseTransformedValue:@5];
-    }).to.raise(NSInvalidArgumentException);
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:boxedInterval]).to.equal(intervalString);
+  });
+
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
+  });
+});
+
+context(@"NSInteger interval transformer", ^{
+  __block NSValueTransformer *transformer;
+  __block NSString *intervalString;
+  __block NSValue *boxedInterval;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTNSIntegerIntervalValueTransformer];
+    intervalString = @"(-4, 5]";
+    lt::Interval<NSInteger> interval({-4, 5}, lt::Interval<NSInteger>::Open,
+                                     lt::Interval<NSInteger>::Closed);
+    boxedInterval = [NSValue valueWithLTNSIntegerInterval:interval];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:intervalString]).to.equal(boxedInterval);
+  });
+
+  it(@"should perform forward transform for invalid string", ^{
+    boxedInterval = [NSValue valueWithLTNSIntegerInterval:lt::Interval<NSInteger>()];
+    expect([transformer transformedValue:@""]).to.equal(boxedInterval);
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:boxedInterval]).to.equal(intervalString);
+  });
+
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
+  });
+});
+
+context(@"NSUInteger interval transformer", ^{
+  __block NSValueTransformer *transformer;
+  __block NSString *intervalString;
+  __block NSValue *boxedInterval;
+
+  beforeEach(^{
+    transformer =
+        [NSValueTransformer valueTransformerForName:kLTNSUIntegerIntervalValueTransformer];
+    intervalString = @"(4, 5]";
+    lt::Interval<NSUInteger> interval({4, 5}, lt::Interval<NSUInteger>::Open,
+                                      lt::Interval<NSUInteger>::Closed);
+    boxedInterval = [NSValue valueWithLTNSUIntegerInterval:interval];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:intervalString]).to.equal(boxedInterval);
+  });
+
+  it(@"should perform forward transform for invalid string", ^{
+    boxedInterval = [NSValue valueWithLTNSUIntegerInterval:lt::Interval<NSUInteger>()];
+    expect([transformer transformedValue:@""]).to.equal(boxedInterval);
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:boxedInterval]).to.equal(intervalString);
+  });
+
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
   });
 });
 

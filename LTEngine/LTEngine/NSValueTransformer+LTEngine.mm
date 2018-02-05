@@ -8,7 +8,9 @@
 #import <Mantle/Mantle.h>
 
 #import "LTGLKitExtensions.h"
+#import "LTInterval.h"
 #import "LTVector.h"
+#import "NSValue+LTInterval.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +28,9 @@ NSString * const kLTVector4ValueTransformer = @"LTVector4ValueTransformer";
 NSString * const kGLKMatrix2ValueTransformer = @"GLKMatrix2ValueTransformer";
 NSString * const kGLKMatrix3ValueTransformer = @"GLKMatrix3ValueTransformer";
 NSString * const kGLKMatrix4ValueTransformer = @"GLKMatrix4ValueTransformer";
+NSString * const kLTCGFloatIntervalValueTransformer = @"LTCGFloatIntervalValueTransformer";
+NSString * const kLTNSIntegerIntervalValueTransformer = @"LTNSIntegerIntervalValueTransformer";
+NSString * const kLTNSUIntegerIntervalValueTransformer = @"LTNSUIntegerIntervalValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
 NSString * const kLTModelValueTransformerEnumNameKey = @"name";
@@ -67,6 +72,12 @@ NSString * const kLTModelValueTransformerColorKey = @"color";
                                     forName:kGLKMatrix3ValueTransformer];
     [NSValueTransformer setValueTransformer:[self lt_GLKMatrix4ValueTransformer]
                                     forName:kGLKMatrix4ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTCGFloatIntervalValueTransformer]
+                                    forName:kLTCGFloatIntervalValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTNSIntegerIntervalValueTransformer]
+                                    forName:kLTNSIntegerIntervalValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTNSUIntegerIntervalValueTransformer]
+                                    forName:kLTNSUIntegerIntervalValueTransformer];
   }
 }
 
@@ -296,6 +307,27 @@ LTMakeStructValueTransformer(GLKMatrix3);
 LTMakeStructValueTransformer(GLKMatrix4);
 
 #undef LTMakeStructValueTransformer
+
+#define LTMakeIntervalValueTransformer(TYPE_NAME) \
+  + (NSValueTransformer *)lt_LT##TYPE_NAME##IntervalValueTransformer { \
+    return [MTLValueTransformer \
+            reversibleTransformerWithForwardBlock:^NSValue *(NSString *string) { \
+      LTParameterAssert([string isKindOfClass:[NSString class]], @"Invalid object: %@", string); \
+      return [NSValue valueWithLT##TYPE_NAME##Interval:LT##TYPE_NAME##IntervalFromString(string)]; \
+    } reverseBlock:^NSString *(NSValue *value) { \
+      LTParameterAssert([value isKindOfClass:[NSValue class]], @"Invalid object: %@", value); \
+      LTParameterAssert(strcmp(value.objCType, @encode(lt::Interval<TYPE_NAME>)) == 0, \
+                        @"Expected an NSValue that boxes the type %@, got: %@", \
+                        @(@encode(TYPE_NAME)), @(value.objCType)); \
+      return [value LT##TYPE_NAME##IntervalValue].description(); \
+    }]; \
+  }
+
+LTMakeIntervalValueTransformer(CGFloat);
+LTMakeIntervalValueTransformer(NSInteger);
+LTMakeIntervalValueTransformer(NSUInteger);
+
+#undef LTMakeIntervalValueTransformer
 
 #pragma mark -
 #pragma mark Transformer methods

@@ -182,6 +182,52 @@ extern NSString * const kGLKMatrix3ValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kGLKMatrix4ValueTransformer;
 
+/// Returns a reversible transformer that converts an \c NSString path representation to an
+/// \c NSValue instance boxing the corresponding \c lt::Interval<CGFloat> and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with one of the following formats:
+/// <tt>(x, y)</tt>
+/// <tt>(x, y]</tt>
+/// <tt>[x, y)</tt>
+/// <tt>[x, y]</tt>
+///
+/// The input to the reverse transformer must be an \c NSValue boxing an \c lt::Interval<CGFloat>.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTCGFloatIntervalValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to an
+/// \c NSValue instance boxing the corresponding \c lt::Interval<NSInteger> and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with one of the following formats:
+/// <tt>(x, y)</tt>
+/// <tt>(x, y]</tt>
+/// <tt>[x, y)</tt>
+/// <tt>[x, y]</tt>
+///
+/// The input to the reverse transformer must be an \c NSValue boxing an \c lt::Interval<NSInteger>.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTNSIntegerIntervalValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to an
+/// \c NSValue instance boxing the corresponding \c lt::Interval<NSUInteger> and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with one of the following formats:
+/// <tt>(x, y)</tt>
+/// <tt>(x, y]</tt>
+/// <tt>[x, y)</tt>
+/// <tt>[x, y]</tt>
+///
+/// The input to the reverse transformer must be an \c NSValue boxing an
+/// \c lt::Interval<NSUInteger>.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTNSUIntegerIntervalValueTransformer;
+
 @interface NSValueTransformer (LTEngine)
 
 /// Reversible transformer that accepts a JSON dictionary with \c NSString as keys and
