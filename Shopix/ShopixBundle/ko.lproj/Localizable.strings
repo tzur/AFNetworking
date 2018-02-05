@@ -38,7 +38,7 @@
 "Purchase Failed" = "구매 실패";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+"Restoration Completed" = "복원 완료";
 
 /* Title of an alert shown after failing attempt to restore purchases */
 "Restoration Failed" = "복원 실패";
