@@ -9,6 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Custom data key for experiments token.
+extern NSString * const kLABCustomDataExperimentsTokenKey;
+
 /// Source providing assignments from Taplytics.
 ///
 /// Taplytics experiment must be configured in a certain way in order to be exposed by this class.
@@ -40,9 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c stabilizeUserExperienceAssignments has been previously called.
 ///
 /// Any Taplytics custom data can be added using the \c customData parameter. The given custom data
-/// is augmented with the experiments token provided by the \c experimentsTokenProvider using the
-/// key "ExperimentsToken". You can use custom data to send applilcation specific data to Taplytics,
-/// then you can use the data to distribute experiments to users with specific data.
+/// is augmented with the experiments token provided by the \c experimentsTokenProvider using
+/// \c kLABCustomDataExperimentsTokenKey. You can use custom data to send applilcation specific data
+///  to Taplytics, then you can use the data to distribute experiments to users with specific data.
 ///
 /// @see https://taplytics.com/docs/guides/experiment-distribution#customData
 @interface LABTaplyticsSource : NSObject <LABAssignmentsSource, LABExperimentsSource>
