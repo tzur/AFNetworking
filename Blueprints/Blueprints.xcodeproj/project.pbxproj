@@ -67,6 +67,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		887D70722028473100638AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
+		887D708B2028473100638AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 887D70632028473100638AB8 /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
+			remoteInfo = TestHost;
+		};
+		887D70BE2028477100638AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 887D70632028473100638AB8 /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
 		8B0E4D0F1CC658870031B743 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */;
@@ -340,6 +361,7 @@
 		8861FC201E5A227B00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FC221E5A22B800CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8861FC251E5A22F000CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		887D70632028473100638AB8 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		88A67DEA1FD5C108005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Builder.h"; sourceTree = "<group>"; };
 		8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Builder.m"; sourceTree = "<group>"; };
@@ -437,6 +459,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		887D70642028473100638AB8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				887D708C2028473100638AB8 /* TestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8B0E4D051CC658870031B743 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,6 +496,7 @@
 			children = (
 				8B5E6C261CC5528400E6A9BC /* libLTKit.a */,
 				8B5E6C281CC5528400E6A9BC /* LTKitTests.xctest */,
+				887D70732028473100638AB8 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -641,6 +672,7 @@
 			isa = PBXGroup;
 			children = (
 				8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */,
+				887D70632028473100638AB8 /* TestHost.xcodeproj */,
 			);
 			name = Projects;
 			sourceTree = "<group>";
@@ -740,6 +772,7 @@
 			);
 			dependencies = (
 				8BED809F1C3A68290001C6F1 /* PBXTargetDependency */,
+				887D70BF2028477100638AB8 /* PBXTargetDependency */,
 			);
 			name = BlueprintsTests;
 			productName = BlueprintsTests;
@@ -803,6 +836,10 @@
 					ProductGroup = 8B5E6C671CC6472F00E6A9BC /* Products */;
 					ProjectRef = 8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */;
 				},
+				{
+					ProductGroup = 887D70642028473100638AB8 /* Products */;
+					ProjectRef = 887D70632028473100638AB8 /* TestHost.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -813,6 +850,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		887D70732028473100638AB8 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 887D70722028473100638AB8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		887D708C2028473100638AB8 /* TestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestHost.app;
+			remoteRef = 887D708B2028473100638AB8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8B0E4D101CC658870031B743 /* Expecta.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1117,6 +1168,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		887D70BF2028477100638AB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = 887D70BE2028477100638AB8 /* PBXContainerItemProxy */;
+		};
 		8B5E6C2A1CC5528800E6A9BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTKit;
