@@ -696,6 +696,7 @@
 		50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */; };
 		50A4794619FB7BBC005ABA65 /* LTSingleQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */; };
 		50A4794719FB7BBC005ABA65 /* LTSingleQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */; };
+		50AF4126201C8D7E003A4E9B /* LTInterval.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50AF40F2201C8D7D003A4E9B /* LTInterval.mm */; };
 		50B626EF1CBE874800F9FAF7 /* LTParameterizationKeyToValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 50B626ED1CBE874800F9FAF7 /* LTParameterizationKeyToValues.h */; };
 		50B626F01CBE874800F9FAF7 /* LTParameterizationKeyToValues.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50B626EE1CBE874800F9FAF7 /* LTParameterizationKeyToValues.mm */; };
 		50B627101CBE8B0F00F9FAF7 /* LTParameterizationKeyToValuesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50B6270F1CBE8B0F00F9FAF7 /* LTParameterizationKeyToValuesSpec.mm */; };
@@ -2533,6 +2534,7 @@
 		50A4792F19FB7761005ABA65 /* LTMixerMaskMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMixerMaskMode.h; sourceTree = "<group>"; };
 		50A4794419FB7BBC005ABA65 /* LTSingleQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTSingleQuadDrawer.h; sourceTree = "<group>"; };
 		50A4794519FB7BBC005ABA65 /* LTSingleQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSingleQuadDrawer.mm; sourceTree = "<group>"; };
+		50AF40F2201C8D7D003A4E9B /* LTInterval.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTInterval.mm; sourceTree = "<group>"; };
 		50B626ED1CBE874800F9FAF7 /* LTParameterizationKeyToValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTParameterizationKeyToValues.h; sourceTree = "<group>"; };
 		50B626EE1CBE874800F9FAF7 /* LTParameterizationKeyToValues.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizationKeyToValues.mm; sourceTree = "<group>"; };
 		50B6270F1CBE8B0F00F9FAF7 /* LTParameterizationKeyToValuesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTParameterizationKeyToValuesSpec.mm; sourceTree = "<group>"; };
@@ -5079,6 +5081,7 @@
 				500AB3F819D1B2C7000DC814 /* LTGeometry.h */,
 				500AB3F919D1B2C7000DC814 /* LTGeometry.mm */,
 				508C155A1C1C84B0009ADA5C /* LTInterval.h */,
+				50AF40F2201C8D7D003A4E9B /* LTInterval.mm */,
 				8B71C3FB190047C900E978B2 /* LTInverseTransformSampler.h */,
 				8B71C3FC190047C900E978B2 /* LTInverseTransformSampler.mm */,
 				8BAB7C3218C4BEBD005BE12A /* LTMathUtils.h */,
@@ -7102,6 +7105,7 @@
 				5054C6E41CC68D7B00976EA1 /* LTDynamicDrawer.mm in Sources */,
 				8BAF8BDF18BCAA8600C77C04 /* LTRectMapping.mm in Sources */,
 				6AB548C11C81F99700672127 /* CVPixelBuffer+LTEngine.mm in Sources */,
+				50AF4126201C8D7E003A4E9B /* LTInterval.mm in Sources */,
 				8BABFD62188C13FA004163DA /* LTOneShotProcessingStrategy.mm in Sources */,
 				28ED10EB18CC9EFE00EE1633 /* LTBristleBrush.mm in Sources */,
 				283A95A11B70AB36004559BF /* LTMathUtils.mm in Sources */,
