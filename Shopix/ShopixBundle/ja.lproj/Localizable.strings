@@ -38,7 +38,7 @@
 "Purchase Failed" = "購入できませんでした";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+"Restoration Completed" = "復元が完了しました";
 
 /* Title of an alert shown after failing attempt to restore purchases */
 "Restoration Failed" = "復元できませんでした";

@@ -38,7 +38,7 @@
 "Purchase Failed" = "Échec de l’achat";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+"Restoration Completed" = "Restauration terminée";
 
 /* Title of an alert shown after failing attempt to restore purchases */
 "Restoration Failed" = "Échec de la restauration";

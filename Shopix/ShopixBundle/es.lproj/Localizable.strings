@@ -38,7 +38,7 @@
 "Purchase Failed" = "La compra ha fallado";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+"Restoration Completed" = "Restauración completada";
 
 /* Title of an alert shown after failing attempt to restore purchases */
 "Restoration Failed" = "Error al restaurar";
