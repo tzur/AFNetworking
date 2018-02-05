@@ -32,7 +32,7 @@
 "Payment will be charged to your iTunes account at confirmation of purchase. Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal, in accordance with your plan, within 24 hours prior to the end of the current period. You can manage or turn off auto-renew in your Apple ID account settings any time after purchase." = "Payment will be charged to your iTunes account at confirmation of purchase. Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal, in accordance with your plan, within 24 hours prior to the end of the current period. You can manage or turn off auto-renew in your Apple ID account settings any time after purchase."; /* MISSING TRANSLATION */
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
-"Please try again. If the problem persists, let us know and we'll get right on it." = "Bitte versuchen Sie es erneut. Sollte das Problem weiterhin bestehen, melden Sie es uns. Wir kümmern uns sofort darum.";
+"Please try again. If the problem persists, let us know and we'll get right on it." = "Bitte versuche es erneut. Sollte das Problem weiterhin bestehen, melde es uns. Wir kümmern uns sofort darum.";
 
 /* Title of an alert shown after failed purchase */
 "Purchase Failed" = "Kauf fehlgeschlagen";
@@ -47,7 +47,7 @@
 "Restore Purchases" = "Käufe wiederherstellen";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
-"Try Again" = "Bitte versuchen Sie es erneut";
+"Try Again" = "Bitte versuche es erneut";
 
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "Jahr";
