@@ -3,7 +3,7 @@
 
 #import "LTVector.h"
 
-#import "NSScanner+Math.h"
+#import "NSScanner+LTEngine.h"
 
 #pragma mark -
 #pragma mark LTVector2

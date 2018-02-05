@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Michael Kimyagarov.
 
-#import "NSScanner+Math.h"
+#import "NSScanner+LTEngine.h"
 
 #import "LTGLKitExtensions.h"
 
-SpecBegin(NSScanner_MathSpec)
+SpecBegin(NSScanner_LTEngineSpec)
 
 __block NSScanner *scanner;
 
@@ -134,6 +134,50 @@ context(@"matrix", ^{
     __block GLKMatrix4 vec4;
     scanner = [NSScanner scannerWithString:@"{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}"];
     expect([scanner lt_scanFloatMatrix:vec4.m rows:4 cols:4]).to.beFalsy();
+  });
+});
+
+context(@"NSUInteger values", ^{
+  __block NSUInteger actual;
+
+  it(@"should scan NSUInteger value correctly", ^{
+    NSDecimalNumber *maxNumber = [NSDecimalNumber decimalNumberWithMantissa:NSUIntegerMax exponent:0
+                                                                 isNegative:NO];
+    const std::vector<std::pair<NSUInteger, const char *>> values = {
+      {0, "0"},
+      {1, "1"},
+      {7, "7"},
+      {NSUIntegerMax - 1,
+       [[[maxNumber decimalNumberBySubtracting:NSDecimalNumber.one] stringValue] UTF8String]},
+      {NSUIntegerMax, [[maxNumber stringValue] UTF8String]},
+      {NSUIntegerMax,
+       [[[maxNumber decimalNumberByAdding:NSDecimalNumber.one] stringValue] UTF8String]}
+    };
+
+    for (auto value : values) {
+      scanner = [NSScanner scannerWithString:[NSString stringWithUTF8String:value.second]];
+      auto expected = value.first;
+
+      expect([scanner lt_scanNSUInteger:&actual]).to.beTruthy();
+      expect(expected).to.equal(actual);
+    }
+  });
+
+  it(@"should fail to scan negative value", ^{
+    scanner = [NSScanner scannerWithString:@"-1"];
+    expect([scanner lt_scanNSUInteger:&actual]).to.beFalsy();
+  });
+
+  it(@"should fail to scan non-NSUInteger value", ^{
+    scanner = [NSScanner scannerWithString:@"foo"];
+    expect([scanner lt_scanNSUInteger:&actual]).to.beFalsy();
+  });
+
+  it(@"should leave value of given reference unchanged when failing to scan value", ^{
+    actual = 7;
+    scanner = [NSScanner scannerWithString:@"foo"];
+    [scanner lt_scanNSUInteger:&actual];
+    expect(actual).to.equal(7);
   });
 });
 
