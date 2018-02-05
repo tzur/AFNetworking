@@ -9,3 +9,6 @@
 
 #import "WFLoggingImageProvider.h"
 #import "WFTestUtils.h"
+
+// Specta hooks.
+#import <LTEngineTests/LTSpectaKeyWindowViewHook.h>
