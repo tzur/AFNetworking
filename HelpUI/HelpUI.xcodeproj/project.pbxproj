@@ -376,6 +376,20 @@
 			remoteGlobalIDString = D0E9C35619F6DB38000D427D;
 			remoteInfo = "Mantle-iOS";
 		};
+		887D70B82028474E00638AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 887D708D2028474E00638AB8 /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
+			remoteInfo = TestHost;
+		};
+		887D70BC2028475E00638AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 887D708D2028474E00638AB8 /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -434,6 +448,7 @@
 		19E518A0200CCD9A008A9EA5 /* HUIItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIItem.mm; sourceTree = "<group>"; };
 		19E518DA200CCD9A008A9EA5 /* HUIItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIItem.h; sourceTree = "<group>"; };
 		19E95BDD1FF9256900078026 /* libHelpUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHelpUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		887D708D2028474E00638AB8 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -549,6 +564,7 @@
 				195B387C1FFE21AB00F8DAB4 /* OCMock.xcodeproj */,
 				195B380D1FFE213900F8DAB4 /* ReactiveObjC.xcodeproj */,
 				195B38671FFE219A00F8DAB4 /* Specta.xcodeproj */,
+				887D708D2028474E00638AB8 /* TestHost.xcodeproj */,
 				195B389D1FFE21C500F8DAB4 /* Wireframes.xcodeproj */,
 				195B383D1FFE216700F8DAB4 /* extobjc.xcodeproj */,
 			);
@@ -786,6 +802,14 @@
 			path = HelpUI;
 			sourceTree = "<group>";
 		};
+		887D708E2028474E00638AB8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				887D70B92028474E00638AB8 /* TestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -801,6 +825,7 @@
 			);
 			dependencies = (
 				195B36B11FFBB1B000F8DAB4 /* PBXTargetDependency */,
+				887D70BD2028475E00638AB8 /* PBXTargetDependency */,
 			);
 			name = HelpUITests;
 			productName = "HelpUI Tests";
@@ -892,6 +917,10 @@
 				{
 					ProductGroup = 195B38681FFE219A00F8DAB4 /* Products */;
 					ProjectRef = 195B38671FFE219A00F8DAB4 /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 887D708E2028474E00638AB8 /* Products */;
+					ProjectRef = 887D708D2028474E00638AB8 /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 195B389E1FFE21C500F8DAB4 /* Products */;
@@ -1215,6 +1244,13 @@
 			remoteRef = 195B38B91FFE221E00F8DAB4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		887D70B92028474E00638AB8 /* TestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestHost.app;
+			remoteRef = 887D70B82028474E00638AB8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1273,6 +1309,11 @@
 			isa = PBXTargetDependency;
 			name = "Mantle-iOS";
 			targetProxy = 1970AF54200F754200E81A5F /* PBXContainerItemProxy */;
+		};
+		887D70BD2028475E00638AB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = 887D70BC2028475E00638AB8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
