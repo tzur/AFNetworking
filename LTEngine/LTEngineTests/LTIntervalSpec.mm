@@ -948,6 +948,11 @@ context(@"description", ^{
     expect(interval.description()).to.equal(@"[0.5, 2]");
   });
 
+  it(@"should return a proper description of a CGFloat interval with non-trivial values", ^{
+    LTCGFloatInterval interval({1.234567, 2});
+    expect(interval.description()).to.equal(@"[1.234567, 2]");
+  });
+
   it(@"should return a proper description of an NSInteger interval", ^{
     LTIntegerInterval interval({-1, 2});
     expect(interval.description()).to.equal(@"[-1, 2]");

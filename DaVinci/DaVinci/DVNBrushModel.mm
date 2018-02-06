@@ -5,8 +5,6 @@
 
 #import <LTEngine/NSValueTransformer+LTEngine.h>
 
-#import "DVNBrushModelVersion.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNBrushModel
@@ -19,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _version = $(DVNBrushModelVersionV1);
     _scale = 1;
-    _minScale = 0;
-    _maxScale = CGFLOAT_MAX;
+    _scaleRange = lt::Interval<CGFloat>({0, CGFLOAT_MAX}, lt::Interval<CGFloat>::Open,
+                                        lt::Interval<CGFloat>::Closed);
   }
   return self;
 }
@@ -37,8 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
     mapping = @{
       @instanceKeypath(DVNBrushModel, version): @"version",
       @instanceKeypath(DVNBrushModel, scale): @"scale",
-      @instanceKeypath(DVNBrushModel, minScale): @"minScale",
-      @instanceKeypath(DVNBrushModel, maxScale): @"maxScale"
+      @instanceKeypath(DVNBrushModel, scaleRange): @"scaleRange"
     };
   });
 
@@ -47,6 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSValueTransformer *)versionJSONTransformer {
   return [NSValueTransformer lt_enumTransformerWithMap:[kDVNBrushModelVersionMapping dictionary]];
+}
+
++ (NSValueTransformer *)scaleRangeJSONTransformer {
+  return [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer];
 }
 
 #pragma mark -

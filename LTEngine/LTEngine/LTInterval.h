@@ -186,6 +186,7 @@ public:
   /// Returns a string representation of this interval.
   NSString *description() const {
     std::stringstream stream;
+    stream.precision((std::numeric_limits<T>::digits10 + 1));
     stream << (infIncluded() ? "[" : "(");
     stream << _inf;
     stream << ", ";

@@ -1,13 +1,34 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <LTEngine/LTInterval.h>
+
 #import "DVNBrushModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class DVNBlendMode;
 
-/// Brush model for constructing brush tip geometry (version 1).
+/// Mode determining the way the source image (but not the mask) defined in a \c DVNBrushModelV1
+/// object should be sampled in order to compute the color values mapped onto the brush tip
+/// geometry.
+LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
+  /// The source image should be sampled, per rendered fragment of the brush tip geometry, at the
+  /// normalized floating-point coordinates of the fragment center.
+  DVNSourceSamplingModeFixed,
+  /// The source image should be sampled, per rendered fragment of the brush tip geometry, at the
+  /// normalized floating-point coordinates of the geometry center.
+  DVNSourceSamplingModeQuadCenter,
+  /// The source image should be sampled, per rendered fragment of the brush tip geometry, such that
+  /// a subimage of the source image is mapped onto the geometry.
+  DVNSourceSamplingModeSubimage
+);
+
+/// Model determining brushes with version 1. A brush with version 1 is capable of creating brush
+/// tip geometry (but no vector stroke geometry) onto which a potentially masked image, constructed
+/// by colors sampled from a so-called source image (short: source) and a single-channel image, the
+/// so-called mask image (short: mask), is mapped. The model allows several parameters to define
+/// random distributions, for the sake of a larger and more interesting variety of brushes.
 @interface DVNBrushModelV1 : DVNBrushModel
 
 #pragma mark -
@@ -62,8 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Brush Tip Duplications
 #pragma mark -
 
-/// Minimum number of times each brush tip geometry is randomly duplicated, after creation according
-/// to \c spacing, \c numberOfSamplesPerSequence, and \c sequenceDistance.
+/// Non-empty support of the uniform distribution determining the possible number of times each
+/// brush tip square can randomly be duplicated, after creation according to \c spacing,
+/// \c numberOfSamplesPerSequence, and \c sequenceDistance. A value of <tt>[1, 1]</tt> has the
+/// effect that no brush tip square is duplicated at all; a value of <tt>[0, 1]</tt> has the effect
+/// that a brush tip square may be removed or not.
 ///
 /// (Order) Dependencies:
 /// \c randomInitialSeed
@@ -71,27 +95,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-@property (readonly, nonatomic) NSUInteger minCount;
-
-/// Maximum number of times each brush tip geometry is randomly duplicated, after creation according
-/// to \c spacing, \c numberOfSamplesPerSequence, and \c sequenceDistance.
-///
-/// (Order) Dependencies:
-/// \c randomInitialSeed
-/// \c initialSeed
-/// \c spacing
-/// \c numberOfSamplesPerSequence
-/// \c sequenceDistance
-@property (readonly, nonatomic) NSUInteger maxCount;
+@property (readonly, nonatomic) lt::Interval<NSUInteger> countRange;
 
 #pragma mark -
 #pragma mark Random Spatial Jittering, Rotation and Scaling of Brush Tip Geometry
 #pragma mark -
 
-/// Non-negative multiplicative factor for computing the minimum distance by which the brush tip
-/// geometry is randomly translated. A value of \c x has the effect that the brush tip geometry is
-/// translated by at least <tt>x * scale</tt>. In particular, a value of \c 0 has the effect that
-/// the brush tip might not be translated at all.
+/// Non-empty support of the uniform distribution determining the possible non-negative number
+/// multiplicative factors for computing the random distance by which each brush tip square is
+/// randomly translated. A value of <tt>[a, b]</tt> has the effect that the brush tip squares are
+/// translated by at least <tt>a * scale</tt> and by at most <tt>b * scale</tt>. A value of
+/// <tt>[0, 0]</tt> has the effect that no brush tip square is translated at all.
 ///
 /// (Order) Dependencies:
 /// \c randomInitialSeed
@@ -99,14 +113,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat minDistanceJitterFactor;
+/// \c countRange
+@property (readonly, nonatomic) lt::Interval<CGFloat> distanceJitterFactorRange;
 
-/// Non-negative multiplicative factor for computing the maximum distance by which the brush tip
-/// geometry is randomly translated. A value of \c x has the effect that the brush tip is translated
-/// by at most <tt>x * scale</tt>. In particular, a value of \c 0 has the effect that the brush tip
-/// is not translated at all.
+/// Non-empty support of the uniform distribution, in range <tt>[0, 2 * M_PI)</tt>, determining the
+/// possible angles, in radians, by which the brush tip squares are randomly rotated around their
+/// centers. A value of <tt>[a, b]</tt> has the effect that the brush tip square is rotated by at
+/// least \c a and by at most \c b radians. A value of <tt>[0, 0]</tt> has the effect that no brush
+/// tip square is not rotated at all.
 ///
 /// (Order) Dependencies:
 /// \c randomInitialSeed
@@ -114,14 +128,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat maxDistanceJitterFactor;
+/// \c countRange
+@property (readonly, nonatomic) lt::Interval<CGFloat> angleRange;
 
-/// Minimum angle, in radians and in range <tt>[0, 2 * M_PI)</tt>, by which the brush tip geometry
-/// is randomly rotated around its center. A value of \c x has the effect that the brush tip is
-/// rotated by at least \c x radians. In particular, a value of \c 0 has the effect that the brush
-/// tip might not be rotated at all.
+/// Non-empty support, with infimum in <tt>[0, 1]</tt> and supremum in <tt>[1, CGFloatMax]</tt>, of
+/// the uniform distribution determining the possible scale factors by which the brush tip squares
+/// are randomly scaled around their centers. A value of <tt>[1, 1]</tt> has the effect that no
+/// brush tip square is scaled; a value of <tt>[0, 0]</tt> has the effect that all brush tip squares
+/// are removed. A value of <tt>[0, CGFloatMax]</tt> has the effect that all sizes are possible for
+/// the brush tip squares.
 ///
 /// (Order) Dependencies:
 /// \c randomInitialSeed
@@ -129,155 +144,79 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat minAngle;
-
-/// Maximum angle, in radians and in range <tt>[0, 2 * M_PI)</tt>, by which the brush tip geometry
-/// is randomly rotated around its center. A value of \c x has the effect that the brush tip is
-/// rotated by at most \c x radians. In particular, a value of \c 0 has the effect that the brush
-/// tip is not rotated at all.
-///
-/// (Order) Dependencies:
-/// \c randomInitialSeed
-/// \c initialSeed
-/// \c spacing
-/// \c numberOfSamplesPerSequence
-/// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat maxAngle;
-
-/// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the minimum factor by which the
-/// brush tip geometry is randomly scaled around its center. A value of \c 1 yields an unchanged
-/// brush tip, while a value of \c 0 yields a non-existant brush tip.
-///
-/// (Order) Dependencies:
-/// \c spacing
-/// \c numberOfSamplesPerSequence
-/// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat minScaleJitter;
-
-/// Multiplicative factor, in range <tt>[1, CGFLOAT_MAX]</tt>, for computing the maximum factor by
-/// which the  brush tip geometry is randomly scaled around its center. A value of \c 1 yields an
-/// unchanged brush tip, while a value of \c CGFLOAT_MAX yields an infinitely large brush tip.
-///
-/// (Order) Dependencies:
-/// \c spacing
-/// \c numberOfSamplesPerSequence
-/// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-@property (readonly, nonatomic) CGFloat maxScaleJitter;
+/// \c countRange
+@property (readonly, nonatomic) lt::Interval<CGFloat> scaleJitterRange;
 
 #pragma mark -
 #pragma mark Tapering
 #pragma mark -
 
-/// Length, in floating point pixel units of the brush stroke geometry coordinate system
-/// multiplied by \c scale, of the tapering applied to the brush tip geometry at the beginning of
-/// the brush stroke.
+/// Lengths, in floating point pixel units of the brush stroke geometry coordinate system
+/// multiplied by \c scale, of the tapering applied to the brush tip geometry at the beginning and
+/// at the end of the brush stroke.
 ///
 /// (Order) Dependencies:
 /// \c scale
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-/// \c minDistanceJitterFactor
-/// \c maxDistanceJitterFactor
-/// \c minAngle
-/// \c maxAngle
-/// \c minScaleJitter
-/// \c maxScaleJitter
-@property (readonly, nonatomic) CGFloat lengthOfStartTapering;
-
-/// Length, in floating point pixel units of the brush stroke geometry coordinate system
-/// multiplied by \c scale, of the tapering applied to the brush tip geometry at the end of the
-/// brush stroke.
-///
-/// (Order) Dependencies:
-/// \c scale
-/// \c spacing
-/// \c numberOfSamplesPerSequence
-/// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-/// \c minDistanceJitterFactor
-/// \c maxDistanceJitterFactor
-/// \c minAngle
-/// \c maxAngle
-/// \c minScaleJitter
-/// \c maxScaleJitter
-@property (readonly, nonatomic) CGFloat lengthOfEndTapering;
+/// \c countRange
+/// \c distanceJitterFactorRange
+/// \c angleRange
+/// \c scaleJitterRange
+@property (readonly, nonatomic) LTVector2 taperingLengths;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, used for determining the effect of the tapering
 /// on the first (/last) brush tip of the entire brush stroke geometry. A value of \c 0 results in
 /// the very first (/last) brush tip geometry to be non-existant, while a value of \c 0.5 results in
 /// the very first (/last) brush tip geometry having half the edge length of the geometry of the
-/// last (/first) brush tip at the start (/end) part of the tapering (if \c minScaleJitter and
-/// \c maxScaleJitter are both \c 1).
+/// last (/first) brush tip at the start (/end) part of the tapering (if \c scaleJitterRange equals
+/// <tt>[1, 1]</tt>).
 ///
 /// (Order) Dependencies:
 /// \c scale
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-/// \c minDistanceJitterFactor
-/// \c maxDistanceJitterFactor
-/// \c minAngle
-/// \c maxAngle
-/// \c minScaleJitter
-/// \c maxScaleJitter
+/// \c countRange
+/// \c distanceJitterFactorRange
+/// \c angleRange
+/// \c scaleJitterRange
 @property (readonly, nonatomic) CGFloat minimumTaperingScaleFactor;
 
-/// Positive number for adjusting the growth behavior of the tapering along the brush stroke. In
-/// particular, the value is used in the power term <tt>a^taperingExponent</tt>, where \c a is the
-/// scale factor (in range <tt>[0, 1]</tt>) for the corresponding brush tip square computed
-/// according to the other tapering parameters, in order to compute the final scale factor.
+/// Positive number for adjusting the growth behavior of the tapering along the brush stroke. The
+/// value is used in the power term <tt>a^taperingExponent</tt>, where \c a is the scale factor (in
+/// range <tt>[0, 1]</tt>) for the corresponding brush tip square computed according to the other
+/// tapering parameters, in order to compute the final scale factor.
 ///
 /// (Order) Dependencies:
 /// \c scale
 /// \c spacing
 /// \c numberOfSamplesPerSequence
 /// \c sequenceDistance
-/// \c minCount
-/// \c maxCount
-/// \c minDistanceJitterFactor
-/// \c maxDistanceJitterFactor
-/// \c minAngle
-/// \c maxAngle
-/// \c minScaleJitter
-/// \c maxScaleJitter
+/// \c countRange
+/// \c distanceJitterFactorRange
+/// \c angleRange
+/// \c scaleJitterRange
 @property (readonly, nonatomic) CGFloat taperingExponent;
 
 #pragma mark -
 #pragma mark Flow
 #pragma mark -
 
-/// Multiplicative factor, in range <tt>[\c minFlow, \c maxFlow]</tt>, used as base value for
-/// computing the brush flow.
+/// Multiplicative factor, in range <tt>flowRange</tt>, used as base value for computing the brush
+/// flow.
 ///
 /// (Order) Dependencies:
-/// \c minFlow
-/// \c maxFlow
+/// \c flowRange
 @property (readonly, nonatomic) CGFloat flow;
 
-/// Minimum brush tip flow, in range <tt>[0, 1]</tt>. Refer to documentation of \c flow property for
-/// more details.
-@property (readonly, nonatomic) CGFloat minFlow;
-
-/// Maximum brush tip flow, in range <tt>[minFlow, 1]</tt>.  Refer to documentation of \c flow
+/// Range of possible brush tip flows, in range <tt>[0, 1]</tt>. Refer to documentation of \c flow
 /// property for more details.
-@property (readonly, nonatomic) CGFloat maxFlow;
+@property (readonly, nonatomic) lt::Interval<CGFloat> flowRange;
 
-/// Positive number for computing the final value used as brush flow. In particular, the final flow
-/// value is given by <tt>flow^flowExponent</tt>.
+/// Positive number for computing the final value used as brush flow. The final flow value is given
+/// by <tt>flow^flowExponent</tt>.
 ///
 /// (Order) Dependencies:
 /// \c flow
@@ -293,38 +232,44 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) LTVector3 color;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the range of values from which
-/// the brightness of the brush tip is randomly chosen. In particular, the aforementioned range is
-/// computed by chosing a random number from the uniform distribution with support
+/// the brightness of the brush tip is randomly chosen. The aforementioned range is computed by
+/// chosing a random number from the uniform distribution with support
 /// <tt>[0, brightnessJitter]</tt>, denoted \c offset, then chosing a random number from the uniform
 /// distribution with support <tt>[brightness - offset, brightness + offset]</tt>, and finally
 /// clamping the value to <tt>[0, 1]</tt>. A value of \c 0 yields an unchanged brush tip brightness,
 /// while a value of \c 1 yields allows for arbitrary brightness changes.
 ///
 /// (Order) Dependencies:
+/// \c randomInitialSeed
+/// \c initialSeed
 /// \c color
 @property (readonly, nonatomic) CGFloat brightnessJitter;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the range of values from which
-/// the hue of the brush tip is randomly chosen. In particular, the aforementioned range is computed
-/// by chosing a random number from the uniform distribution with support <tt>[0, hueJitter]</tt>,
-/// denoted \c offset, then chosing a random number from the uniform distribution with support
+/// the hue of the brush tip is randomly chosen. The aforementioned range is computed by chosing a
+/// random number from the uniform distribution with support <tt>[0, hueJitter]</tt>, denoted
+/// \c offset, then chosing a random number from the uniform distribution with support
 /// <tt>[hue - offset, hue + offset]</tt>, and finally clamping the value to <tt>[0, 1]</tt>. A
 /// value of \c 0 yields an unchanged brush tip hue, while a value of \c 1 yields allows for
 /// arbitrary hue changes.
 ///
 /// (Order) Dependencies:
+/// \c randomInitialSeed
+/// \c initialSeed
 /// \c color
 @property (readonly, nonatomic) CGFloat hueJitter;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the range of values from which
-/// the saturation of the brush tip is randomly chosen. In particular, the aforementioned range is
-/// computed by chosing a random number from the uniform distribution with support
+/// the saturation of the brush tip is randomly chosen. The aforementioned range is computed by
+/// chosing a random number from the uniform distribution with support
 /// <tt>[0, saturationJitter]</tt>, denoted \c offset, then chosing a random number from the uniform
 /// distribution with support <tt>[saturation - offset, saturation + offset]</tt>, and finally
 /// clamping the value to <tt>[0, 1]</tt>. A value of \c 0 yields an unchanged brush tip saturation,
 /// while a value of \c 1 yields allows for arbitrary saturation changes.
 ///
 /// (Order) Dependencies:
+/// \c randomInitialSeed
+/// \c initialSeed
 /// \c color
 @property (readonly, nonatomic) CGFloat saturationJitter;
 
@@ -332,34 +277,64 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Texture Mapping
 #pragma mark -
 
-/// URL to the image mapped onto the brush tip geometry during brush stroke rendering, possibly
-/// affected by previously computed tonal values.
+/// Mode determining the way the source (but not the mask) should be sampled in order to compute the
+/// color values mapped onto the brush tip geometry.
 ///
-/// (Order) Dependencies:
-/// \c flow
-/// \c color
-/// \c brightnessJitter
-/// \c hueJitter
-/// \c saturationJitter
-@property (readonly, nonatomic) NSURL *brushTipImageURL;
+/// (Order) Dependencies: none
+@property (readonly, nonatomic) DVNSourceSamplingMode *sourceSamplingMode;
 
-/// Vector whose \c x and \c y value define the number of columns and rows, respectively, of the
-/// regular grid dividing the image defined by \c brushTipImageURL into the subimages randomly
-/// mapped onto the brush tip squares during brush stroke rendering.
+/// Integer vector whose \c x and \c y values define the number of columns and rows, respectively,
+/// of the regular grid of subimages of which the mask image is assumed to consist. The subimages
+/// are randomly mapped onto the brush tip geometry during brush stroke rendering. If
+/// \c sourceSamplingMode is \c DVNSourceSamplingModeSubimage, the source image is assumed to
+/// consist of subimages determined by the same aforementioned grid. In this case, the subimages are
+/// mapped onto the brush tip geometry as well, analogously to the subimages of the mask image.
 ///
 /// (Order) Dependencies:
-/// \c brushTipImageURL
+/// \c sourceSamplingMode
 @property (readonly, nonatomic) LTVector2 brushTipImageGridSize;
 
-/// Name of the overlay image mapped onto the brush tip geometry during brush stroke rendering.
+/// URL associated with the source image, a single-channel or RGBA image sampled during brush stroke
+/// rendering, affected by the previous tonal manipulations such as \c color, \c brightnessJitter,
+/// \c hueJitter, and \c saturationJitter. If \c brushTipImageGridSize is used for the image
+/// according to \c sourceSamplingMode, the image is assumed to consist of a regular grid of
+/// subimages which has size \c brushTipImageGridSize. If \c brushTipImageGridSize is not
+/// <tt>(1, 1)</tt>, the subimages are chosen randomly.
 ///
 /// (Order) Dependencies:
+/// \c randomInitialSeed
+/// \c initialSeed
 /// \c flow
 /// \c color
 /// \c brightnessJitter
 /// \c hueJitter
 /// \c saturationJitter
-@property (readonly, nonatomic) NSURL *overlayImageURL;
+/// \c brushTipImageGridSize
+/// \c sourceSamplingMode
+@property (readonly, nonatomic) NSURL *sourceImageURL;
+
+/// \c YES if the source image is non-premultiplied.
+///
+/// (Order) Dependencies:
+/// \c sourceImageURL
+@property (readonly, nonatomic) BOOL sourceImageIsNonPremultiplied;
+
+/// URL associated with the mask applied to color values sampled from the source image. The mask
+/// image is assumed to consist of a regular grid of subimages which has size
+/// \c brushTipImageGridSize. If \c brushTipImageGridSize is not <tt>(1, 1)</tt>, the subimages are
+/// chosen randomly.
+///
+/// @important If the \c sourceSamplingMode requires random subimage selection from the source, the
+/// random subimage selection for the mask is synchronized. I.e., if subimage in row \c x and column
+/// \c y is selected from the source image, the subimage with row \c x and column \c y is selected
+/// from the mask as well.
+///
+/// (Order) Dependencies:
+/// \c randomInitialSeed
+/// \c initialSeed
+/// \c brushTipImageGridSize
+/// \c sourceImageURL
+@property (readonly, nonatomic) NSURL *maskImageURL;
 
 #pragma mark -
 #pragma mark Edge Avoidance
@@ -374,9 +349,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c brightnessJitter
 /// \c hueJitter
 /// \c saturationJitter
-/// \c brushTipImageURL
+/// \c sourceImageURL
 /// \c brushTipImageGridSize
-/// \c overlayImageURL
+/// \c maskImageURL
 /// Render target
 @property (readonly, nonatomic) DVNBlendMode *blendMode;
 
@@ -385,8 +360,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the edge avoidance of the brush.
-/// The edge avoidance effect increases proportionally to this value.
+/// The edge avoidance effect increases proportionally to this value. Ignored if
+/// \c edgeAvoidanceGuideImageURL equals the empty string.
+///
+/// (Order) Dependencies:
+/// \c edgeAvoidanceGuideImageURL
 @property (readonly, nonatomic) CGFloat edgeAvoidance;
+
+/// URL associated with the image used as guide for the edge avoidance. Ignored if equalling the
+/// empty string or \c edgeAvoidance is \c 0.
+///
+/// (Order) Dependencies:
+/// \c edgeAvoidance
+@property (readonly, nonatomic) NSURL *edgeAvoidanceGuideImageURL;
 
 /// Offset, in normalized floating-point units of the coordinate system of each brush tip geometry,
 /// used for sampling the edge avoidance texture.

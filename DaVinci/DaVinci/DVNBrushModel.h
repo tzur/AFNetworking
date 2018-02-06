@@ -1,6 +1,8 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <LTEngine/LTInterval.h>
+
 #import "DVNBrushModelVersion.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -47,13 +49,9 @@ extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushM
 /// geometry, such as rotations, random scalings based on additional parameters, distorations, etc.
 @property (readonly, nonatomic) CGFloat scale;
 
-/// Minimum scale of the brush stroke. Refer to documentation of \c scale property for more details.
-/// Value, when initializing with \c init method, is \c 0.
-@property (readonly, nonatomic) CGFloat minScale;
-
-/// Maximum scale of the brush stroke. Refer to documentation of \c scale property for more details.
-/// Value, when initializing with \c init method, is \c CGFLOAT_MAX.
-@property (readonly, nonatomic) CGFloat maxScale;
+/// Range of possible scales of the brush stroke. Refer to documentation of \c scale property for
+/// more details. Value, when initializing with \c init method, is <tt>(0, CGFLOAT_MAX]</tt>.
+@property (readonly, nonatomic) lt::Interval<CGFloat> scaleRange;
 
 @end
 
