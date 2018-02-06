@@ -54,11 +54,11 @@ static auto const kStoredAssignmentsLockedKey = @"LABTaplyticsSourceAssignmentsL
 /// Key for storing the latest variants.
 static auto const kStoredVariantsKey = @"LABTaplyticsSourceVariants";
 
-/// Custom data key for experiments token.
-static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
-
 /// Prefix for a Taplytics defined experiment or variable that is used as a remote configuration.
 static auto const kRemoteConfigurationExperimentPrefix = @"__Remote_";
+
+/// Custom data key for experiments token.
+NSString * const kLABCustomDataExperimentsTokenKey = @"ExperimentsToken";
 
 @interface LABTaplyticsSource ()
 
@@ -97,7 +97,7 @@ static auto const kRemoteConfigurationExperimentPrefix = @"__Remote_";
     _storage = storage;
 
     NSMutableDictionary<NSString *, id> *augmentedCustomData = [customData mutableCopy];
-    augmentedCustomData[kCustomDataExperimentsTokenKey] =
+    augmentedCustomData[kLABCustomDataExperimentsTokenKey] =
         @(experimentsTokenProvider.experimentsToken);
     _taplytics = kLABStartTaplytics(taplytics, apiKey, [augmentedCustomData copy]);
     [self bindProperties];
