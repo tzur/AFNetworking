@@ -57,9 +57,11 @@ context(@"initialization", ^{
     it(@"should deserialize with correct values", ^{
       // DVNBrushModel
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
-      expect(model.minScale).to.equal(1.00390625);
-      expect(model.scale).to.equal(1.0078125);
-      expect(model.maxScale).to.equal(1.0117188);
+      expect(model.scaleRange == lt::Interval<CGFloat>({1.25, 1.75},
+                                                       lt::Interval<CGFloat>::Open,
+                                                       lt::Interval<CGFloat>::Closed))
+          .to.beTruthy();
+      expect(model.scale).to.equal(1.5);
 
       // DVNBrushModelV1
       expect(model.randomInitialSeed).to.beTruthy();
@@ -67,31 +69,37 @@ context(@"initialization", ^{
       expect(model.spacing).to.equal(0.015625);
       expect(model.numberOfSamplesPerSequence).to.equal(8);
       expect(model.sequenceDistance).to.equal(0.0195312);
-      expect(model.minCount).to.equal(9);
-      expect(model.maxCount).to.equal(10);
-      expect(model.minDistanceJitterFactor).to.equal(0.0234375);
-      expect(model.maxDistanceJitterFactor).to.equal(0.0273438);
-      expect(model.minAngle).to.equal(0.03125);
-      expect(model.maxAngle).to.equal(0.0351562);
-      expect(model.minScaleJitter).to.equal(0.0390625);
-      expect(model.maxScaleJitter).to.equal(0.0429688);
-      expect(model.lengthOfStartTapering).to.equal(0.046875);
-      expect(model.lengthOfEndTapering).to.equal(0.0507812);
+      expect(model.countRange == lt::Interval<NSUInteger>({9, 10})).to.beTruthy();
+      expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>({0.0234375, 0.0273438},
+                                                                      lt::Interval<CGFloat>::Closed,
+                                                                      lt::Interval<CGFloat>::Open))
+          .to.beTruthy();
+      expect(model.angleRange == lt::Interval<CGFloat>({0.03125, 0.0351562},
+                                                       lt::Interval<CGFloat>::Open,
+                                                       lt::Interval<CGFloat>::Closed))
+          .to.beTruthy();
+      expect(model.scaleJitterRange == lt::Interval<CGFloat>({0.0390625, 2},
+                                                             lt::Interval<CGFloat>::Open))
+          .to.beTruthy();
+      expect(model.taperingLengths).to.equal(LTVector2(0.046875, 0.0507812));
       expect(model.minimumTaperingScaleFactor).to.equal(0.0546875);
       expect(model.taperingExponent).to.equal(0.0585938);
-      expect(model.minFlow).to.equal(0.0625);
+      expect(model.flowRange == lt::Interval<CGFloat>({0.0625, 0.0703125})).to.beTruthy();
       expect(model.flow).to.equal(0.0664062);
-      expect(model.maxFlow).to.equal(0.0703125);
       expect(model.flowExponent).to.equal(0.0742188);
       expect(model.color).to.equal(LTVector3(0.88, 0, 0));
       expect(model.brightnessJitter).to.equal(0.078125);
       expect(model.hueJitter).to.equal(0.0820312);
       expect(model.saturationJitter).to.equal(0.0859375);
-      expect(model.brushTipImageURL).to.equal([NSURL URLWithString:@"image://brushTip"]);
+      expect(model.sourceSamplingMode).to.equal($(DVNSourceSamplingModeSubimage));
       expect(model.brushTipImageGridSize).to.equal(LTVector2(7, 8));
-      expect(model.overlayImageURL).to.equal([NSURL URLWithString:@"image://overlay"]);
+      expect(model.sourceImageURL).to.equal([NSURL URLWithString:@"image://source"]);
+      expect(model.sourceImageIsNonPremultiplied).to.beTruthy();
+      expect(model.maskImageURL).to.equal([NSURL URLWithString:@"image://mask"]);
       expect(model.blendMode).to.equal($(DVNBlendModeDarken));
       expect(model.edgeAvoidance).to.equal(0.0898438);
+      expect(model.edgeAvoidanceGuideImageURL)
+          .to.equal([NSURL URLWithString:@"image://edgeAvoidanceGuide"]);
       expect(model.edgeAvoidanceSamplingOffset).to.equal(0.0742188);
     });
   });
@@ -105,8 +113,9 @@ context(@"initialization", ^{
 
 context(@"image URL property keys", ^{
   it(@"should return the correct property keys", ^{
-    NSSet *expectedKeys = @[@instanceKeypath(DVNBrushModelV1, brushTipImageURL),
-                            @instanceKeypath(DVNBrushModelV1, overlayImageURL)].lt_set;
+    NSSet *expectedKeys = @[@instanceKeypath(DVNBrushModelV1, sourceImageURL),
+                            @instanceKeypath(DVNBrushModelV1, maskImageURL),
+                            @instanceKeypath(DVNBrushModelV1, edgeAvoidanceGuideImageURL)].lt_set;
     expect([DVNBrushModelV1 imageURLPropertyKeys].lt_set).to.equal(expectedKeys);
   });
 });

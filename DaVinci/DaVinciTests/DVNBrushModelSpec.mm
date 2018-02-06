@@ -9,9 +9,8 @@ SpecBegin(DVNBrushModel)
 
 static NSDictionary * const kDictionary = @{
   @"version": @"1",
-  @"minScale": @7,
+  @"scaleRange": @"[7, 9)",
   @"scale": @8,
-  @"maxScale": @9
 };
 
 context(@"initialization", ^{
@@ -19,8 +18,8 @@ context(@"initialization", ^{
     DVNBrushModel *model = [[DVNBrushModel alloc] init];
     expect(model.version).to.equal($(DVNBrushModelVersionV1));
     expect(model.scale).to.equal(1);
-    expect(model.minScale).to.equal(0);
-    expect(model.maxScale).to.equal(CGFLOAT_MAX);
+    expect(model.scaleRange == lt::Interval<CGFloat>({0, CGFLOAT_MAX}, lt::Interval<CGFloat>::Open,
+                                                     lt::Interval<CGFloat>::Closed)).to.beTruthy();
   });
 
   context(@"deserialization", ^{
@@ -39,9 +38,9 @@ context(@"initialization", ^{
 
     it(@"should deserialize with correct values", ^{
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
-      expect(model.minScale).to.equal(7);
       expect(model.scale).to.equal(8);
-      expect(model.maxScale).to.equal(9);
+      expect(model.scaleRange == lt::Interval<CGFloat>({7, 9}, lt::Interval<CGFloat>::Closed,
+                                                       lt::Interval<CGFloat>::Open)).to.beTruthy();
     });
   });
 
