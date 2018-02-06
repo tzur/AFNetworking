@@ -32,6 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [filtered copy];
 }
 
+- (NSArray *)lt_mapToArray:(NS_NOESCAPE LTDictionaryMapBlock)block {
+  LTParameterAssert(block);
+
+  auto mapped = [NSMutableArray arrayWithCapacity:self.count];
+  [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *) {
+    [mapped addObject:block(key, obj)];
+  }];
+  return [mapped copy];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
