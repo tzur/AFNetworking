@@ -21,11 +21,17 @@
 
 @end
 
+/// Expose that \c SPXPagingView conforms to the protocol \c UIScrollViewDelegate for testing.
+@interface SPXPagingView () <UIScrollViewDelegate>
+@end
+
 SpecBegin(SPXPagingView)
+__block CGFloat pagingViewWidth;
 __block SPXPagingView *pagingView;
 
 beforeEach(^{
-  pagingView = [[SPXPagingView alloc] initWithFrame:CGRectMake(0, 0, 500, 200)];
+  pagingViewWidth = 500;
+  pagingView = [[SPXPagingView alloc] initWithFrame:CGRectMake(0, 0, pagingViewWidth, 200)];
 });
 
 it(@"should initialize with scroll position set to zero", ^{
@@ -207,6 +213,60 @@ context(@"update pages", ^{
     pagingView.pageViews = @[view, [[UIView alloc] init]];
 
     expect(view.didGainFocus).to.equal(1);
+  });
+});
+
+context(@"scroll view delegate", ^{
+  __block UIScrollView *scrollView;
+  __block CGFloat secondPageOffset;
+  __block CGPoint point;
+
+  beforeEach(^{
+    scrollView = OCMClassMock([UIScrollView class]);
+    secondPageOffset = pagingViewWidth * (pagingView.pageViewWidthRatio + pagingView.spacingRatio);
+    pagingView.pageViews = @[
+      [[UIView alloc] init],
+      [[UIView alloc] init]
+    ];
+    [pagingView layoutIfNeeded];
+  });
+
+  it(@"should scroll to the next page if the velocity is positive", ^{
+    point = CGPointMake(1, 0);
+    [pagingView scrollViewWillEndDragging:scrollView withVelocity:CGPointMake(1, 0)
+                      targetContentOffset:&point];
+
+    expect(point.x).to.equal(secondPageOffset);
+  });
+
+  it(@"should scroll to the previous page if the velocity is negative", ^{
+    point = CGPointMake(secondPageOffset - 1, 0);
+    OCMStub([scrollView contentOffset]).andReturn(CGPointMake(secondPageOffset, 0));
+
+    [pagingView scrollViewWillEndDragging:scrollView withVelocity:CGPointMake(-1, 0)
+                      targetContentOffset:&point];
+
+    expect(point.x).to.equal(0);
+  });
+
+  it(@"should clamp if the scrolling is out of bounds", ^{
+    point = CGPointMake(secondPageOffset + 1, 0);
+    OCMStub([scrollView contentOffset]).andReturn(CGPointMake(secondPageOffset, 0));
+
+    [pagingView scrollViewWillEndDragging:scrollView withVelocity:CGPointMake(1, 0)
+                      targetContentOffset:&point];
+
+    expect(point.x).to.equal(secondPageOffset);
+  });
+
+  it(@"should scroll to the nearest page if the velocity is smaller than the threshold", ^{
+    point = CGPointMake(150, 0);
+    OCMStub([scrollView contentOffset]).andReturn(CGPointMake(150, 0));
+
+    [pagingView scrollViewWillEndDragging:scrollView withVelocity:CGPointMake(0.005, 0)
+                      targetContentOffset:&point];
+
+    expect(point.x).to.equal(0);
   });
 });
 
