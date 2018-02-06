@@ -97,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
       [self addPlaybackFinishedObservation];
       [self addProgressObservation];
       [self reportVideoDidLoad];
+      [self adjustPlaybackToPlaybackRequested];
     } else if (playerStatus == AVPlayerItemStatusFailed) {
       [self reportVideoError];
     }
@@ -128,15 +129,41 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)reportVideoDidLoad {
-  if ([self.delegate respondsToSelector:@selector(videoViewDidLoadVideo:)]) {
-    [self.delegate videoViewDidLoadVideo:self];
+  @weakify(self);
+  [WFVideoView invokeOnMainThread:^{
+    @strongify(self)
+    if ([self.delegate respondsToSelector:@selector(videoViewDidLoadVideo:)]) {
+      [self.delegate videoViewDidLoadVideo:self];
+    }
+  }];
+}
+
++ (void)invokeOnMainThread:(void (^)())block {
+  if ([NSThread isMainThread]) {
+    block();
+  } else {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      block();
+    });
+  }
+}
+
+- (void)adjustPlaybackToPlaybackRequested {
+  if (self.playbackRequested) {
+    [self.player play];
+  } else {
+    [self.player pause];
   }
 }
 
 - (void)reportVideoError {
-  if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
-    [self.delegate videoView:self didEncounterVideoError:self.player.error];
-  }
+  @weakify(self);
+  [WFVideoView invokeOnMainThread:^{
+    @strongify(self)
+    if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
+      [self.delegate videoView:self didEncounterVideoError:self.player.error];
+    }
+  }];
 }
 
 - (void)dealloc {
@@ -182,20 +209,15 @@ NS_ASSUME_NONNULL_BEGIN
     dispatch_async(dispatch_get_main_queue(), ^{
       @strongify(self);
       [self setPlayer:player videoSize:videoSize videoURL:videoURL];
-      if (self.playbackRequested) {
-        [self.player play];
-      } else {
-        [self.player pause];
-      }
     });
   });
 }
 
 - (void)setPlayer:(nullable AVPlayer *)player videoSize:(CGSize)videoSize
          videoURL:(nullable NSURL *)videoURL {
-  self.player = player;
   self.videoSize = videoSize;
   self.currentVideoURL = videoURL;
+  self.player = player;
 }
 
 + (CGSize)videoSizeWithPlayer:(nullable AVPlayer *)player {
