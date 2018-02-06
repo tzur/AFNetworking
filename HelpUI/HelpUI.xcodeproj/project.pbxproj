@@ -36,6 +36,10 @@
 		1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */; };
 		198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD52018DCDA00F85E75 /* HUISection.mm */; };
 		198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */; };
+		1992523420270B5100BF71E5 /* HUIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1992523220270B5100BF71E5 /* HUIDocument.mm */; };
+		199253EC2027133500BF71E5 /* HUIDocumentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 199253C22027133400BF71E5 /* HUIDocumentSpec.mm */; };
+		199253F02027134900BF71E5 /* HelpDocument.json in Resources */ = {isa = PBXBuildFile; fileRef = 199253EF2027134900BF71E5 /* HelpDocument.json */; };
+		199258382028332A00BF71E5 /* InvalidHelpDocument.json in Resources */ = {isa = PBXBuildFile; fileRef = 1992580E2028332A00BF71E5 /* InvalidHelpDocument.json */; };
 		19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E518A0200CCD9A008A9EA5 /* HUIItem.mm */; };
 /* End PBXBuildFile section */
 
@@ -437,6 +441,11 @@
 		198FDCAB2018DCDA00F85E75 /* HUISection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISection.h; sourceTree = "<group>"; };
 		198FDCD52018DCDA00F85E75 /* HUISection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISection.mm; sourceTree = "<group>"; };
 		198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISectionSpec.mm; sourceTree = "<group>"; };
+		1992523120270B5100BF71E5 /* HUIDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIDocument.h; sourceTree = "<group>"; };
+		1992523220270B5100BF71E5 /* HUIDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocument.mm; sourceTree = "<group>"; };
+		199253C22027133400BF71E5 /* HUIDocumentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentSpec.mm; sourceTree = "<group>"; };
+		199253EF2027134900BF71E5 /* HelpDocument.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = HelpDocument.json; path = Resources/HelpDocument.json; sourceTree = "<group>"; };
+		1992580E2028332A00BF71E5 /* InvalidHelpDocument.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InvalidHelpDocument.json; path = Resources/InvalidHelpDocument.json; sourceTree = "<group>"; };
 		19C43CD51FF9310E007BB06E /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		19C43CD61FF9310E007BB06E /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		19C43CD71FF9310E007BB06E /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
@@ -515,6 +524,7 @@
 		195B36CE1FFBB3C000F8DAB4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				199253C22027133400BF71E5 /* HUIDocumentSpec.mm */,
 				1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */,
 				198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */,
 			);
@@ -549,6 +559,8 @@
 		195B37971FFCB5E100F8DAB4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				199253EF2027134900BF71E5 /* HelpDocument.json */,
+				1992580E2028332A00BF71E5 /* InvalidHelpDocument.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -693,6 +705,13 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
+		1992523920270FD600BF71E5 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Providers;
+			sourceTree = "<group>";
+		};
 		19C43CBD1FF92E76007BB06E /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,6 +771,8 @@
 		19C43E8C1FFA739B007BB06E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1992523120270B5100BF71E5 /* HUIDocument.h */,
+				1992523220270B5100BF71E5 /* HUIDocument.mm */,
 				19E518DA200CCD9A008A9EA5 /* HUIItem.h */,
 				19E518A0200CCD9A008A9EA5 /* HUIItem.mm */,
 				1970BAC32014C5E900E81A5F /* HUIModelSettings.h */,
@@ -760,14 +781,6 @@
 				198FDCD52018DCDA00F85E75 /* HUISection.mm */,
 			);
 			name = Models;
-			sourceTree = "<group>";
-		};
-		19C43E8D1FFA7494007BB06E /* Providers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Providers;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		19E95BD41FF9256900078026 = {
@@ -796,7 +809,7 @@
 			children = (
 				195B3A3D1FFE38DE00F8DAB4 /* Assets */,
 				19C43E8C1FFA739B007BB06E /* Models */,
-				19C43E8D1FFA7494007BB06E /* Providers */,
+				1992523920270FD600BF71E5 /* Providers */,
 				19C43CC71FF93006007BB06E /* Supporting Files */,
 			);
 			path = HelpUI;
@@ -1258,6 +1271,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				199253F02027134900BF71E5 /* HelpDocument.json in Resources */,
+				199258382028332A00BF71E5 /* InvalidHelpDocument.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1274,6 +1289,7 @@
 				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
 				195B37961FFCB42600F8DAB4 /* LTObjectionModule.mm in Sources */,
 				1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */,
+				199253EC2027133500BF71E5 /* HUIDocumentSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1281,6 +1297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1992523420270B5100BF71E5 /* HUIDocument.mm in Sources */,
 				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */,

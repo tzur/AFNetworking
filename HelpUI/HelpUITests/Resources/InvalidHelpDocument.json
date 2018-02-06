@@ -1,0 +1,17 @@
+{
+  "title": "title",
+  "sections": [
+    {
+      "key": "key",
+      "items": [
+        {
+          "type": "slideshow",
+          "transition": "curtain",
+          "title": "title",
+          "body": "body",
+          "images": [
+          ]
+        }
+      ]
+    }
+  ]
