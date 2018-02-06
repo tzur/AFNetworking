@@ -2,12 +2,9 @@
 // Created by Nofar Noy.
 
 #import "PNKKernel.h"
+#import "PNKPaddingSize.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-namespace pnk {
-  struct PaddingSize;
-};
 
 #if PNK_USE_MPS
 
