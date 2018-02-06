@@ -40,6 +40,8 @@
 		199253EC2027133500BF71E5 /* HUIDocumentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 199253C22027133400BF71E5 /* HUIDocumentSpec.mm */; };
 		199253F02027134900BF71E5 /* HelpDocument.json in Resources */ = {isa = PBXBuildFile; fileRef = 199253EF2027134900BF71E5 /* HelpDocument.json */; };
 		199258382028332A00BF71E5 /* InvalidHelpDocument.json in Resources */ = {isa = PBXBuildFile; fileRef = 1992580E2028332A00BF71E5 /* InvalidHelpDocument.json */; };
+		19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19925FC32029971D00BF71E5 /* HUIDocumentProvider.mm */; };
+		19925FC62029972700BF71E5 /* HUIDocumentProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19925FC52029972600BF71E5 /* HUIDocumentProviderSpec.mm */; };
 		19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E518A0200CCD9A008A9EA5 /* HUIItem.mm */; };
 /* End PBXBuildFile section */
 
@@ -446,6 +448,9 @@
 		199253C22027133400BF71E5 /* HUIDocumentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentSpec.mm; sourceTree = "<group>"; };
 		199253EF2027134900BF71E5 /* HelpDocument.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = HelpDocument.json; path = Resources/HelpDocument.json; sourceTree = "<group>"; };
 		1992580E2028332A00BF71E5 /* InvalidHelpDocument.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InvalidHelpDocument.json; path = Resources/InvalidHelpDocument.json; sourceTree = "<group>"; };
+		19925FC22029971D00BF71E5 /* HUIDocumentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIDocumentProvider.h; sourceTree = "<group>"; };
+		19925FC32029971D00BF71E5 /* HUIDocumentProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentProvider.mm; sourceTree = "<group>"; };
+		19925FC52029972600BF71E5 /* HUIDocumentProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentProviderSpec.mm; sourceTree = "<group>"; };
 		19C43CD51FF9310E007BB06E /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		19C43CD61FF9310E007BB06E /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		19C43CD71FF9310E007BB06E /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
@@ -534,6 +539,7 @@
 		195B36CF1FFBB3C900F8DAB4 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				19925FC52029972600BF71E5 /* HUIDocumentProviderSpec.mm */,
 			);
 			name = Providers;
 			sourceTree = "<group>";
@@ -708,6 +714,8 @@
 		1992523920270FD600BF71E5 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				19925FC22029971D00BF71E5 /* HUIDocumentProvider.h */,
+				19925FC32029971D00BF71E5 /* HUIDocumentProvider.mm */,
 			);
 			name = Providers;
 			sourceTree = "<group>";
@@ -1288,6 +1296,7 @@
 				195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */,
 				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
 				195B37961FFCB42600F8DAB4 /* LTObjectionModule.mm in Sources */,
+				19925FC62029972700BF71E5 /* HUIDocumentProviderSpec.mm in Sources */,
 				1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */,
 				199253EC2027133500BF71E5 /* HUIDocumentSpec.mm in Sources */,
 			);
@@ -1299,6 +1308,7 @@
 			files = (
 				1992523420270B5100BF71E5 /* HUIDocument.mm in Sources */,
 				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
+				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */,
 			);
