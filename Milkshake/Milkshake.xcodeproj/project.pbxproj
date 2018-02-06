@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8804090020266B6200015482 /* SHKFakeTweakCategory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880408FE20266B6200015482 /* SHKFakeTweakCategory.mm */; };
 		880E4BE71FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E4BE61FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
@@ -341,6 +342,8 @@
 
 /* Begin PBXFileReference section */
 		880408F62025B7D300015482 /* SHKTweakCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHKTweakCategory.h; sourceTree = "<group>"; };
+		880408FE20266B6200015482 /* SHKFakeTweakCategory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKFakeTweakCategory.mm; sourceTree = "<group>"; };
+		880408FF20266B6200015482 /* SHKFakeTweakCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHKFakeTweakCategory.h; sourceTree = "<group>"; };
 		880E4BE51FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBMutableTweak+RACSignalSupport.h"; sourceTree = "<group>"; };
 		880E4BE61FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBMutableTweak+RACSignalSupport.mm"; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
@@ -481,6 +484,8 @@
 		88EEA2A22004CC83006FB79D /* Adapters */ = {
 			isa = PBXGroup;
 			children = (
+				880408FF20266B6200015482 /* SHKFakeTweakCategory.h */,
+				880408FE20266B6200015482 /* SHKFakeTweakCategory.mm */,
 				88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */,
 			);
 			name = Adapters;
@@ -1117,6 +1122,7 @@
 			files = (
 				88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */,
 				88A482442003759A0046B7D1 /* SHKTweakInlineSpec.mm in Sources */,
+				8804090020266B6200015482 /* SHKFakeTweakCategory.mm in Sources */,
 				887D83401FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
