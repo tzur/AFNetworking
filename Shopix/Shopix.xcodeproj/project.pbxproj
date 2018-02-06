@@ -43,6 +43,7 @@
 		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
 		CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */; };
 		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */; };
+		CD2E04642029B6040038EC7F /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */; };
@@ -72,7 +73,6 @@
 		CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */; };
 		CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */; };
 		CD6376B61FCDB70F00521EDD /* SPXSubscriptionButtonFormatter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */; };
-		CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CDA6E0EA1FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */; };
 		CDAC84E01FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */; };
 		CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */; };
@@ -1892,7 +1892,7 @@
 				CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */,
 				8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */,
 				CDDA512420179C6A009E5777 /* SPXDismissIcon.m in Sources */,
-				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
+				CD2E04642029B6040038EC7F /* NSDecimalNumber+Localization.mm in Sources */,
 				CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
 				CDF5FAC31FCECC85007D4AB0 /* UIFont+Shopix.mm in Sources */,
@@ -1900,7 +1900,6 @@
 				CDF5F9711FCDC4EB007D4AB0 /* SPXSubscriptionDescriptor.mm in Sources */,
 				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
 				CDC83C161FD067E700E9F41A /* SPXSubscriptionViewController.mm in Sources */,
-				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */,
 				63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXVoucher.mm in Sources */,
