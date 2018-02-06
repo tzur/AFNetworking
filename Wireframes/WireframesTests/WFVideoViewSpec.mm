@@ -137,11 +137,13 @@ context(@"delegate", ^{
     expect(videoDidLoadSignal).will.sendValues(@[videoView]);
 
     // Expect video is playing (in loop) after setting URL, and thus will raise playback finished.
-    auto videoDidFinishPlaybackSignal = [[delegate
+    auto videoDidFinishPlaybackSignal = [[[delegate
         rac_signalForSelector:@selector(videoViewDidFinishPlayback:)]
         reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
           return videoView;
-    }];
+        }]
+        take:1];
+
     expect(videoDidFinishPlaybackSignal).will.sendValues(@[videoView]);
   });
 
