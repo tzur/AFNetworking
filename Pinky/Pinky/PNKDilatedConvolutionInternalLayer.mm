@@ -173,8 +173,10 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 - (void)createBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {
   _bufferForFullPaddingTF = [self bufferForPairOfUShorts];
 
-  _alphaBuffer = self.hasAlphaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.alpha) : nil;
-  _betaBuffer = self.hasBetaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.beta) : nil;
+  _alphaBuffer = self.hasAlphaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.alpha, YES) : nil;
+  _betaBuffer = self.hasBetaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.beta, YES) : nil;
 }
 
 - (id<MTLBuffer>)bufferForPairOfUShorts {
