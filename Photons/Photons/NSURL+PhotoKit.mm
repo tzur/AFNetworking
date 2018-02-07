@@ -191,6 +191,19 @@ static NSString * const kMediaTypeKey = @"mediaType";
     PHAssetCollectionSubtypeSmartAlbumGeneric
   };
 
+  if (@available(iOS 10.2, *)) {
+    subalbums.push_back(PHAssetCollectionSubtypeSmartAlbumDepthEffect);
+  }
+
+  if (@available(iOS 10.3, *)) {
+    subalbums.push_back(PHAssetCollectionSubtypeSmartAlbumLivePhotos);
+  }
+
+  if (@available(iOS 11.0, *)) {
+    subalbums.push_back(PHAssetCollectionSubtypeSmartAlbumAnimated);
+    subalbums.push_back(PHAssetCollectionSubtypeSmartAlbumLongExposures);
+  }
+
   return [self ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum
                                    subalbums:subalbums];
 }
