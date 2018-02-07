@@ -106,8 +106,10 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 - (void)setupBuffersAndStateWithActivationModel:(const pnk::ActivationKernelModel &)model {
   [self createStateWithActivationType:model.activationType];
 
-  _alphaBuffer = self.hasAlphaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.alpha) : nil;
-  _betaBuffer = self.hasBetaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.beta) : nil;
+  _alphaBuffer = self.hasAlphaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.alpha, YES) : nil;
+  _betaBuffer = self.hasBetaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.beta, YES) : nil;
 }
 
 - (void)createStateWithActivationType:(pnk::ActivationType)activationType {
@@ -134,8 +136,8 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   cv::Mat correctedScale = model.scale / (model.variance + model.epsilon);
   cv::Mat correctedShift = model.shift - model.mean.mul(correctedScale);
 
-  _scaleBuffer = PNKHalfBufferFromFloatVector(self.device, correctedScale);
-  _shiftBuffer = PNKHalfBufferFromFloatVector(self.device, correctedShift);
+  _scaleBuffer = PNKHalfBufferFromFloatVector(self.device, correctedScale, YES);
+  _shiftBuffer = PNKHalfBufferFromFloatVector(self.device, correctedShift, YES);
 }
 
 #pragma mark -
