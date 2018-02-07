@@ -3,6 +3,8 @@
 
 #import "NSDictionary+Functional.h"
 
+#import "NSArray+NSSet.h"
+
 static NSDictionary<NSNumber *, NSString *> *const kSourceDictionary = @{
   @4: @"foo",
   @8: @"bar",
@@ -15,7 +17,7 @@ SpecBegin(NSDictionary_Functional)
 
 context(@"map values", ^{
   it(@"should map the values using the provided block", ^{
-    auto mapped = [kSourceDictionary lt_mapValues:^id (NSNumber *key, NSString *obj) {
+    auto mapped = [kSourceDictionary lt_mapValues:^id(NSNumber *key, NSString *obj) {
       return [NSString stringWithFormat:@"%@ %@", key, obj];
     }];
 
@@ -30,7 +32,7 @@ context(@"map values", ^{
 
   it(@"should raise if mapping block returns nil", ^{
     expect(^{
-      [kSourceDictionary lt_mapValues:^id (NSNumber *, NSString *) {
+      [kSourceDictionary lt_mapValues:^id(NSNumber *, NSString *) {
         return nil;
       }];
     }).to.raise(NSInvalidArgumentException);
@@ -55,6 +57,26 @@ context(@"filter", ^{
     }];
 
     expect(filteredDictionary).to.equal(@{});
+  });
+});
+
+context(@"map to array", ^{
+  it(@"should map the values using the provided block", ^{
+    auto mapped = [kSourceDictionary lt_mapToArray:^NSString *(NSNumber *key, NSString *obj) {
+      return [NSString stringWithFormat:@"%@ %@", key, obj];
+    }];
+
+    expect(mapped.count).to.equal(kSourceDictionary.count);
+    expect([mapped lt_set])
+        .to.equal([@[@"4 foo", @"8 bar", @"5 baz", @"9 ping", @"3 pong"] lt_set]);
+  });
+
+  it(@"should raise if mapping block returns nil", ^{
+    expect(^{
+      [kSourceDictionary lt_mapToArray:^id(NSNumber *, NSString *) {
+        return nil;
+      }];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
