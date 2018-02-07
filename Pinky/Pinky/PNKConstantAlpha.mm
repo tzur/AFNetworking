@@ -65,8 +65,9 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
   LTParameterAssert(inputImage.height == outputImage.height,
                     @"Input image height must match output image height. got: (%lu, %lu)",
                     (unsigned long)inputImage.height, (unsigned long)outputImage.height);
-  LTParameterAssert(inputImage.featureChannels == 4, @"Input image feature channels count must be "
-                    "4. got: %lu", (unsigned long)inputImage.featureChannels);
+  LTParameterAssert(inputImage.featureChannels == 3 || inputImage.featureChannels == 4,
+                    @"Input image feature channels count must be 3 or 4. got: %lu",
+                    (unsigned long)inputImage.featureChannels);
   LTParameterAssert(outputImage.featureChannels == 4, @"Output image feature channels count must "
                     "be 4. got: %lu", (unsigned long)outputImage.featureChannels);
 }
