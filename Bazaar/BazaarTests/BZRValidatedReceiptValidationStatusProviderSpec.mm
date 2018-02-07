@@ -12,6 +12,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
 #import "BZRUserIDProvider.h"
+#import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
 BZRReceiptValidationStatus *BZRInvalidReceiptValidationStatusWithError(
@@ -95,7 +96,8 @@ context(@"fetching receipt validation status", ^{
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
     expect(validateSignal).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed &&
+          [error.userInfo[kBZRApplicationBundleIDKey] isEqualToString:@"foo"];
     });
   });
 
@@ -116,15 +118,17 @@ context(@"fetching receipt validation status", ^{
     });
 
     it(@"should send error when receipt validator errs", ^{
-      NSError *error = [NSError lt_errorWithCode:1337];
+      NSError *underlyingError = [NSError lt_errorWithCode:1337];
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
-          .andReturn([RACSignal error:error]);
+          .andReturn([RACSignal error:underlyingError]);
 
-      NSError *receiptValidationError =
-          [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
+      RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
-      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will
-          .sendError(receiptValidationError);
+      expect(validateSignal).will.matchError(^BOOL(NSError *error) {
+        return error.code == BZRErrorCodeReceiptValidationFailed &&
+            error.lt_underlyingError == underlyingError &&
+            [error.userInfo[kBZRApplicationBundleIDKey] isEqualToString:@"foo"];
+      });
     });
 
     it(@"should send error when validation has failed", ^{
@@ -136,7 +140,8 @@ context(@"fetching receipt validation status", ^{
       RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
       expect(validateSignal).will.matchError(^BOOL(NSError *error) {
-        return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
+        return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed &&
+            [error.userInfo[kBZRApplicationBundleIDKey] isEqualToString:@"foo"];
       });
     });
 
