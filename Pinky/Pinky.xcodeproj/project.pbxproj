@@ -896,11 +896,6 @@
 		E46995201FE698F100B944C9 /* PNKImageBilinearScale.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKImageBilinearScale.metal; sourceTree = "<group>"; };
 		E46995221FE6A8E600B944C9 /* PNKImageBilinearScaleSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageBilinearScaleSpec.mm; sourceTree = "<group>"; };
 		E46C3BE020221A85006FAA66 /* PNKColorTransformTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransformTypes.h; sourceTree = "<group>"; };
-		E46F8DCB1FFD30D60014778C /* conv_stride_output_8x8x16.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_stride_output_8x8x16.tensor; path = Resources/conv_stride_output_8x8x16.tensor; sourceTree = "<group>"; };
-		E46F8DCD1FFD32DF0014778C /* conv_dilation_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = conv_dilation_input_15x16x32.tensor; path = Resources/conv_dilation_input_15x16x32.tensor; sourceTree = "<group>"; };
-		E46F8DCE1FFD32DF0014778C /* conv_dilation_bias_16.weights */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_dilation_bias_16.weights; path = Resources/conv_dilation_bias_16.weights; sourceTree = "<group>"; };
-		E46F8DCF1FFD32DF0014778C /* conv_dilation_kernel_16x3x3x32.weights */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_dilation_kernel_16x3x3x32.weights; path = Resources/conv_dilation_kernel_16x3x3x32.weights; sourceTree = "<group>"; };
-		E46F8DD01FFD32DF0014778C /* conv_dilation_output_15x16x16.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_dilation_output_15x16x16.tensor; path = Resources/conv_dilation_output_15x16x16.tensor; sourceTree = "<group>"; };
 		E470BFE2200BAB4A007573C9 /* upsample_bilinear_aligned_output_30x32x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = upsample_bilinear_aligned_output_30x32x32.tensor; path = Resources/upsample_bilinear_aligned_output_30x32x32.tensor; sourceTree = "<group>"; };
 		E470C004200BAB4A007573C9 /* upsample_bilinear_aligned_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = upsample_bilinear_aligned_input_15x16x32.tensor; path = Resources/upsample_bilinear_aligned_input_15x16x32.tensor; sourceTree = "<group>"; };
 		E47248D51FE7A418008E57EE /* ResizeInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ResizeInput.png; path = Resources/ResizeInput.png; sourceTree = "<group>"; };
@@ -2307,8 +2302,6 @@
 				E4D71A171FE6584D0047E620 /* softmax_input.tensor in Resources */,
 				E470C006200BAB4A007573C9 /* upsample_bilinear_aligned_input_15x16x32.tensor in Resources */,
 				061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */,
-				E44CA6741FE126DB007A1C6D /* conv_stride_kernel_16x3x3x32.weights in Resources */,
-				0651C22B1F7273E2004EE4D3 /* conv_basic_kernel_16x3x3x32.weights in Resources */,
 				E4352E7B1FFCFC200052C4D7 /* person_mask.png in Resources */,
 				E4C2FCFB2021E51F002EF963 /* person_grayscale_processor_mask.png in Resources */,
 				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
