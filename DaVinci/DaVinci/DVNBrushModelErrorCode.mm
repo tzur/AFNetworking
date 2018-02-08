@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-LTEnumImplement(NSUInteger, DVNBrushModelErrorCode,
+LTEnumImplement(NSInteger, DVNBrushModelErrorCode,
   DVNBrushModelErrorCodeNoSerializedVersion,
   DVNBrushModelErrorCodeNoValidVersion
 );
