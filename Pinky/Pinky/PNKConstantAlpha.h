@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
 
-/// Kernel that sets the Alpha channel to a constant value. Input is expected to be an RGBA or BGRA
-/// image.
+/// Kernel that sets the Alpha channel to a constant value. Input is expected to be an RGB(A) or
+/// BGR(A) image.
 @interface PNKConstantAlpha : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -17,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as
-/// input. Output is written asynchronously to \c outputImage. The texture underlying \c inputImage
-/// must be a 2D texture of RGBA or BGRA pixel format. \c outputImage must be the same size and
-/// pixel format as \c inputImage.
+/// input. Output is written asynchronously to \c outputImage. \c inputImage must have \c 3 or \c 4
+/// feature channels with an RGB(A) or BGR(A) pixel format. \c outputImage must be the same size as
+/// \c inputImage and have \c 4 feature channels.
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage;
 

@@ -9,7 +9,6 @@
 #import "PNKGather.h"
 #import "PNKImageBilinearScale.h"
 #import "PNKNetworkSchemeFactory.h"
-#import "PNKPaddingSize.h"
 #import "PNKPixelBufferUtils.h"
 #import "PNKReflectionPadding.h"
 #import "PNKRunnableNeuralNetwork.h"
