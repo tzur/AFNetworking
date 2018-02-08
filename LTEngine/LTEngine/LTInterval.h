@@ -195,6 +195,16 @@ public:
     return [NSString stringWithUTF8String:stream.str().c_str()];
   }
 
+  /// Casts this interval to the interval with the given type \c S.
+  template <typename S>
+  explicit operator lt::Interval<S>() const {
+    return lt::Interval<S>({_inf, _sup},
+                           _infInclusion == Closed ?
+                               lt::Interval<S>::Closed : lt::Interval<S>::Open,
+                           _supInclusion == Closed ?
+                               lt::Interval<S>::Closed : lt::Interval<S>::Open);
+  }
+
 private:
   /// Infimum of this interval.
   T _inf;

@@ -377,11 +377,72 @@ public:
 
 } // namespace lt
 
+namespace lt {
+template <typename T, typename S>
+class IntervalCastingSpec {
+public:
+  static void spec(SPTSpec *self) {
+    context(@"casting", ^{
+      static T kInf = 1.5;
+      static T kSup = 2.75;
+      static S kCastInf = kInf;
+      static S kCastSup = kSup;
+
+      it(@"should cast an open interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>({kInf, kSup}, lt::Interval<T>::Open);
+        lt::Interval<S> castInterval = (lt::Interval<S>)interval;
+        expect(castInterval.inf()).to.equal(kCastInf);
+        expect(castInterval.sup()).to.equal(kCastSup);
+        expect(castInterval.infIncluded()).to.beFalsy();
+        expect(castInterval.supIncluded()).to.beFalsy();
+      });
+
+      it(@"should cast a left-open interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>({kInf, kSup}, lt::Interval<T>::Open,
+                                                   lt::Interval<T>::Closed);
+        lt::Interval<S> castInterval = (lt::Interval<S>)interval;
+        expect(castInterval.inf()).to.equal(kCastInf);
+        expect(castInterval.sup()).equal(kCastSup);
+        expect(castInterval.infIncluded()).to.beFalsy();
+        expect(castInterval.supIncluded()).to.beTruthy();
+      });
+
+      it(@"should cast a right-open interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>({kInf, kSup}, lt::Interval<T>::Closed,
+                                                   lt::Interval<T>::Open);
+        lt::Interval<S> castInterval = (lt::Interval<S>)interval;
+        expect(castInterval.inf()).to.equal(kCastInf);
+        expect(castInterval.sup()).equal(kCastSup);
+        expect(castInterval.infIncluded()).to.beTruthy();
+        expect(castInterval.supIncluded()).to.beFalsy();
+      });
+
+      it(@"should cast a closed interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>({kInf, kSup}, lt::Interval<T>::Closed);
+        lt::Interval<S> castInterval = (lt::Interval<S>)interval;
+        expect(castInterval.inf()).to.equal(kCastInf);
+        expect(castInterval.sup()).equal(kCastSup);
+        expect(castInterval.infIncluded()).to.beTruthy();
+        expect(castInterval.supIncluded()).to.beTruthy();
+      });
+    });
+  }
+};
+
+} // namespace lt
+
 SpecBegin(LTInterval)
 
 lt::IntervalSpec<CGFloat>::spec(self);
 lt::IntervalSpec<NSInteger>::spec(self);
 lt::IntervalSpec<NSUInteger>::spec(self);
+
+lt::IntervalCastingSpec<CGFloat, NSInteger>::spec(self);
+lt::IntervalCastingSpec<CGFloat, NSUInteger>::spec(self);
+lt::IntervalCastingSpec<NSInteger, CGFloat>::spec(self);
+lt::IntervalCastingSpec<NSInteger, NSUInteger>::spec(self);
+lt::IntervalCastingSpec<NSUInteger, CGFloat>::spec(self);
+lt::IntervalCastingSpec<NSUInteger, NSInteger>::spec(self);
 
 context(@"equality", ^{
   it(@"should compare equality to other intervals", ^{
