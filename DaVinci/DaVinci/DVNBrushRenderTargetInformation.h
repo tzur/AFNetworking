@@ -8,15 +8,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Value object representing properties of a render target onto which brush stroke geometry can be
 /// rendered. In particular, the object determines the relation between the brush stroke geometry
 /// coordinate system, as defined by \c DVNBrushModel, and the coordinate system of the render
-/// target.
+/// target. Additionally, it defines properties of the render target potentially relevant for
+/// objects performing the actual rendering.
 @interface DVNBrushRenderTargetInformation : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Returns a new instance with the given \c renderTargetLocation and
-/// \c renderTargetHasSingleChannel indication.
+/// Returns a new instance with the given \c renderTargetLocation, \c renderTargetHasSingleChannel
+/// indication, and \c renderTargetIsNonPremultiplied indication.
 + (instancetype)instanceWithRenderTargetLocation:(lt::Quad)renderTargetLocation
-                    renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel;
+                    renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
+                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied;
 
 /// Location, in units of the brush stroke geometry coordinate system, of the corners of the
 /// render target onto which the brush stroke geometry is to be projected.
@@ -24,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Indication whether the render target has a single channel.
 @property (readonly, nonatomic) BOOL renderTargetHasSingleChannel;
+
+/// Indication whether the render target is non-premultiplied.
+@property (readonly, nonatomic) BOOL renderTargetIsNonPremultiplied;
 
 @end
 

@@ -12,18 +12,22 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithRenderTargetLocation:(lt::Quad)renderTargetLocation
-                renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel {
+                renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
+              renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied {
   if (self = [super init]) {
     _renderTargetLocation = renderTargetLocation;
     _renderTargetHasSingleChannel = renderTargetHasSingleChannel;
+    _renderTargetIsNonPremultiplied = renderTargetIsNonPremultiplied;
   }
   return self;
 }
 
 + (instancetype)instanceWithRenderTargetLocation:(lt::Quad)renderTargetLocation
-                    renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel {
+                    renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
+                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied {
   return [[self alloc] initWithRenderTargetLocation:renderTargetLocation
-                       renderTargetHasSingleChannel:renderTargetHasSingleChannel];
+                       renderTargetHasSingleChannel:renderTargetHasSingleChannel
+                     renderTargetIsNonPremultiplied:renderTargetIsNonPremultiplied];
 }
 
 #pragma mark -
@@ -32,8 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, render target location: %@, render target has "
-          "single channel: %@>", self.class, self, NSStringFromLTQuad(self.renderTargetLocation),
-          self.renderTargetHasSingleChannel ? @"YES" : @"NO"];
+          "single channel: %@, render target is non-premultiplied: %@>", self.class, self,
+          NSStringFromLTQuad(self.renderTargetLocation),
+          [@(self.renderTargetHasSingleChannel) stringValue],
+          [@(self.renderTargetIsNonPremultiplied) stringValue]];
 }
 
 - (BOOL)isEqual:(DVNBrushRenderTargetInformation *)information {
@@ -46,13 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return self.renderTargetLocation == information.renderTargetLocation &&
-      self.renderTargetHasSingleChannel == information.renderTargetHasSingleChannel;
+      self.renderTargetHasSingleChannel == information.renderTargetHasSingleChannel &&
+      self.renderTargetIsNonPremultiplied == information.renderTargetIsNonPremultiplied;
 }
 
 - (NSUInteger)hash {
   size_t seed = 0;
   lt::hash_combine(seed, std::hash<lt::Quad>()(self.renderTargetLocation));
   lt::hash_combine(seed, self.renderTargetHasSingleChannel);
+  lt::hash_combine(seed, self.renderTargetIsNonPremultiplied);
   return seed;
 }
 
