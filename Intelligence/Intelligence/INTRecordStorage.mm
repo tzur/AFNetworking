@@ -218,6 +218,42 @@ NS_ASSUME_NONNULL_BEGIN
   return records;
 }
 
+- (NSUInteger)recordCountWithError:(NSError * __autoreleasing *)error {
+  __block NSUInteger recordCount = 0;
+
+  __block auto success = YES;
+  __block NSError *internalError;
+  [self.databaseQueue inDatabase:^(FMDatabase *database) {
+    auto query = @"SELECT count(*) FROM records";
+    auto _Nullable results = [database executeQuery:query values:nil error:&internalError];
+
+    if (!results) {
+      success = NO;
+      return;
+    }
+
+    while ([results nextWithError:&internalError]) {
+      recordCount = (unsigned long)[results unsignedLongLongIntForColumnIndex:0];
+    }
+    [results close];
+
+    if (internalError) {
+      success = NO;
+      return;
+    }
+  }];
+
+  if (!success) {
+    if (error) {
+      *error = internalError;
+    }
+
+    return 0;
+  }
+
+  return recordCount;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

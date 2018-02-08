@@ -207,6 +207,12 @@ it(@"should remove oldest records to uphold maximal disk space usage", ^{
   expect(INTDataFromTuples(records)).to.equal(expected);
 });
 
+it(@"should return the amount of records", ^{
+  [storage saveRecords:@[INTRandomData(20), INTRandomData(30)] error:nil];
+
+  expect([storage recordCountWithError:nil]).to.equal(2);
+});
+
 context(@"database errors", ^{
   __block INTTestableDatabase *database;
   __block FMDatabaseQueue *databaseQueue;
@@ -266,6 +272,15 @@ context(@"database errors", ^{
     auto _Nullable records = [storage fetchOldestRecordsWithCount:10 error:&error];
 
     expect(records).to.beNil();
+    expect(error).to.equal(database.selectError);
+  });
+
+  it(@"should err if database errs on check of database size", ^{
+    database.selectError = [NSError lt_errorWithCode:1337];
+    NSError *error;
+    auto result = [storage recordCountWithError:&error];
+
+    expect(result).to.equal(0);
     expect(error).to.equal(database.selectError);
   });
 });
