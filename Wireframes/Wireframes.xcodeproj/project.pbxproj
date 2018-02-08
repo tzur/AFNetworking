@@ -62,6 +62,9 @@
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
 		8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */; };
 		8BE97B311D47463A001ED33A /* CATransaction+Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE97B301D47463A001ED33A /* CATransaction+Animations.m */; };
+		B45B9D8320038B7400BB6FE7 /* WFVolumeButtonEvents.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45B9D8220038B7400BB6FE7 /* WFVolumeButtonEvents.mm */; };
+		B45B9D892003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45B9D882003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm */; };
+		B4D948B32015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D948B12015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.mm */; };
 		C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */; };
 		C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */; };
 		C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */; };
@@ -487,6 +490,11 @@
 		8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
 		8BE97B2F1D47463A001ED33A /* CATransaction+Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CATransaction+Animations.h"; sourceTree = "<group>"; };
 		8BE97B301D47463A001ED33A /* CATransaction+Animations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+Animations.m"; sourceTree = "<group>"; };
+		B45B9D8120038B7300BB6FE7 /* WFVolumeButtonEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFVolumeButtonEvents.h; sourceTree = "<group>"; };
+		B45B9D8220038B7400BB6FE7 /* WFVolumeButtonEvents.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVolumeButtonEvents.mm; sourceTree = "<group>"; };
+		B45B9D882003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVolumeButtonEventsSpec.mm; sourceTree = "<group>"; };
+		B4D948B12015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "WFVolumeButtonEvent+NotificationName.mm"; sourceTree = "<group>"; };
+		B4D948B22015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WFVolumeButtonEvent+NotificationName.h"; sourceTree = "<group>"; };
 		C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Utilities.h"; sourceTree = "<group>"; };
 		C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Utilities.mm"; sourceTree = "<group>"; };
 		C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+UtilitiesSpec.mm"; sourceTree = "<group>"; };
@@ -712,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				6A7E53011CCE420E000AAAF3 /* Base */,
+				B45B9D59200344E600BB6FE7 /* Events */,
 				8B283FA31CBA9DAC00B745AE /* Extensions */,
 				6AAED9D11CC62A7C00B3C62F /* Image Providers */,
 				6AB2AB9C1CC4DB5500BC2371 /* RAC Support */,
@@ -890,6 +899,7 @@
 		8B283FA41CBA9DB200B745AE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B45B9D872003A95500BB6FE7 /* Events */,
 				8B283FA51CBA9DB700B745AE /* Extensions */,
 				6AAED9EB1CC62A8C00B3C62F /* Image Providers */,
 				6AB2AB9D1CC4DC6C00BC2371 /* RAC Support */,
@@ -950,6 +960,25 @@
 				8B6864811F3347DF00F0EF4C /* ReactiveObjCTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B45B9D59200344E600BB6FE7 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				B4D948B22015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.h */,
+				B4D948B12015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.mm */,
+				B45B9D8120038B7300BB6FE7 /* WFVolumeButtonEvents.h */,
+				B45B9D8220038B7400BB6FE7 /* WFVolumeButtonEvents.mm */,
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
+		B45B9D872003A95500BB6FE7 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				B45B9D882003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm */,
+			);
+			name = Events;
 			sourceTree = "<group>";
 		};
 		CDF61FF01FEC08BA00D05AEC /* Products */ = {
@@ -1388,7 +1417,9 @@
 				CDF61FEE1FEC04EF00D05AEC /* UIView+MASSafeArea.mm in Sources */,
 				C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */,
 				CDAC8C251FC44EEA00B197B3 /* WFVideoView.mm in Sources */,
+				B4D948B32015291500E0CCC1 /* WFVolumeButtonEvent+NotificationName.mm in Sources */,
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,
+				B45B9D8320038B7400BB6FE7 /* WFVolumeButtonEvents.mm in Sources */,
 				8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */,
 				6AB2AAF81CC3945C00BC2371 /* UIView+LayoutSignals.mm in Sources */,
 				6AAEDB841CD7381700B3C62F /* UIImageView+ViewModel.m in Sources */,
@@ -1416,6 +1447,7 @@
 				6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
 				6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */,
+				B45B9D892003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm in Sources */,
 				6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */,
 				8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */,
 				C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */,
