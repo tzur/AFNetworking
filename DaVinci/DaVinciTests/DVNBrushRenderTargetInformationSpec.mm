@@ -10,9 +10,11 @@ context(@"factory methods", ^{
     lt::Quad quad = lt::Quad::canonicalSquare();
     DVNBrushRenderTargetInformation *information =
         [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
-                                             renderTargetHasSingleChannel:YES];
+                                             renderTargetHasSingleChannel:YES
+                                           renderTargetIsNonPremultiplied:YES];
     expect(information.renderTargetLocation == quad).to.beTruthy();
     expect(information.renderTargetHasSingleChannel).to.beTruthy();
+    expect(information.renderTargetIsNonPremultiplied).to.beTruthy();
   });
 });
 
