@@ -63,22 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
     reverseDefaultValue:@"unknownError"];
 }
 
-- (BOOL)validate:(NSError *__autoreleasing *)error {
-  BOOL isModelValid = self.willAutoRenew ?
-      (self.expectedRenewalProductId && !self.isPendingPriceIncreaseConsent &&
-       !self.expirationReason && !self.isInBillingRetryPeriod) :
-      (!self.expectedRenewalProductId && self.expirationReason);
-  if (!isModelValid) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
-                             description:@"Invalid model state"];
-    }
-    return NO;
-  }
-
-  return YES;
-}
-
 @end
 
 #pragma mark -
