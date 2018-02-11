@@ -15,11 +15,17 @@ MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels);
 
-/// Reads an array of float32 numbers from \c fileName and returns them as a row vector.
+/// Reads an array of float32 numbers from \c resource and returns them as a row vector.
 cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource);
 
-/// Reads an array of float16 numbers from \c fileName and returns them as a row vector.
+/// Reads an array of float16 numbers from \c resource and returns them as a row vector.
 cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource);
+
+/// Reads an array of float16 numbers from \c resource and returns them as a matrix with dimensions
+/// defined by \c resource. \c resource must be in the form
+/// <tt><some text>_<width>x<height>x<depth>.<extension></tt>. The number of half-floats in
+/// \c resource must equal <tt>width * height * depth</tt> as extracted from the name.
+cv::Mat PNKLoadStructuredHalfFloatTensorFromResource(NSBundle *bundle, NSString *resource);
 
 /// Creates a half-float matrix with given \c rows, \c columns and \c channels and fills it with
 /// zeroes and ones in 3D chessboard pattern.

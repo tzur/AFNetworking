@@ -3,8 +3,8 @@
 
 #import "PNKSoftMaxLayer.h"
 
-static const NSUInteger kImageWidth = 15;
-static const NSUInteger kImageHeight = 16;
+static const NSUInteger kImageWidth = 16;
+static const NSUInteger kImageHeight = 15;
 static const NSUInteger kFeatureChannels = 32;
 
 DeviceSpecBegin(PNKSoftMaxLayer)
@@ -87,13 +87,10 @@ context(@"tensorflow golden standard", ^{
 
     softMaxOp = [[PNKSoftMaxLayer alloc] initWithDevice:device];
 
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"softmax_input.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kFeatureChannels, kImageHeight);
-
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"softmax_output.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kFeatureChannels, kImageHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+                                                                 @"softmax_input_15x16x32.tensor");
+    auto expectedMat =
+        PNKLoadStructuredHalfFloatTensorFromResource(bundle, @"softmax_output_15x16x32.tensor");
 
     return @{
       kPNKKernelExamplesKernel: softMaxOp,
