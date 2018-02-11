@@ -23,7 +23,7 @@ A typical scenario happens when an initiating application opens another applicat
 
 Let's take an example of *Videoleap* opening *Photofox* for asset editing. Here are some of the flows which **can** be implemented by message passing between the apps using TinCan:
 
-* It's possible to check whether a given message can be delivered to *Photofox*, and if not, user **can** be navigated to the *App Store* to download it, _but this up to application's implementation_ and is out of TinCan's scope.
+* It's possible to check whether a given message can be delivered to *Photofox*, and if not, user **can** be navigated to the *App Store* to download it. **Note** checking whether a message can be sent to a target application is within TinCan's responsibilities, however opening the *App Store* is not.
 * *Videoleap* opens *Photofox* for asset editing and goes to background. Once the user accepts the changes in *Photofox* and returns to *Videoleap*, the asset's edits become visible. TinCan is agnostic to application's crashes. However it's up to the **app's implementation** to be able to recover correctly from crash, during an external asset editing flow.
 
 ## Main components
@@ -34,9 +34,11 @@ Message is a metadata container, which is being passed from the source to a targ
 
 * **Identifier** - A unique identifier of a message.
 * **Source scheme** - A URL scheme of an application who sent this message. The scheme should be dedicated for TinCan's communication.
-* **Target scheme** - A URL scheme of an application this message is targeted to.
+* **Target scheme** - A URL scheme of an application this message is targeted to. The scheme should be dedicated for TinCan's communication.
 * **Application group ID** - An application group ID this message belongs to.
 * **User info dictionary** - A dictionary to store custom key-value pairs.
+* **Action** - An action associated with a message. It's an arbitrary user defined string.
+* **Type** - A type of this message. For example: `TINMessageTypeRequest` or `TINMessageTypeResponse`.
 
 Once created, the message is persistently stored in a shared directory, which can be accessed by applications that have entitlements to the application group ID associated with the shared folder.
 
@@ -48,7 +50,7 @@ Category exposing all the default supported keys `TINMessage`'s `userInfo` dicti
 
 Does the following things:
 * Sends a `TINMessage` from one app to the other. Sending a `TINMessage` to an application will result in opening that application and make it the active application running on the foreground.
-* Receives a `TINMessage` (via an integration to the receiver's app delegate).
+* Constructs `TINMessage`s from URLs with which the app was opened.
 * Manages the messages received by the application by allowing to remove all of them.
 
 ## Usage examples
@@ -62,11 +64,11 @@ When creating a message from an existing `UIImage`, `NSData` or file URL one can
 
 In all the cases above the attached `NSData`/`UIImage`/`fileURL` will be stored persistently at the message's designated directory, and can be accessed using the `fileURLs` property.
 The `userInfo` dictionary can be used to pass an arbitrary, `NSSecureCoding` conforming, data in a message. It's up to the integrating developer to define the exact keys and values which are supported. An example to such key-value pair can be “action” key with “action description” value. When the message sending application can fill “edit” or “export” as an action description based on user's request.
-For example, given an image one can create message originating from `photofox` to `videoleap` using the following code (assuming `photofox` and `videoleap` are registered as schemes in *Photofox* and *Videoleap* applications):
+For example, given an image one can create message originating from `tincan-photofox` to `tincan-videoleap` using the following code (assuming `tincan-photofox` and `tincan-videoleap` are registered as schemes in *Photofox* and *Videoleap* applications):
 
 ```objc
-auto messageFactory = [TINMessageFactory messageFactoryWithSourceScheme:@"photofox"];
-auto _Nullable message = [messageFactory messageWithTargetScheme:@"videoleap" userInfo:@{}];
+auto messageFactory = [TINMessageFactory messageFactoryWithSourceScheme:@"tincan-photofox"];
+auto _Nullable message = [messageFactory messageWithTargetScheme:@"tincan-videoleap" userInfo:@{}];
 
 if (!message) {
   // handle an error in message creation. For example image can't be written into message
@@ -82,7 +84,7 @@ Example:
 
 ```objc
 NSData *data = // some data to be written
-auto _Nullable message = [factory messageWithTargetScheme:@"photofox"
+auto _Nullable message = [factory messageWithTargetScheme:@"tincan-photofox"
                           block:^NSDictionary *(NSURL *messageDirectory, NSError **) {
   auto _Nullable fileURL = nn([messageDirectory URLByAppendingPathComponent:@"foo"]);
   [data writeToFile:fileURL.path options:nil error:nil];
@@ -92,29 +94,6 @@ auto _Nullable message = [factory messageWithTargetScheme:@"photofox"
   };
 } error:nil];
 ```
-
-#### Application specific message creation
-
-Similarly to the client-server model, a service providing application should define the interface of the messages it supports and their format. Additionally the service providing app will define the responses to these messages, if exist.
-Let's take an example of *Photofox* as a provider of *image editing services*. It defines the following interface to send an image edit request:
-
-```objc
-/// Returns a \c TINMessage with the attached \c image to be edited, originated from
-/// \c sourceScheme. \c context is an optional data which will be forwarded as-is in the
-/// corresponding response message (with an edited image). If an error occurs the \c error will
-/// be set and \c nil will be returned.
-///
-/// @important the response message's \c userInfo is guaranteed to have the \c context
-/// accessible by \c kTINMessageContextKey, if \c context isn't \c nil. Additionally the response
-/// message will have the edited image available using the \c filesURL array (first element).
-TINMessage * _Nullable ENEditImageMessage(UIImage *image, NSString *sourceScheme,
-                                          _Nullable id<NSSecureCoding> context, NSError **error);
-```
-
-**Notes**
-
-* The response message format is described in the API definition above, along with the request message.
-* This code should be visible to all potential service consumers, hence it must reside in TinCan project.
 
 ### Sending a message
 
@@ -131,7 +110,7 @@ if (![messenger canSendMessageToTargetScheme:targetScheme]) {
   return;
 }
 
-TINMessage message = // Create a message to be sent.
+TINMessage *message = // Create a message to be sent.
 
 [messenger sendMessage:message block:^(BOOL success, NSError *error) {
   if (!success) {
@@ -164,7 +143,7 @@ Code example for receiving a message in `-[UIApplicationDelegate application:ope
 
 ### Deleting messages
 
-TinCan never deletes any messages automatically, **it is up to the application to delete obsolete messages**. `-[TINMessenger removeAllMessagesForScheme:error:]` removes all the messages targeted to the provided scheme. The provided scheme must be one of the application's suppored schemes defined in applications ~Info.plist~, otherwise an error is be reported. It's **advised to remove the incoming message** right after compleating its processing.
+TinCan never deletes any messages automatically, **it is up to the application to delete obsolete messages**. `-[TINMessenger removeAllMessagesForScheme:error:]` removes all the messages targeted to the provided scheme. The provided scheme must be one of the application's suppored schemes defined in applications ~Info.plist~, otherwise an error is be reported. It's **advised to remove the incoming message** right after completing its processing.
 
 Example:
 
@@ -173,10 +152,79 @@ Example:
             options:(NSDictionary*)options {
   //...
   auto messenger = [TINMessenger messenger];
-  LTAssert([messenger isTinCanURL:url]);
-  auto message = nn([messenger messageFromURL:url error:nil]);
-  // store aside incoming message's content
-  [messenger removeAllMessagesForScheme:message.targetScheme error:nil];
+  if ([messenger isTinCanURL:url]) {
+    auto message = nn([messenger messageFromURL:url error:nil]);
+    // You must copy message's contents for further processing, before removing the message.
+    [self copyContentOfMessage:message];
+    [messenger removeAllMessagesForScheme:message.targetScheme error:nil];
+  }
   // ...
 }
+```
+
+## Integration
+
+This section describes the steps to be performed by TinCan's integrating engineer.
+
+### Application specific message creation
+
+Similarly to the client-server model, an application that provides a service should define the interface of the messages it supports and their format, by adding a category on top of the `TINMessageFactory`. The documentation to the messages it supports will also contain the format of the responses the app will send, if there are such responses.
+Let's take an example of *Photofox* as a provider of *image editing services*. It defines the following interface to send an image edit request:
+
+```objc
+@interface TINMessageFactory (Photofox)
+
+/// Returns a \c TINMessage with the attached \c image to be edited. \c context is an opaque object
+/// which will be forwarded as-is in the corresponding response message (with an edited image). If
+/// an error occurs, \c error will be set and \c nil will be returned.
+///
+/// @important the response message's \c userInfo is guaranteed to have the \c context accessible by
+/// \c kTINMessageContextKey. Additionally the response message will have the edited image available
+/// using the \c filesURL array (first element).
+- (TINMessage * _Nullable) en_editingRequestMessageWithImage:(UIImage *)image 
+                                                     context:(id<NSSecureCoding>)context
+                                                       error:(NSError **)error;
+
+@end
+```
+
+**Notes**
+
+* The response message format is described in the API definition above, along with the request message.
+* This code should be visible to all potential service consumers, hence it must reside in TinCan project.
+* Message's originating scheme is defined by the `TINMessageFactory` instance.
+
+### Analytics integration
+
+The integrating application should add its custom *inter app communication* events. In order to keep things uniform the app must include the following information in every event which is sent for a `TINMessage`:
+1. `identifier`
+2. `sourceScheme`
+3. `targetScheme`
+4. `action`
+5. `type`
+
+### Project file configuration
+
+1. The integrating application must add all the target schemes, to whom it can **send** a `TINMessage`, to the application's `Info.plist` by adding `LSApplicationQueriesSchemes` key with appropriate values. For example *Photofox* can reply to *Videoleap*'s image edit requests, by sending messages to `tincan-videoleap`. Hence *Photofox* must add *Videoleap*'s scheme to its `Info.plist` as follows:
+
+```
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>tincan-videoleap</string>
+</array>
+```
+
+1. The integrating application must add support for the schemes with which it can **receive** TinCan's messages, in its `Info.plist`. For example *Photofox* can receive TinCan messages sent to the scheme `tincan-photofox`. Hence *Photofox*'s `Info.plist` will include the following lines:
+
+```
+<dict>
+	<key>CFBundleTypeRole</key>
+	<string>Editor</string>
+	<key>CFBundleURLName</key>
+	<string>tincan-photofox</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>tincan-photofox</string>
+	</array>
+</dict>
 ```
