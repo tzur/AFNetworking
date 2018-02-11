@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
   subscriptionButton.enabled = NO;
   subscriptionButton.topText =
       [self.formatter billingPeriodTextForSubscription:subscriptionDescriptor
-                                         monthlyFormat:NO];
+                                         monthlyFormat:YES];
   subscriptionButton.bottomGradientColors = isHighlighted && self.highlightedBottomColors ?
       self.highlightedBottomColors : self.bottomGradientColors;
   if (isHighlighted) {
