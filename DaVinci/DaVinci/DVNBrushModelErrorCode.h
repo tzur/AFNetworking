@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Enumeration of error codes related to \c DVNBrushModel.
-LTEnumDeclare(NSUInteger, DVNBrushModelErrorCode,
+LTEnumDeclare(NSInteger, DVNBrushModelErrorCode,
   /// Code of an error occurring when no version string can be found in a serialized version of a
   /// \c DVNBrushModel.
   DVNBrushModelErrorCodeNoSerializedVersion,
