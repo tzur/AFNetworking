@@ -11,18 +11,28 @@ static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKAddition *additionOp;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+  additionOp = [[PNKAddition alloc] initWithDevice:device];
+});
+
+afterEach(^{
+  device = nil;
+  additionOp = nil;
 });
 
 context(@"kernel input verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
   beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
   });
 
   it(@"should raise an exception when input feature channels mismatch", ^{
@@ -60,10 +70,6 @@ context(@"kernel input verification", ^{
 });
 
 context(@"kernel input region", ^{
-  beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
-  });
-
   it(@"should calculate primary input region correctly", ^{
     MTLSize outputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
     MTLRegion primaryInputRegion = [additionOp primaryInputRegionForOutputSize:outputSize];
@@ -92,19 +98,25 @@ context(@"addition operation with Unorm8 channel format", ^{
   static const cv::Vec4b kInputBValue(3, 4, 5, 6);
   static const cv::Vec4b kOutputValue(3, 5, 7, 9);
 
+  __block id<MTLCommandBuffer> commandBuffer;
   __block cv::Mat4b inputAMat;
   __block cv::Mat4b inputBMat;
   __block cv::Mat4b expected;
 
   beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+
     inputAMat = cv::Mat4b(kInputWidth, kInputHeight, kInputAValue);
     inputBMat = cv::Mat4b(kInputWidth, kInputHeight, kInputBValue);
     expected = cv::Mat4b(kInputWidth, kInputHeight, kOutputValue);
   });
 
-  it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
+  afterEach(^{
+    commandBuffer = nil;
+  });
 
+  it(@"should add inputs correctly for non-array textures", ^{
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
@@ -122,8 +134,6 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
-
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
                                          kInputArrayFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
@@ -156,11 +166,15 @@ context(@"addition operation with Float16 channel format", ^{
   static const cv::Vec4hf kOutputValue(half_float::half(3), half_float::half(5),
                                        half_float::half(7), half_float::half(9));
 
+  __block id<MTLCommandBuffer> commandBuffer;
   __block cv::Mat4hf inputAMat;
   __block cv::Mat4hf inputBMat;
   __block cv::Mat4hf expected;
 
   beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+
     inputAMat = cv::Mat4hf(kInputWidth, kInputHeight);
     inputAMat.setTo(kInputAValue);
     inputBMat = cv::Mat4hf(kInputWidth, kInputHeight);
@@ -169,9 +183,11 @@ context(@"addition operation with Float16 channel format", ^{
     expected.setTo(kOutputValue);
   });
 
-  it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
+  afterEach(^{
+    commandBuffer = nil;
+  });
 
+  it(@"should add inputs correctly for non-array textures", ^{
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
@@ -192,8 +208,6 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
-
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputArrayFeatureChannels);
     auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
@@ -220,8 +234,6 @@ context(@"addition operation with Float16 channel format", ^{
 
 context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
-
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,
       kPNKTemporaryImageExamplesDevice: device,
@@ -230,8 +242,6 @@ context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
   });
 
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device];
-
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,
       kPNKTemporaryImageExamplesDevice: device,

@@ -64,6 +64,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"parameter tests", ^{
   context(@"initialization", ^{
     __block PNKBinaryGather *gather;
@@ -108,6 +112,11 @@ context(@"parameter tests", ^{
                         secondaryFeatureChannelIndices:kSecondaryFeatureChannelIndices];
       auto commandQueue = [device newCommandQueue];
       commandBuffer = [commandQueue commandBuffer];
+    });
+
+    afterEach(^{
+      gather = nil;
+      commandBuffer = nil;
     });
 
     it(@"should raise when primary input image width does not fit output image width", ^{
@@ -226,6 +235,10 @@ context(@"kernel input region", ^{
                         primaryFeatureChannelIndices:kPrimaryFeatureChannelIndices
                        secondaryInputFeatureChannels:kSecondaryInputFeatureChannels
                       secondaryFeatureChannelIndices:kSecondaryFeatureChannelIndices];
+  });
+
+  afterEach(^{
+    gather = nil;
   });
 
   it(@"should calculate primary input region correctly", ^{

@@ -94,6 +94,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"kernel input region", ^{
   static const NSUInteger kChannelsCount = 3;
   static const NSUInteger kSecondaryChannelsCount = 15;
@@ -102,6 +106,10 @@ context(@"kernel input region", ^{
 
   beforeEach(^{
     concatOp = [[PNKConcatenation alloc] initWithDevice:device];
+  });
+
+  afterEach(^{
+    concatOp = nil;
   });
 
   it(@"should calculate primary input region correctly", ^{

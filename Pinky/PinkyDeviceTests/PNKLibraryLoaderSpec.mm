@@ -11,6 +11,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 it(@"should load library", ^{
   auto library = PNKLoadLibrary(device);
   expect(library).notTo.beNil();

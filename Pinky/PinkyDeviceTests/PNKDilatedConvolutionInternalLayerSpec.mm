@@ -52,6 +52,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"parameter tests", ^{
   __block pnk::ConvolutionKernelModel convolutionKernelModel;
 
@@ -94,15 +98,19 @@ context(@"parameter tests", ^{
     static const NSUInteger kInputHeight = 32;
 
     __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
-    __block id<MTLCommandQueue> commandQueue;
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
       convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                            initWithDevice:device
                            convolutionModel:convolutionKernelModel];
-      commandQueue = [device newCommandQueue];
+      auto commandQueue = [device newCommandQueue];
       commandBuffer = [commandQueue commandBuffer];
+    });
+
+    afterEach(^{
+      convolutionKernel = nil;
+      commandBuffer = nil;
     });
 
     it(@"should not raise when called with correct parameters", ^{
@@ -182,12 +190,14 @@ context(@"kernel input region", ^{
   __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
 
   beforeEach(^{
-    pnk::ConvolutionKernelModel convolutionKernelModel =
-        PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1, kStrideX, kStrideY,
-                                 pnk::PaddingTypeSame);
+    auto convolutionModel = PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1,
+                                                     kStrideX, kStrideY, pnk::PaddingTypeSame);
     convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                         initWithDevice:device
-                         convolutionModel:convolutionKernelModel];
+                         initWithDevice:device convolutionModel:convolutionModel];
+  });
+
+  afterEach(^{
+    convolutionKernel = nil;
   });
 
   it(@"should calculate input region correctly", ^{

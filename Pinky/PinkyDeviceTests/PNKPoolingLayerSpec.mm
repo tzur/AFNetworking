@@ -167,6 +167,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"parameter checks", ^{
   __block pnk::PoolingKernelModel poolingModel;
 
@@ -300,6 +304,10 @@ context(@"kernel input region", ^{
     };
 
     poolingKernel = [[PNKPoolingLayer alloc] initWithDevice:device poolingModel:poolingModel];
+  });
+
+  afterEach(^{
+    poolingKernel = nil;
   });
 
   it(@"should calculate input region correctly", ^{

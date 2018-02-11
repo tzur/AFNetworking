@@ -10,19 +10,29 @@ static const NSUInteger kFeatureChannels = 32;
 DeviceSpecBegin(PNKSoftMaxLayer)
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKSoftMaxLayer *softMaxOp;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+  softMaxOp = [[PNKSoftMaxLayer alloc] initWithDevice:device];
+});
+
+afterEach(^{
+  device = nil;
+  softMaxOp = nil;
 });
 
 context(@"parameter tests", ^{
   context(@"encodeToCommandBuffer", ^{
+    __block id<MTLCommandBuffer> commandBuffer;
+
     beforeEach(^{
-      softMaxOp = [[PNKSoftMaxLayer alloc] initWithDevice:device];
+      auto commandQueue = [device newCommandQueue];
+      commandBuffer = [commandQueue commandBuffer];
+    });
+
+    afterEach(^{
+      commandBuffer = nil;
     });
 
     it(@"should raise when input image width does not fit output image size", ^{

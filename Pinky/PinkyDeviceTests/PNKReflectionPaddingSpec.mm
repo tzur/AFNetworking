@@ -19,18 +19,28 @@ static const NSUInteger kOutputWidth = kInputWidth + kPadding.left + kPadding.ri
 static const NSUInteger kOutputHeight = kInputHeight + kPadding.top + kPadding.bottom;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKReflectionPadding *reflectionPadding;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+  reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
+});
+
+afterEach(^{
+  device = nil;
+  reflectionPadding = nil;
 });
 
 context(@"kernel input verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
   beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
   });
 
   it(@"should raise an exception when input feature channels mismatch", ^{
@@ -111,10 +121,6 @@ context(@"kernel input verification", ^{
 });
 
 context(@"kernel input region", ^{
-  beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
-  });
-
   it(@"should calculate input region correctly", ^{
     MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
     MTLSize outputSize = {kOutputWidth, kOutputHeight, kInputFeatureChannels};
@@ -132,15 +138,23 @@ context(@"kernel input region", ^{
 });
 
 context(@"reflection padding with Unorm8 channel format", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
   __block cv::Mat4b inputMat;
   __block cv::Mat4b expected;
 
   beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+
     inputMat = LTLoadMat([self class], @"Lena128.png");
     expected = cv::Mat4b(inputMat.rows + (int)kPadding.top + (int)kPadding.bottom,
                          inputMat.cols + (int)kPadding.left + (int)kPadding.right);
     cv::copyMakeBorder(inputMat, expected, (int)kPadding.top, (int)kPadding.bottom,
                        (int)kPadding.left, (int)kPadding.right, cv::BORDER_REFLECT_101);
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
   });
 
   it(@"should do reflection correctly for non-array textures", ^{
@@ -188,7 +202,6 @@ context(@"reflection padding with Unorm8 channel format", ^{
 
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
@@ -197,7 +210,6 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   });
 
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,

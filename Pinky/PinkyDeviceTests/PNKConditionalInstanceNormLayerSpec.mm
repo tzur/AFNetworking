@@ -27,7 +27,7 @@ static cv::Mat PNKConvertToMultichannelMatrix(cv::Mat matrix, NSUInteger rows, N
   return result.reshape(iChannels, iRows);
 }
 
-SpecBegin(PNKConditionalInstanceNormLayer)
+DeviceSpecBegin(PNKConditionalInstanceNormLayer)
 
 static const NSUInteger kInputWidth = 15;
 static const NSUInteger kInputHeight = 16;
@@ -35,13 +35,14 @@ static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKConditionalInstanceNormLayer *ciNormOp;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+});
+
+afterEach(^{
+  device = nil;
 });
 
 context(@"kernel input region", ^{
@@ -289,4 +290,4 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd
