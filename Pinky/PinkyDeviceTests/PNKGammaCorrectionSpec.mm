@@ -10,52 +10,67 @@ static const NSUInteger kInputHeight = 6;
 static const NSUInteger kInputFeatureChannels = 4;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKGammaCorrection *gammaCorrection;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
   gammaCorrection = [[PNKGammaCorrection alloc] initWithDevice:device gamma:0.5];
 });
 
-it(@"should raise an exception when input width mismatch", ^{
-  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
-                                       kInputFeatureChannels);
-  expect(^{
-    [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                               outputImage:outputImage];
-  }).to.raise(NSInvalidArgumentException);
+afterEach(^{
+  device = nil;
+  gammaCorrection = nil;
 });
 
-it(@"should raise an exception when input height mismatch", ^{
-  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
-                                       kInputFeatureChannels);
-  expect(^{
-    [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                               outputImage:outputImage];
-  }).to.raise(NSInvalidArgumentException);
-});
+context(@"kernel input verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
 
-it(@"should raise an exception when input texture is an array", ^{
-  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  expect(^{
-    [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                               outputImage:outputImage];
-  }).to.raise(NSInvalidArgumentException);
-});
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
 
-it(@"should raise an exception when output texture is an array", ^{
-  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
-  expect(^{
-    [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                               outputImage:outputImage];
-  }).to.raise(NSInvalidArgumentException);
+  afterEach(^{
+    commandBuffer = nil;
+  });
+
+  it(@"should raise an exception when input width mismatch", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
+                                         kInputFeatureChannels);
+    expect(^{
+      [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise an exception when input height mismatch", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
+                                         kInputFeatureChannels);
+    expect(^{
+      [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise an exception when input texture is an array", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    expect(^{
+      [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise an exception when output texture is an array", ^{
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
+    expect(^{
+      [gammaCorrection encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                 outputImage:outputImage];
+    }).to.raise(NSInvalidArgumentException);
+  });
 });
 
 context(@"kernel input region", ^{
@@ -74,6 +89,17 @@ context(@"kernel input region", ^{
 });
 
 context(@"processing", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+  });
+
   it(@"should adjust alpha channel correctly for Unorm texture", ^{
     cv::Vec4b kInputColor(4, 9, 4, 255);
     cv::Vec4b kGammaCorrectedInputColor(32, 48, 32, 255);

@@ -103,6 +103,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"parameter tests", ^{
   __block pnk::NormalizationKernelModel normalizationModel;
   __block pnk::ActivationKernelModel activationModel;
@@ -134,12 +138,16 @@ context(@"parameter tests", ^{
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
-      device = MTLCreateSystemDefaultDevice();
       batchNormKernel = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
                                                         normalizationModel:normalizationModel
                                                            activationModel:activationModel];
       auto commandQueue = [device newCommandQueue];
       commandBuffer = [commandQueue commandBuffer];
+    });
+
+    afterEach(^{
+      batchNormKernel = nil;
+      commandBuffer = nil;
     });
 
     it(@"should not raise when called with correct parameters", ^{
@@ -214,6 +222,10 @@ context(@"kernel input region", ^{
     batchNormKernel = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
                                                       normalizationModel:normalizationModel
                                                          activationModel:activationModel];
+  });
+
+  afterEach(^{
+    batchNormKernel = nil;
   });
 
   it(@"should calculate input region correctly", ^{

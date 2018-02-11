@@ -39,22 +39,32 @@ static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
-__block PNKActivationLayer *neuron;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+});
+
+afterEach(^{
+  device = MTLCreateSystemDefaultDevice();
 });
 
 context(@"kernel input region", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+  __block PNKActivationLayer *neuron;
+
   beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeIdentity
     };
-
     neuron = [[PNKActivationLayer alloc] initWithDevice:device activationModel:activationModel];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+    neuron = nil;
   });
 
   it(@"should calculate primary input region correctly", ^{
@@ -89,7 +99,8 @@ context(@"tensorflow golden standard", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     auto activationModel = PNKBuildActivationModel(kInputArrayFeatureChannels,
                                                    pnk::ActivationTypeReLU);
-    neuron = [[PNKActivationLayer alloc] initWithDevice:device activationModel:activationModel];
+    auto neuron = [[PNKActivationLayer alloc] initWithDevice:device
+                                             activationModel:activationModel];
 
     NSBundle *bundle = NSBundle.lt_testBundle;
 
@@ -118,7 +129,8 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     auto activationModel = PNKBuildActivationModel(4, pnk::ActivationTypeIdentity);
 
-    neuron = [[PNKActivationLayer alloc] initWithDevice:device activationModel:activationModel];
+    auto neuron = [[PNKActivationLayer alloc] initWithDevice:device
+                                             activationModel:activationModel];
 
     return @{
       kPNKTemporaryImageExamplesKernel: neuron,

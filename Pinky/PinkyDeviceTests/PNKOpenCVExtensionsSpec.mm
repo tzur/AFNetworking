@@ -41,6 +41,13 @@ context(@"creating Mat from MTLTexture", ^{
     LTAssert(!error, @"Can't create texture from input image. Error %@", error);
   });
 
+  afterEach(^{
+    device = nil;
+    textureLoader = nil;
+    multiChannelTexture = nil;
+    singleChannelTexture = nil;
+  });
+
   it(@"should write texture content correctly", ^{
     auto output = PNKMatFromMTLTexture(multiChannelTexture);
     expect($(output)).to.equalMat($(multiChannelMat));

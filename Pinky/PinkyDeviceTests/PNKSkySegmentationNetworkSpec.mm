@@ -23,6 +23,11 @@ beforeEach(^{
   commandQueue = [device newCommandQueue];
 });
 
+afterEach(^{
+  device = nil;
+  commandQueue = nil;
+});
+
 context(@"segment", ^{
   __block cv::Mat expectedMask;
   __block MPSImage *inputImage;

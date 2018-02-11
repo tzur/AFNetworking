@@ -46,6 +46,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 context(@"parameter tests", ^{
   context(@"initialization", ^{
     __block PNKGather *gather;
@@ -136,6 +140,10 @@ context(@"kernel input region", ^{
   beforeEach(^{
     gather = [[PNKGather alloc] initWithDevice:device inputFeatureChannels:kInputFeatureChannels
                    outputFeatureChannelIndices:kOutputFeatureChannelIndices];
+  });
+
+  afterEach(^{
+    gather = nil;
   });
 
   it(@"should calculate input region correctly", ^{

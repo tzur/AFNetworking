@@ -10,6 +10,7 @@
 
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
+#import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
 #import "PNKImageBilinearScale.h"
 #import "PNKNeuralNetworkModel.h"
@@ -70,8 +71,8 @@ static const NSUInteger kShapeModelInputSide = 512;
       return nil;
     }
 
-    _device = MTLCreateSystemDefaultDevice();
-    _commandQueue = [self.device newCommandQueue];
+    _device = PNKDefaultDevice();
+    _commandQueue = PNKDefaultCommandQueue();
 
     _network = [[PNKSkySegmentationNetwork alloc] initWithDevice:self.device networkModel:*model
                                                       shapeModel:shapeModel];

@@ -9,22 +9,29 @@
 DeviceSpecBegin(PNKImageBilinearScale)
 
 __block id<MTLDevice> device;
+__block PNKImageBilinearScale *scale;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
+  scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
+});
+
+afterEach(^{
+  device = nil;
+  scale = nil;
 });
 
 context(@"parameter tests", ^{
-  __block PNKImageBilinearScale *scale;
-
   context(@"encoding", ^{
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
-      device = MTLCreateSystemDefaultDevice();
-      scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
       auto commandQueue = [device newCommandQueue];
       commandBuffer = [commandQueue commandBuffer];
+    });
+
+    afterEach(^{
+      commandBuffer = nil;
     });
 
     it(@"should raise when called with illegal combination of channels count", ^{
@@ -42,7 +49,6 @@ context(@"parameter tests", ^{
 });
 
 context(@"resize", ^{
-  __block PNKImageBilinearScale *scale;
   __block id<MTLCommandBuffer> commandBuffer;
 
   beforeEach(^{
@@ -50,9 +56,11 @@ context(@"resize", ^{
     commandBuffer = [commandQueue commandBuffer];
   });
 
-  it(@"should resize image correctly", ^{
-    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
+  afterEach(^{
+    commandBuffer = nil;
+  });
 
+  it(@"should resize image correctly", ^{
     auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
     auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
@@ -76,8 +84,6 @@ context(@"resize", ^{
   });
 
   it(@"should resize image and transform Y to RGBA correctly", ^{
-    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
-
     auto inputMatRGBA = LTLoadMat([self class], @"ResizeInput.png");
     cv::Mat inputMat;
     cv::cvtColor(inputMatRGBA, inputMat, CV_RGBA2GRAY);
@@ -107,8 +113,6 @@ context(@"resize", ^{
   });
 
   it(@"should resize image and transform RGBA to Y correctly", ^{
-    scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
-
     auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
     auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
@@ -135,10 +139,8 @@ context(@"resize", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
+context(@"temporary image read count", ^{
   it(@"should decrement read count of an input image of class MPSTemporaryImage", ^{
-    auto scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
-
     auto commandQueue = [device newCommandQueue];
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 

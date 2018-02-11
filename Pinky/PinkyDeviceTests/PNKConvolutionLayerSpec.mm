@@ -58,13 +58,14 @@ static const NSUInteger kNoDilation = 1;
 static const NSUInteger kKernelSide = 3;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKConvolutionLayer *convolutionOp;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+});
+
+afterEach(^{
+  device = nil;
 });
 
 context(@"kernel input region", ^{

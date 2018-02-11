@@ -19,18 +19,28 @@ static const NSUInteger kOutputWidth = kInputWidth - kMargins.left - kMargins.ri
 static const NSUInteger kOutputHeight = kInputHeight - kMargins.top - kMargins.bottom;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKCrop *crop;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+});
+
+afterEach(^{
+  device = nil;
 });
 
 context(@"kernel input verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
   beforeEach(^{
     crop = [[PNKCrop alloc] initWithDevice:device margins:kMargins];
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    crop = nil;
+    commandBuffer = nil;
   });
 
   it(@"should raise when input and output width do not match", ^{

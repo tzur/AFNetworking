@@ -13,13 +13,14 @@ static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKInstanceNormLayer *instanceNormOp;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
+});
+
+afterEach(^{
+  device = nil;
 });
 
 context(@"kernel input region", ^{
@@ -58,6 +59,17 @@ context(@"kernel input region", ^{
 });
 
 context(@"instance normalization operation with Float16 channel format", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+  });
+
   it(@"should normalize input correctly for array textures", ^{
     NSUInteger inputChannels = kInputArrayFeatureChannels;
 

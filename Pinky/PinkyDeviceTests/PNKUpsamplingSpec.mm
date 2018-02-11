@@ -128,18 +128,31 @@ static const NSUInteger kOutputWidth = kInputWidth * 2;
 static const NSUInteger kOutputHeight = kInputHeight * 2;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKUpsampling *nearestNeighborUpsampler;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
   nearestNeighborUpsampler = [[PNKUpsampling alloc] initWithDevice:device
                               upsamplingType:PNKUpsamplingTypeNearestNeighbor];
 });
 
+afterEach(^{
+  device = nil;
+  nearestNeighborUpsampler = nil;
+});
+
 context(@"kernel input verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+  });
+
   it(@"should raise an exception when input and output array length mismatch", ^{
     auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kOutputWidth, kOutputHeight,

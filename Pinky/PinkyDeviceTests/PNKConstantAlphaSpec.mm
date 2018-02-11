@@ -10,17 +10,30 @@ static const NSUInteger kInputHeight = 6;
 static const NSUInteger kInputFeatureChannels = 4;
 
 __block id<MTLDevice> device;
-__block id<MTLCommandBuffer> commandBuffer;
 __block PNKConstantAlpha *alphaLayer;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  auto commandQueue = [device newCommandQueue];
-  commandBuffer = [commandQueue commandBuffer];
   alphaLayer = [[PNKConstantAlpha alloc] initWithDevice:device alpha:0.5];
 });
 
+afterEach(^{
+  device = nil;
+  alphaLayer = nil;
+});
+
 context(@"parameter verification", ^{
+  __block id<MTLCommandBuffer> commandBuffer;
+
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+  });
+
   it(@"should raise an exception when input width mismatch", ^{
     auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
@@ -97,6 +110,17 @@ context(@"kernel input region", ^{
 context(@"processing", ^{
   static const cv::Vec4b kRedColor(255, 0, 0, 255);
   static const cv::Vec4b kRedColorHalfAlpha(255, 0, 0, 128);
+
+  __block id<MTLCommandBuffer> commandBuffer;
+
+  beforeEach(^{
+    auto commandQueue = [device newCommandQueue];
+    commandBuffer = [commandQueue commandBuffer];
+  });
+
+  afterEach(^{
+    commandBuffer = nil;
+  });
 
   it(@"should adjust alpha channel correctly for RGBA input", ^{
     cv::Mat4b inputMat(kInputWidth, kInputHeight, kRedColor);

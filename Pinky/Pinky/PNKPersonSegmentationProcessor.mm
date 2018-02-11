@@ -6,6 +6,7 @@
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKCrop.h"
+#import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
 #import "PNKImageBilinearScale.h"
 #import "PNKNetworkSchemeFactory.h"
@@ -59,7 +60,7 @@ static const pnk::PaddingSize kPadding = {
 - (nullable instancetype)initWithNetworkModel:(NSURL *)networkModelURL
                                         error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
-    _device = MTLCreateSystemDefaultDevice();
+    _device = PNKDefaultDevice();
     if (!PNKSupportsMTLDevice(self.device)) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
@@ -69,7 +70,7 @@ static const pnk::PaddingSize kPadding = {
       return nil;
     }
 
-    _commandQueue = [self.device newCommandQueue];
+    _commandQueue = PNKDefaultCommandQueue();
 
     auto scheme = [PNKNetworkSchemeFactory schemeWithDevice:self.device coreMLModel:networkModelURL
                                                       error:error];

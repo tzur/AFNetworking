@@ -16,6 +16,10 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+afterEach(^{
+  device = nil;
+});
+
 it(@"should raise when kernel weights count does not match other parameters", ^{
   convolutionKernelModel = {
     .kernelWidth = 3,
