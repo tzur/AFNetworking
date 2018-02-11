@@ -5,6 +5,7 @@
 
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
+#import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
 #import "PNKImageBilinearScale.h"
 #import "PNKNetworkSchemeFactory.h"
@@ -44,12 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithNetworkModel:(NSURL *)networkModelURL
                                         error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
-    _device = MTLCreateSystemDefaultDevice();
+    _device = PNKDefaultDevice();
     if (!PNKSupportsMTLDevice(self.device)) {
       return nil;
     }
 
-    _commandQueue = [self.device newCommandQueue];
+    _commandQueue = PNKDefaultCommandQueue();
 
     auto scheme = [PNKNetworkSchemeFactory schemeWithDevice:self.device coreMLModel:networkModelURL
                                                       error:error];

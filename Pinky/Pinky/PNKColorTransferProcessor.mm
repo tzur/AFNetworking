@@ -11,6 +11,7 @@
 #import "PNKColorTransferHistogram.h"
 #import "PNKColorTransferHistogramSpecification.h"
 #import "PNKColorTransferMinAndMax.h"
+#import "PNKDeviceAndCommandQueue.h"
 #import "PNKPixelBufferUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -317,7 +318,7 @@ static const NSUInteger kLatticeGridSize = 16;
   [self updateBuffersIfNeeded];
   [self updateComputeComponentsIfNeeded];
 
-  auto commandQueue = [self.device newCommandQueue];
+  auto commandQueue = PNKDefaultCommandQueue();
   auto commandBuffer = [commandQueue commandBuffer];
 
   [self prepareBuffersWithCommandBuffer:commandBuffer input:input reference:reference];
