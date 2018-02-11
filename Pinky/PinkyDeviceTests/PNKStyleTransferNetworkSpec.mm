@@ -52,7 +52,7 @@ context(@"stylize", ^{
     cv::cvtColor(outputMat, outputRGB, CV_RGBA2RGB);
     cv::Mat outputRGBA;
     cv::cvtColor(outputRGB, outputRGBA, CV_RGB2RGBA);
-    expect($(outputRGBA)).to.equalMat($(expectedMat));
+    expect($(outputRGBA)).to.beCloseToMatWithin($(expectedMat), 24);
   });
 
   it(@"should stylize grey image correctly", ^{
@@ -83,7 +83,7 @@ context(@"stylize", ^{
 
     cv::Mat1b expectedMat = LTLoadMat([self class], @"Lena_sketch1.png");
     auto outputMat = PNKMatFromMTLTexture(outputImage.texture);
-    expect($(outputMat)).to.equalMat($(expectedMat));
+    expect($(outputMat)).to.beCloseToMatWithin($(expectedMat), 5);
   });
 });
 
