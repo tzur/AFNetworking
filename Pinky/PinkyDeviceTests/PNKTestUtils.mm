@@ -10,6 +10,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Extracts image size from the tensor file name. The \c fileName must be in form
+/// <tt><some text>_<width>x<height>x<depth>.<extension></tt>; zero size is returned otherwise.
+static MTLSize PNKImageSizeFromFileName(NSString *fileName) {
+  auto *regex = [NSRegularExpression
+                 regularExpressionWithPattern:@"^.*_(\\d+)x(\\d+)x(\\d+)\\.\\w+$"
+                 options:0 error:nil];
+  auto matches = [regex matchesInString:fileName options:0 range:NSMakeRange(0, fileName.length)];
+  if (matches.count != 1) {
+    return MTLSizeMake(0, 0, 0);
+  }
+
+  auto match = matches[0];
+  if (match.numberOfRanges != 4) {
+    return MTLSizeMake(0, 0, 0);
+  }
+
+  auto height = [[fileName substringWithRange:[match rangeAtIndex:1]] integerValue];
+  auto width = [[fileName substringWithRange:[match rangeAtIndex:2]] integerValue];
+  auto depth = [[fileName substringWithRange:[match rangeAtIndex:3]] integerValue];
+
+  return MTLSizeMake(width, height, depth);
+}
+
 MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format,
                        NSUInteger width, NSUInteger height, NSUInteger channels) {
   return [MPSImage pnk_imageWithDevice:device format:format width:width height:height
@@ -47,6 +70,18 @@ cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *
   cv::Mat1hf tensorData(1, (int)tensorFile.size / sizeof(half_float::half));
   memcpy(tensorData.data, tensorFile.data, tensorFile.size);
   return tensorData;
+}
+
+cv::Mat PNKLoadStructuredHalfFloatTensorFromResource(NSBundle *bundle, NSString *resource) {
+  auto tensorAsOneRow = PNKLoadHalfFloatTensorFromBundleResource(bundle, resource);
+  auto tensorSize = PNKImageSizeFromFileName(resource);
+  LTParameterAssert((NSUInteger)tensorAsOneRow.total() == tensorSize.width * tensorSize.height *
+                    tensorSize.depth, @"Tensor size %lu does not match its dimensions "
+                    "%lu * %lu * %lu", (unsigned long)tensorAsOneRow.total(),
+                    (unsigned long)tensorSize.width, (unsigned long)tensorSize.height,
+                    (unsigned long)tensorSize.depth);
+  cv::Mat result = tensorAsOneRow.reshape((int)tensorSize.depth, (int)tensorSize.height);
+  return result;
 }
 
 cv::Mat PNKFillMatrix(int rows, int columns, int channels) {

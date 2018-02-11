@@ -120,6 +120,45 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
   };
 }
 
+static NSDictionary *PNKBuildDataForGoldenStandardExamples(id<MTLDevice> device,
+                                                           NSString *inputName,
+                                                           NSString *outputName,
+                                                           NSUInteger kernelWidth,
+                                                           NSUInteger kernelHeight,
+                                                           NSUInteger strideX, NSUInteger strideY,
+                                                           pnk::PoolingType pooling,
+                                                           pnk::PaddingType padding) {
+  pnk::PoolingKernelModel poolingModel = {
+    .pooling = pooling,
+    .kernelWidth = kernelWidth,
+    .kernelHeight = kernelHeight,
+    .strideX = strideX,
+    .strideY = strideY,
+    .padding = padding,
+    .averagePoolExcludePadding = YES,
+    .globalPooling = NO
+  };
+
+  auto poolingKernel = [[PNKPoolingLayer alloc] initWithDevice:device poolingModel:poolingModel];
+
+  NSBundle *bundle = NSBundle.lt_testBundle;
+
+  auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle, inputName);
+  auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle, outputName);
+
+  return @{
+    kPNKKernelExamplesKernel: poolingKernel,
+    kPNKKernelExamplesDevice: device,
+    kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+    kPNKKernelExamplesOutputChannels: @(expectedMat.channels()),
+    kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+    kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+    kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+    kPNKKernelExamplesExpectedMat: $(expectedMat),
+    kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+  };
+}
+
 DeviceSpecBegin(PNKPoolingLayer)
 
 __block id<MTLDevice> device;
@@ -285,6 +324,36 @@ context(@"kernel input region", ^{
     MTLSize outputSize = [poolingKernel outputSizeForInputSize:inputSize];
 
     expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
+});
+
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildDataForGoldenStandardExamples(device,
+                                                 @"pooling_basic_input_15x16x32.tensor",
+                                                 @"pooling_basic_output_15x16x32.tensor", 3, 3, 1,
+                                                 1, pnk::PoolingTypeAverage, pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildDataForGoldenStandardExamples(device,
+                                                 @"pooling_stride_input_15x16x32.tensor",
+                                                 @"pooling_stride_output_8x8x32.tensor", 3, 3, 2, 2,
+                                                 pnk::PoolingTypeAverage, pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildDataForGoldenStandardExamples(device,
+                                                 @"pooling_valid_input_15x16x32.tensor",
+                                                 @"pooling_valid_output_13x14x32.tensor", 3, 3, 1,
+                                                 1, pnk::PoolingTypeAverage, pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildDataForGoldenStandardExamples(device,
+                                                 @"pooling_max_input_15x16x32.tensor",
+                                                 @"pooling_max_output_15x16x32.tensor", 3, 3, 1, 1,
+                                                 pnk::PoolingTypeMax, pnk::PaddingTypeSame);
   });
 });
 
