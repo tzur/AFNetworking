@@ -7,7 +7,7 @@
 #import <Bazaar/BZRProductsInfoProvider.h>
 #import <LTKit/NSArray+Functional.h>
 
-#import "BZRBillingPeriod+ProductIdentifier.h"
+#import "BZRBillingPeriod+Shopix.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
