@@ -14,6 +14,9 @@ extern NSString * const BZREventProductIdentifierKey;
 /// was intiated through the App Store is aborted.
 extern NSString * const BZREventPromotedIAPAbortedKey;
 
+/// Key in the event info dictionary mapping to the App Store locale.
+extern NSString * const BZREventAppStoreLocaleKey;
+
 /// Adds methods to conveniently create \c BZREvent objects for various types of events.
 @interface BZREvent (AdditionalInfo)
 

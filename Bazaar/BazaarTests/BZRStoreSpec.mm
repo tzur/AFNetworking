@@ -5,7 +5,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZREvent.h"
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
@@ -187,7 +187,7 @@ context(@"initial receipt validation", ^{
     validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
   });
 
-  it(@"should send error event if initial receipt validation failed", ^{
+  it(@"should send error event if background receipt validation failed", ^{
     validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -198,8 +198,7 @@ context(@"initial receipt validation", ^{
     validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
-          event.eventError == error;
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
     });
   });
 });
@@ -245,6 +244,36 @@ context(@"App Store locale", ^{
 
     OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+  });
+
+  it(@"should not send event with the first app store locale value", ^{
+    LLSignalTestRecorder *eventsRecorder;
+
+    @autoreleasepool {
+      BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+      eventsRecorder = [store.eventsSignal testRecorder];
+    }
+
+    expect(eventsRecorder).will.complete();
+    expect(eventsRecorder).will.sendValuesWithCount(0);
+  });
+
+  it(@"should send event for every app store locale change", ^{
+    auto eventsRecorder = [store.eventsSignal testRecorder];
+
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    validationParametersProvider.appStoreLocale = nil;
+
+    expect(eventsRecorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeInformational)] &&
+          [event.eventInfo[BZREventAppStoreLocaleKey]
+           isEqual:[NSLocale currentLocale].localeIdentifier];
+    });
+    expect(eventsRecorder).to.matchValue(1, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeInformational)] &&
+          [event.eventInfo[BZREventAppStoreLocaleKey] isEqual:[NSNull null]];
+    });
   });
 });
 
