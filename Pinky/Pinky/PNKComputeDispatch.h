@@ -59,7 +59,7 @@ void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
                                           NSArray<MPSImage *> *inputImages,
                                           NSArray<MPSImage *> *outputImages,
                                           NSString * _Nullable commandDescription,
-                                          MTLSize workingSpaceSize);
+                                          MTLSize workingSpaceSize) API_AVAILABLE(ios(10.0));
 
 /// Dispatches a GPU operation working only on \c MPSImages to a compute command encoder.
 ///
@@ -92,7 +92,7 @@ void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
                                           NSArray<MPSImage *> *inputImages,
                                           NSArray<MPSImage *> *outputImages,
                                           NSString * _Nullable commandDescription,
-                                          MTLSize workingSpaceSize);
+                                          MTLSize workingSpaceSize) API_AVAILABLE(ios(10.0));
 
 /// Dispatches a GPU operation to a compute command encoder.
 ///
@@ -122,7 +122,7 @@ void PNKComputeDispatch(id<MTLComputePipelineState> state,
                         NSArray<MPSImage *> *outputImages,
                         NSString * _Nullable commandDescription,
                         MTLSize threadsInGroup,
-                        MTLSize threadgroupsPerGrid);
+                        MTLSize threadgroupsPerGrid) API_AVAILABLE(ios(10.0));
 
 /// Dispatches a GPU operation to a compute command encoder.
 ///

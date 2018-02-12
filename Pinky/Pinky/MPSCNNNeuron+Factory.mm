@@ -9,39 +9,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
 
-static const NSDictionary *PNKActivationTypeToNeuronClass() {
-  if (@available(iOS 11.0, *)) {
-    return @{
-      @(pnk::ActivationTypeAbsolute): [MPSCNNNeuronAbsolute class],
-      @(pnk::ActivationTypeReLU): [MPSCNNNeuronReLU class],
-      @(pnk::ActivationTypeLeakyReLU): [MPSCNNNeuronReLU class],
-      @(pnk::ActivationTypeTanh): [MPSCNNNeuronTanH class],
-      @(pnk::ActivationTypeScaledTanh): [MPSCNNNeuronTanH class],
-      @(pnk::ActivationTypeSigmoid): [MPSCNNNeuronSigmoid class],
-      @(pnk::ActivationTypeSigmoidHard): [MPSCNNNeuronHardSigmoid class],
-      @(pnk::ActivationTypeLinear): [MPSCNNNeuronLinear class],
-      @(pnk::ActivationTypePReLU): [MPSCNNNeuronPReLU class],
-      @(pnk::ActivationTypeELU): [MPSCNNNeuronELU class],
-      @(pnk::ActivationTypeSoftsign): [MPSCNNNeuronSoftSign class],
-      @(pnk::ActivationTypeSoftplus): [MPSCNNNeuronSoftPlus class],
-      @(pnk::ActivationTypeParametricSoftplus): [MPSCNNNeuronSoftPlus class]
-    };
-  } else {
-    return @{
-      @(pnk::ActivationTypeAbsolute): [MPSCNNNeuronAbsolute class],
-      @(pnk::ActivationTypeReLU): [MPSCNNNeuronReLU class],
-      @(pnk::ActivationTypeLeakyReLU): [MPSCNNNeuronReLU class],
-      @(pnk::ActivationTypeTanh): [MPSCNNNeuronTanH class],
-      @(pnk::ActivationTypeScaledTanh): [MPSCNNNeuronTanH class],
-      @(pnk::ActivationTypeSigmoid): [MPSCNNNeuronSigmoid class],
-      @(pnk::ActivationTypeLinear): [MPSCNNNeuronLinear class]
-    };
-  }
-}
-
-static const NSDictionary *kActivationTypeToNeuronClass = PNKActivationTypeToNeuronClass();
-
 @implementation MPSCNNNeuron (Factory)
+
++ (NSDictionary<NSNumber *, Class> *)pnk_activationTypeToNeuronClass {
+  static NSDictionary<NSNumber *, Class> *mapping;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    if (@available(iOS 11.0, *)) {
+      mapping = @{
+        @(pnk::ActivationTypeAbsolute): [MPSCNNNeuronAbsolute class],
+        @(pnk::ActivationTypeReLU): [MPSCNNNeuronReLU class],
+        @(pnk::ActivationTypeLeakyReLU): [MPSCNNNeuronReLU class],
+        @(pnk::ActivationTypeTanh): [MPSCNNNeuronTanH class],
+        @(pnk::ActivationTypeScaledTanh): [MPSCNNNeuronTanH class],
+        @(pnk::ActivationTypeSigmoid): [MPSCNNNeuronSigmoid class],
+        @(pnk::ActivationTypeSigmoidHard): [MPSCNNNeuronHardSigmoid class],
+        @(pnk::ActivationTypeLinear): [MPSCNNNeuronLinear class],
+        @(pnk::ActivationTypePReLU): [MPSCNNNeuronPReLU class],
+        @(pnk::ActivationTypeELU): [MPSCNNNeuronELU class],
+        @(pnk::ActivationTypeSoftsign): [MPSCNNNeuronSoftSign class],
+        @(pnk::ActivationTypeSoftplus): [MPSCNNNeuronSoftPlus class],
+        @(pnk::ActivationTypeParametricSoftplus): [MPSCNNNeuronSoftPlus class]
+      };
+    } else {
+      mapping = @{
+        @(pnk::ActivationTypeAbsolute): [MPSCNNNeuronAbsolute class],
+        @(pnk::ActivationTypeReLU): [MPSCNNNeuronReLU class],
+        @(pnk::ActivationTypeLeakyReLU): [MPSCNNNeuronReLU class],
+        @(pnk::ActivationTypeTanh): [MPSCNNNeuronTanH class],
+        @(pnk::ActivationTypeScaledTanh): [MPSCNNNeuronTanH class],
+        @(pnk::ActivationTypeSigmoid): [MPSCNNNeuronSigmoid class],
+        @(pnk::ActivationTypeLinear): [MPSCNNNeuronLinear class]
+      };
+    }
+  });
+  return mapping;
+}
 
 + (MPSCNNNeuron * _Nullable)pnk_cnnNeuronWithDevice:(id<MTLDevice>)device
     activationModel:(const pnk::ActivationKernelModel &)activationModel {
@@ -49,7 +52,7 @@ static const NSDictionary *kActivationTypeToNeuronClass = PNKActivationTypeToNeu
     return nil;
   }
 
-  Class neuronClass = kActivationTypeToNeuronClass[@(activationModel.activationType)];
+  Class neuronClass = self.pnk_activationTypeToNeuronClass[@(activationModel.activationType)];
 
   LTParameterAssert(neuronClass, @"Activation type %lu is not supported",
                     (unsigned long)activationModel.activationType);
@@ -98,7 +101,7 @@ static const NSDictionary *kActivationTypeToNeuronClass = PNKActivationTypeToNeu
 }
 
 + (BOOL)pnk_doesSupportActivationType:(pnk::ActivationType)activationType {
-  return [kActivationTypeToNeuronClass objectForKey:@(activationType)] != nil;
+  return self.pnk_activationTypeToNeuronClass[@(activationType)] != nil;
 }
 
 @end

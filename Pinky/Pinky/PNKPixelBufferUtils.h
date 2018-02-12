@@ -7,12 +7,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Asserts that the \c pixelBuffer has one of supported pixel formats. Currently supported pixel
 /// formats are 1- and 4-channels non-planar formats with either uchar or half-float channels.
-void PNKAssertPixelBufferFormat(CVPixelBufferRef pixelBuffer);
+void PNKAssertPixelBufferFormat(CVPixelBufferRef pixelBuffer) API_AVAILABLE(ios(10.0));
 
 /// Asserts that the \c pixelBuffer has one of supported pixel formats with exactly
 /// \c channnelCount channels. Currently supported pixel formats are 1- and 4-channels non-planar
 /// formats with either uchar or half-float channels.
-void PNKAssertPixelBufferFormatChannelCount(CVPixelBufferRef pixelBuffer, NSUInteger channelCount);
+void PNKAssertPixelBufferFormatChannelCount(CVPixelBufferRef pixelBuffer, NSUInteger channelCount)
+    API_AVAILABLE(ios(10.0));
 
 /// Creates an \c MPSImage wrapper of the \c pixelBuffer for use with \c device and returns it to
 /// the caller. \c pixelBuffer must have one of supported pixel formats. Currently supported pixel
@@ -24,7 +25,7 @@ void PNKAssertPixelBufferFormatChannelCount(CVPixelBufferRef pixelBuffer, NSUInt
 /// synchronization of reading/writing the \c pixelBuffer from the CPU side and reading/writing
 /// the Metal texture wrapper from the GPU side are the caller's responsibility.
 MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,
-                                  NSUInteger featureChannels = 0);
+                                  NSUInteger featureChannels = 0) API_AVAILABLE(ios(10.0));
 
 #endif
 

@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Protocol providing access to the basic information used by kernels operating on tensors in a
 /// neural network. This protocol is meant to be used as a base for more concrete protocols and
 /// should not be implemented directly.
+API_AVAILABLE(ios(10.0))
 @protocol PNKNeuralKernel <NSObject>
 
 /// Width of the filter window.
@@ -43,10 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Protocol implemented by kernels operating on a single input tensor in a neural network.
+API_AVAILABLE(ios(10.0))
 @protocol PNKUnaryNeuralKernel <PNKNeuralKernel, PNKUnaryKernel>
 @end
 
 /// Protocol implemented by kernels operating on a two input tensors in a neural network.
+API_AVAILABLE(ios(10.0))
 @protocol PNKBinaryNeuralKernel <PNKNeuralKernel, PNKBinaryKernel>
 @end
 

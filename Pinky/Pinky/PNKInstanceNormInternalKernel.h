@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Kernel performing an instance normalization operation.
+API_AVAILABLE(ios(10.0))
 @interface PNKInstanceNormInternalKernel : NSObject <PNKUnaryKernel>
 
 /// Initializes a new kernel that runs on \c device and performs an instance normalization

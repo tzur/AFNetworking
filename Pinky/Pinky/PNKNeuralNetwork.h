@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Protocol implemented by classes representing a neural network.
+API_AVAILABLE(ios(10.0))
 @protocol PNKNeuralNetwork <NSObject>
 
 /// Encodes the entire set of operations performed by the neural network onto \c buffer.
@@ -14,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)buffer
                     inputImages:(NSDictionary<NSString *, MPSImage *> *)inputImages
                    outputImages:(NSDictionary<NSString *, MPSImage *> *)outputImages;
-;
 
 /// Encodes and commits the entire set of operations performed by the neural network onto one or
 /// more command buffers derived from \c queue. This method returns immediately and calls

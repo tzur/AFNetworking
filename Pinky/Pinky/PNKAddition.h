@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Kernel that performs the addition (sum) operation on two textures.
+API_AVAILABLE(ios(10.0))
 @interface PNKAddition : NSObject <PNKBinaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -13,6 +13,7 @@ namespace pnk {
 }
 
 /// Layer performing a conditional instance normalization operation.
+API_AVAILABLE(ios(10.0))
 @interface PNKConditionalInstanceNormLayer : NSObject <PNKUnaryNeuralKernel>
 
 /// Initializes a new layer that runs on \c device and performs a conditional instance normalization

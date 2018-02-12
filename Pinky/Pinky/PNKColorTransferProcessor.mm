@@ -306,7 +306,7 @@ static const NSUInteger kLatticeGridSize = 16;
 - (void)verifyPixelBufferFormat:(CVPixelBufferRef)pixelBuffer {
   OSType format = CVPixelBufferGetPixelFormatType(pixelBuffer);
   LTParameterAssert(format == kCVPixelFormatType_32BGRA || format == kCVPixelFormatType_64RGBAHalf,
-                    @"Invalid pixel buffer format (%u): must be RGBA", format);
+                    @"Invalid pixel buffer format (%u): must be RGBA", (unsigned int)format);
 }
 
 - (CGSize)sizeForPixelBuffer:(CVPixelBufferRef)pixelBuffer {

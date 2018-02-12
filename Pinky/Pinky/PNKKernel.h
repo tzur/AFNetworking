@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Protocol implemented by kernels operating on a single input texture.
+API_AVAILABLE(ios(10.0))
 @protocol PNKUnaryKernel <NSObject>
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
@@ -31,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Protocol implemented by kernels operating on two input textures.
+API_AVAILABLE(ios(10.0))
 @protocol PNKBinaryKernel <NSObject>
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputImage

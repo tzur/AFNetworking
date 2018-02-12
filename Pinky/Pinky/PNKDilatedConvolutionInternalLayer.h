@@ -13,6 +13,7 @@ namespace pnk {
 }
 
 /// Layer performing a dilated convolution operation.
+API_AVAILABLE(ios(10.0))
 @interface PNKDilatedConvolutionInternalLayer : NSObject <PNKUnaryNeuralKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

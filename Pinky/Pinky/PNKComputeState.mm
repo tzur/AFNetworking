@@ -11,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 static id<MTLComputePipelineState> PNKCreateComputeStateWithParameters(id<MTLDevice> device,
-    NSString *functionName, MTLFunctionConstantValues * _Nullable constants) {
+    NSString *functionName, MTLFunctionConstantValues * _Nullable constants)
+    API_AVAILABLE(ios(10.0)) {
   auto library = PNKLoadLibrary(device);
   NSError *error;
   id<MTLFunction> function;
