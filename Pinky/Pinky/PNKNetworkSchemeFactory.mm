@@ -411,7 +411,7 @@ struct GraphTraversalData {
 
 + (NSObject *)customKernelFromLayer:(const cms::NeuralNetworkLayer *)layer
                              device:(id<MTLDevice>)device {
-  if (layer->custom().classname() == "BilinearUpsample") {
+  if (layer->custom().classname() == "BRNBilinearUpsample") {
     return [[PNKUpsampling alloc] initWithDevice:device
                                   upsamplingType:PNKUpsamplingTypeBilinearAligned];
   } else {

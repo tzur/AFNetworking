@@ -14,7 +14,7 @@ context(@"segment", ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
 
     NSError *error;
-    auto networkModelURL = [NSURL URLWithString:[bundle lt_pathForResource:@"supersky.nnmodel"]];
+    auto networkModelURL = [NSURL URLWithString:[bundle lt_pathForResource:@"sky.nnmodel"]];
     auto processor = [[PNKSuperSkySegmentationProcessor alloc] initWithNetworkModel:networkModelURL
                                                                               error:&error];
 
@@ -46,7 +46,7 @@ context(@"segment", ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
 
     NSError *error;
-    auto networkModelURL = [NSURL URLWithString:[bundle lt_pathForResource:@"supersky.nnmodel"]];
+    auto networkModelURL = [NSURL URLWithString:[bundle lt_pathForResource:@"sky.nnmodel"]];
     auto processor = [[PNKSuperSkySegmentationProcessor alloc] initWithNetworkModel:networkModelURL
                                                                               error:&error];
 
