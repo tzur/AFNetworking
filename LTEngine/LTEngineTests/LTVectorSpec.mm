@@ -723,6 +723,11 @@ context(@"LTVector4", ^{
     expect(v.rgb()).to.equal(LTVector3(5, 8, 2));
   });
 
+  it(@"should return vector with bgra values", ^{
+    LTVector4 v(1, 2, 3, 4);
+    expect(v.bgra()).to.equal(LTVector4(3, 2, 1, 4));
+  });
+
   it(@"should sum the vector components correctly", ^{
     LTVector4 v(1, 2, 3, 4);
     expect(v.sum()).to.equal(10);
