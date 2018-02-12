@@ -148,6 +148,26 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Status Bar
+#pragma mark -
+
+- (BOOL)prefersStatusBarHidden {
+  if (@available(iOS 11, *)) {
+    return !(self.view.window.safeAreaInsets.top > 0);
+  }
+  return YES;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+  return UIStatusBarStyleLightContent;
+}
+
+- (void)viewSafeAreaInsetsDidChange {
+  [super viewSafeAreaInsetsDidChange];
+  [self setNeedsStatusBarAppearanceUpdate];
+}
+
+#pragma mark -
 #pragma mark Subviews Setup
 #pragma mark -
 
