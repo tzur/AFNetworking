@@ -53,8 +53,12 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 /// properties to figure out why the subscription will not auto-renew.
 @property (readonly, nonatomic) BOOL willAutoRenew;
 
-/// Product identifier of the subscription that will auto-renew, or \c nil if subscription will not
-/// auto-renew.
+/// Product identifier of the subscription that will auto-renew. May be \c nil if subscription will
+/// not auto-renew.
+///
+/// @note This property may contain a value even if the subscription will not auto-renew. Do not
+/// test the value of this property in order to determine auto-renewal status, instead use the
+/// \c willAutoRenew property.
 @property (readonly, nonatomic, nullable) NSString *expectedRenewalProductId;
 
 /// \c YES if there was a price increase and the user has not agreed to it yet. If this is \c YES
@@ -64,6 +68,8 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 
 /// In case the subscription is already expired this will specify the expiration reason, otherwise
 /// it will be \c nil.
+///
+/// @note This property may be \c nil even for expired subscriptions.
 @property (readonly, nonatomic, nullable) BZRSubscriptionExpirationReason *expirationReason;
 
 /// \c YES if the subscription was not renewed due to billing issues and Apple is still trying to
