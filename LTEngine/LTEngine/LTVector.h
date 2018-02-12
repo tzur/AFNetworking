@@ -886,6 +886,12 @@ struct LTVector4 {
     return LTVector3(x, y, z);
   }
 
+  /// Returns a copy of this vector in which its red component (first element) and blue component
+  /// (third element) are replaced.
+  constexpr LTVector4 bgra() const {
+    return LTVector4(z, y, x, w);
+  }
+
   /// Returns the sum of the components.
   constexpr float sum() const {
     return x + y + w + z;
