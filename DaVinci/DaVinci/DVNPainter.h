@@ -63,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Indication whether this instance is currently processing a content touch event sequence. Is set
 /// to \c YES at the beginning of a sequence and set to \c NO at the end of the sequence.
+/// KVO-compliant.
 @property (readonly, nonatomic) BOOL currentlyProcessingContentTouchEventSequence;
 
 /// Delegate to be informed about spline rendering and canvas clearing events.

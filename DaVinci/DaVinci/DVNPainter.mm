@@ -148,6 +148,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self.renderer != nil;
 }
 
++ (NSSet<NSString *> *)keyPathsForValuesAffectingCurrentlyProcessingContentTouchEventSequence {
+  return [NSSet setWithObject:@instanceKeypath(DVNPainter, renderer)];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

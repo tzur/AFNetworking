@@ -9,6 +9,7 @@
 
 #import "DVNBrushRenderInfoProvider.h"
 #import "DVNSplineRenderModel.h"
+#import "DVNTestObserver.h"
 #import "DVNTestPipelineConfiguration.h"
 
 @interface DVNTestSplineRenderInfoProvider : NSObject <DVNBrushRenderInfoProvider>
@@ -187,6 +188,29 @@ context(@"initialization", ^{
     DVNPainter *painter = [[DVNPainter alloc] initWithCanvas:canvas
                                      brushRenderInfoProvider:providerMock delegate:delegateMock];
     expect(painter.delegate).to.equal(delegateMock);
+  });
+
+  it(@"should provide spline processing indication correctly", ^{
+    DVNPainter *painter = [[DVNPainter alloc] initWithCanvas:canvas
+                                     brushRenderInfoProvider:providerMock delegate:delegateMock];
+    OCMStub([providerMock brushRenderConfiguration]).andReturn(DVNTestPipelineConfiguration());
+    OCMStub([providerMock brushSplineType]).andReturn($(LTParameterizedObjectTypeBSpline));
+
+    DVNTestObserver *observer = [[DVNTestObserver alloc] init];
+    [painter addObserver:observer
+              forKeyPath:@keypath(painter, currentlyProcessingContentTouchEventSequence)
+                 options:NSKeyValueObservingOptionNew context:nil];
+
+    [painter processControlPoints:@[] end:NO];
+    expect(observer.observedValue).to.beTruthy();
+    [painter processControlPoints:@[] end:YES];
+    expect(observer.observedValue).to.beFalsy();
+    [painter processControlPoints:@[] end:NO];
+    expect(observer.observedValue).to.beTruthy();
+
+    [painter removeObserver:observer
+                 forKeyPath:@keypath(painter, currentlyProcessingContentTouchEventSequence)
+                    context:nil];
   });
 });
 
