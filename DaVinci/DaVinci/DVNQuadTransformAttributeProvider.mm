@@ -85,7 +85,7 @@ LTGPUStructImplement(DVNQuadTransformAttributeProviderStruct,
   for (NSUInteger i = 0; i < size; ++i) {
     lt::Quad quad = geometryValues.quads()[i];
     GLKMatrix3 transform = quad.transform();
-    
+
     if (self.isInverse) {
       bool isInvertible;
       transform = GLKMatrix3Invert(transform, &isInvertible);
