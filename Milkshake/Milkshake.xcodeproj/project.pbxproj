@@ -21,6 +21,7 @@
 		887D83401FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887D833F1FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
 		88A482442003759A0046B7D1 /* SHKTweakInlineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A482432003759A0046B7D1 /* SHKTweakInlineSpec.mm */; };
+		88A9ED00202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */; };
 		88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */; };
 		88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
@@ -363,6 +364,8 @@
 		887D833F1FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBMutableTweak+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		8892CCA81FF92222009A8897 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88A482432003759A0046B7D1 /* SHKTweakInlineSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakInlineSpec.mm; sourceTree = "<group>"; };
+		88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBTweakShakeWindow+Milkshake.mm"; sourceTree = "<group>"; };
+		88A9ECFF202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBTweakShakeWindow+Milkshake.h"; sourceTree = "<group>"; };
 		88EEA2A32004CCBA006FB79D /* SHKTweakCategoryAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTweakCategoryAdapter.h; sourceTree = "<group>"; };
 		88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapter.mm; sourceTree = "<group>"; };
 		88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapterSpec.mm; sourceTree = "<group>"; };
@@ -425,6 +428,8 @@
 		880408F72025B90700015482 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				88A9ECFF202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.h */,
+				88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */,
 				880408F92025B94E00015482 /* FBTweakStore+Milkshake.h */,
 				880408F82025B94E00015482 /* FBTweakStore+Milkshake.mm */,
 			);
@@ -1138,6 +1143,7 @@
 				880408FA2025B94E00015482 /* FBTweakStore+Milkshake.mm in Sources */,
 				880E4BE71FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm in Sources */,
 				88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */,
+				88A9ED00202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
