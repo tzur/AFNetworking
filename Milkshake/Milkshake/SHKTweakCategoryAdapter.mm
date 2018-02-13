@@ -6,6 +6,8 @@
 #import <FBTweak/FBTweakCollection.h>
 #import <LTKit/NSArray+Functional.h>
 
+#import "SHKTweakCategory.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SHKTweakCategoryAdapter

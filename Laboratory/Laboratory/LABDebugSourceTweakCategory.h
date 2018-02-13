@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Boris Talesnik.
 
-#import <Milkshake/SHKTweakCategoryAdapter.h>
+#import <Milkshake/SHKTweakCategory.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
