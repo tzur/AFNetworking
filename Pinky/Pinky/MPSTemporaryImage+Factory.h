@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Category for conveniently creating \c MPSImage objects.
+API_AVAILABLE(ios(10.0))
 @interface MPSTemporaryImage (Factory)
 
 /// Returns a \c MPSTemporaryImage allocated for usage on \c buffer with a descriptor built from the

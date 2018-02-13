@@ -217,8 +217,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                     outputImage.height == expectedOutputSize.height &&
                     outputImage.featureChannels == expectedOutputSize.depth,
                     @"Output image must be of size (%lu, %lu, %lu), got: (%lu, %lu, %lu)",
-                    expectedOutputSize.width, expectedOutputSize.height, expectedOutputSize.depth,
-                    outputImage.width, outputImage.height, outputImage.featureChannels);
+                    (unsigned long)expectedOutputSize.width,
+                    (unsigned long)expectedOutputSize.height,
+                    (unsigned long)expectedOutputSize.depth,
+                    (unsigned long)outputImage.width, (unsigned long)outputImage.height,
+                    (unsigned long)outputImage.featureChannels);
 
   pnk::PaddingSize fullPaddingTF = PNKConvolutionFullPaddingTF(inputImage.width, inputImage.height,
                                                                self.kernelWidth, self.kernelHeight,

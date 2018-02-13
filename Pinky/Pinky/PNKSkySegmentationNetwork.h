@@ -21,6 +21,7 @@ namespace pnk {
 /// convolution for enlarged receptive fields. The tensor is then upsampled and concatenated with
 /// tensors from the downsampling stage via skip connections. Finally the last tensor passes through
 /// a pixel-wise convolution to create the confidence maps per class.
+API_AVAILABLE(ios(10.0))
 @interface PNKSkySegmentationNetwork : NSObject
 
 /// Initializes a new network that runs on \c device and performs segmentation of skies in images.

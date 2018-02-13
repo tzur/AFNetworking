@@ -12,6 +12,7 @@ namespace pnk {
 #if PNK_USE_MPS
 
 /// Category for conveniently creating \c MPSCNNNeuron objects from pinky \c ActivationKernelModel.
+API_AVAILABLE(ios(10.0))
 @interface MPSCNNNeuron (Factory)
 
 /// Returns \c MPSCNNNeuron representing the activation function described by \c activationModel.

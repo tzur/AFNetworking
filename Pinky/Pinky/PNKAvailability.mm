@@ -8,7 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 BOOL PNKSupportsMTLDevice(id<MTLDevice> device) {
-  return MPSSupportsMTLDevice(device);
+  if (@available(iOS 10.0, *)) {
+    return MPSSupportsMTLDevice(device);
+  } else {
+    return NO;
+  }
 }
 
 #else

@@ -12,6 +12,7 @@ namespace pnk {
 /// Network for style transfer onto an image. The output of this network is an image, the same size
 /// and number of channels as the input. The architecture of this network is of an autoencoder with
 /// two downsampling stages and two upsampling stages with 3 or 5 residual blocks in between.
+API_AVAILABLE(ios(10.0))
 @interface PNKStyleTransferNetwork : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

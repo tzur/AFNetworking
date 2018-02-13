@@ -13,6 +13,7 @@ namespace pnk {
 }
 
 /// Layer performing a batch normalization operation.
+API_AVAILABLE(ios(10.0))
 @interface PNKBatchNormalizationLayer : NSObject <PNKUnaryNeuralKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

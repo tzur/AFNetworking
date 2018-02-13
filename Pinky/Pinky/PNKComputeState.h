@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note This creates a non-specialized kernel function. Raises \c NSInternalInconsistencyException
 /// if the kernel with \c functionName has constants.
-id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device, NSString *functionName);
+id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device, NSString *functionName)
+    API_AVAILABLE(ios(10.0));
 
 /// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
 #if PNK_USE_MPS
@@ -22,7 +23,7 @@ id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device, NSString
 ///
 /// @note This creates a specialized kernel function.
 id<MTLComputePipelineState> PNKCreateComputeStateWithConstants(id<MTLDevice> device,
-    NSString *functionName, MTLFunctionConstantValues *constants);
+    NSString *functionName, MTLFunctionConstantValues *constants) API_AVAILABLE(ios(10.0));
 
 #endif // PNK_USE_MPS
 

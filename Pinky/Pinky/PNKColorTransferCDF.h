@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// small gaussian kernel to remove high-frequencies. Size and sigma parameters of this gaussian
 /// kernel are fixed and can be read from \c pdfSmoothingKernelSize and \c pdfSmoothingKernelSigma
 /// properties of this class.
+API_AVAILABLE(ios(10.0))
 @interface PNKColorTransferCDF : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
