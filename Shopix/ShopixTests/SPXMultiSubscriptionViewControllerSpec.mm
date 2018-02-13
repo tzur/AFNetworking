@@ -7,7 +7,7 @@
 #import "SPXFakeMailComposeViewController.h"
 #import "SPXFeedbackComposeViewControllerProvider.h"
 #import "SPXMultiSubscriptionViewModel.h"
-#import "SPXSubscriptionButtonsFactory.h"
+#import "SPXSubscriptionButtonsPageViewModel.h"
 #import "SPXSubscriptionTermsViewModel.h"
 
 SpecBegin(SPXMultiSubscriptionViewController)
@@ -27,6 +27,8 @@ beforeEach(^{
       OCMProtocolMock(@protocol(SPXFeedbackComposeViewControllerProvider));
 
   viewModel = OCMClassMock([SPXMultiSubscriptionViewModel class]);
+  OCMStub([viewModel pageViewModels])
+      .andReturn(@[OCMClassMock([SPXSubscriptionButtonsPageViewModel class])]);
   auto termsViewModel = [[SPXSubscriptionTermsViewModel alloc]
                          initWithFullTerms:[NSURL URLWithString:@""]
                          privacyPolicy:[NSURL URLWithString:@""]];

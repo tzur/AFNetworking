@@ -134,6 +134,11 @@ NS_ASSUME_NONNULL_BEGIN
   [self.viewModel viewDidSetup];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.pagingView scrollToPage:self.viewModel.activePageIndex animated:NO];
+}
+
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
   self.scrollView.contentSize = self.contentView.frame.size;
@@ -361,10 +366,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupScrollPositionBinding {
   @weakify(self);
-  [RACObserve(self.pagingView, scrollPosition) subscribeNext:^(NSNumber *value) {
-    @strongify(self);
-    [self.viewModel scrolledToPosition:value.floatValue];
-  }];
+  [[RACObserve(self.pagingView, scrollPosition)
+      skip:1]
+      subscribeNext:^(NSNumber *value) {
+        @strongify(self);
+        [self.viewModel scrolledToPosition:value.floatValue];
+      }];
 }
 
 - (void)setupActivePageBinding {
