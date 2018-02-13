@@ -7,7 +7,6 @@
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRTestUtils.h"
 #import "BZRTimeProvider.h"
-#import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(BZRCachedReceiptValidationStatusProvider_MultiApp)
@@ -165,8 +164,8 @@ context(@"fetching receipt validation status of multiple apps", ^{
                       fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set] testRecorder];
 
     auto underlyingErrors = @[
-      [NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba", kBZRApplicationBundleIDKey: @"foo"}],
-      [NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba", kBZRApplicationBundleIDKey: @"bar"}]
+      [NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba"}],
+      [NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba"}]
     ];
     expect(recorder).will.matchError(^BOOL(NSError *error) {
       return error.code == BZRErrorCodeReceiptValidationFailed &&
@@ -184,15 +183,9 @@ context(@"fetching receipt validation status of multiple apps", ^{
     auto recorder = [validationStatusProvider.eventsSignal testRecorder];
 
     auto firstValidationErrorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError)
-        eventError:[NSError lt_errorWithCode:1337 userInfo:@{
-          @"bar": @"ba",
-          kBZRApplicationBundleIDKey: @"foo"
-        }]];
+        eventError:[NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba"}]];
     auto secondValidationErrorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError)
-        eventError:[NSError lt_errorWithCode:1337 userInfo:@{
-          @"bar": @"ba",
-          kBZRApplicationBundleIDKey: @"bar"
-        }]];
+        eventError:[NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba"}]];
     expect([validationStatusProvider
             fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set]).will.finish();
     expect(recorder).to.sendValues(@[firstValidationErrorEvent, secondValidationErrorEvent]);

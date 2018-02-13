@@ -12,6 +12,7 @@
 #import "BZRRetryReceiptValidator.h"
 #import "BZRUserIDProvider.h"
 #import "BZRValidatricksReceiptValidator.h"
+#import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -74,7 +75,7 @@ static const NSUInteger kNumberOfRetries = 4;
 - (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
     (NSString *)applicationBundleID {
   @weakify(self);
-  return [[[[self receiptValidationParameters:applicationBundleID]
+  return [[[[[self receiptValidationParameters:applicationBundleID]
       tryMap:^BZRReceiptValidationParameters * _Nullable(
           BZRReceiptValidationParameters * _Nullable receiptValidationParameters, NSError **error) {
         if (!receiptValidationParameters && error) {
@@ -87,6 +88,14 @@ static const NSUInteger kNumberOfRetries = 4;
         @strongify(self);
         return [self validateReceiptWithApplicationBundleID:applicationBundleID
                                 receiptValidationParameters:receiptValidationParameters];
+      }]
+      catch:^RACSignal *(NSError *error) {
+        auto userInfoWithBundleID = [error.userInfo mtl_dictionaryByAddingEntriesFromDictionary:@{
+          kBZRApplicationBundleIDKey: applicationBundleID
+        }];
+        auto errorWithBundleID = [NSError lt_errorWithCode:error.code
+                                                  userInfo:userInfoWithBundleID];
+        return [RACSignal error:errorWithBundleID];
       }]
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }

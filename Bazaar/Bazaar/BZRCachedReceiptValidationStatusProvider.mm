@@ -6,14 +6,11 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
-#import "BZRKeychainStorage+TypeSafety.h"
-#import "BZRKeychainStorageMigrator.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRTimeConversion.h"
 #import "BZRTimeProvider.h"
-#import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -177,17 +174,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<RACEvent *> *)fetchReceiptValidationStatusWithBundleID:
     (NSString *)applicationBundleID {
   @weakify(self);
-  return [[[[[self fetchReceiptValidationStatus:applicationBundleID]
+  return [[[[self fetchReceiptValidationStatus:applicationBundleID]
       map:^RACTuple *(BZRReceiptValidationStatus *receiptValidationStatus) {
         return RACTuplePack(applicationBundleID, receiptValidationStatus);
-      }]
-      catch:^RACSignal *(NSError *error) {
-        auto userInfoWithBundleID =
-            [error.userInfo mtl_dictionaryByAddingEntriesFromDictionary:
-             @{kBZRApplicationBundleIDKey: applicationBundleID}];
-        auto errorWithBundleID = [NSError lt_errorWithCode:error.code
-                                                  userInfo:userInfoWithBundleID];
-        return [RACSignal error:errorWithBundleID];
       }]
       doError:^(NSError *error) {
         @strongify(self);
