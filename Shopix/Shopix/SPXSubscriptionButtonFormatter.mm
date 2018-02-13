@@ -99,7 +99,7 @@ using namespace spx;
   auto unitCountText = [[NSMutableAttributedString alloc]
       initWithString:unitCountString attributes:@{
         NSForegroundColorAttributeName: self.periodTextColor,
-        NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.036 minSize:18 maxSize:30
+        NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.036 minSize:18 maxSize:25
                                                     weight:UIFontWeightBold]
       }];
   [unitCountText appendAttributedString:periodText];
