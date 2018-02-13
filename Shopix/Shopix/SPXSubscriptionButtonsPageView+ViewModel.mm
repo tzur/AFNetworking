@@ -65,7 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
                    animations:^{
     [self.backgroundVideoView setAlpha:0.25f];
   } completion:^(BOOL finished) {
-    if (finished) {
+    // Stop playback only if is not during fade in animation.
+    if (finished && self.backgroundVideoView.alpha < 1) {
       [self.backgroundVideoView stop];
     }
   }];
