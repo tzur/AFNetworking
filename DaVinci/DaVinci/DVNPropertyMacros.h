@@ -3,6 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Declares an \c lt::Interval with the given \c type.
+#define _DVNIntervalDeclare(type) lt::Interval<type>
+
 /// Declares \c name, \c defaultName, \c minName, \c softMinName, \c maxName and \c softMaxName
 /// properties for the given \c name.
 #define DVNPropertyDeclare(type, name, Name) \
@@ -16,6 +19,39 @@ NS_ASSUME_NONNULL_BEGIN
   @property (readonly, nonatomic) BOOL __softMax##Name##Set; \
   @property (readonly, nonatomic) BOOL __##name##Set; \
   @property (readonly, nonatomic) BOOL __default##Name##Set; \
+
+/// Declares a getter named \c nameRange returning an open \c lt::Interval of the given \c type and
+/// with the given \c infimum and \c supremum.
+#define DVNOpenRangeClassProperty(type, name, Name, infimum, supremum) \
+  _DVNRangeClassProperty(type, name, Name, infimum, supremum, Open, Open)
+
+/// Declares a getter named \c nameRange returning a left-open \c lt::Interval of the given \c type
+/// and with the given \c infimum and \c supremum.
+#define DVNLeftOpenRangeClassProperty(type, name, Name, infimum, supremum) \
+  _DVNRangeClassProperty(type, name, Name, infimum, supremum, Open, Closed)
+
+/// Declares a getter named \c nameRange returning a right-open \c lt::Interval of the given \c type
+/// and with the given \c infimum and \c supremum.
+#define DVNRightOpenRangeClassProperty(type, name, Name, infimum, supremum) \
+  _DVNRangeClassProperty(type, name, Name, infimum, supremum, Closed, Open)
+
+/// Declares a getter named \c nameRange returning a closed \c lt::Interval of the given \c type and
+/// with the given \c infimum and \c supremum.
+#define DVNClosedRangeClassProperty(type, name, Name, infimum, supremum) \
+  _DVNRangeClassProperty(type, name, Name, infimum, supremum, Closed, Closed)
+
+/// Declares a getter named \c nameRange returning an \c lt::Interval of the given \c type and with
+/// the given \c infimum and \c supremum. The infimum (/supremum) of the returned interval is
+/// included if the given \c infEndpointInclusion (/supEndpointInclusion) is \c Open, and excluded
+/// if \c Closed.
+#define _DVNRangeClassProperty(type, name, Name, infimum, supremum, \
+  infEndpointInclusion, supEndpointInclusion) \
+  static const _DVNIntervalDeclare(type) k##Name##Values({infimum, supremum}, \
+  _DVNIntervalDeclare(type)::infEndpointInclusion, \
+  _DVNIntervalDeclare(type)::supEndpointInclusion); \
+  + (_DVNIntervalDeclare(type))name##Range {\
+    return k##Name##Values;\
+  } \
 
 /// Implements \c minName and \c maxName getters for the given property \c name in addition to
 /// <tt>setName:<\tt>, <tt>setSoftMinName:<\tt>, <tt>setSoftMaxName:<\tt> and
