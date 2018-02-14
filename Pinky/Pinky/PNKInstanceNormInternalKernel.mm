@@ -3,6 +3,7 @@
 
 #import "PNKInstanceNormInternalKernel.h"
 
+#import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
@@ -27,11 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel shift buffer.
 @property (readonly, nonatomic) id<MTLBuffer> shiftBuffer;
 
-/// Kernel activation type performed after normalization.
-@property (readonly, nonatomic) pnk::ActivationType activationType;
+/// Kernel activation alpha parameters buffer.
+@property (readonly, nonatomic, nullable) id<MTLBuffer> alphaBuffer;
 
-/// Kernel pReLU parameters buffer.
-@property (readonly, nonatomic, nullable) id<MTLBuffer> preluBuffer;
+/// Kernel activation beta parameters buffer.
+@property (readonly, nonatomic, nullable) id<MTLBuffer> betaBuffer;
+
+/// Indicator if the layer's ActivationType is using the Alpha parameter buffer.
+@property (readonly, nonatomic) bool hasAlphaBuffer;
+
+/// Indicator if the layer's ActivationType is using the Beta parameter buffer.
+@property (readonly, nonatomic) bool hasBetaBuffer;
 
 @end
 
@@ -51,56 +58,46 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
                featureChannels:(NSUInteger)featureChannels
-                activationType:(pnk::ActivationType)activationType {
+                activationModel:(const pnk::ActivationKernelModel &)activationModel {
   if (self = [super init]) {
     _device = device;
     _featureChannels = featureChannels;
     _inputFeatureChannels = featureChannels;
-    _activationType = activationType;
-    [self setupBuffersAndStateWithActivationModel:activationType];
+    [self setupBuffersAndStateWithActivationModel:activationModel];
   }
   return self;
 }
 
-- (void)setupBuffersAndStateWithActivationModel:(pnk::ActivationType)activationType {
-  switch (activationType) {
-    case pnk::ActivationTypeIdentity:
-      [self createStateWithHasPrelu:NO sharedPrelu:NO];
-      break;
-    case pnk::ActivationTypeAbsolute:
-      [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, -1.), YES);
-      break;
-    case pnk::ActivationTypeReLU:
-      [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, 0.), YES);
-      break;
-    case pnk::ActivationTypeLeakyReLU:
-      [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, 0.), YES);
-      break;
-    case pnk::ActivationTypePReLU:
-      [self createStateWithHasPrelu:YES sharedPrelu:NO];
-      _preluBuffer = PNKHalfBufferFromFloatVector(self.device,
-                                                  cv::Mat1f::zeros(1, (int)self.featureChannels),
-                                                  YES);
-      break;
-    default:
-      LTParameterAssert(NO, @"Activation type %lu is not supported",
-                        (unsigned long)activationType);
-  }
+- (void)setupBuffersAndStateWithActivationModel:(const pnk::ActivationKernelModel &)model {
+  [self createStateWithActivationType:model.activationType];
 
+  _alphaBuffer = self.hasAlphaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.alpha, YES) : nil;
+  _betaBuffer = self.hasBetaBuffer ?
+      PNKHalfBufferFromFloatVector(self.device, model.beta, YES) : nil;
   _scaleBuffer = PNKHalfBufferFromFloatVector(self.device,
                                               cv::Mat1f(1, (int)self.featureChannels, 1.), YES);
   _shiftBuffer = PNKHalfBufferFromFloatVector(self.device,
                                               cv::Mat1f(1, (int)self.featureChannels, 0.), YES);
 }
 
-- (void)createStateWithHasPrelu:(const BOOL)hasPrelu sharedPrelu:(const BOOL)sharedPrelu {
-  _functionName = self.inputFeatureChannels > 4 ? kKernelArrayFunctionName : kKernelFunctionName;
+- (void)createStateWithActivationType:(pnk::ActivationType)activationType {
+  _functionName = self.inputFeatureChannels > 4 ?
+      kKernelArrayFunctionName : kKernelFunctionName;
+
+  auto needsAlphaBeta = PNKActivationNeedsAlphaBetaParameters(activationType);
+  _hasAlphaBuffer = needsAlphaBeta.first;
+  _hasBetaBuffer = needsAlphaBeta.second;
+
+  ushort activationTypeAsUshort = (ushort)activationType;
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&hasPrelu type:MTLDataTypeBool withName:@"hasPrelu"];
-  [functionConstants setConstantValue:&sharedPrelu type:MTLDataTypeBool withName:@"sharedPrelu"];
+  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
+                             withName:@"activationType"];
+  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
+                             withName:@"hasAlphaBuffer"];
+  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
+                             withName:@"hasBetaBuffer"];
+
   _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
 }
 
@@ -120,26 +117,6 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   PNKFillHalfFloatBuffer(self.shiftBuffer, parameters);
 }
 
-- (void)setPReluParameters:(const cv::Mat &)parameters {
-  int elementsCount = parameters.cols * parameters.rows;
-  switch (self.activationType) {
-    case pnk::ActivationTypeLeakyReLU:
-      LTParameterAssert(elementsCount == 1, @"Leaky Relu Activation model must "
-                        "have exactly one parameter, got %d", elementsCount);
-      PNKFillHalfFloatBuffer(self.preluBuffer, parameters);
-      break;
-    case pnk::ActivationTypePReLU:
-      LTParameterAssert(elementsCount == (int)self.featureChannels, @"PRelu Activation model must "
-                        "have the same number of parameters as number of input features (%lu), "
-                        "got %d", (unsigned long)self.featureChannels, elementsCount);
-      PNKFillHalfFloatBuffer(self.preluBuffer, parameters);
-      break;
-    default:
-      LTParameterAssert(NO, @"Setting parameters for activation type %lu is not supported",
-                        (unsigned long)self.activationType);
-  }
-}
-
 #pragma mark -
 #pragma mark PNKUnaryNeuralKernel
 #pragma mark -
@@ -154,9 +131,14 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   MTLSize threadsInGroup = MTLSizeMake(threadWidth, threadHeight, 1);
   MTLSize threadgroupsPerGrid = {1, 1, outputImage.pnk_textureArrayDepth};
 
-  auto kernelBuffers = self.preluBuffer ?
-      @[self.scaleBuffer, self.shiftBuffer, self.preluBuffer] :
-      @[self.scaleBuffer, self.shiftBuffer];
+  NSArray<id<MTLBuffer>> *kernelBuffers;
+  if (self.hasBetaBuffer) {
+    kernelBuffers = @[self.scaleBuffer, self.shiftBuffer, self.alphaBuffer, self.betaBuffer];
+  } else if (self.hasAlphaBuffer) {
+    kernelBuffers = @[self.scaleBuffer, self.shiftBuffer, self.alphaBuffer];
+  } else {
+    kernelBuffers = @[self.scaleBuffer, self.shiftBuffer];
+  }
 
   PNKComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
                      self.functionName, threadsInGroup, threadgroupsPerGrid);

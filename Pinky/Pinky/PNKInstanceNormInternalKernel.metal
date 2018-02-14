@@ -3,21 +3,19 @@
 
 #include <metal_stdlib>
 
+#include "PNKActivation.metal.h"
 #include "PNKTemplatedIO.metal"
 
 using namespace metal;
 
-constant const bool hasPrelu [[function_constant(0)]];
-constant const bool sharedPrelu [[function_constant(1)]];
+constant const ushort activationType [[function_constant(0)]];
+constant const bool hasAlphaBuffer [[function_constant(1)]];
+constant const bool hasBetaBuffer [[function_constant(2)]];
 
 template <typename T, typename U>
-void instanceNormAll(constant half4 *scale [[buffer(0)]],
-                     constant half4 *shift [[buffer(1)]],
-                     constant half4 *preluWeights [[buffer(2), function_constant(hasPrelu)]],
-                     T inputImage [[texture(0)]],
-                     U outputImage [[texture(1)]],
-                     ushort2 gridIndex, ushort arrayIndex, ushort threadIndex,
-                     ushort3 threadCount, ushort warpSize,
+void instanceNormAll(constant half4 *scale, constant half4 *shift, constant half4 *alpha,
+                     constant half4 *beta, T inputImage, U outputImage, ushort2 gridIndex,
+                     ushort arrayIndex, ushort threadIndex, ushort3 threadCount, ushort warpSize,
                      threadgroup float4 *threadgroupSum) {
   ushort width = inputImage.get_width();
   ushort height = inputImage.get_height();
@@ -94,26 +92,21 @@ void instanceNormAll(constant half4 *scale [[buffer(0)]],
   const float4 correctedScale = inverseSigma * textureScale;
   const float4 correctedShift = textureShift - mean * correctedScale;
 
-  half4 w;
-  if (hasPrelu) {
-    w = sharedPrelu ? half4(preluWeights[0][0]) : preluWeights[arrayIndex];
-  }
   for (ushort y = gridIndex.y; y < height; y += threadCount.y) {
     for (ushort x = gridIndex.x; x < width; x += threadCount.x) {
       float4 floatInput = static_cast<float4>(lt::read(inputImage, ushort2(x, y), arrayIndex));
       half4 scaled = static_cast<half4>(floatInput * correctedScale + correctedShift);
-      if (hasPrelu) {
-        scaled = select(scaled * w, scaled, scaled > 0.0h);
-      }
-      lt::write(outputImage, scaled, ushort2(x, y), arrayIndex);
+      half4 activated = pnk::ActivatedValue(scaled, activationType, alpha, beta, arrayIndex);
+      lt::write(outputImage, activated, ushort2(x, y), arrayIndex);
     }
   }
 }
 
 kernel void instanceNormArray(constant half4 *scale [[buffer(0)]],
                               constant half4 *shift [[buffer(1)]],
-                              constant half4 *preluWeights [[buffer(2),
-                                                             function_constant(hasPrelu)]],
+                              constant half4 *alpha [[buffer(2),
+                                                      function_constant(hasAlphaBuffer)]],
+                              constant half4 *beta [[buffer(3), function_constant(hasBetaBuffer)]],
                               texture2d_array<half, access::read> inputImage [[texture(0)]],
                               texture2d_array<half, access::write> outputImage [[texture(1)]],
                               ushort3 gridIndex [[thread_position_in_grid]],
@@ -127,13 +120,14 @@ kernel void instanceNormArray(constant half4 *scale [[buffer(0)]],
   constexpr ushort kMaxThreadsInGroup = 256;
   threadgroup float4 threadgroupSum[kMaxThreadsInGroup];
 
-  instanceNormAll(scale, shift, preluWeights, inputImage, outputImage, gridIndex.xy, gridIndex.z,
+  instanceNormAll(scale, shift, alpha, beta, inputImage, outputImage, gridIndex.xy, gridIndex.z,
                   threadIndex, threadCount, warpSize, threadgroupSum);
 }
 
 kernel void instanceNorm(constant half4 *scale [[buffer(0)]],
                          constant half4 *shift [[buffer(1)]],
-                         constant half4 *preluWeights [[buffer(2), function_constant(hasPrelu)]],
+                         constant half4 *alpha [[buffer(2), function_constant(hasAlphaBuffer)]],
+                         constant half4 *beta [[buffer(3), function_constant(hasBetaBuffer)]],
                          texture2d<half, access::read> inputImage [[texture(0)]],
                          texture2d<half, access::write> outputImage [[texture(1)]],
                          ushort3 gridIndex [[thread_position_in_grid]],
@@ -143,6 +137,6 @@ kernel void instanceNorm(constant half4 *scale [[buffer(0)]],
   constexpr ushort kMaxThreadsInGroup = 256;
   threadgroup float4 threadgroupSum[kMaxThreadsInGroup];
 
-  instanceNormAll(scale, shift, preluWeights, inputImage, outputImage, gridIndex.xy, 0,
+  instanceNormAll(scale, shift, alpha, beta, inputImage, outputImage, gridIndex.xy, 0,
                   threadIndex, threadCount, warpSize, threadgroupSum);
 }
