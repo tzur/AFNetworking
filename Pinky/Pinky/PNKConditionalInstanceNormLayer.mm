@@ -48,12 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
     _instanceNormKernel = [[PNKInstanceNormInternalKernel alloc]
                            initWithDevice:device
                            featureChannels:normalizationModel.inputFeatureChannels
-                           activationType:activationModel.activationType];
+                           activationModel:activationModel];
 
-    if (activationModel.activationType == pnk::ActivationTypeLeakyReLU ||
-        activationModel.activationType == pnk::ActivationTypePReLU) {
-      [self.instanceNormKernel setPReluParameters:activationModel.alpha];
-    }
     [self setSingleCondition:0];
   }
   return self;
