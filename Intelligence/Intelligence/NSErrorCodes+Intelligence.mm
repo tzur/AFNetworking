@@ -12,8 +12,10 @@ LTErrorCodesImplement(INTErrorCodeProductID,
   INTErrorCodeJSONRecordsSendFailed,
   /// Caused when a a JSON record or a group of JSON records is invalid.
   INTErrorCodeInvalidJSONRecords,
-  // Caused when a JSON batch size is too large.
-  INTErrorCodeJSONBatchSizeTooLarge
+  /// Caused when a JSON batch size is too large.
+  INTErrorCodeJSONBatchSizeTooLarge,
+  /// Caused when a background task failed to start by a \c UIApplication object.
+  INTErrorCodeBackgroundTaskFailedToStart
 );
 
 NS_ASSUME_NONNULL_END
