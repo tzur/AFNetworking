@@ -38,6 +38,7 @@ extern "C" {
 #import "LTEasyBoxing+Pinky.h"
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
+#import "PNKImageTestUtils.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKKernelExamples.h"
 #import "PNKTemporaryImageExamples.h"
