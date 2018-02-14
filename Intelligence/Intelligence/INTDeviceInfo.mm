@@ -11,29 +11,32 @@ NS_ASSUME_NONNULL_BEGIN
                               advertisingID:(NSUUID *)advertisingID
                  advertisingTrackingEnabled:(BOOL)advertisingTrackingEnabled
                                  deviceKind:(NSString *)deviceKind
-                                 iosVersion:(NSString *)iosVersion
-                                 appVersion:(NSString *)appVersion
+                                 iosVersion:(NSString *)iosVersion appVersion:(NSString *)appVersion
                             appVersionShort:(NSString *)appVersionShort
                                    timeZone:(NSString *)timeZone
                                     country:(nullable NSString *)country
                           preferredLanguage:(nullable NSString *)preferredLanguage
                          currentAppLanguage:(nullable NSString *)currentAppLanguage
                             purchaseReceipt:(nullable NSData *)purchaseReceipt
-                            appStoreCountry:(nullable NSString *)appStoreCountry {
+                            appStoreCountry:(nullable NSString *)appStoreCountry
+                             inLowPowerMode:(nullable NSNumber *)inLowPowerMode
+                                 firmwareID:(nullable NSString *)firmwareID {
   if (self = [super init]) {
-      _identifierForVendor = identifierForVendor;
-      _advertisingID = advertisingID;
-      _advertisingTrackingEnabled = advertisingTrackingEnabled;
-      _deviceKind = deviceKind;
-      _iosVersion = iosVersion;
-      _appVersion = appVersion;
-      _appVersionShort = appVersionShort;
-      _timeZone = timeZone;
-      _country = country;
-      _preferredLanguage = preferredLanguage;
-      _currentAppLanguage = currentAppLanguage;
-      _purchaseReceipt = purchaseReceipt;
-      _appStoreCountry = appStoreCountry;
+    _identifierForVendor = identifierForVendor;
+    _advertisingID = advertisingID;
+    _advertisingTrackingEnabled = advertisingTrackingEnabled;
+    _deviceKind = deviceKind;
+    _iosVersion = iosVersion;
+    _appVersion = appVersion;
+    _appVersionShort = appVersionShort;
+    _timeZone = timeZone;
+    _country = country;
+    _preferredLanguage = preferredLanguage;
+    _currentAppLanguage = currentAppLanguage;
+    _purchaseReceipt = purchaseReceipt;
+    _appStoreCountry = appStoreCountry;
+    _inLowPowerMode = inLowPowerMode;
+    _firmwareID = firmwareID;
   }
 
   return self;
@@ -52,7 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
                                           preferredLanguage:self.preferredLanguage
                                          currentAppLanguage:self.currentAppLanguage
                                             purchaseReceipt:self.purchaseReceipt
-                                            appStoreCountry:self.appStoreCountry];
+                                            appStoreCountry:self.appStoreCountry
+                                             inLowPowerMode:self.inLowPowerMode
+                                                 firmwareID:self.firmwareID];
 }
 
 @end

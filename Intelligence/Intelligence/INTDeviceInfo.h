@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
                          currentAppLanguage:(nullable NSString *)currentAppLanguage
                             purchaseReceipt:(nullable NSData *)purchaseReceipt
                             appStoreCountry:(nullable NSString *)appStoreCountry
+                             inLowPowerMode:(nullable NSNumber *)inLowPowerMode
+                                 firmwareID:(nullable NSString *)firmwareID
     NS_DESIGNATED_INITIALIZER;
 
 /// Returns a new instance of \c INTDeviceInfo whith all properties as the receivers' and
@@ -93,6 +95,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// associated with, as defined by ISO 3166-1. \c nil if the country is unavailable, for example,
 /// when there is no internet connection.
 @property (readonly, nonatomic, nullable) NSString *appStoreCountry;
+
+/// \c @YES if the device is jailbroken. \c nil if the information is unavailable or the instance is
+/// of an older version.
+/// @note property name does not resemble real meaning, to obscure from malicious sources.
+@property (readonly, nonatomic, nullable) NSNumber *inLowPowerMode;
+
+/// Team identifier that signed the app binary, or \c nil if no signing exists, no team identifier
+/// exists (old signing info) or fetching the signing info failed.
+/// @note property name does not resemble real meaning, to obscure from malicious sources.
+@property (readonly, nonatomic, nullable) NSString *firmwareID;
 
 @end
 

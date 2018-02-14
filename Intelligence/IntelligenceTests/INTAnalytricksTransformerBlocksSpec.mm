@@ -687,7 +687,7 @@ context(@"analytricks project deleted event transformer", ^{
          appVersionShort:@"1.2" timeZone:@"foo" country:@"bar" preferredLanguage:@"barFoo"
          currentAppLanguage:@"que"
          purchaseReceipt:[[NSData alloc] initWithBase64EncodedString:@"thud" options:0]
-         appStoreCountry:@"bar"];
+         appStoreCountry:@"bar" inLowPowerMode:@YES firmwareID:@"baz"];
   });
 
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{

@@ -4,6 +4,7 @@
 #import "INTDeviceInfoSource.h"
 
 #import <AdSupport/AdSupport.h>
+#import <LTKit/LTAppIntegrity.h>
 #import <LTKit/NSLocale+Language.h>
 #import <LTKit/UIDevice+Hardware.h>
 
@@ -38,7 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
                                           preferredLanguage:locale.lt_preferredLanguage
                                          currentAppLanguage:locale.lt_currentAppLanguage
                                             purchaseReceipt:[INTDeviceInfoSource purchaseReceipt]
-                                            appStoreCountry:appStoreCountry];
+                                            appStoreCountry:appStoreCountry
+                                             inLowPowerMode:@(LTIsJailbroken())
+                                                 firmwareID:LTSigningTeamIdentifier()];
 }
 
 + (nullable NSData *)purchaseReceipt {
