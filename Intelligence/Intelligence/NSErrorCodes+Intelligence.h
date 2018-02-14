@@ -14,7 +14,13 @@ NS_ENUM(NSInteger) {
 /// All error codes available in Intelligence.
 LTErrorCodesDeclare(INTErrorCodeProductID,
   /// Caused when a record saving operation has failed.
-  INTErrorCodeDataRecordSaveFailed
+  INTErrorCodeDataRecordSaveFailed,
+  /// Caused when a record sending operation has failed.
+  INTErrorCodeJSONRecordsSendFailed,
+  /// Caused when a JSON record or a group of JSON records is invalid.
+  INTErrorCodeInvalidJSONRecords,
+  /// Caused when a JSON batch size is too large.
+  INTErrorCodeJSONBatchSizeTooLarge
 );
 
 NS_ASSUME_NONNULL_END
