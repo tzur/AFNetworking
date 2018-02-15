@@ -144,13 +144,11 @@ context(@"tensorflow golden standard", ^{
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
                                                 activationModel:activationModel];
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_basic_input_15x16x32.tensor");
 
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_output_15x16x8.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_basic_output_15x16x8.tensor");
 
     return @{
       kPNKKernelExamplesKernel: convolutionOp,
@@ -188,13 +186,10 @@ context(@"tensorflow golden standard", ^{
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
                                                 activationModel:activationModel];
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
-
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_output_8x8x8.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, (int)outputHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_stride_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_stride_output_8x8x8.tensor");
 
     return @{
       kPNKKernelExamplesKernel: convolutionOp,
@@ -232,13 +227,11 @@ context(@"tensorflow golden standard", ^{
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
                                                 activationModel:activationModel];
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_dilation_input_15x16x32.tensor");
 
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_output_15x16x8.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"conv_dilation_output_15x16x8.tensor");
 
     return @{
       kPNKKernelExamplesKernel: convolutionOp,

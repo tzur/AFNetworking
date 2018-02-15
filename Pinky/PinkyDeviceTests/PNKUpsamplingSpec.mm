@@ -225,15 +225,11 @@ context(@"tensorflow golden standard", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
 
-    auto inputMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_nearest_neighbor_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                              kGoldenStandardInputHeight);
 
-    auto expectedMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_nearest_neighbor_output_30x32x32.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                                    2 * kGoldenStandardInputHeight);
 
     return @{
       kPNKKernelExamplesKernel: nearestNeighborUpsampler,
@@ -253,15 +249,11 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
 
-    auto inputMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_bilinear_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                              kGoldenStandardInputHeight);
 
-    auto expectedMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_bilinear_output_30x32x32.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                                    2 * kGoldenStandardInputHeight);
 
     return @{
       kPNKKernelExamplesKernel: bilinearUpsampler,
@@ -282,15 +274,11 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
 
-    auto inputMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_bilinear_aligned_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                              kGoldenStandardInputHeight);
 
-    auto expectedMatSingleRow = PNKLoadHalfFloatTensorFromBundleResource(bundle,
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
         @"upsample_bilinear_aligned_output_30x32x32.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kGoldenStandardFeatureChannels,
-                                                    2 * kGoldenStandardInputHeight);
 
     return @{
       kPNKKernelExamplesKernel: bilinearAlignedUpsampler,

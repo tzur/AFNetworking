@@ -341,15 +341,11 @@ context(@"tensorflow golden standard", ^{
     auto batchNormOp = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
                                                        normalizationModel:normalizationModel
                                                           activationModel:activationModel];
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                 @"batch_normalization_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kInputChannels, kInputHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"batch_normalization_input_15x16x32.tensor");
 
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                 @"batch_normalization_output_15x16x32.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kInputChannels, kInputHeight);
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"batch_normalization_output_15x16x32.tensor");
 
     return @{
       kPNKKernelExamplesKernel: batchNormOp,
