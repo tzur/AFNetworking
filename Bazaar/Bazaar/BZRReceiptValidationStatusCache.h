@@ -49,8 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Stores the receipt validation status to the storage of the application specified by
 /// \c applicationBundleID and returns \c YES on success. If an error occurred while writing to the
 /// cache \c error is populated with error information and \c NO is returned.
-- (BOOL)storeCacheEntry:
-    (nullable BZRReceiptValidationStatusCacheEntry *)receiptValidationStatusCacheEntry
+- (BOOL)storeCacheEntry:(nullable BZRReceiptValidationStatusCacheEntry *)cacheEntry
     applicationBundleID:(NSString *)applicationBundleID
     error:(NSError **)error;
 
