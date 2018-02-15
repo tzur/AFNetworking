@@ -135,7 +135,7 @@ NSString * const kValidationDateKey = @"validationDate";
 @end
 
 #pragma mark -
-#pragma mark BZRCachedReceiptValidationStatusCache+MultiApp
+#pragma mark BZRReceiptValidationStatusCache+MultiApp
 #pragma mark -
 
 @implementation BZRReceiptValidationStatusCache (MultiApp)
@@ -161,4 +161,3 @@ NSString * const kValidationDateKey = @"validationDate";
 @end
 
 NS_ASSUME_NONNULL_END
-

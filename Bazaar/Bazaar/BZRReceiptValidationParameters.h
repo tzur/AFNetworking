@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCurrentApplicationBundleID:(NSString *)currentApplicationBundleID
     applicationBundleID:(NSString *)applicationBundleID receiptData:(nullable NSData *)receiptData
     deviceID:(nullable NSUUID *)deviceID appStoreLocale:(nullable NSLocale *)appStoreLocale
-    userID:(nullable NSString *)userID
-    NS_DESIGNATED_INITIALIZER;
+    userID:(nullable NSString *)userID NS_DESIGNATED_INITIALIZER;
 
 /// Current application's bundle ID.
 @property (readonly, nonatomic) NSString *currentApplicationBundleID;

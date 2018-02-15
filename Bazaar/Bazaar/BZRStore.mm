@@ -56,8 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
     multiAppSubscriptionClassifier;
 
 /// Provider used to provide list of products that were acquired via subsription.
-@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider
-    *acquiredViaSubscriptionProvider;
+@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 
 /// Activator used to control the periodic validation.
 @property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
