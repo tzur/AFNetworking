@@ -3,6 +3,9 @@
 
 #import "BZRReceiptModel.h"
 
+#import "BZRReceiptEnvironment.h"
+#import "NSValueTransformer+Bazaar.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
@@ -10,6 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 @implementation BZRReceiptInAppPurchaseInfo
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
++ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
 
 + (BOOL)supportsSecureCoding {
   return YES;
@@ -46,6 +57,15 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
   return optionalPropertyKeys;
 }
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
++ (NSValueTransformer *)expirationReasonJSONTransformer {
+  return [NSValueTransformer bzr_enumNameTransformerForClass:
+          [BZRSubscriptionExpirationReason class]];
+}
+
 + (BOOL)supportsSecureCoding {
   return YES;
 }
@@ -72,6 +92,31 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
   return optionalPropertyKeys;
 }
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
++ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)lastPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)expirationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)cancellationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)pendingRenewalInfoJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
+          [BZRSubscriptionPendingRenewalInfo class]];
+}
+
 + (BOOL)supportsSecureCoding {
   return YES;
 }
@@ -96,6 +141,28 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
   });
 
   return optionalPropertyKeys;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
++ (NSValueTransformer *)environmentJSONTransformer {
+  return [NSValueTransformer bzr_enumNameTransformerForClass:[BZRReceiptEnvironment class]];
+}
+
++ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)inAppPurchasesJSONTransformer {
+  return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:
+          [BZRReceiptInAppPurchaseInfo class]];
+}
+
++ (NSValueTransformer *)subscriptionJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
+          [BZRReceiptSubscriptionInfo class]];
 }
 
 + (BOOL)supportsSecureCoding {

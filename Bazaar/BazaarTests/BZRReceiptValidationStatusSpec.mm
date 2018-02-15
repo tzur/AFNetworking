@@ -3,8 +3,10 @@
 
 #import "BZRReceiptValidationStatus.h"
 
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationError.h"
+#import "NSValueTransformer+Bazaar.h"
 
 SpecBegin(BZRReceiptValidationStatus)
 
@@ -106,6 +108,62 @@ context(@"initialization", ^{
     status = [[BZRReceiptValidationStatus alloc] initWithDictionary:dictionaryValue error:&error];
     expect(status).toNot.beNil();
     expect(error).to.beNil();
+  });
+});
+
+context(@"JSON serialization", ^{
+  __block NSValueTransformer *millisecondsDateTimeTransformer;
+
+  beforeEach(^{
+    millisecondsDateTimeTransformer = [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+  });
+
+  it(@"should correctly convert from BZRReciptValidationStatus to JSON dictionary", ^{
+    BZRReceiptInfo *receipt = [[BZRReceiptInfo alloc] initWithDictionary:@{
+      @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentSandbox)
+    } error:nil];
+    NSDictionary *receiptJSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:receipt];
+
+    NSDate *validationDateTime = [NSDate dateWithTimeIntervalSince1970:1337];
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        [[BZRReceiptValidationStatus alloc] initWithDictionary:@{
+          @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
+          @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): validationDateTime,
+          @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
+        } error:nil];
+    NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:receiptValidationStatus];
+
+    expect(JSONDictionary[@"isValid"]).to.equal(YES);
+    expect(JSONDictionary[@"validationDateTime"])
+        .to.equal([millisecondsDateTimeTransformer reverseTransformedValue:validationDateTime]);
+    expect(JSONDictionary[@instanceKeypath(BZRReceiptValidationStatus, receipt)])
+        .to.equal(receiptJSONDictionary);
+  });
+
+  it(@"should correctly convert from JSON dictionary to BZRReciptValidationStatus", ^{
+    BZRReceiptInfo *receipt = [[BZRReceiptInfo alloc] initWithDictionary:@{
+      @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentSandbox)
+    } error:nil];
+    NSDictionary *receiptJSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:receipt];
+
+    NSDate *validationDateTime = [NSDate dateWithTimeIntervalSince1970:1337];
+    NSDictionary *JSONDictionary = @{
+      @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
+      @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
+          [millisecondsDateTimeTransformer reverseTransformedValue:validationDateTime],
+      @instanceKeypath(BZRReceiptValidationStatus, receipt): receiptJSONDictionary
+    };
+
+    NSError *error;
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        [MTLJSONAdapter modelOfClass:BZRReceiptValidationStatus.class
+                  fromJSONDictionary:JSONDictionary
+                               error:&error];
+
+    expect(error).to.beNil();
+    expect(receiptValidationStatus.isValid).to.equal(YES);
+    expect(receiptValidationStatus.validationDateTime).to.equal(validationDateTime);
+    expect(receiptValidationStatus.receipt).to.equal(receipt);
   });
 });
 

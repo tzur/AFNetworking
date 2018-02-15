@@ -4,8 +4,7 @@
 #import "BZRValidatricksReceiptModel.h"
 
 #import "BZRReceiptEnvironment.h"
-#import "NSErrorCodes+Bazaar.h"
-#import "NSValueTransformer+Validatricks.h"
+#import "NSValueTransformer+Bazaar.h"
 
 /// Dictionary representing a JSON serialized object.
 typedef NSDictionary<NSString *, id> BZRJSONDictionary;
@@ -94,10 +93,10 @@ it(@"should fail if the JSON dictionary contains nil for a mandatory key", ^{
 SpecEnd
 
 #pragma mark -
-#pragma mark BZRSubscriptionPendingRenewalInfo
+#pragma mark BZRValidatricksSubscriptionPendingRenewalInfo
 #pragma mark -
 
-SpecBegin(BZRSubscriptionPendingRenewalInfo)
+SpecBegin(BZRValidatricksSubscriptionPendingRenewalInfo)
 
 it(@"should provide property key to JSON key mapping", ^{
   NSDictionary<NSString *, NSString *> *JSONKeyPaths =

@@ -4,20 +4,20 @@
 #import "BZRValidatricksReceiptValidationStatus.h"
 
 #import "BZRValidatricksReceiptModel.h"
-#import "NSValueTransformer+Validatricks.h"
+#import "NSValueTransformer+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRValidatricksReceiptValidationStatus
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{
-    @instanceKeypath(BZRReceiptValidationStatus, isValid): @"valid",
-    @instanceKeypath(BZRReceiptValidationStatus, error): @"reason",
-    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): @"currentDateTime",
-    @instanceKeypath(BZRReceiptValidationStatus, receipt): @"receipt",
-    @instanceKeypath(BZRValidatricksReceiptValidationStatus, requestId): @"requestId"
-  };
+  return [[BZRReceiptValidationStatus JSONKeyPathsByPropertyKey]
+          mtl_dictionaryByAddingEntriesFromDictionary:@{
+            @instanceKeypath(BZRReceiptValidationStatus, isValid): @"valid",
+            @instanceKeypath(BZRReceiptValidationStatus, error): @"reason",
+            @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): @"currentDateTime",
+            @instanceKeypath(BZRValidatricksReceiptValidationStatus, requestId): @"requestId"
+          }];
 }
 
 + (NSDictionary<NSString *, id> *)defaultPropertyValues {
@@ -36,13 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSValueTransformer bzr_validatricksErrorValueTransformer];
 }
 
-+ (NSValueTransformer *)validationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
 + (NSValueTransformer *)receiptJSONTransformer {
-  return [NSValueTransformer
-          mtl_JSONDictionaryTransformerWithModelClass:[BZRValidatricksReceiptInfo class]];
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
+          [BZRValidatricksReceiptInfo class]];
 }
 
 @end

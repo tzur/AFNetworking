@@ -1,12 +1,17 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "NSValueTransformer+Validatricks.h"
+#import "NSValueTransformer+Bazaar.h"
 
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptValidationError.h"
 
-SpecBegin(NSValueTransformer_Validatricks)
+LTEnumMake(NSUInteger, BZRTestEnum,
+    BZRTestEnumFoo,
+    BZRTestEnumBar
+);
+
+SpecBegin(NSValueTransformer_Bazaar)
 
 context(@"time interval since 1970 transformer", ^{
   __block NSValueTransformer *transformer;
@@ -40,7 +45,7 @@ context(@"time interval since 1970 transformer", ^{
   });
 });
 
-context(@"validatricks date time transformer", ^{
+context(@"milliseconds date time transformer", ^{
   static const double kMilliSecondsPerSecond = 1000;
 
   __block NSValueTransformer *transformer;
@@ -48,7 +53,7 @@ context(@"validatricks date time transformer", ^{
   __block NSDate *dateTime;
 
   beforeEach(^{
-    transformer = [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
+    transformer = [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
     timeInterval = 1337 * kMilliSecondsPerSecond;
     dateTime = [NSDate dateWithTimeIntervalSince1970:1337];
   });
@@ -134,6 +139,41 @@ context(@"validatricks receipt environment transformer", ^{
 
   it(@"should return nil if the received value is unknown", ^{
     expect([transformer transformedValue:@"foo"]).to.beNil();
+  });
+});
+
+context(@"enum class transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer bzr_enumNameTransformerForClass:BZRTestEnum.class];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:$(BZRTestEnumFoo).name]).to.equal($(BZRTestEnumFoo));
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:$(BZRTestEnumFoo)]).to
+        .equal($(BZRTestEnumFoo).name);
+  });
+
+  it(@"should raise if given enum class is not an enum", ^{
+    expect(^{
+      [NSValueTransformer bzr_enumNameTransformerForClass:NSString.class];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should transform to nil when transforming an invalid enum field name", ^{
+    expect([transformer transformedValue:@"foo"]).to.beNil();
+  });
+
+  it(@"should transform to nil when transforming a nil value", ^{
+    expect([transformer transformedValue:nil]).to.beNil();
+  });
+
+  it(@"should transform to nil when reverse transforming a nil value", ^{
+    expect([transformer reverseTransformedValue:nil]).to.beNil();
   });
 });
 
