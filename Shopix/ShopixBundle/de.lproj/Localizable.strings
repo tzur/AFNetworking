@@ -1,12 +1,6 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
 "/mo" = "/Mon.";
 
-/* A note used to clarify that a subscription is billed once. */
-"Billed in one payment" = "Wird in einer Zahlung abgerechnet";
-
-/* A note used to clarify that a subscription is billed once and the subscription price. The %@ must appear in the translation and will be replaced with the price. Example: Billed in one payment of $10 */
-"Billed in one payment of %@" = "Wird in einer Zahlung von %@ abgerechnet";
-
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Kontakt";
 
