@@ -20,20 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c colorScheme for default colors mapping. \c periodTextColor is set to
 /// \c darkTextColor \c priceTextColor is set to \c textColor. \c fullPriceTextColor is set to
-/// \c grayedTextColor. If \c showNonMonthlyFootnoteMarker is \c YES a marker is appended
-/// to the price if the billing period in not monthly but presented as monthly format.
-- (instancetype)initColorScheme:(SPXColorScheme *)colorScheme
-   showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker;
+/// \c grayedTextColor.
+- (instancetype)initColorScheme:(SPXColorScheme *)colorScheme;
 
 /// Initializes with the color \c periodTextColor for the subscription period text,
-/// \c priceTextColor and \c fullPriceTextColor for the price texts. If
-/// \c showNonMonthlyFootnoteMarker is \c YES a marker is appended to the price if the billing
-/// period in not monthly but presented as monthly format.
+/// \c priceTextColor and \c fullPriceTextColor for the price texts.
 - (instancetype)initWithPeriodTextColor:(UIColor *)periodTextColor
                          priceTextColor:(UIColor *)priceTextColor
-                     fullPriceTextColor:(UIColor *)fullPriceTextColor
-           showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker
-    NS_DESIGNATED_INITIALIZER;
+                     fullPriceTextColor:(UIColor *)fullPriceTextColor NS_DESIGNATED_INITIALIZER;
 
 /// Returns an attributed string that represents the subscription period that is determined by
 /// \c descriptor.billingPeriod. If \c monthlyFormat is \c YES the period text will be in months -
