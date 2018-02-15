@@ -27,13 +27,6 @@ it(@"should change its intrinsic content size according to the terms height", ^{
   expect(termsView.intrinsicContentSize.height).to.equal(1);
 });
 
-it(@"should change its intrinsic content size according to the terms and terms gist height", ^{
-  termsView.termsGistText = onePointHeightText;
-  [termsView layoutIfNeeded];
-
-  expect(termsView.intrinsicContentSize.height).to.equal(2);
-});
-
 it(@"should change its intrinsic content size if frame size forces breaking the text to multiple "
    "lines", ^{
   termsView.frame = CGRectMake(0, 0, 14, 100);
