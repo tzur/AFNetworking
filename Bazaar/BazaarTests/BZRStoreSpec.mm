@@ -22,8 +22,8 @@
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
+#import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
-#import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTestUtils.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -73,7 +73,7 @@ __block id<BZRProductsVariantSelector> variantSelector;
 __block BZRFakeReceiptValidationParametersProvider *validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
-__block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
+__block BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 __block BZRKeychainStorage *keychainStorage;
 __block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
 __block NSBundle *bundle;
@@ -103,7 +103,7 @@ beforeEach(^{
   validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-  storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
+  storeKitMetadataFetcher = OCMClassMock([BZRStoreKitCachedMetadataFetcher class]);
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
   bundle = OCMClassMock([NSBundle class]);

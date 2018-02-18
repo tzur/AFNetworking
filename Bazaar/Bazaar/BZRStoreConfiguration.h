@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
     BZRAllowedProductsProvider, BZRKeychainStorage,
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRStoreKitFacade,
-    BZRStoreKitMetadataFetcher, LTPath;
+    BZRStoreKitCachedMetadataFetcher, LTPath;
 
 @protocol BZRMultiAppSubscriptionClassifier, BZRProductsProvider, BZRProductContentFetcher,
     BZRProductsVariantSelectorFactory, BZRReceiptValidationParametersProvider;
@@ -121,7 +121,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
 /// Fetcher used to fetch products metadata.
-@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
+@property (readonly, nonatomic) BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 
 /// Activator used to control the periodic receipt validation.
 @property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
