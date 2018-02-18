@@ -700,7 +700,8 @@ context(@"analytricks project deleted event transformer", ^{
          initWithIdForVendor:deviceInfo.identifierForVendor advertisingID:deviceInfo.advertisingID
          isAdvertisingTrackingEnabled:YES deviceKind:@"fooBar" iosVersion:@"10.2" appVersion:@"1"
          appVersionShort:@"1.2" timezone:@"foo" country:@"bar" preferredLanguage:@"barFoo"
-         currentAppLanguage:@"que" purchaseReceipt:@"thud" appStoreCountry:@"bar"].properties;
+         currentAppLanguage:@"que" purchaseReceipt:@"thud" appStoreCountry:@"bar"
+         inLowPowerMode:@YES firmwareID:@"baz"].properties;
 
     return @{
       kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
