@@ -69,21 +69,20 @@ NSString * const kINTEnrichmentAppRunCountKey = @"app_run_count";
     NSUUID * _Nullable ltDeviceID = appContext[kINTAppContextDeviceIDKey];
     NSUUID * _Nullable deviceInfoID = appContext[kINTAppContextDeviceInfoIDKey];
 
-    NSDictionary *analytricksMetadata;
-
     if (!ltDeviceID || !deviceInfoID) {
-      analytricksMetadata = @{};
-    } else {
-      analytricksMetadata = [[INTAnalytricksMetadata alloc]
-         initWithEventID:eventMetadata.eventID deviceTimestamp:eventMetadata.deviceTimestamp
-         appTotalRunTime:@(eventMetadata.totalRunTime) ltDeviceID:ltDeviceID
-         deviceInfoID:deviceInfoID].properties;
+      return events;
     }
 
     return [events lt_map:^(NSDictionary *event) {
       if (![event isKindOfClass:NSDictionary.class]) {
         return event;
       }
+
+      auto analytricksMetadata =
+          [[INTAnalytricksMetadata alloc]
+           initWithEventID:[NSUUID UUID] deviceTimestamp:eventMetadata.deviceTimestamp
+           appTotalRunTime:@(eventMetadata.totalRunTime) ltDeviceID:ltDeviceID
+           deviceInfoID:deviceInfoID].properties;
 
       return [analytricksMetadata int_dictionaryByAddingEntriesFromDictionary:event];
     }];

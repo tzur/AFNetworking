@@ -31,6 +31,7 @@
 #import <Intelligence/INTScreenDismissedEvent.h>
 #import <Intelligence/INTScreenDisplayedEvent.h>
 #import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDateFormatter+Formatters.h>
 
 #import "INTAnalytricksContextGenerators.h"
@@ -135,21 +136,37 @@ context(@"analytricks metadata enricher", ^{
       kINTAppContextDeviceIDKey: deviceID,
       kINTAppContextDeviceInfoIDKey: deviceInfoID
     }, metadata);
+    expect(enrichedEvents).to.haveCount(2);
 
-    auto expectedEnrichment = @{
-      @"event_id": metadata.eventID.UUIDString,
-      @"device_timestamp": [[NSDateFormatter lt_UTCDateFormatter]
-                            stringFromDate:metadata.deviceTimestamp],
-      @"app_total_run_time": @(3),
-      @"lt_device_id": deviceID.UUIDString,
-      @"device_info_id": deviceInfoID.UUIDString
-      };
-
-    auto expectedEvents = [events lt_map:^(NSDictionary *event) {
-      return [expectedEnrichment int_dictionaryByAddingEntriesFromDictionary:event];
+    auto expectedEvents = [NSMutableArray array];
+    [events enumerateObjectsUsingBlock:^(NSDictionary *event, NSUInteger idx, BOOL *) {
+      expectedEvents[idx] = [event int_mergeUpdates:@{
+        @"device_timestamp": [[NSDateFormatter lt_UTCDateFormatter]
+                              stringFromDate:metadata.deviceTimestamp],
+        @"app_total_run_time": @(3),
+        @"lt_device_id": deviceID.UUIDString,
+        @"device_info_id": deviceInfoID.UUIDString,
+        @"event_id": enrichedEvents[idx][@"event_id"]
+      }];
     }];
 
     expect(enrichedEvents).to.equal(expectedEvents);
+  });
+
+  it(@"should create distinct event id for each event", ^{
+    auto deviceID = [NSUUID UUID];
+    auto deviceInfoID = [NSUUID UUID];
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceIDKey: deviceID,
+      kINTAppContextDeviceInfoIDKey: deviceInfoID
+    }, INTCreateEventMetadata());
+
+    auto uuids = [[enrichedEvents lt_map:^NSString *(NSDictionary *event) {
+      return event[@"event_id"];
+    }] lt_set];
+
+    expect(uuids).to.haveCount(2);
   });
 
   it(@"should prioritize event keys when enriching", ^{
@@ -203,8 +220,9 @@ context(@"analytricks metadata enricher", ^{
       kINTAppContextDeviceInfoIDKey: deviceInfoID
     }, metadata);
 
+    auto eventID = [[NSUUID alloc] initWithUUIDString:enrichedEvents[1][@"event_id"]];
     auto analytricksMetadata =
-        [[INTAnalytricksMetadata alloc] initWithEventID:metadata.eventID
+        [[INTAnalytricksMetadata alloc] initWithEventID:eventID
                                         deviceTimestamp:metadata.deviceTimestamp
                                         appTotalRunTime:@(3)
                                              ltDeviceID:deviceID deviceInfoID:deviceInfoID];
