@@ -47,7 +47,8 @@ INTDeviceInfo *INTFakeDeviceInfo() {
                                                  appVersion:@"foo" appVersionShort:@"foo"
                                                    timeZone:@"foo" country:@"foo"
                                           preferredLanguage:@"foo" currentAppLanguage:@"foo"
-                                            purchaseReceipt:[NSData data] appStoreCountry:nil];
+                                            purchaseReceipt:[NSData data] appStoreCountry:nil
+                                             inLowPowerMode:@NO firmwareID:@"foo"];
 }
 
 SpecBegin(INTDeviceInfoObserver)

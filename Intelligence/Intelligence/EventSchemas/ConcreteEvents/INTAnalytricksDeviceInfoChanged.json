@@ -59,6 +59,14 @@
         "app_store_country": {
           "description": "@see -[INTDeviceInfo appStoreCountry]",
           "type": ["string", "null"]
+        },
+        "in_low_power_mode": {
+          "description": "@see -[INTDeviceInfo inLowPowerMode]",
+          "type": ["boolean", "null"]
+        },
+        "firmware_id": {
+          "description": "@see -[INTDeviceInfo firmwareID]",
+          "type": ["string", "null"]
         }
       },
       "required": [
@@ -74,7 +82,9 @@
         "preferred_language",
         "current_app_language",
         "purchase_receipt",
-        "app_store_country"
+        "app_store_country",
+        "in_low_power_mode",
+        "firmware_id"
       ]
     }
   ]
