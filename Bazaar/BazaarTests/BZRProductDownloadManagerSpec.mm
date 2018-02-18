@@ -4,7 +4,7 @@
 #import "BZRProductDownloadManager.h"
 
 #import "BZRFakePaymentTransaction.h"
-#import "BZRPaymentQueue.h"
+#import "BZRPaymentQueueAdapter.h"
 
 /// Fake \c SKDownload with a mutable \c downloadState.
 @interface BZRFakeDownload : SKDownload

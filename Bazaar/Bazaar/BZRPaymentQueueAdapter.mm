@@ -1,18 +1,19 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "BZRPaymentQueue.h"
+#import "BZRPaymentQueueAdapter.h"
 
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent+AdditionalInfo.h"
+#import "BZRPaymentQueue.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRPaymentQueue () <SKPaymentTransactionObserver>
+@interface BZRPaymentQueueAdapter () <SKPaymentTransactionObserver>
 
 /// Queue used to make payments, restore completed transactions and manage downloads.
-@property (readonly, nonatomic) SKPaymentQueue *underlyingPaymentQueue;
+@property (readonly, nonatomic) id<BZRPaymentQueue> underlyingPaymentQueue;
 
 /// Subject used to send an array of unfinished transactions.
 @property (readonly, nonatomic) RACSubject<BZRPaymentTransactionList *> *
@@ -30,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Collection of transactions classified as payment transactions or restoration transactions.
 typedef NSDictionary<NSString *, BZRPaymentTransactionList *> BZRClassifiedTransactions;
 
-@implementation BZRPaymentQueue
+@implementation BZRPaymentQueueAdapter
 
 @synthesize downloadsDelegate = _downloadsDelegate;
 @synthesize paymentsDelegate = _paymentsDelegate;
@@ -47,11 +48,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)init {
-  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]];
-}
-
-- (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue {
+- (instancetype)initWithPaymentQueue:(id<BZRPaymentQueue>)underlyingPaymentQueue {
   if (self = [super init]) {
     _underlyingPaymentQueue = underlyingPaymentQueue;
     _unfinishedTransactionsSubject = [RACSubject subject];

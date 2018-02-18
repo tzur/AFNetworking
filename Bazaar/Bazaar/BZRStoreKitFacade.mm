@@ -6,7 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
-#import "BZRPaymentQueue.h"
+#import "BZRPaymentQueueAdapter.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseHelper.h"
 #import "BZRPurchaseManager.h"
@@ -15,6 +15,7 @@
 #import "BZRTransactionRestorationManager.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "SKPaymentQueue+Bazaar.h"
 #import "SKProductsRequest+RACSignalSupport.h"
 #import "SKReceiptRefreshRequest+RACSignalSupport.h"
 
@@ -23,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRStoreKitFacade ()
 
 /// Payment queue used to make purchases, restore purchase and download products content.
-@property (readonly, nonatomic) BZRPaymentQueue *paymentQueue;
+@property (readonly, nonatomic) BZRPaymentQueueAdapter *paymentQueueAdapter;
 
 /// Purchase manager used to make in-app purchases.
 @property (readonly, nonatomic) BZRPurchaseManager *purchaseManager;
@@ -49,35 +50,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID
     purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper {
-  BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
+  BZRPaymentQueueAdapter *paymentQueueAdapter =
+      [[BZRPaymentQueueAdapter alloc] initWithPaymentQueue:[SKPaymentQueue defaultQueue]];
   BZRPurchaseManager *purchaseManager =
-      [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
+      [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueueAdapter
                                      applicationUserID:applicationUserID
                                         purchaseHelper:purchaseHelper];
   BZRTransactionRestorationManager *restorationManager =
-      [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue
+      [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueueAdapter
                                                    applicationUserID:applicationUserID];
   BZRProductDownloadManager *downloadManager =
-      [[BZRProductDownloadManager alloc] initWithPaymentQueue:paymentQueue];
+      [[BZRProductDownloadManager alloc] initWithPaymentQueue:paymentQueueAdapter];
   BZRStoreKitRequestsFactory *storeKitRequestsFactory = [[BZRStoreKitRequestsFactory alloc] init];
 
-  return [self initWithPaymentQueue:paymentQueue purchaseManager:purchaseManager
-                 restorationManager:restorationManager downloadManager:downloadManager
-            storeKitRequestsFactory:storeKitRequestsFactory];
+  return [self initWithPaymentQueueAdapter:paymentQueueAdapter purchaseManager:purchaseManager
+                        restorationManager:restorationManager downloadManager:downloadManager
+                   storeKitRequestsFactory:storeKitRequestsFactory];
 }
 
-- (instancetype)initWithPaymentQueue:(BZRPaymentQueue *)paymentQueue
-                     purchaseManager:(BZRPurchaseManager *)purchaseManager
-                  restorationManager:(BZRTransactionRestorationManager *)restorationManager
-                     downloadManager:(BZRProductDownloadManager *)downloadManager
-             storeKitRequestsFactory:(id<BZRStoreKitRequestsFactory>)storeKitRequestsFactory {
+- (instancetype)initWithPaymentQueueAdapter:(BZRPaymentQueueAdapter *)paymentQueueAdapter
+    purchaseManager:(BZRPurchaseManager *)purchaseManager
+    restorationManager:(BZRTransactionRestorationManager *)restorationManager
+    downloadManager:(BZRProductDownloadManager *)downloadManager
+    storeKitRequestsFactory:(id<BZRStoreKitRequestsFactory>)storeKitRequestsFactory {
   if (self = [super init]) {
-    _paymentQueue = paymentQueue;
+    _paymentQueueAdapter = paymentQueueAdapter;
     _purchaseManager = purchaseManager;
     _restorationManager = restorationManager;
     _downloadManager = downloadManager;
     _storeKitRequestsFactory = storeKitRequestsFactory;
-    _eventsSignal = [paymentQueue.eventsSignal takeUntil:[self rac_willDeallocSignal]];
+    _eventsSignal = [paymentQueueAdapter.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 
     [self finishFailedTransactions];
   }
@@ -131,7 +133,7 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
 }
 
 - (void)finishTransaction:(SKPaymentTransaction *)transaction {
-  [self.paymentQueue finishTransaction:transaction];
+  [self.paymentQueueAdapter finishTransaction:transaction];
 }
 
 + (RACSignal *)requestSignalWithRequestFactoryBlock:(BZRRequestFactoryBlock)requestFactoryBlock {
@@ -194,7 +196,7 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
 }
 
 - (RACSignal<BZREvent *> *)unfinishedFailedTransactionsErrors {
-  return [[[self.paymentQueue.unfinishedTransactionsSignal
+  return [[[self.paymentQueueAdapter.unfinishedTransactionsSignal
       flattenMap:^(BZRPaymentTransactionList *transaction) {
         return [transaction.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
       }]
@@ -223,7 +225,7 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
 - (RACSignal<BZRPaymentTransactionList *> *)unhandledSuccessfulTransactionsSignal {
   return [[RACSignal merge:@[
     [self successfulTransactionsFromTransactionsSignal:
-     self.paymentQueue.unfinishedTransactionsSignal],
+     self.paymentQueueAdapter.unfinishedTransactionsSignal],
     [self successfulTransactionsFromTransactionsSignal:
      self.purchaseManager.unhandledTransactionsSignal]
   ]]

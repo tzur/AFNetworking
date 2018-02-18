@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZREvent, BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
+@class BZREvent, BZRPaymentQueueAdapter, BZRProductDownloadManager, BZRPurchaseManager,
     BZRTransactionRestorationManager;
 
 @protocol BZRPurchaseHelper, BZRStoreKitRequestsFactory;
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c applicationUserID is an optional unique identifier for the user’s account.
-///\c paymentQueue will be initialized using \c -[BZRPaymentQueue init].
+///\c paymentQueueAdapter will be initialized with \c [SKPaymentQueue defaultQueue].
 /// \c purchaseManager will be initialized using
 /// \c -[BZRPurchaseManager initWithPaymentQueue:applicationUserID:purchaseHelper:].
 /// \c restorationManager will be initialized using
@@ -45,16 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID
                            purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper;
 
-/// Initializes with \c paymentQueue, used to observe an underlying \c SKPaymentQueue and pass calls
-/// from the \c SKPaymentQueue to \c paymentQueue's appropriate delegate. \c purchaseManager is used
-/// to make products purchases with StoreKit. \c restorationManager is used to restore completed
-/// transactions. \c downloadManager is used to download content of products.
+/// Initializes with \c paymentQueueAdapter, used to observe an underlying \c SKPaymentQueue and
+/// pass calls from the \c SKPaymentQueue to \c paymentQueue's appropriate delegate. \c
+/// purchaseManager is used to make products purchases with StoreKit. \c restorationManager is used
+/// to restore completed transactions. \c downloadManager is used to download content of products.
 /// \c storeKitRequestsFactory is used to create StoreKit's requests.
-- (instancetype)initWithPaymentQueue:(BZRPaymentQueue *)paymentQueue
-                     purchaseManager:(BZRPurchaseManager *)purchaseManager
-                  restorationManager:(BZRTransactionRestorationManager *)restorationManager
-                     downloadManager:(BZRProductDownloadManager *)downloadManager
-             storeKitRequestsFactory:(id<BZRStoreKitRequestsFactory>)storeKitRequestsFactory
+- (instancetype)initWithPaymentQueueAdapter:(BZRPaymentQueueAdapter *)paymentQueueAdapter
+                            purchaseManager:(BZRPurchaseManager *)purchaseManager
+                         restorationManager:(BZRTransactionRestorationManager *)restorationManager
+                            downloadManager:(BZRProductDownloadManager *)downloadManager
+                    storeKitRequestsFactory:(id<BZRStoreKitRequestsFactory>)storeKitRequestsFactory
     NS_DESIGNATED_INITIALIZER;
 
 /// Fetches metadata for products with the specified \c productIdentifiers.
