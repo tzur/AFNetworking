@@ -87,8 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider {
   auto alertViewControllerProvider = [[SPXAlertViewControllerProvider alloc] init];
   auto buttonFormatter =
-      [[SPXSubscriptionButtonFormatter alloc] initColorScheme:viewModel.colorScheme
-       showNonMonthlyFootnoteMarker:viewModel.showNonMonthlyBillingFootnote];
+      [[SPXSubscriptionButtonFormatter alloc] initColorScheme:viewModel.colorScheme];
   auto defaultButtonsFactory =
       [[SPXMultiSubscriptionGradientButtonsFactory alloc] initWithColorScheme:viewModel.colorScheme
                                                                     formatter:buttonFormatter];
@@ -358,7 +357,6 @@ NS_ASSUME_NONNULL_BEGIN
   [self setupScrollPositionBinding];
   [self setupActivePageBinding];
   [self setupRestorePurchasesButtonPressedBinding];
-  [self setupTermsGistBinding];
   [self setupActivityIndicatorBinding];
   [self setupAlertRequestBinding];
   [self setupFeedbackComposerRequestBinding];
@@ -386,11 +384,6 @@ NS_ASSUME_NONNULL_BEGIN
      @strongify(self);
      [self.viewModel restorePurchasesButtonPressed];
    }];
-}
-
-- (void)setupTermsGistBinding {
-  RAC(self.termsView, termsGistText) = [RACObserve(self.viewModel.termsViewModel, termsGistText)
-                                        distinctUntilChanged];
 }
 
 - (void)setupActivityIndicatorBinding {

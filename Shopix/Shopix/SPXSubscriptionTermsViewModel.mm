@@ -16,10 +16,6 @@ using namespace spx;
 
 @interface SPXSubscriptionTermsViewModel ()
 
-/// Optional attributed string that is presented before the terms text, used for a dynamic text such
-/// as terms that depends on a specific subscription.
-@property (strong, nonatomic, nullable) NSAttributedString *termsGistText;
-
 /// Non-attributed version of the terms overview as provided on initialization.
 @property (readonly, nonatomic) NSString *termsOverview;
 
@@ -98,55 +94,6 @@ using namespace spx;
   }];
 }
 
-- (void)updateTermsGistWithSubscriptions:
-    (nullable NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors {
-  [self unbindOnePaymentText];
-  if (!subscriptionDescriptors) {
-    return;
-  }
-  [self bindOnePaymentTextForDescriptors:subscriptionDescriptors];
-}
-
-- (void)unbindOnePaymentText {
-  self.termsGistText = nil;
-}
-
-- (void)bindOnePaymentTextForDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)descriptors {
-  auto _Nullable foundSubscription =
-      [descriptors lt_find:^BOOL(SPXSubscriptionDescriptor *descriptor) {
-        return descriptor.billingPeriod.unit.value == BZRBillingPeriodUnitYears ||
-          (descriptor.billingPeriod.unit.value == BZRBillingPeriodUnitMonths &&
-           descriptor.billingPeriod.unitCount > 1);
-      }];
-
-  if (!foundSubscription) {
-    return;
-  }
-
-  @weakify(self);
-  RAC(self, termsGistText) = [[[RACObserve(foundSubscription, priceInfo)
-      takeUntil:[self rac_signalForSelector:@selector(unbindOnePaymentText)]]
-      map:^NSAttributedString *(BZRProductPriceInfo * _Nullable priceInfo) {
-        @strongify(self);
-        auto termsGistString = priceInfo ?
-            [NSString stringWithFormat:SPXSubscriptionTermsViewModel.defaultTermsGistWithPrice,
-             [priceInfo.price spx_localizedPriceForLocale:priceInfo.localeIdentifier]] :
-            SPXSubscriptionTermsViewModel.defaultTermsGist;
-        return [self termsGistTextForString:[@"* " stringByAppendingString:termsGistString]];
-      }]
-      deliverOnMainThread];
-}
-
-- (NSAttributedString *)termsGistTextForString:(NSString *)termsGistString {
-  auto paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-  paragraphStyle.alignment = NSTextAlignmentCenter;
-  return [[NSAttributedString alloc] initWithString:termsGistString attributes:@{
-    NSForegroundColorAttributeName: self.termsTextColor,
-    NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightSemibold],
-    NSParagraphStyleAttributeName: paragraphStyle
-  }];
-}
-
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
@@ -158,17 +105,6 @@ using namespace spx;
     "with your plan, within 24 hours prior to the end of the current period. You can manage or "
     "turn off auto-renew in your Apple ID account settings any time after purchase.", @"Short "
     "terms of use shown to the user in the subscription screen.");
-}
-
-+ (NSString *)defaultTermsGist {
-  return _LDefault(@"Billed in one payment", @"A note used to clarify that a subscription is "
-                   "billed once.");
-}
-
-+ (NSString *)defaultTermsGistWithPrice {
-  return _LDefault(@"Billed in one payment of %@", @"A note used to clarify that a subscription is "
-                   "billed once and the subscription price. The %@ must appear in the translation "
-                   "and will be replaced with the price. Example: Billed in one payment of $10");
 }
 
 @end

@@ -7,9 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SPXSubscriptionTermsView ()
 
-/// Text view holding the terms gist text.
-@property (readonly, nonatomic) UITextView *termsGistTextView;
-
 /// Text view holding the terms text, terms of use link and privacy policy link.
 @property (readonly, nonatomic) UITextView *termsTextView;
 
@@ -34,30 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setup {
-  [self setupTermsGistTextView];
   [self setupTermsTextView];
   [self setContentCompressionResistancePriority:UILayoutPriorityRequired
                                         forAxis:UILayoutConstraintAxisVertical];
-}
-
-- (void)setupTermsGistTextView {
-  _termsGistTextView = [[UITextView alloc] init];
-  self.termsGistTextView.selectable = NO;
-  self.termsGistTextView.scrollEnabled = NO;
-  self.termsGistTextView.textContainerInset = UIEdgeInsetsZero;
-  self.termsGistTextView.backgroundColor = [UIColor clearColor];
-
-  [self addSubview:self.termsGistTextView];
-  [self updateTermsGistTextViewConstraints];
-}
-
-- (void)updateTermsGistTextViewConstraints {
-  [self.termsGistTextView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.top.width.centerX.equalTo(self);
-    if (!self.termsGistText) {
-      make.height.equalTo(@0);
-    }
-  }];
 }
 
 - (void)setupTermsTextView {
@@ -69,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   [self addSubview:self.termsTextView];
   [self.termsTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.top.equalTo(self.termsGistTextView.mas_bottom);
+    make.top.equalTo(self);
     make.width.centerX.equalTo(self);
   }];
 }
@@ -106,9 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (CGSize)intrinsicContentSize {
-  auto contentHeight =
-      self.termsTextView.frame.size.height + self.termsGistTextView.frame.size.height;
-  return CGSizeMake(UIViewNoIntrinsicMetric, contentHeight);
+  return self.termsTextView.intrinsicContentSize;
 }
 
 #pragma mark -
@@ -121,14 +95,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIEdgeInsets)termsTextContainerInset {
   return self.termsTextView.textContainerInset;
-}
-
-- (void)setTermsGistText:(nullable NSAttributedString *)termsGistText {
-  _termsGistText = termsGistText;
-  if (termsGistText) {
-    self.termsGistTextView.attributedText = termsGistText;
-  }
-  [self updateTermsGistTextViewConstraints];
 }
 
 @end

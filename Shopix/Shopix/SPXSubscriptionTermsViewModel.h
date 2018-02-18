@@ -12,17 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// View-Model for \c SPXSubscriptionTermsView.
 @protocol SPXSubscriptionTermsViewModel <NSObject>
 
-/// Updates the \c termsGistText according to the given \c subscriptionDescriptors. If the array
-/// contains a yearly/bi-yearly subscription the text "* Billed in one payment of
-/// <yearly subscription price>" will be appended as well. If \c subscriptionDescriptors is \c nil
-/// the terms gist text is set to \c nil.
-- (void)updateTermsGistWithSubscriptions:
-    (nullable NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors;
-
-/// Optional attributed string that is presented before the terms text, used for a dynamic text such
-/// as terms that depends on a specific subscription. KVO Complaint.
-@property (readonly, nonatomic, nullable) NSAttributedString *termsGistText;
-
 /// Attributed string for the terms overview.
 @property (readonly, nonatomic) NSAttributedString *termsText;
 
@@ -67,15 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Default terms overview string.
 @property (class, readonly, nonatomic) NSString *defaultTermsOverview;
-
-/// Default note used to clarify the exact nature of the billing for subscription products for which
-/// the retail price is different than the presented price. For example, a subscription with yearly
-/// billing period that its price is divided by 12 and only the relative price per month is
-/// presented to the user.
-@property (class, readonly, nonatomic) NSString *defaultTermsGist;
-
-/// Same as \c defaultTermsGist appended with the localized price.
-@property (class, readonly, nonatomic) NSString *defaultTermsGistWithPrice;
 
 @end
 

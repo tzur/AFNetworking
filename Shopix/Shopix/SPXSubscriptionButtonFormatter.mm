@@ -27,31 +27,23 @@ using namespace spx;
 /// Subscription price text color.
 @property (readonly, nonatomic) UIColor *priceTextColor;
 
-/// If \c YES a marker is appended to the price if the billing period in not monthly but presented
-/// as monthly format.
-@property (readonly, nonatomic) BOOL showNonMonthlyBillingFootnoteMarker;
-
 @end
 
 @implementation SPXSubscriptionButtonFormatter
 
-- (instancetype)initColorScheme:(SPXColorScheme *)colorScheme
-   showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker {
+- (instancetype)initColorScheme:(SPXColorScheme *)colorScheme {
     return [self initWithPeriodTextColor:colorScheme.darkTextColor
                           priceTextColor:colorScheme.textColor
-                      fullPriceTextColor:colorScheme.grayedTextColor
-            showNonMonthlyFootnoteMarker:showNonMonthlyFootnoteMarker];
+                      fullPriceTextColor:colorScheme.grayedTextColor];
 }
 
 - (instancetype)initWithPeriodTextColor:(UIColor *)periodTextColor
                          priceTextColor:(UIColor *)priceTextColor
-                     fullPriceTextColor:(UIColor *)fullPriceTextColor
-           showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker {
+                     fullPriceTextColor:(UIColor *)fullPriceTextColor {
   if (self = [super init]) {
     _periodTextColor = periodTextColor;
     _fullPriceTextColor = fullPriceTextColor;
     _priceTextColor = priceTextColor;
-    _showNonMonthlyBillingFootnoteMarker = showNonMonthlyFootnoteMarker;
   }
   return self;
 }
@@ -131,10 +123,6 @@ using namespace spx;
                            dividedBy:divisor];
   if (monthlyFormat && descriptor.billingPeriod) {
     priceString = [self appendPerMonthSuffixToPrice:priceString];
-    if (self.showNonMonthlyBillingFootnoteMarker &&
-        ![self isMonthlyBillingPeriod:descriptor.billingPeriod]) {
-      priceString = [priceString stringByAppendingString:@" *"];
-    }
   }
 
   return [[NSAttributedString alloc] initWithString:priceString attributes:@{

@@ -82,9 +82,7 @@ using namespace spx;
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider {
   auto buttonFormatter =
-      [[SPXSubscriptionButtonFormatter alloc]
-       initColorScheme:viewModel.colorScheme
-       showNonMonthlyFootnoteMarker:viewModel.showNonMonthlyBillingFootnote];
+      [[SPXSubscriptionButtonFormatter alloc] initColorScheme:viewModel.colorScheme];
   auto defaultButtonsFactory =
       [[SPXSubscriptionGradientButtonsFactory alloc] initWithColorScheme:viewModel.colorScheme
                                                                formatter:buttonFormatter];
@@ -253,8 +251,6 @@ using namespace spx;
                 termsOfUseLink:self.viewModel.termsViewModel.termsOfUseLink
                 privacyPolicyLink:self.viewModel.termsViewModel.privacyPolicyLink];
   self.termsView.termsTextContainerInset = UIEdgeInsetsMake(6, 0, 6, 0);
-  RAC(self.termsView, termsGistText) = [RACObserve(self.viewModel.termsViewModel, termsGistText)
-                                        distinctUntilChanged];
   [self.view addSubview:self.termsView];
 
   [self.termsView mas_makeConstraints:^(MASConstraintMaker *make) {

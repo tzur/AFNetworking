@@ -56,10 +56,6 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 /// Terms view model, used to define the terms text, terms-of-use and privacy documents.
 @property (readonly, nonatomic) id<SPXSubscriptionTermsViewModel> termsViewModel;
 
-/// If /c YES, a footnote is shown to the user to clarify the exact nature of the billing for
-/// subscription products for which the retail price is different than the presented price.
-@property (readonly, nonatomic) BOOL showNonMonthlyBillingFootnote;
-
 /// Color scheme for the subscription view and its subviews.
 @property (readonly, nonatomic) SPXColorScheme *colorScheme;
 
@@ -97,8 +93,8 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Same as the designated initializer. \c colorScheme is pulled from Objection,
-/// \c showNonMonthlyBillingFootnote is set to \c NO, \c subscriptionManager is set to the default
-/// manager and \c fetchProductsStrategy is set to \c SPXFetchProductsStrategyAlways.
+/// \c subscriptionManager is set to the default manager and \c fetchProductsStrategy is set to
+/// \c SPXFetchProductsStrategyAlways.
 - (instancetype)
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
               preferredProductIndex:(nullable NSNumber *)preferredProductIndex
@@ -117,9 +113,6 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 ///
 /// \c pageViewModels used to define page views with video, title and subtitle.
 ///
-/// c \showNonMonthlyBillingFootnote used to show a clarification about billing for subscription
-/// products for which the retail price is different than the presented price.
-///
 /// \c termsViewModel used to define the terms text, terms-of-use and privacy documents.
 ///
 /// \c colorScheme defines the color scheme for the subscription view and its subviews.
@@ -132,7 +125,6 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
               preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                      pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-      showNonMonthlyBillingFootnote:(BOOL)showNonMonthlyBillingFootnote
                      termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                         colorScheme:(SPXColorScheme *)colorScheme
                 subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
