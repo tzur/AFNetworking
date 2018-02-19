@@ -18,13 +18,14 @@
 #import "LTBoundaryCondition.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUResourceProxy.h"
 #import "LTOpenCVExtensions.h"
 #import "LTRectDrawer+PassthroughShader.h"
 #import "LTTexture+Protected.h"
 
-@interface LTMMTexture () {
+@interface LTMMTexture () <LTGPUResource> {
   /// Reference to the pixel buffer that backs the texture.
   lt::Ref<CVPixelBufferRef> _pixelBuffer;
 
@@ -61,12 +62,15 @@
               maxMipmapLevel:(GLint)maxMipmapLevel
               allocateMemory:(BOOL)allocateMemory {
   LTParameterAssert(!maxMipmapLevel, @"LTMMTexture does not support mipmaps");
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
                   allocateMemory:allocateMemory]) {
     [self setupPixelBuffer:[self createPixelBuffer]];
     [self setupOpenGLParameters];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
@@ -130,11 +134,11 @@
 
 #ifdef LTMMTEXTURE_USE_IOSURFACE
 - (void)setupSurfaceBackedTexture {
-  LTGLVersion version = [LTGLContext currentContext].version;
+  LTGLVersion version = self.context.version;
   auto internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
   auto format = [self.pixelFormat formatForVersion:version];
   auto precision = [self.pixelFormat precisionForVersion:version];
-  auto eaglContext = [LTGLContext currentContext].context;
+  auto eaglContext = self.context.context;
   auto _Nullable surface = CVPixelBufferGetIOSurface(_pixelBuffer.get());
   LTParameterAssert(surface, @"Pixel buffer must be backed by IOSurface");
 
@@ -196,7 +200,7 @@
 }
 
 - (void)allocateTextureCacheBackedTexture {
-  LTGLVersion version = [LTGLContext currentContext].version;
+  LTGLVersion version = self.context.version;
   GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
   GLenum format = [self.pixelFormat formatForVersion:version];
   GLenum precision = [self.pixelFormat precisionForVersion:version];
@@ -226,10 +230,11 @@
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   [self lockTextureAndExecute:^{
     _pixelBuffer.reset(nullptr);
     _texture.reset(nullptr);
@@ -341,7 +346,7 @@
 
 - (GLsync)createAndPushSyncObject {
   __block GLsync syncObject;
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
   } openGLES3:^{
     syncObject = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
@@ -459,7 +464,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   }
 
   __block GLboolean isSync;
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     isSync = glIsSyncAPPLE(sync);
   } openGLES3:^{
     isSync = glIsSync(sync);
@@ -476,7 +481,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   __block GLenum waitResult;
   static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     waitResult = glClientWaitSyncAPPLE(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
   } openGLES3:^{
     waitResult = glClientWaitSync(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
@@ -497,7 +502,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)deleteSyncObjectIfExists:(nullable GLsync)sync {
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     if (glIsSyncAPPLE(sync)) {
       glDeleteSyncAPPLE(sync);
     }

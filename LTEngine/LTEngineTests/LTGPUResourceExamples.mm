@@ -3,7 +3,9 @@
 
 #import "LTGPUResourceExamples.h"
 
+#import "LTGLContext+Internal.h"
 #import "LTGPUResource.h"
+#import "LTGPUResourceProxy.h"
 
 NSString * const kLTResourceExamples = @"LTResourceExamples";
 NSString * const kLTResourceExamplesSUTValue = @"LTResourceExamplesSUTValue";
@@ -111,6 +113,21 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
       [resource bindAndExecute:nil];
       [resource unbind];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should appear in the current context resources", ^{
+    auto resources = [[LTGLContext currentContext] resources];
+    expect(resources).to.contain(resource);
+  });
+
+  it(@"should not appear in its context after disposal", ^{
+    [resource dispose];
+    auto resources = [[LTGLContext currentContext] resources];
+    expect(resources).notTo.contain(resource);
+  });
+
+  it(@"should have context set to the current context", ^{
+    expect(resource.context).to.equal([LTGLContext currentContext]);
   });
 
   it(@"should set name to 0 upon disposal", ^{

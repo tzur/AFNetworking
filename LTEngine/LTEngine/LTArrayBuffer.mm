@@ -3,18 +3,11 @@
 
 #import "LTArrayBuffer.h"
 
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
 #import "LTGLException.h"
+#import "LTGPUResourceProxy.h"
 
 @interface LTArrayBuffer ()
-
-@property (readwrite, nonatomic) GLuint name;
-
-/// OpenGL usage type of the buffer.
-@property (readwrite, nonatomic) LTArrayBufferUsage usage;
-
-/// Type of the buffer array.
-@property (readwrite, nonatomic) LTArrayBufferType type;
 
 /// Current size of the buffer.
 @property (readwrite, nonatomic) NSUInteger size;
@@ -29,11 +22,15 @@
 
 @implementation LTArrayBuffer
 
+@synthesize context = _context;
+@synthesize name = _name;
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
 - (instancetype)initWithType:(LTArrayBufferType)type usage:(LTArrayBufferUsage)usage {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
     LTAssert(usage == GL_STATIC_DRAW || usage == GL_STREAM_DRAW || usage == GL_DYNAMIC_DRAW,
              @"Usage is not one of {GL_STATIC_DRAW, GL_STREAM_DRAW, GL_DYNAMIC_DRAW}");
@@ -41,10 +38,13 @@
     glGenBuffers(1, &_name);
     LTGLCheck(@"Failed generating buffer");
 
-    self.type = type;
-    self.usage = usage;
+    _type = type;
+    _usage = usage;
+    _context = [LTGLContext currentContext];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (void)dealloc {
@@ -52,10 +52,11 @@
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   [self unbind];
   glDeleteBuffers(1, &_name);
   LTGLCheckDbg(@"Failed to delete buffer: %d", _name);
@@ -129,7 +130,7 @@
     // This is the only way to read a buffer object, since OpenGL ES doesn't support the
     // \c GL_READ_ONLY flag with \c glMapBuffer().
     __block GLvoid *mappedBuffer;
-    [[LTGLContext currentContext] executeForOpenGLES2:^{
+    [self.context executeForOpenGLES2:^{
       mappedBuffer = glMapBufferRangeEXT(self.type, 0, self.size, GL_MAP_READ_BIT_EXT);
     } openGLES3:^{
       mappedBuffer = glMapBufferRange(self.type, 0, self.size, GL_MAP_READ_BIT);
@@ -166,7 +167,7 @@
 
 - (void)updateBufferWithMapping:(NSArray *)dataArray {
   __block char *mappedBuffer;
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
   } openGLES3:^{
     mappedBuffer = (char *)glMapBufferRange(self.type, 0, self.size,
@@ -193,7 +194,7 @@
 
 - (void)unmapBuffer {
   __block GLboolean unmapped;
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     unmapped = glUnmapBufferOES(self.type);
   } openGLES3:^{
     unmapped = glUnmapBuffer(self.type);

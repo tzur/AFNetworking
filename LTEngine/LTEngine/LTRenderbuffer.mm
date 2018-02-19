@@ -4,8 +4,9 @@
 #import "LTRenderbuffer.h"
 
 #import "LTFboAttachable.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
 #import "LTGLPixelFormat.h"
+#import "LTGPUResourceProxy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,28 +35,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTRenderbuffer
 
+@synthesize context = _context;
+
 - (instancetype)initWithDrawable:(id<EAGLDrawable>)drawable {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
     _fillColor = LTVector4::null();
+    _context = [LTGLContext currentContext];
 
     [self updateGenerationID];
     [self createRenderbuffer];
     [self allocateRenderbufferStorageForDrawable:drawable];
     [self derivePixelFormat];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)format {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
     _fillColor = LTVector4::null();
     _pixelFormat = format;
+    _context = [LTGLContext currentContext];
 
     [self updateGenerationID];
     [self createRenderbuffer];
     [self allocateRenderbufferStorageWithSize:size];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (void)createRenderbuffer {
@@ -67,8 +78,8 @@ NS_ASSUME_NONNULL_BEGIN
   __block BOOL storageCreated;
 
   [self bindAndExecute:^{
-    storageCreated = [[LTGLContext currentContext].context renderbufferStorage:GL_RENDERBUFFER
-                                                                  fromDrawable:drawable];
+    storageCreated = [self.context.context renderbufferStorage:GL_RENDERBUFFER
+                                                  fromDrawable:drawable];
   }];
 
   LTAssert(storageCreated, @"Renderbuffer storage creation failed for drawable %@", drawable);
@@ -76,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)allocateRenderbufferStorageWithSize:(CGSize)size {
   [self bindAndExecute:^{
-    auto contextVersion = [LTGLContext currentContext].version;
+    auto contextVersion = self.context.version;
     auto internalFormat = [self.pixelFormat renderbufferInternalFormatForVersion:contextVersion];
     glRenderbufferStorage(GL_RENDERBUFFER, internalFormat, size.width, size.height);
     LTGLCheckDbg(@"Error when allocating renderbuffer storage with size: %@, format: %@",
@@ -91,8 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   _pixelFormat = [[LTGLPixelFormat alloc]
-                  initWithRenderbufferInternalFormat:internalFormat
-                  version:[LTGLContext currentContext].version];
+                  initWithRenderbufferInternalFormat:internalFormat version:self.context.version];
 }
 
 - (void)dealloc {
@@ -100,13 +110,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   glDeleteRenderbuffers(1, &_name);
   LTGLCheckDbg(@"Error deleting renderbuffer");
-
   _name = 0;
 }
 
@@ -188,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)present {
   [self bindAndExecute:^{
-    [[LTGLContext currentContext].context presentRenderbuffer:GL_RENDERBUFFER];
+    [self.context.context presentRenderbuffer:GL_RENDERBUFFER];
   }];
 }
 

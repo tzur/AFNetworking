@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTFboPool, LTGLContext, LTProgramPool;
 
+@protocol LTGPUResource;
+
 struct LTVector;
 
 /// Supported blending functions.
@@ -86,6 +88,10 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Wrapper class for \c EAGLContext, supplying abilities to set OpenGL capabilities which are not
 /// specific to a single geometry or program, such as blending, depth test, face culling and more.
+/// The \c LTGLContext tracks all \c LTGPUResource allocations and deallocations. It utilizes a
+/// dispatch queue which serves as a target queue to perform tasks on this context. This class
+/// guarantees that \c LTGPUResource deallocation will occur on the right dispatch queue and
+/// context.
 @interface LTGLContext : NSObject
 
 /// Returns the current rendering context for the calling thread.
@@ -96,15 +102,27 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 + (void)setCurrentContext:(nullable LTGLContext *)context;
 
 /// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup. On supported
-/// devices, the API version will be ES3, otherwise it will be ES2.
+/// devices, the API version will be ES3, otherwise it will be ES2. The \c targetQueue will be set
+/// to main dispatch queue.
 - (instancetype)init;
 
 /// Initializes a context with a new \c EAGLContext and the given \c sharegroup. On supported
-/// devices, the API version will be ES3, otherwise it will be ES2.
+/// devices, the API version will be ES3, otherwise it will be ES2. The \c targetQueue will be set
+/// to main dispatch queue.
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup;
 
+/// Initializes with the given \c sharegroup and the given \c targetQueue. On supported devices, the
+/// API version will be ES3, otherwise it will be ES2. The context is bound to the \c targetQueue,
+/// which will be used to dispatch all context's executed tasks.
+///
+/// @note if in-order task's execution is required, i.e. the next task get executed only after the
+/// previous has completed, then the \c targetQueue must be a serial dispatch queue.
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                       targetQueue:(dispatch_queue_t)targetQueue;
+
 /// Initializes a context with a new \c EAGLContext of version \c version using the given \c
-/// sharegroup. If \c version is not supported, this initializer will return \c nil.
+/// sharegroup. If \c version is not supported, this initializer will return \c nil. The
+/// \c targetQueue will be set to main dispatch queue.
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                            version:(LTGLVersion)version;
 
@@ -117,6 +135,10 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 - (void)executeForOpenGLES2:(NS_NOESCAPE LTVoidBlock)openGLES2
                   openGLES3:(NS_NOESCAPE LTVoidBlock)openGLES3;
 
+/// Switches to the receiver's context, if needed, and asynchronously executes the given \c block on
+/// its dispatch \c targetQueue. Restores the original context afterwards.
+- (void)executeAsyncBlock:(LTVoidBlock)block;
+
 /// Fills the currently bound framebuffer with the given \c colorValue and depth renderbuffer with
 /// the given \c depthValue.
 - (void)clearColor:(LTVector4)colorValue depth:(GLfloat)depthValue;
@@ -126,6 +148,14 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Fills the depth attachable to the currently bound framebuffer with the given \c depth.
 - (void)clearDepth:(GLfloat)depth;
+
+/// All the resources created by this context.
+///
+/// @important While the resources are held weakly by the context, the returned array is holding
+/// them strongly, which maintains a consistent snapshot to the time of the call, but also prevents
+/// them from being deallocated. Because of that, one should avoid storing a strong reference to the
+/// array or to one of the resources inside it.
+@property (readonly, nonatomic) NSArray<id<LTGPUResource>> *resources;
 
 /// Current version of this context.
 @property (readonly, nonatomic) LTGLVersion version;
@@ -138,6 +168,10 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Program pool associated with this context.
 @property (readonly, nonatomic) LTProgramPool *programPool;
+
+/// Dispatch queue associated with this context, serves as a target queue for tasks performed on
+/// this context.
+@property (readonly, nonatomic) dispatch_queue_t targetQueue;
 
 /// Blend function.
 @property (nonatomic) LTGLContextBlendFuncArgs blendFunc;

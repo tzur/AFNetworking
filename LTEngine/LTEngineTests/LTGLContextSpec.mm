@@ -5,11 +5,56 @@
 
 #import "LTFbo.h"
 #import "LTFboAttachmentInfo.h"
+#import "LTGLContext+Internal.h"
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
 #import "LTPassthroughProcessor.h"
 #import "LTTexture+Factory.h"
+
+/// Object implementing \c LTGPUResource protocol, used for testing purpose. When created registers
+/// itself as a resource of the current context.
+@interface LTGLContextResource : NSObject <LTGPUResource>
+@property (readonly, nonatomic) GLuint name;
+@property (readonly, nonatomic, nullable) LTGLContext *context;
+@end
+
+@implementation LTGLContextResource
+
+- (instancetype)initWithName:(GLuint)name context:(LTGLContext *)context {
+  if (self = [super init]) {
+    _name = name;
+    _context = context;
+    [self.context addResource:self];
+  }
+  return self;
+}
+
++ (instancetype)resourceWithName:(GLuint)name {
+  return [[LTGLContextResource alloc] initWithName:name context:[LTGLContext currentContext]];
+}
+
+- (void)dealloc {
+  [self.context removeResource:self];
+}
+
+- (void)bind {
+  LTMethodNotImplemented();
+}
+
+- (void)unbind {
+  LTMethodNotImplemented();
+}
+
+- (void)bindAndExecute:(__unused NS_NOESCAPE LTVoidBlock)block {
+  LTMethodNotImplemented();
+}
+
+- (void)dispose {
+  LTMethodNotImplemented();
+}
+
+@end
 
 SpecBegin(LTGLContext)
 
@@ -500,6 +545,161 @@ context(@"OpenGL ES version execution", ^{
 
     expect(version2).to.beFalsy();
     expect(version3).to.beTruthy();
+  });
+});
+
+context(@"resource tracking", ^{
+  __block LTGLContext *glContext;
+
+  beforeEach(^{
+    glContext = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:glContext];
+  });
+
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
+  });
+
+  it(@"should allow releasing the resource when not referenced", ^{
+    __weak LTGLContextResource *weakResource;
+
+    @autoreleasepool {
+      auto resource = [LTGLContextResource resourceWithName:1];
+      weakResource = resource;
+      expect(weakResource).notTo.beNil();
+    }
+    expect(weakResource).to.beNil();
+  });
+
+  it(@"should keep the resource count up to date", ^{
+    expect(glContext.resources).to.haveCountOf(0);
+
+    @autoreleasepool {
+      __unused auto resource = [LTGLContextResource resourceWithName:1];
+      expect(glContext.resources).to.haveCountOf(1);
+
+      @autoreleasepool {
+        __unused auto resource2 = [LTGLContextResource resourceWithName:2];
+        expect(glContext.resources).to.haveCountOf(2);
+      }
+
+      expect(glContext.resources).to.haveCountOf(1);
+    }
+
+    expect(glContext.resources).to.haveCountOf(0);
+  });
+
+  it(@"should track multiple allocated resources", ^{
+    auto resource1 = [LTGLContextResource resourceWithName:1];
+    auto resource2 = [LTGLContextResource resourceWithName:2];
+    auto resource3 = [LTGLContextResource resourceWithName:3];
+
+    expect(glContext.resources).to.haveACountOf(3);
+    expect(glContext.resources).to.contain(resource1);
+    expect(glContext.resources).to.contain(resource2);
+    expect(glContext.resources).to.contain(resource3);
+  });
+
+  it(@"should deallocate resource from its creation context when other context is set", ^{
+    LTGLContext *otherContext;
+
+    @autoreleasepool {
+      __unused auto resource = [LTGLContextResource resourceWithName:1];
+
+      otherContext = [[LTGLContext alloc] init];
+      [LTGLContext setCurrentContext:otherContext];
+
+      expect(otherContext.resources).to.haveCountOf(0);
+      expect(glContext.resources).to.haveCountOf(1);
+    }
+
+    expect(glContext.resources).to.haveCountOf(0);
+    expect([LTGLContext currentContext]).to.equal(otherContext);
+  });
+
+  it(@"should release all weakly held resources when context deallocates", ^{
+    __weak LTGLContext *weakContext;
+    __weak LTGLContextResource *weakResource0;
+    __weak LTGLContextResource *weakResource1;
+
+    @autoreleasepool {
+      auto context = [[LTGLContext alloc] init];
+      [LTGLContext setCurrentContext:context];
+
+      auto texture0 = [LTGLContextResource resourceWithName:1];
+      auto texture1 = [LTGLContextResource resourceWithName:2];
+
+      weakContext = context;
+      weakResource0 = texture0;
+      weakResource1 = texture1;
+      [LTGLContext setCurrentContext:nil];
+    }
+
+    expect(weakContext).to.beNil();
+    expect(weakResource0).to.beNil();
+    expect(weakResource1).to.beNil();
+  });
+
+  it(@"should not release weakly held context while resource is alive", ^{
+    __weak LTGLContext *weakContext;
+    LTGLContextResource *resource;
+
+    @autoreleasepool {
+      auto context = [[LTGLContext alloc] init];
+      [LTGLContext setCurrentContext:context];
+
+      resource = [LTGLContextResource resourceWithName:1];
+      weakContext = context;
+      [LTGLContext setCurrentContext:nil];
+    }
+
+    expect(weakContext).notTo.beNil();
+    expect(resource).notTo.beNil();
+  });
+});
+
+context(@"context switch", ^{
+  __block LTGLContext *context;
+  __block LTGLContext *otherContext;
+  __block dispatch_queue_t queue;
+
+  beforeEach(^{
+    context = [[LTGLContext alloc] init];
+    [LTGLContext setCurrentContext:context];
+
+    queue = dispatch_queue_create("com.lightricks.LTGLContextSpec-queue", DISPATCH_QUEUE_SERIAL);
+    otherContext = [[LTGLContext alloc] initWithSharegroup:nil targetQueue:queue];
+  });
+
+  afterEach(^{
+    [LTGLContext setCurrentContext:nil];
+  });
+
+  it(@"should execute on the right context", ^{
+    __block BOOL blockRun = NO;
+    __block LTGLContext *blockRunContext;
+
+    waitUntil(^(DoneCallback done) {
+      [otherContext executeAsyncBlock:^{
+        blockRun = YES;
+        blockRunContext = [LTGLContext currentContext];
+        done();
+      }];
+    });
+    expect(blockRun).to.beTruthy();
+    expect(blockRunContext).to.equal(otherContext);
+  });
+
+  it(@"should restore the original context after context switch", ^{
+    __block BOOL blockRun = NO;
+    waitUntil(^(DoneCallback done) {
+      [otherContext executeAsyncBlock:^{
+        blockRun = YES;
+        done();
+      }];
+    });
+    expect([LTGLContext currentContext]).to.equal(context);
+    expect(blockRun).to.beTruthy();
   });
 });
 

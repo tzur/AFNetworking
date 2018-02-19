@@ -5,7 +5,8 @@
 
 #import "LTFboAttachable.h"
 #import "LTFboAttachmentInfo.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
+#import "LTGPUResourceProxy.h"
 #import "LTRenderbuffer.h"
 #import "LTTexture+Writing.h"
 
@@ -15,9 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Dictionary mapping LTFboAttachmentPoint to \c LTFboAttachmentInfo.
 @property (readonly, nonatomic) NSDictionary<NSNumber *, LTFboAttachmentInfo *> *attachmentInfos;
-
-/// Framebuffer identifier.
-@property (nonatomic) GLuint framebuffer;
 
 /// Set to the previously bound framebuffer, or \c 0 if the framebuffer is not bound.
 @property (nonatomic) GLint previousFramebuffer;
@@ -31,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation LTFbo
+
+@synthesize context = _context;
+@synthesize name = _name;
 
 #pragma mark -
 #pragma mark Initialization
@@ -75,26 +76,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithContext:(LTGLContext *)context
                 attachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
+    _context = context;
     LTParameterAssert(infos.count, @"No attachables given");
     _attachmentInfos = infos;
     self.previousViewport = CGRectNull;
-    [self verifyAttachablesWithContext:context];
+    [self verifyAttachables];
     [self createFramebuffer];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
-- (void)verifyAttachablesWithContext:(LTGLContext *)context {
-  LTParameterAssert((GLint)[self colorAttachablesCount] <= context.maxNumberOfColorAttachmentPoints,
+- (void)verifyAttachables {
+  LTParameterAssert((GLint)[self colorAttachablesCount] <=
+                    self.context.maxNumberOfColorAttachmentPoints,
                     @"%lu exceeds max number of color attachables %d",
                     (unsigned long)[self colorAttachablesCount],
-                    context.maxNumberOfColorAttachmentPoints);
+                    self.context.maxNumberOfColorAttachmentPoints);
 
   [self enumerateAttachablesWithBlock:^(NSNumber *attachmentPoint, LTFboAttachmentInfo *info,
                                         BOOL *) {
     [self verifySizeOfAttachableInfo:info atPoint:attachmentPoint];
-    [self verifyAsRenderTargetAttachableInfo:info atPoint:attachmentPoint withContext:context];
+    [self verifyAsRenderTargetAttachableInfo:info atPoint:attachmentPoint];
     [self verifyLevelOfAttachableInfo:info];
   }];
 }
@@ -128,8 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifyAsRenderTargetAttachableInfo:(LTFboAttachmentInfo *)info
-                                   atPoint:(NSNumber *)attachmentPoint
-                               withContext:(LTGLContext *)context {
+                                   atPoint:(NSNumber *)attachmentPoint {
   if (attachmentPoint.unsignedIntegerValue == LTFboAttachmentPointDepth) {
     return;
   }
@@ -139,12 +144,12 @@ NS_ASSUME_NONNULL_BEGIN
     // Rendering to byte precision is always available by the spec of OpenGL ES 2.0 and 3.0.
     return;
   } else if (attachable.pixelFormat.dataType == LTGLPixelDataType16Float) {
-    if (!context.canRenderToHalfFloatColorBuffers) {
+    if (!self.context.canRenderToHalfFloatColorBuffers) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has a pixel "
        "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
     }
   } else if (attachable.pixelFormat.dataType == LTGLPixelDataType32Float) {
-    if (!context.canRenderToFloatColorBuffers) {
+    if (!self.context.canRenderToFloatColorBuffers) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has pixel "
        "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
     }
@@ -156,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)createFramebuffer {
-  glGenFramebuffers(1, &_framebuffer);
+  glGenFramebuffers(1, &_name);
   LTGLCheck(@"Framebuffer creation failed");
 
   [self bindAndExecute:^{
@@ -168,7 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE) {
       [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
-       "(status: 0x%x, framebuffer: %d, attachmentInfos %@)", status, self.framebuffer,
+       "(status: 0x%x, name: %d, attachmentInfos %@)", status, self.name,
        self.attachmentInfos];
     }
 
@@ -197,9 +202,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dispose {
-  if (!self.framebuffer) {
+  if (!self.name || !self.context) {
     return;
   }
+
+  [self.context removeResource:self];
 
   // The attachables held by this object, if not held by any other object, are required to be
   // deallocated immediately after this object deallocates. However, the detaching code may add
@@ -212,10 +219,9 @@ NS_ASSUME_NONNULL_BEGIN
     }];
   }
 
-  glDeleteFramebuffers(1, &_framebuffer);
-  LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
-
-  _framebuffer = 0;
+  glDeleteFramebuffers(1, &_name);
+  LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.name);
+  _name = 0;
 }
 
 - (void)detachAttachables {
@@ -248,7 +254,7 @@ NS_ASSUME_NONNULL_BEGIN
   glGetIntegerv(GL_VIEWPORT, viewport);
   self.previousViewport = CGRectMake(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-  glBindFramebuffer(GL_FRAMEBUFFER, self.framebuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, self.name);
   CGSize size = self.attachment.size / std::pow(2, self.level);
   glViewport(0, 0, size.width, size.height);
   self.bound = YES;
@@ -272,7 +278,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setContextWithRenderingToScreen:(BOOL)renderingToScreen
                                 andDraw:(NS_NOESCAPE LTVoidBlock)block {
-  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
+  [self.context executeAndPreserveState:^(LTGLContext *context) {
     context.renderingToScreen = renderingToScreen;
     // New framebuffer is attached, there's no point of keeping the previous scissor tests.
     context.scissorTestEnabled = NO;
@@ -338,7 +344,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   [self bindAndExecute:^{
-    [[LTGLContext currentContext] clearColor:color];
+    [self.context clearColor:color];
   }];
 }
 
@@ -350,7 +356,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self bindAndExecute:^{
     auto attachable = self.attachmentInfos[@(LTFboAttachmentPointDepth)].attachable;
     [attachable clearAttachableWithColor:LTVector4(value) block:^{
-      [[LTGLContext currentContext] clearDepth:value];
+      [self.context clearDepth:value];
     }];
   }];
 }
@@ -361,8 +367,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   auto descriptions = [NSMutableArray<NSString *> array];
-  [descriptions addObject:[NSString stringWithFormat:@"%@: %p, framebuffer: %d, bound: %d",
-                           [self class], self, self.framebuffer, self.bound]];
+  [descriptions addObject:[NSString stringWithFormat:@"%@: %p, name: %d, bound: %d",
+                           [self class], self, self.name, self.bound]];
 
   for (NSNumber *attachmentPoint in self.attachmentInfos) {
     [descriptions addObject:[NSString stringWithFormat:@"attachment: %@",
@@ -375,10 +381,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
-
-- (GLuint)name {
-  return self.framebuffer;
-}
 
 - (CGSize)size {
   return self.attachment.size;

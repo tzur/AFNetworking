@@ -9,7 +9,7 @@
 #import "LTBoundaryCondition.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
 #import "LTImage.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
@@ -75,6 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTTexture
 
+@synthesize context = _context;
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -83,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
               maxMipmapLevel:(GLint)maxMipmapLevel
               allocateMemory:(BOOL __unused)allocateMemory {
   if (self = [super init]) {
+    _context = [LTGLContext currentContext];
     [self verifyPixelFormat:pixelFormat];
     LTParameterAssert(std::floor(size) == size, @"Given size (%g, %g) is not integral",
                       size.width, size.height);
@@ -127,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)verifyPixelFormat:(LTGLPixelFormat *)pixelFormat {
   LTParameterAssert(pixelFormat);
 
-  LTGLVersion version = [LTGLContext currentContext].version;
+  LTGLVersion version = self.context.version;
   LTParameterAssert([pixelFormat formatForVersion:version] != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL format", pixelFormat);
   LTParameterAssert([pixelFormat textureInternalFormatForVersion:version] != LTGLInvalidEnum,
@@ -641,7 +644,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   [self bindAndExecute:^{
-    [[LTGLContext currentContext] executeForOpenGLES2:^{
+    [self.context executeForOpenGLES2:^{
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, maxMipmapLevel);
     } openGLES3:^{
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, maxMipmapLevel);

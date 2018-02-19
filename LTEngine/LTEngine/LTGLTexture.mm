@@ -6,7 +6,8 @@
 #import "CVPixelBuffer+LTEngine.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
+#import "LTGPUResourceProxy.h"
 #import "LTMathUtils.h"
 #import "LTOpenCVExtensions.h"
 #import "LTProgram.h"
@@ -50,11 +51,14 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
               maxMipmapLevel:(GLint)maxMipmapLevel
               allocateMemory:(BOOL)allocateMemory {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
                   allocateMemory:allocateMemory]) {
     [self create:allocateMemory];
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
@@ -98,7 +102,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (void)loadMipmapImages:(const Matrices &)images {
   [self bindAndExecute:^{
     [self writeWithBlock:^{
-      LTGLVersion version = [LTGLContext currentContext].version;
+      LTGLVersion version = self.context.version;
       GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
       GLenum precision = [self.pixelFormat precisionForVersion:version];
       GLenum format = [self.pixelFormat formatForVersion:version];
@@ -137,7 +141,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 
 - (void)allocateMemoryForAllLevels {
   [self writeWithBlock:^{
-    LTGLVersion version = [LTGLContext currentContext].version;
+    LTGLVersion version = self.context.version;
     GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
     GLenum precision = [self.pixelFormat precisionForVersion:version];
     GLenum format = [self.pixelFormat formatForVersion:version];
@@ -156,10 +160,11 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   [self unbind];
   glDeleteTextures(1, &_name);
   LTGLCheckDbg(@"Error deleting texture");
@@ -208,7 +213,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     readImage = *image;
   }
 
-  [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
+  [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Since the default pack alignment is 4, it is necessarry to verify there's no special
     // packing of the texture that may effect the representation of the Mat if the number of bytes
     // per row % 4 != 0.
@@ -257,7 +262,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
   LTAssert(storedImage.isContinuous(), @"Expected converted matrix to be continuous");
 
   [self writeWithBlock:^{
-    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
+    [self.context executeAndPreserveState:^(LTGLContext *context) {
       // Since the default pack alignment is 4, it is necessarry to verify there's no special
       // packing of the texture that may effect the representation of the Mat if the number of bytes
       // per row % 4 != 0.
@@ -389,8 +394,8 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     // GL_HALF_FLOAT is only supported on device.
     GLint type;
     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
-    if (([LTGLContext currentContext].version == LTGLVersion2 && type == GL_HALF_FLOAT_OES) ||
-        ([LTGLContext currentContext].version == LTGLVersion3 && type == GL_HALF_FLOAT)) {
+    if ((self.context.version == LTGLVersion2 && type == GL_HALF_FLOAT_OES) ||
+        (self.context.version == LTGLVersion3 && type == GL_HALF_FLOAT)) {
       return CV_16F;
     } else {
       return CV_32F;
@@ -444,7 +449,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     case LTGLPixelComponentsR:
     case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
-      if ([LTGLContext currentContext].supportsRGTextures) {
+      if (self.context.supportsRGTextures) {
         return [self matType];
       } else {
         return CV_MAKETYPE(CV_MAT_DEPTH([self matType]), 4);

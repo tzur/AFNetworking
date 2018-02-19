@@ -4,8 +4,8 @@
 @class LTGLContext;
 
 /// Serial queue for GPU operations. All tasks submitted to this queue will use the same OpenGL
-/// context, and since the queue is serial there are no concurrency issues with dispatching multiple
-/// operations to the queue.
+/// context, and execute on context's dispatch queue. Since this queue is serial there are no
+/// concurrency issues with dispatching multiple operations to the queue.
 ///
 /// Blocks can be dispatched to the queue synchronously and asynchronously, with the limitation that
 /// synchronous dispatching request can be discarded if the queue is paused to avoid deadlocks.
