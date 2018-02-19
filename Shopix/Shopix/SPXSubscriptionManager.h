@@ -52,16 +52,6 @@ typedef void (^SPXFetchProductsCompletionBlock)
 - (void)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers
         completionHandler:(SPXFetchProductsCompletionBlock)completionHandler;
 
-/// Loads the latest fetched subscription products information specified by \c productIdentifiers,
-/// and fetches the information from Apple's iTunesConnect if it was not fetched already.
-/// \c completionHandler is invoked on the main thread with the fetched information. On failure,
-/// \c completionHandler is invoked with \c products set to \c nil and \c error will contain error
-/// information.
-///
-/// @note On failure \c error with code \c BZRErrorCodeFetchingProductListFailed is returned.
-- (void)fetchProductsInfoIfNeeded:(NSSet<NSString *> *)productIdentifiers
-                completionHandler:(SPXFetchProductsCompletionBlock)completionHandler;
-
 /// Block invoked on completion of \c purchaseSubscription:completionHandler: method. On successful
 /// completion the \c subscriptionInfo parameter will contain the latest subscription information
 /// as provided by Bazaar, on failure \c error will contain error information.
