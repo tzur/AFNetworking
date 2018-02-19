@@ -9,7 +9,6 @@
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationStatus.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
-#import <LTKit/NSArray+Functional.h>
 
 #import "SPXAlertViewModel+ShopixPresets.h"
 

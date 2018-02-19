@@ -19,18 +19,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
-  SPXFetchProductsStrategyIfNeeded,
-  SPXFetchProductsStrategyAlways
-);
-
 @interface SPXSubscriptionViewModel () <SPXSubscriptionManagerDelegate>
 
 /// Manager used to handle products information fetching, subscription purchasing and restoration.
 @property (readonly, nonatomic) SPXSubscriptionManager *subscriptionManager;
-
-/// Enum used to specify the strategy for products information fetching.
-@property (readonly, nonatomic) SPXFetchProductsStrategy *fetchProductsStrategy;
 
 /// Signal that sends a page index that the view should scroll to.
 @property (readonly, nonatomic) RACSubject<NSNumber *> *pagingViewScrollRequestedSubject;
@@ -79,8 +71,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
                                 pageViewModels:pageViewModels
                                 termsViewModel:termsViewModel
                                    colorScheme:colorScheme
-                           subscriptionManager:[[SPXSubscriptionManager alloc] init]
-                         fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+                           subscriptionManager:[[SPXSubscriptionManager alloc] init]];
 }
 
 - (instancetype)
@@ -89,8 +80,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
                      pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                      termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                         colorScheme:(SPXColorScheme *)colorScheme
-                subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
-              fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy {
+                subscriptionManager:(SPXSubscriptionManager *)subscriptionManager {
   LTParameterAssert(preferredProductIndex.unsignedIntegerValue < subscriptionDescriptors.count,
                     @"Highlighted button index (%lu) must be lower than the number of buttons "
                     "(%lu)", (unsigned long)preferredProductIndex.unsignedIntegerValue,
@@ -102,7 +92,6 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
-    _fetchProductsStrategy = fetchProductsStrategy;
     _pagingViewScrollRequestedSubject = [RACSubject subject];
     _pagingViewScrollRequested = [self.pagingViewScrollRequestedSubject
                                   takeUntil:[self rac_willDeallocSignal]];
@@ -142,13 +131,8 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
       lt_map:^NSString *(SPXSubscriptionDescriptor *descriptor) {
         return descriptor.productIdentifier;
       }].lt_set;
-  if ([self.fetchProductsStrategy isEqual:$(SPXFetchProductsStrategyAlways)]) {
-    [self.subscriptionManager fetchProductsInfo:requestedProductIdentifiers
-                              completionHandler:fetchCompletionHandler];
-  } else {
-    [self.subscriptionManager fetchProductsInfoIfNeeded:requestedProductIdentifiers
-                                      completionHandler:fetchCompletionHandler];
-  }
+  [self.subscriptionManager fetchProductsInfo:requestedProductIdentifiers
+                            completionHandler:fetchCompletionHandler];
 }
 
 - (void)subscriptionButtonPressed:(NSUInteger)buttonIndex {

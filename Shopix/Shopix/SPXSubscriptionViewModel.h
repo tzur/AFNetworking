@@ -10,15 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SPXAlertViewModel, SPXSubscriptionVideoPageViewModel, SPXSubscriptionTermsViewModel,
     SPXSubscriptionTermsViewModel;
 
-/// Possible values of the products fetching strategy.
-LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
-  /// States that the products information will be taken from the cached products information if it
-  /// exists, otherwise it will be fetched.
-  SPXFetchProductsStrategyIfNeeded,
-  /// States that the products information will re-fetched every time the view is loaded.
-  SPXFetchProductsStrategyAlways
-);
-
 #pragma mark -
 #pragma mark SPXSubscriptionViewModel protocol
 #pragma mark -
@@ -92,9 +83,8 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Same as the designated initializer. \c colorScheme is pulled from Objection,
-/// \c subscriptionManager is set to the default manager and \c fetchProductsStrategy is set to
-/// \c SPXFetchProductsStrategyAlways.
+/// Same as the designated initializer. \c colorScheme is pulled from Objection and
+/// \c subscriptionManager is set to the default manager.
 - (instancetype)
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
               preferredProductIndex:(nullable NSNumber *)preferredProductIndex
@@ -119,8 +109,6 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 ///
 /// \c subscriptionManager used to handle products information fetching, subscription purchasing and
 /// restoration.
-///
-/// \c fetchProductsStrategy used to specify the strategy for products information fetching.
 - (instancetype)
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
               preferredProductIndex:(nullable NSNumber *)preferredProductIndex
@@ -128,7 +116,6 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
                      termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                         colorScheme:(SPXColorScheme *)colorScheme
                 subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
-              fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy
     NS_DESIGNATED_INITIALIZER;
 
 @end

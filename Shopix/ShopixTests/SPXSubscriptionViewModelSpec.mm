@@ -50,131 +50,69 @@ beforeEach(^{
       }];
   viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
       preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
-      colorScheme:colorScheme subscriptionManager:subscriptionManager
-      fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+      colorScheme:colorScheme subscriptionManager:subscriptionManager];
 });
 
 it(@"should raise if the preferred button index is greater than the number of buttons", ^{
   expect(^{
     viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
     preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
-    colorScheme:colorScheme subscriptionManager:subscriptionManager
-    fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+    colorScheme:colorScheme subscriptionManager:subscriptionManager];
   }).to.raise(NSInvalidArgumentException);
 });
 
 context(@"products fetching", ^{
-  context(@"fetch always strategy", ^{
-    beforeEach(^{
-      viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
-          colorScheme:colorScheme subscriptionManager:subscriptionManager
-          fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
-    });
-
-    it(@"should show the activity indicator when fetch has started", ^{
-      [viewModel fetchProductsInfo];
-      expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
-    });
-
-    it(@"should hide the activity indicator when fetch has finished successfully", ^{
-      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                   completionHandler:([OCMArg invokeBlockWithArgs:@{},
-                                                       [NSNull null],nil])]);
-      [viewModel fetchProductsInfo];
-
-      expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
-    });
-
-    it(@"should request dismissal if failed to fetch products", ^{
-      auto error = [NSError lt_errorWithCode:1337];
-      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                   completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null],
-                                                       error, nil])]);
-      auto recorder = [viewModel.dismissRequested testRecorder];
-      [viewModel fetchProductsInfo];
-
-      expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
-    });
-
-    it(@"should set the subscription descriptors prices when fetch is finished", ^{
-      BZRProduct *product1 = OCMClassMock([BZRProduct class]);
-      BZRProduct *product2 = OCMClassMock([BZRProduct class]);
-      OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-      OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-      NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
-        @"foo1": product1,
-        @"foo2": product2
-      };
-      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                   completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts,
-                                                       [NSNull null], nil])]);
-
-      [viewModel fetchProductsInfo];
-
-      [viewModel.subscriptionDescriptors
-       enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index,
-                                    BOOL *) {
-         expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
-         expect(descriptor.priceInfo).to
-            .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
-       }];
-    });
+  beforeEach(^{
+    viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
+        preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
+        colorScheme:colorScheme subscriptionManager:subscriptionManager];
   });
 
-  context(@"fetch if needed strategy", ^{
-    beforeEach(^{
-      viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
-          colorScheme:colorScheme subscriptionManager:subscriptionManager
-          fetchProductsStrategy:$(SPXFetchProductsStrategyIfNeeded)];
-    });
+  it(@"should show the activity indicator when fetch has started", ^{
+    [viewModel fetchProductsInfo];
+    expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
+  });
 
-    it(@"should show the activity indicator when fetch has started", ^{
-      [viewModel fetchProductsInfo];
-      expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
-    });
+  it(@"should hide the activity indicator when fetch has finished successfully", ^{
+    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+        completionHandler:([OCMArg invokeBlockWithArgs:@{}, [NSNull null], nil])]);
 
-    it(@"should hide the activity indicator when fetch has finished successfully", ^{
-      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
-          completionHandler:([OCMArg invokeBlockWithArgs:@{}, [NSNull null], nil])]);
-      [viewModel fetchProductsInfo];
+    [viewModel fetchProductsInfo];
 
-      expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
-    });
+    expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
+  });
 
-    it(@"should request dismissal if failed to fetch products", ^{
-      auto error = [NSError lt_errorWithCode:1337];
-      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
-          completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], error, nil])]);
-      auto recorder = [viewModel.dismissRequested testRecorder];
-      [viewModel fetchProductsInfo];
+  it(@"should request dismissal if failed to fetch products", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+        completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], error, nil])]);
+    auto recorder = [viewModel.dismissRequested testRecorder];
 
-      expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
-    });
+    [viewModel fetchProductsInfo];
 
-    it(@"should set the product descriptors according to the product identifiers with prices", ^{
-      BZRProduct *product1 = OCMClassMock([BZRProduct class]);
-      BZRProduct *product2 = OCMClassMock([BZRProduct class]);
-      OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-      OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-      NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
-        @"foo1": product1,
-        @"foo2": product2
-      };
-      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
-          completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
+    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+  });
 
-      [viewModel fetchProductsInfo];
+  it(@"should set the subscription descriptors prices when fetch is finished", ^{
+    BZRProduct *product1 = OCMClassMock([BZRProduct class]);
+    BZRProduct *product2 = OCMClassMock([BZRProduct class]);
+    OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+    OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+    NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
+      @"foo1": product1,
+      @"foo2": product2
+    };
+    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+        completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
 
-      [viewModel.subscriptionDescriptors
-       enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index,
-                                    BOOL *) {
-         expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
-         expect(descriptor.priceInfo).to
-            .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
-       }];
-    });
+    [viewModel fetchProductsInfo];
+
+    [viewModel.subscriptionDescriptors
+     enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index, BOOL *) {
+       expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
+       expect(descriptor.priceInfo).to
+          .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
+     }];
   });
 });
 
