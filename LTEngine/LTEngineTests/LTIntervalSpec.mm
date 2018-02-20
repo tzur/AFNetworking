@@ -58,6 +58,16 @@ public:
           expect(interval.supIncluded()).to.beTruthy();
         });
       });
+
+      context(@"closed single-value interval", ^{
+        it(@"should initialize correctly", ^{
+          Interval<T> interval(7);
+          expect(interval.inf()).to.equal(7);
+          expect(interval.sup()).to.equal(7);
+          expect(interval.infIncluded()).to.beTruthy();
+          expect(interval.supIncluded()).to.beTruthy();
+        });
+      });
     });
 
     context(@"hash", ^{

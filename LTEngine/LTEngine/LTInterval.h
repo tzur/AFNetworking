@@ -44,6 +44,10 @@ public:
       _inf(std::min(values.first, values.second)), _sup(std::max(values.first, values.second)),
       _infInclusion(Closed), _supInclusion(Closed) {}
 
+  /// Initializes with the given \c value as single interval value and closed end points.
+  Interval(T value) noexcept :
+      _inf(value), _sup(value), _infInclusion(Closed), _supInclusion(Closed) {}
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(_inf) ^ std::hash<T>()(_sup) ^
