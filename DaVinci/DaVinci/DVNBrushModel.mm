@@ -5,6 +5,8 @@
 
 #import <LTEngine/NSValueTransformer+LTEngine.h>
 
+#import "DVNPropertyMacros.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNBrushModel
@@ -58,6 +60,9 @@ LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVer
     [[LTBidirectionalMap alloc] initWithDictionary:@{
       $(DVNBrushModelVersionV1): @"1"
     }];
+
+DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
+                              std::numeric_limits<CGFloat>::max());
 
 #pragma mark -
 #pragma mark Private API

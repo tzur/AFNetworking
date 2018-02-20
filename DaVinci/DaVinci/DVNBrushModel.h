@@ -53,6 +53,9 @@ extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushM
 /// more details. Value, when initializing with \c init method, is <tt>(0, CGFLOAT_MAX]</tt>.
 @property (readonly, nonatomic) lt::Interval<CGFloat> scaleRange;
 
+/// Allowed range of \c scaleRange.
+@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedScaleRange;
+
 @end
 
 NS_ASSUME_NONNULL_END
