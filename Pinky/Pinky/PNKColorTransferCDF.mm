@@ -5,6 +5,8 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "PNKColorTransferCDFConstants.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
@@ -46,7 +48,7 @@ static const NSUInteger kInverseCDFScaleFactor = 16;
 
 /// Maximum number of histogram bins supported by the kernel, based on the available threadgroup
 /// memory on the lower end devices.
-static const NSUInteger kMaxHistogramBins = 1024;
+static const NSUInteger kMaxHistogramBins = PNK_COLOR_TRANSFER_CDF_MAX_SUPPORTED_HISTOGRAM_BINS;
 
 /// Size of the gaussian kernel used for smoothing the PDFs. Must be odd.
 static const NSUInteger kPDFSmoothingKernelSize = 7;

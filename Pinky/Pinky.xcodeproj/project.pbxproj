@@ -814,6 +814,7 @@
 		285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferMinAndMaxSpec.mm; sourceTree = "<group>"; };
 		28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferTestUtils.h; sourceTree = "<group>"; };
 		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
+		28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferCDFConstants.h; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1482,6 +1483,7 @@
 				2817F75D1FF4DF9400AF1DDC /* PNKColorTransferCDF.h */,
 				2817F73A1FF4DF9300AF1DDC /* PNKColorTransferCDF.metal */,
 				2817F75C1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm */,
+				28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */,
 				2835A93B1FEAA41A0000F2EA /* PNKColorTransferHistogram.h */,
 				2835A95E1FEAA41A0000F2EA /* PNKColorTransferHistogram.metal */,
 				2835A95D1FEAA41A0000F2EA /* PNKColorTransferHistogram.mm */,

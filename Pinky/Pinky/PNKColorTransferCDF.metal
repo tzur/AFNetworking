@@ -2,10 +2,14 @@
 // Created by Amit Goldstein.
 
 #include <metal_stdlib>
+
+#include "PNKColorTransferCDFConstants.h"
+
 using namespace metal;
 
-/// Maximum number of bins supported by the kernel.
-constant ushort kMaxSupportedHistogramBins = 1024;
+/// Maximum number of bins supported by the kernel, based on the available threadgroup memory on the
+/// lower end devices.
+constant ushort kMaxSupportedHistogramBins = PNK_COLOR_TRANSFER_CDF_MAX_SUPPORTED_HISTOGRAM_BINS;
 
 /// Actual number of histogram entries, or "bins" for each channel.
 constant ushort kHistogramBins [[function_constant(0)]];
