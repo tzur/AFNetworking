@@ -177,6 +177,23 @@ public:
     return x < minimum ? minimum : *max();
   }
 
+  /// Returns this interval clamped to the given \c interval, i.e. the returned value is one of the
+  /// following:
+  ///
+  /// a) An empty optional if the given \c interval is empty.
+  /// b) The intersection of the two involved intervals, if the intersection is non-empty.
+  /// c) The non-empty closed interval consisting of the single value \c a, s.t. \c a is an
+  ///    arbitrary value contained by this interval clamped to the given \c interval.
+  std::experimental::optional<lt::Interval<T>> clampedTo(lt::Interval<T> interval) const {
+    if (interval.isEmpty()) {
+      return std::experimental::nullopt;
+    }
+
+    lt::Interval<T> intersection = intersectionWith(interval);
+    return !intersection.isEmpty() ? intersection :
+        lt::Interval<T>(*interval.clamp(min().value_or(inf())));
+  }
+
   /// Returns \c true if the infimum of this interval belongs to the interval.
   bool infIncluded() const {
     return _infInclusion == Closed;

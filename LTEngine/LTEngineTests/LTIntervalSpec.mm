@@ -1013,6 +1013,135 @@ context(@"length", ^{
   });
 });
 
+context(@"clamped interval", ^{
+  static const Interval<CGFloat>::EndpointInclusion kOpen = Interval<CGFloat>::Open;
+  static const Interval<CGFloat>::EndpointInclusion kClosed = Interval<CGFloat>::Closed;
+
+  __block Interval<CGFloat> interval;
+
+  context(@"clamping by empty interval", ^{
+    it(@"should return empty optional", ^{
+      expect(bool(Interval<CGFloat>(0).clampedTo(Interval<CGFloat>()))).to.beFalsy();
+    });
+  });
+
+  context(@"open CGFloat interval", ^{
+    beforeEach(^{
+      interval = Interval<CGFloat>({1.5, 2.5}, kOpen);
+    });
+
+    it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
+      expect(*Interval<CGFloat>({0, 1.5}).clampedTo(interval) == Interval<CGFloat>(*interval.min()))
+          .to.beTruthy();
+    });
+
+    it(@"should return intersection if not empty", ^{
+      expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, *interval.min()}, kOpen, kClosed)).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, 2}, kOpen, kClosed)).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
+      expect(*interval.clampedTo(interval) == interval).to.beTruthy();
+      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
+             Interval<CGFloat>({2, 2.5}, kClosed, kOpen)).to.beTruthy();
+      expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
+             Interval<CGFloat>({*interval.max(), 2.5}, kClosed, kOpen)).to.beTruthy();
+    });
+
+    it(@"should return maximum if values of clamped interval are greater than other interval", ^{
+      expect(*Interval<CGFloat>({2.5, 3}).clampedTo(interval) == Interval<CGFloat>(*interval.max()))
+          .to.beTruthy();
+    });
+  });
+
+  context(@"left-open CGFloat interval", ^{
+    beforeEach(^{
+      interval = Interval<CGFloat>({1.5, 2.5}, kOpen, kClosed);
+    });
+
+    it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
+      expect(*Interval<CGFloat>({0, 1.5}).clampedTo(interval) == Interval<CGFloat>(*interval.min()))
+          .to.beTruthy();
+    });
+
+    it(@"should return intersection if not empty", ^{
+      expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, *interval.min()}, kOpen, kClosed)).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, 2}, kOpen, kClosed)).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
+      expect(*interval.clampedTo(interval) == interval).to.beTruthy();
+      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
+             Interval<CGFloat>({2, 2.5})).to.beTruthy();
+      expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
+             Interval<CGFloat>({*interval.max(), 2.5})).to.beTruthy();
+    });
+
+    it(@"should return maximum if values of clamped interval are greater than other interval", ^{
+      expect(*Interval<CGFloat>({2.5, 3}).clampedTo(interval) == Interval<CGFloat>(*interval.max()))
+          .to.beTruthy();
+    });
+  });
+
+  context(@"right-open CGFloat interval", ^{
+    beforeEach(^{
+      interval = Interval<CGFloat>({1.5, 2.5}, kClosed, kOpen);
+    });
+
+    it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
+      expect(*Interval<CGFloat>({0, 1.5}, kOpen).clampedTo(interval) ==
+             Interval<CGFloat>(*interval.min())).to.beTruthy();
+    });
+
+    it(@"should return intersection if not empty", ^{
+      expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, *interval.min()})).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) == Interval<CGFloat>({1.5, 2}))
+          .to.beTruthy();
+      expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
+      expect(*interval.clampedTo(interval) == interval).to.beTruthy();
+      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
+             Interval<CGFloat>({2, 2.5}, kClosed, kOpen)).to.beTruthy();
+      expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
+             Interval<CGFloat>({*interval.max(), 2.5}, kClosed, kOpen)).to.beTruthy();
+    });
+
+    it(@"should return maximum if values of clamped interval are greater than other interval", ^{
+      expect(*Interval<CGFloat>({2.5, 3}).clampedTo(interval) == Interval<CGFloat>(*interval.max()))
+          .to.beTruthy();
+    });
+  });
+
+  context(@"closed CGFloat interval", ^{
+    beforeEach(^{
+      interval = Interval<CGFloat>({1.5, 2.5});
+    });
+
+    it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
+      expect(*Interval<CGFloat>({0, 1.5}, kOpen).clampedTo(interval) ==
+             Interval<CGFloat>(*interval.min())).to.beTruthy();
+    });
+
+    it(@"should return intersection if not empty", ^{
+      expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
+             Interval<CGFloat>({1.5, *interval.min()})).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) == Interval<CGFloat>({1.5, 2}))
+          .to.beTruthy();
+      expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
+      expect(*interval.clampedTo(interval) == interval).to.beTruthy();
+      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) == Interval<CGFloat>({2, 2.5}))
+          .to.beTruthy();
+      expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
+             Interval<CGFloat>({*interval.max(), 2.5})).to.beTruthy();
+    });
+
+    it(@"should return maximum if values of clamped interval are greater than other interval", ^{
+      expect(*Interval<CGFloat>({2.5, 3}, kOpen).clampedTo(interval) ==
+             Interval<CGFloat>(*interval.max())).to.beTruthy();
+    });
+  });
+});
+
 context(@"description", ^{
   it(@"should return a proper description of a CGFloat interval", ^{
     Interval<CGFloat> interval({0.5, 2});
