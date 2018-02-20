@@ -14,7 +14,7 @@ not, purchasing products not via StoreKit.
 
 - Product - a synonym for an in-app purchase. Can represent a
 non-consumable payment purchase or a subscription purchase. In
-Facetune 2 for example, some of the features and every subscription are
+`Facetune 2` for example, some of the features and every subscription are
 backed up by a product.
 
 - Product identifier - an identifier associated with a certain product.
@@ -70,7 +70,7 @@ this class.
 
 ### BZRProductsInfoProvider
 
-A protocol that provides a readonly access to all sorts of information
+A protocol that provides a read-only access to all sorts of information
 regarding user purchases through KVO compliant properties. The most
 interesting property is the one named `allowedProducts`, which
 is a set product identifiers that the user is allowed to use. This means
@@ -235,6 +235,93 @@ For example, in order to know whether the user is a Facetune 2 subscriber:
   BOOL isFacetune2Subscriber =
       [sharedUserInfoReader isSubscriberOfAppWithBundleIdentifier:@"com.lightricks.Facetune2"];
 ```
+
+## iCloud User ID
+
+### The Problem - Uniquely Identifying Users.
+
+We would like to be able to identify users across devices. This will assist in many tasks that are very hard or
+impossible to accomplish without the ability to identify users. For once we want to let users access their
+subscription across devices without the need to restore purchases, with multi-app subscription this task
+becomes very important and not just nice to have. Also we want to be able to assist users when they run into
+troubles with their subscription. Having an ID for the user allows us to better understand the history of purchases
+made by this user on all the devices he uses. Additionally having a way to identify users may improve our analytics 
+data and assist with increasing the effectiveness of our marketing spend.
+
+Classically this problem of user identity is solved by using some login mechanism that lets the user pick some unique
+user ID (eg. email or user name) and a password in a sign-up process. Then the user can sign-in on different devices
+using the same credentials used at sign-up. Alternatively in order to spare the need of managing user credentials and
+implementing user authentication it is common to turn to 3rd party single-sign-on services like those provided by
+Google or Facebook. These 3rd party services implement the authentication process and user management for you and 
+provide you with the basic user information that you need, a unique user ID along with some proof of authenticity.
+Unfortunately if we had chosen to use one of these mechanisms we would be forced to add a "login" step to the 
+subscription funnel, which has the potential to deter many of our users and prevent them from completing this 
+process and  purchase subscription.
+
+### The Solution - "Silent Login" Using iCloud User-Record ID.
+
+It appears that iCloud provides an easy way to identify users across devices based on their iCloud account
+information without any in-app login mechanism and without even requesting for special permissions. In order to
+get this unique identifier an application needs to declare it uses iCloud and it should define an iCloud container on 
+the [iCloud dashboard](https://icloud.developer.apple.com/dashboard). An iCloud container is, as its name suggest, a
+container of various types of data. Different pieces of data are called records and each record has its own unique 
+identifier. Records are added by the app developer in code or via the dashboard, however there's a basic record that 
+exists for every container which is called the "user record". The ID of this user record is unique for every user who 
+accesses the container.
+
+From Apple's `CKContainer` documentation:
+> "Every user who accesses a container has a corresponding user record in that container. By default, user records
+contain no identifying personal information about the user or their iCloud account. User records provide a way to
+differentiate one user of the app from another through the use of a unique identifier. Every user gets their own unique
+identifier in a container. Because there is a record that has the same identifier as the user identifier, you can use
+the record to store information about the current user. Always do so carefully, though, and with the understanding that
+any data you add to the user record can be seen by other users of the app. Never store sensitive personal information
+in the user record. This user record is not to be confused with the user’s CKUserIdentity, which is a separate record
+and by default does not contain any personally identifying information."
+
+In order to get unique user identifiers Lightricks have created an iCloud container designated for Bazaar usage. The 
+identifier of this container is "iCloud.com.lightricks.Bazaar" and is shared amongst all Lightricks applications. 
+Bazaar uses the user-record ID of this container as the unique user identifier.
+
+### How Should Apps Use The iCloud User ID?
+
+Basically applications don't have much use in this user ID, Bazaar is already using it for its own purposes.
+However it may be useful for apps to send iCloud account information to analytics in order to associate the iCloud
+user ID with the IDFV of the current device. It is also useful to print the iCloud user ID to the log in order to
+assist with troubleshooting when users send requests to the support team. 
+
+In order to get the iCloud user ID and send it to analytics or print it, the app needs to create an instance of the 
+`BZRiCloudUserIDProvider` class and observe its `userID` property for changes. Note that fetching the iCloud user ID is
+an asynchronous operation and this is why one needs to observe the property and just query its value right after the
+initialization.
+
+> Note that the account information may change during the run time if the user signs out of his iCloud account or
+decides to restrict the access for certain apps.
+
+Usage example:
+```objc
+self.iCloudUserIDProvider = [[BZRiCloudUserIDProvider alloc] init];
+@weakify(self);
+[RACObserve(self.iCloudUserIDProvider, userID) subscribeNext:^(NSString * _Nullable userID) {
+  @strongify(self);
+  LogInfo(@"iCloud User ID updated: %@", userID);
+  auto event = [[FTKinesisUserIDChangedEvent alloc] initWithUserID:userID];
+  [self.eventBus post:event];
+}];
+```
+
+In order to get more details regarding the iCloud account status apps can use `BZRCloudKitAccountInfoProvider`
+which provides lower level interface to the iCloud account information.
+
+### How Bazaar Uses The iCloud User ID?
+
+Bazaar uses iCloud user ID to associate the application receipt with the user identifier. When Bazaar validates
+the application receipt file with Validatricks (our receipt validation server) he provides the server with the user ID,
+if available, and the server associates the receipt file with the user ID. This way Bazaar can later (from other
+devices or even if the user is signed out of the AppStore) ask the server about user purchases by sending only
+the iCloud user ID without sending the receipt file itself. This is used mainly to support multi-app subscription
+where one application does not necessarily have access to the receipt file of another application in which the
+user may have purchased multi-app subscription.
 
 ## Multi-app Subscription
 
