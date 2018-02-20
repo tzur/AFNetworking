@@ -174,7 +174,7 @@ context(@"create lut from input and reference textures", ^{
 
     auto output = LTApplyLUT(inputTexture, lut);
     auto expected = LTLoadMat(self.class, @"ColorTransferResult.png");
-    expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 5);
   });
 });
 

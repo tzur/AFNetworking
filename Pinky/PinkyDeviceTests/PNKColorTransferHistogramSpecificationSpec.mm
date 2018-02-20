@@ -359,7 +359,7 @@ context(@"correctness", ^{
   });
 
   it(@"should perform histogram specification with a larger number of bins", ^{
-    static const NSUInteger kHistogramBins = 1024;
+    static const NSUInteger kHistogramBins = 1016;
     buffers = [[PNKColorTransferHistogramSpecificationBuffers alloc]
                initWithDevice:device inputMat:inputMat referenceMat:referenceMat
                histogramBins:kHistogramBins];

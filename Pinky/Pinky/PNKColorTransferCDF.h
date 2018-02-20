@@ -53,6 +53,9 @@ API_AVAILABLE(ios(10.0))
 /// Number of histogram entries, or "bins" for each channel.
 @property (readonly, nonatomic) NSUInteger histogramBins;
 
+/// Minimum supported number of histogram bins.
+@property (class, readonly, nonatomic) NSUInteger minSupportedHistogramBins;
+
 /// Maximum supported number of histogram bins.
 @property (class, readonly, nonatomic) NSUInteger maxSupportedHistogramBins;
 
