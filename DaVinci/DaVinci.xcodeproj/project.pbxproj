@@ -116,6 +116,7 @@
 		50CDE7BC1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CDE7BB1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm */; };
 		6543581E1D463C3A002140A8 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6543580A1D463B64002140A8 /* libLTKit.a */; };
 		6543581F1D463C53002140A8 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654358171D463B6E002140A8 /* libextobjc_iOS.a */; };
+		7961A3DA203AAED700A5AB0C /* DVNTestObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7961A3D9203AAED700A5AB0C /* DVNTestObserver.mm */; };
 		8861FD7D1E5A2A9800CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD7C1E5A2A9800CA1436 /* CoreGraphics.framework */; };
 		8861FD9F1E5A2A9C00CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */; };
 		8861FDA11E5A2AA500CA1436 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDA01E5A2AA500CA1436 /* CoreImage.framework */; };
@@ -634,6 +635,8 @@
 		654357FE1D463B5A002140A8 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		654358041D463B64002140A8 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		6543580D1D463B6E002140A8 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		7961A3D8203AAED700A5AB0C /* DVNTestObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNTestObserver.h; sourceTree = "<group>"; };
+		7961A3D9203AAED700A5AB0C /* DVNTestObserver.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTestObserver.mm; sourceTree = "<group>"; };
 		8861FD7C1E5A2A9800CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8861FDA01E5A2AA500CA1436 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -1306,6 +1309,8 @@
 				50B57C312021F89A00397AA6 /* DVNBrushModelVersion+TestBrushModel.mm */,
 				25C3DC921D37ACD60056E47A /* DVNEasyQuadVectorBoxing.h */,
 				25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */,
+				7961A3D8203AAED700A5AB0C /* DVNTestObserver.h */,
+				7961A3D9203AAED700A5AB0C /* DVNTestObserver.mm */,
 				50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */,
 				50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */,
 				50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */,
@@ -1930,6 +1935,7 @@
 				25C3DCAE1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm in Sources */,
 				500FC56620173BBD0005D295 /* DVNBrushModelV1Spec.mm in Sources */,
 				25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */,
+				7961A3DA203AAED700A5AB0C /* DVNTestObserver.mm in Sources */,
 				5001CB2B1F2745A700C70D23 /* DVNBrushSpec.mm in Sources */,
 				285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */,
 				28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */,
