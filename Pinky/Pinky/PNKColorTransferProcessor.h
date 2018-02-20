@@ -20,8 +20,8 @@ API_AVAILABLE(ios(10.0))
 
 /// Initializes with the given sizes of input and reference that will be provided. Returns \c nil
 /// when initialized on a simulator or an unsupported GPU.
-- (nullable instancetype)initWithDevice:(id<MTLDevice>)device inputSize:(CGSize)inputSize
-                          referenceSize:(CGSize)referenceSize NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithInputSize:(CGSize)inputSize referenceSize:(CGSize)referenceSize
+    NS_DESIGNATED_INITIALIZER;
 
 /// Returns a 3D lookup table that can be used to map the current \c input's color palette to the
 /// current \c reference's palette.

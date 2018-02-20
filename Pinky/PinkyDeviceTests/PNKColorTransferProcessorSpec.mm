@@ -19,26 +19,20 @@ static LTTexture *LTApplyLUT(LTTexture *input, LT3DLUT *lut) {
   return output;
 }
 
-DeviceSpecBegin(PNKColorTransferMetalProcessor)
-
-__block id<MTLDevice> device;
+DeviceSpecBegin(PNKColorTransferProcessor)
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];
   [LTGLContext setCurrentContext:context];
-
-  device = MTLCreateSystemDefaultDevice();
 });
 
 afterEach(^{
-  device = nil;
   [LTGLContext setCurrentContext:nil];
 });
 
 it(@"should have default properties", ^{
   auto processor = [[PNKColorTransferProcessor alloc]
-                    initWithDevice:device inputSize:CGSizeMakeUniform(1)
-                    referenceSize:CGSizeMakeUniform(1)];
+                    initWithInputSize:CGSizeMakeUniform(1) referenceSize:CGSizeMakeUniform(1)];
 
   expect(processor.iterations).to.equal(20);
   expect(processor.histogramBins).to.equal(32);
@@ -60,8 +54,7 @@ context(@"pixel buffer formats", ^{
                                allocateMemory:YES];
     halfFloatRGBA = [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatRGBA16Float)
                                 allocateMemory:YES];
-    processor = [[PNKColorTransferProcessor alloc]
-                 initWithDevice:device inputSize:size referenceSize:size];
+    processor = [[PNKColorTransferProcessor alloc] initWithInputSize:size referenceSize:size];
   });
 
   afterEach(^{
@@ -120,7 +113,7 @@ context(@"incorrect size", ^{
     small = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
     large = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(32)];
     processor = [[PNKColorTransferProcessor alloc]
-                 initWithDevice:device inputSize:small.size referenceSize:small.size];
+                 initWithInputSize:small.size referenceSize:small.size];
   });
 
   afterEach(^{
@@ -164,8 +157,7 @@ context(@"create lut from input and reference textures", ^{
 
   it(@"should create lookup table mapping input palette to reference palette", ^{
     auto processor = [[PNKColorTransferProcessor alloc]
-                      initWithDevice:device inputSize:inputTexture.size
-                      referenceSize:referenceTexture.size];
+                      initWithInputSize:inputTexture.size referenceSize:referenceTexture.size];
     processor.iterations = 5;
     processor.dampingFactor = 0.5;
     auto lut = [processor lutForInput:inputTexture.pixelBuffer.get()

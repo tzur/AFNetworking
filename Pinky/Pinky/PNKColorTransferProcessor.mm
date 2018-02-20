@@ -102,19 +102,18 @@ static const NSUInteger kLatticeGridSize = 16;
 #pragma mark Initialization
 #pragma mark -
 
-- (nullable instancetype)initWithDevice:(id<MTLDevice>)device inputSize:(CGSize)inputSize
-                          referenceSize:(CGSize)referenceSize {
+- (nullable instancetype)initWithInputSize:(CGSize)inputSize referenceSize:(CGSize)referenceSize {
   LTParameterAssert(std::min(inputSize) > 0, @"Invalid input size (%@): must be positive",
                     NSStringFromCGSize(inputSize));
   LTParameterAssert(std::min(referenceSize) > 0, @"Invalid reference size (%@): must be positive",
                     NSStringFromCGSize(referenceSize));
 
-  if (!PNKSupportsMTLDevice(device)) {
-    return nil;
-  }
-
   if (self = [super init]) {
-    _device = device;
+    _device = PNKDefaultDevice();
+    if (!PNKSupportsMTLDevice(self.device)) {
+      return nil;
+    }
+
     _inputSize = inputSize;
     _referenceSize = referenceSize;
     [self createBuffers];
@@ -452,9 +451,8 @@ LTProperty(float, dampingFactor, DampingFactor, 0, 1, 0.2);
 
 @implementation PNKColorTransferProcessor
 
-- (nullable instancetype)initWithDevice:(__unused id<MTLDevice>)device
-                              inputSize:(__unused CGSize)inputSize
-                          referenceSize:(__unused CGSize)referenceSize {
+- (nullable instancetype)initWithInputSize:(__unused CGSize)inputSize
+                             referenceSize:(__unused CGSize)referenceSize {
   return nil;
 }
 
