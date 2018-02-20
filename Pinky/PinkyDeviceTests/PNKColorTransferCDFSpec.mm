@@ -128,6 +128,12 @@ context(@"initialization", ^{
                            initWithDevice:device
                            histogramBins:PNKColorTransferCDF.maxSupportedHistogramBins + 1];
     }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      __unused auto cdf = [[PNKColorTransferCDF alloc]
+                           initWithDevice:device
+                           histogramBins:PNKColorTransferCDF.minSupportedHistogramBins - 1];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
@@ -275,7 +281,7 @@ context(@"correctness", ^{
   });
 
   it(@"should calculate correct cdf and inverse cdf with smaller number of bins", ^{
-    static const NSUInteger kHistogramBins = 3;
+    static const NSUInteger kHistogramBins = 4;
     static const cv::Mat1i kInputHistogram =
         PNKRandomHistogram(kInputPixels, kNumChannels, kHistogramBins);
     static const cv::Mat1i kReferenceHistogram =

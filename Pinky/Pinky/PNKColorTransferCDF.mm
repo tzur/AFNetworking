@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// sufficiently close approximate of the inverse function. Should be power of two.
 static const NSUInteger kInverseCDFScaleFactor = 16;
 
+/// Minimum number of histogram bins supported by the kernel.
+static const NSUInteger kMinHistogramBins = 4;
+
 /// Maximum number of histogram bins supported by the kernel, based on the available threadgroup
 /// memory on the lower end devices.
 static const NSUInteger kMaxHistogramBins = PNK_COLOR_TRANSFER_CDF_MAX_SUPPORTED_HISTOGRAM_BINS;
@@ -57,9 +60,10 @@ static const NSUInteger kPDFSmoothingKernelSize = 7;
 static const float kPDFSmoothingKernelSigma = 1;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device histogramBins:(NSUInteger)histogramBins {
-  LTParameterAssert(histogramBins > 1 && histogramBins <= kMaxHistogramBins,
-                    @"Invalid histogram bins (%lu), must be in range [2,%lu].",
-                    (unsigned long)histogramBins, (unsigned long)kMaxHistogramBins);
+  LTParameterAssert(histogramBins >= kMinHistogramBins && histogramBins <= kMaxHistogramBins,
+                    @"Invalid histogram bins (%lu), must be in range [%lu,%lu].",
+                    (unsigned long)histogramBins, (unsigned long)kMinHistogramBins,
+                    (unsigned long)kMaxHistogramBins);
 
   if (self = [super init]) {
     _device = device;
@@ -180,6 +184,10 @@ static const float kPDFSmoothingKernelSigma = 1;
 
 + (NSUInteger)inverseCDFScaleFactor {
   return kInverseCDFScaleFactor;
+}
+
++ (NSUInteger)minSupportedHistogramBins {
+  return kMinHistogramBins;
 }
 
 + (NSUInteger)maxSupportedHistogramBins {
