@@ -28,8 +28,8 @@
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
+#import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
-#import "BZRStoreKitMetadataFetcher.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
 /// Fetcher used to fetch products metadata.
-@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
+@property (readonly, nonatomic) BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;

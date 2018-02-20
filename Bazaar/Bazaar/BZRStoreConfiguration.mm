@@ -30,6 +30,7 @@
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRReceiptValidationStatusProvider.h"
+#import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTimeProvider.h"
@@ -42,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Manager used to read and write files from the file system.
 @property (strong, nonatomic) NSFileManager *fileManager;
+
+/// Underlying fetcher used to fetch products metadata.
+@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataUnderlyingFetcher;
 
 @end
 
@@ -153,8 +157,11 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
         [[BZRPurchaseHelper alloc] initWithAggregatedReceiptProvider:self.validationStatusProvider];
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
                                                             purchaseHelper:purchaseHelper];
-    _storeKitMetadataFetcher =
+    _storeKitMetadataUnderlyingFetcher =
         [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
+    _storeKitMetadataFetcher =
+        [[BZRStoreKitCachedMetadataFetcher alloc]
+         initWithUnderlyingFetcher:self.storeKitMetadataUnderlyingFetcher];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
@@ -170,18 +177,19 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
 - (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath
                                               decryptionKey:(nullable NSString *)decryptionKey {
-    auto localProductsProvider = [[BZRLocalProductsProvider alloc]
-                                  initWithPath:productsListJSONFilePath decryptionKey:decryptionKey
-                                  fileManager:self.fileManager];
-    auto productsWithDiscountsProvider = [[BZRProductsWithDiscountsProvider alloc]
-                                          initWithUnderlyingProvider:localProductsProvider];
-    _netherProductsProvider = [[BZRProductsWithVariantsProvider alloc]
-                               initWithUnderlyingProvider:productsWithDiscountsProvider];
-    auto productsWithPriceInfoProvider = [[BZRProductsWithPriceInfoProvider alloc]
-                                          initWithUnderlyingProvider:self.netherProductsProvider
-                                          storeKitMetadataFetcher:self.storeKitMetadataFetcher];
-    return [[BZRCachedProductsProvider alloc]
-            initWithUnderlyingProvider:productsWithPriceInfoProvider];
+  auto localProductsProvider = [[BZRLocalProductsProvider alloc]
+                                initWithPath:productsListJSONFilePath decryptionKey:decryptionKey
+                                fileManager:self.fileManager];
+  auto productsWithDiscountsProvider = [[BZRProductsWithDiscountsProvider alloc]
+                                        initWithUnderlyingProvider:localProductsProvider];
+  _netherProductsProvider = [[BZRProductsWithVariantsProvider alloc]
+                             initWithUnderlyingProvider:productsWithDiscountsProvider];
+  auto productsWithPriceInfoProvider =
+      [[BZRProductsWithPriceInfoProvider alloc]
+       initWithUnderlyingProvider:self.netherProductsProvider
+       storeKitMetadataFetcher:self.storeKitMetadataUnderlyingFetcher];
+  return [[BZRCachedProductsProvider alloc]
+          initWithUnderlyingProvider:productsWithPriceInfoProvider];
 }
 
 @end
