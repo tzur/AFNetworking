@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSArray<RACTwoTuple<NSNumber *, NSData *> *> *)
     fetchOldestRecordsWithCount:(NSUInteger)count error:(NSError **)error;
 
+/// Returns the current number of records stored. Returns 0 if there was an error while feching the
+/// record count and \c error is set accordingly.
+- (NSUInteger)recordCountWithError:(NSError **)error;
+
 @end
 
 /// Default implementation of \c INTRecordStorage. Uses an underlying \c FMDatabaseQueue in order to
