@@ -6,7 +6,7 @@
 #import <LTKit/NSArray+NSSet.h>
 
 #import "DVNBlendMode.h"
-#import "DVNBrushModelVersion.h"
+#import "DVNBrushModelVersion+TestBrushModel.h"
 
 #if !CGFLOAT_IS_DOUBLE
 static NSDictionary *
@@ -32,11 +32,7 @@ context(@"initialization", ^{
   __block NSError *error;
 
   beforeEach(^{
-    NSString *filePath = [[NSBundle bundleForClass:[self class]]
-                          pathForResource:@"DVNTestBrushModelV1" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:filePath];
-    jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0
-                                                       error:nil];
+    jsonDictionary = [$(DVNBrushModelVersionV1) JSONDictionaryOfTestBrushModel];
 #if !CGFLOAT_IS_DOUBLE
     // Since NSJSONSerialization may use double instead of float for deserialization of JSON
     // dictionaries even if CGFloat is float, the NSNumber values of the dictionary have to be
