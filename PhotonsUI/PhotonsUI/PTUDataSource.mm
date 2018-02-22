@@ -17,7 +17,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTUDataSource () <UICollectionViewDataSource>
+@interface PTUDataSource () <UICollectionViewDataSource> {
+  /// Optimization used to flush the update queue when a reload update is received.
+  std::atomic<unsigned int> _pendingReloads;
+}
 
 /// Collection view to keep up to date with \c changesetProvider.
 @property (readonly, nonatomic) UICollectionView *collectionView;
@@ -62,9 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used to extend each update job to its whole execution, including completion block call.
 @property (readonly, nonatomic) dispatch_semaphore_t updateQueueSemaphore;
 
-/// Optimization used to flush the update queue when a reload update is received.
-@property (atomic) NSUInteger pendingReloads;
-
 @end
 
 @implementation PTUDataSource
@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     _updateQueue = dispatch_queue_create("com.lightricks.PhotonsUI.dataSource",
                                          DISPATCH_QUEUE_SERIAL);
     _updateQueueSemaphore = dispatch_semaphore_create(0);
-    self.pendingReloads = 0;
+    _pendingReloads = 0;
 
     self.dataModel = @[];
     self.sectionTitles = @{};
@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
         // Changes without incremental changes make all changes made before them obsolete, so the
         // \c pendingReloads counter is used to flush the queue as quickly as possible.
         if (!changeset.hasIncrementalChanges) {
-          ++self.pendingReloads;
+          ++_pendingReloads;
         }
 
         /// Dispatching on a serial queue ensures we process updates serially, without ever blocking
@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
           // Applying incremental changes when a reload is pending is wasteful, so if a reload is
           // pending we try to clear the queue as quickly as possible.
-          if (changeset.hasIncrementalChanges && self.pendingReloads) {
+          if (changeset.hasIncrementalChanges && _pendingReloads) {
             return;
           }
 
@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
               self.hasData = [[self class] hasDataInDataModel:self.dataModel];
               [self.collectionView reloadData];
               [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
-              --self.pendingReloads;
+              --_pendingReloads;
               dispatch_semaphore_signal(self.updateQueueSemaphore);
               return;
             }
