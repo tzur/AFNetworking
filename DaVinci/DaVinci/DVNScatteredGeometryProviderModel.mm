@@ -181,9 +181,11 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(distance.intersects(nonNegativeNumbers),
                     @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX])",
                     distance.description());
-  lt::Interval<CGFloat> validAngleInterval({0, 2 * M_PI});
+  lt::Interval<CGFloat> validAngleInterval({0, 4 * M_PI},
+                                           lt::Interval<CGFloat>::EndpointInclusion::Closed,
+                                           lt::Interval<CGFloat>::EndpointInclusion::Open);
   LTParameterAssert(angle.intersects(validAngleInterval),
-                    @"Interval %@ outside valid angle interval ([0, 2 * PI])",
+                    @"Interval %@ outside valid angle interval ([0, 4 * PI])",
                     angle.description());
   lt::Interval<CGFloat> positiveNumbers({0, CGFLOAT_MAX},
                                         lt::Interval<CGFloat>::EndpointInclusion::Open,

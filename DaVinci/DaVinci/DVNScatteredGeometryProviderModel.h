@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param distance Interval from which the length of random translations of quads are retrieved.
 /// Must be non-negative.
 /// @param angle Interval from which the angle of random rotations of quads are retrieved. Must be
-/// in range <tt>[0, 2 * M_PI]</tt>.
+/// in range <tt>[0, 4 * M_PI)</tt>.
 /// @param scale Interval from which the scale factor of random scalings of quads are retrieved.
 /// Must be positive.
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param distance Interval from which the length of random translations of quads are retrieved.
 /// Must be non-negative.
 /// @param angle Interval from which the angle of random rotations of quads are retrieved. Must be
-/// in range <tt>[0, 2 * M_PI]</tt>.
+/// in range <tt>[0, 4 * M_PI)</tt>.
 /// @param scale Interval from which the scale factor of random scalings of quads are retrieved.
 /// Must be positive.
 /// @param lengthOfStartTapering Maximum length, in units of the sampled parametric object, at the
@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) lt::Interval<CGFloat> distance;
 
 /// Interval from which the angle of random rotations of quads are retrieved. Is in range
-/// <tt>[0, 2 * M_PI]</tt>.
+/// <tt>[0, 4 * M_PI]</tt>.
 @property (readonly, nonatomic) lt::Interval<CGFloat> angle;
 
 /// Interval from which the scale factor of random scalings of quads are retrieved. Is in range
