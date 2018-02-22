@@ -116,7 +116,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c countRange
 @property (readonly, nonatomic) lt::Interval<CGFloat> distanceJitterFactorRange;
 
-/// Non-empty support of the uniform distribution, in range <tt>[0, 2 * M_PI)</tt>, determining the
+/// Non-empty support of the uniform distribution, in range <tt>[0, 4 * M_PI)</tt>, determining the
 /// possible angles, in radians, by which the brush tip squares are randomly rotated around their
 /// centers. A value of <tt>[a, b]</tt> has the effect that the brush tip square is rotated by at
 /// least \c a and by at most \c b radians. A value of <tt>[0, 0]</tt> has the effect that no brush
