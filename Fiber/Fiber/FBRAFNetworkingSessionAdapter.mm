@@ -6,11 +6,8 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "AFNetworking+Fiber.h"
-#import "FBRHTTPRequest.h"
 #import "FBRHTTPResponse.h"
 #import "FBRHTTPSessionConfiguration.h"
-#import "FBRHTTPSessionRequestMarshalling.h"
-#import "FBRHTTPSessionSecurityPolicy.h"
 #import "NSError+AFNetworkingAdapter.h"
 #import "NSError+Fiber.h"
 #import "NSErrorCodes+Fiber.h"
@@ -75,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
         [[FBRHTTPResponse alloc] initWithMetadata:(NSHTTPURLResponse *)responseMetadata
                                           content:(NSData *)responseData] : nil;
     if (error) {
-      failure([error fbr_fiberErrorWithRequest:request response:response]);
+      failure([error fbr_fiberErrorWithRequest:nil response:response]);
       return;
     }
     success(response);

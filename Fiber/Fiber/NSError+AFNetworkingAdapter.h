@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Converts an AFNetworking to a Fiber error, i.e. an error in \c kLTErrorDomain with Fiber
 /// specific error code. The given \c request and \c response will be added to the error's
 /// \c userInfo dictionary. The receiver is added as the underlying error of the returned error.
-- (NSError *)fbr_fiberErrorWithRequest:(FBRHTTPRequest *)request
+- (NSError *)fbr_fiberErrorWithRequest:(nullable FBRHTTPRequest *)request
                               response:(nullable FBRHTTPResponse *)response;
 
 @end

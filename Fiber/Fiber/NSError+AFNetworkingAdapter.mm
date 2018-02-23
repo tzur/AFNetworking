@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSError (AFNetworkingAdapter)
 
-- (NSError *)fbr_fiberErrorWithRequest:(FBRHTTPRequest *)request
+- (NSError *)fbr_fiberErrorWithRequest:(nullable FBRHTTPRequest *)request
                               response:(nullable FBRHTTPResponse *)response {
   NSInteger fiberErrorCode = FBRErrorCodeHTTPTaskFailed;
   if ([self.domain isEqualToString:AFURLResponseSerializationErrorDomain]) {

@@ -23,12 +23,12 @@ extern NSString * const kFBRFailingHTTPResponseKey;
 + (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(FBRHTTPRequest *)request
                underlyingError:(nullable NSError *)underlyingError;
 
-/// Creates and returns an \c NSError with the specified \c code. \c request is added to the
-/// \c userInfo dictionary with \c kFBRFailingHTTPRequestKey as its key. \c response is added to the
-/// \c userInfo dictionary with \c kFBRFailingHTTPResponseKey as its key. If \c underlyingError is
-/// not \c nil it will also be added to the \c userInfo dictionary with \c NSUnderlyingErrorKey as
-/// its key.
-+ (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(FBRHTTPRequest *)request
+/// Creates and returns an \c NSError with the specified \c code. If \c request is not \c nil, it
+/// will be added to the \c userInfo dictionary with \c kFBRFailingHTTPRequestKey as its key. If
+/// \c response is not \c nil, it will be added to the \c userInfo dictionary with
+/// \c kFBRFailingHTTPResponseKey as its key. If \c underlyingError is not \c nil it will also be
+/// added to the \c userInfo dictionary with \c NSUnderlyingErrorKey as its key.
++ (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(nullable FBRHTTPRequest *)request
                   HTTPResponse:(nullable FBRHTTPResponse *)response
                underlyingError:(nullable NSError *)underlyingError;
 

@@ -21,11 +21,14 @@ NSString * const kFBRFailingHTTPResponseKey = @"FailingResponse";
                  underlyingError:underlyingError];
 }
 
-+ (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(FBRHTTPRequest *)request
++ (NSError *)fbr_errorWithCode:(NSInteger)code HTTPRequest:(nullable FBRHTTPRequest *)request
                   HTTPResponse:(nullable FBRHTTPResponse *)response
                underlyingError:(nullable NSError *)underlyingError {
   NSMutableDictionary<NSString *, id> *userInfo = [NSMutableDictionary dictionary];
-  userInfo[kFBRFailingHTTPRequestKey] = [request copy];
+
+  if (request) {
+    userInfo[kFBRFailingHTTPRequestKey] = [request copy];
+  }
 
   if (response) {
     userInfo[kFBRFailingHTTPResponseKey] = [response copy];
@@ -34,7 +37,7 @@ NSString * const kFBRFailingHTTPResponseKey = @"FailingResponse";
   if (underlyingError) {
     userInfo[NSUnderlyingErrorKey] = underlyingError;
   }
-  
+
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
