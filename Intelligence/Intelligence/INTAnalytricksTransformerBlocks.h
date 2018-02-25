@@ -24,9 +24,10 @@ extern NSString * const kINTEnrichmentAppRunCountKey;
 /// Returns a block that adds entries from an \c NSDictionary resulting from
 /// <tt>-[INTAnalytrickMetadata properties]</tt> to each event in \c events only if an event is an
 /// \c NSDictionary and if \c appContext contains an \c kINTAppContextDeviceIDKey in
-/// \c kINTAppContextDeviceInfoIDKey, otherwise the event is returned as is. If there's a conflict
-/// between the event keys and the analytricks metadata keys, the events' values are taken for the
-/// final dictionary.
+/// \c kINTAppContextDeviceInfoIDKey, otherwise the event is returned as is. The only exeption is
+/// the "event_id" key which is overriden with a new and unique value for each event. If there's a
+/// conflict between the event keys and the analytricks metadata keys, the events' values are taken
+/// for the final dictionary.
 + (INTEventEnrichmentBlock)analytricksMetadataEnrichementBlock;
 
 /// Returns a block that adds \c kINTEnrichmentAppRunCountKey key with the value of
