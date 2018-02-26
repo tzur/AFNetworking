@@ -48,6 +48,21 @@ public:
   Interval(T value) noexcept :
       _inf(value), _sup(value), _infInclusion(Closed), _supInclusion(Closed) {}
 
+  /// Returns an open interval with the given \c values.
+  static Interval<T> oo(std::pair<T, T> values) {
+    return Interval<T>(values, Open);
+  }
+
+  /// Returns a left-open, right-closed interval with the given \c values.
+  static Interval<T> oc(std::pair<T, T> values) {
+    return Interval<T>(values, Open, Closed);
+  }
+
+  /// Returns a left-closed, right-open interval with the given \c values.
+  static Interval<T> co(std::pair<T, T> values) {
+    return Interval<T>(values, Closed, Open);
+  }
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(_inf) ^ std::hash<T>()(_sup) ^

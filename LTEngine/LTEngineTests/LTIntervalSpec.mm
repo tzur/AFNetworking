@@ -70,6 +70,32 @@ public:
       });
     });
 
+    context(@"factory methods", ^{
+      it(@"should return an open interval", ^{
+        Interval<T> interval = Interval<T>::oo({7, 8});
+        expect(interval.inf()).to.equal(7);
+        expect(interval.sup()).to.equal(8);
+        expect(interval.infIncluded()).to.beFalsy();
+        expect(interval.supIncluded()).to.beFalsy();
+      });
+
+      it(@"should return a left-open interval", ^{
+        Interval<T> interval = Interval<T>::oc({7, 8});
+        expect(interval.inf()).to.equal(7);
+        expect(interval.sup()).to.equal(8);
+        expect(interval.infIncluded()).to.beFalsy();
+        expect(interval.supIncluded()).to.beTruthy();
+      });
+
+      it(@"should return a right-open interval", ^{
+        Interval<T> interval = Interval<T>::co({7, 8});
+        expect(interval.inf()).to.equal(7);
+        expect(interval.sup()).to.equal(8);
+        expect(interval.infIncluded()).to.beTruthy();
+        expect(interval.supIncluded()).to.beFalsy();
+      });
+    });
+
     context(@"hash", ^{
       it(@"should compute a hash of an interval", ^{
         Interval<T> interval({0, 1});
@@ -108,13 +134,13 @@ public:
       });
 
       it(@"should indicate that an empty interval is empty", ^{
-        Interval<T> interval({0, 0}, Interval<T>::Closed, Interval<T>::Open);
+        Interval<T> interval = Interval<T>::oc({0, 0});
         expect(interval.isEmpty()).to.beTruthy();
 
-        interval = Interval<T>({0, 0}, Interval<T>::Closed, Interval<T>::Open);
+        interval = Interval<T>::co({0, 0});
         expect(interval.isEmpty()).to.beTruthy();
 
-        interval = Interval<T>({0, 0}, Interval<T>::Open);
+        interval = Interval<T>::oo({0, 0});
         expect(interval.isEmpty()).to.beTruthy();
       });
     });
@@ -122,7 +148,7 @@ public:
     context(@"value inclusion", ^{
       context(@"open interval", ^{
         it(@"should return correct results for containment queries", ^{
-          Interval<T> interval({1, 3}, Interval<T>::Open);
+          Interval<T> interval = Interval<T>::oo({1, 3});
           expect(interval.contains(0)).to.beFalsy();
           expect(interval.contains(1)).to.beFalsy();
           expect(interval.contains(2)).to.beTruthy();
@@ -133,7 +159,7 @@ public:
 
       context(@"left-open interval", ^{
         it(@"should return correct results for containment queries", ^{
-          Interval<T> interval({1, 3}, Interval<T>::Open, Interval<T>::Closed);
+          Interval<T> interval = Interval<T>::oc({1, 3});
           expect(interval.contains(0)).to.beFalsy();
           expect(interval.contains(1)).to.beFalsy();
           expect(interval.contains(2)).to.beTruthy();
@@ -144,7 +170,7 @@ public:
 
       context(@"right-open interval", ^{
         it(@"should return correct results for containment queries", ^{
-          Interval<T> interval({1, 3}, Interval<T>::Closed, Interval<T>::Open);
+          Interval<T> interval = Interval<T>::co({1, 3});
           expect(interval.contains(0)).to.beFalsy();
           expect(interval.contains(1)).to.beTruthy();
           expect(interval.contains(2)).to.beTruthy();
@@ -176,10 +202,10 @@ public:
         context(@"different boundary conditions", ^{
           it(@"should compute that two intervals with different boundaries intersect", ^{
             Interval<T> interval({0, 1});
-            Interval<T> anotherInterval({0, 1}, Interval<T>::Closed, Interval<T>::Open);
+            Interval<T> anotherInterval = Interval<T>::co({0, 1});
             expect(interval.intersects(anotherInterval)).to.beTruthy();
 
-            anotherInterval = Interval<T>({0, 1}, Interval<T>::Open, Interval<T>::Closed);
+            anotherInterval = Interval<T>::oc({0, 1});
             expect(interval.intersects(anotherInterval)).to.beTruthy();
           });
         });
@@ -192,19 +218,19 @@ public:
           anotherInterval = Interval<T>({0, 2.5});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
-          anotherInterval = Interval<T>({0, 2.5}, Interval<T>::Open);
+          anotherInterval = Interval<T>::oo({0, 2.5});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
           anotherInterval = Interval<T>({0, 3});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
-          anotherInterval = Interval<T>({0, 3}, Interval<T>::Open);
+          anotherInterval = Interval<T>::oo({0, 3});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
           anotherInterval = Interval<T>({2.5, 3});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
-          anotherInterval = Interval<T>({2.5, 4}, Interval<T>::Open);
+          anotherInterval = Interval<T>::oo({2.5, 4});
           expect(interval.intersects(anotherInterval)).to.beTruthy();
 
           anotherInterval = Interval<T>({2, 3});
@@ -216,10 +242,10 @@ public:
           Interval<T> anotherInterval({0, 1});
           expect(interval.intersects(anotherInterval)).to.beFalsy();
 
-          anotherInterval = Interval<T>({0, 2}, Interval<T>::Closed, Interval<T>::Open);
+          anotherInterval = Interval<T>::co({0, 2});
           expect(interval.intersects(anotherInterval)).to.beFalsy();
 
-          anotherInterval = Interval<T>({3, 4}, Interval<T>::Open, Interval<T>::Closed);
+          anotherInterval = Interval<T>::oc({3, 4});
           expect(interval.intersects(anotherInterval)).to.beFalsy();
 
           anotherInterval = Interval<T>({4, 5});
@@ -263,7 +289,7 @@ public:
       });
 
       it(@"should return correct parametric factor for the minimum, in case of open interval", ^{
-        interval = Interval<T>({1, 5}, Interval<T>::Open);
+        interval = Interval<T>::oo({1, 5});
         expect(*interval.parametricValue(*interval.min())).to.equal(0);
       });
 
@@ -277,7 +303,7 @@ public:
       });
 
       it(@"should return correct parametric factor for its maximum, in case of open interval", ^{
-        interval = Interval<T>({1, 5}, Interval<T>::Open);
+        interval = Interval<T>::oo({1, 5});
         expect(*interval.parametricValue(*interval.max())).to.beCloseToWithin(1, kEpsilon);
       });
 
@@ -336,7 +362,7 @@ public:
 
       context(@"open interval", ^{
         beforeEach(^{
-          interval = Interval<T>({1, 3}, Interval<T>::Open);
+          interval = Interval<T>::oo({1, 3});
         });
 
         it(@"should return its minimum if value to project is smaller than the infimum", ^{
@@ -371,11 +397,11 @@ public:
       it(@"should return a proper description", ^{
         Interval<T> interval = Interval<T>({1, 2});
         expect(interval.description()).to.equal(@"[1, 2]");
-        interval = Interval<T>({2, 3}, Interval<T>::Open);
+        interval = Interval<T>::oo({2, 3});
         expect(interval.description()).to.equal(@"(2, 3)");
-        interval = Interval<T>({3, 4}, Interval<T>::Open, Interval<T>::Closed);
+        interval = Interval<T>::oc({3, 4});
         expect(interval.description()).to.equal(@"(3, 4]");
-        interval = Interval<T>({4, 5}, Interval<T>::Closed, Interval<T>::Open);
+        interval = Interval<T>::co({4, 5});
         expect(interval.description()).to.equal(@"[4, 5)");
       });
     });
@@ -396,7 +422,7 @@ public:
       static S kCastSup = kSup;
 
       it(@"should cast an open interval", ^{
-        Interval<T> interval = Interval<T>({kInf, kSup}, Interval<T>::Open);
+        Interval<T> interval = Interval<T>::oo({kInf, kSup});
         Interval<S> castInterval = (Interval<S>)interval;
         expect(castInterval.inf()).to.equal(kCastInf);
         expect(castInterval.sup()).to.equal(kCastSup);
@@ -405,8 +431,7 @@ public:
       });
 
       it(@"should cast a left-open interval", ^{
-        Interval<T> interval = Interval<T>({kInf, kSup}, Interval<T>::Open,
-                                                   Interval<T>::Closed);
+        Interval<T> interval = Interval<T>::oc({kInf, kSup});
         Interval<S> castInterval = (Interval<S>)interval;
         expect(castInterval.inf()).to.equal(kCastInf);
         expect(castInterval.sup()).equal(kCastSup);
@@ -415,7 +440,7 @@ public:
       });
 
       it(@"should cast a right-open interval", ^{
-        Interval<T> interval = Interval<T>({kInf, kSup}, Interval<T>::Closed, Interval<T>::Open);
+        Interval<T> interval = Interval<T>::co({kInf, kSup});
         Interval<S> castInterval = (Interval<S>)interval;
         expect(castInterval.inf()).to.equal(kCastInf);
         expect(castInterval.sup()).equal(kCastSup);
@@ -424,7 +449,7 @@ public:
       });
 
       it(@"should cast a closed interval", ^{
-        Interval<T> interval = Interval<T>({kInf, kSup}, Interval<T>::Closed);
+        Interval<T> interval = Interval<T>({kInf, kSup});
         Interval<S> castInterval = (Interval<S>)interval;
         expect(castInterval.inf()).to.equal(kCastInf);
         expect(castInterval.sup()).equal(kCastSup);
@@ -457,7 +482,7 @@ context(@"equality", ^{
       Interval<CGFloat> anotherInterval({0, 1});
       expect(interval == anotherInterval).to.beTruthy();
 
-      anotherInterval = Interval<CGFloat>({0, 1}, Interval<CGFloat>::Open);
+      anotherInterval = Interval<CGFloat>::oo({0, 1});
       expect(interval == anotherInterval).to.beFalsy();
 
       anotherInterval = Interval<CGFloat>({0, 2});
@@ -469,7 +494,7 @@ context(@"equality", ^{
       Interval<NSInteger> anotherInterval({0, 1});
       expect(interval == anotherInterval).to.beTruthy();
 
-      anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open);
+      anotherInterval = Interval<NSInteger>::oo({0, 1});
       expect(interval == anotherInterval).to.beFalsy();
 
       anotherInterval = Interval<NSInteger>({0, 2});
@@ -481,7 +506,7 @@ context(@"equality", ^{
       Interval<NSUInteger> anotherInterval({0, 1});
       expect(interval == anotherInterval).to.beTruthy();
 
-      anotherInterval = Interval<NSUInteger>({0, 1}, Interval<NSUInteger>::Open);
+      anotherInterval = Interval<NSUInteger>::oo({0, 1});
       expect(interval == anotherInterval).to.beFalsy();
 
       anotherInterval = Interval<NSUInteger>({0, 2});
@@ -495,7 +520,7 @@ context(@"equality", ^{
       Interval<CGFloat> anotherInterval({0, 1});
       expect(interval != anotherInterval).to.beFalsy();
 
-      anotherInterval = Interval<CGFloat>({0, 1}, Interval<CGFloat>::Open);
+      anotherInterval = Interval<CGFloat>::oo({0, 1});
       expect(interval != anotherInterval).to.beTruthy();
 
       anotherInterval = Interval<CGFloat>({0, 2});
@@ -507,7 +532,7 @@ context(@"equality", ^{
       Interval<NSInteger> anotherInterval({0, 1});
       expect(interval != anotherInterval).to.beFalsy();
 
-      anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open);
+      anotherInterval = Interval<NSInteger>::oo({0, 1});
       expect(interval != anotherInterval).to.beTruthy();
 
       anotherInterval = Interval<NSInteger>({0, 2});
@@ -519,7 +544,7 @@ context(@"equality", ^{
       Interval<NSUInteger> anotherInterval({0, 1});
       expect(interval != anotherInterval).to.beFalsy();
 
-      anotherInterval = Interval<NSUInteger>({0, 1}, Interval<NSUInteger>::Open);
+      anotherInterval = Interval<NSUInteger>::oo({0, 1});
       expect(interval != anotherInterval).to.beTruthy();
 
       anotherInterval = Interval<NSUInteger>({0, 2});
@@ -531,19 +556,19 @@ context(@"equality", ^{
 context(@"extrema", ^{
   context(@"CGFloat intervals", ^{
     it(@"should return correct extrema of a left-open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Open, Interval<CGFloat>::Closed);
+      Interval<CGFloat> interval = Interval<CGFloat>::oc({0, 1});
       expect(*interval.min()).to.equal(std::nextafter((CGFloat)0, (CGFloat)1));
       expect(*interval.max()).to.equal(1);
     });
 
     it(@"should return correct extrema of a right-open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Closed, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::co({0, 1});
       expect(*interval.min()).to.equal(0);
       expect(*interval.max()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
     });
 
     it(@"should return correct extrema of an open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({0, 1});
       expect(*interval.min()).to.equal(std::nextafter((CGFloat)0, (CGFloat)1));
       expect(*interval.max()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
     });
@@ -551,19 +576,19 @@ context(@"extrema", ^{
 
   context(@"NSInteger intervals", ^{
     it(@"should return correct extrema of a left-open interval", ^{
-      Interval<NSInteger> interval({-1, 1}, Interval<NSInteger>::Open, Interval<NSInteger>::Closed);
+      Interval<NSInteger> interval = Interval<NSInteger>::oc({-1, 1});
       expect(*interval.min()).to.equal(0);
       expect(*interval.max()).to.equal(1);
     });
 
     it(@"should return correct extrema of a right-open interval", ^{
-      Interval<NSInteger> interval({-1, 1}, Interval<NSInteger>::Closed, Interval<NSInteger>::Open);
+      Interval<NSInteger> interval = Interval<NSInteger>::co({-1, 1});
       expect(*interval.min()).to.equal(-1);
       expect(*interval.max()).to.equal(0);
     });
 
     it(@"should return correct extrema of an open interval", ^{
-      Interval<NSInteger> interval({-1, 1}, Interval<NSInteger>::Open);
+      Interval<NSInteger> interval = Interval<NSInteger>::oo({-1, 1});
       expect(*interval.min()).to.equal(0);
       expect(*interval.max()).to.equal(0);
     });
@@ -571,21 +596,19 @@ context(@"extrema", ^{
 
   context(@"NSUInteger intervals", ^{
     it(@"should return correct extrema of a left-open interval", ^{
-      Interval<NSUInteger> interval({0, 2}, Interval<NSUInteger>::Open,
-                                    Interval<NSUInteger>::Closed);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oc({0, 2});
       expect(*interval.min()).to.equal(1);
       expect(*interval.max()).to.equal(2);
     });
 
     it(@"should return correct extrema of a right-open interval", ^{
-      Interval<NSUInteger> interval({0, 2}, Interval<NSUInteger>::Closed,
-                                    Interval<NSUInteger>::Open);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::co({0, 2});
       expect(*interval.min()).to.equal(0);
       expect(*interval.max()).to.equal(1);
     });
 
     it(@"should return correct extrema of an open interval", ^{
-      Interval<NSUInteger> interval({0, 2}, Interval<NSUInteger>::Open);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 2});
       expect(*interval.min()).to.equal(1);
       expect(*interval.max()).to.equal(1);
     });
@@ -594,24 +617,23 @@ context(@"extrema", ^{
 
 context(@"empty intervals", ^{
   it(@"should indicate that an empty CGFloat interval is empty", ^{
-    Interval<CGFloat> interval({0, std::nextafter((CGFloat)0, (CGFloat)1)},
-                               Interval<CGFloat>::Open);
+    Interval<CGFloat> interval = Interval<CGFloat>::oo({0, std::nextafter((CGFloat)0, (CGFloat)1)});
     expect(interval.isEmpty()).to.beTruthy();
   });
 
   context(@"edge cases for floating-point intervals", ^{
     it(@"should indicate that an empty CGFloat interval is empty", ^{
-      Interval<CGFloat> interval({-0.0, +0.0}, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({-0.0, +0.0});
       expect(interval.isEmpty()).to.beTruthy();
     });
 
     it(@"should indicate that an empty left-open CGFloat interval is empty", ^{
-      Interval<CGFloat> interval({-0.0, +0.0}, Interval<CGFloat>::Open, Interval<CGFloat>::Closed);
+      Interval<CGFloat> interval = Interval<CGFloat>::oc({-0.0, +0.0});
       expect(interval.isEmpty()).to.beTruthy();
     });
 
     it(@"should indicate that an empty right-open CGFloat interval is empty", ^{
-      Interval<CGFloat> interval({-0.0, +0.0}, Interval<CGFloat>::Closed, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::co({-0.0, +0.0});
       expect(interval.isEmpty()).to.beTruthy();
     });
 
@@ -622,12 +644,12 @@ context(@"empty intervals", ^{
   });
 
   it(@"should indicate that an empty NSInteger interval is empty", ^{
-    Interval<NSInteger> interval({-1, 0}, Interval<NSInteger>::Open);
+    Interval<NSInteger> interval = Interval<NSInteger>::oo({-1, 0});
     expect(interval.isEmpty()).to.beTruthy();
   });
 
   it(@"should indicate that an empty NSUInteger interval is empty", ^{
-    Interval<NSUInteger> interval({0, 1}, Interval<NSUInteger>::Open);
+    Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 1});
     expect(interval.isEmpty()).to.beTruthy();
   });
 });
@@ -635,7 +657,7 @@ context(@"empty intervals", ^{
 context(@"value inclusion", ^{
   context(@"open interval", ^{
     it(@"should return correct results for containment queries of a CGFloat interval", ^{
-      Interval<CGFloat> interval({0.5, 1.5}, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({0.5, 1.5});
       expect(interval.contains(0.5)).to.beFalsy();
       expect(interval.contains(std::nextafter((CGFloat)0.5, (CGFloat)1.5))).to.beTruthy();
       expect(interval.contains(std::nextafter((CGFloat)1.5, (CGFloat)0.5))).to.beTruthy();
@@ -645,7 +667,7 @@ context(@"value inclusion", ^{
 
   context(@"left-open interval", ^{
     it(@"should return correct results for containment queries of a CGFloat interval", ^{
-      Interval<CGFloat> interval({0.5, 1.5}, Interval<CGFloat>::Open, Interval<CGFloat>::Closed);
+      Interval<CGFloat> interval = Interval<CGFloat>::oc({0.5, 1.5});
       expect(interval.contains(0.5)).to.beFalsy();
       expect(interval.contains(std::nextafter((CGFloat)0.5, (CGFloat)1.5))).to.beTruthy();
       expect(interval.contains(std::nextafter((CGFloat)1.5, (CGFloat)0.5))).to.beTruthy();
@@ -655,7 +677,7 @@ context(@"value inclusion", ^{
 
   context(@"right-open interval", ^{
     it(@"should return correct results for containment queries of a CGFloat interval", ^{
-      Interval<CGFloat> interval({0.5, 1.5}, Interval<CGFloat>::Closed, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::co({0.5, 1.5});
       expect(interval.contains(0.5)).to.beTruthy();
       expect(interval.contains(std::nextafter((CGFloat)0.5, (CGFloat)1.5))).to.beTruthy();
       expect(interval.contains(std::nextafter((CGFloat)1.5, (CGFloat)0.5))).to.beTruthy();
@@ -679,19 +701,19 @@ context(@"intersection", ^{
     context(@"different boundary conditions", ^{
       it(@"should compute that two CGFLoat intervals with different boundaries intersect", ^{
         Interval<CGFloat> interval({0, 1});
-        Interval<CGFloat> anotherInterval({0, 1}, Interval<CGFloat>::Open);
+        Interval<CGFloat> anotherInterval = Interval<CGFloat>::oo({0, 1});
         expect(interval.intersects(anotherInterval)).to.beTruthy();
       });
 
       it(@"should compute that two NSInteger intervals with different boundaries intersect", ^{
         Interval<NSInteger> interval({0, 1});
-        Interval<NSInteger> anotherInterval({0, 2}, Interval<NSInteger>::Open);
+        Interval<NSInteger> anotherInterval = Interval<NSInteger>::oo({0, 2});
         expect(interval.intersects(anotherInterval)).to.beTruthy();
       });
 
       it(@"should compute that two NSUInteger intervals with different boundaries intersect", ^{
         Interval<NSUInteger> interval({0, 1});
-        Interval<NSUInteger> anotherInterval({0, 2}, Interval<NSUInteger>::Open);
+        Interval<NSUInteger> anotherInterval = Interval<NSUInteger>::oo({0, 2});
         expect(interval.intersects(anotherInterval)).to.beTruthy();
       });
     });
@@ -707,15 +729,13 @@ context(@"intersection", ^{
 
       it(@"should compute how two equal intervals with different boundary conditions intersect", ^{
         Interval<CGFloat> interval({0, 1});
-        Interval<CGFloat> anotherInterval({0, 1}, Interval<CGFloat>::Closed,
-                                          Interval<CGFloat>::Open);
+        Interval<CGFloat> anotherInterval = Interval<CGFloat>::co({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({0, 1}, Interval<CGFloat>::Open,
-                                            Interval<CGFloat>::Closed);
+        anotherInterval = Interval<CGFloat>::oc({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({0, 1}, Interval<CGFloat>::Open);
+        anotherInterval = Interval<CGFloat>::oo({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
       });
 
@@ -729,29 +749,27 @@ context(@"intersection", ^{
         expect(interval.intersectionWith(anotherInterval) ==
                Interval<CGFloat>({0, 0.5})).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({-1, 0.5}, Interval<CGFloat>::Open);
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<CGFloat>({0, 0.5}, Interval<CGFloat>::Closed,
-                                 Interval<CGFloat>::Open)).to.beTruthy();
+        anotherInterval = Interval<CGFloat>::oo({-1, 0.5});
+        expect(interval.intersectionWith(anotherInterval) == Interval<CGFloat>::co({0, 0.5}))
+            .to.beTruthy();
 
         anotherInterval = Interval<CGFloat>({-1, 2});
         expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({-1, 2}, Interval<CGFloat>::Open);
+        anotherInterval = Interval<CGFloat>::oo({-1, 2});
         expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
 
         anotherInterval = Interval<CGFloat>({0.5, 2});
         expect(interval.intersectionWith(anotherInterval) ==
                Interval<CGFloat>({0.5, 1})).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({0.5, 2}, Interval<CGFloat>::Open);
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<CGFloat>({0.5, 1}, Interval<CGFloat>::Open,
-                                 Interval<CGFloat>::Closed)).to.beTruthy();
+        anotherInterval = Interval<CGFloat>::oo({0.5, 2});
+        expect(interval.intersectionWith(anotherInterval) == Interval<CGFloat>::oc({0.5, 1}))
+            .to.beTruthy();
 
         anotherInterval = Interval<CGFloat>({1, 2});
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<CGFloat>({1, 1})).to.beTruthy();
+        expect(interval.intersectionWith(anotherInterval) == Interval<CGFloat>({1, 1}))
+            .to.beTruthy();
       });
 
       it(@"should compute that two non-overlapping intervals do not intersect", ^{
@@ -759,12 +777,10 @@ context(@"intersection", ^{
         Interval<CGFloat> anotherInterval({-2, -1});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({-1, 0}, Interval<CGFloat>::Closed,
-                                            Interval<CGFloat>::Open);
+        anotherInterval = Interval<CGFloat>::co({-1, 0});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<CGFloat>({1, 2}, Interval<CGFloat>::Open,
-                                            Interval<CGFloat>::Closed);
+        anotherInterval = Interval<CGFloat>::oc({1, 2});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
         anotherInterval = Interval<CGFloat>({2, 3});
@@ -781,15 +797,13 @@ context(@"intersection", ^{
 
       it(@"should compute how two equal intervals with different boundary conditions intersect", ^{
         Interval<NSInteger> interval({0, 1});
-        Interval<NSInteger> anotherInterval({0, 1}, Interval<NSInteger>::Closed,
-                                          Interval<NSInteger>::Open);
+        Interval<NSInteger> anotherInterval = Interval<NSInteger>::co({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open,
-                                              Interval<NSInteger>::Closed);
+        anotherInterval = Interval<NSInteger>::oc({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::oo({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
       });
 
@@ -803,23 +817,21 @@ context(@"intersection", ^{
         expect(interval.intersectionWith(anotherInterval) ==
                Interval<NSInteger>({0, 1})).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({-1, 1}, Interval<NSInteger>::Open);
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<NSInteger>({0, 1}, Interval<NSInteger>::Closed,
-                                   Interval<NSInteger>::Open)).to.beTruthy();
+        anotherInterval = Interval<NSInteger>::oo({-1, 1});
+        expect(interval.intersectionWith(anotherInterval) == Interval<NSInteger>::co({0, 1}))
+            .to.beTruthy();
 
         anotherInterval = Interval<NSInteger>({-1, 2});
         expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({-1, 2}, Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::oo({-1, 2});
         expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
 
         anotherInterval = Interval<NSInteger>({1, 2});
         expect(interval.intersectionWith(anotherInterval) ==
                Interval<NSInteger>({1, 1})).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({1, 2}, Interval<NSInteger>::Closed,
-                                              Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::co({1, 2});
         expect(interval.intersectionWith(anotherInterval) ==
                Interval<NSInteger>({1, 1})).to.beTruthy();
 
@@ -833,12 +845,10 @@ context(@"intersection", ^{
         Interval<NSInteger> anotherInterval({-2, -1});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({-1, 0}, Interval<NSInteger>::Closed,
-                                            Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::co({-1, 0});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({1, 2}, Interval<NSInteger>::Open,
-                                            Interval<NSInteger>::Closed);
+        anotherInterval = Interval<NSInteger>::oc({1, 2});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
         anotherInterval = Interval<NSInteger>({2, 3});
@@ -855,15 +865,13 @@ context(@"intersection", ^{
 
       it(@"should compute how two equal intervals with different boundary conditions intersect", ^{
         Interval<NSInteger> interval({0, 1});
-        Interval<NSInteger> anotherInterval({0, 1}, Interval<NSInteger>::Closed,
-                                            Interval<NSInteger>::Open);
+        Interval<NSInteger> anotherInterval = Interval<NSInteger>::co({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open,
-                                              Interval<NSInteger>::Closed);
+        anotherInterval = Interval<NSInteger>::oc({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::oo({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
       });
 
@@ -877,25 +885,21 @@ context(@"intersection", ^{
         expect(interval.intersectionWith(anotherInterval) == Interval<NSInteger>({0, 1}))
             .to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::oo({0, 1});
         expect(interval.intersectionWith(anotherInterval) == anotherInterval).to.beTruthy();
 
         anotherInterval = Interval<NSInteger>({0, 2});
         expect(interval.intersectionWith(anotherInterval) == interval).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 2}, Interval<NSInteger>::Open);
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open, Interval<NSInteger>::Closed))
+        anotherInterval = Interval<NSInteger>::oo({0, 2});
+        expect(interval.intersectionWith(anotherInterval) == Interval<NSInteger>::oc({0, 1}))
             .to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 2}, Interval<NSInteger>::Open,
-                                            Interval<NSInteger>::Closed);
-        expect(interval.intersectionWith(anotherInterval) ==
-               Interval<NSInteger>({0, 1}, Interval<NSInteger>::Open, Interval<NSInteger>::Closed))
+        anotherInterval = Interval<NSInteger>::oc({0, 2});
+        expect(interval.intersectionWith(anotherInterval) == Interval<NSInteger>::oc({0, 1}))
             .to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 2}, Interval<NSInteger>::Closed,
-                                            Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::co({0, 2});
         expect(interval.intersectionWith(anotherInterval) == Interval<NSInteger>({0, 1}))
             .to.beTruthy();
 
@@ -906,16 +910,13 @@ context(@"intersection", ^{
 
       it(@"should compute that two non-overlapping intervals do not intersect", ^{
         Interval<NSInteger> interval({0, 1});
-        Interval<NSInteger> anotherInterval({0, 0}, Interval<NSInteger>::Open,
-                                          Interval<NSInteger>::Closed);
+        Interval<NSInteger> anotherInterval = Interval<NSInteger>::oc({0, 0});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({0, 0}, Interval<NSInteger>::Closed,
-                                            Interval<NSInteger>::Open);
+        anotherInterval = Interval<NSInteger>::co({0, 0});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
-        anotherInterval = Interval<NSInteger>({1, 2}, Interval<NSInteger>::Open,
-                                            Interval<NSInteger>::Closed);
+        anotherInterval = Interval<NSInteger>::oc({1, 2});
         expect(interval.intersectionWith(anotherInterval).isEmpty()).to.beTruthy();
 
         anotherInterval = Interval<NSInteger>({2, 3});
@@ -927,32 +928,32 @@ context(@"intersection", ^{
 
 context(@"linear interpolation", ^{
   it(@"should return its minimum value for factor of 0, in case of open CGFloat interval", ^{
-    Interval<CGFloat> interval({-1, 2}, Interval<CGFloat>::Open);
+    Interval<CGFloat> interval = Interval<CGFloat>::oo({-1, 2});
     expect(*interval.valueAt(0)).to.equal(std::nextafter((CGFloat)-1, (CGFloat)2));
   });
 
   it(@"should return its minimum value for factor of 0, in case of open NSInteger interval", ^{
-    Interval<NSInteger> interval({-1, 1}, Interval<NSInteger>::Open);
+    Interval<NSInteger> interval = Interval<NSInteger>::oo({-1, 1});
     expect(*interval.valueAt(0)).to.equal(0);
   });
 
   it(@"should return its minimum value for factor of 0, in case of open NSUInteger interval", ^{
-    Interval<NSUInteger> interval({0, 2}, Interval<NSUInteger>::Open);
+    Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 2});
     expect(*interval.valueAt(0)).to.equal(1);
   });
 
   it(@"should return its maximum value for factor of 1, in case of open CGFloat interval", ^{
-    Interval<CGFloat> interval({-1, 2}, Interval<CGFloat>::Open);
+    Interval<CGFloat> interval = Interval<CGFloat>::oo({-1, 2});
     expect(*interval.valueAt(1)).to.equal(std::nextafter((CGFloat)2, (CGFloat)-1));
   });
 
   it(@"should return its maximum value for factor of 1, in case of open NSInteger interval", ^{
-    Interval<NSInteger> interval({-1, 1}, Interval<NSInteger>::Open);
+    Interval<NSInteger> interval = Interval<NSInteger>::oo({-1, 1});
     expect(*interval.valueAt(1)).to.equal(0);
   });
 
   it(@"should return its maximum value for factor of 1, in case of open NSUInteger interval", ^{
-    Interval<NSUInteger> interval({0, 2}, Interval<NSUInteger>::Open);
+    Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 2});
     expect(*interval.valueAt(1)).to.equal(1);
   });
 });
@@ -960,17 +961,17 @@ context(@"linear interpolation", ^{
 context(@"length", ^{
   context(@"CGFloat interval", ^{
     it(@"should return correct length of a left-open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Open, Interval<CGFloat>::Closed);
+      Interval<CGFloat> interval = Interval<CGFloat>::oc({0, 1});
       expect(interval.length()).to.equal(1 - std::nextafter((CGFloat)0, (CGFloat)1));
     });
 
     it(@"should return correct length of a right-open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Closed, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::co({0, 1});
       expect(interval.length()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
     });
 
     it(@"should return correct length of an open interval", ^{
-      Interval<CGFloat> interval({0, 1}, Interval<CGFloat>::Open);
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({0, 1});
       expect(interval.length()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0) -
                                          std::nextafter((CGFloat)0, (CGFloat)1));
     });
@@ -978,45 +979,40 @@ context(@"length", ^{
 
   context(@"NSInteger interval", ^{
     it(@"should return correct length of a left-open interval", ^{
-      Interval<NSInteger> interval({-2, 2}, Interval<NSInteger>::Open, Interval<NSInteger>::Closed);
+      Interval<NSInteger> interval = Interval<NSInteger>::oc({-2, 2});
       expect(interval.length()).to.equal(3);
     });
 
     it(@"should return correct length of a right-open interval", ^{
-      Interval<NSInteger> interval({-2, 2}, Interval<NSInteger>::Closed, Interval<NSInteger>::Open);
+      Interval<NSInteger> interval = Interval<NSInteger>::co({-2, 2});
       expect(interval.length()).to.equal(3);
     });
 
     it(@"should return correct length of an open interval", ^{
-      Interval<NSInteger> interval({-2, 2}, Interval<NSInteger>::Open);
+      Interval<NSInteger> interval = Interval<NSInteger>::oo({-2, 2});
       expect(interval.length()).to.equal(2);
     });
   });
 
   context(@"NSUInteger interval", ^{
     it(@"should return correct length of a left-open interval", ^{
-      Interval<NSUInteger> interval({0, 4}, Interval<NSUInteger>::Open,
-                                    Interval<NSUInteger>::Closed);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oc({0, 4});
       expect(interval.length()).to.equal(3);
     });
 
     it(@"should return correct length of a right-open interval", ^{
-      Interval<NSUInteger> interval({0, 4}, Interval<NSUInteger>::Closed,
-                                    Interval<NSUInteger>::Open);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::co({0, 4});
       expect(interval.length()).to.equal(3);
     });
 
     it(@"should return correct length of an open interval", ^{
-      Interval<NSUInteger> interval({0, 4}, Interval<NSUInteger>::Open);
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 4});
       expect(interval.length()).to.equal(2);
     });
   });
 });
 
 context(@"clamped interval", ^{
-  static const Interval<CGFloat>::EndpointInclusion kOpen = Interval<CGFloat>::Open;
-  static const Interval<CGFloat>::EndpointInclusion kClosed = Interval<CGFloat>::Closed;
-
   __block Interval<CGFloat> interval;
 
   context(@"clamping by empty interval", ^{
@@ -1027,7 +1023,7 @@ context(@"clamped interval", ^{
 
   context(@"open CGFloat interval", ^{
     beforeEach(^{
-      interval = Interval<CGFloat>({1.5, 2.5}, kOpen);
+      interval = Interval<CGFloat>::oo({1.5, 2.5});
     });
 
     it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
@@ -1037,15 +1033,15 @@ context(@"clamped interval", ^{
 
     it(@"should return intersection if not empty", ^{
       expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
-             Interval<CGFloat>({1.5, *interval.min()}, kOpen, kClosed)).to.beTruthy();
-      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) ==
-             Interval<CGFloat>({1.5, 2}, kOpen, kClosed)).to.beTruthy();
+             Interval<CGFloat>::oc({1.5, *interval.min()})).to.beTruthy();
+      expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) == Interval<CGFloat>::oc({1.5, 2}))
+          .to.beTruthy();
       expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
       expect(*interval.clampedTo(interval) == interval).to.beTruthy();
-      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
-             Interval<CGFloat>({2, 2.5}, kClosed, kOpen)).to.beTruthy();
+      expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) == Interval<CGFloat>::co({2, 2.5}))
+          .to.beTruthy();
       expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
-             Interval<CGFloat>({*interval.max(), 2.5}, kClosed, kOpen)).to.beTruthy();
+             Interval<CGFloat>::co({*interval.max(), 2.5})).to.beTruthy();
     });
 
     it(@"should return maximum if values of clamped interval are greater than other interval", ^{
@@ -1056,7 +1052,7 @@ context(@"clamped interval", ^{
 
   context(@"left-open CGFloat interval", ^{
     beforeEach(^{
-      interval = Interval<CGFloat>({1.5, 2.5}, kOpen, kClosed);
+      interval = Interval<CGFloat>::oc({1.5, 2.5});
     });
 
     it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
@@ -1066,9 +1062,9 @@ context(@"clamped interval", ^{
 
     it(@"should return intersection if not empty", ^{
       expect(*Interval<CGFloat>({0, *interval.min()}).clampedTo(interval) ==
-             Interval<CGFloat>({1.5, *interval.min()}, kOpen, kClosed)).to.beTruthy();
+             Interval<CGFloat>::oc({1.5, *interval.min()})).to.beTruthy();
       expect(*Interval<CGFloat>({0, 2}).clampedTo(interval) ==
-             Interval<CGFloat>({1.5, 2}, kOpen, kClosed)).to.beTruthy();
+             Interval<CGFloat>::oc({1.5, 2})).to.beTruthy();
       expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
       expect(*interval.clampedTo(interval) == interval).to.beTruthy();
       expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
@@ -1085,11 +1081,11 @@ context(@"clamped interval", ^{
 
   context(@"right-open CGFloat interval", ^{
     beforeEach(^{
-      interval = Interval<CGFloat>({1.5, 2.5}, kClosed, kOpen);
+      interval = Interval<CGFloat>::co({1.5, 2.5});
     });
 
     it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
-      expect(*Interval<CGFloat>({0, 1.5}, kOpen).clampedTo(interval) ==
+      expect(*Interval<CGFloat>::oo({0, 1.5}).clampedTo(interval) ==
              Interval<CGFloat>(*interval.min())).to.beTruthy();
     });
 
@@ -1101,9 +1097,9 @@ context(@"clamped interval", ^{
       expect(*Interval<CGFloat>({0, 3}).clampedTo(interval) == interval).to.beTruthy();
       expect(*interval.clampedTo(interval) == interval).to.beTruthy();
       expect(*Interval<CGFloat>({2, 3}).clampedTo(interval) ==
-             Interval<CGFloat>({2, 2.5}, kClosed, kOpen)).to.beTruthy();
+             Interval<CGFloat>::co({2, 2.5})).to.beTruthy();
       expect(*Interval<CGFloat>({*interval.max(), 3}).clampedTo(interval) ==
-             Interval<CGFloat>({*interval.max(), 2.5}, kClosed, kOpen)).to.beTruthy();
+             Interval<CGFloat>::co({*interval.max(), 2.5})).to.beTruthy();
     });
 
     it(@"should return maximum if values of clamped interval are greater than other interval", ^{
@@ -1118,7 +1114,7 @@ context(@"clamped interval", ^{
     });
 
     it(@"should return minimum if values of clamped interval are smaller than other interval", ^{
-      expect(*Interval<CGFloat>({0, 1.5}, kOpen).clampedTo(interval) ==
+      expect(*Interval<CGFloat>::oo({0, 1.5}).clampedTo(interval) ==
              Interval<CGFloat>(*interval.min())).to.beTruthy();
     });
 
@@ -1136,7 +1132,7 @@ context(@"clamped interval", ^{
     });
 
     it(@"should return maximum if values of clamped interval are greater than other interval", ^{
-      expect(*Interval<CGFloat>({2.5, 3}, kOpen).clampedTo(interval) ==
+      expect(*Interval<CGFloat>::oo({2.5, 3}).clampedTo(interval) ==
              Interval<CGFloat>(*interval.max())).to.beTruthy();
     });
   });
@@ -1168,20 +1164,17 @@ context(@"interval from string", ^{
   context(@"CGFloat intervals", ^{
     it(@"should return correct open CGFloat interval for a given string", ^{
       Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"(-0.25, 1.25)");
-      expect(interval == Interval<CGFloat>({-0.25, 1.25}, Interval<CGFloat>::Open))
-          .to.beTruthy();
+      expect(interval == Interval<CGFloat>::oo({-0.25, 1.25})).to.beTruthy();
     });
 
     it(@"should return correct left-open CGFloat interval for a given string", ^{
       Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"(-0.5, 1.5]");
-      expect(interval == Interval<CGFloat>({-0.5, 1.5}, Interval<CGFloat>::Open,
-                                               Interval<CGFloat>::Closed)).to.beTruthy();
+      expect(interval == Interval<CGFloat>::oc({-0.5, 1.5})).to.beTruthy();
     });
 
     it(@"should return correct right-open CGFloat interval for a given string", ^{
       Interval<CGFloat> interval = LTCGFloatIntervalFromString(@"[-0.75, 1.75)");
-      expect(interval == Interval<CGFloat>({-0.75, 1.75}, Interval<CGFloat>::Closed,
-                                               Interval<CGFloat>::Open)).to.beTruthy();
+      expect(interval == Interval<CGFloat>::co({-0.75, 1.75})).to.beTruthy();
     });
 
     it(@"should return correct closed CGFloat interval for a given string", ^{
@@ -1209,20 +1202,17 @@ context(@"interval from string", ^{
   context(@"NSInteger intervals", ^{
     it(@"should return correct open NSInteger interval for a given string", ^{
       Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(-7, 8)");
-      expect(interval == Interval<NSInteger>({-7, 8}, Interval<NSInteger>::Open))
-          .to.beTruthy();
+      expect(interval == Interval<NSInteger>::oo({-7, 8})).to.beTruthy();
     });
 
     it(@"should return correct left-open NSInteger interval for a given string", ^{
       Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"(-6, 7]");
-      expect(interval == Interval<NSInteger>({-6, 7}, Interval<NSInteger>::Open,
-                                             Interval<NSInteger>::Closed)).to.beTruthy();
+      expect(interval == Interval<NSInteger>::oc({-6, 7})).to.beTruthy();
     });
 
     it(@"should return correct right-open NSInteger interval for a given string", ^{
       Interval<NSInteger> interval = LTNSIntegerIntervalFromString(@"[-5, 6)");
-      expect(interval == Interval<NSInteger>({-5, 6}, Interval<NSInteger>::Closed,
-                                             Interval<NSInteger>::Open)).to.beTruthy();
+      expect(interval == Interval<NSInteger>::co({-5, 6})).to.beTruthy();
     });
 
     it(@"should return correct closed NSInteger interval for a given string", ^{
@@ -1250,20 +1240,17 @@ context(@"interval from string", ^{
   context(@"NSUInteger intervals", ^{
     it(@"should return correct open NSUInteger interval for a given string", ^{
       Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"(7, 8)");
-      expect(interval == Interval<NSUInteger>({7, 8}, Interval<NSUInteger>::Open))
-          .to.beTruthy();
+      expect(interval == Interval<NSUInteger>::oo({7, 8})).to.beTruthy();
     });
 
     it(@"should return correct left-open NSUInteger interval for a given string", ^{
       Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"(6, 7]");
-      expect(interval == Interval<NSUInteger>({6, 7}, Interval<NSUInteger>::Open,
-                                              Interval<NSUInteger>::Closed)).to.beTruthy();
+      expect(interval == Interval<NSUInteger>::oc({6, 7})).to.beTruthy();
     });
 
     it(@"should return correct right-open NSUInteger interval for a given string", ^{
       Interval<NSUInteger> interval = LTNSUIntegerIntervalFromString(@"[5, 6)");
-      expect(interval == Interval<NSUInteger>({5, 6}, Interval<NSUInteger>::Closed,
-                                              Interval<NSUInteger>::Open)).to.beTruthy();
+      expect(interval == Interval<NSUInteger>::co({5, 6})).to.beTruthy();
     });
 
     it(@"should return correct closed NSUInteger interval for a given string", ^{
