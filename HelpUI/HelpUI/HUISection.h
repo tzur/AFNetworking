@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, readonly, nonatomic) NSString *key;
 
 /// Localized title of this help section. \c nil if the section has no title. Localization is done
-/// by the localization method of \c HUIModelSettings.
+/// by the localization method of \c HUISettings.
 @property (copy, readonly, nonatomic, nullable) NSString *title;
 
 /// Array of \c HUIItem objects, that belong to this section.

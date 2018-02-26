@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUITextItem
 
 - (void)setText:(NSString *)text {
-  _text = [HUIModelSettings localize:text];
+  _text = [[HUISettings instance] localize:text];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -74,11 +74,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIModelSettings localize:title];
+  _title = [[HUISettings instance] localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIModelSettings localize:body];
+  _body = [[HUISettings instance] localize:body];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -99,11 +99,11 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation HUIVideoItem
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIModelSettings localize:title];
+  _title = [[HUISettings instance] localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIModelSettings localize:body];
+  _body = [[HUISettings instance] localize:body];
 }
 
 + (NSValueTransformer *)iconURLJSONTransformer {
@@ -179,11 +179,11 @@ static NSDictionary * const kSlideshowItemDefaultsForFade = @{
 }
 
 - (void)setTitle:(NSString * _Nullable)title {
-  _title = [HUIModelSettings localize:title];
+  _title = [[HUISettings instance] localize:title];
 }
 
 - (void)setBody:(NSString * _Nullable)body {
-  _body = [HUIModelSettings localize:body];
+  _body = [[HUISettings instance] localize:body];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {

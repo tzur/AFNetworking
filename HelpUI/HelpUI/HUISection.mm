@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
                       items:(NSArray<HUIItem *> *)items {
   if (self = [super init]) {
     _key = [key copy];
-    _title = [HUIModelSettings localize:[title copy]];
+    _title = [[HUISettings instance] localize:[title copy]];
     _items = [items copy];
   }
   return self;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setTitle:(NSString *)title {
-  _title = [HUIModelSettings localize:title];
+  _title = [[HUISettings instance] localize:title];
 }
 
 #pragma mark -

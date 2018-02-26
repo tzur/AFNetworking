@@ -32,7 +32,7 @@
 		1970AFAE200F813900E81A5F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1970AF84200F813900E81A5F /* CoreGraphics.framework */; };
 		1970AFB0200F82A500E81A5F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1970AFAF200F82A500E81A5F /* QuartzCore.framework */; };
 		1970B13F2010C17200E81A5F /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1970B13E2010C17200E81A5F /* GLKit.framework */; };
-		1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */; };
+		1970BAEE2014C5EA00E81A5F /* HUISettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAED2014C5EA00E81A5F /* HUISettings.mm */; };
 		1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */; };
 		198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD52018DCDA00F85E75 /* HUISection.mm */; };
 		198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */; };
@@ -437,8 +437,8 @@
 		1970AF84200F813900E81A5F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1970AFAF200F82A500E81A5F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1970B13E2010C17200E81A5F /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		1970BAC32014C5E900E81A5F /* HUIModelSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIModelSettings.h; sourceTree = "<group>"; };
-		1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIModelSettings.mm; sourceTree = "<group>"; };
+		1970BAC32014C5E900E81A5F /* HUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISettings.h; sourceTree = "<group>"; };
+		1970BAED2014C5EA00E81A5F /* HUISettings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISettings.mm; sourceTree = "<group>"; };
 		1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIItemSpec.mm; sourceTree = "<group>"; };
 		198FDCAB2018DCDA00F85E75 /* HUISection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISection.h; sourceTree = "<group>"; };
 		198FDCD52018DCDA00F85E75 /* HUISection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISection.mm; sourceTree = "<group>"; };
@@ -783,10 +783,10 @@
 				1992523220270B5100BF71E5 /* HUIDocument.mm */,
 				19E518DA200CCD9A008A9EA5 /* HUIItem.h */,
 				19E518A0200CCD9A008A9EA5 /* HUIItem.mm */,
-				1970BAC32014C5E900E81A5F /* HUIModelSettings.h */,
-				1970BAED2014C5EA00E81A5F /* HUIModelSettings.mm */,
 				198FDCAB2018DCDA00F85E75 /* HUISection.h */,
 				198FDCD52018DCDA00F85E75 /* HUISection.mm */,
+				1970BAC32014C5E900E81A5F /* HUISettings.h */,
+				1970BAED2014C5EA00E81A5F /* HUISettings.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1310,7 +1310,7 @@
 				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
 				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
-				1970BAEE2014C5EA00E81A5F /* HUIModelSettings.mm in Sources */,
+				1970BAEE2014C5EA00E81A5F /* HUISettings.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

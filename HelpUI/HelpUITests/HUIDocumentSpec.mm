@@ -6,8 +6,8 @@
 #import <LTKit/NSBundle+Path.h>
 
 #import "HUIItem.h"
-#import "HUIModelSettings.h"
 #import "HUISection.h"
+#import "HUISettings.h"
 
 SpecBegin(HUIDocument)
 __block HUIDocument *document;
@@ -220,7 +220,7 @@ context (@"localization", ^{
   __block NSError *error;
 
   beforeEach(^{
-    HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString * _Nonnull) {
+    [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString * _Nonnull) {
       return @"localized title";
     };
     auto dict = @{@"title": @"title"};
@@ -232,7 +232,7 @@ context (@"localization", ^{
   });
 
   afterEach(^{
-    HUIModelSettings.localizationBlock = nil;
+    [HUISettings instance].localizationBlock = nil;
   });
 });
 

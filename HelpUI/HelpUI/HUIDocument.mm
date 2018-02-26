@@ -4,8 +4,8 @@
 #import "HUIDocument.h"
 
 #import "HUIItem.h"
-#import "HUIModelSettings.h"
 #import "HUISection.h"
+#import "HUISettings.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setTitle:(NSString *)title {
-  _title = [HUIModelSettings localize:title];
+  _title = [[HUISettings instance] localize:title];
 }
 
 #pragma mark -

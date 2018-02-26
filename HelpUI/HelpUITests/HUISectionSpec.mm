@@ -84,13 +84,13 @@ context(@"deserialization", ^{
 
 context(@"localization", ^{
   beforeEach(^{
-    HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString *) {
+    [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
       return @"localized title";
     };
   });
 
   afterEach(^{
-    HUIModelSettings.localizationBlock = nil;
+    [HUISettings instance].localizationBlock = nil;
   });
 
   it(@"should localize title with localizationBlock when section created from dictionary", ^{
