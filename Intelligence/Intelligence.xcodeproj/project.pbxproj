@@ -502,6 +502,7 @@
 		A117236C1ECC767C0039177C /* NSUUID+Zero.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSUUID+Zero.mm"; sourceTree = "<group>"; };
 		A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTDeviceInfoLoadedEvent.h; path = Intelligence/INTDeviceInfoLoadedEvent.h; sourceTree = SOURCE_ROOT; };
 		A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = INTDeviceInfoLoadedEvent.mm; path = Intelligence/INTDeviceInfoLoadedEvent.mm; sourceTree = SOURCE_ROOT; };
+		A12CCC0620342F9F00D97D7F /* INTJSONSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTJSONSender.h; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
@@ -1197,6 +1198,7 @@
 			isa = PBXGroup;
 			children = (
 				A1F24CBC1EC07FCD0050D534 /* Alooma */,
+				A12CCC0620342F9F00D97D7F /* INTJSONSender.h */,
 			);
 			name = Loggers;
 			sourceTree = "<group>";
