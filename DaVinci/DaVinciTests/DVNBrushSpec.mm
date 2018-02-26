@@ -504,7 +504,7 @@ context(@"rendering", ^{
       expect($(targetTexture.image)).to.equalMat($(expectedMat));
     });
 
-    context(@"color burn blend blend mode", ^{
+    context(@"color burn blend mode", ^{
       it(@"should render with color burn blend mode", ^{
         mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeColorBurn);
         [fbo bindAndDraw:^{
@@ -519,7 +519,7 @@ context(@"rendering", ^{
         expect($(targetTexture.image)).to.equalMat($(expectedMat));
       });
 
-      it(@"should yield correct results in all channels for color burn blend blend mode", ^{
+      it(@"should yield correct results in all channels for color burn blend mode", ^{
         cv::Vec4b newBackColor(0, 128, 255, 255);
         cv::Vec4b newFrontColor(0, 192, 255, 255);
         [targetTexture clearColor:LTVector4(newBackColor)];
