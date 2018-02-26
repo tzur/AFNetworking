@@ -34,4 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// General provider of brush render configurations.
+@interface DVNBrushRenderConfigurationProvider : NSObject <DVNBrushRenderConfigurationProvider>
+@end
+
 NS_ASSUME_NONNULL_END
