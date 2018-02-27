@@ -44,6 +44,25 @@ public:
       _inf(std::min(values.first, values.second)), _sup(std::max(values.first, values.second)),
       _infInclusion(Closed), _supInclusion(Closed) {}
 
+  /// Initializes with the given \c value as single interval value and closed end points.
+  Interval(T value) noexcept :
+      _inf(value), _sup(value), _infInclusion(Closed), _supInclusion(Closed) {}
+
+  /// Returns an open interval with the given \c values.
+  static Interval<T> oo(std::pair<T, T> values) {
+    return Interval<T>(values, Open);
+  }
+
+  /// Returns a left-open, right-closed interval with the given \c values.
+  static Interval<T> oc(std::pair<T, T> values) {
+    return Interval<T>(values, Open, Closed);
+  }
+
+  /// Returns a left-closed, right-open interval with the given \c values.
+  static Interval<T> co(std::pair<T, T> values) {
+    return Interval<T>(values, Closed, Open);
+  }
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(_inf) ^ std::hash<T>()(_sup) ^
@@ -171,6 +190,23 @@ public:
     }
     CGFloat minimum = *min();
     return x < minimum ? minimum : *max();
+  }
+
+  /// Returns this interval clamped to the given \c interval, i.e. the returned value is one of the
+  /// following:
+  ///
+  /// a) An empty optional if the given \c interval is empty.
+  /// b) The intersection of the two involved intervals, if the intersection is non-empty.
+  /// c) The non-empty closed interval consisting of the single value \c a, s.t. \c a is an
+  ///    arbitrary value contained by this interval clamped to the given \c interval.
+  std::experimental::optional<lt::Interval<T>> clampedTo(lt::Interval<T> interval) const {
+    if (interval.isEmpty()) {
+      return std::experimental::nullopt;
+    }
+
+    lt::Interval<T> intersection = intersectionWith(interval);
+    return !intersection.isEmpty() ? intersection :
+        lt::Interval<T>(*interval.clamp(min().value_or(inf())));
   }
 
   /// Returns \c true if the infimum of this interval belongs to the interval.
