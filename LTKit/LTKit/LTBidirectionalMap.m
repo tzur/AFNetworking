@@ -42,14 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createValuesToKeysMapping {
   [self.keysToValues enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL __unused *stop) {
-#if defined(DEBUG) && DEBUG
     LTParameterAssert(![self.valuesToKeys objectForKey:obj],
                       @"Provided mapping (%@) is not bijective", self.keysToValues);
-#else
-    if ([self.valuesToKeys objectForKey:obj]) {
-      LogError(@"Provided mapping (%@) is not bijective", self.keysToValues);
-    }
-#endif
     [self.valuesToKeys setObject:key forKey:obj];
   }];
 }
