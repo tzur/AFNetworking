@@ -116,4 +116,51 @@ context(@"image URL property keys", ^{
   });
 });
 
+context(@"allowed ranges", ^{
+  static const CGFloat kCGFloatMax = std::numeric_limits<CGFloat>::max();
+  static const NSUInteger kNSUIntegerMax = std::numeric_limits<NSUInteger>::max();
+
+  it(@"should return the allowed scale range", ^{
+    expect([DVNBrushModel allowedScaleRange] == lt::Interval<CGFloat>::oc({0, kCGFloatMax}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedInitialSeedRange] ==
+           lt::Interval<NSUInteger>({0, kNSUIntegerMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedSpacingRange] ==
+           lt::Interval<CGFloat>({0.001, kCGFloatMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedNumberOfSamplesPerSequenceRange] ==
+           lt::Interval<NSUInteger>({1, kNSUIntegerMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedSequenceDistanceRange] ==
+           lt::Interval<CGFloat>({0.001, kCGFloatMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedCountRange] ==
+           lt::Interval<NSUInteger>({0, kNSUIntegerMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedDistanceJitterFactorRange] ==
+           lt::Interval<CGFloat>({0, kCGFloatMax})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedAngleRange] == lt::Interval<CGFloat>({0, 4 * M_PI}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedInfScaleJitterRange] == lt::Interval<CGFloat>({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedSupScaleJitterRange] == lt::Interval<CGFloat>({1, kCGFloatMax}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedTaperingLengthRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedMinimumTaperingScaleFactorRange] ==
+           lt::Interval<CGFloat>::oc({0, 1})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedTaperingExponentRange] == lt::Interval<CGFloat>::oc({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedFlowRange] == lt::Interval<CGFloat>({0, 1})).to.beTruthy();
+    expect([DVNBrushModelV1 allowedFlowExponentRange] == lt::Interval<CGFloat>::oc({0, 20}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedBrightnessJitterRange] == lt::Interval<CGFloat>({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedHueJitterRange] == lt::Interval<CGFloat>({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedSaturationJitterRange] == lt::Interval<CGFloat>({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedEdgeAvoidanceRange] == lt::Interval<CGFloat>({0, 1}))
+        .to.beTruthy();
+    expect([DVNBrushModelV1 allowedEdgeAvoidanceSamplingOffsetRange] ==
+           lt::Interval<CGFloat>({0, kCGFloatMax})).to.beTruthy();
+  });
+});
+
 SpecEnd
