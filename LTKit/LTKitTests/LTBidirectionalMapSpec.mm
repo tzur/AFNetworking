@@ -61,7 +61,6 @@ context(@"initialization", ^{
     expect(map.count).to.equal(3);
   });
 
-#if defined(DEBUG) && DEBUG
   it(@"should raise when attempting to create a non-bijective map", ^{
     NSDictionary<NSString *, NSNumber *> *nonBijectiveMap = @{@"a": @1, @"b": @1};
 
@@ -70,7 +69,6 @@ context(@"initialization", ^{
           [[LTBidirectionalMap alloc] initWithDictionary:nonBijectiveMap];
     }).to.raise(NSInvalidArgumentException);
   });
-#endif
 });
 
 context(@"mutating the map", ^{
