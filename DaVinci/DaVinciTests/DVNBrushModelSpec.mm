@@ -62,8 +62,7 @@ context(@"image URL property keys", ^{
 context(@"allowed ranges", ^{
   it(@"should return the allowed scale range", ^{
     expect([DVNBrushModel allowedScaleRange] ==
-           lt::Interval<CGFloat>({0, CGFLOAT_MAX}, lt::Interval<CGFloat>::Open,
-                                 lt::Interval<CGFloat>::Closed)).to.beTruthy();
+           lt::Interval<CGFloat>::oc({0, std::numeric_limits<CGFloat>::max()})).to.beTruthy();
   });
 });
 
