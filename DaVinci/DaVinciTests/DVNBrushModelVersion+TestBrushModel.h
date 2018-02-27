@@ -5,10 +5,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DVNBrushModel;
+
 @interface DVNBrushModelVersion (TestBrushModel)
 
 /// Returns a \c DVNBrushModel JSON dictionary for this instance, for testing purposes.
 - (NSDictionary *)JSONDictionaryOfTestBrushModel;
+
+/// Returns a \c DVNBrushModel for this instance, for testing purposes.
+- (DVNBrushModel *)testBrushModel;
 
 @end
 

@@ -1,0 +1,43 @@
+{
+  "version": "1",
+  "scale": 1,
+  "scaleRange": "[1, 500]",
+
+  "randomInitialSeed": false,
+  "initialSeed": 0,
+
+  "spacing": 1,
+  "numberOfSamplesPerSequence": 2,
+  "sequenceDistance": 1,
+
+  "countRange": "[1, 1]",
+
+  "distanceJitterFactorRange": "[0, 0]",
+  "angleRange": "[0, 0]",
+  "scaleJitterRange": "[1, 1]",
+
+  "taperingLengths": "(0, 0)",
+  "minimumTaperingScaleFactor": 0.000001,
+  "taperingExponent": 1,
+
+  "flow": 1,
+  "flowRange": "[0, 1]",
+  "flowExponent": 1,
+
+  "color": "(1, 1, 1)",
+  "brightnessJitter": 0,
+  "hueJitter": 0,
+  "saturationJitter": 0,
+
+  "sourceSamplingMode": "subimage",
+  "brushTipImageGridSize": "(1, 1)",
+  "sourceImageURL": "image://source",
+  "sourceImageIsNonPremultiplied": false,
+  "maskImageURL": "image://mask",
+
+  "blendMode": "normal",
+
+  "edgeAvoidance": 0,
+  "edgeAvoidanceGuideImageURL": "",
+  "edgeAvoidanceSamplingOffset": 1
+}

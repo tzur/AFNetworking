@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [self brushModelJSONDictionaryFromFileWithName:[self testFileName]];
 }
 
+- (DVNBrushModel *)testBrushModel {
+  return [MTLJSONAdapter modelOfClass:[self classOfBrushModel]
+                   fromJSONDictionary:[self JSONDictionaryOfTestBrushModel] error:nil];
+}
+
 #pragma mark -
 #pragma mark Auxiliary Class Methods
 #pragma mark -
