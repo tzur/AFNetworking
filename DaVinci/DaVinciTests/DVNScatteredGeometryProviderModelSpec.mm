@@ -79,6 +79,14 @@ context(@"initialization", ^{
     expect(model.minimumTaperingScaleFactor).to.equal(1);
   });
 
+  it(@"should initialize correctly with angle range values smaller than 4 PI", ^{
+    angle = lt::Interval<CGFloat>({M_PI_4, 3 * M_PI});
+    model = [[DVNScatteredGeometryProviderModel alloc]
+             initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
+             count:count distance:distance angle:angle scale:scale];
+    expect(model.angle == angle).to.beTruthy();
+  });
+
   it(@"should initialize correctly with tapering parameters", ^{
     expect(model).toNot.beNil();
     expect(model.geometryProviderModel).to.equal(underlyingProviderModel);

@@ -37,7 +37,7 @@ DVNPropertyDeclare(CGFloat, maxDistance, MaxDistance);
 DVNPropertyDeclare(CGFloat, minAngle, MinAngle);
 
 /// Upper bound on the random angle by which any duplicated quad is rotated around its \c center.
-/// Must be in range <tt>[minAngle, 2 * M_PI]</tt>. Default value is \c 0.
+/// Must be in range <tt>[minAngle, 4 * M_PI]</tt>. Default value is \c 0.
 DVNPropertyDeclare(CGFloat, maxAngle, MaxAngle);
 
 /// Lower bound on the random scale factor by which any duplicated quad is scaled around its
