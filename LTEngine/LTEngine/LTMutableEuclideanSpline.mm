@@ -129,7 +129,8 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
     [self extendSplineWithSingleSegmentUsingControlPointsStartingAtIndex:i windowSize:windowSize];
   }
 
-  NSUInteger numberOfIterations = (self.numberOfControlPoints - windowSize + 1 - index) / stepSize;
+  NSUInteger numberOfIterations =
+      std::ceil((CGFloat)(self.numberOfControlPoints - windowSize + 1 - index) / stepSize);
 
   self.indexOfControlPointAtEndOfIntrinsicParametricRange =
       index + numberOfIterations * stepSize + range.location;

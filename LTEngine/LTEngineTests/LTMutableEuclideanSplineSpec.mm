@@ -348,6 +348,21 @@ itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
 });
 
 itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
+  kLTMutableEuclideanSplineBaseFactory: [[LTBasicCubicBezierInterpolantFactory alloc] init],
+  kLTMutableEuclideanSplineInitialPoints:
+      LTCreateSplinePoints({0, 1, 2, 3},
+                           {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},
+                           @"attribute", @[@7, @7.1, @7.2, @8]),
+  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
+  kLTMutableEuclideanSplineAdditionalPoints:
+      LTCreateSplinePoints({4, 5, 6, 7, 8, 9}, {CGPointMake(1, 1), CGPointMake(2, 2),
+                           CGPointMake(2, 2), CGPointMake(2, 2), CGPointMake(3, 3),
+                           CGPointMake(3, 3)}, @"attribute", @[@8.5, @9, @9.5, @10, @10.5, @11]),
+  kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
+  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(M_SQRT2 * 3)
+});
+
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
   kLTMutableEuclideanSplineBaseFactory: [[LTBasicCatmullRomInterpolantFactory alloc] init],
   kLTMutableEuclideanSplineInitialPoints:
       LTCreateSplinePoints({0, 1, 2, 3},
