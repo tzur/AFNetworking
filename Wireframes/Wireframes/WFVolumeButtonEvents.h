@@ -22,7 +22,7 @@ LTEnumDeclare(NSUInteger, WFVolumeButtonEvent,
 /// @code
 /// WFVolumeButtonEvents([UIApplication sharedApplication]);
 /// @endcode
-NS_EXTENSION_UNAVAILABLE_IOS("") RACSignal<NSNumber *> *WFVolumeButtonEvents();
+NS_EXTENSION_UNAVAILABLE_IOS("") RACSignal<WFVolumeButtonEvent *> *WFVolumeButtonEvents();
 
 /// Returns a signal which sends \c WFVolumeButtonEvent each time user presses or releases devices
 /// volume buttons. The returned signal doesn't err or complete. The given \c application is used to
@@ -49,7 +49,7 @@ NS_EXTENSION_UNAVAILABLE_IOS("") RACSignal<NSNumber *> *WFVolumeButtonEvents();
 ///    \c WFVolumeButtonEventVolume{Up,Down}Press and \c WFVolumeButtonEventVolume{Up,Down}Relese
 ///    events upon EACH press on the volume up / down button. When the button is released no event
 ///    is sent.
-NS_EXTENSION_UNAVAILABLE_IOS("") RACSignal<NSNumber *> *
+NS_EXTENSION_UNAVAILABLE_IOS("") RACSignal<WFVolumeButtonEvent *> *
     WFVolumeButtonEvents(UIApplication *application);
 
 NS_ASSUME_NONNULL_END

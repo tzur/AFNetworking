@@ -104,11 +104,11 @@ static void WFRemoveVolumeButtonEventListenerForApplication(UIApplication *appli
   [lock unlock];
 }
 
-RACSignal<NSNumber *> *WFVolumeButtonEvents() {
+RACSignal<WFVolumeButtonEvent *> *WFVolumeButtonEvents() {
   return WFVolumeButtonEvents([UIApplication sharedApplication]);
 }
 
-RACSignal<NSNumber *> *WFVolumeButtonEvents(UIApplication *application) {
+RACSignal<WFVolumeButtonEvent *> *WFVolumeButtonEvents(UIApplication *application) {
   return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     WFAddVolumeButtonEventListenerForApplication(application);
     auto notificationCenter = [NSNotificationCenter defaultCenter];
