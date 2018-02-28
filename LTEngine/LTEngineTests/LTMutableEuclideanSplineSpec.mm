@@ -42,11 +42,18 @@ static NSString * const kLTMutableEuclideanSplineBaseFactory =
 static NSString * const kLTMutableEuclideanSplineInitialPoints =
     @"LTMutableEuclideanSplineInitialPoints";
 
+static NSString * const kLTMutableEuclideanSplineStartPoint = @"LTMutableEuclideanSplineStartPoint";
+
+static NSString * const kLTMutableEuclideanSplineEndPoint = @"LTMutableEuclideanSplineEndPoint";
+
 static NSString * const kLTMutableEuclideanSplineInsufficientAdditionalPoints =
     @"LTMutableEuclideanSplineInsufficientAdditionalPoints";
 
 static NSString * const kLTMutableEuclideanSplineAdditionalPoints =
     @"LTMutableEuclideanSplineAdditionalPoints";
+
+static NSString * const kLTMutableEuclideanSplineEndPointAfterPushing =
+    @"LTMutableEuclideanSplineEndPointAfterPushing";
 
 static NSString * const kLTMutableEuclideanSplineMaxParametericValue =
     @"LTMutableEuclideanSplineMaxParametericValue";
@@ -153,20 +160,20 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
         beforeEach(^{
           NSRange range = [[baseFactory class] intrinsicParametricRange];
-          startPoint = spline.controlPoints[range.location];
-          endPoint = spline.controlPoints[range.location + range.length - 1];
+          startPoint = data[kLTMutableEuclideanSplineStartPoint] ?:
+              spline.controlPoints[range.location];
+          endPoint = data[kLTMutableEuclideanSplineEndPoint] ?:
+              spline.controlPoints[range.location + range.length - 1];
         });
 
         it(@"should return the correct mapping for a given parametric value", ^{
-          LTParameterizationKeyToValue *expectedMapping = @{
-            @keypath(startPoint, xCoordinateOfLocation): @(startPoint.xCoordinateOfLocation),
-            @keypath(startPoint, yCoordinateOfLocation): @(startPoint.yCoordinateOfLocation),
-            @"attribute": @7
-          };
-
           LTParameterizationKeyToValue *mapping = [spline mappingForParametricValue:0];
 
-          expect(mapping).to.equal(expectedMapping);
+          expect([mapping[@"attribute"] CGFloatValue]).to.beCloseToWithin(7, kEpsilon);
+          expect([mapping[@keypath(startPoint, xCoordinateOfLocation)] CGFloatValue])
+              .to.beCloseToWithin(startPoint.xCoordinateOfLocation, kEpsilon);
+          expect([mapping[@keypath(startPoint, yCoordinateOfLocation)] CGFloatValue])
+              .to.beCloseToWithin(startPoint.yCoordinateOfLocation, kEpsilon);
         });
 
         it(@"should return the correct mappings for given parametric values", ^{
@@ -193,7 +200,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
           CGFloat value = [spline floatForParametricValue:0
                                                       key:@keypath(initialPoints.firstObject,
                                                                    xCoordinateOfLocation)];
-          expect(value).to.equal(startPoint.xCoordinateOfLocation);
+          expect(value).to.beCloseToWithin(startPoint.xCoordinateOfLocation, kEpsilon);
         });
 
         it(@"should return the correct float values for given parametric values and key", ^{
@@ -236,21 +243,22 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
         beforeEach(^{
           NSRange range = [[baseFactory class] intrinsicParametricRange];
-          startPoint = spline.controlPoints[range.location];
-          endPoint = spline.controlPoints[spline.numberOfControlPoints -
-                                          (range.location + range.length - 1)];
+          startPoint = data[kLTMutableEuclideanSplineStartPoint] ?:
+              spline.controlPoints[range.location];
+          endPoint = data[kLTMutableEuclideanSplineEndPointAfterPushing] ?:
+              spline.controlPoints[range.location + (range.length - 1) *
+                                   (spline.numberOfControlPoints - range.location) /
+                                   (range.length - 1) - 1];
         });
 
         it(@"should return the correct mapping for a given parametric value", ^{
-          LTParameterizationKeyToValue *expectedMapping = @{
-            @keypath(startPoint, xCoordinateOfLocation): @(startPoint.xCoordinateOfLocation),
-            @keypath(startPoint, yCoordinateOfLocation): @(startPoint.yCoordinateOfLocation),
-            @"attribute": @7
-          };
-
           LTParameterizationKeyToValue *mapping = [spline mappingForParametricValue:0];
 
-          expect(mapping).to.equal(expectedMapping);
+          expect([mapping[@"attribute"] CGFloatValue]).to.beCloseToWithin(7, kEpsilon);
+          expect([mapping[@keypath(startPoint, xCoordinateOfLocation)] CGFloatValue])
+              .to.beCloseToWithin(startPoint.xCoordinateOfLocation, kEpsilon);
+          expect([mapping[@keypath(startPoint, yCoordinateOfLocation)] CGFloatValue])
+              .to.beCloseToWithin(startPoint.yCoordinateOfLocation, kEpsilon);
         });
 
         it(@"should return the correct mappings for given parametric values", ^{
@@ -277,7 +285,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
           CGFloat value = [spline floatForParametricValue:0
                                                       key:@keypath(initialPoints.firstObject,
                                                                    xCoordinateOfLocation)];
-          expect(value).to.equal(startPoint.xCoordinateOfLocation);
+          expect(value).to.beCloseToWithin(startPoint.xCoordinateOfLocation, kEpsilon);
         });
 
         it(@"should return the correct float values for given parametric values and key", ^{
@@ -374,6 +382,27 @@ itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
                            @[@11, @12]),
   kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
   kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @3.1677561067696
+});
+
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
+  kLTMutableEuclideanSplineBaseFactory: [[LTBasicBSplineInterpolantFactory alloc] init],
+  kLTMutableEuclideanSplineInitialPoints:
+      LTCreateSplinePoints({0, 1, 2, 3},
+                           {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},
+                           @"attribute", @[@6, @7, @8, @9]),
+  kLTMutableEuclideanSplineStartPoint: LTCreateSplinePoints({0}, {CGPointMake(1.0 / 6, 1.0 / 6)},
+                                                            @"attribute", @[@7]).firstObject,
+  kLTMutableEuclideanSplineEndPoint: LTCreateSplinePoints({0}, {CGPointMake(1 / 1.2, 1 / 1.2)},
+                                                          @"attribute", @[@8]).firstObject,
+  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
+  kLTMutableEuclideanSplineAdditionalPoints:
+      LTCreateSplinePoints({4, 5}, {CGPointMake(2, 0), CGPointMake(2, 0)}, @"attribute",
+                           @[@11.25, @12]),
+  kLTMutableEuclideanSplineEndPointAfterPushing:
+      LTCreateSplinePoints({0}, {CGPointMake(1 + 1 / 1.2, 1.0 / 6)}, @"attribute",
+                           @[@8]).firstObject,
+  kLTMutableEuclideanSplineMaxParametericValue: @0.942809,
+  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @2.310366
 });
 
 SpecEnd
