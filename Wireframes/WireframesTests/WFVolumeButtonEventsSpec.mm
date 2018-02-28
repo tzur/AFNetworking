@@ -51,8 +51,8 @@ it(@"should disable events generation when no active subscription", ^{
   OCMExpect([applicationMock setWantsVolumeButtonEvents:NO]);
   auto events = WFVolumeButtonEvents(applicationMock);
   auto events1 = WFVolumeButtonEvents(applicationMock);
-  auto disposable = [events subscribeNext:^(NSNumber * _Nullable) {}];
-  auto disposable1 = [events1 subscribeNext:^(NSNumber * _Nullable) {}];
+  auto disposable = [events subscribeNext:^(WFVolumeButtonEvent * _Nullable) {}];
+  auto disposable1 = [events1 subscribeNext:^(WFVolumeButtonEvent * _Nullable) {}];
   [disposable dispose];
   [disposable1 dispose];
   OCMVerifyAll((id)applicationMock);
