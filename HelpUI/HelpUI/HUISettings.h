@@ -8,10 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Singleton for global settings that can be used by all of the HelpUI classes.
 @interface HUISettings : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Returns the singleton instance.
 + (instancetype)instance;
-
-- (instancetype)init NS_UNAVAILABLE;
 
 /// Type for block that localizes an \c NSString.
 typedef NSString *_Nullable(^HUILocalizationBlock)(NSString *);
