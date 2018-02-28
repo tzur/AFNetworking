@@ -40,6 +40,21 @@ itShouldBehaveLike(kLTBasicParameterizedObjectFactoryExamples, @{
 #pragma mark -
 
 itShouldBehaveLike(kLTBasicParameterizedObjectFactoryExamples, @{
+  kLTBasicParameterizedObjectFactoryClass: [LTBasicCubicBezierInterpolantFactory class],
+  kLTBasicParameterizedObjectFactoryNumberOfRequiredValues: @4,
+  kLTBasicParameterizedObjectFactoryMinParametricValue: @0,
+  kLTBasicParameterizedObjectFactoryMaxParametricValue: @1,
+  kLTBasicParameterizedObjectFactoryRange: [NSValue valueWithRange:NSMakeRange(0, 4)],
+  kLTBasicParameterizedObjectFactoryValues: @[@0.25, @0.5, @(1.0 / 3.0), @(2.0 / 3.0)],
+  kLTBasicParameterizedObjectFactoryComputedValues: @[@0.25, @0.3737, @0.4271, @0.4961,
+                                                      @(2.0 / 3.0)]
+});
+
+#pragma mark -
+#pragma mark LTBasicCatmullRomInterpolantFactory
+#pragma mark -
+
+itShouldBehaveLike(kLTBasicParameterizedObjectFactoryExamples, @{
   kLTBasicParameterizedObjectFactoryClass: [LTBasicCatmullRomInterpolantFactory class],
   kLTBasicParameterizedObjectFactoryNumberOfRequiredValues: @4,
   kLTBasicParameterizedObjectFactoryMinParametricValue: @0,
