@@ -18,6 +18,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// (no associated feature items). This maps a help item to feature items.
 @property (readonly, nonatomic, nullable) NSArray<NSString *> *associatedFeatureItemTitles;
 
+/// Localized title for the item. Can be \c nil.
+@property (readonly, nonatomic, nullable) NSString *title;
+
+/// Localized textual introduction for the item. Can be \c nil.
+@property (readonly, nonatomic, nullable) NSString *body;
+
+/// URL of an icon for the item. Can be \c nil.
+@property (readonly, nonatomic, nullable) NSURL *iconURL;
+
 @end
 
 /// Textual help item, a paragraph of text.
@@ -34,15 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Name of the image resource.
 @property (readonly, nonatomic) NSString *image;
 
-/// Title for the image. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *title;
-
-/// Main content for the image. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *body;
-
-/// URL of an icon shown alongside the image. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSURL *iconURL;
-
 @end
 
 /// Help item presenting a video.
@@ -50,15 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Name of the video resource.
 @property (readonly, nonatomic) NSString *video;
-
-/// Title for the video. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *title;
-
-/// Main content for this video. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *body;
-
-/// URL of an icon shown alongside the video. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSURL *iconURL;
 
 @end
 
@@ -70,15 +61,6 @@ typedef NS_ENUM(NSUInteger, HUISlideshowTransition) {
 
 /// Help item peresenting a slideshow of fixed number of slides.
 @interface HUISlideshowItem : HUIItem
-
-/// Title for the slideshow. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *title;
-
-/// Main content for this slideshow. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSString *body;
-
-/// URL of an icon shown alongside the slideshow. Can be \c nil.
-@property (readonly, nonatomic, nullable) NSURL *iconURL;
 
 /// Array of \c NSString with names of the images to use as slides.
 @property (readonly, nonatomic) NSArray<NSString *> *images;

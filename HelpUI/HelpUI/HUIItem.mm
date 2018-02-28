@@ -18,6 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (void)setTitle:(NSString * _Nullable)title {
+  _title = [[HUISettings instance] localize:title];
+}
+
+- (void)setBody:(NSString * _Nullable)body {
+  _body = [[HUISettings instance] localize:body];
+}
+
 + (NSDictionary<NSString *, Class> *)itemTypeToClass {
   return @{
     @"text": [HUITextItem class],
@@ -29,9 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @instanceKeypath(HUIItem, associatedFeatureItemTitles):
-          @"associated_feature_item_titles",
+    @instanceKeypath(HUIItem, title): @"title",
+    @instanceKeypath(HUIItem, body): @"body",
+    @instanceKeypath(HUIItem, iconURL): @"icon_url",
+    @instanceKeypath(HUIItem, associatedFeatureItemTitles): @"associated_feature_item_titles",
   };
+}
+
++ (NSValueTransformer *)iconURLJSONTransformer {
+  return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
 + (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
@@ -69,24 +83,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUIImageItem
 
-+ (NSValueTransformer *)iconURLJSONTransformer {
-  return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
-}
-
-- (void)setTitle:(NSString * _Nullable)title {
-  _title = [[HUISettings instance] localize:title];
-}
-
-- (void)setBody:(NSString * _Nullable)body {
-  _body = [[HUISettings instance] localize:body];
-}
-
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [@{
     @instanceKeypath(HUIImageItem, image): @"image",
-    @instanceKeypath(HUIImageItem, title): @"title",
-    @instanceKeypath(HUIImageItem, body): @"body",
-    @instanceKeypath(HUIImageItem, iconURL): @"icon_url",
   } mtl_dictionaryByAddingEntriesFromDictionary:[super JSONKeyPathsByPropertyKey]];
 }
 
@@ -98,24 +97,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUIVideoItem
 
-- (void)setTitle:(NSString * _Nullable)title {
-  _title = [[HUISettings instance] localize:title];
-}
-
-- (void)setBody:(NSString * _Nullable)body {
-  _body = [[HUISettings instance] localize:body];
-}
-
-+ (NSValueTransformer *)iconURLJSONTransformer {
-  return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
-}
-
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [@{
     @instanceKeypath(HUIVideoItem, video): @"video",
-    @instanceKeypath(HUIVideoItem, title): @"title",
-    @instanceKeypath(HUIVideoItem, body): @"body",
-    @instanceKeypath(HUIVideoItem, iconURL): @"icon_url",
   } mtl_dictionaryByAddingEntriesFromDictionary:[super JSONKeyPathsByPropertyKey]];
 }
 
@@ -174,23 +158,8 @@ static NSDictionary * const kSlideshowItemDefaultsForFade = @{
   }];
 }
 
-+ (NSValueTransformer *)iconURLJSONTransformer {
-  return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
-}
-
-- (void)setTitle:(NSString * _Nullable)title {
-  _title = [[HUISettings instance] localize:title];
-}
-
-- (void)setBody:(NSString * _Nullable)body {
-  _body = [[HUISettings instance] localize:body];
-}
-
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [@{
-    @instanceKeypath(HUISlideshowItem, title): @"title",
-    @instanceKeypath(HUISlideshowItem, body): @"body",
-    @instanceKeypath(HUISlideshowItem, iconURL): @"icon_url",
     @instanceKeypath(HUISlideshowItem, images): @"images",
     @instanceKeypath(HUISlideshowItem, transition): @"transition",
     @instanceKeypath(HUISlideshowItem, stillDuration): @"still_duration",
