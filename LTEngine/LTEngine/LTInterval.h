@@ -99,6 +99,12 @@ public:
     return false;
   }
 
+  /// Returns an interval equivalent to this interval, but with closed endpoints. If this interval
+  /// is empty, returns the closed interval with the infimum of this interval as single value.
+  Interval<T> closed() const {
+    return isEmpty() ? Interval<T>(_inf) : Interval<T>({*min(), *max()});
+  }
+
   /// Returns \c true if this interval contains the given \c value.
   bool contains(T value) const {
     return (infIncluded() ? value >= _inf : value > _inf) &&

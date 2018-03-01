@@ -688,6 +688,71 @@ context(@"empty intervals", ^{
   });
 });
 
+context(@"conversion to closed interval", ^{
+  context(@"CGFloat interval", ^{
+    it(@"should return the correct closed interval if it is open", ^{
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({0, 1}).closed();
+      expect(interval == Interval<CGFloat>({std::nextafter((CGFloat)0, (CGFloat)1),
+                                            std::nextafter((CGFloat)1, (CGFloat)0)})).to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is left-open", ^{
+      Interval<CGFloat> interval = Interval<CGFloat>::openZeroToClosedOne().closed();
+      expect(interval == Interval<CGFloat>({std::nextafter((CGFloat)0, (CGFloat)1), 1}))
+          .to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is right-open", ^{
+      Interval<CGFloat> interval = Interval<CGFloat>::co({0, 1}).closed();
+      expect(interval == Interval<CGFloat>({0, std::nextafter((CGFloat)1, (CGFloat)0)}))
+          .to.beTruthy();
+    });
+
+    it(@"should return itself if it is closed", ^{
+      Interval<CGFloat> interval = Interval<CGFloat>::zeroToOne().closed();
+      expect(interval == Interval<CGFloat>::zeroToOne()).to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is empty", ^{
+      Interval<CGFloat> interval = Interval<CGFloat>::oo({0, 0}).closed();
+      expect(interval == Interval<CGFloat>(0)).to.beTruthy();
+
+      interval = Interval<CGFloat>::oo({0, std::nextafter((CGFloat)0, (CGFloat)1)}).closed();
+      expect(interval == Interval<CGFloat>(0)).to.beTruthy();
+    });
+  });
+
+  context(@"NSUInteger interval", ^{
+    it(@"should return the correct closed interval if it is open", ^{
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 3}).closed();
+      expect(interval == Interval<NSUInteger>({1, 2})).to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is left-open", ^{
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oc({0, 3}).closed();
+      expect(interval == Interval<NSUInteger>({1, 3})).to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is right-open", ^{
+      Interval<NSUInteger> interval = Interval<NSUInteger>::co({0, 3}).closed();
+      expect(interval == Interval<NSUInteger>({0, 2})).to.beTruthy();
+    });
+
+    it(@"should return itself if it is closed", ^{
+      Interval<NSUInteger> interval = Interval<NSUInteger>({0, 3}).closed();
+      expect(interval == Interval<NSUInteger>({0, 3})).to.beTruthy();
+    });
+
+    it(@"should return the correct closed interval if it is empty", ^{
+      Interval<NSUInteger> interval = Interval<NSUInteger>::oo({0, 0}).closed();
+      expect(interval == Interval<NSUInteger>(0)).to.beTruthy();
+
+      interval = Interval<NSUInteger>::oo({0, 1}).closed();
+      expect(interval == Interval<NSUInteger>(0)).to.beTruthy();
+    });
+  });
+});
+
 context(@"value inclusion", ^{
   context(@"open interval", ^{
     it(@"should return correct results for containment queries of a CGFloat interval", ^{
