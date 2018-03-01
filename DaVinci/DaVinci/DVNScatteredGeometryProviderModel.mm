@@ -9,6 +9,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static CGFloat DVNTaperingScale(CGFloat factor, CGFloat polynomialFactor,
+                                lt::Interval<CGFloat> taperingScaleFactors) {
+  CGFloat t = factor;
+  CGFloat t2 = t * t;
+  CGFloat t3 = t2 * t;
+  // Use the Bernstein polynomial originating from the cubic Bezier curve determined by control
+  // points \c 0, \c polynomialFactor, \c 1, and \c 1.
+  CGFloat normalizedScaleFactor = (3 * t3 - 6 * t2 + 3 * t) * polynomialFactor - 2 * t3 + 3 * t2;
+  return *taperingScaleFactors.valueAt(normalizedScaleFactor);
+}
+
 @interface DVNScatteredGeometryProviderModel ()
 
 /// Returns a new instance equal to this instance, with the exception of the given
@@ -41,6 +52,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Indication whether tapering is performed.
 @property (readonly, nonatomic) BOOL performsTapering;
 
+/// Range of scale factors used for tapering.
+@property (readonly, nonatomic) lt::Interval<CGFloat> taperingScaleFactors;
+
 @end
 
 @implementation DVNScatteredGeometryProvider
@@ -53,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     _model = model;
     _performsTapering = (model.lengthOfStartTapering > 0 || model.lengthOfEndTapering > 0) &&
         model.minimumTaperingScaleFactor < 1;
+    _taperingScaleFactors = lt::Interval<CGFloat>({model.minimumTaperingScaleFactor, 1});
   }
   return self;
 }
@@ -68,26 +83,35 @@ NS_ASSUME_NONNULL_BEGIN
   CGFloats sampledParametricValues = samples.sampledParametricValues;
   CGFloat minParametricValue = sampledParametricValues.front();
   CGFloat maxParametricValue = sampledParametricValues.back();
-  CGFloat length = maxParametricValue - minParametricValue;
+  CGFloat lengthOfStartTapering = self.model.lengthOfStartTapering;
+  CGFloat startTaperingFactor = self.model.startTaperingFactor;
+  CGFloat length = std::min(maxParametricValue - minParametricValue,
+                            self.model.lengthOfEndTapering);
+  CGFloat maximumTaperingScaleFactor = 1;
+
+  if (end && lengthOfStartTapering) {
+    CGFloat interpolationValue = std::min<CGFloat>(minParametricValue / lengthOfStartTapering, 1.0);
+    maximumTaperingScaleFactor = DVNTaperingScale(interpolationValue, startTaperingFactor,
+                                                  self.taperingScaleFactors);
+  }
 
   for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
-    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.model.count.inf()
-                                                        max:(int)self.model.count.sup()];
+    lt::Interval<int> countRange = (lt::Interval<int>)self.model.count.closed();
+    NSUInteger count = [self.random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];
     CGFloat taperingScaleFactor = 1;
 
     if (self.performsTapering) {
       CGFloat parametricValue = sampledParametricValues[i];
-      taperingScaleFactor = std::min((parametricValue + 1) / self.model.lengthOfStartTapering,
-                                     (CGFloat)1.0);
-      if (end) {
-        CGFloat endTaperingScaleFactor =
-            std::min(length > self.model.lengthOfEndTapering ?
-                     (maxParametricValue - parametricValue) / self.model.lengthOfEndTapering :
-                     (maxParametricValue - parametricValue) / length, (CGFloat)1.0);
-        taperingScaleFactor *= endTaperingScaleFactor;
+      if (!end && parametricValue / lengthOfStartTapering < 1) {
+        taperingScaleFactor = DVNTaperingScale(parametricValue / lengthOfStartTapering,
+                                               startTaperingFactor, self.taperingScaleFactors);
+      } else if (end) {
+        CGFloat lengthToEnd = maxParametricValue - parametricValue;
+        CGFloat endTaperingScaleFactor = lengthToEnd > self.model.lengthOfEndTapering ?
+            1 : DVNTaperingScale(lengthToEnd / length, self.model.endTaperingFactor,
+                                 self.taperingScaleFactors);
+        taperingScaleFactor = maximumTaperingScaleFactor * endTaperingScaleFactor;
       }
-      taperingScaleFactor = std::max(pow(taperingScaleFactor, self.model.taperingExponent),
-                                     self.model.minimumTaperingScaleFactor);
     }
 
     NSUInteger index = values.indices()[i];
@@ -103,14 +127,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (lt::Quad)randomlyTransformedQuadFromQuad:(lt::Quad)quad
                         taperingScaleFactor:(CGFloat)taperingScaleFactor {
-  CGFloat distanceLength = [self.random randomDoubleBetweenMin:self.model.distance.inf()
-                                                           max:self.model.distance.sup()];
+  lt::Interval<CGFloat> distanceRange = self.model.distance.closed();
+  CGFloat distanceLength = [self.random randomDoubleBetweenMin:distanceRange.inf()
+                                                           max:distanceRange.sup()];
   CGPoint distance = CGPoint(LTVector2::angle([self.random randomDoubleBetweenMin:0 max:M_PI * 2]) *
                              distanceLength);
-  CGFloat angle = [self.random randomDoubleBetweenMin:self.model.angle.inf()
-                                                  max:self.model.angle.sup()];
-  CGFloat scale = [self.random randomDoubleBetweenMin:self.model.scale.inf()
-                                                  max:self.model.scale.sup()];
+  lt::Interval<CGFloat> angleRange = self.model.angle.closed();
+  CGFloat angle = [self.random randomDoubleBetweenMin:angleRange.inf() max:angleRange.sup()];
+  lt::Interval<CGFloat> scaleRange = self.model.scale.closed();
+  CGFloat scale = [self.random randomDoubleBetweenMin:scaleRange.inf() max:scaleRange.sup()];
   return quad
       .rotatedAroundPoint(angle, quad.center())
       .scaledBy(scale * taperingScaleFactor)
@@ -139,8 +164,8 @@ NS_ASSUME_NONNULL_BEGIN
                                         scale:(lt::Interval<CGFloat>)scale {
   return [self initWithGeometryProviderModel:geometryProviderModel randomState:randomState
                                        count:count distance:distance angle:angle scale:scale
-                       lengthOfStartTapering:0 lengthOfEndTapering:0 taperingExponent:1
-                  minimumTaperingScaleFactor:1];
+                       lengthOfStartTapering:0 lengthOfEndTapering:0 startTaperingFactor:1
+                         endTaperingFactor:1 minimumTaperingScaleFactor:1];
 }
 
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
@@ -151,11 +176,13 @@ NS_ASSUME_NONNULL_BEGIN
                                         scale:(lt::Interval<CGFloat>)scale
                         lengthOfStartTapering:(CGFloat)lengthOfStartTapering
                           lengthOfEndTapering:(CGFloat)lengthOfEndTapering
-                             taperingExponent:(CGFloat)taperingExponent
+                          startTaperingFactor:(CGFloat)startTaperingFactor
+                            endTaperingFactor:(CGFloat)endTaperingFactor
                    minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
   [self validateDistance:distance angle:angle scale:scale
    lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
-        taperingExponent:taperingExponent minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+   startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
+   minTaperingScaleFactor:minimumTaperingScaleFactor];
 
   if (self = [super init]) {
     _geometryProviderModel = geometryProviderModel;
@@ -166,7 +193,8 @@ NS_ASSUME_NONNULL_BEGIN
     _scale = scale;
     _lengthOfStartTapering = lengthOfStartTapering;
     _lengthOfEndTapering = lengthOfEndTapering;
-    _taperingExponent = taperingExponent;
+    _startTaperingFactor = startTaperingFactor;
+    _endTaperingFactor = endTaperingFactor;
     _minimumTaperingScaleFactor = minimumTaperingScaleFactor;
   }
   return self;
@@ -175,35 +203,29 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)validateDistance:(lt::Interval<CGFloat>)distance angle:(lt::Interval<CGFloat>)angle
                    scale:(lt::Interval<CGFloat>)scale
    lengthOfStartTapering:(CGFloat)lengthOfStartTapering
-     lengthOfEndTapering:(CGFloat)lengthOfEndTapering taperingExponent:(CGFloat)taperingExponent
-      minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
-  lt::Interval<CGFloat> nonNegativeNumbers({0, CGFLOAT_MAX});
-  LTParameterAssert(distance.intersects(nonNegativeNumbers),
-                    @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX])",
+     lengthOfEndTapering:(CGFloat)lengthOfEndTapering
+     startTaperingFactor:(CGFloat)startTaperingFactor endTaperingFactor:(CGFloat)endTaperingFactor
+  minTaperingScaleFactor:(CGFloat)minTaperingScaleFactor {
+  LTParameterAssert(distance.intersectionWith(lt::Interval<CGFloat>::nonNegativeNumbers()) ==
+                    distance, @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX])",
                     distance.description());
-  lt::Interval<CGFloat> validAngleInterval({0, 4 * M_PI},
-                                           lt::Interval<CGFloat>::EndpointInclusion::Closed,
-                                           lt::Interval<CGFloat>::EndpointInclusion::Open);
+  lt::Interval<CGFloat> validAngleInterval = lt::Interval<CGFloat>::co({0, 4 * M_PI});
   LTParameterAssert(angle.intersects(validAngleInterval),
                     @"Interval %@ outside valid angle interval ([0, 4 * PI])",
                     angle.description());
-  lt::Interval<CGFloat> positiveNumbers({0, CGFLOAT_MAX},
-                                        lt::Interval<CGFloat>::EndpointInclusion::Open,
-                                        lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  LTParameterAssert(scale.intersects(positiveNumbers),
+  LTParameterAssert(scale.intersectionWith(lt::Interval<CGFloat>::nonNegativeNumbers()) == scale,
                     @"Interval %@ outside valid scaling interval ((0, CGFLOAT_MAX])",
                     scale.description());
-  LTParameterAssert(nonNegativeNumbers.contains(lengthOfStartTapering),
+  LTParameterAssert(lt::Interval<CGFloat>::nonNegativeNumbers().contains(lengthOfStartTapering),
                     @"Invalid length of start tapering: %g", lengthOfStartTapering);
-  LTParameterAssert(nonNegativeNumbers.contains(lengthOfEndTapering),
+  LTParameterAssert(lt::Interval<CGFloat>::nonNegativeNumbers().contains(lengthOfEndTapering),
                     @"Invalid length of end tapering: %g", lengthOfEndTapering);
-  lt::Interval<CGFloat> openZeroOneRange =
-      lt::Interval<CGFloat>({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Open,
-                            lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  LTParameterAssert(openZeroOneRange.contains(taperingExponent), @"Invalid tapering exponent: %g",
-                    taperingExponent);
-  LTParameterAssert(openZeroOneRange.contains(minimumTaperingScaleFactor),
-                    @"Invalid minimum tapering scale factor: %g", minimumTaperingScaleFactor);
+  LTParameterAssert(lt::Interval<CGFloat>::zeroToOne().contains(startTaperingFactor),
+                    @"Invalid start tapering factor: %g", startTaperingFactor);
+  LTParameterAssert(lt::Interval<CGFloat>::zeroToOne().contains(endTaperingFactor),
+                    @"Invalid end tapering factor: %g", endTaperingFactor);
+  LTParameterAssert(lt::Interval<CGFloat>::openZeroToClosedOne().contains(minTaperingScaleFactor),
+                    @"Invalid minimum tapering scale factor: %g", minTaperingScaleFactor);
 }
 
 #pragma mark -
@@ -224,7 +246,8 @@ NS_ASSUME_NONNULL_BEGIN
       self.distance == model.distance && self.angle == model.angle && self.scale == model.scale &&
       self.lengthOfStartTapering == model.lengthOfStartTapering &&
       self.lengthOfEndTapering == model.lengthOfEndTapering &&
-      self.taperingExponent == model.taperingExponent &&
+      self.startTaperingFactor == model.startTaperingFactor &&
+      self.endTaperingFactor == model.endTaperingFactor &&
       self.minimumTaperingScaleFactor == model.minimumTaperingScaleFactor;
 }
 
@@ -236,6 +259,11 @@ NS_ASSUME_NONNULL_BEGIN
   lt::hash_combine(seed, self.distance.hash());
   lt::hash_combine(seed, self.angle.hash());
   lt::hash_combine(seed, self.scale.hash());
+  lt::hash_combine(seed, self.lengthOfStartTapering);
+  lt::hash_combine(seed, self.lengthOfEndTapering);
+  lt::hash_combine(seed, self.startTaperingFactor);
+  lt::hash_combine(seed, self.endTaperingFactor);
+  lt::hash_combine(seed, self.minimumTaperingScaleFactor);
   return seed;
 }
 
@@ -259,7 +287,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                        scale:self.scale
                                        lengthOfStartTapering:self.lengthOfStartTapering
                                          lengthOfEndTapering:self.lengthOfEndTapering
-                                            taperingExponent:self.taperingExponent
+                                         startTaperingFactor:self.startTaperingFactor
+                                           endTaperingFactor:self.endTaperingFactor
                                   minimumTaperingScaleFactor:self.minimumTaperingScaleFactor];
 }
 

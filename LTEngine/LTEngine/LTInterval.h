@@ -63,6 +63,26 @@ public:
     return Interval<T>(values, Closed, Open);
   }
 
+  /// Returns the closed interval <tt>[0, 1]</tt>.
+  static Interval<T> zeroToOne() {
+    return Interval<T>({0, 1});
+  }
+
+ /// Returns the left-open, right-closed interval <tt>(0, 1]</tt>.
+  static Interval<T> openZeroToClosedOne() {
+    return Interval<T>::oc({0, 1});
+  }
+
+  /// Returns the interval containing all non-negative numbers.
+  static Interval<T> nonNegativeNumbers() {
+    return Interval<T>({0, std::numeric_limits<T>::max()});
+  }
+
+  /// Returns the interval containing all positive numbers.
+  static Interval<T> positiveNumbers() {
+    return Interval<T>::oc({0, std::numeric_limits<T>::max()});
+  }
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(_inf) ^ std::hash<T>()(_sup) ^
@@ -77,6 +97,12 @@ public:
       return std::is_integral<T>::value ? _inf + 1 == _sup : std::nextafter(_inf, _sup) == _sup;
     }
     return false;
+  }
+
+  /// Returns an interval equivalent to this interval, but with closed endpoints. If this interval
+  /// is empty, returns the closed interval with the infimum of this interval as single value.
+  Interval<T> closed() const {
+    return isEmpty() ? Interval<T>(_inf) : Interval<T>({*min(), *max()});
   }
 
   /// Returns \c true if this interval contains the given \c value.

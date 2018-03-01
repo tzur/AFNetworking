@@ -34,13 +34,14 @@ DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDiction
   return [DVNBrushRenderModel instanceWithBrushModel:brushModel renderTargetInfo:info];
 }
 
-@interface DVNTestBrushStrokePainter : NSObject <DVNBrushRenderInfoProvider, DVNPainterDelegate,
-    DVNSplineRendering>
+@interface DVNTestBrushStrokePainter : NSObject <DVNBrushRenderInfoProvider, DVNPainterDelegate>
 @property (readonly, nonatomic) LTTexture *canvas;
 @property (readonly, nonatomic) DVNPainter *painter;
 @property (readonly, nonatomic) DVNBrushRenderConfigurationProvider *provider;
 @property (strong, nonatomic) NSDictionary<NSString *, LTTexture *> *textureMapping;
 @property (strong, nonatomic) DVNBrushRenderModel *model;
+@property (strong, nonatomic) NSArray<LTSplineControlPoint *> *startControlPoints;
+@property (strong, nonatomic) NSArray<LTSplineControlPoint *> *endControlPoints;
 @end
 
 @implementation DVNTestBrushStrokePainter
@@ -65,12 +66,9 @@ DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDiction
                            withTextureMapping:self.textureMapping];
 }
 
-- (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints end:(BOOL)end {
-  [self.painter processControlPoints:controlPoints end:end];
-}
-
-- (void)cancel {
-  [self.painter cancel];
+- (void)paint {
+  [self.painter processControlPoints:self.startControlPoints end:NO];
+  [self.painter processControlPoints:self.endControlPoints end:YES];
 }
 
 @end
@@ -82,12 +80,15 @@ context(@"version 1", ^{
       DVNBrushModelJSONDictionaryFromFileWithName([NSBundle bundleForClass:[self class]],
                                                   @"DVNDefaultTestBrushModelV1");
 
-  static NSArray<LTSplineControlPoint *> * const kControlPoints = @[
+  static NSArray<LTSplineControlPoint *> * const kStartControlPoints = @[
     [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(3.5,
                                                                            kSize.height / 2)],
-    [[LTSplineControlPoint alloc] initWithTimestamp:0
-                                           location:CGPointMake(kSize.width - 3.5,
-                                                                kSize.height / 2)],
+    [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointFromSize(kSize / 2)]
+  ];
+
+  static NSArray<LTSplineControlPoint *> * const kEndControlPoints = @[
+    [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.width - 3.5,
+                                                                           kSize.height / 2)]
   ];
 
   __block LTTexture *sourceTexture;
@@ -106,6 +107,8 @@ context(@"version 1", ^{
     };
     painter = [[DVNTestBrushStrokePainter alloc] initWithCanvasSize:kSize];
     painter.textureMapping = textureMapping;
+    painter.startControlPoints = kStartControlPoints;
+    painter.endControlPoints = kEndControlPoints;
   });
 
   afterEach(^{
@@ -118,7 +121,7 @@ context(@"version 1", ^{
   it(@"should render", ^{
     painter.model = DVNTestBrushRenderModel(kDictionary, @{}, kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Default.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -129,7 +132,7 @@ context(@"version 1", ^{
                                             @{@instanceKeypath(DVNBrushModelV1, scale): @3},
                                             kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Scale.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -140,7 +143,7 @@ context(@"version 1", ^{
                                             @{@instanceKeypath(DVNBrushModelV1, spacing): @2},
                                             kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Spacing.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -152,7 +155,7 @@ context(@"version 1", ^{
                                 @{@instanceKeypath(DVNBrushModelV1, sequenceDistance): @2},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SequenceDistance.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -165,7 +168,7 @@ context(@"version 1", ^{
                                                    distanceJitterFactorRange): @"[0, 1]"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_DistanceJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -179,7 +182,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, countRange): @"[1, 2]"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Count.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -193,7 +196,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, initialSeed): @1},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_InitialSeed.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -215,7 +218,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, angleRange): @"[0, 3.1415]"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_AngleJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -225,10 +228,10 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1,
-                                                   scaleJitterRange): @"[0, 3]"},
+                                                   scaleJitterRange): @"(0, 3]"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_ScaleJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -238,10 +241,10 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(10, 8)"},
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_TaperingLengths.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -251,26 +254,27 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(10, 8)",
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)",
                                   @instanceKeypath(DVNBrushModelV1,
                                                    minimumTaperingScaleFactor): @0.5},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_TaperingScaleFactor.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
   });
 
-  it(@"should render according to tapering exponent", ^{
+  it(@"should render according to tapering factors", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(10, 8)",
-                                  @instanceKeypath(DVNBrushModelV1, taperingExponent): @0.25},
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)",
+                                  @instanceKeypath(DVNBrushModelV1, taperingFactors):
+                                      @"(0, 0.5)"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_TaperingExponent.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -282,7 +286,7 @@ context(@"version 1", ^{
                                 @{@instanceKeypath(DVNBrushModelV1, flow): @0.5},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Flow.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -295,7 +299,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, flowExponent): @0.2},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_FlowExponent.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -307,7 +311,7 @@ context(@"version 1", ^{
                                 @{@instanceKeypath(DVNBrushModelV1, color): @"(1, 0, 0)"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Color.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -319,7 +323,7 @@ context(@"version 1", ^{
                                 @{@instanceKeypath(DVNBrushModelV1, brightnessJitter): @0.5},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_BrightnessJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -332,7 +336,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, hueJitter): @0.5},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_HueJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -345,7 +349,7 @@ context(@"version 1", ^{
                                   @instanceKeypath(DVNBrushModelV1, saturationJitter): @0.5},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SaturationJitter.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -385,7 +389,7 @@ context(@"version 1", ^{
                                         @"fixed"},
                                   kSize);
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
 
       cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SamplingMode_Fixed.png");
       expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -399,7 +403,7 @@ context(@"version 1", ^{
                                         @"center"},
                                   kSize);
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
 
       cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SamplingMode_Center.png");
       expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -412,7 +416,7 @@ context(@"version 1", ^{
                                         @"subimage"},
                                   kSize);
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
 
       cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SamplingMode_Subimage.png");
       expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -440,7 +444,7 @@ context(@"version 1", ^{
                                       @"(2, 1)"},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_GridSize.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -459,7 +463,7 @@ context(@"version 1", ^{
                                                      sourceImageIsNonPremultiplied): @NO},
                                   kSize);
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
       expect(LTVector4(painter.canvas.image.at<cv::Vec4b>(0, 0)))
           .to.equal(LTVector4(cv::Vec4b(255, 255, 255, 128)));
     });
@@ -474,7 +478,7 @@ context(@"version 1", ^{
                                                      sourceImageIsNonPremultiplied): @YES},
                                   kSize);
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
 
       expect(LTVector4(painter.canvas.image.at<cv::Vec4b>(0, 0)))
           .to.equal(LTVector4(cv::Vec4b(128, 128, 128, 128)));
@@ -496,7 +500,7 @@ context(@"version 1", ^{
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @3},
                                 kSize);
 
-    [painter processControlPoints:kControlPoints end:YES];
+    [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_Mask.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
@@ -521,7 +525,7 @@ context(@"version 1", ^{
       }];
       painter.textureMapping = textureMapping;
 
-      [painter processControlPoints:kControlPoints end:YES];
+      [painter paint];
 
       cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_EdgeAvoidance.png");
       expect($(painter.canvas.image)).to.equalMat($(expected));
