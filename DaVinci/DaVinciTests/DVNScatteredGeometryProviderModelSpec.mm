@@ -26,7 +26,8 @@ __block lt::Interval<CGFloat> angle;
 __block lt::Interval<CGFloat> scale;
 __block CGFloat lengthOfStartTapering;
 __block CGFloat lengthOfEndTapering;
-__block CGFloat taperingExponent;
+__block CGFloat startTaperingFactor;
+__block CGFloat endTaperingFactor;
 __block CGFloat minimumTaperingScaleFactor;
 __block DVNScatteredGeometryProviderModel *model;
 
@@ -39,7 +40,8 @@ beforeEach(^{
   scale = lt::Interval<CGFloat>({0.5, 1.5});
   lengthOfStartTapering = 7;
   lengthOfEndTapering = 8;
-  taperingExponent = 0.5;
+  startTaperingFactor = 0.5;
+  endTaperingFactor = 0.6;
   minimumTaperingScaleFactor = 0.1;
 
   NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[@"xKey", @"yKey"]];
@@ -51,8 +53,8 @@ beforeEach(^{
   model = [[DVNScatteredGeometryProviderModel alloc]
            initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
            count:count distance:distance angle:angle scale:scale
-           lengthOfStartTapering:lengthOfStartTapering
-           lengthOfEndTapering:lengthOfEndTapering taperingExponent:taperingExponent
+           lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+           startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
            minimumTaperingScaleFactor:minimumTaperingScaleFactor];
 });
 
@@ -75,7 +77,8 @@ context(@"initialization", ^{
     expect(model.scale == scale).to.beTruthy();
     expect(model.lengthOfStartTapering).to.equal(0);
     expect(model.lengthOfEndTapering).to.equal(0);
-    expect(model.taperingExponent).to.equal(1);
+    expect(model.startTaperingFactor).to.equal(1);
+    expect(model.endTaperingFactor).to.equal(1);
     expect(model.minimumTaperingScaleFactor).to.equal(1);
   });
 
@@ -97,7 +100,8 @@ context(@"initialization", ^{
     expect(model.scale == scale).to.beTruthy();
     expect(model.lengthOfStartTapering).to.equal(lengthOfStartTapering);
     expect(model.lengthOfEndTapering).to.equal(lengthOfEndTapering);
-    expect(model.taperingExponent).to.equal(taperingExponent);
+    expect(model.startTaperingFactor).to.equal(startTaperingFactor);
+    expect(model.endTaperingFactor).to.equal(endTaperingFactor);
     expect(model.minimumTaperingScaleFactor).to.equal(minimumTaperingScaleFactor);
   });
 });
@@ -106,14 +110,16 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
   DVNScatteredGeometryProviderModel *model =
       [[DVNScatteredGeometryProviderModel alloc]
        initWithGeometryProviderModel:underlyingProviderModel randomState:randomState count:count
-       distance:distance angle:angle scale:scale lengthOfStartTapering:lengthOfStartTapering
-       lengthOfEndTapering:lengthOfEndTapering taperingExponent:taperingExponent
+       distance:distance angle:angle scale:scale
+       lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+       startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
        minimumTaperingScaleFactor:minimumTaperingScaleFactor];
   DVNScatteredGeometryProviderModel *equalModel =
       [[DVNScatteredGeometryProviderModel alloc]
        initWithGeometryProviderModel:underlyingProviderModel randomState:randomState count:count
-       distance:distance angle:angle scale:scale lengthOfStartTapering:lengthOfStartTapering
-       lengthOfEndTapering:lengthOfEndTapering taperingExponent:taperingExponent
+       distance:distance angle:angle scale:scale
+       lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+       startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
        minimumTaperingScaleFactor:minimumTaperingScaleFactor];
   DVNScatteredGeometryProviderModel *differentModel =
       [[DVNScatteredGeometryProviderModel alloc]
@@ -152,7 +158,8 @@ context(@"provider", ^{
       expect(model.scale == currentModel.scale).to.beTruthy();
       expect(currentModel.lengthOfStartTapering).to.equal(model.lengthOfStartTapering);
       expect(currentModel.lengthOfEndTapering).to.equal(model.lengthOfEndTapering);
-      expect(currentModel.taperingExponent).to.equal(model.taperingExponent);
+      expect(currentModel.startTaperingFactor).to.equal(model.startTaperingFactor);
+      expect(currentModel.endTaperingFactor).to.equal(model.endTaperingFactor);
       expect(currentModel.minimumTaperingScaleFactor).to.equal(model.minimumTaperingScaleFactor);
     });
   });
@@ -219,9 +226,9 @@ context(@"provider", ^{
         quads = values.quads();
         underlyingQuads = underlyingValues.quads();
         indices = values.indices();
-        distance = lt::Interval<CGFloat>({minimumTaperingScaleFactor * distance.inf(),
-                                          distance.sup()});
-        scale = lt::Interval<CGFloat>({minimumTaperingScaleFactor * scale.inf(), scale.sup()});
+        distance = lt::Interval<CGFloat>({minimumTaperingScaleFactor * *distance.min(),
+                                          *distance.max()});
+        scale = lt::Interval<CGFloat>({minimumTaperingScaleFactor * *scale.min(), *scale.max()});
       });
 
       it(@"should provide quads with bounded centers", ^{

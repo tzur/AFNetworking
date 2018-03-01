@@ -67,8 +67,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param lengthOfEndTapering Maximum length, in units of the sampled parametric object, at the end
 /// of the sample sequence for which tapering of the returned quads is performed. Must be
 /// non-negative.
-/// @param taperingExponent Exponent used to compute the size of the returned quads undergoing
-/// tapering. Must be positive.
+/// @param startTaperingFactor Factor used in a Bernstein polynomial for computing the size of the
+/// returned quads undergoing tapering at the beginning of the sample sequence. Must be in range
+/// <tt>[0, 1]</tt>.
+/// @param endTaperingFactor Factor used in a Bernstein polynomial for computing the size of the
+/// returned quads undergoing tapering at the end of the sample sequence. Must be in range
+/// <tt>[0, 1]</tt>.
 /// @param minimumTaperingScaleFactor Minimum scale factor used for tapering. Must be in range
 /// <tt>(0, 1]</tt>.
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
@@ -79,7 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
                                         scale:(lt::Interval<CGFloat>)scale
                         lengthOfStartTapering:(CGFloat)lengthOfStartTapering
                           lengthOfEndTapering:(CGFloat)lengthOfEndTapering
-                             taperingExponent:(CGFloat)taperingExponent
+                          startTaperingFactor:(CGFloat)startTaperingFactor
+                            endTaperingFactor:(CGFloat)endTaperingFactor
                    minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor
     NS_DESIGNATED_INITIALIZER;
 
@@ -120,9 +125,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// which tapering of the returned quads is performed. Is non-negative.
 @property (readonly, nonatomic) CGFloat lengthOfEndTapering;
 
-/// Exponent used to compute the size of the returned quads undergoing tapering. Is in range
-/// <tt>(0, CGFLOAT_MAX]</tt>.
-@property (readonly, nonatomic) CGFloat taperingExponent;
+/// Factor used in a Bernstein polynomial for computing the size of the returned quads undergoing
+/// tapering at the beginning of the sample sequence. Is in range <tt>[0, 1]</tt>.
+@property (readonly, nonatomic) CGFloat startTaperingFactor;
+
+/// Factor used in a Bernstein polynomial for computing the size of the returned quads undergoing
+/// tapering at the end of the sample sequence. Is in range <tt>[0, 1]</tt>.
+@property (readonly, nonatomic) CGFloat endTaperingFactor;
 
 /// Minimum scale factor used for tapering. Is in range <tt>(0, 1]</tt>.
 @property (readonly, nonatomic) CGFloat minimumTaperingScaleFactor;
