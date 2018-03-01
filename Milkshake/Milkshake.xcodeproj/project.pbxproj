@@ -24,6 +24,8 @@
 		88A9ED00202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */; };
 		88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */; };
 		88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */; };
+		88F927112047F2460028215F /* SHKSignalBasedTweak.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F927102047F2460028215F /* SHKSignalBasedTweak.mm */; };
+		88F927132047F38E0028215F /* SHKSignalBasedTweakSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F927122047F38E0028215F /* SHKSignalBasedTweakSpec.mm */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
 		8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863CA1F33474400F0EF4C /* ReactiveObjC.framework */; };
 		A14171C61E6EAC0D005DBEFF /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libMilkshake.a */; };
@@ -369,6 +371,9 @@
 		88EEA2A32004CCBA006FB79D /* SHKTweakCategoryAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTweakCategoryAdapter.h; sourceTree = "<group>"; };
 		88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapter.mm; sourceTree = "<group>"; };
 		88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapterSpec.mm; sourceTree = "<group>"; };
+		88F9270F2047F2460028215F /* SHKSignalBasedTweak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHKSignalBasedTweak.h; sourceTree = "<group>"; };
+		88F927102047F2460028215F /* SHKSignalBasedTweak.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKSignalBasedTweak.mm; sourceTree = "<group>"; };
+		88F927122047F38E0028215F /* SHKSignalBasedTweakSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKSignalBasedTweakSpec.mm; sourceTree = "<group>"; };
 		8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libMilkshake.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMilkshake.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -449,6 +454,8 @@
 			children = (
 				880E4BE51FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.h */,
 				880E4BE61FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm */,
+				88F9270F2047F2460028215F /* SHKSignalBasedTweak.h */,
+				88F927102047F2460028215F /* SHKSignalBasedTweak.mm */,
 			);
 			name = Signals;
 			sourceTree = "<group>";
@@ -494,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				887D833F1FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm */,
+				88F927122047F38E0028215F /* SHKSignalBasedTweakSpec.mm */,
 			);
 			name = Signals;
 			sourceTree = "<group>";
@@ -1142,6 +1150,7 @@
 			files = (
 				880408FA2025B94E00015482 /* FBTweakStore+Milkshake.mm in Sources */,
 				880E4BE71FF3D16F00B4C05E /* FBMutableTweak+RACSignalSupport.mm in Sources */,
+				88F927112047F2460028215F /* SHKSignalBasedTweak.mm in Sources */,
 				88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */,
 				88A9ED00202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm in Sources */,
 			);
@@ -1151,6 +1160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88F927132047F38E0028215F /* SHKSignalBasedTweakSpec.mm in Sources */,
 				88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */,
 				880408FD2025BE5800015482 /* FBTweakStore+MilkshakeSpec.mm in Sources */,
 				88A482442003759A0046B7D1 /* SHKTweakInlineSpec.mm in Sources */,
