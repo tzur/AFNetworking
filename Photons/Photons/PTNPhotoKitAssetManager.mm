@@ -4,6 +4,7 @@
 #import "PTNPhotoKitAssetManager.h"
 
 #import <LTKit/LTRandomAccessCollection.h>
+#import <map>
 
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
@@ -17,6 +18,7 @@
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
 #import "PTNPhotoKitAlbum.h"
+#import "PTNPhotoKitAssetResourceManager.h"
 #import "PTNPhotoKitAuthorizationManager.h"
 #import "PTNPhotoKitAuthorizer.h"
 #import "PTNPhotoKitChangeManager.h"
@@ -45,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Image manager used to request images.
 @property (readonly, nonatomic) id<PTNPhotoKitImageManager> imageManager;
+
+/// Asset resource manager used to fetch resources.
+@property (readonly, nonatomic) id<PTNPhotoKitAssetResourceManager> assetResourceManager;
 
 /// Change manager used to request changes in the PhotoKit library.
 @property (readonly, nonatomic) id<PTNPhotoKitChangeManager> changeManager;
@@ -75,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
+           assetResourceManager:(id<PTNPhotoKitAssetResourceManager>)assetResourceManager
            authorizationManager:(id<PTNAuthorizationManager>)authorizationManager
                   changeManager:(id<PTNPhotoKitChangeManager>)changeManager
                    imageResizer:(PTNImageResizer *)imageResizer {
@@ -82,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     _fetcher = fetcher;
     _observer = observer;
     _imageManager = imageManager;
+    _assetResourceManager = assetResourceManager;
     _authorizationManager = authorizationManager;
     _changeManager = changeManager;
     _imageResizer = imageResizer;
@@ -120,11 +127,13 @@ NS_ASSUME_NONNULL_BEGIN
       [[PTNPhotoKitObserver alloc] initWithPhotoLibrary:[PHPhotoLibrary sharedPhotoLibrary]];
   id<PTNPhotoKitImageManager> imageManager =
       [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager];
+  id<PTNPhotoKitAssetResourceManager> assetResourceManager =
+      [PHAssetResourceManager defaultManager];
   id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
   PTNImageResizer *imageResizer = [[PTNImageResizer alloc] init];
   return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
-          authorizationManager:authorizationManager changeManager:changeManager
-                  imageResizer:imageResizer];
+          assetResourceManager:assetResourceManager authorizationManager:authorizationManager
+                 changeManager:changeManager imageResizer:imageResizer];
 }
 
 - (instancetype)init {
@@ -603,7 +612,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)imageAssetForPhotoKitAssetWithMetadata:(PHAsset *)asset
                                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     PHContentEditingInputRequestOptions *options =
         [[PHContentEditingInputRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
@@ -664,7 +673,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)imageAssetForPhotoKitAsset:(PHAsset *)asset
                          resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                   options:(PHImageRequestOptions *)options {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error,
                                 BOOL __unused *stop, NSDictionary __unused *info) {
       if (!error) {
@@ -736,7 +745,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)videoAssetForPhotoKitAsset:(PHAsset *)asset
                                   options:(PHVideoRequestOptions *)options {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
       if (!error) {
         PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
@@ -785,38 +794,78 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)imageDataForPhotoKitAsset:(PHAsset *)asset {
-  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    PHImageRequestOptions *options = [[[PTNImageFetchOptions alloc] init] photoKitOptions];
-    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
-      if (!error) {
-        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
-        [subscriber sendNext:progress];
-      }
+  return [[RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
+    auto _Nullable resource = [self photoAssetResourceForAsset:asset];
+    if (!resource) {
+      [subscriber sendError:[NSError ptn_errorWithCode:PTNErrorCodeInvalidAssetType
+                                  associatedDescriptor:asset
+                                           description:@"Asset doesn't contain a photo resource"]];
+      return nil;
+    }
+
+    PHAssetResourceRequestOptions *options = [[PHAssetResourceRequestOptions alloc] init];
+    options.networkAccessAllowed = YES;
+    options.progressHandler = ^(double value) {
+      PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+      [subscriber sendNext:progress];
     };
 
-    auto resultHandler = ^(NSData * _Nullable imageData, NSString * _Nullable dataUTI,
-                           UIImageOrientation, NSDictionary * _Nullable info) {
-      if (!imageData) {
+    auto mutableData = [NSMutableData data];
+    auto dataReceivedHandler = ^(NSData *data) {
+      [mutableData appendData:data];
+    };
+
+    auto completionHandler = ^(NSError * _Nullable error) {
+      if (error) {
         NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
                                                       url:asset.ptn_identifier
-                                          underlyingError:info[PHImageErrorKey]];
+                                          underlyingError:error];
         [subscriber sendError:wrappedError];
         return;
       }
 
-      id<PTNImageDataAsset> rawImageAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                                              uniformTypeIdentifier:dataUTI];
-      [subscriber sendNext:[[PTNProgress alloc] initWithResult:rawImageAsset]];
+      // Avoid copying the data to spare memory and runtime.
+      id<PTNImageDataAsset> dataAsset = [[PTNImageDataAsset alloc]
+                                         initWithData:mutableData
+                                         uniformTypeIdentifier:resource.uniformTypeIdentifier];
+      [subscriber sendNext:[[PTNProgress alloc] initWithResult:dataAsset]];
       [subscriber sendCompleted];
     };
 
-    PHImageRequestID requestID = [self.imageManager requestImageDataForAsset:asset options:options
-                                                               resultHandler:resultHandler];
+    auto requestID = [self.assetResourceManager requestDataForAssetResource:resource
+                                                                    options:options
+                                                        dataReceivedHandler:dataReceivedHandler
+                                                          completionHandler:completionHandler];
 
     return [RACDisposable disposableWithBlock:^{
-      [self.imageManager cancelImageRequest:requestID];
+      [self.assetResourceManager cancelDataRequest:requestID];
     }];
   }] subscribeOn:[RACScheduler scheduler]];
+}
+
+- (nullable PHAssetResource *)photoAssetResourceForAsset:(PHAsset *)asset {
+  auto resources = [self.fetcher assetResourcesForAsset:asset];
+
+  auto typeToResource = std::map<PHAssetResourceType, PHAssetResource *>();
+  for (PHAssetResource *resource in resources) {
+    typeToResource[resource.type] = resource;
+  }
+
+  // PhotoKit prefers full size resources over others, and otherwise uses the first returned
+  // resource. This reflects in the data that PHImageManager returns for an asset, and we prefer to
+  // mock that logic.
+  static const std::vector<PHAssetResourceType> kTypePriorities{
+    PHAssetResourceTypeFullSizePhoto,
+    PHAssetResourceTypePhoto,
+    PHAssetResourceTypeAlternatePhoto
+  };
+
+  for (const auto &type : kTypePriorities) {
+    if (typeToResource.find(type) != typeToResource.end()) {
+      return typeToResource[type];
+    }
+  }
+  return nil;
 }
 
 #pragma mark -
@@ -932,7 +981,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)performChanges:(LTVoidBlock)changeBlock {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     [self.changeManager performChanges:changeBlock
                      completionHandler:^(BOOL success, NSError * _Nullable error) {
       if (!success) {

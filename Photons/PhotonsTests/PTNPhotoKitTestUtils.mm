@@ -105,4 +105,15 @@ PHChange *PTNPhotoKitCreateChangeForObjectDetails(PHObjectChangeDetails *changeD
   return change;
 }
 
+PHAssetResource *PTNPhotoKitCreateAssetResource(NSString *assetLocalIdentifier,
+    PHAssetResourceType type, NSString *uniformTypeIdentifier,
+    NSString * _Nullable originalFilename) {
+  PHAssetResource *resource = OCMClassMock([PHAssetResource class]);
+  OCMStub([resource assetLocalIdentifier]).andReturn(assetLocalIdentifier);
+  OCMStub([resource type]).andReturn(type);
+  OCMStub([resource uniformTypeIdentifier]).andReturn(uniformTypeIdentifier);
+  OCMStub([resource originalFilename]).andReturn(originalFilename);
+  return resource;
+}
+
 NS_ASSUME_NONNULL_END

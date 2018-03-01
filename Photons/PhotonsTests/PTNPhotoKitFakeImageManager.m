@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps asset identifier to image.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, NSData *> *identifierToImageData;
 
-/// Maps asset identifier to \c AVAsset.
+/// Maps asset identifier to its UTI.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, NSString *> *identifierToDataUTI;
 
 /// Maps asset identifier to audio mix.
