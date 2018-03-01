@@ -96,6 +96,40 @@ public:
       });
     });
 
+    context(@"fixed values", ^{
+      it(@"should return a [0, 1] interval", ^{
+        Interval<T> interval = Interval<T>::zeroToOne();
+        expect(interval.inf()).to.equal(0);
+        expect(interval.sup()).to.equal(1);
+        expect(interval.infIncluded()).to.beTruthy();
+        expect(interval.supIncluded()).to.beTruthy();
+      });
+
+      it(@"should return a (0, 1] interval", ^{
+        Interval<T> interval = Interval<T>::openZeroToClosedOne();
+        expect(interval.inf()).to.equal(0);
+        expect(interval.sup()).to.equal(1);
+        expect(interval.infIncluded()).to.beFalsy();
+        expect(interval.supIncluded()).to.beTruthy();
+      });
+
+      it(@"should return an interval with all non-negative numbers", ^{
+        Interval<T> interval = Interval<T>::nonNegativeNumbers();
+        expect(interval.inf()).to.equal(0);
+        expect(interval.sup()).to.equal(std::numeric_limits<T>::max());
+        expect(interval.infIncluded()).to.beTruthy();
+        expect(interval.supIncluded()).to.beTruthy();
+      });
+
+      it(@"should return an interval with all positive numbers", ^{
+        Interval<T> interval = Interval<T>::positiveNumbers();
+        expect(interval.inf()).to.equal(0);
+        expect(interval.sup()).to.equal(std::numeric_limits<T>::max());
+        expect(interval.infIncluded()).to.beFalsy();
+        expect(interval.supIncluded()).to.beTruthy();
+      });
+    });
+
     context(@"hash", ^{
       it(@"should compute a hash of an interval", ^{
         Interval<T> interval({0, 1});
