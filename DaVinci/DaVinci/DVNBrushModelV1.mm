@@ -54,7 +54,7 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
       @instanceKeypath(DVNBrushModelV1, scaleJitterRange): @"scaleJitterRange",
       @instanceKeypath(DVNBrushModelV1, taperingLengths): @"taperingLengths",
       @instanceKeypath(DVNBrushModelV1, minimumTaperingScaleFactor): @"minimumTaperingScaleFactor",
-      @instanceKeypath(DVNBrushModelV1, taperingExponent): @"taperingExponent",
+      @instanceKeypath(DVNBrushModelV1, taperingFactors): @"taperingFactors",
       @instanceKeypath(DVNBrushModelV1, flow): @"flow",
       @instanceKeypath(DVNBrushModelV1, flowRange): @"flowRange",
       @instanceKeypath(DVNBrushModelV1, flowExponent): @"flowExponent",
@@ -95,6 +95,10 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
 }
 
 + (NSValueTransformer *)taperingLengthsJSONTransformer {
+  return [NSValueTransformer valueTransformerForName:kLTVector2ValueTransformer];
+}
+
++ (NSValueTransformer *)taperingFactorsJSONTransformer {
   return [NSValueTransformer valueTransformerForName:kLTVector2ValueTransformer];
 }
 
@@ -184,7 +188,7 @@ DVNClosedRangeClassProperty(CGFloat, allowedTaperingLength, allowedTaperingLengt
                             std::numeric_limits<CGFloat>::max());
 DVNLeftOpenRangeClassProperty(CGFloat, allowedMinimumTaperingScaleFactor,
                               AllowedMinimumTaperingScaleFactor, 0, 1);
-DVNLeftOpenRangeClassProperty(CGFloat, allowedTaperingExponent, AllowedTaperingExponent, 0, 1);
+DVNClosedRangeClassProperty(CGFloat, allowedTaperingFactor, AllowedTaperingFactor, 0, 1);
 DVNClosedRangeClassProperty(CGFloat, allowedFlow, AllowedFlow, 0, 1);
 DVNLeftOpenRangeClassProperty(CGFloat, allowedFlowExponent, AllowedFlowExponent, 0, 20);
 DVNClosedRangeClassProperty(CGFloat, allowedBrightnessJitter, AllowedBrightnessJitter, 0, 1);

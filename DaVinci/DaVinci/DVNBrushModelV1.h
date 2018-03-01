@@ -218,10 +218,12 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// Allowed range of the \c minimumTaperingScaleFactor of this instance.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedMinimumTaperingScaleFactorRange;
 
-/// Positive number for adjusting the growth behavior of the tapering along the brush stroke. The
-/// value is used in the power term <tt>a^taperingExponent</tt>, where \c a is the scale factor (in
-/// range <tt>[0, 1]</tt>) for the corresponding brush tip square computed according to the other
-/// tapering parameters, in order to compute the final scale factor.
+/// Vector, with coordinates in range \c allowedTaperingFactorRange, used for adjusting the growth
+/// behavior of the tapering along the brush stroke. The x-coordinate (/y-coordinate) determines
+/// the growth behavior at the beginning (/end) of the brush stroke. Each coordinate, \c c, is used
+/// for computing the cubic Bezier curve determined by the values \c 0, \c c, \c 1, \c 1, in this
+/// order. The values of the Bezier curve are used to compute the scale factor to be applied to the
+/// brush tip squares, in addition to the other tapering parameters.
 ///
 /// (Order) Dependencies:
 /// \c scale
@@ -232,10 +234,12 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c distanceJitterFactorRange
 /// \c angleRange
 /// \c scaleJitterRange
-@property (readonly, nonatomic) CGFloat taperingExponent;
+/// \c taperingLengths
+/// \c minimumTaperingScaleFactor
+@property (readonly, nonatomic) LTVector2 taperingFactors;
 
-/// Allowed range of the \c taperingExponent of this instance.
-@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingExponentRange;
+/// Allowed range of the x- and y-coordinate of the \c taperingFactors of this instance.
+@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingFactorRange;
 
 #pragma mark -
 #pragma mark Flow

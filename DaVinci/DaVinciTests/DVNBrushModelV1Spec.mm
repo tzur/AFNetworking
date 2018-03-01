@@ -79,7 +79,7 @@ context(@"initialization", ^{
           .to.beTruthy();
       expect(model.taperingLengths).to.equal(LTVector2(0.046875, 0.0507812));
       expect(model.minimumTaperingScaleFactor).to.equal(0.0546875);
-      expect(model.taperingExponent).to.equal(0.0585938);
+      expect(model.taperingFactors).to.equal(LTVector2(0.0585938, 0.0664062));
       expect(model.flowRange == lt::Interval<CGFloat>({0.0625, 0.0703125})).to.beTruthy();
       expect(model.flow).to.equal(0.0664062);
       expect(model.flowExponent).to.equal(0.0742188);
@@ -145,7 +145,7 @@ context(@"allowed ranges", ^{
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedMinimumTaperingScaleFactorRange] ==
            lt::Interval<CGFloat>::oc({0, 1})).to.beTruthy();
-    expect([DVNBrushModelV1 allowedTaperingExponentRange] == lt::Interval<CGFloat>::oc({0, 1}))
+    expect([DVNBrushModelV1 allowedTaperingFactorRange] == lt::Interval<CGFloat>({0, 1}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedFlowRange] == lt::Interval<CGFloat>({0, 1})).to.beTruthy();
     expect([DVNBrushModelV1 allowedFlowExponentRange] == lt::Interval<CGFloat>::oc({0, 20}))
