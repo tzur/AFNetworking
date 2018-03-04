@@ -61,3 +61,14 @@ lane :undefined_behavior_sanitizer do |options|
     raw_logfile_path: "output/logs/undefined_behavior_sanitizer_raw.log"
   )
 end
+
+lane :static_analysis do
+  lt_static_analysis(
+    workspace: WORKSPACE,
+    scheme: SCHEME,
+    sdk: "iphoneos",
+    arch: "arm64",
+    ccache: true,
+    raw_logfile_path: "output/logs/static_analysis_raw.log"
+  )
+end
