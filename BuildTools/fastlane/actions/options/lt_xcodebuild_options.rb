@@ -48,10 +48,6 @@ module Fastlane
         "i386"
       ].freeze
 
-      def self.config_file_name
-        "LTBuildfile"
-      end
-
       def self.actions_option
         FastlaneCore::ConfigItem.new(
           key: :actions,
