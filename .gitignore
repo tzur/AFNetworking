@@ -32,3 +32,9 @@ DerivedData
 
 # Local ruby gems
 /ruby/
+
+# Fastlane
+Fastlane/report.xml
+Fastlane/Preview.html
+Fastlane/screenshots
+Fastlane/test_output
