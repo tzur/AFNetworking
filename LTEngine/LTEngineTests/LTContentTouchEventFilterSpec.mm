@@ -24,8 +24,6 @@ beforeEach(^{
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"hello"];
-
     LTContentTouchEventFilter *filter =
         [[LTContentTouchEventFilter alloc] initWithPredicate:predicate];
 
