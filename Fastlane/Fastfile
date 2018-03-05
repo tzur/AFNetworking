@@ -1,0 +1,63 @@
+# frozen_string_literal: true
+
+Fastlane::Actions.load_external_actions("../BuildTools/fastlane/actions")
+
+skip_docs
+
+WORKSPACE = "Foundations/Foundations.xcworkspace"
+SCHEME = "Foundations"
+DEFAULT_TEST_DESTINATION = "platform=iOS Simulator,name=iPhone 7,OS=latest"
+
+lane :build_and_test do |options|
+  lt_build_and_test(
+    workspace: WORKSPACE,
+    scheme: options[:scheme] || SCHEME,
+    destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    raw_logfile_path: "output/logs/tests_raw.log"
+  )
+end
+
+lane :build_release do
+  lt_build(
+    workspace: WORKSPACE,
+    scheme: SCHEME,
+    sdk: "iphoneos",
+    arch: "arm64",
+    configuration: "Release",
+    ccache: false,
+    raw_logfile_path: "output/logs/release_raw.log"
+  )
+end
+
+lane :thread_sanitizer do
+  lt_build_and_test(
+    workspace: WORKSPACE,
+    scheme: SCHEME,
+    destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    enable_thread_sanitizer: true,
+    ccache: false,
+    raw_logfile_path: "output/logs/thread_sanitizer_raw.log"
+  )
+end
+
+lane :address_sanitizer do
+  lt_build_and_test(
+    workspace: WORKSPACE,
+    scheme: SCHEME,
+    destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    enable_address_sanitizer: true,
+    ccache: false,
+    raw_logfile_path: "output/logs/address_sanitizer_raw.log"
+  )
+end
+
+lane :undefined_behavior_sanitizer do
+  lt_build_and_test(
+    workspace: WORKSPACE,
+    scheme: SCHEME,
+    destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    enable_undefined_behavior_sanitizer: true,
+    ccache: false,
+    raw_logfile_path: "output/logs/undefined_behavior_sanitizer_raw.log"
+  )
+end
