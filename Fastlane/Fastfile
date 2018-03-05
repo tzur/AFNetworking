@@ -29,7 +29,7 @@ lane :build_release do
   )
 end
 
-lane :thread_sanitizer do
+lane :thread_sanitizer do |options|
   lt_build_and_test(
     workspace: WORKSPACE,
     scheme: SCHEME,
@@ -40,7 +40,7 @@ lane :thread_sanitizer do
   )
 end
 
-lane :address_sanitizer do
+lane :address_sanitizer do |options|
   lt_build_and_test(
     workspace: WORKSPACE,
     scheme: SCHEME,
@@ -51,7 +51,7 @@ lane :address_sanitizer do
   )
 end
 
-lane :undefined_behavior_sanitizer do
+lane :undefined_behavior_sanitizer do |options|
   lt_build_and_test(
     workspace: WORKSPACE,
     scheme: SCHEME,
