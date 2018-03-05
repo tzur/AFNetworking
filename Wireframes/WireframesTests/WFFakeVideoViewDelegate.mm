@@ -5,24 +5,35 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface WFFakeVideoViewDelegate ()
+@property (readwrite, nonatomic) NSUInteger numberOfVideoLoads;
+@property (readwrite, nonatomic) NSUInteger numberOfPlaybacksFinished;
+@property (readwrite, nonatomic) NSArray<NSNumber *> *playbackNotificationTimes;
+@end
+
 @implementation WFFakeVideoViewDelegate
 
+- (instancetype)init {
+  if (self = [super init]) {
+    self.playbackNotificationTimes = @[];
+  }
+  return self;
+}
+
 - (void)videoViewDidLoadVideo:(WFVideoView __unused *)videoView {
+  ++self.numberOfVideoLoads;
 }
 
 - (void)videoViewDidFinishPlayback:(WFVideoView __unused *)videoView {
+  ++self.numberOfPlaybacksFinished;
+}
+
+- (void)videoView:(WFVideoView __unused *)videoView didPlayVideoAtTime:(NSTimeInterval)time {
+  self.playbackNotificationTimes = [self.playbackNotificationTimes arrayByAddingObject:@(time)];
 }
 
 - (void)videoView:(WFVideoView __unused *)videoView
-    didPlayVideoAtTime:(__unused NSTimeInterval)time {
-}
-
-- (void)videoView:(WFVideoView __unused *)videoView didEncounterVideoError:(NSError *)error {
-  // Fail the test. Flakiness of playback tests in CI has been observed. It is probably because at
-  // some conditions an error is reported from the player. This (temporary) assertion is in order to
-  // get the details of this error from CI and understand what causes it and how to fix this
-  // flakiness.
-  LTAssert(NO, @"Video view did encounter video error: %@", error);
+    didEncounterVideoError:(NSError __unused *)error {
 }
 
 @end
