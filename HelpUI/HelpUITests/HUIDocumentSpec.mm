@@ -23,15 +23,15 @@ context(@"document deserialization", ^{
           @"title": @"title1",
           @"items": @[
             @{
-              @"type": @"text",
-              @"text": @"text1",
+              @"type": @"video",
+              @"video": @"video1",
               @"associated_feature_item_titles": @[@"title1", @"title2"]
             }]
         },
         @{
           @"key": @"key2",
           @"title": @"title2",
-          @"items": @[@{@"type": @"text", @"text": @"text2"}]
+          @"items": @[@{@"type": @"video", @"video": @"video2"}]
         },
         @{
           @"key": @"key3",
@@ -42,7 +42,7 @@ context(@"document deserialization", ^{
                @"image": @"image1",
                @"associated_feature_item_titles": @[@"title3"]
              },
-             @{@"type": @"video", @"video": @"video1"},
+             @{@"type": @"video", @"video": @"video3"},
              @{@"type": @"slideshow", @"images": @[@"slideshow1", @"slideshow2"]}]
         }
       ]
@@ -95,8 +95,8 @@ context(@"sections", ^{
             @"key": @"key1",
             @"items": @[
               @{
-                @"type": @"text",
-                @"text": @"text1",
+                @"type": @"video",
+                @"text": @"video1",
                 @"associated_feature_item_titles": @[@"title1"]
               }]
           },

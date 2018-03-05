@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Class cluster for all help items. An item provides a single type of content, like text, image,
+/// Class cluster for all help items. An item provides a single type of content, like image,
 /// animation, etc. All help items are immutable.
 ///
 /// @important The class is deserializable from JSON using Mantle. The \c type field must exist in
@@ -26,14 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// URL of an icon for the item. Can be \c nil.
 @property (readonly, nonatomic, nullable) NSURL *iconURL;
-
-@end
-
-/// Textual help item, a paragraph of text.
-@interface HUITextItem : HUIItem
-
-/// Localized text presented by this item.
-@property (readonly, nonatomic) NSString *text;
 
 @end
 
