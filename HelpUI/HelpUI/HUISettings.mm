@@ -11,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     self.localizationBlock = nil;
     self.contentAspectRatio = 1.0;
-    self.helpViewBackgroundColor = [UIColor lt_colorWithHex:@"#000000"];
+    self.helpViewBackgroundColor = [[UIColor lt_colorWithHex:@"#000000"]
+                                    colorWithAlphaComponent:0.15];
     self.titleBoxGradientTopColor = [UIColor lt_colorWithHex:@"#202023"];
     self.titleBoxGradientBottomColor = [UIColor lt_colorWithHex:@"#000000"];
     self.titleBoxIconColor = [UIColor lt_colorWithHex:@"#FFFFFF"];

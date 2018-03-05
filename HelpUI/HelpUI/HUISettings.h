@@ -27,7 +27,7 @@ typedef NSString *_Nullable(^HUILocalizationBlock)(NSString *);
 @property (nonatomic) CGFloat contentAspectRatio;
 
 /// Color for the background of the help view. Defaults to
-/// <tt>[UIColor lt_colorWithHex:@"#000000"]</tt>
+/// <tt>[[UIColor lt_colorWithHex:@"#000000"] colorWithAlphaComponent:0.15]</tt>
 @property (strong, nonatomic) UIColor *helpViewBackgroundColor;
 
 /// Color for the top of the help card title box gradient. Defaults to
