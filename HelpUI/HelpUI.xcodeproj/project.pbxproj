@@ -45,6 +45,8 @@
 		19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E518A0200CCD9A008A9EA5 /* HUIItem.mm */; };
 		19EEEAEB20445359007EF4CF /* HUIBoxTopLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19EEEAE920445359007EF4CF /* HUIBoxTopLayout.mm */; };
 		19EEEAF020445508007EF4CF /* HUIBoxTopLayoutSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19EEEAEE20445508007EF4CF /* HUIBoxTopLayoutSpec.mm */; };
+		19EEF3E1204D333F007EF4CF /* HUIBoxTopView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19EEF3E0204D333F007EF4CF /* HUIBoxTopView.mm */; };
+		19EEF3E3204D3358007EF4CF /* HUIBoxTopViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19EEF3E2204D3357007EF4CF /* HUIBoxTopViewSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -467,6 +469,9 @@
 		19EEEAE820445359007EF4CF /* HUIBoxTopLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIBoxTopLayout.h; sourceTree = "<group>"; };
 		19EEEAE920445359007EF4CF /* HUIBoxTopLayout.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIBoxTopLayout.mm; sourceTree = "<group>"; };
 		19EEEAEE20445508007EF4CF /* HUIBoxTopLayoutSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIBoxTopLayoutSpec.mm; sourceTree = "<group>"; };
+		19EEF3B6204D333F007EF4CF /* HUIBoxTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIBoxTopView.h; sourceTree = "<group>"; };
+		19EEF3E0204D333F007EF4CF /* HUIBoxTopView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIBoxTopView.mm; sourceTree = "<group>"; };
+		19EEF3E2204D3357007EF4CF /* HUIBoxTopViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIBoxTopViewSpec.mm; sourceTree = "<group>"; };
 		887D708D2028474E00638AB8 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -835,6 +840,8 @@
 			children = (
 				19EEEAE820445359007EF4CF /* HUIBoxTopLayout.h */,
 				19EEEAE920445359007EF4CF /* HUIBoxTopLayout.mm */,
+				19EEF3B6204D333F007EF4CF /* HUIBoxTopView.h */,
+				19EEF3E0204D333F007EF4CF /* HUIBoxTopView.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -843,6 +850,7 @@
 			isa = PBXGroup;
 			children = (
 				19EEEAEE20445508007EF4CF /* HUIBoxTopLayoutSpec.mm */,
+				19EEF3E2204D3357007EF4CF /* HUIBoxTopViewSpec.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1321,6 +1329,7 @@
 				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
 				195B37961FFCB42600F8DAB4 /* LTObjectionModule.mm in Sources */,
 				19925FC62029972700BF71E5 /* HUIDocumentProviderSpec.mm in Sources */,
+				19EEF3E3204D3358007EF4CF /* HUIBoxTopViewSpec.mm in Sources */,
 				1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */,
 				19EEEAF020445508007EF4CF /* HUIBoxTopLayoutSpec.mm in Sources */,
 				199253EC2027133500BF71E5 /* HUIDocumentSpec.mm in Sources */,
@@ -1334,6 +1343,7 @@
 				1992523420270B5100BF71E5 /* HUIDocument.mm in Sources */,
 				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
 				19EEEAEB20445359007EF4CF /* HUIBoxTopLayout.mm in Sources */,
+				19EEF3E1204D333F007EF4CF /* HUIBoxTopView.mm in Sources */,
 				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUISettings.mm in Sources */,
