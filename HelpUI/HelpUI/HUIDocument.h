@@ -10,8 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Help document is divided into sections, that by themselves are divided into items. Section is
 /// intended to group items by a certain common context, like a currently selected tool, while items
-/// give the ability to provide different types of content, like paragraphs of text, images, videos,
-/// etc.
+/// give the ability to provide different types of content, like images, videos, etc.
 ///
 /// Broadly speaking, help document is like a web page, sections are like top level \c <div> tags,
 /// and items are like html tags and widgets.

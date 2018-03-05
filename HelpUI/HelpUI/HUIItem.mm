@@ -28,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary<NSString *, Class> *)itemTypeToClass {
   return @{
-    @"text": [HUITextItem class],
     @"image": [HUIImageItem class],
     @"video": [HUIVideoItem class],
     @"slideshow": [HUISlideshowItem class],
@@ -56,23 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(itemClass, @"Given type %@ is not one of the valid.", type);
 
   return itemClass;
-}
-
-@end
-
-#pragma mark -
-#pragma mark HUITextItem
-#pragma mark -
-
-@implementation HUITextItem
-
-- (void)setText:(NSString *)text {
-  _text = [[HUISettings instance] localize:text];
-}
-
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return [@{@instanceKeypath(HUITextItem, text): @"text"}
-          mtl_dictionaryByAddingEntriesFromDictionary:[super JSONKeyPathsByPropertyKey]];
 }
 
 @end

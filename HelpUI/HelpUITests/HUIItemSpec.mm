@@ -25,48 +25,6 @@ context(@"base", ^{
   });
 });
 
-context(@"text", ^{
-  __block HUITextItem *item;
-  __block NSError *error;
-  __block NSDictionary *dict;
-
-  beforeEach(^{
-    dict = @{
-      @"type": @"text",
-      @"text": @"text1",
-      @"associated_feature_item_titles": @[@"featureTitle"]
-    };
-
-    item = [MTLJSONAdapter modelOfClass:HUIItem.class fromJSONDictionary:dict error:&error];
-  });
-
-  it(@"should deserialize without errors", ^{
-    expect(error).to.beNil();
-  });
-
-  it(@"should deserialize correctly", ^{
-    expect(item.text).to.equal(@"text1");
-    expect(item.associatedFeatureItemTitles).to.equal(@[@"featureTitle"]);
-  });
-
-  context(@"localization", ^{
-    beforeEach(^{
-      [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
-        return @"text after localization";
-      };
-      item = [MTLJSONAdapter modelOfClass:HUIItem.class fromJSONDictionary:dict error:&error];
-    });
-
-    afterEach(^{
-        [HUISettings instance].localizationBlock = nil;
-    });
-
-    it(@"should localize text with localizationBlock", ^{
-      expect(item.text).to.equal(@"text after localization");
-    });
-  });
-});
-
 context(@"image", ^{
   __block HUIImageItem *item;
   __block NSError *error;
