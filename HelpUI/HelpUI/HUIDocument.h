@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)sectionKeyForPath:(NSString *)featureHierarchyPath;
 
 /// Localized title of this help document. Localization is done by the localization method of
-/// \c HUIModelSettings.
+/// \c HUISettings.
 @property (readonly, nonatomic) NSString *title;
 
 /// Array of \c HUISection objects, each representing a help section.

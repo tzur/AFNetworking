@@ -14,4 +14,4 @@
 #import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTCGExtensions.h>
 
-#import "HUIModelSettings.h"
+#import "HUISettings.h"

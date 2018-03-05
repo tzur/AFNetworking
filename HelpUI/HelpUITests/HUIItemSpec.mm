@@ -51,14 +51,14 @@ context(@"text", ^{
 
   context(@"localization", ^{
     beforeEach(^{
-      HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString *) {
+      [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
         return @"text after localization";
       };
       item = [MTLJSONAdapter modelOfClass:HUIItem.class fromJSONDictionary:dict error:&error];
     });
 
     afterEach(^{
-        HUIModelSettings.localizationBlock = nil;
+        [HUISettings instance].localizationBlock = nil;
     });
 
     it(@"should localize text with localizationBlock", ^{
@@ -99,14 +99,14 @@ context(@"image", ^{
 
   context(@"localization", ^{
     beforeEach(^{
-      HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString *) {
+      [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
         return @"text after localization";
       };
       item = [MTLJSONAdapter modelOfClass:HUIItem.class fromJSONDictionary:dict error:&error];
     });
 
     afterEach(^{
-      HUIModelSettings.localizationBlock = nil;
+      [HUISettings instance].localizationBlock = nil;
     });
 
     it(@"should localize title and body with localizationBlock", ^{
@@ -146,14 +146,14 @@ context(@"video", ^{
 
   context(@"localization", ^{
     beforeEach(^{
-      HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString *) {
+      [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
         return @"text after localization";
       };
       item = [MTLJSONAdapter modelOfClass:HUIItem.class fromJSONDictionary:dict error:&error];
     });
 
     afterEach(^{
-      HUIModelSettings.localizationBlock = nil;
+      [HUISettings instance].localizationBlock = nil;
     });
 
     it(@"should localize title and body with localizationBlock", ^{
@@ -292,7 +292,7 @@ context(@"slideshow", ^{
 
   context(@"localization", ^{
     beforeEach(^{
-      HUIModelSettings.localizationBlock = ^NSString * _Nullable(NSString *) {
+      [HUISettings instance].localizationBlock = ^NSString * _Nullable(NSString *) {
         return @"text after localization";
       };
       itemDefaultTransition = [MTLJSONAdapter modelOfClass:HUIItem.class
@@ -301,7 +301,7 @@ context(@"slideshow", ^{
     });
 
     afterEach(^{
-      HUIModelSettings.localizationBlock = nil;
+      [HUISettings instance].localizationBlock = nil;
     });
 
     it(@"should localize title and body with localizationBlock", ^{
