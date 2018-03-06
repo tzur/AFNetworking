@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
-// Created by Barak Weiss.
+// Created by Boris Talesnik.
 
 #import <LTKit/NSErrorCodes+LTKit.h>
 
@@ -20,7 +20,9 @@ LTErrorCodesDeclare(INTErrorCodeProductID,
   /// Caused when a JSON record or a group of JSON records is invalid.
   INTErrorCodeInvalidJSONRecords,
   /// Caused when a JSON batch size is too large.
-  INTErrorCodeJSONBatchSizeTooLarge
+  INTErrorCodeJSONBatchSizeTooLarge,
+  /// Caused when a background task failed to start by a \c UIApplication object.
+  INTErrorCodeBackgroundTaskFailedToStart
 );
 
 NS_ASSUME_NONNULL_END

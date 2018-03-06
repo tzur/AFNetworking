@@ -22,6 +22,7 @@
 		A117236A1ECC76620039177C /* INTDeviceInfoObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */; };
 		A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236C1ECC767C0039177C /* NSUUID+Zero.mm */; };
 		A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */; };
+		A12CCBFC20342F5600D97D7F /* RACSignal+BackgroundTask.mm in Sources */ = {isa = PBXBuildFile; fileRef = A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
 		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
@@ -100,6 +101,7 @@
 		A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */; };
 		A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */; };
 		A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */; };
+		A1CFC0D8203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		A1F24CA41EC07FC20050D534 /* Alooma.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA01EC07FC20050D534 /* Alooma.m */; settings = {COMPILER_FLAGS = "-Wno-unused-parameter -Wno-deprecated-declarations -Wno-assign-enum"; }; };
 		A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */; settings = {COMPILER_FLAGS = "-Wno-char-subscripts"; }; };
@@ -502,6 +504,8 @@
 		A117236C1ECC767C0039177C /* NSUUID+Zero.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSUUID+Zero.mm"; sourceTree = "<group>"; };
 		A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTDeviceInfoLoadedEvent.h; path = Intelligence/INTDeviceInfoLoadedEvent.h; sourceTree = SOURCE_ROOT; };
 		A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = INTDeviceInfoLoadedEvent.mm; path = Intelligence/INTDeviceInfoLoadedEvent.mm; sourceTree = SOURCE_ROOT; };
+		A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BackgroundTask.mm"; sourceTree = "<group>"; };
+		A12CCBFB20342F5600D97D7F /* RACSignal+BackgroundTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+BackgroundTask.h"; sourceTree = "<group>"; };
 		A12CCC0620342F9F00D97D7F /* INTJSONSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTJSONSender.h; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
@@ -605,6 +609,7 @@
 		A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectLoadedEvent.json; sourceTree = "<group>"; };
 		A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDisplayedEvent.json; sourceTree = "<group>"; };
 		A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "INTAnalytricksContext+MergeSpec.mm"; sourceTree = "<group>"; };
+		A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BackgroundTaskSpec.mm"; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A1DA6A641EB6022C0085011B /* INTTransformerBlockBuilderStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilderStructures.h; sourceTree = "<group>"; };
 		A1F24C9F1EC07FC20050D534 /* Alooma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alooma.h; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/Alooma.h"; sourceTree = "<group>"; };
@@ -1102,6 +1107,8 @@
 				A17E0A4C1ED4350C007940A0 /* NSLocale+Country.mm */,
 				A117236B1ECC767C0039177C /* NSUUID+Zero.h */,
 				A117236C1ECC767C0039177C /* NSUUID+Zero.mm */,
+				A12CCBFB20342F5600D97D7F /* RACSignal+BackgroundTask.h */,
+				A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1111,6 +1118,7 @@
 			children = (
 				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
 				A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */,
+				A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1695,6 +1703,7 @@
 				A149BC1E1EBE6AC200DA82B7 /* INTAnalytricksAppBackgrounded.json in Sources */,
 				A149BC1F1EBE6AC200DA82B7 /* INTAnalytricksAppForegrounded.json in Sources */,
 				A17E0B0C1ED45E90007940A0 /* INTAnalytricksProjectDeleted.json in Sources */,
+				A12CCBFC20342F5600D97D7F /* RACSignal+BackgroundTask.mm in Sources */,
 				A17E08F31ED1D9D0007940A0 /* INTMediaImportedEvent.json in Sources */,
 				A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */,
 				A149BC201EBE6AC200DA82B7 /* INTAnalytricksScreenVisited.json in Sources */,
@@ -1752,6 +1761,7 @@
 				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
 				A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */,
 				A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */,
+				A1CFC0D8203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm in Sources */,
 				A117235D1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 				A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */,
