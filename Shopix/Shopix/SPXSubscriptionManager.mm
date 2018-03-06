@@ -9,7 +9,6 @@
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationStatus.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
-#import <LTKit/NSArray+Functional.h>
 
 #import "SPXAlertViewModel+ShopixPresets.h"
 
@@ -70,37 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
                                         productIdentifiers:productIdentifiers
                                          completionHandler:completionHandler];
    }];
-}
-
-- (void)fetchProductsInfoIfNeeded:(NSSet<NSString *> *)productIdentifiers
-                completionHandler:(SPXFetchProductsCompletionBlock)completionHandler {
-  @weakify(self);
-  [[self.productsManager.productList
-      deliverOnMainThread]
-      subscribeNext:^(NSSet<BZRProduct *> *productList) {
-        NSMutableDictionary<NSString *, BZRProduct *> *products = [productList.allObjects
-            lt_reduce:^NSMutableDictionary<NSString *, BZRProduct *> *
-            (NSMutableDictionary<NSString *, BZRProduct *> *productsSoFar, BZRProduct *product) {
-              if ([productIdentifiers containsObject:product.identifier]) {
-                productsSoFar[product.identifier] = product;
-              }
-              return productsSoFar;
-            }
-            initial:[@{} mutableCopy]];
-
-        completionHandler(products, nil);
-      }
-      error:^(NSError *error) {
-        @strongify(self);
-        if (!self.delegate) {
-          completionHandler(nil, error);
-          return;
-        }
-
-        [self presentProductsInfoFetchingFailedAlertWithError:error
-                                           productIdentifiers:productIdentifiers
-                                            completionHandler:completionHandler];
-      }];
 }
 
 - (void)purchaseSubscription:(NSString *)productIdentifier
