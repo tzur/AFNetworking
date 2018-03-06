@@ -238,14 +238,6 @@ context(@"multi-app subscription", ^{
 });
 
 context(@"App Store locale", ^{
-  it(@"should fetch receipt validation every time the App Store locale changes", ^{
-    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
-    validationParametersProvider.appStoreLocale = nil;
-
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-  });
-
   it(@"should not send event with the first app store locale value", ^{
     LLSignalTestRecorder *eventsRecorder;
 

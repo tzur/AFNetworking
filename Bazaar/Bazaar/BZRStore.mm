@@ -209,28 +209,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)activateBackgroundValidation {
   RACSignal *completedTransactionsSignal =
-      [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-       deliverOn:[RACScheduler scheduler]];
-
-  auto appStoreLocaleObserver = RACObserve(self.validationParametersProvider, appStoreLocale);
-  auto appStoreLocaleChangedSignal = [[appStoreLocaleObserver distinctUntilChanged] skip:1];
+      [[self.storeKitFacade.unhandledSuccessfulTransactionsSignal
+        deliverOn:[RACScheduler scheduler]] mapReplace:[RACUnit defaultUnit]];
 
   // We want to wait for the first value of the App Store locale that is fetched from the products'
   // metadata before doing validation that is triggered from the completed transactions signal.
-  auto fetchedAppStoreSignal = [[appStoreLocaleObserver skip:1] take:1];
+  auto appStoreLocaleFetchedSignal =
+      [[RACObserve(self.validationParametersProvider, appStoreLocale) skip:1] take:1];
 
   @weakify(self);
-  auto triggerSignal = [RACSignal merge:@[
-    appStoreLocaleChangedSignal,
-    [fetchedAppStoreSignal flattenMap:^(id) {
-      @strongify(self);
-      if (!self.receiptValidationStatus) {
-        return [completedTransactionsSignal startWith:@[]];
-      }
+  auto triggerSignal = [appStoreLocaleFetchedSignal then:^{
+    @strongify(self);
+    if (!self) {
+      return [RACSignal empty];
+    }
 
-      return completedTransactionsSignal;
-    }]
-  ]];
+    if (!self.receiptValidationStatus) {
+      // Trigger validation if there is no receipt validation status, usually after first app usage.
+      return [completedTransactionsSignal startWith:[RACUnit defaultUnit]];
+    }
+
+    return completedTransactionsSignal;
+  }];
 
   [self.backgroundReceiptValidator activateWithTrigger:triggerSignal];
 }
