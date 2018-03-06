@@ -1,14 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "NSValueTransformer+Validatricks.h"
+#import "NSValueTransformer+Bazaar.h"
 
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptValidationError.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSValueTransformer (Validatricks)
+@implementation NSValueTransformer (Bazaar)
 
 + (NSValueTransformer *)bzr_timeIntervalSince1970ValueTransformer {
   return [MTLValueTransformer reversibleTransformerWithForwardBlock:
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
           }];
 }
 
-+ (NSValueTransformer *)bzr_validatricksDateTimeValueTransformer {
++ (NSValueTransformer *)bzr_millisecondsDateTimeValueTransformer {
   static const double kMilliSecondsPerSecond = 1000;
 
   NSValueTransformer *transformer =
@@ -66,6 +66,22 @@ NS_ASSUME_NONNULL_BEGIN
     @"sandbox": $(BZRReceiptEnvironmentSandbox),
     @"production": $(BZRReceiptEnvironmentProduction)
   }];
+}
+
++ (NSValueTransformer *)bzr_enumNameTransformerForClass:(Class)enumClass {
+  LTParameterAssert([enumClass conformsToProtocol:@protocol(LTEnum)], @"Given class %@ doesn't "
+                    "conform to the LTEnum protocol", enumClass);
+
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:
+      ^id<LTEnum> _Nullable(NSString * _Nullable name) {
+        if (!name || ![enumClass fieldNamesToValues][name]) {
+          return nil;
+        }
+
+        return [[enumClass alloc] initWithName:name];
+      } reverseBlock:^NSString * _Nullable(id<LTEnum> _Nullable enumObject) {
+        return enumObject.name;
+      }];
 }
 
 @end

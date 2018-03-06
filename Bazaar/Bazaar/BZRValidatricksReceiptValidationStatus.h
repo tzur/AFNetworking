@@ -5,8 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Value object that represents a receipt-validation status received from Validatricks.
 @interface BZRValidatricksReceiptValidationStatus : BZRReceiptValidationStatus
-    <MTLJSONSerializing>
 
 /// Unique identifier of the receipt validation request.
 @property (readonly, nonatomic) NSString *requestId;

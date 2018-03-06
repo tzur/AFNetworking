@@ -3,8 +3,9 @@
 
 #import "BZRReceiptValidationStatus.h"
 
-#import <LTKit/LTKeyPathCoding.h>
-#import <LTKit/NSErrorCodes+LTKit.h>
+#import "BZRReceiptModel.h"
+#import "BZRReceiptValidationError.h"
+#import "NSValueTransformer+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,6 +44,22 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
++ (NSValueTransformer *)errorJSONTransformer {
+  return [NSValueTransformer bzr_enumNameTransformerForClass:[BZRReceiptValidationError class]];
+}
+
++ (NSValueTransformer *)validationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)receiptJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[BZRReceiptInfo class]];
 }
 
 + (BOOL)supportsSecureCoding {

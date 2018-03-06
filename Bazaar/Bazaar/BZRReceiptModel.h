@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Describes a single in-app purchase that is listed in an application receipt.
-@interface BZRReceiptInAppPurchaseInfo : BZRModel <NSSecureCoding>
+@interface BZRReceiptInAppPurchaseInfo : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// iTune-Connect product ID of the IAP.
 @property (readonly, nonatomic) NSString *productId;
@@ -45,7 +45,7 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 );
 
 /// Describes the renewal status of a subscription product.
-@interface BZRSubscriptionPendingRenewalInfo : BZRModel <NSSecureCoding>
+@interface BZRSubscriptionPendingRenewalInfo : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// \c YES if the subscription will auto-renew. If the value is \c YES then
 /// \c expectedRenewalProductId will specify the product identifier of the subscription that will
@@ -83,7 +83,7 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 #pragma mark -
 
 /// Describes the subscription status as listed in a receipt.
-@interface BZRReceiptSubscriptionInfo : BZRModel <NSSecureCoding>
+@interface BZRReceiptSubscriptionInfo : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// iTunes-Connect product ID of the subscription.
 @property (readonly, nonatomic) NSString *productId;
@@ -116,7 +116,7 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 #pragma mark -
 
 /// Contains crucial information that is extracted from application receipt.
-@interface BZRReceiptInfo : BZRModel <NSSecureCoding>
+@interface BZRReceiptInfo : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// The environment that the receipt was issued for.
 @property (readonly, nonatomic) BZRReceiptEnvironment *environment;

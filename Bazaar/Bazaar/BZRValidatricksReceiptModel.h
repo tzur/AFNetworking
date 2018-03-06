@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Extends \c BZRReceiptInAppPurchaseInfo by providing instant deserialization from Validatricks
 /// JSON response.
 @interface BZRValidatricksReceiptInAppPurchaseInfo : BZRReceiptInAppPurchaseInfo
-    <MTLJSONSerializing>
 @end
 
 #pragma mark -
@@ -20,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 @interface BZRValidatricksSubscriptionPendingRenewalInfo : BZRSubscriptionPendingRenewalInfo
-    <MTLJSONSerializing>
 @end
 
 #pragma mark -
@@ -29,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Extends \c BZRReceiptSubscriptionInfo by providing instant deserialization from Validatricks
 /// JSON response.
-@interface BZRValidatricksReceiptSubscriptionInfo : BZRReceiptSubscriptionInfo <MTLJSONSerializing>
+@interface BZRValidatricksReceiptSubscriptionInfo : BZRReceiptSubscriptionInfo
 @end
 
 #pragma mark -
@@ -38,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Extends \c BZRReceiptInfo by providing instant deserialization from Validatricks
 /// JSON response.
-@interface BZRValidatricksReceiptInfo : BZRReceiptInfo <MTLJSONSerializing>
+@interface BZRValidatricksReceiptInfo : BZRReceiptInfo
 @end
 
 NS_ASSUME_NONNULL_END

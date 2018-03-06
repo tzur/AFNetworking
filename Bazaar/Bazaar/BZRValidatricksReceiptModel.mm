@@ -3,9 +3,7 @@
 
 #import "BZRValidatricksReceiptModel.h"
 
-#import "BZRReceiptEnvironment.h"
-#import "NSErrorCodes+Bazaar.h"
-#import "NSValueTransformer+Validatricks.h"
+#import "NSValueTransformer+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,10 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
     @instanceKeypath(BZRValidatricksReceiptInAppPurchaseInfo, originalPurchaseDateTime):
         @"originalPurchaseDateTime",
   };
-}
-
-+ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 @end
@@ -90,22 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
-+ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
-+ (NSValueTransformer *)lastPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
-+ (NSValueTransformer *)expirationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
-+ (NSValueTransformer *)cancellationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
 + (NSValueTransformer *)pendingRenewalInfoJSONTransformer {
   return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
           [BZRValidatricksSubscriptionPendingRenewalInfo class]];
@@ -129,14 +107,6 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
-+ (NSValueTransformer *)environmentJSONTransformer {
-  return [NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer];
-}
-
-+ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
-}
-
 + (NSValueTransformer *)inAppPurchasesJSONTransformer {
   return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:
           [BZRValidatricksReceiptInAppPurchaseInfo class]];
@@ -145,6 +115,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSValueTransformer *)subscriptionJSONTransformer {
   return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
           [BZRValidatricksReceiptSubscriptionInfo class]];
+}
+
++ (NSValueTransformer *)environmentJSONTransformer {
+  return [NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer];
 }
 
 @end
