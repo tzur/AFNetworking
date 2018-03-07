@@ -4,9 +4,6 @@
 [submodule "third_party/ReactiveCocoa"]
 	path = third_party/ReactiveCocoa
 	url = https://github.com/Lightricks/ReactiveCocoa.git
-[submodule "third_party/dropbox-ios-sdk"]
-	path = third_party/dropbox-ios-sdk
-	url = https://github.com/Lightricks/dropbox-ios-sdk.git
 [submodule "third_party/Masonry"]
 	path = third_party/Masonry
 	url = https://github.com/Lightricks/Masonry.git
