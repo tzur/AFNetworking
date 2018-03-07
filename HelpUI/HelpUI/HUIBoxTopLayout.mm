@@ -73,7 +73,7 @@ static const CGFloat kBodyPreferredFontSize = 14.;
 
 - (void)setupBodyAttributedStringAndSize {
   auto bodyAttributes = @{
-    NSForegroundColorAttributeName: [HUISettings instance].titleBoxBodyColor,
+    NSForegroundColorAttributeName: [HUISettings instance].topBoxBodyColor,
     NSParagraphStyleAttributeName: [HUIBoxTopLayout paragraphStyle],
     NSFontAttributeName: [HUIBoxTopLayout preferredBodyFont]
   };
@@ -100,7 +100,7 @@ static const CGFloat kBodyPreferredFontSize = 14.;
 
 + (UIFont *)preferredBodyFont {
   return [UIFont systemFontOfSize:kBodyPreferredFontSize
-                           weight:[HUISettings instance].titleBoxBodyFontWeight];
+                           weight:[HUISettings instance].topBoxBodyFontWeight];
 }
 
 + (NSParagraphStyle *)paragraphStyle {
@@ -150,7 +150,7 @@ static const CGFloat kBodyPreferredFontSize = 14.;
 
 - (void)setupTitleAttributedStringAndSize {
   auto titleAttributes = @{
-    NSForegroundColorAttributeName: [HUISettings instance].titleBoxHeadlineColor,
+    NSForegroundColorAttributeName: [HUISettings instance].topBoxTitleColor,
     NSParagraphStyleAttributeName: [HUIBoxTopLayout paragraphStyle],
     NSFontAttributeName: [HUIBoxTopLayout preferredTitleFont]
   };
@@ -182,7 +182,7 @@ static const CGFloat kBodyPreferredFontSize = 14.;
 
 + (UIFont *)preferredTitleFont {
   return [UIFont systemFontOfSize:kTitlePreferredFontSize
-                           weight:[HUISettings instance].titleBoxHeadlineFontWeight];
+                           weight:[HUISettings instance].topBoxTitleFontWeight];
 }
 
 + (CGFloat)maxTitleHeight {

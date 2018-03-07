@@ -727,6 +727,15 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
+		198F568C204FDDFA00DA392A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1970BAC32014C5E900E81A5F /* HUISettings.h */,
+				1970BAED2014C5EA00E81A5F /* HUISettings.mm */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		1992523920270FD600BF71E5 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,8 +810,6 @@
 				19E518A0200CCD9A008A9EA5 /* HUIItem.mm */,
 				198FDCAB2018DCDA00F85E75 /* HUISection.h */,
 				198FDCD52018DCDA00F85E75 /* HUISection.mm */,
-				1970BAC32014C5E900E81A5F /* HUISettings.h */,
-				1970BAED2014C5EA00E81A5F /* HUISettings.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -834,6 +841,7 @@
 				195B3A3D1FFE38DE00F8DAB4 /* Assets */,
 				19C43E8C1FFA739B007BB06E /* Models */,
 				1992523920270FD600BF71E5 /* Providers */,
+				198F568C204FDDFA00DA392A /* Settings */,
 				19C43CC71FF93006007BB06E /* Supporting Files */,
 				19EEEAE5204452F8007EF4CF /* Views */,
 			);
