@@ -137,9 +137,7 @@ context(@"allowed ranges", ^{
            lt::Interval<CGFloat>({0, kCGFloatMax})).to.beTruthy();
     expect([DVNBrushModelV1 allowedAngleRange] == lt::Interval<CGFloat>({0, 4 * M_PI}))
         .to.beTruthy();
-    expect([DVNBrushModelV1 allowedInfScaleJitterRange] == lt::Interval<CGFloat>({0, 1}))
-        .to.beTruthy();
-    expect([DVNBrushModelV1 allowedSupScaleJitterRange] == lt::Interval<CGFloat>({1, kCGFloatMax}))
+    expect([DVNBrushModelV1 allowedScaleJitterRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedTaperingLengthRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
         .to.beTruthy();

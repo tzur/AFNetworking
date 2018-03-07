@@ -169,11 +169,8 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c countRange
 @property (readonly, nonatomic) lt::Interval<CGFloat> scaleJitterRange;
 
-/// Allowed range of the infimum of the \c scaleJitterRange of this instance.
-@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedInfScaleJitterRange;
-
-/// Allowed range of the supremum of the \c scaleJitterRange of this instance.
-@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedSupScaleJitterRange;
+/// Allowed range of \c scaleJitterRange.
+@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedScaleJitterRange;
 
 #pragma mark -
 #pragma mark Tapering
