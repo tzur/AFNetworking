@@ -446,6 +446,7 @@
 		1970BAC32014C5E900E81A5F /* HUISettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISettings.h; sourceTree = "<group>"; };
 		1970BAED2014C5EA00E81A5F /* HUISettings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISettings.mm; sourceTree = "<group>"; };
 		1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIItemSpec.mm; sourceTree = "<group>"; };
+		198F5657204FCAA000DA392A /* HUIAnimatableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIAnimatableCell.h; sourceTree = "<group>"; };
 		198FDCAB2018DCDA00F85E75 /* HUISection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISection.h; sourceTree = "<group>"; };
 		198FDCD52018DCDA00F85E75 /* HUISection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISection.mm; sourceTree = "<group>"; };
 		198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISectionSpec.mm; sourceTree = "<group>"; };
@@ -851,6 +852,7 @@
 		19EEEAE5204452F8007EF4CF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				198F5657204FCAA000DA392A /* HUIAnimatableCell.h */,
 				19EEEAE820445359007EF4CF /* HUIBoxTopLayout.h */,
 				19EEEAE920445359007EF4CF /* HUIBoxTopLayout.mm */,
 				19EEF3B6204D333F007EF4CF /* HUIBoxTopView.h */,
