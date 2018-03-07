@@ -81,7 +81,6 @@
 		887265961D772D8700D4F2A6 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF9151D7727890023AF7A /* Localizable.stringsdict */; };
 		887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */; };
 		88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */; };
-		8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */; };
 		8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8BF1F3EFB1D00F76142 /* libLLReactiveMatchers.a */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
 		8B6868451F3B27AE00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6864451F3347A600F0EF4C /* ReactiveObjC.framework */; };
@@ -613,7 +612,6 @@
 				8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */,
 				8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */,
-				8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */,
 				8861FE0B1E5A2CC800CA1436 /* GLKit.framework in Frameworks */,
 				8861FE071E5A2C6300CA1436 /* ImageIO.framework in Frameworks */,
 				287C87841F54114C00FCC2CC /* Mantle.framework in Frameworks */,
