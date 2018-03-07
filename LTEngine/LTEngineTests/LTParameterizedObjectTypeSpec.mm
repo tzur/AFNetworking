@@ -11,6 +11,7 @@ it(@"should return a factory of the correct class for each type", ^{
   NSDictionary<LTParameterizedObjectType *, Class> *typeToClass = @{
     $(LTParameterizedObjectTypeDegenerate): [LTBasicDegenerateInterpolantFactory class],
     $(LTParameterizedObjectTypeLinear): [LTBasicLinearInterpolantFactory class],
+    $(LTParameterizedObjectTypeCubicBezier): [LTBasicCubicBezierInterpolantFactory class],
     $(LTParameterizedObjectTypeCatmullRom): [LTBasicCatmullRomInterpolantFactory class],
     $(LTParameterizedObjectTypeBSpline): [LTBasicBSplineInterpolantFactory class]
   };
