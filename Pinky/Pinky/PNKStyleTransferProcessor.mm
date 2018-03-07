@@ -3,6 +3,7 @@
 
 #import "PNKStyleTransferProcessor.h"
 
+#import "LTEasyBoxing+Pinky.h"
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
@@ -12,7 +13,7 @@
 #import "PNKNeuralNetworkModel.h"
 #import "PNKNeuralNetworkModelFactory.h"
 #import "PNKPixelBufferUtils.h"
-#import "PNKStyleTransferNetwork.h"
+#import "PNKRunnableNeuralNetwork.h"
 #import "PNKStyleTransferState.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PNKStyleTransferProcessor ()
 
 /// Neural network performing the style transfer.
-@property (readonly, nonatomic) PNKStyleTransferNetwork *network;
+@property (readonly, nonatomic) PNKRunnableNeuralNetwork *network;
 
 /// Device to encode thie operations of this processor.
 @property (readonly, nonatomic) id<MTLDevice> device;
@@ -62,6 +63,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Pinky kernel used to set the alpha channel of the output to 1.
 @property (readonly, nonatomic) PNKConstantAlpha *alphaCorrect;
 
+/// Number of feature channels in the \c network input image.
+@property (readonly, nonatomic) NSUInteger networkInputChannels;
+
+/// Number of feature channels in the \c network output image.
+@property (readonly, nonatomic) NSUInteger networkOutputChannels;
+
 /// Serial queue used to perform the operations when the processor's asynchronic API is called.
 /// This separate queue is used because encoding the network can take a non-negligible time.
 @property (readonly, nonatomic) dispatch_queue_t dispatchQueue;
@@ -72,11 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)initWithModel:(NSURL *)modelURL error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
-    auto model = [[[PNKNeuralNetworkModelFactory alloc] init] modelWithCoreMLModel:modelURL
-                                                                             error:error];
-    if (!model) {
-      return nil;
-    }
     _device = PNKDefaultDevice();
     if (!PNKSupportsMTLDevice(self.device)) {
       if (error) {
@@ -88,17 +90,28 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     _commandQueue = PNKDefaultCommandQueue();
-    _network = [[PNKStyleTransferNetwork alloc] initWithDevice:self.device model:*model];
+
+    auto scheme = [PNKNetworkSchemeFactory schemeWithDevice:self.device coreMLModel:modelURL
+                                                      error:error];
+    if (!scheme) {
+      return nil;
+    }
+
+    _network = [[PNKRunnableNeuralNetwork alloc] initWithNetworkScheme:*scheme];
+    [self validateNetwork];
+    [self setChannelCounts];
 
     _dispatchQueue = dispatch_queue_create("com.lightricks.Pinky.StyleTransferProcessor",
                                            DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
 
     _stylizedOutputSmallSide = 1024;
-    _stylizedOutputChannels = self.network.outputChannels > 1 ? 4 : 1;
-    _stylesCount = self.network.stylesCount;
 
     _inputResizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
     _alphaCorrect = [[PNKConstantAlpha alloc] initWithDevice:self.device alpha:1.];
+
+    _stylesCount = (NSUInteger)[self.network.metadata[@"NumberOfStyles"] integerValue];
+    LTParameterAssert(self.networkInputChannels, @"Network metadata must contain a valid value for "
+                      "styles count");
   } else {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
@@ -107,6 +120,30 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
   return self;
+}
+
+- (void)validateNetwork {
+  LTParameterAssert(self.network.inputImageNames.count == 1, @"Network must have 1 input image, "
+                    "got %lu", (unsigned long)self.network.inputImageNames.count);
+  LTParameterAssert(self.network.inputImageNamesToSizes.size() == 1, @"Network must have "
+                    "inputImageNamesToSizes dictionary with 1 entry, got %lu",
+                    (unsigned long)self.network.inputImageNamesToSizes.size());
+  LTParameterAssert(self.network.inputParameterNames.count == 1, @"Network must have 1 input "
+                    "parameter, got %lu", (unsigned long)self.network.inputParameterNames.count);
+  LTParameterAssert(self.network.outputImageNames.count == 1, @"Network must have 1 output image, "
+                    "got %lu", (unsigned long)self.network.outputImageNames.count);
+}
+
+- (void)setChannelCounts {
+  auto inputImageName = self.network.inputImageNames[0];
+  auto inputImageSize = self.network.inputImageNamesToSizes[inputImageName.UTF8String];
+  _networkInputChannels = inputImageSize.depth;
+
+  auto outputImageName = self.network.outputImageNames[0];
+  auto outputImageNamesToSizes =
+      [self.network outputImageSizesFromInputImageSizes:self.network.inputImageNamesToSizes];
+  auto outputImageSize = outputImageNamesToSizes[outputImageName.UTF8String];
+  _networkOutputChannels = outputImageSize.depth;
 }
 
 - (void)stylizeWithInput:(CVPixelBufferRef)input output:(CVPixelBufferRef)output
@@ -129,6 +166,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifyOutputBuffer:(CVPixelBufferRef)output withSize:(CGSize)size {
+  PNKAssertPixelBufferFormatChannelCount(output, [self stylizedOutputChannels]);
+
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto expectedOutputSize = [self outputSizeWithInputSize:size];
@@ -163,7 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
   auto netInputImage = [MPSImage pnk_unorm8ImageWithDevice:self.device
                                                      width:CVPixelBufferGetWidth(output)
                                                     height:CVPixelBufferGetHeight(output)
-                                                  channels:self.network.inputChannels];
+                                                  channels:self.networkInputChannels];
 
   [self encodePreProcessWithCommandBuffer:commandBuffer input:inputImage
                                    output:netInputImage];
@@ -181,25 +220,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)encodeAndCommitWithState:(PNKStyleTransferState *)state output:(CVPixelBufferRef)output
                       styleIndex:(NSUInteger)styleIndex completion:(LTCompletionBlock)completion {
-  MPSImage *outputImage = PNKImageFromPixelBuffer(output, self.device, self.stylizedOutputChannels);
+  MPSImage *outputImage = PNKImageFromPixelBuffer(output, self.device);
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
-  if (self.stylizedOutputChannels != 1) {
+  LTParameterAssert(styleIndex < [self stylesCount], @"Style index must be less then %lu, "
+                    "got %lu", (unsigned long)[self stylesCount], (unsigned long)styleIndex);
+  NSString *inputImageName = self.network.inputImageNames[0];
+  NSString *inputParameterName = self.network.inputParameterNames[0];
+  NSString *outputImageName = self.network.outputImageNames[0];
+
+  if ([self stylizedOutputChannels] != 1) {
     auto netOutputImage =
         [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
                                                       width:outputImage.width
                                                      height:outputImage.height
-                                                   channels:self.network.outputChannels];
-    [self.network encodeWithCommandBuffer:commandBuffer inputImage:state.networkInputImage
-                              outputImage:netOutputImage styleIndex:styleIndex];
+                                                   channels:self.networkOutputChannels];
+    [self.network encodeWithCommandBuffer:commandBuffer
+                              inputImages:@{inputImageName: state.networkInputImage}
+                          inputParameters:@{inputParameterName: @(styleIndex)}
+                             outputImages:@{outputImageName: netOutputImage}];
 
     [self encodePostProcessWithCommandBuffer:commandBuffer inputImage:netOutputImage
                                  outputImage:outputImage];
 
   } else {
-    [self.network encodeWithCommandBuffer:commandBuffer inputImage:state.networkInputImage
-                              outputImage:outputImage styleIndex:styleIndex];
+    [self.network encodeWithCommandBuffer:commandBuffer
+                              inputImages:@{inputImageName: state.networkInputImage}
+                          inputParameters:@{inputParameterName: @(styleIndex)}
+                             outputImages:@{outputImageName:outputImage}];
   }
 
   [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer>) {
@@ -217,6 +266,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodePostProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer inputImage:(MPSImage *)input
                                outputImage:(MPSImage *)output {
   [self.alphaCorrect encodeToCommandBuffer:buffer inputImage:input outputImage:output];
+}
+
+- (NSUInteger)stylizedOutputChannels {
+  return (self.networkOutputChannels == 3) ? 4 : self.networkOutputChannels;
 }
 
 - (CGSize)outputSizeWithInputSize:(CGSize)size {
@@ -259,6 +312,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
   return CGSizeZero;
+}
+
+- (NSUInteger)stylizedOutputChannels {
+  return 0;
+}
+
+- (NSUInteger)stylesCount {
+  return 0;
 }
 
 @end

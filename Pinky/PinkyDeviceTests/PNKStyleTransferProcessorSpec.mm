@@ -11,44 +11,11 @@ DeviceSpecBegin(PNKStyleTransferProcessor)
 
 __block PNKStyleTransferProcessor *processor;
 
-static NSString * const kColorNetworkFileName = @"echo.nnmodel";
 static NSString * const kGreyNetworkFileName = @"sketch.nnmodel";
 
 static NSString * const kLargeImageFileName = @"Lena.png";
-static NSString * const kSmallImageFileName = @"Lena128.png";
 
 context(@"stylize", ^{
-  it(@"should stylize image correctly using a color input network", ^{
-    NSBundle *bundle = NSBundle.lt_testBundle;
-    NSError *error;
-    auto modelURL = [NSURL URLWithString:[bundle lt_pathForResource:kColorNetworkFileName]];
-    processor = [[PNKStyleTransferProcessor alloc] initWithModel:modelURL error:&error];
-
-    cv::Mat4b inputMat = LTLoadMat([self class], kSmallImageFileName);
-    auto inputBuffer = LTCVPixelBufferCreate(inputMat.cols, inputMat.rows,
-                                             kCVPixelFormatType_32BGRA);
-    LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat * _Nonnull image) {
-      inputMat.copyTo(*image);
-    });
-
-    auto outputSize = [processor outputSizeWithInputSize:CGSizeMake(inputMat.cols, inputMat.rows)];
-    auto outputBuffer = LTCVPixelBufferCreate(outputSize.width, outputSize.height,
-                                              kCVPixelFormatType_32BGRA);
-
-    waitUntil(^(DoneCallback done) {
-      [processor stylizeWithInput:inputBuffer.get() output:outputBuffer.get() styleIndex:55
-                       completion:^(PNKStyleTransferState * __unused state){
-         done();
-      }];
-    });
-
-    cv::Mat expectedMat = LTLoadMat([self class], @"Lena128_echo55.png");
-    LTCVPixelBufferImageForReading(outputBuffer.get(), ^(const cv::Mat &outputMat) {
-      double psnr = PNKPsnrScore(expectedMat, outputMat, YES);
-      expect(psnr > 50).to.beTruthy();
-    });
-  });
-
   it(@"should stylize image correctly using a greyscale input network", ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
     NSError *error;
@@ -73,7 +40,7 @@ context(@"stylize", ^{
       }];
     });
 
-    cv::Mat1b expectedMat = LTLoadMat([self class], @"Lena_sketch1.png");
+    cv::Mat1b expectedMat = LTLoadMat([self class], @"Lena_sketch10.png");
     LTCVPixelBufferImageForReading(outputBuffer.get(), ^(const cv::Mat &outputMat) {
       double psnr = PNKPsnrScore(expectedMat, outputMat, NO);
       expect(psnr > 50).to.beTruthy();

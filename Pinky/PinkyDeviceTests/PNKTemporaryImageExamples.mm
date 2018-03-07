@@ -6,11 +6,15 @@
 #import "PNKKernel.h"
 
 NSString * const kPNKTemporaryImageUnaryExamples = @"PNKTemporaryImageUnaryExamples";
+NSString * const kPNKTemporaryImageParametricUnaryExamples =
+    @"PNKTemporaryImageParametricUnaryExamples";
 NSString * const kPNKTemporaryImageBinaryExamples = @"PNKTemporaryImageBinaryExamples";
 NSString * const kPNKTemporaryImageExamplesKernel = @"PNKTemporaryImageExamplesKernel";
 NSString * const kPNKTemporaryImageExamplesDevice = @"PNKTemporaryImageExamplesDevice";
 NSString * const kPNKTemporaryImageExamplesInputChannels =
     @"PNKTemporaryImageExamplesInputChannels";
+NSString * const kPNKTemporaryImageExamplesInputParameters =
+    @"PNKTemporaryImageExamplesInputParameters";
 
 SharedExamplesBegin(PNKTemporaryImageExamples)
 
@@ -29,11 +33,37 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
       auto outputSize = [unaryKernel outputSizeForInputSize:inputSize];
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                               size:inputSize];
+                                                                        size:inputSize];
       expect(inputImage.readCount == 1);
 
       [unaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                              outputImage:outputImage];
+      expect(inputImage.readCount == 0);
+    });
+  });
+});
+
+sharedExamplesFor(kPNKTemporaryImageParametricUnaryExamples, ^(NSDictionary *data) {
+  context(@"PNKParametricUnaryKernel protocol", ^{
+    it(@"should manage readCount properly upon consumption", ^{
+      id<PNKParametricUnaryKernel> parametricUnaryKernel = data[kPNKTemporaryImageExamplesKernel];
+      id<MTLDevice> device = data[kPNKTemporaryImageExamplesDevice];
+      NSUInteger inputChannels = [data[kPNKTemporaryImageExamplesInputChannels]
+                                  unsignedIntegerValue];
+      NSDictionary *inputParameters = data[kPNKTemporaryImageExamplesInputParameters];
+
+      auto commandQueue = [device newCommandQueue];
+      id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+
+      MTLSize inputSize{32, 32, inputChannels};
+      auto outputSize = [parametricUnaryKernel outputSizeForInputSize:inputSize];
+      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
+                                                                        size:inputSize];
+      expect(inputImage.readCount == 1);
+
+      [parametricUnaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                   inputParameters:inputParameters outputImage:outputImage];
       expect(inputImage.readCount == 0);
     });
   });

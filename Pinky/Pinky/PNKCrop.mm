@@ -88,7 +88,7 @@ static NSString * const kDebugGroupName = @"crop";
                     (unsigned long)expectedOutputSize.width,
                     (unsigned long)outputImage.width);
   LTParameterAssert(expectedOutputSize.height == outputImage.height,
-                    @"Output image width must equal %lu, got: %lu",
+                    @"Output image height must equal %lu, got: %lu",
                     (unsigned long)expectedOutputSize.height,
                     (unsigned long)outputImage.height);
 }

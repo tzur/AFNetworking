@@ -6,6 +6,11 @@
 /// kernels manage the \c readCount property correctly by decreasing it after encoding the image.
 extern NSString * const kPNKTemporaryImageUnaryExamples;
 
+/// Group name of shared tests for \c PNKParametricUnaryKernel implementations that support
+/// \c MPSTemporaryImage as inputs to their encode methods. The shared tests check whether the
+/// kernels manage the \c readCount property correctly by decreasing it after encoding the image.
+extern NSString * const kPNKTemporaryImageParametricUnaryExamples;
+
 /// Group name of shared tests for \c PNKBinaryKernel implementations that support
 /// \c MPSTemporaryImage as inputs to their encode methods. The shared tests check whether the
 /// kernels manage the \c readCount property correctly by decreasing it after encoding the image.
@@ -20,3 +25,6 @@ extern NSString * const kPNKTemporaryImageExamplesDevice;
 
 /// Dictionary key stating the number of feature channels in the input image.
 extern NSString * const kPNKTemporaryImageExamplesInputChannels;
+
+/// Dictionary key containing array of input parameters.
+extern NSString * const kPNKTemporaryImageExamplesInputParameters;

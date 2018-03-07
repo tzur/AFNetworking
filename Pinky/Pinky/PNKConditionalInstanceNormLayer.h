@@ -14,7 +14,7 @@ namespace pnk {
 
 /// Layer performing a conditional instance normalization operation.
 API_AVAILABLE(ios(10.0))
-@interface PNKConditionalInstanceNormLayer : NSObject <PNKUnaryNeuralKernel>
+@interface PNKConditionalInstanceNormLayer : NSObject <PNKNeuralKernel, PNKParametricUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs a conditional instance normalization
 /// operation such that each condition parameters are described by their index in
@@ -28,14 +28,14 @@ API_AVAILABLE(ios(10.0))
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as
-/// input. Output is written asynchronously to \c outputImage. \c outputImage must be the same size
-/// and number of channels as \c inputImage.
+/// input. \c inputParameters must be a dictionary containing the condition number to be used by
+/// this instance normalization layer. It must contain a single key-value pair with a key
+/// @"condition" and an \c NSNumber value for the condition number. Output is written asynchronously
+/// to \c outputImage. \c outputImage must be the same size and number of channels as \c inputImage.
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
-
-/// Sets the conditional for the parameters to be used by this instance normalization layer.
-/// \c condition must be in <tt>[0, conditionsCount)</tt>.
-- (void)setSingleCondition:(NSUInteger)condition;
+                   inputImage:(MPSImage *)inputImage
+              inputParameters:(NSDictionary<NSString *, NSObject *> *)inputParameters
+                  outputImage:(MPSImage *)outputImage;
 
 /// Number of conditions applicable in this layer.
 @property (readonly, nonatomic) NSUInteger conditionsCount;

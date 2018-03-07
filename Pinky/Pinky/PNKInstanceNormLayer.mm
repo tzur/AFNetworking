@@ -40,7 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
     _instanceNormKernel = [[PNKInstanceNormInternalKernel alloc]
                            initWithDevice:device
                            featureChannels:normalizationModel.inputFeatureChannels
-                           activationModel:activationModel];
+                           activationModel:activationModel
+                           reuseParameterBuffers:YES];
 
     [self.instanceNormKernel setScaleParameters:normalizationModel.scale];
     [self.instanceNormKernel setShiftParameters:normalizationModel.shift];

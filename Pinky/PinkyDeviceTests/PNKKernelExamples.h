@@ -5,6 +5,10 @@
 /// operation completes successfully and that the output is correct.
 extern NSString * const kPNKUnaryKernelExamples;
 
+/// Group name of shared tests for \c PNKParametricUnaryKernel implementations checking that the
+/// encoded operation completes successfully and that the output is correct.
+extern NSString * const kPNKParametricUnaryKernelExamples;
+
 /// Group name of shared tests for \c PNKBinaryKernel implementations checking that the encoded
 /// operation completes successfully and that the output is correct.
 extern NSString * const kPNKBinaryKernelExamples;
@@ -43,6 +47,9 @@ extern NSString * const kPNKKernelExamplesPrimaryInputMat;
 
 /// Dictionary key to the cv::Mat representing the secondary input image.
 extern NSString * const kPNKKernelExamplesSecondaryInputMat;
+
+/// Dictionary key to the array of input parameters.
+extern NSString * const kPNKKernelExamplesInputParameters;
 
 /// Dictionary key to the cv::Mat representing the expected result image.
 extern NSString * const kPNKKernelExamplesExpectedMat;

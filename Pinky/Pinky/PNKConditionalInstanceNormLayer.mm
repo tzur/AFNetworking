@@ -4,6 +4,7 @@
 #import "PNKConditionalInstanceNormLayer.h"
 
 #import "PNKBufferExtensions.h"
+#import "PNKCollectionUtils.h"
 #import "PNKInstanceNormInternalKernel.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
@@ -48,7 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
     _instanceNormKernel = [[PNKInstanceNormInternalKernel alloc]
                            initWithDevice:device
                            featureChannels:normalizationModel.inputFeatureChannels
-                           activationModel:activationModel];
+                           activationModel:activationModel
+                           reuseParameterBuffers:NO];
 
     [self setSingleCondition:0];
   }
@@ -79,22 +81,37 @@ NS_ASSUME_NONNULL_BEGIN
   _shiftMatrix = model.shift.reshape(0, (int)self.conditionsCount).clone();
 }
 
+#pragma mark -
+#pragma mark PNKParametricUnaryKernel
+#pragma mark -
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage
+              inputParameters:(NSDictionary<NSString *, NSObject *> *)inputParameters
+                  outputImage:(MPSImage *)outputImage {
+  [self validateInputParameters:inputParameters];
+  NSUInteger condition = ((NSNumber *)inputParameters[@"condition"]).unsignedIntegerValue;
+  [self setSingleCondition:condition];
+  [self.instanceNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                    outputImage:outputImage];
+}
+
+- (void)validateInputParameters:(NSDictionary<NSString *, NSObject *> *)inputParameters {
+  PNKValidateCollection(inputParameters, [self inputParameterKernelNames], @"input parameters");
+  LTAssert([inputParameters[@"condition"] isKindOfClass:[NSNumber class]], @"Input parameter %@ is "
+           "not an NSNumber", inputParameters[@"condition"]);
+}
+
+- (NSArray<NSString *> *)inputParameterKernelNames {
+  return @[@"condition"];
+}
+
 - (void)setSingleCondition:(NSUInteger)condition {
   LTParameterAssert(condition < self.conditionsCount,
                     @"Condition number must be in [0, %lu), got %lu",
                     (unsigned long)self.conditionsCount, (unsigned long)condition);
   [self.instanceNormKernel setScaleParameters:self.scaleMatrix.row((int)condition)];
   [self.instanceNormKernel setShiftParameters:self.shiftMatrix.row((int)condition)];
-}
-
-#pragma mark -
-#pragma mark PNKUnaryNeuralKernel
-#pragma mark -
-
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
-  [self.instanceNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                    outputImage:outputImage];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

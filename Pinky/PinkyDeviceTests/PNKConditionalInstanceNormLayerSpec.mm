@@ -80,11 +80,9 @@ context(@"kernel input region", ^{
   });
 });
 
-context(@"set conditions", ^{
-  __block NSUInteger conditionsCount;
-
-  beforeEach(^{
-    conditionsCount = 3;
+context(@"encoding parameters checking", ^{
+  it(@"should raise when trying to set a condition out of bounds", ^{
+    NSUInteger conditionsCount = 3;
 
     pnk::ActivationKernelModel activationModel {
       .activationType = pnk::ActivationTypeIdentity
@@ -100,18 +98,22 @@ context(@"set conditions", ^{
     ciNormOp = [[PNKConditionalInstanceNormLayer alloc] initWithDevice:device
                                                     normalizationModel:normalizationModel
                                                        activationModel:activationModel];
-  });
 
-  it(@"raise when trying to set a condition out of bounds", ^{
+    auto inputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+                                                    height:kInputHeight
+                                                  channels:kInputRGBFeatureChannels];
+
+    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+                                                     height:kInputHeight
+                                                   channels:kInputRGBFeatureChannels];
+
+    auto commandQueue = [device newCommandQueue];
+    auto commandBuffer = [commandQueue commandBuffer];
+    auto inputParameters = @{@"condition": @(conditionsCount)};
     expect(^{
-      [ciNormOp setSingleCondition:conditionsCount];
+      [ciNormOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                      inputParameters:inputParameters outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"set condition correctly when setting a condition in bounds", ^{
-    expect(^{
-      [ciNormOp setSingleCondition:conditionsCount - 1];
-    }).toNot.raiseAny();
   });
 });
 
@@ -122,7 +124,7 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
     bundle = NSBundle.lt_testBundle;
   });
 
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+  itShouldBehaveLike(kPNKParametricUnaryKernelExamples, ^{
     NSUInteger inputChannels = 4;
 
     pnk::ActivationKernelModel activationModel {
@@ -159,11 +161,12 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
       kPNKKernelExamplesOutputWidth: @(kInputWidth),
       kPNKKernelExamplesOutputHeight: @(kInputHeight),
       kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesInputParameters: @{@"condition": @0},
       kPNKKernelExamplesExpectedMat: $(expectedMat)
     };
   });
 
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+  itShouldBehaveLike(kPNKParametricUnaryKernelExamples, ^{
     NSUInteger inputChannels = kInputArrayFeatureChannels;
 
     pnk::ActivationKernelModel activationModel {
@@ -199,11 +202,12 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
       kPNKKernelExamplesOutputWidth: @(kInputWidth),
       kPNKKernelExamplesOutputHeight: @(kInputHeight),
       kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesInputParameters: @{@"condition": @0},
       kPNKKernelExamplesExpectedMat: $(expectedMat)
     };
   });
 
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+  itShouldBehaveLike(kPNKParametricUnaryKernelExamples, ^{
     NSUInteger inputChannels = kInputArrayFeatureChannels;
 
     pnk::ActivationKernelModel activationModel {
@@ -239,13 +243,14 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
       kPNKKernelExamplesOutputWidth: @(kInputWidth),
       kPNKKernelExamplesOutputHeight: @(kInputHeight),
       kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesInputParameters: @{@"condition": @0},
       kPNKKernelExamplesExpectedMat: $(expectedMat)
     };
   });
 });
 
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+  itShouldBehaveLike(kPNKTemporaryImageParametricUnaryExamples, ^{
     pnk::ActivationKernelModel activationModel {
       .activationType = pnk::ActivationTypeIdentity
     };
@@ -263,11 +268,12 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: ciNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels),
+      kPNKTemporaryImageExamplesInputParameters: @{@"condition": @0}
     };
   });
 
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+  itShouldBehaveLike(kPNKTemporaryImageParametricUnaryExamples, ^{
     pnk::ActivationKernelModel activationModel {
       .activationType = pnk::ActivationTypeIdentity
     };
@@ -285,7 +291,8 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: ciNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels),
+      kPNKTemporaryImageExamplesInputParameters: @{@"condition": @0}
     };
   });
 });

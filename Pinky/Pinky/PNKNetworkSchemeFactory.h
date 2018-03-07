@@ -19,8 +19,19 @@ struct NetworkScheme {
   /// Dictionary that maps names of network input images to their respective read counts.
   NSDictionary<NSString *, NSNumber *> *inputImagesData;
 
+  /// Dictionary that maps input image names to their suggested sizes.
+  std::unordered_map<std::string, MTLSize> inputImageNamesToSizes;
+
   /// Array of names of network output images.
   NSArray<NSString *> *outputImageNames;
+
+  /// Array of names of network input parameters. While input images and output images are
+  /// 3-dimensional tensors in Tensorflow and \c MPSImages in Pinky, input parameters can have any
+  /// (non-image) type.
+  NSArray<NSString *> *inputParameterNames;
+
+  /// Dictionary that maps names of network metadata fields to their values.
+  NSDictionary<NSString *, NSString *> *metadata;
 };
 
 } // namespace pnk
