@@ -21,7 +21,8 @@ API_AVAILABLE(ios(10.0))
 /// set via their respective setters.
 - (instancetype)initWithDevice:(id<MTLDevice>)device
                featureChannels:(NSUInteger)featureChannels
-                activationModel:(const pnk::ActivationKernelModel &)activationModel
+               activationModel:(const pnk::ActivationKernelModel &)activationModel
+         reuseParameterBuffers:(BOOL)reuseParameterBuffers
     NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as

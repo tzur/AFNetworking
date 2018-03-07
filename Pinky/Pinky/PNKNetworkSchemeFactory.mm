@@ -6,17 +6,22 @@
 #import <LTKit/LTMMInputFile.h>
 #import <LTKit/NSData+Compression.h>
 
+#import "LTEasyBoxing+Pinky.h"
 #import "PNKActivationLayer.h"
 #import "PNKAddition.h"
 #import "PNKBatchNormalizationLayer.h"
 #import "PNKConcatenation.h"
+#import "PNKConditionalInstanceNormLayer.h"
 #import "PNKConvolutionLayer.h"
 #import "PNKCoreMLLayerParser.h"
+#import "PNKCrop.h"
 #import "PNKInstanceNormLayer.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 #import "PNKNeuralNode.h"
 #import "PNKPoolingLayer.h"
+#import "PNKProtobufHelpers.h"
 #import "PNKProtobufMacros.h"
+#import "PNKReflectionPadding.h"
 #import "PNKSoftMaxLayer.h"
 #import "PNKUpsampling.h"
 
@@ -48,10 +53,16 @@ struct NetworkMetadata {
   std::unordered_multimap<std::string, const cms::NeuralNetworkLayer *> inputNameToLayers;
 
   /// Network input images.
-  std::unordered_set<std::string> globalInputNames;
+  std::unordered_set<std::string> globalInputImageNames;
 
   /// Network output images.
-  std::unordered_set<std::string> globalOutputNames;
+  std::unordered_set<std::string> globalOutputImageNames;
+
+  /// Network input parameters.
+  std::unordered_set<std::string> globalInputParameterNames;
+
+  /// Maps the name of each input image to its suggested size.
+  std::unordered_map<std::string, MTLSize> globalInputImageNamesToSizes;
 };
 
 /// Intermediate data used by graph traversal algoithm.
@@ -104,13 +115,17 @@ struct GraphTraversalData {
 
   LTParameterAssert(networkModel.has_neuralnetwork(), @"Incorrect model type, expected neural "
                     "network");
-  return [self schemeWithDevice:device neuralNetwork:networkModel.neuralnetwork() error:error];
+
+  return [self schemeWithDevice:device modelDescription:networkModel.description()
+                  neuralNetwork:networkModel.neuralnetwork() error:error];
 }
 
 + (std::experimental::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
+    modelDescription:(const cms::ModelDescription &)modelDescription
     neuralNetwork:(const cms::NeuralNetwork &)neuralNetwork
     error:(NSError *__autoreleasing *)error {
-  pnk::NetworkMetadata metadata = [self networkMetadataFromNeuralNetwork:neuralNetwork];
+  pnk::NetworkMetadata metadata = [self networkMetadataFromModelDescription:modelDescription
+                                                              neuralNetwork:neuralNetwork];
 
   auto orderedLayers = [self orderedLayersFromNeuralNetwork:neuralNetwork metadata:metadata
                                                       error:error];
@@ -129,46 +144,74 @@ struct GraphTraversalData {
   }
 
   NSMutableDictionary<NSString *, NSNumber *> *inputImagesData = [NSMutableDictionary dictionary];
-  for (const auto &name: metadata.globalInputNames) {
+  for (const auto &name: metadata.globalInputImageNames) {
     size_t readCount = metadata.inputNameToLayers.count(name);
     [inputImagesData setObject:@(readCount) forKey:[NSString stringWithUTF8String:name.c_str()]];
   }
 
+  NSMutableArray<NSString *> *inputParameterNames = [NSMutableArray array];
+  for (const auto &name: metadata.globalInputParameterNames) {
+    [inputParameterNames addObject:[NSString stringWithUTF8String:name.c_str()]];
+  }
+
   NSMutableArray<NSString *> *outputImageNames = [NSMutableArray array];
-  for (const auto &name: metadata.globalOutputNames) {
+  for (const auto &name: metadata.globalOutputImageNames) {
     [outputImageNames addObject:[NSString stringWithUTF8String:name.c_str()]];
+  }
+
+  NSMutableDictionary<NSString *, NSString *> *schemeMetadata = [NSMutableDictionary dictionary];
+  for (const auto &pair: modelDescription.metadata().userdefined()) {
+    [schemeMetadata setObject:[NSString stringWithUTF8String:pair.second.c_str()]
+                       forKey:[NSString stringWithUTF8String:pair.first.c_str()]];
   }
 
   pnk::NetworkScheme networkScheme = {
     .nodes = nodes,
     .inputImagesData = inputImagesData,
-    .outputImageNames = outputImageNames
+    .inputImageNamesToSizes = metadata.globalInputImageNamesToSizes,
+    .inputParameterNames = inputParameterNames,
+    .outputImageNames = outputImageNames,
+    .metadata = schemeMetadata
   };
   return networkScheme;
 }
 
-+ (pnk::NetworkMetadata)networkMetadataFromNeuralNetwork:(const cms::NeuralNetwork &)neuralNetwork {
++ (pnk::NetworkMetadata)networkMetadataFromModelDescription:
+    (const cms::ModelDescription &)modelDescription
+    neuralNetwork:(const cms::NeuralNetwork &)neuralNetwork {
   pnk::NetworkMetadata metadata;
+
+  for (int i = 0; i < modelDescription.input_size(); ++i) {
+    auto globalInput = modelDescription.input(i);
+    auto name = globalInput.name();
+    if (globalInput.type().has_imagetype()) {
+      auto imagetype = globalInput.type().imagetype();
+      auto colorspace = imagetype.colorspace();
+      NSUInteger channelCount = (colorspace == cms::ImageFeatureType_ColorSpace_GRAYSCALE) ? 1 : 3;
+      NSUInteger width = (NSUInteger)imagetype.width();
+      NSUInteger height = (NSUInteger)imagetype.height();
+
+      metadata.globalInputImageNames.insert(name);
+      metadata.globalInputImageNamesToSizes[name] = MTLSizeMake(width, height, channelCount);
+    } else {
+      metadata.globalInputParameterNames.insert(name);
+    }
+  }
+
+  for (int i = 0; i < modelDescription.output_size(); ++i) {
+    auto globalOutput = modelDescription.output(i);
+    metadata.globalOutputImageNames.insert(globalOutput.name());
+  }
 
   for (const auto &layer : neuralNetwork.layers()) {
     for (int i = 0; i < layer.input_size(); ++i) {
-      metadata.inputNameToLayers.insert(std::make_pair(layer.input(i), &layer));
+      auto inputName = layer.input(i);
+      if (metadata.globalInputParameterNames.count(inputName)) {
+        continue;
+      }
+      metadata.inputNameToLayers.insert(std::make_pair(inputName, &layer));
     }
     metadata.outputNameToLayer[layer.output(0)] = &layer;
-  }
-
-  /// Find all input names that are not output names - these are global inputs.
-  for (const auto &pair: metadata.inputNameToLayers) {
-    if (metadata.outputNameToLayer.find(pair.first) == metadata.outputNameToLayer.end()) {
-      metadata.globalInputNames.insert(pair.first);
-    }
-  }
-
-  /// Find all output names that are not input names - these are global outputs.
-  for (const auto &pair: metadata.outputNameToLayer) {
-    if (metadata.inputNameToLayers.find(pair.first) == metadata.inputNameToLayers.end()) {
-      metadata.globalOutputNames.insert(pair.first);
-    }
   }
 
   return metadata;
@@ -192,7 +235,7 @@ struct GraphTraversalData {
 
   // Initialize the visited layers set with layers that have one of global input images as their
   // inputs.
-  for (const auto &inputName: metadata.globalInputNames) {
+  for (const auto &inputName: metadata.globalInputImageNames) {
     [self processImage:inputName metadata:metadata graphTraversalData:graphTraversalData];
   }
 
@@ -202,6 +245,9 @@ struct GraphTraversalData {
     bool readyForProcessing = true;
     for (int i = 0; i < currentlyVisitedLayer->input_size(); ++i) {
       const std::string &inputName = currentlyVisitedLayer->input(i);
+      if (metadata.globalInputParameterNames.count(inputName)) {
+        continue;
+      }
       readyForProcessing &= (graphTraversalData.processedImageNames.count(inputName) > 0);
     }
 
@@ -306,14 +352,10 @@ struct GraphTraversalData {
     return NO;
   }
 
-  static const std::set<std::pair<cms::NeuralNetworkLayer::LayerCase,
-  cms::NeuralNetworkLayer::LayerCase>> kLayerTypePairsForFusion  = {
-    {cms::NeuralNetworkLayer::kConvolution, cms::NeuralNetworkLayer::kActivation},
-    {cms::NeuralNetworkLayer::kBatchnorm, cms::NeuralNetworkLayer::kActivation}
-  };
-
-  return kLayerTypePairsForFusion.count(std::make_pair(previousLayer->layer_case(),
-                                                       layer->layer_case())) > 0;
+  return layer->has_activation() &&
+      (previousLayer->has_convolution() || previousLayer->has_batchnorm() ||
+       (previousLayer->has_custom() &&
+        previousLayer->custom().classname() == "BRNConditionalInstanceNormalization"));
 }
 
 + (PNKNeuralNode *)neuralNodeWithKit:(const Layers &)kit
@@ -370,6 +412,20 @@ struct GraphTraversalData {
     case cms::NeuralNetworkLayer::kSoftmax:
       kernel = [[PNKSoftMaxLayer alloc] initWithDevice:device];
       break;
+    case cms::NeuralNetworkLayer::kCrop: {
+      auto cropAmounts = layer->crop().cropamounts();
+      LTAssert(cropAmounts.borderamounts_size() == 2, @"borderamounts_size of crop layer must be "
+               "2, got %d", cropAmounts.borderamounts_size());
+      auto topBottom = cropAmounts.borderamounts(0);
+      auto leftRight = cropAmounts.borderamounts(1);
+      pnk::PaddingSize margins = {
+        .left = (NSUInteger)leftRight.startedgesize(),
+        .top = (NSUInteger)topBottom.startedgesize(),
+        .right = (NSUInteger)leftRight.endedgesize(),
+        .bottom = (NSUInteger)topBottom.endedgesize()
+      };
+      kernel = [[PNKCrop alloc] initWithDevice:device margins:margins];
+    } break;
     case cms::NeuralNetworkLayer::kUpsample: {
       kernel = [[PNKUpsampling alloc] initWithDevice:device
                                       upsamplingType:PNKUpsamplingTypeNearestNeighbor];
@@ -381,7 +437,7 @@ struct GraphTraversalData {
       kernel = [[PNKConcatenation alloc] initWithDevice:device];
       break;
     case cms::NeuralNetworkLayer::kCustom: {
-      kernel = [self customKernelFromLayer:layer device:device];
+      kernel = [self customKernelFromKit:kit device:device];
     } break;
     default:
       LTAssert(NO, @"Layer type %lu not supported", (unsigned long)layer->layer_case());
@@ -397,6 +453,17 @@ struct GraphTraversalData {
                                 primaryInputImageName:primaryInputImageName
                                       outputImageName:outputImageName
                                  outputImageReadCount:outputImageReadCount];
+  } else if ([kernel conformsToProtocol:@protocol(PNKParametricUnaryKernel)]) {
+    NSMutableArray<NSString *> *inputParameterGlobalNames = [NSMutableArray array];
+    for (int i = 1; i < layer->input_size(); ++i) {
+      auto parameterName = [NSString stringWithUTF8String:layer->input(i).c_str()];
+      [inputParameterGlobalNames addObject:parameterName];
+    }
+    return [[PNKNeuralNode alloc] initWithParametricUnaryKernel:(id<PNKParametricUnaryKernel>)kernel
+                                          primaryInputImageName:primaryInputImageName
+                                      inputParameterGlobalNames:inputParameterGlobalNames
+                                                outputImageName:outputImageName
+                                           outputImageReadCount:outputImageReadCount];
   } else if ([kernel conformsToProtocol:@protocol(PNKBinaryKernel)]){
     NSString *secondaryInputImageName = [NSString stringWithUTF8String:layer->input(1).c_str()];
     return [[PNKNeuralNode alloc] initWithBinaryKernel:(id<PNKBinaryKernel>)kernel
@@ -409,15 +476,57 @@ struct GraphTraversalData {
   }
 }
 
-+ (NSObject *)customKernelFromLayer:(const cms::NeuralNetworkLayer *)layer
-                             device:(id<MTLDevice>)device {
-  if (layer->custom().classname() == "BRNBilinearUpsample") {
++ (NSObject *)customKernelFromKit:(const Layers &)kit device:(id<MTLDevice>)device {
+  auto layer = kit[0];
+  auto className = layer->custom().classname();
+
+  if (className == "BRNBilinearUpsample") {
     return [[PNKUpsampling alloc] initWithDevice:device
                                   upsamplingType:PNKUpsamplingTypeBilinearAligned];
+  } else if (className == "BRNPadding") {
+    return [self reflectionPaddingKernelFromLayer:layer device:device];
+  } else if (className == "BRNConditionalInstanceNormalization") {
+    return [self conditionalInstanceNormalizationFromKit:kit device:device];
   } else {
     LTAssert(NO, @"Custom layer type %s not supported",
              layer->custom().classname().substr(0, 20).c_str());
   }
+}
+
++ (PNKReflectionPadding *)reflectionPaddingKernelFromLayer:(const cms::NeuralNetworkLayer *)layer
+                                                    device:(id<MTLDevice>)device {
+  auto parameters = layer->custom().parameters();
+  pnk::PaddingSize paddingSize = {
+    .left = (NSUInteger)parameters["left"].intvalue(),
+    .top = (NSUInteger)parameters["top"].intvalue(),
+    .right = (NSUInteger)parameters["right"].intvalue(),
+    .bottom = (NSUInteger)parameters["bottom"].intvalue()
+  };
+
+  return [[PNKReflectionPadding alloc] initWithDevice:device paddingSize:paddingSize];
+}
+
++ (PNKConditionalInstanceNormLayer *)conditionalInstanceNormalizationFromKit:(const Layers &)kit
+                                                                      device:(id<MTLDevice>)device {
+  auto layer = kit[0];
+  auto parameters = layer->custom().parameters();
+  auto weights = layer->custom().weights();
+
+  pnk::ActivationKernelModel activationKernelModel = (kit.size() == 2 && kit[1]->has_activation()) ?
+      pnk::createActivationKernelModel(kit[1]->activation()) :
+      pnk::ActivationKernelModel{.activationType = pnk::ActivationTypeIdentity};
+  pnk::NormalizationKernelModel normalizationKernelModel = {
+    .inputFeatureChannels = (NSUInteger)parameters["channels"].intvalue(),
+    .computeMeanVar = YES,
+    .instanceNormalization = YES,
+    .epsilon = (float)parameters["epsilon"].doublevalue(),
+    .scale = pnk::createMat(weights[0].floatvalue()),
+    .shift = pnk::createMat(weights[1].floatvalue())
+  };
+
+  return [[PNKConditionalInstanceNormLayer alloc] initWithDevice:device
+                                              normalizationModel:normalizationKernelModel
+                                                 activationModel:activationKernelModel];
 }
 
 @end

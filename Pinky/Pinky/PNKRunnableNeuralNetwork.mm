@@ -3,9 +3,12 @@
 
 #import "PNKRunnableNeuralNetwork.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "LTEasyBoxing+Pinky.h"
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
+#import "PNKCollectionUtils.h"
 #import "PNKNetworkSchemeFactory.h"
 #import "PNKNeuralNode.h"
 
@@ -14,22 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Dictionary of images with their names as keys.
-typedef NSDictionary<NSString *, MPSImage *> PNKImageCollection API_AVAILABLE(ios(10.0));
+API_AVAILABLE(ios(10.0))
+typedef NSDictionary<NSString *, MPSImage *> PNKImageCollection;
 
 /// Mutable dictionary of images with their names as keys.
-typedef NSMutableDictionary<NSString *, MPSImage *> PNKMutableImageCollection
-    API_AVAILABLE(ios(10.0));
+API_AVAILABLE(ios(10.0))
+typedef NSMutableDictionary<NSString *, MPSImage *> PNKMutableImageCollection;
 
 /// Dictionary of image sizes with image names as keys.
+API_AVAILABLE(ios(10.0))
 typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 
 @interface PNKRunnableNeuralNetwork ()
 
 /// Network scheme to run.
 @property (readonly, nonatomic) pnk::NetworkScheme networkScheme;
-
-/// Dispatch queue to perform encoding asynchronously.
-@property (readonly, nonatomic) dispatch_queue_t dispatchQueue;
 
 @end
 
@@ -38,35 +40,26 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 - (instancetype)initWithNetworkScheme:(const pnk::NetworkScheme &)networkScheme {
   if (self = [super init]) {
     _networkScheme = networkScheme;
-    _dispatchQueue = dispatch_queue_create("com.lightricks.Pinky.RunnableNeuralNetwork",
-                                           DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
   }
   return self;
 }
 
-- (void)encodeAndCommitAsyncWithCommandQueue:(id<MTLCommandQueue>)queue
-                                 inputImages:(PNKImageCollection *)inputImages
-                                outputImages:(PNKImageCollection *)outputImages
-                                  completion:(LTCompletionBlock)completion {
-  LTParameterAssert(completion, @"Completion block must not be nil.");
-
-  __block auto buffer = [queue commandBuffer];
-  dispatch_async(self.dispatchQueue, ^{
-    [self encodeWithCommandBuffer:buffer inputImages:inputImages outputImages:outputImages];
-    [buffer addCompletedHandler:^(id<MTLCommandBuffer>) {
-      completion();
-    }];
-    [buffer commit];
-  });
+- (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                    inputImages:(NSDictionary<NSString *, MPSImage *> *)inputImages
+                   outputImages:(NSDictionary<NSString *, MPSImage *> *)outputImages {
+  [self encodeWithCommandBuffer:commandBuffer inputImages:inputImages
+                inputParameters:[NSDictionary dictionary] outputImages:outputImages];
 }
 
 - (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                     inputImages:(PNKImageCollection *)inputImages
+                inputParameters:(NSDictionary<NSString *, NSObject *> *)inputParameters
                    outputImages:(PNKImageCollection *)outputImages {
-  [self validateImageCollection:inputImages withNames:self.networkScheme.inputImagesData.allKeys
-                           type:@"input"];
-  [self validateImageCollection:outputImages withNames:self.networkScheme.outputImageNames
-                           type:@"output"];
+  PNKValidateCollection(inputImages, self.networkScheme.inputImagesData.allKeys, @"input images");
+  PNKValidateCollection(inputParameters, self.networkScheme.inputParameterNames,
+                        @"input parameters");
+  PNKValidateCollection(outputImages, self.networkScheme.outputImageNames, @"output images");
+
   PNKSizeCollection temporaryImageSizes = [self temporaryImageSizesWithInputImages:inputImages
                                                                       outputImages:outputImages];
   [self prefetchStorageWithTemporaryImageSizes:temporaryImageSizes commandBuffer:commandBuffer];
@@ -79,17 +72,8 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 
   [self updateReadCountsOfInputImages:inputImages
                        withDictionary:self.networkScheme.inputImagesData];
-  [self encodeWithCommandBuffer:commandBuffer images:allImages];
-}
-
-- (void)validateImageCollection:(PNKImageCollection *)images
-                      withNames:(NSArray<NSString *> *)names type:(NSString *)type {
-  LTParameterAssert(images.count == names.count, @"%@ images collection must have size of %lu, got "
-                    "%lu", type, (unsigned long)names.count, (unsigned long)images.count);
-  for (NSString *name in names) {
-    LTParameterAssert([images objectForKey:name], @"image with name %@ not found in %@ images "
-                      "collection", name, type);
-  }
+  [self encodeWithCommandBuffer:commandBuffer images:allImages
+         networkInputParameters:inputParameters];
 }
 
 - (PNKSizeCollection)temporaryImageSizesWithInputImages:(PNKImageCollection *)inputImages
@@ -128,9 +112,9 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 - (void)prefetchStorageWithTemporaryImageSizes:(const PNKSizeCollection &)temporaryImageSizes
                                  commandBuffer:(id<MTLCommandBuffer>)commandBuffer {
   NSMutableArray<MPSImageDescriptor *> *descriptorList =
-      [NSMutableArray arrayWithCapacity:(NSUInteger)temporaryImageSizes.size()];
-  for (const auto &nameAndSize: temporaryImageSizes) {
-    auto size = nameAndSize.second;
+      [NSMutableArray arrayWithCapacity:temporaryImageSizes.size()];
+  for (auto pair: temporaryImageSizes) {
+    auto size = pair.second;
     auto descriptor =
         [MPSImageDescriptor imageDescriptorWithChannelFormat:MPSImageFeatureChannelFormatFloat16
                                                        width:size.width height:size.height
@@ -146,10 +130,10 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
                                    commandBuffer:(id<MTLCommandBuffer>)commandBuffer {
   auto temporaryImages = [PNKMutableImageCollection dictionary];
 
-  for (const auto &nameAndSize: temporaryImageSizes) {
-    auto name = [NSString stringWithUTF8String:nameAndSize.first.c_str()];
+  for (auto pair: temporaryImageSizes) {
     auto image = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                 size:nameAndSize.second];
+                                                                 size:pair.second];
+    auto name = [NSString stringWithUTF8String:pair.first.c_str()];
     temporaryImages[name] = image;
   }
 
@@ -169,7 +153,8 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 }
 
 - (void)encodeWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                         images:(PNKImageCollection *)images {
+                         images:(PNKImageCollection *)images
+         networkInputParameters:(NSDictionary<NSString *, NSObject *> *)networkInputParameters {
   for (PNKNeuralNode *node in self.networkScheme.nodes) {
     NSString *outputImageName = node.outputImageName;
     MPSImage *outputImage = images[outputImageName];
@@ -180,17 +165,60 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
     NSString * _Nullable secondaryInputImageName = node.secondaryInputImageName;
     MPSImage * _Nullable secondaryInputImage = images[secondaryInputImageName];
 
+    NSArray * _Nullable inputParameters =
+        [node.inputParameterGlobalNames lt_map:^NSObject *(NSString *name) {
+          return networkInputParameters[name];
+        }];
+
     [node encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
-            secondaryInputImage:secondaryInputImage outputImage:outputImage];
+            secondaryInputImage:secondaryInputImage inputParameters:inputParameters
+                    outputImage:outputImage];
   }
+}
+
+- (PNKSizeCollection)outputImageSizesFromInputImageSizes:
+    (const PNKSizeCollection &)inputImageSizes {
+  PNKSizeCollection imageSizes(inputImageSizes);
+  for (PNKNeuralNode *node in self.networkScheme.nodes) {
+    NSString *primaryInputImageName = node.primaryInputImageName;
+    MTLSize primaryInputImageSize = imageSizes[primaryInputImageName.UTF8String];
+
+    NSString * _Nullable secondaryInputImageName = node.secondaryInputImageName;
+    MTLSize secondaryInputImageSize = secondaryInputImageName ?
+        imageSizes[secondaryInputImageName.UTF8String] : MTLSizeMake(0, 0, 0);
+
+    NSString *outputImageName = node.outputImageName;
+    MTLSize outputImageSize = [node outputSizeForPrimaryInputSize:primaryInputImageSize
+                                               secondaryInputSize:secondaryInputImageSize];
+
+    imageSizes[outputImageName.UTF8String] = outputImageSize;
+  }
+
+  PNKSizeCollection outputImageSizes;
+  for (NSString *outputImageName: self.networkScheme.outputImageNames) {
+    outputImageSizes[outputImageName.UTF8String] = imageSizes[outputImageName.UTF8String];
+  }
+  return outputImageSizes;
 }
 
 - (NSArray<NSString *> *)inputImageNames {
   return self.networkScheme.inputImagesData.allKeys;
 }
 
+- (std::unordered_map<std::string, MTLSize>)inputImageNamesToSizes {
+  return self.networkScheme.inputImageNamesToSizes;
+}
+
+- (NSArray<NSString *> *)inputParameterNames {
+  return self.networkScheme.inputParameterNames;
+}
+
 - (NSArray<NSString *> *)outputImageNames {
   return self.networkScheme.outputImageNames;
+}
+
+- (NSDictionary<NSString *, NSString *> *)metadata {
+  return self.networkScheme.metadata;
 }
 
 @end

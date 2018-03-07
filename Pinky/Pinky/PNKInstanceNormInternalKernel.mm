@@ -23,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *functionName;
 
 /// Kernel scale buffer.
-@property (readonly, nonatomic) id<MTLBuffer> scaleBuffer;
+@property (nonatomic) id<MTLBuffer> scaleBuffer;
 
 /// Kernel shift buffer.
-@property (readonly, nonatomic) id<MTLBuffer> shiftBuffer;
+@property (nonatomic) id<MTLBuffer> shiftBuffer;
 
 /// Kernel activation alpha parameters buffer.
 @property (readonly, nonatomic, nullable) id<MTLBuffer> alphaBuffer;
@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Indicator if the layer's ActivationType is using the Beta parameter buffer.
 @property (readonly, nonatomic) bool hasBetaBuffer;
+
+/// Indicator if the parameter buffers (scale and shift) should be reused.
+@property (readonly, nonatomic) BOOL reuseParameterBuffers;
 
 @end
 
@@ -58,11 +61,13 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
                featureChannels:(NSUInteger)featureChannels
-                activationModel:(const pnk::ActivationKernelModel &)activationModel {
+               activationModel:(const pnk::ActivationKernelModel &)activationModel
+         reuseParameterBuffers:(BOOL)reuseParameterBuffers {
   if (self = [super init]) {
     _device = device;
     _featureChannels = featureChannels;
     _inputFeatureChannels = featureChannels;
+    _reuseParameterBuffers = reuseParameterBuffers;
     [self setupBuffersAndStateWithActivationModel:activationModel];
   }
   return self;
@@ -106,7 +111,11 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   LTParameterAssert(elementsCount == (int)self.featureChannels, @"Number of scale parameters must "
                     "be the same as number of input features (%lu), got %d",
                     (unsigned long)self.featureChannels, elementsCount);
-  PNKFillHalfFloatBuffer(self.scaleBuffer, parameters);
+  if (self.reuseParameterBuffers) {
+    PNKFillHalfFloatBuffer(self.scaleBuffer, parameters);
+  } else {
+    self.scaleBuffer = PNKHalfBufferFromFloatVector(self.device, parameters, YES);
+  }
 }
 
 - (void)setShiftParameters:(const cv::Mat &)parameters {
@@ -114,7 +123,11 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   LTParameterAssert(elementsCount == (int)self.featureChannels, @"Number of shift parameters must "
                     "be the same as number of input features (%lu), got %d",
                     (unsigned long)self.featureChannels, elementsCount);
-  PNKFillHalfFloatBuffer(self.shiftBuffer, parameters);
+  if (self.reuseParameterBuffers) {
+    PNKFillHalfFloatBuffer(self.shiftBuffer, parameters);
+  } else {
+    self.shiftBuffer = PNKHalfBufferFromFloatVector(self.device, parameters, YES);
+  }
 }
 
 #pragma mark -
