@@ -103,14 +103,10 @@ context(@"tensorflow golden standard", ^{
                                              activationModel:activationModel];
 
     NSBundle *bundle = NSBundle.lt_testBundle;
-
-    auto inputMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"activation_relu_input_15x16x32.tensor");
-    auto inputMat = inputMatSingleRow.reshape(kInputArrayFeatureChannels, kInputHeight);
-
-    auto expectedMatSingleRow =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"activation_relu_output_15x16x32.tensor");
-    auto expectedMat = expectedMatSingleRow.reshape(kInputArrayFeatureChannels, kInputHeight);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"activation_relu_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"activation_relu_output_15x16x32.tensor");
 
     return @{
       kPNKKernelExamplesKernel: neuron,
