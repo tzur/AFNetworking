@@ -70,6 +70,7 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
       @instanceKeypath(DVNBrushModelV1, maskImageURL): @"maskImageURL",
       @instanceKeypath(DVNBrushModelV1, blendMode): @"blendMode",
       @instanceKeypath(DVNBrushModelV1, edgeAvoidance): @"edgeAvoidance",
+      @instanceKeypath(DVNBrushModelV1, edgeAvoidanceGuideImageURL): @"edgeAvoidanceGuideImageURL",
       @instanceKeypath(DVNBrushModelV1, edgeAvoidanceSamplingOffset): @"edgeAvoidanceSamplingOffset"
     }];
 
