@@ -167,7 +167,6 @@ context(@"tensorflow golden standard", ^{
     NSUInteger strideY = 2;
     NSUInteger inputChannels = kInputArrayFeatureChannels;
     NSUInteger outputChannels = kOutputArrayFeatureChannels;
-    NSUInteger outputHeight = (kInputHeight - 1) / strideY + 1;
 
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeIdentity
