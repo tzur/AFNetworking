@@ -48,7 +48,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c randomInitialSeed
 @property (readonly, nonatomic) NSUInteger initialSeed;
 
-/// Allowed range of the \c initialSeed of this instance.
+/// Allowed range of \c initialSeed.
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedInitialSeedRange;
 
 #pragma mark -
@@ -65,7 +65,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c scale
 @property (readonly, nonatomic) CGFloat spacing;
 
-/// Allowed range of the \c spacing of this instance.
+/// Allowed range of \c spacing.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedSpacingRange;
 
 /// Number of brush tip squares determining a single sequence of brush tips. The brush tip squares
@@ -75,7 +75,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// (Order) Dependencies: none
 @property (readonly, nonatomic) NSUInteger numberOfSamplesPerSequence;
 
-/// Allowed range of the \c numberOfSamplesPerSequence of this instance.
+/// Allowed range of \c numberOfSamplesPerSequence.
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger>
     allowedNumberOfSamplesPerSequenceRange;
 
@@ -89,7 +89,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c scale
 @property (readonly, nonatomic) CGFloat sequenceDistance;
 
-/// Allowed range of the \c sequenceDistance of this instance.
+/// Allowed range of \c sequenceDistance.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedSequenceDistanceRange;
 
 #pragma mark -
@@ -110,7 +110,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c sequenceDistance
 @property (readonly, nonatomic) lt::Interval<NSUInteger> countRange;
 
-/// Allowed range of the \c countRange of this instance.
+/// Allowed range of \c countRange.
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedCountRange;
 
 #pragma mark -
@@ -132,7 +132,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c countRange
 @property (readonly, nonatomic) lt::Interval<CGFloat> distanceJitterFactorRange;
 
-/// Allowed range of the \c distanceJitterFactorRange of this instance.
+/// Allowed range of \c distanceJitterFactorRange.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedDistanceJitterFactorRange;
 
 /// Non-empty support of the uniform distribution, in range <tt>[0, 4 * M_PI)</tt>, determining the
@@ -150,7 +150,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c countRange
 @property (readonly, nonatomic) lt::Interval<CGFloat> angleRange;
 
-/// Allowed range of the \c angleRange of this instance.
+/// Allowed range of \c angleRange.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedAngleRange;
 
 /// Non-empty support, with infimum in <tt>[0, 1]</tt> and supremum in <tt>[1, CGFloatMax]</tt>, of
@@ -191,7 +191,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c scaleJitterRange
 @property (readonly, nonatomic) LTVector2 taperingLengths;
 
-/// Allowed range of the x- and y-coordinate of the \c taperingLengths of this instance.
+/// Allowed range of the x- and y-coordinate of \c taperingLengths.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingLengthRange;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, used for determining the effect of the tapering
@@ -212,7 +212,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c scaleJitterRange
 @property (readonly, nonatomic) CGFloat minimumTaperingScaleFactor;
 
-/// Allowed range of the \c minimumTaperingScaleFactor of this instance.
+/// Allowed range of \c minimumTaperingScaleFactor.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedMinimumTaperingScaleFactorRange;
 
 /// Vector, with coordinates in range \c allowedTaperingFactorRange, used for adjusting the growth
@@ -235,7 +235,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c minimumTaperingScaleFactor
 @property (readonly, nonatomic) LTVector2 taperingFactors;
 
-/// Allowed range of the x- and y-coordinate of the \c taperingFactors of this instance.
+/// Allowed range of the x- and y-coordinate of \c taperingFactors.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingFactorRange;
 
 #pragma mark -
@@ -253,7 +253,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// property for more details.
 @property (readonly, nonatomic) lt::Interval<CGFloat> flowRange;
 
-/// Allowed range of the \c flowRange of this instance.
+/// Allowed range of \c flowRange.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedFlowRange;
 
 /// Positive number for computing the final value used as brush flow. The final flow value is given
@@ -263,7 +263,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c flow
 @property (readonly, nonatomic) CGFloat flowExponent;
 
-/// Allowed range of the \c flowExponent of this instance.
+/// Allowed range of \c flowExponent.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedFlowExponentRange;
 
 #pragma mark -
@@ -289,7 +289,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c color
 @property (readonly, nonatomic) CGFloat brightnessJitter;
 
-/// Allowed range of the \c brightnessJitter of this instance.
+/// Allowed range of \c brightnessJitter.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedBrightnessJitterRange;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the range of values from which
@@ -306,7 +306,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c color
 @property (readonly, nonatomic) CGFloat hueJitter;
 
-/// Allowed range of the \c hueJitter of this instance.
+/// Allowed range of \c hueJitter.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedHueJitterRange;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, for computing the range of values from which
@@ -323,7 +323,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c color
 @property (readonly, nonatomic) CGFloat saturationJitter;
 
-/// Allowed range of the \c saturationJitter of this instance.
+/// Allowed range of \c saturationJitter.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedSaturationJitterRange;
 
 #pragma mark -
@@ -420,7 +420,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c edgeAvoidanceGuideImageURL
 @property (readonly, nonatomic) CGFloat edgeAvoidance;
 
-/// Allowed range of the \c edgeAvoidance of this instance.
+/// Allowed range of \c edgeAvoidance.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedEdgeAvoidanceRange;
 
 /// URL associated with the image used as guide for the edge avoidance. Ignored if equalling the
@@ -434,7 +434,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// used for sampling the edge avoidance texture.
 @property (readonly, nonatomic) CGFloat edgeAvoidanceSamplingOffset;
 
-/// Allowed range of the x- and y-coordinate of the \c edgeAvoidanceSamplingOffset of this instance.
+/// Allowed range of the x- and y-coordinate of \c edgeAvoidanceSamplingOffset.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat>
     allowedEdgeAvoidanceSamplingOffsetRange;
 
