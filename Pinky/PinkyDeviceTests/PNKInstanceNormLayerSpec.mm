@@ -59,20 +59,7 @@ context(@"kernel input region", ^{
 });
 
 context(@"instance normalization operation with Float16 channel format", ^{
-  __block id<MTLCommandBuffer> commandBuffer;
-
-  beforeEach(^{
-    auto commandQueue = [device newCommandQueue];
-    commandBuffer = [commandQueue commandBuffer];
-  });
-
-  afterEach(^{
-    commandBuffer = nil;
-  });
-
-  it(@"should normalize input correctly for array textures", ^{
-    NSUInteger inputChannels = kInputArrayFeatureChannels;
-
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeIdentity
     };
@@ -81,52 +68,36 @@ context(@"instance normalization operation with Float16 channel format", ^{
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
-      .inputFeatureChannels = inputChannels,
-      .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_scale.weights"),
-      .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_shift.weights")
+      .inputFeatureChannels = kInputArrayFeatureChannels,
+      .scale = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_basic_gamma_32.weights"),
+      .shift = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_basic_beta_32.weights")
     };
 
     instanceNormOp = [[PNKInstanceNormLayer alloc] initWithDevice:device
                                                normalizationModel:normalizationModel
                                                   activationModel:activationModel];
 
-    auto inputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                   kInputHeight, inputChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, inputChannels);
-    auto expectedImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                      kInputHeight, inputChannels);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_basic_input_15x16x32.tensor");
 
-    auto inputMat = PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_input.tensor");
-    auto elementsPerSlice = inputImage.width * inputImage.height * 4;
-    for (NSUInteger i = 0; i < inputImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(inputImage.texture, inputMat(roi).reshape(4, kInputHeight), i);
-    }
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_basic_output_15x16x32.tensor");
 
-    auto expectedMat = PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                                @"instanceNorm_output.tensor");
-    elementsPerSlice = expectedImage.width * expectedImage.height * 4;
-    for (NSUInteger i = 0; i < expectedImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(expectedImage.texture, expectedMat(roi).reshape(4, kInputHeight), i);
-    }
-
-    [instanceNormOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                              outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    for (NSUInteger i = 0; i < inputChannels / 4; ++i) {
-      auto outputSlice = PNKMatFromMTLTexture(outputImage.texture, i);
-      auto expectedSlice = PNKMatFromMTLTexture(expectedImage.texture, i);
-      expect($(outputSlice)).to.beCloseToMatWithin($(expectedSlice), @(5e-2));
-    }
+    return @{
+      kPNKKernelExamplesKernel: instanceNormOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(kInputArrayFeatureChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
   });
 
-  it(@"should normalize input correctly for non array textures", ^{
-    NSUInteger inputChannels = 4;
-
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeIdentity
     };
@@ -135,43 +106,36 @@ context(@"instance normalization operation with Float16 channel format", ^{
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
-      .inputFeatureChannels = inputChannels,
-      .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_scale.weights"),
-      .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_shift.weights")
+      .inputFeatureChannels = kInputRGBFeatureChannels,
+      .scale = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_single_texture_gamma_3.weights"),
+      .shift = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_single_texture_beta_3.weights")
     };
 
     instanceNormOp = [[PNKInstanceNormLayer alloc] initWithDevice:device
                                                normalizationModel:normalizationModel
                                                   activationModel:activationModel];
 
-    auto inputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                   kInputHeight, inputChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, inputChannels);
-    auto expectedImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                      kInputHeight, inputChannels);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_single_texture_input_15x16x3.tensor");
 
-    auto inputMat =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_input.tensor");
-    PNKCopyMatToMTLTexture(inputImage.texture, inputMat.reshape(4, kInputHeight));
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_single_texture_output_15x16x3.tensor");
 
-    auto expectedMat =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_output.tensor");
-    PNKCopyMatToMTLTexture(expectedImage.texture, expectedMat.reshape(4, kInputHeight));
-
-    [instanceNormOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                              outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    auto outputSlice = PNKMatFromMTLTexture(outputImage.texture);
-    auto expectedSlice = PNKMatFromMTLTexture(expectedImage.texture);
-    expect($(outputSlice)).to.beCloseToMatWithin($(expectedSlice), @(5e-2));
+    return @{
+      kPNKKernelExamplesKernel: instanceNormOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(kInputRGBFeatureChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
   });
 
-  it(@"should normalize input correctly for array textures with ReLU activation", ^{
-    NSUInteger inputChannels = kInputArrayFeatureChannels;
-
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeReLU
     };
@@ -180,48 +144,33 @@ context(@"instance normalization operation with Float16 channel format", ^{
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
-      .inputFeatureChannels = inputChannels,
-      .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_scale.weights"),
-      .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_shift.weights")
+      .inputFeatureChannels = kInputArrayFeatureChannels,
+      .scale = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_relu_gamma_32.weights"),
+      .shift = PNKLoadFloatTensorFromBundleResource(bundle,
+          @"instance_normalization_relu_beta_32.weights")
     };
 
     instanceNormOp = [[PNKInstanceNormLayer alloc] initWithDevice:device
                                                normalizationModel:normalizationModel
                                                   activationModel:activationModel];
 
-    auto inputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                   kInputHeight, inputChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, inputChannels);
-    auto expectedImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                      kInputHeight, inputChannels);
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_relu_input_15x16x32.tensor");
 
-    auto inputMat =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_input.tensor");
-    auto elementsPerSlice = inputImage.width * inputImage.height * 4;
-    for (NSUInteger i = 0; i < inputImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(inputImage.texture, inputMat(roi).reshape(4, kInputHeight), i);
-    }
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"instance_normalization_relu_output_15x16x32.tensor");
 
-    auto expectedMat =
-        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_output.tensor");
-    elementsPerSlice = expectedImage.width * expectedImage.height * 4;
-    for (NSUInteger i = 0; i < expectedImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(expectedImage.texture, expectedMat(roi).reshape(4, kInputHeight), i);
-    }
-
-    [instanceNormOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                              outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    for (NSUInteger i = 0; i < inputChannels / 4; ++i) {
-      auto outputSlice = PNKMatFromMTLTexture(outputImage.texture, i);
-      auto expectedSlice = PNKMatFromMTLTexture(expectedImage.texture, i);
-      expect($(outputSlice)).to.beCloseToMatWithin($(expectedSlice), @(5e-2));
-    }
+    return @{
+      kPNKKernelExamplesKernel: instanceNormOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(kInputArrayFeatureChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
   });
 });
 

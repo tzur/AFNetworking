@@ -40,7 +40,7 @@ context(@"stylize", ^{
       }];
     });
 
-    cv::Mat1b expectedMat = LTLoadMat([self class], @"Lena_sketch10.png");
+    cv::Mat1b expectedMat = LTLoadMat([self class], @"Lena_sketch1.png");
     LTCVPixelBufferImageForReading(outputBuffer.get(), ^(const cv::Mat &outputMat) {
       double psnr = PNKPsnrScore(expectedMat, outputMat, NO);
       expect(psnr > 50).to.beTruthy();
