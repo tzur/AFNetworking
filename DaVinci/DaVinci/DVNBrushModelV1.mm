@@ -175,16 +175,15 @@ DVNClosedRangeClassProperty(CGFloat, allowedSpacing, AllowedSpacing, 0.001,
                             std::numeric_limits<CGFloat>::max());
 DVNClosedRangeClassProperty(NSUInteger, allowedNumberOfSamplesPerSequence,
                             AllowedNumberOfSamplesPerSequence, 1, NSUIntegerMax);
-DVNClosedRangeClassProperty(CGFloat, allowedSequenceDistance, allowedSequenceDistance, 0.001,
+DVNClosedRangeClassProperty(CGFloat, allowedSequenceDistance, AllowedSequenceDistance, 0.001,
                             std::numeric_limits<CGFloat>::max());
-DVNClosedRangeClassProperty(NSUInteger, allowedCount, allowedCount, 0, NSUIntegerMax);
-DVNClosedRangeClassProperty(CGFloat, allowedDistanceJitterFactor, allowedDistanceJitterFactor, 0,
+DVNClosedRangeClassProperty(NSUInteger, allowedCount, AllowedCount, 0, NSUIntegerMax);
+DVNClosedRangeClassProperty(CGFloat, allowedDistanceJitterFactor, AllowedDistanceJitterFactor, 0,
                             std::numeric_limits<CGFloat>::max());
-DVNClosedRangeClassProperty(CGFloat, allowedAngle, allowedAngle, 0, 4 * M_PI);
-DVNClosedRangeClassProperty(CGFloat, allowedInfScaleJitter, allowedInfScaleJitter, 0, 1);
-DVNClosedRangeClassProperty(CGFloat, allowedSupScaleJitter, allowedSupScaleJitter, 1,
+DVNClosedRangeClassProperty(CGFloat, allowedAngle, AllowedAngle, 0, 4 * M_PI);
+DVNClosedRangeClassProperty(CGFloat, allowedScaleJitter, AllowedScaleJitter, 0,
                             std::numeric_limits<CGFloat>::max());
-DVNClosedRangeClassProperty(CGFloat, allowedTaperingLength, allowedTaperingLength, 0,
+DVNClosedRangeClassProperty(CGFloat, allowedTaperingLength, AllowedTaperingLength, 0,
                             std::numeric_limits<CGFloat>::max());
 DVNLeftOpenRangeClassProperty(CGFloat, allowedMinimumTaperingScaleFactor,
                               AllowedMinimumTaperingScaleFactor, 0, 1);
