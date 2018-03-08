@@ -219,7 +219,6 @@ context(@"upsampling correctness", ^{
 });
 
 context(@"tensorflow golden standard", ^{
-  static const NSUInteger kGoldenStandardInputHeight = 15;
   static const NSUInteger kGoldenStandardFeatureChannels = 32;
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{

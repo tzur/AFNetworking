@@ -318,7 +318,6 @@ context(@"batch normalization", ^{
 });
 
 context(@"tensorflow golden standard", ^{
-  static const NSUInteger kInputHeight = 16;
   static const NSUInteger kInputChannels = 32;
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
