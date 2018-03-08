@@ -36,6 +36,8 @@
 		1970BAF02014C6A900E81A5F /* HUIItemSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1970BAEF2014C6A900E81A5F /* HUIItemSpec.mm */; };
 		198F596A2051290000DA392A /* HUIResourceCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198F5969205128FF00DA392A /* HUIResourceCell.mm */; };
 		198F596C2051291000DA392A /* HUIResourceCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198F596B2051291000DA392A /* HUIResourceCellSpec.mm */; };
+		198F596F2051296100DA392A /* HUIVideoCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198F596D2051296000DA392A /* HUIVideoCell.mm */; };
+		198F59712051296C00DA392A /* HUIVideoCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198F59702051296B00DA392A /* HUIVideoCellSpec.mm */; };
 		198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD52018DCDA00F85E75 /* HUISection.mm */; };
 		198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */; };
 		1992523420270B5100BF71E5 /* HUIDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1992523220270B5100BF71E5 /* HUIDocument.mm */; };
@@ -453,6 +455,9 @@
 		198F5968205128FF00DA392A /* HUIResourceCell+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HUIResourceCell+Protected.h"; sourceTree = "<group>"; };
 		198F5969205128FF00DA392A /* HUIResourceCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIResourceCell.mm; sourceTree = "<group>"; };
 		198F596B2051291000DA392A /* HUIResourceCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIResourceCellSpec.mm; sourceTree = "<group>"; };
+		198F596D2051296000DA392A /* HUIVideoCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIVideoCell.mm; sourceTree = "<group>"; };
+		198F596E2051296000DA392A /* HUIVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIVideoCell.h; sourceTree = "<group>"; };
+		198F59702051296B00DA392A /* HUIVideoCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIVideoCellSpec.mm; sourceTree = "<group>"; };
 		198FDCAB2018DCDA00F85E75 /* HUISection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUISection.h; sourceTree = "<group>"; };
 		198FDCD52018DCDA00F85E75 /* HUISection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISection.mm; sourceTree = "<group>"; };
 		198FDCD72018DCEF00F85E75 /* HUISectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUISectionSpec.mm; sourceTree = "<group>"; };
@@ -868,6 +873,8 @@
 				198F5967205128FF00DA392A /* HUIResourceCell.h */,
 				198F5969205128FF00DA392A /* HUIResourceCell.mm */,
 				198F5968205128FF00DA392A /* HUIResourceCell+Protected.h */,
+				198F596E2051296000DA392A /* HUIVideoCell.h */,
+				198F596D2051296000DA392A /* HUIVideoCell.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -879,6 +886,7 @@
 				19EEF3E2204D3357007EF4CF /* HUIBoxTopViewSpec.mm */,
 				19EEF4DD204D41B8007EF4CF /* HUIBoxViewSpec.mm */,
 				198F596B2051291000DA392A /* HUIResourceCellSpec.mm */,
+				198F59702051296B00DA392A /* HUIVideoCellSpec.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1353,6 +1361,7 @@
 			files = (
 				195B37941FFCB3E500F8DAB4 /* LTSpectaObjectionHook.mm in Sources */,
 				195B378F1FFCAEC100F8DAB4 /* WFTestUtils.mm in Sources */,
+				198F59712051296C00DA392A /* HUIVideoCellSpec.mm in Sources */,
 				195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */,
 				198F596C2051291000DA392A /* HUIResourceCellSpec.mm in Sources */,
 				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
@@ -1376,6 +1385,7 @@
 				19EEEAEB20445359007EF4CF /* HUIBoxTopLayout.mm in Sources */,
 				19EEF3E1204D333F007EF4CF /* HUIBoxTopView.mm in Sources */,
 				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
+				198F596F2051296100DA392A /* HUIVideoCell.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUISettings.mm in Sources */,
 				19EEF4DC204D4180007EF4CF /* HUIBoxView.mm in Sources */,
