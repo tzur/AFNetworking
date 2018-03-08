@@ -582,7 +582,6 @@
 		88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88FAF8F31D7727820023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		8B10C8B91F3EFB1D00F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
 		8B6864361F3347A500F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
@@ -878,7 +877,6 @@
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
 				8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */,
-				8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */,
 				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,
 				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
 				287C87831F54114C00FCC2CC /* Mantle.framework */,
@@ -1756,10 +1754,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../third_party/dropbox-ios-sdk",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1795,10 +1790,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../third_party/dropbox-ios-sdk",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				HEADER_SEARCH_PATHS = (
