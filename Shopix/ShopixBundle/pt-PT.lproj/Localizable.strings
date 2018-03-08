@@ -10,6 +10,9 @@
 /* Label on a button for purchasing subscription that renews every x days */
 "Days" = "Days"; /* MISSING TRANSLATION */
 
+/* Title of an alert shown after successful restoration of user purchases */
+"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "mês";
 
@@ -49,8 +52,14 @@
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "Restaurar comprar";
 
+/* Title of a button shown in an information alert */
+"Settings" = "Settings"; /* MISSING TRANSLATION */
+
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
+
+/* Message shown after successful subscription restoration */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Tenta novamente";

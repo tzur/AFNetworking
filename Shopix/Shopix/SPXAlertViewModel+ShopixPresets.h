@@ -41,6 +41,14 @@ NS_ASSUME_NONNULL_BEGIN
                                       contactUsAction:(LTVoidBlock)contactUsAction
                                          cancelAction:(LTVoidBlock)cancelAction;
 
+/// Creates a new alert view-model for an alert that should be shown if the user's iCloud account
+/// is not available. The alert will have a title, message and 2 buttons, "Settings" for redirecting
+/// the user to the iOS settings to enable iCloud account, and a "Not Now" button for cancelling the
+/// operation. The \c settingsAction or \c cancelAction block is invoked if the user pressed on the
+/// "Settings" or "Not Now" button respectively.
++ (instancetype)noICloudAccountAlertWithSettingsAction:(LTVoidBlock)settingsAction
+                                          cancelAction:(LTVoidBlock)cancelAction;
+
 @end
 
 NS_ASSUME_NONNULL_END
