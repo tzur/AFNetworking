@@ -13,16 +13,19 @@ NS_ASSUME_NONNULL_BEGIN
     self.contentAspectRatio = 1.0;
     self.helpViewBackgroundColor = [[UIColor lt_colorWithHex:@"#000000"]
                                     colorWithAlphaComponent:0.15];
-    self.titleBoxGradientTopColor = [UIColor lt_colorWithHex:@"#202023"];
-    self.titleBoxGradientBottomColor = [UIColor lt_colorWithHex:@"#000000"];
-    self.titleBoxIconColor = [UIColor lt_colorWithHex:@"#FFFFFF"];
-    self.titleBoxHighlightedIconColor = [UIColor lt_colorWithHex:@"#FFFFFF"];
-    self.titleBoxHeadlineColor = [[UIColor lt_colorWithHex:@"#FFFFFF"] colorWithAlphaComponent:0.9];
-    self.titleBoxBodyColor = [[UIColor lt_colorWithHex:@"#FFFFFF"] colorWithAlphaComponent:0.8];
+    self.topBoxGradientTopColor = [UIColor lt_colorWithHex:@"#202023"];
+    self.topBoxGradientBottomColor = [UIColor lt_colorWithHex:@"#000000"];
+    self.topBoxIconColor = [UIColor lt_colorWithHex:@"#FFFFFF"];
+    self.topBoxHighlightedIconColor = [UIColor lt_colorWithHex:@"#FFFFFF"];
+    self.topBoxTitleColor = [[UIColor lt_colorWithHex:@"#FFFFFF"] colorWithAlphaComponent:0.9];
+    self.topBoxBodyColor = [[UIColor lt_colorWithHex:@"#FFFFFF"] colorWithAlphaComponent:0.8];
     self.boxBackgroundColor = [UIColor lt_colorWithHex:@"#000000"];
 
-    self.titleBoxHeadlineFontWeight = UIFontWeightBold;
-    self.titleBoxBodyFontWeight = UIFontWeightLight;
+    self.topBoxTitleFontWeight = UIFontWeightBold;
+    self.topBoxBodyFontWeight = UIFontWeightLight;
+
+    self.boxShadowColor = [UIColor blackColor];
+    self.boxShadowBackgroundColor = [UIColor clearColor];
   }
   return self;
 }

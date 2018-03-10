@@ -73,8 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setupGradientView {
-  auto topColor = [HUISettings instance].titleBoxGradientTopColor;
-  auto bottomColor = [HUISettings instance].titleBoxGradientBottomColor;
+  auto topColor = [HUISettings instance].topBoxGradientTopColor;
+  auto bottomColor = [HUISettings instance].topBoxGradientBottomColor;
   _gradientView = [WFGradientView verticalGradientWithTopColor:topColor bottomColor:bottomColor];
   self.gradientView.startPoint = CGPointMake(0.5, 0.25);
   self.gradientView.endPoint = CGPointMake(0.5, 0.75);
@@ -106,8 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
     [RACObserve(self, iconURL) map:^id<WFImageViewModel>(NSURL * _Nullable url) {
       @strongify(self);
       return WFImageViewModel(url)
-          .color([HUISettings instance].titleBoxIconColor)
-          .highlightedColor([HUISettings instance].titleBoxHighlightedIconColor)
+          .color([HUISettings instance].topBoxIconColor)
+          .highlightedColor([HUISettings instance].topBoxHighlightedIconColor)
           .sizeToBounds(self.iconImageView)
           .build();
       }];
