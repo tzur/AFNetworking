@@ -227,23 +227,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)imageAssetForDescriptor:(id<PTNDescriptor>)descriptor
                       resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
-  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
-  if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
-    NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
-                           associatedDescriptor:descriptor];
-    return [RACSignal error:error];
-  }
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+    if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
 
-  if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
-    return [self imageForVideoAssetWithDescriptor:descriptor resizingStrategy:resizingStrategy];
-  }
+    if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+      return [self imageForVideoAssetWithDescriptor:descriptor resizingStrategy:resizingStrategy];
+    }
 
-  PTNFileBackedImageAsset *imageAsset =
-      [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
-                                           imageResizer:self.imageResizer
-                                       resizingStrategy:resizingStrategy];
+    PTNFileBackedImageAsset *imageAsset =
+        [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
+                                             imageResizer:self.imageResizer
+                                         resizingStrategy:resizingStrategy];
 
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+    return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+  }];
 }
 
 - (RACSignal *)imageForVideoAssetWithDescriptor:(id<PTNDescriptor>)descriptor
@@ -275,16 +279,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
                                   options:(PTNAVAssetFetchOptions __unused *)options {
-  if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
-    NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
-                           associatedDescriptor:descriptor];
-    return [RACSignal error:error];
-  }
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+    if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
 
-  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
-  PTNAudiovisualAsset *videoAsset =
-      [[PTNAudiovisualAsset alloc] initWithAVAsset:[AVAsset assetWithURL:filePath.url]];
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:videoAsset]];
+    if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
+
+    PTNAudiovisualAsset *videoAsset =
+        [[PTNAudiovisualAsset alloc] initWithAVAsset:[AVAsset assetWithURL:filePath.url]];
+    return [RACSignal return:[[PTNProgress alloc] initWithResult:videoAsset]];
+  }];
 }
 
 #pragma mark -
@@ -301,23 +315,27 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)imageDataAssetForDescriptor:(id<PTNDescriptor>)descriptor {
-  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
-  if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
-    NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
-                           associatedDescriptor:descriptor];
-    return [RACSignal error:error];
-  }
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+    if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
 
-  if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
-    return [self imageForVideoAssetWithDescriptor:descriptor
-                                 resizingStrategy:[PTNResizingStrategy identity]];
-  }
+    if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+      return [self imageForVideoAssetWithDescriptor:descriptor
+                                   resizingStrategy:[PTNResizingStrategy identity]];
+    }
 
-  PTNFileBackedImageAsset *imageAsset =
-      [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
-                                           imageResizer:self.imageResizer resizingStrategy:nil];
+    PTNFileBackedImageAsset *imageAsset =
+    [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
+                                         imageResizer:self.imageResizer resizingStrategy:nil];
 
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+    return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+  }];
 }
 
 @end
