@@ -12,25 +12,31 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNPhotoKitFakeFetcher ()
 
 /// Maps between local identifier to its matching asset.
-@property (strong, nonatomic) NSMutableDictionary *localIdentifierToAsset;
+@property (strong, nonatomic) NSMutableDictionary<NSString *, PHAsset *> *localIdentifierToAsset;
 
 /// Maps between local identifier to its matching asset collection.
-@property (strong, nonatomic) NSMutableDictionary *localIdentifierToAssetCollection;
+@property (strong, nonatomic)
+    NSMutableDictionary<NSString *, PHAssetCollection *> *localIdentifierToAssetCollection;
 
 /// Masp between asset collection's local identifier to its key asset.
-@property (strong, nonatomic) NSMutableDictionary *assetCollectionLocalIdentifierToKeyAsset;
+@property (strong, nonatomic)
+    NSMutableDictionary<NSString *, PHAsset *> *assetCollectionLocalIdentifierToKeyAsset;
 
 /// Maps between collection type to an array of asset collection matching the type.
-@property (strong, nonatomic) NSMutableDictionary *typeToAssetCollections;
+@property (strong, nonatomic)
+    NSMutableDictionary<NSArray<NSNumber *> *, id> *typeToAssetCollections;
 
 /// Maps between asset collection's local identifier to its assets array.
-@property (strong, nonatomic) NSMutableDictionary *assetCollectionLocalIdentifierToAssets;
+@property (strong, nonatomic)
+    NSMutableDictionary<NSString *, id> *assetCollectionLocalIdentifierToAssets;
 
 /// Maps between collection list to asset collections.
-@property (strong, nonatomic) NSMutableDictionary *collectionListToAssetCollections;
+@property (strong, nonatomic) NSMutableDictionary<NSString *, id> *collectionListToAssetCollections;
 
 /// Maps between asset collections to collection list.
-@property (strong, nonatomic) NSMutableDictionary *assetCollectionsToCollectionList;
+@property (strong, nonatomic)
+    NSMutableDictionary<NSArray<PHCollection *> *,
+                        PHCollectionList *> *assetCollectionsToCollectionList;
 
 /// All threads from which calls to the receiver were made.
 @property (strong, atomic) NSSet<NSThread *> *operatingThreads;
@@ -42,7 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSMutableDictionary *mediaTypeToAssets;
 
 /// Maps between fetch result to its matching asset collection.
-@property (strong, nonatomic) NSMutableDictionary *fetchResultToAssetCollection;
+@property (strong, nonatomic)
+    NSMutableDictionary<PHFetchResult *, PHAssetCollection *> *fetchResultToAssetCollection;
+
+/// Maps between asset and its associated asset resources.
+@property (strong, nonatomic)
+    NSMutableDictionary<NSString *, NSArray<PHAssetResource *> *> *assetLocalIdentifierToResources;
 
 @end
 
@@ -61,6 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
     _changeDetailsMock = OCMClassMock(PTNPhotoKitFetcher.class);
     self.mediaTypeToAssets = [NSMutableDictionary dictionary];
     self.fetchResultToAssetCollection = [NSMutableDictionary dictionary];
+    self.assetLocalIdentifierToResources = [NSMutableDictionary dictionary];
   }
   return self;
 }
@@ -130,6 +142,13 @@ NS_ASSUME_NONNULL_BEGIN
                 withFetchResult:(PHFetchResult *)fetchResult {
   @synchronized (self.fetchResultToAssetCollection) {
     self.mediaTypeToAssets[fetchResult] = assetCollection;
+  }
+}
+
+- (void)registerAssetResources:(NSArray<PHAssetResource *> *)assetResources
+                     withAsset:(PHAsset *)asset {
+  @synchronized (self.assetLocalIdentifierToResources) {
+    self.assetLocalIdentifierToResources[asset.localIdentifier] = assetResources;
   }
 }
 
@@ -215,7 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions __unused *)options {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PHAsset *keyAsset;
-  
+
   @synchronized (self.assetCollectionLocalIdentifierToKeyAsset) {
     keyAsset = self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier];
   }
@@ -241,6 +260,16 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return assetCollection;
+}
+
+- (NSArray<PHAssetResource *> *)assetResourcesForAsset:(PHAsset *)asset {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
+
+  NSArray<PHAssetResource *> *resources;
+  @synchronized (self.assetLocalIdentifierToResources) {
+    resources = self.assetLocalIdentifierToResources[asset.localIdentifier];
+  }
+  return resources;
 }
 
 @end

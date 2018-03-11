@@ -84,6 +84,11 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
     transientAssetCollectionWithAssetFetchResult:(PHFetchResult<PHAsset *> *)fetchResult
                                            title:(nullable NSString *)title;
 
+/// Returns the list of data resources associated with \c asset.
+///
+/// @see [PHAssetResource assetResourcesForAsset:]
+- (NSArray<PHAssetResource *> *)assetResourcesForAsset:(PHAsset *)asset;
+
 @end
 
 /// Implementation of \c PTNPhotoKitFetcher by passing through the messages to the appropriate class

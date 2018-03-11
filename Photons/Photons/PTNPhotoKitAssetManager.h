@@ -5,8 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAuthorizationManager, PTNPhotoKitChangeManager, PTNPhotoKitFetcher,
-    PTNPhotoKitImageManager, PTNPhotoKitObserver;
+@protocol PTNAuthorizationManager, PTNPhotoKitAssetResourceManager, PTNPhotoKitChangeManager,
+    PTNPhotoKitFetcher, PTNPhotoKitImageManager, PTNPhotoKitObserver;
 
 @class PTNImageResizer;
 
@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFetcher:(id<PTNPhotoKitFetcher>)fetcher
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
+           assetResourceManager:(id<PTNPhotoKitAssetResourceManager>)assetResourceManager
            authorizationManager:(id<PTNAuthorizationManager>)authorizationManager
                   changeManager:(id<PTNPhotoKitChangeManager>)changeManager
                    imageResizer:(PTNImageResizer *)imageResizer NS_DESIGNATED_INITIALIZER;

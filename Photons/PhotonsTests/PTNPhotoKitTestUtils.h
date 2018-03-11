@@ -63,4 +63,10 @@ PHChange *PTNPhotoKitCreateChangeForFetchDetails(PHFetchResultChangeDetails *cha
 /// Creates a \c PHChange that always returns the given \c changeDetails.
 PHChange *PTNPhotoKitCreateChangeForObjectDetails(PHObjectChangeDetails *changeDetails);
 
+/// Creates a \c PHAssetResource with the given \c assetLocalIdentifier, \c type,
+/// \c uniformTypeIdentifier and optional \c originalFileName.
+PHAssetResource *PTNPhotoKitCreateAssetResource(NSString *assetLocalIdentifier,
+    PHAssetResourceType type, NSString *uniformTypeIdentifier,
+    NSString * _Nullable originalFilename = nil);
+
 NS_ASSUME_NONNULL_END

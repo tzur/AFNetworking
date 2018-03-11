@@ -19,6 +19,7 @@
 #import "PTNImageResizer.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
+#import "PTNPhotoKitFakeAssetResourceManager.h"
 #import "PTNPhotoKitFakeAuthorizationManager.h"
 #import "PTNPhotoKitFakeChangeManager.h"
 #import "PTNPhotoKitFakeFetchResultChangeDetails.h"
@@ -74,6 +75,7 @@ __block PTNPhotoKitAssetManager *manager;
 __block PTNPhotoKitFakeFetcher *fetcher;
 __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
+__block PTNPhotoKitFakeAssetResourceManager *assetResourceManager;
 __block PTNPhotoKitFakeAuthorizationManager *authorizationManager;
 __block PTNPhotoKitFakeChangeManager *changeManager;
 __block PTNImageResizer *imageResizer;
@@ -82,12 +84,14 @@ beforeEach(^{
   fetcher = [[PTNPhotoKitFakeFetcher alloc] init];
   observer = [[PTNPhotoKitFakeObserver alloc] init];
   imageManager = [[PTNPhotoKitFakeImageManager alloc] init];
+  assetResourceManager = [[PTNPhotoKitFakeAssetResourceManager alloc] init];
   authorizationManager = [[PTNPhotoKitFakeAuthorizationManager alloc] init];
   changeManager = [[PTNPhotoKitFakeChangeManager alloc] init];
   imageResizer = OCMClassMock([PTNImageResizer class]);
 
   manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                 imageManager:imageManager
+                                        assetResourceManager:assetResourceManager
                                         authorizationManager:authorizationManager
                                                changeManager:changeManager
                                                 imageResizer:imageResizer];
@@ -245,6 +249,7 @@ context(@"album fetching", ^{
         PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc]
                                             initWithFetcher:fetcher observer:observer
                                             imageManager:imageManager
+                                            assetResourceManager:assetResourceManager
                                             authorizationManager:authorizationManager
                                             changeManager:changeManager
                                             imageResizer:imageResizer];
@@ -695,8 +700,10 @@ context(@"album fetching", ^{
 
       @autoreleasepool {
         PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc]
-                                            initWithFetcher:fetcher observer:observer
+                                            initWithFetcher:fetcher
+                                            observer:observer
                                             imageManager:imageManager
+                                            assetResourceManager:assetResourceManager
                                             authorizationManager:authorizationManager
                                             changeManager:changeManager
                                             imageResizer:imageResizer];
@@ -778,6 +785,7 @@ context(@"album fetching", ^{
       fetcherMock = OCMProtocolMock(@protocol(PTNPhotoKitFetcher));
       assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcherMock observer:observer
                                                          imageManager:imageManager
+                                                 assetResourceManager:assetResourceManager
                                                  authorizationManager:authorizationManager
                                                         changeManager:changeManager
                                                          imageResizer:imageResizer];
@@ -839,6 +847,7 @@ context(@"asset fetching", ^{
       auto *assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher
                                                                    observer:observer
                                                                imageManager:imageManager
+                                                       assetResourceManager:assetResourceManager
                                                        authorizationManager:authorizationManager
                                                               changeManager:changeManager
                                                                imageResizer:imageResizer];
@@ -993,6 +1002,7 @@ context(@"image fetching", ^{
     id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
+                                                    assetResourceManager:assetResourceManager
                                                     authorizationManager:authorizationManager
                                                            changeManager:changeManager
                                                             imageResizer:imageResizer];
@@ -1171,6 +1181,7 @@ context(@"image fetching", ^{
       imageManagerMock = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
       manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                     imageManager:imageManagerMock
+                                            assetResourceManager:assetResourceManager
                                             authorizationManager:authorizationManager
                                                    changeManager:changeManager
                                                     imageResizer:imageResizer];
@@ -1386,6 +1397,7 @@ context(@"AVAsset fetching", ^{
     id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
+                                                    assetResourceManager:assetResourceManager
                                                     authorizationManager:authorizationManager
                                                            changeManager:changeManager
                                                             imageResizer:imageResizer];
@@ -1483,59 +1495,63 @@ context(@"AVAsset fetching", ^{
 });
 
 context(@"image data fetching", ^{
-  __block id asset;
+  static auto const kUniformTypeIdentifier = @"public.cool.raw.format";
+  static auto const kFullSizeUniformTypeIdentifier = @"com.foo.bar.baz";
+
+  __block PHAsset *asset;
+  __block NSArray<PHAssetResource *> *resources;
   __block id<PTNImageDataAsset> imageDataAsset;
   __block NSData *imageData;
-  __block NSString *uniformTypeIdentifier;
-  __block UIImageOrientation orientation;
   __block NSError *defaultError;
 
   beforeEach(^{
-    asset = PTNPhotoKitCreateAsset(@"foo");
-    OCMStub([asset descriptorTraits]).andReturn([NSSet setWithObject:kPTNDescriptorTraitRawKey]);
-
-    [fetcher registerAsset:asset];
-
-    uniformTypeIdentifier = @"public.cool.raw.format";
-    orientation = UIImageOrientationRight;
-    uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
+    uint8_t buffer[] = {0x1, 0x2, 0x3, 0x4};
     imageData = [NSData dataWithBytes:buffer length:sizeof(buffer)];
     imageDataAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                       uniformTypeIdentifier:uniformTypeIdentifier];
+                                       uniformTypeIdentifier:kUniformTypeIdentifier];
 
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
+
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    OCMStub([asset descriptorTraits]).andReturn([NSSet setWithObject:kPTNDescriptorTraitRawKey]);
+    [fetcher registerAsset:asset];
+
+    resources = @[PTNPhotoKitCreateAssetResource(asset.localIdentifier, PHAssetResourceTypePhoto,
+                                                 kUniformTypeIdentifier)];
+    [fetcher registerAssetResources:resources withAsset:asset];
   });
 
   it(@"should make requests with network access allowed", ^{
-    id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+    id<PTNPhotoKitAssetResourceManager> assetResourceManager =
+        OCMProtocolMock(@protocol(PTNPhotoKitAssetResourceManager));
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
+                                                    assetResourceManager:assetResourceManager
                                                     authorizationManager:authorizationManager
                                                            changeManager:changeManager
                                                             imageResizer:imageResizer];
-    OCMExpect([imageManager requestImageDataForAsset:asset
-        options:[OCMArg checkWithBlock:^BOOL(PHImageRequestOptions *options) {
+    OCMExpect([assetResourceManager requestDataForAssetResource:resources.firstObject
+        options:[OCMArg checkWithBlock:^BOOL(PHAssetResourceRequestOptions *options) {
           return options.isNetworkAccessAllowed;
-        }] resultHandler:([OCMArg invokeBlockWithArgs:imageData,
-                           uniformTypeIdentifier, @(orientation), @{}, nil])]);
+        }]
+        dataReceivedHandler:([OCMArg invokeBlockWithArgs:imageData, nil])
+        completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], nil])]);
 
     expect([assetManager fetchImageDataWithDescriptor:asset]).will.complete();
-    OCMVerifyAll((id)imageManager);
+    OCMVerifyAll((id)assetResourceManager);
   });
 
-  context(@"fetch raw image of asset", ^{
-    it(@"should fetch raw image", ^{
-      [imageManager serveAsset:asset withProgress:@[] imageData:imageData
-                       dataUTI:uniformTypeIdentifier orientation:orientation];
+  context(@"fetch image data of asset", ^{
+    it(@"should fetch image data", ^{
+      [assetResourceManager serveResource:resources.firstObject withProgress:@[] data:imageData];
 
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
       expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
     });
 
-    it(@"should complete after fetching a raw image", ^{
-      [imageManager serveAsset:asset withProgress:@[] imageData:imageData
-                       dataUTI:uniformTypeIdentifier orientation:orientation];
+    it(@"should complete after fetching image data", ^{
+      [assetResourceManager serveResource:resources.firstObject withProgress:@[] data:imageData];
 
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
@@ -1543,9 +1559,9 @@ context(@"image data fetching", ^{
       expect(values).will.complete();
     });
 
-    it(@"should fetch downloaded raw image with progress", ^{
-      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] imageData:imageData
-                       dataUTI:uniformTypeIdentifier orientation:orientation];
+    it(@"should fetch downloaded image data with progress", ^{
+      [assetResourceManager serveResource:resources.firstObject withProgress:@[@0.25, @0.5, @1]
+                                     data:imageData];
 
       expect([manager fetchImageDataWithDescriptor:asset]).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -1559,30 +1575,35 @@ context(@"image data fetching", ^{
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
       RACDisposable *subscriber = [values subscribeNext:^(id) {}];
-      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+      expect([assetResourceManager isRequestIssuedForResource:resources.firstObject])
+          .will.beTruthy();
 
       [subscriber dispose];
-      expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+      expect([assetResourceManager isRequestCancelledForResource:resources.firstObject])
+          .will.beTruthy();
     });
 
     it(@"should err on error after progress finished", ^{
-      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+      [assetResourceManager serveResource:resources.firstObject withProgress:@[@0.25, @0.5, @1]
+                             finallyError:defaultError];
 
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
+        [[PTNProgress alloc] initWithProgress:@1]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+        return error.lt_isLTDomain && error.code == PTNErrorCodeAssetLoadingFailed &&
+            error.lt_underlyingError;
       });
     });
 
     it(@"should err on progress download error", ^{
-      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
+      [assetResourceManager serveResource:resources.firstObject withProgress:@[@0.25, @0.5]
+                             finallyError:defaultError];
 
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
@@ -1592,14 +1613,52 @@ context(@"image data fetching", ^{
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
-        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+        return error.lt_isLTDomain && error.code == PTNErrorCodeAssetLoadingFailed &&
+            error.lt_underlyingError;
+      });
+    });
+
+    it(@"should prefer full size photo resource over regular photo", ^{
+      resources = @[
+        PTNPhotoKitCreateAssetResource(asset.localIdentifier, PHAssetResourceTypePhoto,
+                                       kUniformTypeIdentifier),
+        PTNPhotoKitCreateAssetResource(asset.localIdentifier, PHAssetResourceTypeFullSizePhoto,
+                                       kFullSizeUniformTypeIdentifier)
+      ];
+      [fetcher registerAssetResources:resources withAsset:asset];
+
+      for (PHAssetResource *resource in resources) {
+        [assetResourceManager serveResource:resource withProgress:@[] data:imageData];
+      }
+
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      auto fullSizeImageDataAsset = [[PTNImageDataAsset alloc]
+                                     initWithData:imageData
+                                     uniformTypeIdentifier:kFullSizeUniformTypeIdentifier];
+      expect(values).will.sendValues(@[[[PTNProgress alloc]
+                                        initWithResult:fullSizeImageDataAsset]]);
+    });
+
+    it(@"should err when requesting image data for video only asset", ^{
+      resources = @[
+        PTNPhotoKitCreateAssetResource(asset.localIdentifier, PHAssetResourceTypeVideo,
+                                       kUniformTypeIdentifier)
+      ];
+      [fetcher registerAssetResources:resources withAsset:asset];
+
+      for (PHAssetResource *resource in resources) {
+        [assetResourceManager serveResource:resource withProgress:@[] data:imageData];
+      }
+
+      expect([manager fetchImageDataWithDescriptor:asset]).will.matchError(^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == PTNErrorCodeInvalidAssetType;
       });
     });
 
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
-        [imageManager serveAsset:asset withProgress:@[] imageData:imageData
-                         dataUTI:uniformTypeIdentifier orientation:orientation];
+        [assetResourceManager serveResource:resources.firstObject withProgress:@[] data:imageData];
 
         RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 

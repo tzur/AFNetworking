@@ -58,6 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerAssetCollection:(PHAssetCollection *)assetCollection
                 withFetchResult:(PHFetchResult *)fetchResult;
 
+/// Registers the given \c assetResources so it will be returned when fetching associated asset
+/// resources of \c asset.
+- (void)registerAssetResources:(NSArray<PHAssetResource *> *)assetResources
+                     withAsset:(PHAsset *)asset;
+
 /// All threads from which calls to the receiver were made.
 @property (readonly, atomic) NSSet<NSThread *> *operatingThreads;
 

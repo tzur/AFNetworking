@@ -60,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAssetCollection transientAssetCollectionWithAssetFetchResult:fetchResult title:title];
 }
 
+- (NSArray<PHAssetResource *> *)assetResourcesForAsset:(PHAsset *)asset {
+  return [PHAssetResource assetResourcesForAsset:asset];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
