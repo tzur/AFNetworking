@@ -5,9 +5,9 @@
 @protocol HUIAnimatableCell <NSObject>
 
 /// Called when the cell should start its animation.
-- (void)animatableCellStartAnimation;
+- (void)startAnimation;
 
 /// Called when the cell should stop its animation.
-- (void)animatableCellStopAnimation;
+- (void)stopAnimation;
 
 @end

@@ -9,9 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class HUIVideoItem;
 
 /// Cell for showing a video. The video is streached to fill the cell's content view bounds. When
-/// \c animatableCellStartAnimation of \c HUIAnimatableCell is called on an \c HUIVideoItem object,
-/// the playback of the video starts in repeate mode. The video is displayed using \c WFVideoView,
-/// which has "Video" accessibility identifier.
+/// \c startAnimation of \c HUIAnimatableCell is called on an \c HUIVideoItem object, the playback
+/// of the video starts in repeate mode. The video is displayed using \c WFVideoView, which has
+/// "Video" accessibility identifier.
 @interface HUIVideoCell : HUIResourceCell <HUIAnimatableCell>
 
 /// Help item presented by this cell.

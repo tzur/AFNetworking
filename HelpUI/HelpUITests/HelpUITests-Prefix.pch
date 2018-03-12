@@ -31,4 +31,8 @@ extern "C" {
 #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 
 // Specta hooks.
+#import <LTEngineTests/LTSpectaKeyWindowViewHook.h>
 #import <LTEngineTests/LTSpectaObjectionHook.h>
+
+#import "HUIFakeCell.h"
+#import "HUIFakeDataSource.h"

@@ -62,12 +62,12 @@ context(@"animatable cell", ^{
   });
 
   it(@"should play slideshow view when animation starts", ^{
-    [cell animatableCellStartAnimation];
+    [cell startAnimation];
     OCMVerify([slideshow play]);
   });
 
   it(@"should pause slideshow view when animation pauses", ^{
-    [cell animatableCellStopAnimation];
+    [cell stopAnimation];
     OCMVerify([slideshow pause]);
   });
 });

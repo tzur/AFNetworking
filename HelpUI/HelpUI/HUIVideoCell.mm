@@ -91,11 +91,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark HUIAnimatableCell
 #pragma mark -
 
-- (void)animatableCellStartAnimation {
+- (void)startAnimation {
   [self.videoView play];
 }
 
-- (void)animatableCellStopAnimation {
+- (void)stopAnimation {
   [self.videoView pause];
 }
 
