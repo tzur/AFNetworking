@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BOOL __##name##Set; \
 @property (readonly, nonatomic) type min##Name; \
 @property (readonly, nonatomic) type max##Name; \
-@property (readonly, nonatomic) type default##Name;
+@property (readonly, nonatomic) type default##Name
 
 /// Implement a primitive property, proxying another property with a custom name (updating the
 /// proxied property in the setter and returning its value, bounds, and default value in the
