@@ -176,6 +176,18 @@
 		E40F42AA2022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F42A92022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm */; };
 		E40F42AE2022F39700190666 /* supersky_bicycles.png in Resources */ = {isa = PBXBuildFile; fileRef = E40F42AC2022F39700190666 /* supersky_bicycles.png */; };
 		E40F42B02022F3BD00190666 /* PNKSuperSkySegmentationProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F42AF2022F3BD00190666 /* PNKSuperSkySegmentationProcessorSpec.mm */; };
+		E41718A620565768009FEF14 /* add_secondary_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417187920565766009FEF14 /* add_secondary_input_15x16x32.tensor */; };
+		E41718A720565768009FEF14 /* crop_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417189B20565766009FEF14 /* crop_input_15x16x32.tensor */; };
+		E41718A820565768009FEF14 /* crop_output_9x12x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417189C20565767009FEF14 /* crop_output_9x12x32.tensor */; };
+		E41718A920565768009FEF14 /* reflection_padding_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417189D20565767009FEF14 /* reflection_padding_input_15x16x32.tensor */; };
+		E41718AA20565768009FEF14 /* reflection_padding_output_23x22x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417189E20565767009FEF14 /* reflection_padding_output_23x22x32.tensor */; };
+		E41718AB20565768009FEF14 /* gather_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E417189F20565767009FEF14 /* gather_input_15x16x32.tensor */; };
+		E41718AC20565768009FEF14 /* concat_output_15x16x64.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A020565767009FEF14 /* concat_output_15x16x64.tensor */; };
+		E41718AD20565768009FEF14 /* add_primary_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A120565767009FEF14 /* add_primary_input_15x16x32.tensor */; };
+		E41718AE20565768009FEF14 /* concat_secondary_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A220565767009FEF14 /* concat_secondary_input_15x16x32.tensor */; };
+		E41718AF20565768009FEF14 /* concat_primary_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A320565767009FEF14 /* concat_primary_input_15x16x32.tensor */; };
+		E41718B020565768009FEF14 /* add_output_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A420565767009FEF14 /* add_output_15x16x32.tensor */; };
+		E41718B120565768009FEF14 /* gather_output_15x16x5.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E41718A520565768009FEF14 /* gather_output_15x16x5.tensor */; };
 		E4196CC91FEF9E8A004D1075 /* PNKNeuralNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4196CC81FEF9E8A004D1075 /* PNKNeuralNode.mm */; };
 		E41AE71A205019E0008A5F8C /* Lena_sketch1.png in Resources */ = {isa = PBXBuildFile; fileRef = E41AE6F8205019E0008A5F8C /* Lena_sketch1.png */; };
 		E41BC78820274857003FC3B7 /* PNKDeviceAndCommandQueue.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41BC78620274857003FC3B7 /* PNKDeviceAndCommandQueue.mm */; };
@@ -858,6 +870,18 @@
 		E40F42A92022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSuperSkySegmentationProcessor.mm; sourceTree = "<group>"; };
 		E40F42AC2022F39700190666 /* supersky_bicycles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = supersky_bicycles.png; path = Resources/supersky_bicycles.png; sourceTree = "<group>"; };
 		E40F42AF2022F3BD00190666 /* PNKSuperSkySegmentationProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSuperSkySegmentationProcessorSpec.mm; sourceTree = "<group>"; };
+		E417187920565766009FEF14 /* add_secondary_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = add_secondary_input_15x16x32.tensor; path = Resources/add_secondary_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E417189B20565766009FEF14 /* crop_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = crop_input_15x16x32.tensor; path = Resources/crop_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E417189C20565767009FEF14 /* crop_output_9x12x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = crop_output_9x12x32.tensor; path = Resources/crop_output_9x12x32.tensor; sourceTree = "<group>"; };
+		E417189D20565767009FEF14 /* reflection_padding_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = reflection_padding_input_15x16x32.tensor; path = Resources/reflection_padding_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E417189E20565767009FEF14 /* reflection_padding_output_23x22x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = reflection_padding_output_23x22x32.tensor; path = Resources/reflection_padding_output_23x22x32.tensor; sourceTree = "<group>"; };
+		E417189F20565767009FEF14 /* gather_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gather_input_15x16x32.tensor; path = Resources/gather_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E41718A020565767009FEF14 /* concat_output_15x16x64.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = concat_output_15x16x64.tensor; path = Resources/concat_output_15x16x64.tensor; sourceTree = "<group>"; };
+		E41718A120565767009FEF14 /* add_primary_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = add_primary_input_15x16x32.tensor; path = Resources/add_primary_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E41718A220565767009FEF14 /* concat_secondary_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = concat_secondary_input_15x16x32.tensor; path = Resources/concat_secondary_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E41718A320565767009FEF14 /* concat_primary_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = concat_primary_input_15x16x32.tensor; path = Resources/concat_primary_input_15x16x32.tensor; sourceTree = "<group>"; };
+		E41718A420565767009FEF14 /* add_output_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = add_output_15x16x32.tensor; path = Resources/add_output_15x16x32.tensor; sourceTree = "<group>"; };
+		E41718A520565768009FEF14 /* gather_output_15x16x5.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = gather_output_15x16x5.tensor; path = Resources/gather_output_15x16x5.tensor; sourceTree = "<group>"; };
 		E4196CC71FEF9E8A004D1075 /* PNKNeuralNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNode.h; sourceTree = "<group>"; };
 		E4196CC81FEF9E8A004D1075 /* PNKNeuralNode.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNeuralNode.mm; sourceTree = "<group>"; };
 		E41AE6F8205019E0008A5F8C /* Lena_sketch1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena_sketch1.png; path = Resources/Lena_sketch1.png; sourceTree = "<group>"; };
@@ -1185,10 +1209,16 @@
 				E47248D51FE7A418008E57EE /* ResizeInput.png */,
 				E44666D2200622D0009D7042 /* activation_relu_input_15x16x32.tensor */,
 				E44666F4200622D1009D7042 /* activation_relu_output_15x16x32.tensor */,
+				E41718A420565767009FEF14 /* add_output_15x16x32.tensor */,
+				E41718A120565767009FEF14 /* add_primary_input_15x16x32.tensor */,
+				E417187920565766009FEF14 /* add_secondary_input_15x16x32.tensor */,
 				E48E48062018C235002B6D55 /* batch_normalization_beta_32.weights */,
 				E48E48072018C235002B6D55 /* batch_normalization_gamma_32.weights */,
 				E48E48082018C235002B6D55 /* batch_normalization_input_15x16x32.tensor */,
 				E48E48092018C235002B6D55 /* batch_normalization_output_15x16x32.tensor */,
+				E41718A020565767009FEF14 /* concat_output_15x16x64.tensor */,
+				E41718A320565767009FEF14 /* concat_primary_input_15x16x32.tensor */,
+				E41718A220565767009FEF14 /* concat_secondary_input_15x16x32.tensor */,
 				E4BC760B201DE056000477B4 /* conv_basic_bias_8.weights */,
 				E4BC7607201DE056000477B4 /* conv_basic_input_15x16x32.tensor */,
 				E4BC7608201DE056000477B4 /* conv_basic_kernel_8x3x3x32.weights */,
@@ -1201,6 +1231,10 @@
 				E4BC7609201DE056000477B4 /* conv_stride_input_15x16x32.tensor */,
 				E4BC760A201DE056000477B4 /* conv_stride_kernel_8x3x3x32.weights */,
 				E4BC760C201DE057000477B4 /* conv_stride_output_8x8x8.tensor */,
+				E417189B20565766009FEF14 /* crop_input_15x16x32.tensor */,
+				E417189C20565767009FEF14 /* crop_output_9x12x32.tensor */,
+				E417189F20565767009FEF14 /* gather_input_15x16x32.tensor */,
+				E41718A520565768009FEF14 /* gather_output_15x16x5.tensor */,
 				E483D40C20517CF4000D4809 /* instance_normalization_basic_beta_32.weights */,
 				E483D40D20517CF4000D4809 /* instance_normalization_basic_gamma_32.weights */,
 				E483D41620517CF5000D4809 /* instance_normalization_basic_input_15x16x32.tensor */,
@@ -1226,6 +1260,8 @@
 				E487772C202C6134009753EF /* pooling_stride_output_8x8x32.tensor */,
 				E4877704202C6132009753EF /* pooling_valid_input_15x16x32.tensor */,
 				E487772B202C6133009753EF /* pooling_valid_output_13x14x32.tensor */,
+				E417189D20565767009FEF14 /* reflection_padding_input_15x16x32.tensor */,
+				E417189E20565767009FEF14 /* reflection_padding_output_23x22x32.tensor */,
 				E4C11CB220318040002CC63E /* sketch.nnmodel */,
 				E4C11CB320318041002CC63E /* sky.nnmodel */,
 				E4877727202C6132009753EF /* softmax_input_15x16x32.tensor */,
@@ -2325,13 +2361,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E41718AB20565768009FEF14 /* gather_input_15x16x32.tensor in Resources */,
 				E483D41920517CF5000D4809 /* instance_normalization_basic_gamma_32.weights in Resources */,
+				E41718AD20565768009FEF14 /* add_primary_input_15x16x32.tensor in Resources */,
 				E483D41D20517CF5000D4809 /* instance_normalization_single_texture_input_15x16x3.tensor in Resources */,
 				E483D42120517CF5000D4809 /* instance_normalization_single_texture_gamma_3.weights in Resources */,
 				2856897120065B660053FDD8 /* ColorTransferReference.png in Resources */,
 				E487772E202C6134009753EF /* pooling_basic_output_15x16x32.tensor in Resources */,
+				E41718A620565768009FEF14 /* add_secondary_input_15x16x32.tensor in Resources */,
+				E41718A920565768009FEF14 /* reflection_padding_input_15x16x32.tensor in Resources */,
 				E44666F6200622D1009D7042 /* activation_relu_output_15x16x32.tensor in Resources */,
 				E4BC761D201DE057000477B4 /* conv_dilation_bias_8.weights in Resources */,
+				E41718A820565768009FEF14 /* crop_output_9x12x32.tensor in Resources */,
 				E49052E420175C8000D4C252 /* person_processor_mask.png in Resources */,
 				E4BC7618201DE057000477B4 /* conv_stride_output_8x8x8.tensor in Resources */,
 				06C2F307202A7580004B7F86 /* Lena.png in Resources */,
@@ -2339,10 +2380,13 @@
 				E483D41F20517CF5000D4809 /* instance_normalization_basic_output_15x16x32.tensor in Resources */,
 				2817F8F51FFBBC3D00AF1DDC /* ColorTransferHistogramSpecificationReference.png in Resources */,
 				E4C11CB520318041002CC63E /* person.nnmodel in Resources */,
+				E41718AE20565768009FEF14 /* concat_secondary_input_15x16x32.tensor in Resources */,
+				E41718B020565768009FEF14 /* add_output_15x16x32.tensor in Resources */,
 				E4877731202C6134009753EF /* pooling_basic_input_15x16x32.tensor in Resources */,
 				E4BC7612201DE057000477B4 /* conv_stride_bias_8.weights in Resources */,
 				E483D41E20517CF5000D4809 /* instance_normalization_single_texture_beta_3.weights in Resources */,
 				2841032E20172EAC00C51053 /* ColorTransferResult.png in Resources */,
+				E41718A720565768009FEF14 /* crop_input_15x16x32.tensor in Resources */,
 				061C659D1FD6DA6400F1BF1B /* PNKSkyShape512.model in Resources */,
 				06368F5F2031959000D8369E /* Lena128_echo55.png in Resources */,
 				E483D42020517CF5000D4809 /* instance_normalization_single_texture_output_15x16x3.tensor in Resources */,
@@ -2354,6 +2398,7 @@
 				E4877732202C6134009753EF /* pooling_stride_input_15x16x32.tensor in Resources */,
 				E4BC7619201DE057000477B4 /* conv_dilation_input_15x16x32.tensor in Resources */,
 				E487772F202C6134009753EF /* softmax_input_15x16x32.tensor in Resources */,
+				E41718B120565768009FEF14 /* gather_output_15x16x5.tensor in Resources */,
 				E48E480B2018C235002B6D55 /* batch_normalization_gamma_32.weights in Resources */,
 				061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */,
 				E470C006200BAB4A007573C9 /* upsample_bilinear_aligned_input_15x16x32.tensor in Resources */,
@@ -2384,6 +2429,7 @@
 				2835A9641FEAA44D0000F2EA /* ColorTransferHistogramInput.png in Resources */,
 				E47248D61FE7A418008E57EE /* ResizeInput.png in Resources */,
 				E4B3ADAB1FF9178800775329 /* upsample_bilinear_output_30x32x32.tensor in Resources */,
+				E41718AF20565768009FEF14 /* concat_primary_input_15x16x32.tensor in Resources */,
 				E4B3ADAA1FF9178800775329 /* upsample_bilinear_input_15x16x32.tensor in Resources */,
 				E4BC7613201DE057000477B4 /* conv_basic_input_15x16x32.tensor in Resources */,
 				E4BC761B201DE057000477B4 /* conv_dilation_output_15x16x8.tensor in Resources */,
@@ -2396,7 +2442,9 @@
 				E4352E7A1FFCFC200052C4D7 /* person.png in Resources */,
 				E4877730202C6134009753EF /* softmax_output_15x16x32.tensor in Resources */,
 				E483D41C20517CF5000D4809 /* instance_normalization_relu_input_15x16x32.tensor in Resources */,
+				E41718AC20565768009FEF14 /* concat_output_15x16x64.tensor in Resources */,
 				064745311FD8891A00BAE7BD /* Bicycles_skymask512.png in Resources */,
+				E41718AA20565768009FEF14 /* reflection_padding_output_23x22x32.tensor in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

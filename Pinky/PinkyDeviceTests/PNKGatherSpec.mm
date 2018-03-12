@@ -161,6 +161,32 @@ context(@"kernel input region", ^{
   });
 });
 
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    NSBundle *bundle = NSBundle.lt_testBundle;
+
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"gather_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+     @"gather_output_15x16x5.tensor");
+
+    auto gatherKernel = [[PNKGather alloc] initWithDevice:device
+                                     inputFeatureChannels:(NSUInteger)inputMat.channels()
+                              outputFeatureChannelIndices:{1, 3, 7, 15, 31}];
+
+    return @{
+      kPNKKernelExamplesKernel: gatherKernel,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(expectedMat.channels()),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
+  });
+});
+
 context(@"gather", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildUcharDataForKernelExamples(device, 4, {0, 2});

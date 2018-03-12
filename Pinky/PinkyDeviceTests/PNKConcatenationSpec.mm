@@ -227,6 +227,33 @@ context(@"concatenation operation with Float16 channel format", ^{
   });
 });
 
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];
+    NSBundle *bundle = NSBundle.lt_testBundle;
+
+    auto primaryInputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"concat_primary_input_15x16x32.tensor");
+    auto secondaryInputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"concat_secondary_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"concat_output_15x16x64.tensor");
+    return @{
+      kPNKKernelExamplesKernel: concatenationOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesPrimaryInputChannels: @(primaryInputMat.channels()),
+      kPNKKernelExamplesSecondaryInputChannels: @(secondaryInputMat.channels()),
+      kPNKKernelExamplesOutputChannels: @(expectedMat.channels()),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(primaryInputMat),
+      kPNKKernelExamplesSecondaryInputMat: $(secondaryInputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
+  });
+});
+
 context(@"PNKTemporaryImageExamples", ^{
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
     auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];

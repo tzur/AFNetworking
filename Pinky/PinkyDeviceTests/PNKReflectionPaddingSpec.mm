@@ -200,6 +200,29 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 });
 
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    NSBundle *bundle = NSBundle.lt_testBundle;
+
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+         @"reflection_padding_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+         @"reflection_padding_output_23x22x32.tensor");
+
+    return @{
+      kPNKKernelExamplesKernel: reflectionPadding,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(expectedMat.channels()),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat),
+      kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+    };
+  });
+});
+
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     return @{
