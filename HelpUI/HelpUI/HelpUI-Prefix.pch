@@ -5,11 +5,6 @@
 #import <Masonry/Masonry.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnewline-eof"
-#import <Objection-iOS/Objection.h>
-#pragma clang diagnostic pop
-
 #import <LTKit/LTKit-Prefix.pch>
 #import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTCGExtensions.h>

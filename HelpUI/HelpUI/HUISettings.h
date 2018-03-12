@@ -4,6 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class HUIItem;
+@class LTImageLoader;
 
 /// Singleton for global settings that can be used by all of the HelpUI classes.
 @interface HUISettings : NSObject
@@ -22,6 +23,9 @@ typedef NSString *_Nullable(^HUILocalizationBlock)(NSString *);
 
 /// Used to localize strings. In case it is \c nil, no localization is done. Defaults to \c nil.
 @property (nonatomic, nullable) HUILocalizationBlock localizationBlock;
+
+/// Used for loading images.
+@property (strong, nonatomic, nullable) LTImageLoader *imageLoader;
 
 /// Aspect ratio of the content of a help card. Defaults to \c 1.0.
 @property (nonatomic) CGFloat contentAspectRatio;

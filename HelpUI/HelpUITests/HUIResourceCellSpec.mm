@@ -10,7 +10,6 @@ SpecBegin(HUIResourceCell_Protected)
 __block HUIResourceCell *cell;
 
 beforeEach(^{
-  LTBindObjectToProtocol([[WFImageLoader alloc] init], @protocol(WFImageProvider));
   cell = [[HUIResourceCell alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 });
 
