@@ -21,10 +21,9 @@ static NSDictionary *PNKBuildUcharDataForKernelExamples(id<MTLDevice> device,
     outputValues[i] = inputValues[outputChannelIndices[i]];
   }
 
-  auto inputMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth, inputValues);
+  auto inputMat = PNKGenerateChannelwiseConstantMatrix(kInputHeight, kInputWidth, inputValues);
 
-  auto expectedMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
-                                                               outputValues);
+  auto expectedMat = PNKGenerateChannelwiseConstantMatrix(kInputHeight, kInputWidth, outputValues);
 
   return @{
     kPNKKernelExamplesKernel: gatherKernel,

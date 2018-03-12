@@ -33,13 +33,13 @@ static NSDictionary *PNKBuildDataForExamples(id<MTLDevice> device, NSUInteger pr
         secondaryInputValues[secondaryChannelIndices[i - primaryChannelIndices.size()]];
   }
 
-  auto primaryInputMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
-                                                                   primaryInputValues);
-  auto secondaryInputMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
-                                                                     secondaryInputValues);
+  auto primaryInputMat = PNKGenerateChannelwiseConstantMatrix(kInputHeight, kInputWidth,
+                                                              primaryInputValues);
+  auto secondaryInputMat = PNKGenerateChannelwiseConstantMatrix(kInputHeight, kInputWidth,
+                                                                secondaryInputValues);
 
-  auto expectedMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
-                                                               outputValues);
+  auto expectedMat = PNKGenerateChannelwiseConstantMatrix(kInputHeight, kInputWidth,
+                                                          outputValues);
 
   return @{
     kPNKKernelExamplesKernel: kernel,

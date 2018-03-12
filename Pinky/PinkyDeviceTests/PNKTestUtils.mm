@@ -10,6 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Maps Open CV type constants to \c MPSImageFeatureChannelFormat.
+static const std::map<int, MPSImageFeatureChannelFormat> kCVTypeToFeatureChannelFormat = {
+  {CV_8U, MPSImageFeatureChannelFormatUnorm8},
+  {CV_16U, MPSImageFeatureChannelFormatUnorm16},
+  {CV_16F, MPSImageFeatureChannelFormatFloat16},
+  {CV_32F, MPSImageFeatureChannelFormatFloat32}
+};
+
 /// Extracts image size from the tensor file name. The \c fileName must be in form
 /// <tt><some text>_<width>x<height>x<depth>.<extension></tt>; zero size is returned otherwise.
 static MTLSize PNKImageSizeFromFileName(NSString *fileName) {
@@ -97,12 +105,12 @@ cv::Mat PNKFillMatrix(int rows, int columns, int channels) {
   return matrix.reshape(channels, rows);
 }
 
-template <typename T, int cvType>
+template <typename T>
 cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns,
                                              const std::vector<T> &values) {
   int channels = (int)values.size();
 
-  cv::Mat matrix = cv::Mat((int)(rows * columns), channels, cvType);
+  cv::Mat matrix = cv::Mat((int)(rows * columns), channels, cv::DataType<T>::type);
 
   for (int i = 0; i < matrix.rows; i++) {
     for (int j = 0; j < channels; j++) {
@@ -113,14 +121,14 @@ cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns
   return matrix.reshape(channels, (int)rows);
 }
 
-cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger columns,
-                                                  const std::vector<uchar> &values) {
-  return PNKGenerateChannelwiseConstantMatrix<uchar, CV_8U>(rows, columns, values);
-}
+template cv::Mat PNKGenerateChannelwiseConstantMatrix<uchar>(NSUInteger rows, NSUInteger columns,
+                                                             const std::vector<uchar> &values);
 
-cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
-                                                      const std::vector<half_float::half> &values) {
-  return PNKGenerateChannelwiseConstantMatrix<half_float::half, CV_16F>(rows, columns, values);
+template cv::Mat PNKGenerateChannelwiseConstantMatrix<half_float::half>(NSUInteger rows,
+    NSUInteger columns, const std::vector<half_float::half> &values);
+
+MPSImageFeatureChannelFormat PNKFeatureChannelFormatFromCVType(int type) {
+  return kCVTypeToFeatureChannelFormat.at(type);
 }
 
 NS_ASSUME_NONNULL_END

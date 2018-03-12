@@ -31,14 +31,13 @@ cv::Mat PNKLoadStructuredHalfFloatTensorFromResource(NSBundle *bundle, NSString 
 /// zeroes and ones in 3D chessboard pattern.
 cv::Mat PNKFillMatrix(int rows, int columns, int channels);
 
-/// Creates a uchar matrix with given \c rows and \c columns and a number of channels as the size of
-/// \c values. Each channel of the matrix has a constant value as defined by \c values.
-cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger columns,
-                                                  const std::vector<uchar> &values);
+/// Create a matrix of type \c T with given \c rows and \c columns and a number of channels as
+/// the size of \c values. Each channel of the matrix has a constant value as defined by \c values.
+template <typename T>
+cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns,
+                                             const std::vector<T> &values);
 
-/// Creates a half-float matrix with given \c rows and \c columns and a number of channels as the
-/// size of \c values. Each channel of the matrix has a constant value as defined by \c values.
-cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
-                                                      const std::vector<half_float::half> &values);
+/// Returns the \c MPSImageFeatureChannelFormat matching the Open CV type \c type.
+MPSImageFeatureChannelFormat PNKFeatureChannelFormatFromCVType(int type);
 
 NS_ASSUME_NONNULL_END

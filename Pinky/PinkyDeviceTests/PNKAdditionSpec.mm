@@ -3,10 +3,52 @@
 
 #import "PNKAddition.h"
 
-DeviceSpecBegin(PNKAddition)
-
 static const NSUInteger kInputWidth = 5;
 static const NSUInteger kInputHeight = 5;
+
+template <typename T>
+static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInteger channels) {
+  auto kernel = [[PNKAddition alloc] initWithDevice:device];
+
+  std::vector<T> primaryInputValues(channels);
+  for (NSUInteger i = 0; i < channels; ++i) {
+    primaryInputValues[i] = (T)(i + 1);
+  }
+
+  auto primaryInputMat = PNKGenerateChannelwiseConstantMatrix<T>(kInputHeight, kInputWidth,
+                                                                 primaryInputValues);
+
+  std::vector<T> secondaryInputValues(channels);
+  for (NSUInteger i = 0; i < channels; ++i) {
+    secondaryInputValues[i] = (T)(i + 2);
+  }
+  auto secondaryInputMat = PNKGenerateChannelwiseConstantMatrix<T>(kInputHeight, kInputWidth,
+                                                                   secondaryInputValues);
+
+  std::vector<T> expectedValues(channels);
+  for (NSUInteger i = 0; i < channels; ++i) {
+    expectedValues[i] = primaryInputValues[i] + secondaryInputValues[i];
+  }
+  cv::Mat expectedMat = PNKGenerateChannelwiseConstantMatrix<T>(kInputHeight, kInputWidth,
+                                                                expectedValues);
+
+  return @{
+    kPNKKernelExamplesKernel: kernel,
+    kPNKKernelExamplesDevice: device,
+    kPNKKernelExamplesPixelFormat: @(PNKFeatureChannelFormatFromCVType(cv::DataType<T>::type)),
+    kPNKKernelExamplesPrimaryInputChannels: @(channels),
+    kPNKKernelExamplesSecondaryInputChannels: @(channels),
+    kPNKKernelExamplesOutputChannels: @(channels),
+    kPNKKernelExamplesOutputWidth: @(kInputWidth),
+    kPNKKernelExamplesOutputHeight: @(kInputHeight),
+    kPNKKernelExamplesPrimaryInputMat: $(primaryInputMat),
+    kPNKKernelExamplesSecondaryInputMat: $(secondaryInputMat),
+    kPNKKernelExamplesExpectedMat: $(expectedMat)
+  };
+}
+
+DeviceSpecBegin(PNKAddition)
+
 static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
@@ -94,141 +136,22 @@ context(@"kernel input region", ^{
 });
 
 context(@"addition operation with Unorm8 channel format", ^{
-  static const cv::Vec4b kInputAValue(0, 1, 2, 3);
-  static const cv::Vec4b kInputBValue(3, 4, 5, 6);
-  static const cv::Vec4b kOutputValue(3, 5, 7, 9);
-
-  __block id<MTLCommandBuffer> commandBuffer;
-  __block cv::Mat4b inputAMat;
-  __block cv::Mat4b inputBMat;
-  __block cv::Mat4b expected;
-
-  beforeEach(^{
-    auto commandQueue = [device newCommandQueue];
-    commandBuffer = [commandQueue commandBuffer];
-
-    inputAMat = cv::Mat4b(kInputWidth, kInputHeight, kInputAValue);
-    inputBMat = cv::Mat4b(kInputWidth, kInputHeight, kInputBValue);
-    expected = cv::Mat4b(kInputWidth, kInputHeight, kOutputValue);
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    return PNKBuildDataForKernelExamples<uchar>(device, kInputFeatureChannels);
   });
 
-  afterEach(^{
-    commandBuffer = nil;
-  });
-
-  it(@"should add inputs correctly for non-array textures", ^{
-    auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-    auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-
-    PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat);
-    PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat);
-
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
-                  secondaryInputImage:inputBImage outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    auto output = PNKMatFromMTLTexture(outputImage.texture);
-    expect($(output)).to.equalMat($(expected));
-  });
-
-  it(@"should add inputs correctly for array textures", ^{
-    auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
-                                         kInputArrayFeatureChannels);
-    auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
-                                         kInputArrayFeatureChannels);
-    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
-                                         kInputArrayFeatureChannels);
-
-    for (NSUInteger i = 0; i < kInputArrayFeatureChannels / 4; ++i) {
-      PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat, i);
-      PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat, i);
-    }
-
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
-                  secondaryInputImage:inputBImage outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    for (NSUInteger i = 0; i < kInputArrayFeatureChannels / 4; ++i) {
-      auto outputSlice = PNKMatFromMTLTexture(outputImage.texture, i);
-      expect($(outputSlice)).to.equalMat($(expected));
-    }
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    return PNKBuildDataForKernelExamples<uchar>(device, kInputArrayFeatureChannels);
   });
 });
 
 context(@"addition operation with Float16 channel format", ^{
-  static const cv::Vec4hf kInputAValue(half_float::half(0), half_float::half(1),
-                                       half_float::half(2), half_float::half(3));
-  static const cv::Vec4hf kInputBValue(half_float::half(3), half_float::half(4),
-                                       half_float::half(5), half_float::half(6));
-  static const cv::Vec4hf kOutputValue(half_float::half(3), half_float::half(5),
-                                       half_float::half(7), half_float::half(9));
-
-  __block id<MTLCommandBuffer> commandBuffer;
-  __block cv::Mat4hf inputAMat;
-  __block cv::Mat4hf inputBMat;
-  __block cv::Mat4hf expected;
-
-  beforeEach(^{
-    auto commandQueue = [device newCommandQueue];
-    commandBuffer = [commandQueue commandBuffer];
-
-    inputAMat = cv::Mat4hf(kInputWidth, kInputHeight);
-    inputAMat.setTo(kInputAValue);
-    inputBMat = cv::Mat4hf(kInputWidth, kInputHeight);
-    inputBMat.setTo(kInputBValue);
-    expected = cv::Mat4hf(kInputWidth, kInputHeight);
-    expected.setTo(kOutputValue);
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputFeatureChannels);
   });
 
-  afterEach(^{
-    commandBuffer = nil;
-  });
-
-  it(@"should add inputs correctly for non-array textures", ^{
-    auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputFeatureChannels);
-    auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputFeatureChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputFeatureChannels);
-
-    PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat);
-    PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat);
-
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
-                  secondaryInputImage:inputBImage outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    auto output = PNKMatFromMTLTexture(outputImage.texture);
-    expect($(output)).to.equalMat($(expected));
-  });
-
-  it(@"should add inputs correctly for array textures", ^{
-    auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputArrayFeatureChannels);
-    auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputArrayFeatureChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, kInputArrayFeatureChannels);
-
-    for (NSUInteger i = 0; i < kInputArrayFeatureChannels / 4; ++i) {
-      PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat, i);
-      PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat, i);
-    }
-
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
-                  secondaryInputImage:inputBImage outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-
-    for (NSUInteger i = 0; i < kInputArrayFeatureChannels / 4; ++i) {
-      auto outputSlice = PNKMatFromMTLTexture(outputImage.texture, i);
-      expect($(outputSlice)).to.equalMat($(expected));
-    }
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputArrayFeatureChannels);
   });
 });
 
