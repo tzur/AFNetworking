@@ -145,6 +145,31 @@ context(@"crop correctness", ^{
   });
 });
 
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    NSBundle *bundle = NSBundle.lt_testBundle;
+
+    auto inputMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+        @"crop_input_15x16x32.tensor");
+    auto expectedMat = PNKLoadStructuredHalfFloatTensorFromResource(bundle,
+         @"crop_output_9x12x32.tensor");
+
+    crop = [[PNKCrop alloc] initWithDevice:device margins:kMargins];
+
+    return @{
+      kPNKKernelExamplesKernel: crop,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(expectedMat.channels()),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat),
+      kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+    };
+  });
+});
+
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     crop = [[PNKCrop alloc] initWithDevice:device margins:{0, 0, 0, 0}];
