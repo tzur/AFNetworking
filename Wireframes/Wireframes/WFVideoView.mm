@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
   _playerCreationQueue = dispatch_queue_create("com.lightricks.Wireframes.VideoView.PlayerCreation",
                                                DISPATCH_QUEUE_SERIAL);
   [self observeAppActiveState];
-  [self observePlayerStatus];
+  [self observePlayerItemStatus];
 }
 
 - (void)observeAppActiveState {
@@ -85,23 +85,25 @@ NS_ASSUME_NONNULL_BEGIN
   [self.player pause];
 }
 
-- (void)observePlayerStatus {
+- (void)observePlayerItemStatus {
   @weakify(self);
-  [RACObserve(self, player.status) subscribeNext:^(NSNumber * _Nullable status) {
-    if (!status) {
-      return;
-    }
-    AVPlayerItemStatus playerStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
-    @strongify(self)
-    if (playerStatus == AVPlayerItemStatusReadyToPlay) {
-      [self addPlaybackFinishedObservation];
-      [self addProgressObservation];
-      [self reportVideoDidLoad];
-      [self adjustPlaybackToPlaybackRequested];
-    } else if (playerStatus == AVPlayerItemStatusFailed) {
-      [self reportVideoError];
-    }
-  }];
+  [[RACObserve(self, player.currentItem.status)
+      distinctUntilChanged]
+      subscribeNext:^(NSNumber * _Nullable status) {
+        if (!status) {
+          return;
+        }
+        auto itemStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
+        @strongify(self)
+        if (itemStatus == AVPlayerItemStatusReadyToPlay) {
+          [self addPlaybackFinishedObservation];
+          [self addProgressObservation];
+          [self reportVideoDidLoad];
+          [self adjustPlaybackToPlaybackRequested];
+        } else if (itemStatus == AVPlayerItemStatusFailed) {
+          [self reportVideoError];
+        }
+      }];
 }
 
 - (void)addPlaybackFinishedObservation {
@@ -161,7 +163,7 @@ NS_ASSUME_NONNULL_BEGIN
   [WFVideoView invokeOnMainThread:^{
     @strongify(self)
     if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
-      [self.delegate videoView:self didEncounterVideoError:self.player.error];
+      [self.delegate videoView:self didEncounterVideoError:self.player.currentItem.error];
     }
   }];
 }
