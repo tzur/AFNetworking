@@ -29,6 +29,7 @@ extern "C" {
 #import <LTEngineTests/EXPMatchers+equalScalar.h>
 #import <LTEngineTests/EXPMatchers+beCloseToLTVector.h>
 #import <LTEngineTests/EXPMatchers+beCloseToMat.h>
+#import <LTEngineTests/EXPMatchers+beCloseToMatPSNR.h>
 #import <LTEngineTests/EXPMatchers+beCloseToScalar.h>
 #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>
 #endif
@@ -38,7 +39,6 @@ extern "C" {
 #import "LTEasyBoxing+Pinky.h"
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
-#import "PNKImageTestUtils.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKKernelExamples.h"
 #import "PNKTemporaryImageExamples.h"
