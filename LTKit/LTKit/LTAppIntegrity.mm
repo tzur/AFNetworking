@@ -9,6 +9,7 @@
 #import <unordered_set>
 
 #import "LTAppIntegrityInternal.h"
+#import "LTMMInputFile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -58,6 +59,10 @@ BOOL LTIsJailbroken() {
 // 4. https://davedelong.com/blog/2018/01/10/reading-your-own-entitlements
 
 struct LTMachHeaderInfo {
+  /// Memory mapped contents of the file that contains the header. The file is not accessed
+  /// directly, but held here so that the object will not be deallocated and the file closed,
+  /// rendering \c header invalid.
+  LTMMInputFile * _Nullable file;
   /// Pointer to the mach header (which should be treated as mach_header_64 if \c is64Bit is
   /// \c true).
   const struct mach_header * _Nullable header;
@@ -80,22 +85,26 @@ static uintptr_t LTGetPostHeaderPointer(const struct mach_header *header) {
 static LTMachHeaderInfo LTGetExecutableMachHeaderInfo() {
   Dl_info dlinfo;
 
-  if (!dladdr((void *)main, &dlinfo) || dlinfo.dli_fbase == NULL) {
-    return {.header = nullptr, .is64Bit = false};
+  if (!dladdr((void *)main, &dlinfo) || !dlinfo.dli_fname) {
+    return {.file = nil, .header = nullptr, .is64Bit = false};
   }
 
-  auto header = (const struct mach_header *)dlinfo.dli_fbase;
+  // The straightforward approach of using dli_fbase will not work in App Store builds, since the
+  // loader doesn't load or strip the LINKEDIT information. Therefore, it seems that the only way to
+  // access this data is to read the image from disk. Note that this increases the attack surface of
+  // malicious code.
+  auto _Nullable file = [[LTMMInputFile alloc] initWithPath:@(dlinfo.dli_fname) error:nil];
+  if (!file) {
+    return {.file = nil, .header = nullptr, .is64Bit = false};
+  }
+
+  auto header = (const struct mach_header *)file.data;
   bool is64Bit = LTIsMachHeader64Bit(header);
 
-  return {.header = header, .is64Bit = is64Bit};
+  return {.file = file, .header = header, .is64Bit = is64Bit};
 }
 
-static const LTSuperBlob * _Nullable LTGetExecutableSuperBlob() {
-  auto machInfo = LTGetExecutableMachHeaderInfo();
-  if (!machInfo.header) {
-    return nullptr;
-  }
-
+static const LTSuperBlob * _Nullable LTGetExecutableSuperBlob(const LTMachHeaderInfo &machInfo) {
   auto pointer = LTGetPostHeaderPointer((const struct mach_header *)machInfo.header);
 
   const struct linkedit_data_command *dataCommand = nullptr;
@@ -181,12 +190,8 @@ static __unused NSDictionary<NSString *, id> * _Nullable
                            ntohl(genericBlob->length) - sizeof(LTGenericBlob));
 }
 
-static __unused NSDictionary<NSString *, id> * _Nullable LTAppEntitlementsFromTextSegment() {
-  auto machInfo = LTGetExecutableMachHeaderInfo();
-  if (!machInfo.header) {
-    return nil;
-  }
-
+static __unused NSDictionary<NSString *, id> * _Nullable
+    LTAppEntitlementsFromTextSegment(const LTMachHeaderInfo &machInfo) {
   // __TEXT
   auto segmentName = LTDecodeString("XXSB_S");
   // __entitlements
@@ -221,16 +226,24 @@ static __unused NSDictionary<NSString *, id> * _Nullable LTAppEntitlementsFromTe
 }
 
 NSString * _Nullable LTSigningTeamIdentifier() {
-  auto superBlob = LTGetExecutableSuperBlob();
+  auto machInfo = LTGetExecutableMachHeaderInfo();
+  if (!machInfo.header) {
+    return nil;
+  }
+  auto superBlob = LTGetExecutableSuperBlob(machInfo);
   return superBlob ? LTSigningTeamIdentifier(superBlob) : nil;
 }
 
 NSDictionary<NSString *, id> * _Nullable LTAppEntitlements() {
+  auto machInfo = LTGetExecutableMachHeaderInfo();
+  if (!machInfo.header) {
+    return nil;
+  }
 #if !TARGET_OS_SIMULATOR && TARGET_OS_IPHONE
-  auto superBlob = LTGetExecutableSuperBlob();
+  auto superBlob = LTGetExecutableSuperBlob(machInfo);
   return superBlob ? LTAppEntitlementsFromSuperBlob(superBlob) : nil;
 #else
-  return LTAppEntitlementsFromTextSegment();
+  return LTAppEntitlementsFromTextSegment(machInfo);
 #endif
 }
 
