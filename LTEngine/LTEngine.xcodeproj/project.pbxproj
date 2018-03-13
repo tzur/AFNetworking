@@ -1305,6 +1305,7 @@
 		E412C8C31F653DC00070FCBC /* GuidedFilterAmphorasResult.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8C11F653DC00070FCBC /* GuidedFilterAmphorasResult.png */; };
 		E412C8C71F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8C51F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png */; };
 		E412C8C91F653FF10070FCBC /* GuidedFilterAmphorasFlash.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8C81F653FF10070FCBC /* GuidedFilterAmphorasFlash.png */; };
+		E412CDE02056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm in Sources */ = {isa = PBXBuildFile; fileRef = E412CDDE2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm */; };
 		E48419ED1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = E48419EB1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h */; };
 		E48419EE1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = E48419EC1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm */; };
 		E4841A221E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */; };
@@ -3138,6 +3139,8 @@
 		E412C8C11F653DC00070FCBC /* GuidedFilterAmphorasResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterAmphorasResult.png; path = Resources/GuidedFilterAmphorasResult.png; sourceTree = "<group>"; };
 		E412C8C51F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterAmphorasNoFlash.png; path = Resources/GuidedFilterAmphorasNoFlash.png; sourceTree = "<group>"; };
 		E412C8C81F653FF10070FCBC /* GuidedFilterAmphorasFlash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterAmphorasFlash.png; path = Resources/GuidedFilterAmphorasFlash.png; sourceTree = "<group>"; };
+		E412CDDE2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToMatPSNR.mm"; sourceTree = "<group>"; };
+		E412CDDF2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToMatPSNR.h"; sourceTree = "<group>"; };
 		E48419EB1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureOpenExrArchiver.h; sourceTree = "<group>"; };
 		E48419EC1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiver.mm; sourceTree = "<group>"; };
 		E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiverSpec.mm; sourceTree = "<group>"; };
@@ -5545,6 +5548,8 @@
 				283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				8BAE3A4518B2441B00DA79E1 /* EXPMatchers+beCloseToMat.h */,
 				8BAE3A4618B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm */,
+				E412CDDF2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.h */,
+				E412CDDE2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm */,
 				8BAE3A4B18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.h */,
 				8BAE3A4C18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.mm */,
 				8BAE3A4018B2354E00DA79E1 /* EXPMatchers+equalMat.h */,
@@ -7518,6 +7523,7 @@
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
 				0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */,
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
+				E412CDE02056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm in Sources */,
 				2520B1B71D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm in Sources */,
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				50E998A81C075F89004F15C9 /* LTReparameterizationSpec.mm in Sources */,
