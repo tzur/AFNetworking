@@ -6,8 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Immutable class that calculates the frames for the subviews of \c HUIBoxTopView, and their
 /// layout dependent properties (for example the attibuted strings of subviews that contains text).
 /// The requirments for this layout are documented in file \c HelpUI_Design.jpg on Google Drive.
-///
-/// @see https://drive.google.com/open?id=1qiskh3I3hCKL3mdJCs_Sm4H0Ncxc9Wi4
 @interface HUIBoxTopLayout : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
