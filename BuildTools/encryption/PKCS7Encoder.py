@@ -43,7 +43,7 @@ class PKCS7Encoder(object):
         nl = len(text)
         val = int(binascii.hexlify(text[-1]), 16)
         if val > self.k:
-            raise ValueError('Input is not padded or padding is corrupt')
+            raise ValueError("Input is not padded or padding is corrupt")
 
         l = nl - val
         return text[:l]
@@ -56,6 +56,6 @@ class PKCS7Encoder(object):
         l = len(text)
         output = StringIO.StringIO()
         val = self.k - (l % self.k)
-        for _ in xrange(val):
-            output.write('%02x' % val)
+        for _ in range(val):
+            output.write("%02x" % val)
         return text + binascii.unhexlify(output.getvalue())

@@ -1,8 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright (c) 2012 Lightricks. All rights reserved.
 # Created by Yaron Inger.
 
+import io
 import json
 import os
 import sys
@@ -15,18 +16,31 @@ import Utils
 
 RC_FAILED_PROCESSING = 1
 
+def main(argv):
+    if len(argv) != 4:
+        print("Usage: %s <key> <shader file name> <output directory>" %
+              os.path.basename(argv[0]))
+        sys.exit()
+
+    key, shader_file_name, output_directory = argv[1:]
+
+    try:
+        encryptor = ShaderEncryptor(key, shader_file_name)
+        encryptor.write_to(output_directory)
+    except ShaderParseException:
+        sys.exit(RC_FAILED_PROCESSING)
 
 def file_name_to_script_dir(file_name):
     """Converts base file name to a file name inside the script directory."""
     return os.path.join(os.path.dirname(sys.argv[0]), file_name)
 
-
 def escape_string(s):
     """Escapes the given string and wraps it with quotes."""
     return json.dumps(s)
 
-
 class ShaderEncryptor(object):
+    # pylint: disable=too-many-instance-attributes
+
     H_TEMPLATE_FILE = "ShaderTemplate.h"
     M_TEMPLATE_FILE = "ShaderTemplate.m"
 
@@ -57,7 +71,7 @@ class ShaderEncryptor(object):
         self.__shader = Shader(self.__shader_file_name)
 
         # Prepare template values.
-        encrypted_contents = encryptor.encrypt_contents(self.__shader.contents)
+        encrypted_contents = encryptor.encrypt_contents(self.__shader.contents.encode("utf-8"))
 
         # Create C buffers.
         self.__capitalized_objc_name = self.__shader.objc_file_name(capitalized=True)
@@ -78,8 +92,12 @@ class ShaderEncryptor(object):
 
     def __fill_templates(self):
         templates = {
-            self.M_TEMPLATE_FILE: file(file_name_to_script_dir(self.M_TEMPLATE_FILE), "rb").read(),
-            self.H_TEMPLATE_FILE: file(file_name_to_script_dir(self.H_TEMPLATE_FILE), "rb").read()
+            self.M_TEMPLATE_FILE: ShaderEncryptor.__read_template_file__(
+                file_name_to_script_dir(self.M_TEMPLATE_FILE)
+            ),
+            self.H_TEMPLATE_FILE: ShaderEncryptor.__read_template_file__(
+                file_name_to_script_dir(self.H_TEMPLATE_FILE)
+            )
         }
 
         variables = {
@@ -97,11 +115,16 @@ class ShaderEncryptor(object):
             "UNIFORMS_IMPLEMENTATION": "\n\n".join(self.__uniforms_implementations)
         }
 
-        for name in templates.iterkeys():
-            for key, value in variables.iteritems():
+        for name in templates:
+            for key, value in variables.items():
                 templates[name] = templates[name].replace("@%s@" % key, str(value))
 
         return templates
+
+    @staticmethod
+    def __read_template_file__(file_path):
+        with io.open(file_path, "r", encoding="utf-8") as template_file:
+            return template_file.read()
 
     def __generate_uniforms_getters(self):
         return ShaderEncryptor.__generate_variables_getters(self.__shader.uniforms)
@@ -150,8 +173,7 @@ class ShaderEncryptor(object):
     def __import_file():
         if os.environ["PROJECT_NAME"].startswith("LTEngine"):
             return "\"LTShaderStorage.h\""
-        else:
-            return "<LTEngine/LTShaderStorage.h>"
+        return "<LTEngine/LTShaderStorage.h>"
 
     def write_to(self, output_directory):
         try:
@@ -159,24 +181,15 @@ class ShaderEncryptor(object):
         except os.error:
             pass
 
+        print(output_directory)
+
         h_file_path = "%s+%s.h" % (self.CATEGORY_BASE_CLASS_NAME, self.__capitalized_objc_name)
         m_file_path = "%s+%s.m" % (self.CATEGORY_BASE_CLASS_NAME, self.__capitalized_objc_name)
-        with file(os.path.join(output_directory, h_file_path), "wb") as h_file:
+        with io.open(os.path.join(output_directory, h_file_path), "w", encoding="utf-8") as h_file:
             h_file.write(self.__filled_templates[self.H_TEMPLATE_FILE])
-        with file(os.path.join(output_directory, m_file_path), "wb") as m_file:
+        with io.open(os.path.join(output_directory, m_file_path), "w", encoding="utf-8") as m_file:
             m_file.write(self.__filled_templates[self.M_TEMPLATE_FILE])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print ("Usage: %s <key> <shader file name> <output directory>" %
-               os.path.basename(sys.argv[0]))
-        sys.exit()
-
-    key, shader_file_name, output_directory = sys.argv[1:]
-
-    try:
-        encryptor = ShaderEncryptor(key, shader_file_name)
-        encryptor.write_to(output_directory)
-    except ShaderParseException:
-        sys.exit(RC_FAILED_PROCESSING)
+    main(sys.argv)

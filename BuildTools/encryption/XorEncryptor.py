@@ -17,7 +17,7 @@ class XorEncryptor(object):
     def encrypt_file(self, input_file_name):
         """Encrypts a given file, returns cipher text."""
         try:
-            input_text = file(input_file_name, "rb").read()
+            input_text = open(input_file_name, "rb").read()
         except IOError:
             raise XorEncryptorException("Cannot open input file: %s" % input_file_name)
 
@@ -29,8 +29,8 @@ class XorEncryptor(object):
         key_index = 0
         key_length = len(self.key)
 
-        for char in input_text:
-            encrypted_text.append(chr(ord(char) ^ ord(self.key[key_index])))
+        for byte in bytearray(list(input_text)):
+            encrypted_text.append(chr(byte ^ ord(self.key[key_index])))
             key_index = (key_index + 1) % key_length
 
         return "".join(encrypted_text)
@@ -46,4 +46,4 @@ if __name__ == "__main__":
 
     encryptor = XorEncryptor(args.key)
     cipherText = encryptor.encrypt_file(args.infile)
-    file(args.outfile, "wb").write(cipherText)
+    open(args.outfile, "wb").write(cipherText)

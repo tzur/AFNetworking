@@ -1,8 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright (c) 2016 Lightricks. All rights reserved.
 # Created by Daniel Lahyani.
 
+import io
 import json
 import os
 import sys
@@ -10,6 +11,16 @@ import time
 
 from encryption import XorEncryptor
 import Utils
+
+def main(argv):
+    if len(argv) != 5:
+        print("Usage: %s <key> <certificate file name> <project prefix> <output directory>" %
+              os.path.basename(argv[0]))
+        sys.exit(-1)
+
+    key, certificate_file_name, project_prefix, output_directory = argv[1:]
+    encryptor = CertificateEncryptor(key, os.path.abspath(certificate_file_name), project_prefix)
+    encryptor.write_to(output_directory)
 
 def file_name_to_script_dir(file_name):
     """Converts base file name to a file name inside the script directory."""
@@ -24,6 +35,7 @@ class CertificateEncryptor(object):
     Encryptor used to encrypt certificate files and generate Objective-C source files that provides
     simple interface to decrypt and use the certificate data as a simple buffer.
     """
+    # pylint: disable=too-many-instance-attributes
 
     H_TEMPLATE_FILE = "CertificateTemplate.h"
     M_TEMPLATE_FILE = "CertificateTemplate.mm"
@@ -59,12 +71,17 @@ class CertificateEncryptor(object):
         self.__filled_templates = self.__fill_templates()
 
     def __certificate_contents(self):
-        return open(self.__certificate_file_name, 'rb').read()
+        with io.open(self.__certificate_file_name, "rb") as certificate_file:
+            return certificate_file.read()
 
     def __fill_templates(self):
         templates = {
-            self.M_TEMPLATE_FILE: file(file_name_to_script_dir(self.M_TEMPLATE_FILE), "rb").read(),
-            self.H_TEMPLATE_FILE: file(file_name_to_script_dir(self.H_TEMPLATE_FILE), "rb").read()
+            self.M_TEMPLATE_FILE: CertificateEncryptor.__read_template_file(
+                file_name_to_script_dir(self.M_TEMPLATE_FILE)
+            ),
+            self.H_TEMPLATE_FILE: CertificateEncryptor.__read_template_file(
+                file_name_to_script_dir(self.H_TEMPLATE_FILE)
+            )
         }
 
         variables = {
@@ -76,11 +93,16 @@ class CertificateEncryptor(object):
             "SCRIPT_NAME": os.path.basename(sys.argv[0])
         }
 
-        for name in templates.iterkeys():
-            for key, value in variables.iteritems():
+        for name in templates:
+            for key, value in variables.items():
                 templates[name] = templates[name].replace("@%s@" % key, str(value))
 
         return templates
+
+    @staticmethod
+    def __read_template_file(file_path):
+        with io.open(file_path, "r", encoding="utf-8") as template_file:
+            return template_file.read()
 
     def write_to(self, output_directory):
         try:
@@ -91,18 +113,11 @@ class CertificateEncryptor(object):
         output_base_name = "%s%sCert" % (self.__project_prefix, self.__certificate_name)
         h_file_name = "%s.h" % (output_base_name)
         m_file_name = "%s.mm" % (output_base_name)
-        with file(os.path.join(output_directory, h_file_name), "wb") as h_file:
+        with io.open(os.path.join(output_directory, h_file_name), "w", encoding="utf-8") as h_file:
             h_file.write(self.__filled_templates[self.H_TEMPLATE_FILE])
-        with file(os.path.join(output_directory, m_file_name), "wb") as m_file:
+        with io.open(os.path.join(output_directory, m_file_name), "w", encoding="utf-8") as m_file:
             m_file.write(self.__filled_templates[self.M_TEMPLATE_FILE])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print ("Usage: %s <key> <certificate file name> <project prefix> <output directory>" %
-               os.path.basename(sys.argv[0]))
-        sys.exit(-1)
-
-    key, certificate_file_name, project_prefix, output_directory = sys.argv[1:]
-    encryptor = CertificateEncryptor(key, os.path.abspath(certificate_file_name), project_prefix)
-    encryptor.write_to(output_directory)
+    main(sys.argv)

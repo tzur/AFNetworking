@@ -1,9 +1,9 @@
 # Copyright (c) 2012 Lightricks. All rights reserved.
 # Created by Yaron Inger.
 
+import io
 import os
 import re
-
 
 class ShaderParseException(Exception):
     pass
@@ -13,7 +13,7 @@ class Shader(object):
     def __init__(self, filename):
         self.__basedir = os.path.dirname(filename)
         self.__basename = os.path.basename(filename)
-        self._contents = file(filename, "rb").read()
+        self._contents = io.open(filename, "r", encoding="utf-8").read()
         self.__strip_comments()
 
     def __strip_comments(self):

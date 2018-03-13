@@ -7,6 +7,7 @@ translated .strings files. If a string was not previously translated, it will be
 output dictionary file.
 """
 
+import io
 import glob
 import os
 import shutil
@@ -53,8 +54,8 @@ def write_localization_line(base_localization_line, existing_localization_dict, 
 
 def localization_dict_from_file(language_path, localized_file_name):
     localized_file_path = os.path.join(language_path, localized_file_name)
-    print "Processing " + localized_file_path
-    with open(localized_file_path, 'r') as source_localized_file:
+    print("Processing " + localized_file_path)
+    with io.open(localized_file_path, encoding="utf-8") as source_localized_file:
         localization_dict = str_to_dict(source_localized_file.read())
 
     return localization_dict
@@ -76,10 +77,10 @@ def create_localized_language_for_path(language_path, localized_file_name,
     language_dir_name = os.path.basename(language_path)
     existing_localization_dict = localization_dict_from_file(language_path, localized_file_name)
     out_language_dir = os.path.join(out_dir, language_dir_name)
-
     if not os.path.exists(out_language_dir):
         os.makedirs(out_language_dir)
-    with open(os.path.join(out_language_dir, localized_file_name), 'w+') as out_localized_file:
+    with io.open(os.path.join(out_language_dir, localized_file_name), "w+",
+                 encoding="utf-8") as out_localized_file:
         for base_localization_line in base_localization_file_contents.splitlines():
             write_localization_line(base_localization_line, existing_localization_dict,
                                     out_localized_file)
@@ -99,7 +100,7 @@ def create_localization_file_for_each_language(localization_folders_path, base_d
             continue
         for base_file_path in glob.glob(base_file_paths):
             base_file_name = os.path.basename(base_file_path)
-            with open(base_file_path, 'r') as base_localization_file:
+            with io.open(base_file_path, "r", encoding="utf-8") as base_localization_file:
                 create_localized_language_for_path(language_path, base_file_name,
                                                    base_localization_file.read(), out_dir)
 
@@ -119,7 +120,7 @@ def main(argv):
     out_dir - Output directory to write the localization files to.
     """
     if len(argv) != 4:
-        print "Usage: python " + argv[0] + " project_root_path base_dir out_dir"
+        print("Usage: python " + argv[0] + " project_root_path base_dir out_dir")
         exit()
 
     project_root_path, base_dir, out_dir = argv[1:4]
