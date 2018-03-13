@@ -233,7 +233,7 @@ context(@"data tasks", ^{
 
       expect(reportedError.domain).will.equal(kLTErrorDomain);
       expect(reportedError.code).will.equal(FBRErrorCodeHTTPTaskFailed);
-      expect(reportedError.fbr_HTTPRequest).will.equal(request);
+      expect(reportedError.fbr_HTTPRequest).will.beNil();
       expect(reportedError.fbr_HTTPResponse).will.equal(response);
       expect(reportedError.lt_underlyingError).will.equal(error);
     });
