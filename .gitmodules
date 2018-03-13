@@ -64,3 +64,12 @@
 [submodule "Pinky/Models"]
 	path = Pinky/Models
 	url = https://github.com/Lightricks/Pinky-Models.git
+[submodule "third_party/facebook-ios-sdk-binaries"]
+	path = third_party/facebook-ios-sdk-binaries
+	url = https://github.com/Lightricks/facebook-ios-sdk-binaries
+[submodule "third_party/Fabric"]
+	path = third_party/Fabric
+	url = https://github.com/Lightricks/Fabric
+[submodule "third_party/IGListKit"]
+	path = third_party/IGListKit
+	url = https://github.com/Lightricks/IGListKit
