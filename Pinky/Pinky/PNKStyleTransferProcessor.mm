@@ -274,11 +274,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)outputSizeWithInputSize:(CGSize)size {
   CGFloat smallSide = std::min(size.width, size.height);
+
+  CGSize resizedInputSize;
   if (smallSide <= self.stylizedOutputSmallSide) {
-    return size;
+    resizedInputSize = size;
+  } else {
+    CGSize sizeToFill = CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputSmallSide);
+    resizedInputSize = CGSizeAspectFill(size, sizeToFill);
   }
-  CGSize sizeToFill = CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputSmallSide);
-  CGSize resizedInputSize = CGSizeAspectFill(size, sizeToFill);
+
   resizedInputSize.width = ((int)(resizedInputSize.width + 3) / 4) * 4;
   resizedInputSize.height = ((int)(resizedInputSize.height + 3) / 4) * 4;
   return resizedInputSize;
