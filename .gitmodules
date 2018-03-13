@@ -67,3 +67,6 @@
 [submodule "third_party/facebook-ios-sdk-binaries"]
 	path = third_party/facebook-ios-sdk-binaries
 	url = https://github.com/Lightricks/facebook-ios-sdk-binaries
+[submodule "third_party/Fabric"]
+	path = third_party/Fabric
+	url = https://github.com/Lightricks/Fabric
