@@ -24,6 +24,34 @@ static NSDictionary *
 }
 #endif
 
+static NSArray<NSString *> *DVNPropertyKeys(Class classObject) {
+  unsigned int count = 0;
+  objc_property_t *properties = class_copyPropertyList(classObject, &count);
+  if (!count) {
+    return @[];
+  }
+
+  @onExit {
+    free(properties);
+  };
+
+  NSMutableArray<NSString *> *propertyKeys = [NSMutableArray arrayWithCapacity:count];
+  for (unsigned i = 0; i < count; ++i) {
+    NSString *propertyName = @(property_getName(properties[i]));
+
+    ext_propertyAttributes *attributes = ext_copyPropertyAttributes(properties[i]);
+    @onExit {
+      free(attributes);
+    };
+
+    if (attributes->ivar) {
+      [propertyKeys addObject:propertyName];
+    }
+  }
+
+  return propertyKeys;
+}
+
 SpecBegin(DVNBrushModelV1)
 
 context(@"initialization", ^{
@@ -113,6 +141,18 @@ context(@"image URL property keys", ^{
                             @instanceKeypath(DVNBrushModelV1, maskImageURL),
                             @instanceKeypath(DVNBrushModelV1, edgeAvoidanceGuideImageURL)].lt_set;
     expect([DVNBrushModelV1 imageURLPropertyKeys].lt_set).to.equal(expectedKeys);
+  });
+});
+
+context(@"JSON serialization strings", ^{
+  it(@"should provide serialization keys for all serializable properties", ^{
+    NSMutableArray<NSString *> *propertyKeypaths =
+        [DVNPropertyKeys([[DVNBrushModelV1 class] superclass]) mutableCopy];
+    NSArray<NSString *> *propertyKeypathsV1 = DVNPropertyKeys([DVNBrushModelV1 class]);
+    [propertyKeypaths addObjectsFromArray:propertyKeypathsV1];
+
+    expect([[DVNBrushModelV1 JSONKeyPathsByPropertyKey] allKeys].lt_set)
+        .to.equal(propertyKeypaths.lt_set);
   });
 });
 
