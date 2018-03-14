@@ -68,24 +68,25 @@ NS_ASSUME_NONNULL_BEGIN
         NSMutableArray *moved = [NSMutableArray array];
 
         for (NSUInteger i = 0; i < changesets.count; ++i) {
+          PTUChangeset *changeset = changesets[i];
           if (changeIndex && changeIndex.unsignedIntegerValue == i) {
             NSUInteger afterOffset = afterDataModel.count;
             NSUInteger beforeOffset = beforeDataModel.count;
 
-            [beforeDataModel addObjectsFromArray:changesets[i].beforeDataModel];
-            [afterDataModel addObjectsFromArray:changesets[i].afterDataModel];
+            [beforeDataModel addObjectsFromArray:changeset.beforeDataModel ?: @[]];
+            [afterDataModel addObjectsFromArray:changeset.afterDataModel];
 
             [deleted addObjectsFromArray:
-                PTUIndexPathsWithSectionOffset(changesets[i].deletedIndexes, beforeOffset)];
+                PTUIndexPathsWithSectionOffset(changeset.deletedIndexes, beforeOffset) ?: @[]];
             [inserted addObjectsFromArray:
-                PTUIndexPathsWithSectionOffset(changesets[i].insertedIndexes, beforeOffset)];
+                PTUIndexPathsWithSectionOffset(changeset.insertedIndexes, beforeOffset) ?: @[]];
             [updated addObjectsFromArray:
-                PTUIndexPathsWithSectionOffset(changesets[i].updatedIndexes, beforeOffset)];
+                PTUIndexPathsWithSectionOffset(changeset.updatedIndexes, beforeOffset) ?: @[]];
             [moved addObjectsFromArray:
-                PTUMovesWithSectionOffset(changesets[i].movedIndexes, afterOffset)];
+                PTUMovesWithSectionOffset(changeset.movedIndexes, afterOffset) ?: @[]];
           } else {
-            [beforeDataModel addObjectsFromArray:changesets[i].afterDataModel];
-            [afterDataModel addObjectsFromArray:changesets[i].afterDataModel];
+            [beforeDataModel addObjectsFromArray:changeset.afterDataModel];
+            [afterDataModel addObjectsFromArray:changeset.afterDataModel];
           }
         }
 

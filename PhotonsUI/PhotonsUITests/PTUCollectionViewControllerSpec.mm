@@ -4,6 +4,7 @@
 #import "PTUCollectionViewController.h"
 
 #import <Photons/NSError+Photons.h>
+#import <Photons/PTNAssetManager.h>
 
 #import "PTNTestUtils.h"
 #import "PTUCellSizingStrategy.h"

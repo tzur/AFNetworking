@@ -3,6 +3,8 @@
 
 #import "PTUChangesetProviderReverser.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "PTUChangeset.h"
 #import "PTUChangesetMove.h"
 #import "PTUReversedRandomAccessCollection.h"
@@ -88,10 +90,14 @@ NS_ASSUME_NONNULL_BEGIN
                                               inserted:inserted updated:updated moved:moves];
 }
 
-- (NSArray<NSNumber *> *)sectionSizes:(PTUDataModel *)dataModel {
-  return [[dataModel rac_sequence] map:^NSNumber *(NSArray *section) {
+- (NSArray<NSNumber *> *)sectionSizes:(PTUDataModel * _Nullable)dataModel {
+  if (!dataModel) {
+    return @[];
+  }
+
+  return [dataModel lt_map:^NSNumber *(NSArray *section) {
     return @(section.count);
-  }].array;
+  }];
 }
 
 - (nullable PTUDataModel *)reverseDataModel:(nullable PTUDataModel *)dataModel {
@@ -118,10 +124,10 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  return [[indexPaths rac_sequence] map:^NSIndexPath *(NSIndexPath *indexPath) {
+  return [indexPaths lt_map:^NSIndexPath *(NSIndexPath *indexPath) {
       return [self reverseIndexPath:indexPath
                     withSectionSize:sectionSizes[indexPath.section].unsignedIntegerValue];
-    }].array;
+    }];
 }
 
 - (nullable PTUChangesetMoves *)reverseMoves:(nullable PTUChangesetMoves *)moves
@@ -131,14 +137,14 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  return [[moves rac_sequence] map:^PTUChangesetMove *(PTUChangesetMove *move) {
+  return [moves lt_map:^PTUChangesetMove *(PTUChangesetMove *move) {
     NSIndexPath *reversedFrom = [self reverseIndexPath:move.fromIndex
         withSectionSize:beforeSectionSizes[move.fromIndex.section].unsignedIntegerValue];
     NSIndexPath *reversedTo = [self reverseIndexPath:move.toIndex
         withSectionSize:afterSectionSizes[move.toIndex.section].unsignedIntegerValue];
 
     return [PTUChangesetMove changesetMoveFrom:reversedFrom to:reversedTo];
-  }].array;
+  }];
 }
 
 - (NSIndexPath *)reverseIndexPath:(NSIndexPath *)indexPath withSectionSize:(NSUInteger)sectionSize {
