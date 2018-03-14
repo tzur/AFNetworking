@@ -24,6 +24,44 @@ NS_ASSUME_NONNULL_BEGIN
   return optionalPropertyKeys;
 }
 
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{
+      @instanceKeypath(BZRReceiptValidationStatus, requestId): @""
+    };
+  });
+
+  return defaultPropertyValues;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{
+    @instanceKeypath(BZRReceiptValidationStatus, receipt): @"receipt",
+    @instanceKeypath(BZRReceiptValidationStatus, isValid): @"valid",
+    @instanceKeypath(BZRReceiptValidationStatus, error): @"reason",
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): @"currentDateTime",
+    @instanceKeypath(BZRReceiptValidationStatus, requestId): @"requestId"
+  };
+}
+
++ (NSValueTransformer *)errorJSONTransformer {
+  return [NSValueTransformer bzr_validatricksErrorValueTransformer];
+}
+
++ (NSValueTransformer *)validationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)receiptJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[BZRReceiptInfo class]];
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
 - (BOOL)validate:(NSError *__autoreleasing *)error {
   if (self.isValid && !self.receipt) {
     if (error) {
@@ -43,26 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return YES;
-}
-
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{};
-}
-
-+ (NSValueTransformer *)errorJSONTransformer {
-  return [NSValueTransformer bzr_enumNameTransformerForClass:[BZRReceiptValidationError class]];
-}
-
-+ (NSValueTransformer *)validationDateTimeJSONTransformer {
-  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
-}
-
-+ (NSValueTransformer *)receiptJSONTransformer {
-  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[BZRReceiptInfo class]];
-}
-
-+ (BOOL)supportsSecureCoding {
   return YES;
 }
 

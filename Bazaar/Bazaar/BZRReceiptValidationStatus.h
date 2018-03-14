@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Information extracted from the receipt sent for validation or \c nil if validation failed.
 @property (readonly, nonatomic, nullable) BZRReceiptInfo *receipt;
 
+/// Unique identifier of the receipt validation request.
+@property (readonly, nonatomic) NSString *requestId;
+
 @end
 
 NS_ASSUME_NONNULL_END

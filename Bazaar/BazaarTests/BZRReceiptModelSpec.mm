@@ -118,7 +118,7 @@ it(@"should correctly build model with JSON dictionary where willAutoRenew is YE
 it(@"should correctly build model with JSON dictionary where willAutoRenew is NO", ^{
   BZRJSONDictionary *JSONDictionary = @{
     @"willAutoRenew": @NO,
-    @"expirationReason": @"BZRSubscriptionExpirationReasonBillingError",
+    @"expirationReason": @"billingError",
     @"isInBillingRetryPeriod": @YES
   };
   NSError *error;
@@ -140,7 +140,7 @@ it(@"should correctly build model if willAutoRenew is NO and expectedRenewalProd
   BZRJSONDictionary *JSONDictionary = @{
     @"willAutoRenew": @NO,
     @"expectedRenewalProductId": @"foo.bar",
-    @"expirationReason": @"BZRSubscriptionExpirationReasonProductWasUnavailable"
+    @"expirationReason": @"productWasUnavailable"
   };
   NSError *error;
 
@@ -200,10 +200,10 @@ context(@"initialization", ^{
 it(@"should correctly build model with JSON dictionary", ^{
   BZRJSONDictionary *JSONDictionary = @{
     @"productId": @"foo",
-    @"isExpired": @YES,
+    @"expired": @YES,
     @"originalTransactionId": @"1337",
     @"originalPurchaseDateTime": @1337,
-    @"expirationDateTime": @1337
+    @"expiresDateTime": @1337
   };
   NSError *error;
 
@@ -224,10 +224,10 @@ it(@"should correctly build model with JSON dictionary", ^{
 it(@"should correctly transform date time values", ^{
   BZRJSONDictionary *JSONDictionary = @{
     @"productId": @"foo",
-    @"isExpired": @YES,
+    @"expired": @YES,
     @"originalTransactionId": @"1337",
     @"originalPurchaseDateTime": @1000,
-    @"expirationDateTime": @1000,
+    @"expiresDateTime": @1000,
     @"cancellationDateTime": @1000,
     @"lastPurchaseDateTime": @1000
   };
@@ -249,7 +249,7 @@ it(@"should fail if the JSON dictionary is missing a mandatory key", ^{
     @"productId": @"foo",
     @"originalTransactionId": @"1337",
     @"originalPurchaseDateTime": @1337,
-    @"expirationDateTime": @1337
+    @"expiresDateTime": @1337
   };
   NSError *error;
 
@@ -265,10 +265,10 @@ it(@"should fail if the JSON dictionary is missing a mandatory key", ^{
 it(@"should fail if the JSON dictionary contains nil for a mandatory key", ^{
   BZRJSONDictionary *JSONDictionary = @{
     @"productId": @"foo",
-    @"isExpired": @YES,
+    @"expired": @YES,
     @"originalTransactionId": @"1337",
     @"originalPurchaseDateTime": [NSNull null],
-    @"expirationDateTime": @1337
+    @"expiresDateTime": @1337
   };
   NSError *error;
 
@@ -288,6 +288,13 @@ SpecEnd
 #pragma mark -
 
 SpecBegin(BZRReceiptInfo)
+
+static NSString * const kValidatricksSandboxEnvironment =
+    [[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+     reverseTransformedValue:$(BZRReceiptEnvironmentSandbox)];
+static NSString * const kValidatricksProductionEnvironment =
+    [[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+     reverseTransformedValue:$(BZRReceiptEnvironmentProduction)];
 
 context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
@@ -327,7 +334,7 @@ beforeEach(^{
 
 it(@"should correctly build model with JSON dictionary", ^{
   BZRJSONDictionary *JSONDictionary = @{
-    @"environment": @"BZRReceiptEnvironmentProduction"
+    @"environment": kValidatricksProductionEnvironment
   };
   NSError *error;
 
@@ -343,7 +350,7 @@ it(@"should correctly build model with JSON dictionary", ^{
 
 it(@"should correctly transform receipt environment value", ^{
   BZRJSONDictionary *JSONDictionary = @{
-    @"environment": @"BZRReceiptEnvironmentProduction"
+    @"environment": kValidatricksProductionEnvironment
   };
   NSError *error;
 
@@ -358,7 +365,7 @@ it(@"should correctly transform receipt environment value", ^{
 it(@"should correctly transform the original purchase date time", ^{
   NSNumber *originalPurchaseDateTime = @1337000;
   BZRJSONDictionary *JSONDictionary = @{
-    @"environment": @"BZRReceiptEnvironmentSandbox",
+    @"environment": kValidatricksSandboxEnvironment,
     @"originalPurchaseDateTime": originalPurchaseDateTime
   };
   NSError *error;
@@ -375,7 +382,7 @@ it(@"should correctly transform the in app purchases array", ^{
   NSArray<BZRJSONDictionary *> *inAppPurchases =
       @[inAppPurchaseJSONDictionary, inAppPurchaseJSONDictionary];
   BZRJSONDictionary *JSONDictionary = @{
-    @"environment": @"BZRReceiptEnvironmentSandbox",
+    @"environment": kValidatricksSandboxEnvironment,
     @"inAppPurchases": inAppPurchases
   };
   NSError *error;
@@ -390,7 +397,7 @@ it(@"should correctly transform the in app purchases array", ^{
 
 it(@"should correctly transform the subscription model", ^{
   BZRJSONDictionary *JSONDictionary = @{
-    @"environment": @"BZRReceiptEnvironmentSandbox",
+    @"environment": kValidatricksSandboxEnvironment,
     @"subscription": subscriptionJSONDictionary
   };
   NSError *error;

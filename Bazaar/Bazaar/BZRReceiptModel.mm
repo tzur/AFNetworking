@@ -15,7 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRReceiptInAppPurchaseInfo
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{};
+  return @{
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, productId): @"productId",
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId):
+        @"originalTransactionId",
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime):
+        @"originalPurchaseDateTime",
+  };
 }
 
 + (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
@@ -58,12 +64,29 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{};
+  return @{
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, willAutoRenew):
+        @"willAutoRenew",
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expectedRenewalProductId):
+        @"expectedRenewalProductId",
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isPendingPriceIncreaseConsent):
+        @"isPendingPriceIncreaseConsent",
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expirationReason):
+        @"expirationReason",
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isInBillingRetryPeriod):
+        @"isInBillingRetryPeriod"
+  };
 }
 
 + (NSValueTransformer *)expirationReasonJSONTransformer {
-  return [NSValueTransformer bzr_enumNameTransformerForClass:
-          [BZRSubscriptionExpirationReason class]];
+  return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
+    @"discontinuedByUser": $(BZRSubscriptionExpirationReasonDiscontinuedByUser),
+    @"billingError": $(BZRSubscriptionExpirationReasonBillingError),
+    @"priceIncreased": $(BZRSubscriptionExpirationReasonPriceChangeNotAgreed),
+    @"productWasUnavailable": $(BZRSubscriptionExpirationReasonProductWasUnavailable),
+    @"unknownError": $(BZRSubscriptionExpirationReasonUnknownError)
+  } defaultValue:$(BZRSubscriptionExpirationReasonUnknownError)
+    reverseDefaultValue:@"unknownError"];
 }
 
 + (BOOL)supportsSecureCoding {
@@ -93,7 +116,22 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{};
+  return @{
+    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @"expired",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"productId",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId):
+        @"originalTransactionId",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
+        @"originalPurchaseDateTime",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, lastPurchaseDateTime):
+        @"lastPurchaseDateTime",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
+        @"expiresDateTime",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime):
+        @"cancellationDateTime",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, pendingRenewalInfo):
+        @"pendingRenewalInfo"
+  };
 }
 
 + (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
@@ -144,11 +182,16 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{};
+  return @{
+    @instanceKeypath(BZRReceiptInfo, environment): @"environment",
+    @instanceKeypath(BZRReceiptInfo, originalPurchaseDateTime): @"originalPurchaseDateTime",
+    @instanceKeypath(BZRReceiptInfo, inAppPurchases): @"inAppPurchases",
+    @instanceKeypath(BZRReceiptInfo, subscription): @"subscription"
+  };
 }
 
 + (NSValueTransformer *)environmentJSONTransformer {
-  return [NSValueTransformer bzr_enumNameTransformerForClass:[BZRReceiptEnvironment class]];
+  return [NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer];
 }
 
 + (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
