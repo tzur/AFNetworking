@@ -70,12 +70,12 @@ context(@"animatable cell", ^{
   });
 
   it(@"should play video view on when animation starts", ^{
-    [cell animatableCellStartAnimation];
+    [cell startAnimation];
     OCMVerify([video play]);
   });
 
   it(@"should pause video view on when animation pauses", ^{
-    [cell animatableCellStopAnimation];
+    [cell stopAnimation];
     OCMVerify([video pause]);
   });
 });

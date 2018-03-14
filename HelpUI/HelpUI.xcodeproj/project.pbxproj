@@ -13,6 +13,11 @@
 		191F7CBB20550A64003E36DF /* HUISlideshowCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7CB920550A64003E36DF /* HUISlideshowCell.mm */; };
 		191F7E1020556912003E36DF /* HUIDocumentDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7E0E20556912003E36DF /* HUIDocumentDataSource.mm */; };
 		191F7E1220556959003E36DF /* HUIDocumentDataSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7E1120556959003E36DF /* HUIDocumentDataSourceSpec.mm */; };
+		191F7F51205664A3003E36DF /* HUICellsAnimator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7F50205664A3003E36DF /* HUICellsAnimator.mm */; };
+		191F7F53205664B2003E36DF /* HUICellsAnimatorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7F52205664B2003E36DF /* HUICellsAnimatorSpec.mm */; };
+		191F7F5720566543003E36DF /* HUIFakeCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7F5620566543003E36DF /* HUIFakeCell.mm */; };
+		191F810F205666E7003E36DF /* HUIFakeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F80E4205666E7003E36DF /* HUIFakeDataSource.mm */; };
+		191F820020566834003E36DF /* LTSpectaKeyWindowViewHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F81D620566834003E36DF /* LTSpectaKeyWindowViewHook.mm */; };
 		195B36AF1FFBB1B000F8DAB4 /* libHelpUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E95BDD1FF9256900078026 /* libHelpUI.a */; };
 		195B378F1FFCAEC100F8DAB4 /* WFTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B378E1FFCAEC100F8DAB4 /* WFTestUtils.mm */; };
 		195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B37901FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm */; };
@@ -437,6 +442,14 @@
 		191F7E0E20556912003E36DF /* HUIDocumentDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentDataSource.mm; sourceTree = "<group>"; };
 		191F7E0F20556912003E36DF /* HUIDocumentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIDocumentDataSource.h; sourceTree = "<group>"; };
 		191F7E1120556959003E36DF /* HUIDocumentDataSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIDocumentDataSourceSpec.mm; sourceTree = "<group>"; };
+		191F7F26205664A2003E36DF /* HUICellsAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUICellsAnimator.h; sourceTree = "<group>"; };
+		191F7F50205664A3003E36DF /* HUICellsAnimator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUICellsAnimator.mm; sourceTree = "<group>"; };
+		191F7F52205664B2003E36DF /* HUICellsAnimatorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUICellsAnimatorSpec.mm; sourceTree = "<group>"; };
+		191F7F5520566543003E36DF /* HUIFakeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIFakeCell.h; sourceTree = "<group>"; };
+		191F7F5620566543003E36DF /* HUIFakeCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIFakeCell.mm; sourceTree = "<group>"; };
+		191F80E4205666E7003E36DF /* HUIFakeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIFakeDataSource.mm; sourceTree = "<group>"; };
+		191F810E205666E7003E36DF /* HUIFakeDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIFakeDataSource.h; sourceTree = "<group>"; };
+		191F81D620566834003E36DF /* LTSpectaKeyWindowViewHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaKeyWindowViewHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.mm; sourceTree = "<group>"; };
 		195B36AA1FFBB1B000F8DAB4 /* HelpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		195B36D11FFBCC5C00F8DAB4 /* HelpUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelpUITests-Prefix.pch"; sourceTree = "<group>"; };
 		195B36D21FFBD09B00F8DAB4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -547,6 +560,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		191F7F5420566510003E36DF /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				191F7F5520566543003E36DF /* HUIFakeCell.h */,
+				191F7F5620566543003E36DF /* HUIFakeCell.mm */,
+				191F810E205666E7003E36DF /* HUIFakeDataSource.h */,
+				191F80E4205666E7003E36DF /* HUIFakeDataSource.mm */,
+			);
+			name = "Test Utils";
+			sourceTree = "<group>";
+		};
 		195B36AB1FFBB1B000F8DAB4 /* HelpUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,6 +578,7 @@
 				195B36CF1FFBB3C900F8DAB4 /* Providers */,
 				195B37971FFCB5E100F8DAB4 /* Resources */,
 				195B36B51FFBB1EC00F8DAB4 /* Supporting Files */,
+				191F7F5420566510003E36DF /* Test Utils */,
 				19EEEAEC20445368007EF4CF /* Views */,
 			);
 			path = HelpUITests;
@@ -601,6 +626,7 @@
 			isa = PBXGroup;
 			children = (
 				195B37951FFCB42600F8DAB4 /* LTObjectionModule.mm */,
+				191F81D620566834003E36DF /* LTSpectaKeyWindowViewHook.mm */,
 				195B37931FFCB3E500F8DAB4 /* LTSpectaObjectionHook.mm */,
 			);
 			name = LTEngineTests;
@@ -886,6 +912,8 @@
 				19EEF3E0204D333F007EF4CF /* HUIBoxTopView.mm */,
 				19EEF4B1204D417F007EF4CF /* HUIBoxView.h */,
 				19EEF4DB204D4180007EF4CF /* HUIBoxView.mm */,
+				191F7F26205664A2003E36DF /* HUICellsAnimator.h */,
+				191F7F50205664A3003E36DF /* HUICellsAnimator.mm */,
 				191F7E0F20556912003E36DF /* HUIDocumentDataSource.h */,
 				191F7E0E20556912003E36DF /* HUIDocumentDataSource.mm */,
 				191F7CB720550A64003E36DF /* HUIImageCell.h */,
@@ -908,6 +936,7 @@
 				19EEEAEE20445508007EF4CF /* HUIBoxTopLayoutSpec.mm */,
 				19EEF3E2204D3357007EF4CF /* HUIBoxTopViewSpec.mm */,
 				19EEF4DD204D41B8007EF4CF /* HUIBoxViewSpec.mm */,
+				191F7F52205664B2003E36DF /* HUICellsAnimatorSpec.mm */,
 				191F7E1120556959003E36DF /* HUIDocumentDataSourceSpec.mm */,
 				191F7CB320550A4F003E36DF /* HUIImageCellSpec.mm */,
 				198F596B2051291000DA392A /* HUIResourceCellSpec.mm */,
@@ -1387,10 +1416,14 @@
 			files = (
 				195B37941FFCB3E500F8DAB4 /* LTSpectaObjectionHook.mm in Sources */,
 				191F7CB520550A4F003E36DF /* HUIImageCellSpec.mm in Sources */,
+				191F7F53205664B2003E36DF /* HUICellsAnimatorSpec.mm in Sources */,
 				195B378F1FFCAEC100F8DAB4 /* WFTestUtils.mm in Sources */,
 				198F59712051296C00DA392A /* HUIVideoCellSpec.mm in Sources */,
+				191F810F205666E7003E36DF /* HUIFakeDataSource.mm in Sources */,
 				195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */,
 				198F596C2051291000DA392A /* HUIResourceCellSpec.mm in Sources */,
+				191F7F5720566543003E36DF /* HUIFakeCell.mm in Sources */,
+				191F820020566834003E36DF /* LTSpectaKeyWindowViewHook.mm in Sources */,
 				198FDCD82018DCEF00F85E75 /* HUISectionSpec.mm in Sources */,
 				19EEF4DE204D41B8007EF4CF /* HUIBoxViewSpec.mm in Sources */,
 				191F7E1220556959003E36DF /* HUIDocumentDataSourceSpec.mm in Sources */,
@@ -1417,6 +1450,7 @@
 				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
 				198F596F2051296100DA392A /* HUIVideoCell.mm in Sources */,
 				19E518DB200CCD9A008A9EA5 /* HUIItem.mm in Sources */,
+				191F7F51205664A3003E36DF /* HUICellsAnimator.mm in Sources */,
 				1970BAEE2014C5EA00E81A5F /* HUISettings.mm in Sources */,
 				191F7CBA20550A64003E36DF /* HUIImageCell.mm in Sources */,
 				19EEF4DC204D4180007EF4CF /* HUIBoxView.mm in Sources */,

@@ -118,11 +118,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark HUIAnimatableCell
 #pragma mark -
 
-- (void)animatableCellStartAnimation {
+- (void)startAnimation {
   [self.slideshowView play];
 }
 
-- (void)animatableCellStopAnimation {
+- (void)stopAnimation {
   [self.slideshowView pause];
 }
 
