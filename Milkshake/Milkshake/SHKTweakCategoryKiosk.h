@@ -3,12 +3,18 @@
 
 @class FBTweakStore, FBPersistentTweak, FBTweakCategory;
 
+@protocol FBTweak;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Contains common Tweaks for all iOS applications.
 @interface SHKCommonTweaks : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
+
+/// Returns an array of read-only Tweaks that provides basic and general information about the
+/// device, the system and the application like IDFV, iOS version, app version etc.
+@property (class, readonly, nonatomic) NSArray<id<FBTweak>> *generalInformationTweaks;
 
 @end
 
