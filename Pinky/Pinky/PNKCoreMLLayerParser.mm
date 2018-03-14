@@ -64,18 +64,17 @@ PoolingType poolingType(CoreML::Specification::PoolingLayerParams_PoolingType po
 cv::Mat1f metalConvolutionWeightsFromCoreMLConvolutionParameters(
     const CoreML::Specification::ConvolutionLayerParams &convolutionParams) {
   const cv::Mat1f weights = createMat(convolutionParams.weights().floatvalue());
-  NSUInteger inputFeatureChannels = (NSUInteger)(convolutionParams.ngroups() *
-                                                 convolutionParams.kernelchannels());
+  NSUInteger kernelChannels = (NSUInteger)convolutionParams.kernelchannels();
   NSUInteger outputFeatureChannels = (NSUInteger)convolutionParams.outputchannels();
   NSUInteger kernelHeight = (NSUInteger)convolutionParams.kernelsize(0);
   NSUInteger kernelWidth = (NSUInteger)convolutionParams.kernelsize(1);
 
   cv::Mat1f result(weights.rows, weights.cols);
-  NSUInteger channelSize = kernelHeight * kernelWidth * inputFeatureChannels;
+  NSUInteger channelSize = kernelHeight * kernelWidth * kernelChannels;
   NSUInteger imageSize = kernelHeight * kernelWidth;
   for (NSUInteger outputChannel = 0; outputChannel < outputFeatureChannels ; ++outputChannel) {
     cv::Rect roi((int)(outputChannel * channelSize), 0, (int)channelSize, 1);
-    cv::transpose(weights(roi).reshape(1, (int)inputFeatureChannels),
+    cv::transpose(weights(roi).reshape(1, (int)kernelChannels),
                   result(roi).reshape(1, (int)imageSize));
   }
 

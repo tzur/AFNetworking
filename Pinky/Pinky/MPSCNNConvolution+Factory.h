@@ -19,8 +19,10 @@ API_AVAILABLE(ios(10.0))
 /// Returns \c MPSCNNConvolution that performs the convolution represented by \c convolutionModel
 /// with the activation represented by \c activationModel.
 ///
-/// @note This is a memory intensive operation and requires allocating \c MTLBuffers for the
-/// parameters of the convolution.
+/// @note Depthwise convolution (<tt>groups == inputFeatureChannels</tt>) is supported in case when
+/// \t inputFeatureChannels, \t outputFeatureChannels and \t groups are all equal and divisible by
+/// \c 4. The latter constraint is due to iOS 10's requirement that each group has a number of
+/// channels that is divisible by \t 4.
 + (MPSCNNConvolution *)pnk_cnnConvolutionWithDevice:(id<MTLDevice>)device
     convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
     activationModel:(const pnk::ActivationKernelModel &)activationModel;
