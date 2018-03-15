@@ -12,6 +12,7 @@ DeviceSpecBegin(PNKStyleTransferProcessor)
 __block PNKStyleTransferProcessor *processor;
 
 static NSString * const kGreyNetworkFileName = @"sketch.nnmodel";
+static NSString * const kColorNetworkFileName = @"echo.nnmodel";
 
 static NSString * const kLargeImageFileName = @"Lena.png";
 
@@ -88,6 +89,36 @@ context(@"stylize", ^{
       });
     });
   });
+
+  it(@"should stylize image correctly using a color input network", ^{
+    NSBundle *bundle = NSBundle.lt_testBundle;
+    NSError *error;
+    auto modelURL = [NSURL URLWithString:[bundle lt_pathForResource:kColorNetworkFileName]];
+    processor = [[PNKStyleTransferProcessor alloc] initWithModel:modelURL error:&error];
+
+    cv::Mat4b inputMat = LTLoadMat([self class], @"baby.jpg");
+    auto inputBuffer = LTCVPixelBufferCreate(inputMat.cols, inputMat.rows,
+                                             kCVPixelFormatType_32BGRA);
+    LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat * _Nonnull image) {
+      inputMat.copyTo(*image);
+    });
+
+    auto outputSize = [processor outputSizeWithInputSize:CGSizeMake(inputMat.cols, inputMat.rows)];
+    auto outputBuffer = LTCVPixelBufferCreate(outputSize.width, outputSize.height,
+                                              kCVPixelFormatType_32BGRA);
+
+    waitUntil(^(DoneCallback done) {
+      [processor stylizeWithInput:inputBuffer.get() output:outputBuffer.get() styleIndex:0
+                       completion:^(PNKStyleTransferState * __unused state){
+                         done();
+                       }];
+      });
+
+    cv::Mat4b expectedMat = LTLoadMat([self class], @"baby_echo0.png");
+    LTCVPixelBufferImageForReading(outputBuffer.get(), ^(const cv::Mat &outputMat) {
+      expect($(outputMat)).to.beCloseToMatPSNR($(expectedMat), 50);
+    });
+  });
 });
 
-SpecEnd
+DeviceSpecEnd
