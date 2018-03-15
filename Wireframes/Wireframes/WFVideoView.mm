@@ -87,8 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)observePlayerItemStatus {
   @weakify(self);
-  [[RACObserve(self, player.currentItem.status)
+  [[[RACObserve(self, player.currentItem.status)
       distinctUntilChanged]
+      deliverOnMainThread]
       subscribeNext:^(NSNumber * _Nullable status) {
         if (!status) {
           return;
@@ -127,26 +128,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)shouldAddProgressObservation {
-  return [self.delegate respondsToSelector:@selector(videoView:didPlayVideoAtTime:)] && self.player;
+  return self.player && [self.delegate respondsToSelector:@selector(videoView:didPlayVideoAtTime:)];
 }
 
 - (void)reportVideoDidLoad {
-  @weakify(self);
-  [WFVideoView invokeOnMainThread:^{
-    @strongify(self)
-    if ([self.delegate respondsToSelector:@selector(videoViewDidLoadVideo:)]) {
-      [self.delegate videoViewDidLoadVideo:self];
-    }
-  }];
-}
-
-+ (void)invokeOnMainThread:(void (^)())block {
-  if ([NSThread isMainThread]) {
-    block();
-  } else {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      block();
-    });
+  if ([self.delegate respondsToSelector:@selector(videoViewDidLoadVideo:)]) {
+    [self.delegate videoViewDidLoadVideo:self];
   }
 }
 
@@ -159,13 +146,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)reportVideoError {
-  @weakify(self);
-  [WFVideoView invokeOnMainThread:^{
-    @strongify(self)
-    if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
-      [self.delegate videoView:self didEncounterVideoError:self.player.currentItem.error];
-    }
-  }];
+  if ([self.delegate respondsToSelector:@selector(videoView:didEncounterVideoError:)]) {
+    [self.delegate videoView:self didEncounterVideoError:self.player.currentItem.error];
+  }
 }
 
 - (void)dealloc {
@@ -236,7 +219,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)play {
   self.playbackRequested = YES;
-  [self.player play];
+  if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+    [self.player play];
+  }
 }
 
 - (void)pause {
@@ -255,16 +240,28 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)playerItemDidPlayToEnd:(NSNotification __unused *)notification {
-  if ([self.delegate respondsToSelector:@selector(videoViewDidFinishPlayback:)]) {
-    [self.delegate videoViewDidFinishPlayback:self];
-  }
-
-  if (self.repeatsOnEnd) {
-    [self.player seekToTime:kCMTimeZero];
-
-    if (self.playbackRequested) {
-      [self.player play];
+  @weakify(self);
+  [WFVideoView invokeOnMainThread:^{
+    @strongify(self)
+    if ([self.delegate respondsToSelector:@selector(videoViewDidFinishPlayback:)]) {
+      [self.delegate videoViewDidFinishPlayback:self];
     }
+    if (self.repeatsOnEnd) {
+      [self.player seekToTime:kCMTimeZero];
+      if (self.playbackRequested) {
+        [self.player play];
+      }
+    }
+  }];
+}
+
++ (void)invokeOnMainThread:(void (^)())block {
+  if ([NSThread isMainThread]) {
+    block();
+  } else {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      block();
+    });
   }
 }
 
