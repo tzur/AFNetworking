@@ -16,8 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)tin_writeMessage:(id<NSSecureCoding>)message toURL:(NSURL *)url
                    error:(NSError *__autoreleasing *)error {
   if (![url isFileURL]) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeInvalidArgument
-                           description:@"%@ must be a file url", url];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeInvalidArgument
+                             description:@"%@ must be a file url", url];
+    }
     return NO;
   }
 
