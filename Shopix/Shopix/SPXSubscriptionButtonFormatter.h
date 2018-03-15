@@ -52,8 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// number of months in the full subscription period and the suffix '/mo' will be appended to the
 /// price text. If \c monthlyFormat is \c NO the price text is for the full subscription period.
 /// \c monthlyFormat is ignored if subscription period of type one-time payment.
-/// Returns \c nil if \c priceInfo doesn't specify a full price. \c NSInvalidArgumentException is
-/// raised if \c descriptor.priceInfo is \c nil.
+/// Returns \c nil if \c priceInfo doesn't specify a full price or discount percentage.
+/// \c NSInvalidArgumentException is raised if \c descriptor.priceInfo is \c nil.
 - (nullable NSAttributedString *)
     fullPriceTextForSubscription:(SPXSubscriptionDescriptor *)descriptor
     monthlyFormat:(BOOL)monthlyFormat;

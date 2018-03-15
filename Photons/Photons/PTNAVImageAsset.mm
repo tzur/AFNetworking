@@ -90,7 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
     // PhotoKit uses JPEG and 0.93 compression when fetching images from \c audiovisual assets.
     auto _Nullable data = UIImageJPEGRepresentation(image, 0.93);
     if (!data) {
-      *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAVImageAssetFetchImageDataFailed];
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAVImageAssetFetchImageDataFailed];
+      }
     }
     return data;
   }];

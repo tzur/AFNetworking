@@ -5,6 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+using namespace spx;
+
 @interface SPXSubscriptionTermsView ()
 
 /// Text view holding the terms text, terms of use link and privacy policy link.
@@ -60,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSDictionary<NSAttributedStringKey, id> *termsOverviewAttributes =
       [termsText attributesAtIndex:0 longestEffectiveRange:nil
                            inRange:NSMakeRange(0, termsText.length)];
-  auto seperator = [[NSAttributedString alloc] initWithString:@" | "
+  auto seperator = [[NSAttributedString alloc] initWithString:_LIgnore(@" | ")
                                                    attributes:termsOverviewAttributes];
   [terms appendAttributedString:seperator];
 

@@ -10,11 +10,11 @@ using namespace spx;
 @implementation BZRBillingPeriod (Shopix)
 
 + (nullable instancetype)spx_billingPeriodWithProductIdentifier:(NSString *)productIdentifier {
-  return [[BZRBillingPeriod alloc] initWithDictionary:
-          [BZRBillingPeriod spx_periodOfProductIdentifier:productIdentifier] error:nil];
+  auto _Nullable dictionary = [BZRBillingPeriod spx_periodOfProductIdentifier:productIdentifier];
+  return dictionary ? [[BZRBillingPeriod alloc] initWithDictionary:dictionary error:nil] : nil;
 }
 
-+ (NSDictionary *)spx_periodOfProductIdentifier:(NSString *)productIdentifier {
++ (nullable NSDictionary *)spx_periodOfProductIdentifier:(NSString *)productIdentifier {
   auto productIdentifierComponents = [productIdentifier componentsSeparatedByString:@"."];
   for (NSString *component in [productIdentifierComponents reverseObjectEnumerator]) {
     if ([component isEqualToString:@"Monthly"] || [component isEqualToString:@"1M"]) {

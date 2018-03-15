@@ -19,13 +19,13 @@ extern NSString * const kSPXDefaultLocalizationTableName;
 
 /// Returns localized \c key string from the given table with name \c tableName. \c key is returned
 /// if no such key exists in \c tableName or if \c tableName does not exist.
-static inline NSString *SPXLocalizeFromTable(NSString *tableName, NSString *key) {
+static inline NSString *SPXLocalizeFromTable(NSString *tableName, NSString *key)
+    LT_RETURNS_LOCALIZED_STRING {
   LTLocalizationTable * _Nullable table = [SPXLocalization localizationTables][tableName];
   return table ? table[key] : key;
 }
 
 namespace spx {
-
   /// Returns localized \c key string from the default table. \c key is returned if no such key
   /// exists in the default table or if the default table does not exist. \c comment is used only by
   /// external tools that extract the strings needed to be localized.
@@ -51,6 +51,13 @@ namespace spx {
   /// @endcode
   static inline NSString *_LPlural(NSString *key, NSString *comment) {
     return _LDefault(key, comment);
+  }
+
+  /// Returns the same \c key that was provided to this method without localization. This is used to
+  /// silence the static analyzer when the string that is displayed doesn't require any
+  /// localization.
+  static inline NSString *_LIgnore(NSString *key) LT_RETURNS_LOCALIZED_STRING {
+    return key;
   }
 }
 

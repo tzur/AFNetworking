@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
                           activeVariant:(nullable NSString *)activeVariant {
   if (self = [super init]) {
     _experimentModel = model;
-    _activeVariant = model.allVariants[activeVariant];
+    _activeVariant = activeVariant ? model.allVariants[activeVariant] : nil;
   }
 
   return self;
