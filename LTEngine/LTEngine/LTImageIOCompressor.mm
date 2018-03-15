@@ -43,9 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
                                      (__bridge CFStringRef)self.format.UTI, 1, NULL)
   );
   if (!destination) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
-                           description:@"Failed creating image destination with image %@, "
-                                       "metadata %@", image, metadata];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                             description:@"Failed creating image destination with image %@, "
+                "metadata %@", image, metadata];
+    }
     return nil;
   }
 
@@ -75,10 +77,12 @@ NS_ASSUME_NONNULL_BEGIN
                                     1, NULL)
   );
   if (!destination) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
-                                   url:url
-                           description:@"Failed creating image destination with image %@, "
-                                       "metadata %@", image, metadata];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                                     url:url
+                             description:@"Failed creating image destination with image %@, "
+                "metadata %@", image, metadata];
+    }
     return NO;
   }
 
