@@ -1259,6 +1259,32 @@ context(@"description", ^{
   });
 });
 
+context(@"mathematical operators", ^{
+  it(@"should multiply with a numeric value on the left-hand side", ^{
+    expect(2 * Interval<NSUInteger>::oc({2, 4}) == Interval<NSUInteger>::oc({4, 8})).to.beTruthy();
+    expect(2 * Interval<CGFloat>::co({2, 4}) == Interval<CGFloat>::co({4, 8})).to.beTruthy();
+    expect(0.5 * Interval<NSUInteger>::oo({2, 4}) == Interval<NSUInteger>::oo({1, 2}))
+        .to.beTruthy();
+    expect(0.5 * Interval<CGFloat>({2, 4}) == Interval<CGFloat>({1, 2})).to.beTruthy();
+  });
+
+  it(@"should multiply with a numeric value on the right-hand side", ^{
+    expect(Interval<NSUInteger>::oc({2, 4}) * 2 == Interval<NSUInteger>::oc({4, 8})).to.beTruthy();
+    expect(Interval<CGFloat>::co({2, 4}) * 2 == Interval<CGFloat>::co({4, 8})).to.beTruthy();
+    expect(Interval<NSUInteger>::oo({2, 4}) * 0.5 == Interval<NSUInteger>::oo({1, 2}))
+        .to.beTruthy();
+    expect(Interval<CGFloat>({2, 4}) * 0.5 == Interval<CGFloat>({1, 2})).to.beTruthy();
+  });
+
+  it(@"should divide by a numeric value", ^{
+    expect(Interval<NSUInteger>::oc({2, 4}) / 2 == Interval<NSUInteger>::oc({1, 2})).to.beTruthy();
+    expect(Interval<CGFloat>::co({2, 4}) / 2 == Interval<CGFloat>::co({1, 2})).to.beTruthy();
+    expect(Interval<NSUInteger>::oo({2, 4}) / 0.5 == Interval<NSUInteger>::oo({4, 8}))
+    .to.beTruthy();
+    expect(Interval<CGFloat>({2, 4}) / 0.5 == Interval<CGFloat>({4, 8})).to.beTruthy();
+  });
+});
+
 context(@"interval from string", ^{
   context(@"CGFloat intervals", ^{
     it(@"should return correct open CGFloat interval for a given string", ^{

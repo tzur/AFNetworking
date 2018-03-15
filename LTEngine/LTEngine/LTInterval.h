@@ -245,6 +245,16 @@ public:
     return _supInclusion == Closed;
   }
 
+  /// Returns the infimum endpoint inclusion of this interval.
+  EndpointInclusion infInclusion() const {
+    return _infInclusion;
+  }
+
+  /// Returns the supremum endpoint inclusion of this interval.
+  EndpointInclusion supInclusion() const {
+    return _supInclusion;
+  }
+
   /// Returns a string representation of this interval.
   NSString *description() const {
     std::stringstream stream;
@@ -289,6 +299,30 @@ constexpr bool operator==(lt::Interval<T> lhs, lt::Interval<T> rhs) {
 template <typename T>
 constexpr bool operator!=(lt::Interval<T> lhs, lt::Interval<T> rhs) {
   return !(lhs == rhs);
+}
+
+/// Returns the interval resulting from the elementwise multiplication of the infimum/supremum of
+/// the given \c rhs with the given \c lhs.
+template <typename T, typename S>
+constexpr lt::Interval<T> operator*(S lhs, lt::Interval<T> rhs) {
+  return lt::Interval<T>({lhs * rhs.inf(), lhs * rhs.sup()}, rhs.infInclusion(),
+                         rhs.supInclusion());
+}
+
+/// Returns the interval resulting from the elementwise multiplication of the infimum/supremum of
+/// the given \c lhs with the given \c rhs.
+template <typename T, typename S>
+constexpr lt::Interval<T> operator*(lt::Interval<T> lhs, S rhs) {
+  return lt::Interval<T>({rhs * lhs.inf(), rhs * lhs.sup()}, lhs.infInclusion(),
+                         lhs.supInclusion());
+}
+
+/// Returns the interval resulting from the elementwise division of the infimum/supremum of
+/// the given \c lhs with the given \c rhs.
+template <typename T, typename S>
+constexpr lt::Interval<T> operator/(lt::Interval<T> lhs, S rhs) {
+  return lt::Interval<T>({lhs.inf() / rhs, lhs.sup() / rhs}, lhs.infInclusion(),
+                         lhs.supInclusion());
 }
 
 /// Returns a \c CGFloat interval for the given \c string. The \c string is assumed to be in the
