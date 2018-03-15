@@ -18,6 +18,8 @@
 		191F7F5720566543003E36DF /* HUIFakeCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F7F5620566543003E36DF /* HUIFakeCell.mm */; };
 		191F810F205666E7003E36DF /* HUIFakeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F80E4205666E7003E36DF /* HUIFakeDataSource.mm */; };
 		191F820020566834003E36DF /* LTSpectaKeyWindowViewHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F81D620566834003E36DF /* LTSpectaKeyWindowViewHook.mm */; };
+		191F84CD205921F1003E36DF /* HUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F84A2205921F0003E36DF /* HUIView.mm */; };
+		191F84CF20592211003E36DF /* HUIViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191F84CE20592211003E36DF /* HUIViewSpec.mm */; };
 		195B36AF1FFBB1B000F8DAB4 /* libHelpUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E95BDD1FF9256900078026 /* libHelpUI.a */; };
 		195B378F1FFCAEC100F8DAB4 /* WFTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B378E1FFCAEC100F8DAB4 /* WFTestUtils.mm */; };
 		195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B37901FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm */; };
@@ -450,6 +452,9 @@
 		191F80E4205666E7003E36DF /* HUIFakeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIFakeDataSource.mm; sourceTree = "<group>"; };
 		191F810E205666E7003E36DF /* HUIFakeDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIFakeDataSource.h; sourceTree = "<group>"; };
 		191F81D620566834003E36DF /* LTSpectaKeyWindowViewHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaKeyWindowViewHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.mm; sourceTree = "<group>"; };
+		191F84A2205921F0003E36DF /* HUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIView.mm; sourceTree = "<group>"; };
+		191F84CC205921F1003E36DF /* HUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUIView.h; sourceTree = "<group>"; };
+		191F84CE20592211003E36DF /* HUIViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUIViewSpec.mm; sourceTree = "<group>"; };
 		195B36AA1FFBB1B000F8DAB4 /* HelpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		195B36D11FFBCC5C00F8DAB4 /* HelpUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelpUITests-Prefix.pch"; sourceTree = "<group>"; };
 		195B36D21FFBD09B00F8DAB4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -926,6 +931,8 @@
 				191F7CB920550A64003E36DF /* HUISlideshowCell.mm */,
 				198F596E2051296000DA392A /* HUIVideoCell.h */,
 				198F596D2051296000DA392A /* HUIVideoCell.mm */,
+				191F84CC205921F1003E36DF /* HUIView.h */,
+				191F84A2205921F0003E36DF /* HUIView.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -942,6 +949,7 @@
 				198F596B2051291000DA392A /* HUIResourceCellSpec.mm */,
 				191F7C8920550A4F003E36DF /* HUISlideshowCellSpec.mm */,
 				198F59702051296B00DA392A /* HUIVideoCellSpec.mm */,
+				191F84CE20592211003E36DF /* HUIViewSpec.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1421,6 +1429,7 @@
 				198F59712051296C00DA392A /* HUIVideoCellSpec.mm in Sources */,
 				191F810F205666E7003E36DF /* HUIFakeDataSource.mm in Sources */,
 				195B37911FFCB1CB00F8DAB4 /* WFLoggingImageProvider.mm in Sources */,
+				191F84CF20592211003E36DF /* HUIViewSpec.mm in Sources */,
 				198F596C2051291000DA392A /* HUIResourceCellSpec.mm in Sources */,
 				191F7F5720566543003E36DF /* HUIFakeCell.mm in Sources */,
 				191F820020566834003E36DF /* LTSpectaKeyWindowViewHook.mm in Sources */,
@@ -1445,6 +1454,7 @@
 				198F596A2051290000DA392A /* HUIResourceCell.mm in Sources */,
 				198FDCD62018DCDB00F85E75 /* HUISection.mm in Sources */,
 				191F7CBB20550A64003E36DF /* HUISlideshowCell.mm in Sources */,
+				191F84CD205921F1003E36DF /* HUIView.mm in Sources */,
 				19EEEAEB20445359007EF4CF /* HUIBoxTopLayout.mm in Sources */,
 				19EEF3E1204D333F007EF4CF /* HUIBoxTopView.mm in Sources */,
 				19925FC42029971D00BF71E5 /* HUIDocumentProvider.mm in Sources */,
