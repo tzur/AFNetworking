@@ -176,6 +176,8 @@ using namespace spx;
     fullPriceString = [descriptor.priceInfo.price
                        spx_localizedFullPriceForLocale:descriptor.priceInfo.localeIdentifier
                        discountPercentage:descriptor.discountPercentage dividedBy:divisor];
+  } else {
+    return nil;
   }
 
   fullPriceString = (monthlyFormat && descriptor.billingPeriod) ?

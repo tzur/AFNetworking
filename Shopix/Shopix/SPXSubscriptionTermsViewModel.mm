@@ -79,7 +79,9 @@ using namespace spx;
 }
 
 - (NSAttributedString *)termsOfUseLink {
-  return [[NSAttributedString alloc] initWithString:@"Terms of Use" attributes:@{
+  return [[NSAttributedString alloc] initWithString:_LDefault(@"Terms of Use", @"Title of link to "
+                                                              "terms of use document")
+                                         attributes:@{
     NSForegroundColorAttributeName: self.linksColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.fullTermsURL
@@ -87,7 +89,9 @@ using namespace spx;
 }
 
 - (NSAttributedString *)privacyPolicyLink {
-  return [[NSAttributedString alloc] initWithString:@"Privacy" attributes:@{
+  return [[NSAttributedString alloc] initWithString:_LDefault(@"Privacy", @"Title of link to "
+                                                              "privacy policy document")
+                                         attributes:@{
     NSForegroundColorAttributeName: self.linksColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.privacyPolicyURL
