@@ -151,6 +151,19 @@ context(@"asset fetching", ^{
     });
   });
 
+  it(@"should verify file existence on subscription", ^{
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
+    RACSignal *values = [manager fetchDescriptorWithURL:url];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"qux.jpg"
+                                                                      path:@"/baz"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
+  });
+
   it(@"should fetch directory descriptor for directory URL", ^{
     NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
 
@@ -228,6 +241,20 @@ context(@"image fetching", ^{
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAssetNotFound;
       });
+    });
+
+    it(@"should verify file existence on subscription", ^{
+      asset = PTNFileSystemFileFromString(@"/foo/bar/baz.jpg");
+      RACSignal *values = [manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                                    options:options];
+
+      PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+      auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.jpg"
+                                                                        path:@"/foo/bar"
+                                                                 isDirectory:NO];
+      fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+      expect(values).will.complete();
     });
   });
 
@@ -318,7 +345,7 @@ context(@"AVAsset fetching", ^{
   });
 
   it(@"should fetch AVAsset", ^{
-    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options] ;
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
   });
 
@@ -335,6 +362,28 @@ context(@"AVAsset fetching", ^{
       return error.code == PTNErrorCodeInvalidDescriptor;
     });
   });
+
+  it(@"should error on non-existing assets", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetNotFound;
+    });
+  });
+
+  it(@"should verify file existence on subscription", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"
+                                                                      path:@"/foo/bar"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
+  });
 });
 
 context(@"image data fetching", ^{
@@ -347,6 +396,19 @@ context(@"image data fetching", ^{
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == PTNErrorCodeAssetNotFound;
     });
+  });
+
+  it(@"should verify file existence on subscription", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"
+                                                                      path:@"/foo/bar"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
   });
 
   it(@"should error on non-File-System asset", ^{

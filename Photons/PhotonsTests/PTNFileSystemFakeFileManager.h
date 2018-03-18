@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes a fake file system manager with \c files as its registered files.
 - (instancetype)initWithFiles:(NSArray<PTNFileSystemFakeFileManagerFile *> *)files;
 
+/// Fake file system representation.
+@property (strong, nonatomic) NSArray<PTNFileSystemFakeFileManagerFile *> *files;
+
 @end
 
 NS_ASSUME_NONNULL_END

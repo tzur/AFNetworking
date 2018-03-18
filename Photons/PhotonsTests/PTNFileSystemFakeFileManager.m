@@ -50,13 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface PTNFileSystemFakeFileManager ()
-
-/// Fake file system representation.
-@property (strong, nonatomic) NSArray<PTNFileSystemFakeFileManagerFile *> *files;
-
-@end
-
 @implementation PTNFileSystemFakeFileManager
 
 - (instancetype)initWithFiles:(NSArray<PTNFileSystemFakeFileManagerFile *> *)files {
