@@ -10,12 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Returns a Tweak that allows the setting of the current language of the application. The list of
-/// possible localizations are taken from the main bundle. The Tweak uses the documented
-/// "AppleLanguages" key in \c NSUserDefaults to control the current localization. By default the
-/// device localization is used.
-@property (class, readonly, nonatomic) FBPersistentTweak *activeLanguageTweak;
-
 @end
 
 /// Contains Tweak categories for application to use. Any category can be added manually to
