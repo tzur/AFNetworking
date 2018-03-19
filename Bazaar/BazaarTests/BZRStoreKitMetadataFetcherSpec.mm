@@ -46,11 +46,22 @@ context(@"getting product list", ^{
     expect(weakstoreKitMetadataFetcher).to.beNil();
   });
 
-  it(@"should send error when failed to fetch products metadata", ^{
+  it(@"should send error when store kit facade errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
+    expect([storeKitMetadataFetcher fetchProductsMetadata:@[product]]).will.sendError(error);
+  });
+
+  it(@"should send error when product list doesn't contain any product", ^{
+    SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+    OCMStub([response products]).andReturn(@[]);
+    OCMStub([response invalidProductIdentifiers]).andReturn(@[product.identifier]);
+    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
+        .andReturn([RACSignal return:response]);
+
+    NSError *error = [NSError bzr_invalidProductsErrorWithIdentifiers:@[product.identifier].lt_set];
     expect([storeKitMetadataFetcher fetchProductsMetadata:@[product]]).will.sendError(error);
   });
 
@@ -63,8 +74,7 @@ context(@"getting product list", ^{
 
     auto recorder = [storeKitMetadataFetcher.eventsSignal testRecorder];
 
-    [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] subscribeNext:^(id) {}];
-
+    expect([storeKitMetadataFetcher fetchProductsMetadata:@[product]]).will.finish();
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       NSError *error = event.eventError;
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&

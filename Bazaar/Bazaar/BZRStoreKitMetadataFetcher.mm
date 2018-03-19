@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSArray<NSString *> *identifiers =
       [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
   @weakify(self);
-  return [[[self.storeKitFacade
+  return [[[[self.storeKitFacade
       fetchMetadataForProductsWithIdentifiers:[NSSet setWithArray:identifiers]]
       doNext:^(SKProductsResponse *response) {
         @strongify(self);
@@ -59,6 +59,16 @@ NS_ASSUME_NONNULL_BEGIN
           [self.nonCriticalErrorEventsSubject sendNext:
            [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
         }
+      }]
+      try:^BOOL(SKProductsResponse *response, NSError * __autoreleasing *error) {
+        if (!response.products.count) {
+          if (error) {
+            auto invalidProductIdentifiers = response.invalidProductIdentifiers.lt_set;
+            *error = [NSError bzr_invalidProductsErrorWithIdentifiers:invalidProductIdentifiers];
+          }
+          return NO;
+        }
+        return YES;
       }]
       map:^BZRProductList *(SKProductsResponse *response) {
         @strongify(self);

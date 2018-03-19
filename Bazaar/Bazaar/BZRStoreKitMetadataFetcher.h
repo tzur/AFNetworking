@@ -23,8 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that fetches metadata for all \c products and sends them as a new list of
 /// \c BZRProduct augmented with the fetched metadata. If a product's metadata couldn't be fetched,
 /// it will not appear in the products list delivered by the signal. The signal completes after
-/// sending the list of products. The signal errs if fetching the products' metadata encountred an
-/// error, the error code will be \c BZRErrorCodeProductsMetadataFetchingFailed.
+/// sending the list of products. The signal errs if fetching the products' metadata encountered an
+/// error, or no products metadata was fetched. The error code will be
+/// \c BZRErrorCodeProductsMetadataFetchingFailed.
 - (RACSignal<BZRProductList *> *)fetchProductsMetadata:(BZRProductList *)products;
 
 @end
