@@ -56,6 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public API
 #pragma mark -
 
+/// Must be overridden by subclasses.
++ (NSArray<NSString *> *)imageURLPropertyKeys {
+  return @[];
+}
+
 LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping =
     [[LTBidirectionalMap alloc] initWithDictionary:@{
       $(DVNBrushModelVersionV1): @"1"
@@ -63,15 +68,6 @@ LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVer
 
 DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
                               std::numeric_limits<CGFloat>::max());
-
-#pragma mark -
-#pragma mark Private API
-#pragma mark -
-
-/// Must be overridden by subclasses.
-+ (NSArray<NSString *> *)imageURLPropertyKeys {
-  return @[];
-}
 
 @end
 
