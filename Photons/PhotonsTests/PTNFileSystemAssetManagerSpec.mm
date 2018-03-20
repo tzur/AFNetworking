@@ -449,4 +449,68 @@ context(@"image data fetching", ^{
   });
 });
 
+context(@"AVPreview fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
+  __block id<PTNDescriptor> descriptor;
+  __block LTPath *descriptorPath;
+  __block NSURL *assetURL;
+
+  beforeEach(^{
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
+    assetURL = PTNOneSecondVideoPath();
+    descriptorPath = PTNFileSystemPathFromString(assetURL.path);
+    descriptor = [[PTNFileSystemFileDescriptor alloc]
+                  initWithPath:[LTPath pathWithPath:assetURL.path]];
+  });
+
+  it(@"should fetch AVAsset", ^{
+    LLSignalTestRecorder *values = [[manager fetchAVPreviewWithDescriptor:descriptor
+                                                                  options:options] testRecorder];
+
+    expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+      AVPlayerItem *playerItem = progress.result;
+      if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+        return NO;
+      }
+      return [((AVURLAsset *)playerItem.asset).URL isEqual:assetURL];
+    });
+  });
+
+  it(@"should complete after fetching an AVAsset", ^{
+    RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+    expect(values).will.sendValuesWithCount(1);
+    expect(values).will.complete();
+  });
+
+  it(@"should error on non audiovisual descriptor", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
+    RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  it(@"should error on non-existing assets", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetNotFound;
+    });
+  });
+
+  it(@"should verify file existence on subscription", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"
+                                                                      path:@"/foo/bar"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
+  });
+});
+
 SpecEnd

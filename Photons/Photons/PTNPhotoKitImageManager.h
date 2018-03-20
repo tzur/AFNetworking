@@ -24,6 +24,11 @@ typedef void (^PTNPhotoKitImageManagerImageDataHandler)(NSData *__nullable image
                                                         UIImageOrientation orientation,
                                                         NSDictionary *__nullable info);
 
+/// Handles successful or erroneous callbacks of
+/// \c requestPlayerItemForVideo:options:resultHandler:.
+typedef void (^PTNPhotoKitImageManagerAVPreviewHandler)(AVPlayerItem *__nullable playerItem,
+                                                        NSDictionary *__nullable info);
+
 /// Requests an image representation for the specified asset.
 ///
 /// @see -[PHImageManager requestImageForAsset:targetSize:contentMode:options:resultHandler:].
@@ -51,6 +56,13 @@ typedef void (^PTNPhotoKitImageManagerImageDataHandler)(NSData *__nullable image
 - (PHImageRequestID)requestImageDataForAsset:(PHAsset *)asset
                                      options:(PHImageRequestOptions *)options
                                resultHandler:(PTNPhotoKitImageManagerImageDataHandler)resultHandler;
+
+/// Requests a \c AVPlayerItem object for the specified asset.
+///
+/// @see -[PHImageManager requestPlayerItemForVideo:options:resultHandler:].
+- (PHImageRequestID)requestPlayerItemForVideo:(PHAsset *)asset
+    options:(PHVideoRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerAVPreviewHandler)resultHandler;
 
 @end
 

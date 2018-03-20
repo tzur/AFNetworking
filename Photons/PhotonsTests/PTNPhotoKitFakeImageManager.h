@@ -27,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
        orientation:(UIImageOrientation)orientation;
 
 /// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
+/// values), and finally the given \c playerItem.
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+        playerItem:(AVPlayerItem *)playerItem;
+
+/// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
 /// values), and finally errs with the given \c error.
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
       finallyError:(NSError *)error;

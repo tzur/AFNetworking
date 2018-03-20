@@ -274,6 +274,16 @@ static const NSTimeInterval kAssetMaxAge = 86400;
 }
 
 #pragma mark -
+#pragma mark AV Preview fetching
+#pragma mark -
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions __unused *)options {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
+#pragma mark -
 #pragma mark Caching
 #pragma mark -
 

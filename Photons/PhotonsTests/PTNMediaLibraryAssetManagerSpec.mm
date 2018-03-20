@@ -3,6 +3,7 @@
 
 #import "PTNMediaLibraryAssetManager.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <MediaPlayer/MPMediaLibrary.h>
@@ -10,8 +11,10 @@
 #import "MPMediaItem+Photons.h"
 #import "NSError+Photons.h"
 #import "NSURL+MediaLibrary.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationManager.h"
 #import "PTNAuthorizationStatus.h"
 #import "PTNFakeMediaQuery.h"
@@ -389,6 +392,135 @@ context(@"fetching", ^{
                       authorizationManager:authorizationManager];
       auto signal = [manager fetchImageWithDescriptor:item resizingStrategy:resizeStrategy
                                               options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
+  });
+
+  context(@"AVAsset", ^{
+    __block PTNAVAssetFetchOptions *options;
+
+    beforeEach(^{
+      options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
+    });
+
+    it(@"should fetch AVAsset", ^{
+      NSURL *url = [NSURL URLWithString:@"file://foo.bar"];
+      OCMStub(item.assetURL).andReturn(url);
+      AVAsset *underlyingAsset = [AVAsset assetWithURL:url];
+      PTNAudiovisualAsset *expectedAsset = [[PTNAudiovisualAsset alloc]
+                                            initWithAVAsset:underlyingAsset];
+
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVAssetWithDescriptor:item options:options];
+
+      expect(signal).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    });
+
+    it(@"should err when fetching with invalid descriptor", ^{
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:nil];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVAssetWithDescriptor:(id<PTNDescriptor>)@"foo" options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor;
+      });
+    });
+
+    it(@"should err when item does not have URL", ^{
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVAssetWithDescriptor:item options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed;
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      auto authorizationManager = (PTNMediaLibraryAuthorizationManager *)
+      OCMClassMock([PTNMediaLibraryAuthorizationManager class]);
+      OCMStub(authorizationManager.authorizationStatus).andReturn($(PTNAuthorizationStatusDenied));
+
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVAssetWithDescriptor:item options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
+  });
+
+  context(@"AVPerview", ^{
+    __block PTNAVAssetFetchOptions *options;
+
+    beforeEach(^{
+      options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
+    });
+
+    it(@"should fetch AVPlayerItem", ^{
+      NSURL *url = [NSURL URLWithString:@"file://foo.bar"];
+      OCMStub(item.assetURL).andReturn(url);
+
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVPreviewWithDescriptor:item options:options];
+
+      LLSignalTestRecorder *values = [signal testRecorder];
+      expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        AVPlayerItem *playerItem = progress.result;
+        if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+          return NO;
+        }
+        return [((AVURLAsset *)playerItem.asset).URL isEqual:url];
+      });
+    });
+
+    it(@"should err when fetching with invalid descriptor", ^{
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:nil];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)@"foo"
+                                                  options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeInvalidDescriptor;
+      });
+    });
+
+    it(@"should err when item does not have URL", ^{
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
+      auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVPreviewWithDescriptor:item options:options];
+
+      expect(signal).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed;
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      auto authorizationManager = (PTNMediaLibraryAuthorizationManager *)
+      OCMClassMock([PTNMediaLibraryAuthorizationManager class]);
+      OCMStub(authorizationManager.authorizationStatus).andReturn($(PTNAuthorizationStatusDenied));
+
+      auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                      authorizationManager:authorizationManager];
+      auto signal = [manager fetchAVPreviewWithDescriptor:item options:options];
 
       expect(signal).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeNotAuthorized;

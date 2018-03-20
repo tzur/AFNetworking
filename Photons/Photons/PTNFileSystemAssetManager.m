@@ -338,6 +338,33 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+#pragma mark -
+#pragma mark AV preview fetching
+#pragma mark -
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions __unused *)options {
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+    if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
+
+    if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
+
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:filePath.url];
+    return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
+  }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

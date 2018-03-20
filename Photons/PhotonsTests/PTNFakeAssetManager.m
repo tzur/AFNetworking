@@ -3,6 +3,7 @@
 
 #import "PTNFakeAssetManager.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "PTNAVAssetFetchOptions.h"
@@ -57,6 +58,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@implementation PTNAVPreviewRequest
+
+- (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
+                           options:(nullable PTNAVAssetFetchOptions *)options {
+  if (self = [super init]) {
+    _descriptor = descriptor;
+    _options = options;
+  }
+  return self;
+}
+
+@end
+
 @interface PTNFakeAssetManager ()
 
 /// Mapping of \c PTNImageRequest to the \c RACSubject returned for an image request with those
@@ -67,7 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// parameters.
 @property (readonly, nonatomic) NSMapTable<PTNAVAssetRequest *, RACSubject *> *avRequests;
 
-/// Mapping of \c PTNImageDataRequest to the \c RACSubject returned for a imdage data request with
+/// Mapping of \c PTNAVPreviewRequest to the \c RACSubject returned for a AV preview request with
+/// those parameters.
+@property (readonly, nonatomic) NSMapTable<PTNAVPreviewRequest *, RACSubject *> *avPreviewRequests;
+
+/// Mapping of \c PTNImageDataRequest to the \c RACSubject returned for a image data request with
 /// those parameters.
 @property (readonly, nonatomic) NSMapTable<PTNImageDataRequest *, RACSubject *> *imageDataRequests;
 
@@ -85,6 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _imageRequests = [NSMapTable strongToStrongObjectsMapTable];
     _avRequests = [NSMapTable strongToStrongObjectsMapTable];
+    _avPreviewRequests = [NSMapTable strongToStrongObjectsMapTable];
     _imageDataRequests = [NSMapTable strongToStrongObjectsMapTable];
     _descriptorRequests = [NSMutableDictionary dictionary];
     _albumRequests = [NSMutableDictionary dictionary];
@@ -144,6 +163,17 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [self.imageDataRequests objectForKey:request];
+}
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions *)options {
+  PTNAVPreviewRequest *request = [[PTNAVPreviewRequest alloc] initWithDescriptor:descriptor
+                                                                         options:options];
+  if (![self.avPreviewRequests objectForKey:request]) {
+    [self.avPreviewRequests setObject:[RACSubject subject] forKey:request];
+  }
+
+  return [self.avPreviewRequests objectForKey:request];
 }
 
 #pragma mark -
@@ -307,6 +337,59 @@ NS_ASSUME_NONNULL_BEGIN
     map:^RACSubject *(PTNImageDataRequest *request) {
       return [self.imageDataRequests objectForKey:request];
     }].array;
+}
+
+#pragma mark -
+#pragma mark AV preview serving
+#pragma mark -
+
+- (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
+                 withProgress:(NSArray<NSNumber *> *)progress
+                   playerItem:(AVPlayerItem *)playerItem {
+  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:playerItem]];
+
+  [self serveAVPreviewAssetRequest:request withProgressObjects:progressObjects then:nil];
+}
+
+- (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
+                 withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
+  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }];
+
+  [self serveAVPreviewAssetRequest:request withProgressObjects:progressObjects then:error];
+
+}
+
+- (void)serveAVPreviewAssetRequest:(PTNAVPreviewRequest *)request
+               withProgressObjects:(NSArray<PTNProgress *> *)progress
+                              then:(nullable NSError *)error {
+  for (RACSubject *signal in [self requestsMatchingAVPreviewRequest:request]) {
+    for (PTNProgress *progressObject in progress) {
+      [signal sendNext:progressObject];
+    }
+
+    if (error) {
+      [signal sendError:error];
+    } else {
+      [signal sendCompleted];
+    }
+  }
+}
+
+- (NSArray<RACSubject *> *)requestsMatchingAVPreviewRequest:(PTNAVPreviewRequest *)previewRequest {
+  return [[self.avPreviewRequests.keyEnumerator.rac_sequence
+      filter:^BOOL(PTNAVPreviewRequest *request) {
+        return (previewRequest.descriptor == nil ||
+            [previewRequest.descriptor isEqual:request.descriptor]) &&
+            (previewRequest.options == nil ||
+            [previewRequest.options isEqual:request.options]);
+      }]
+      map:^RACSubject *(PTNAVPreviewRequest *request) {
+        return [self.avPreviewRequests objectForKey:request];
+      }].array;
 }
 
 #pragma mark -

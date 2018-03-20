@@ -22,14 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps asset identifier to audio mix.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, AVAudioMix *> *identifierToAudioMix;
 
-/// Maps asset identifier to image.
+/// Maps asset identifier to image data.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, NSData *> *identifierToImageData;
 
 /// Maps asset identifier to its UTI.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, NSString *> *identifierToDataUTI;
 
-/// Maps asset identifier to audio mix.
+/// Maps asset identifier to orientation.
 @property (strong, nonatomic) NSMutableDictionary<NSString *, NSNumber *> *identifierToOrientation;
+
+/// Maps asset identifier to \c AVPlayerItem.
+@property (strong, nonatomic)
+    NSMutableDictionary<NSString *, AVPlayerItem *> *identifierToPlayerItem;
 
 /// Maps asset identifier to error.
 @property (strong, nonatomic) NSMutableDictionary *identifierToError;
@@ -62,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.identifierToImageData = [NSMutableDictionary dictionary];
     self.identifierToDataUTI = [NSMutableDictionary dictionary];
     self.identifierToOrientation = [NSMutableDictionary dictionary];
+    self.identifierToPlayerItem = [NSMutableDictionary dictionary];
     self.identifierToError = [NSMutableDictionary dictionary];
     self.identifierToProgressError = [NSMutableDictionary dictionary];
     self.requestToIdentifier = [NSMutableDictionary dictionary];
@@ -97,6 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
   self.identifierToImageData[identifier] = imageData;
   self.identifierToDataUTI[identifier] = dataUTI;
   self.identifierToOrientation[identifier] = @(orientation);
+}
+
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+        playerItem:(AVPlayerItem *)playerItem {
+  NSString *identifier = asset.localIdentifier;
+
+  self.identifierToProgress[identifier] = progress;
+  self.identifierToPlayerItem[identifier] = playerItem;
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
@@ -250,6 +263,49 @@ NS_ASSUME_NONNULL_BEGIN
     } else if (self.identifierToImageData[identifier]) {
       resultHandler(self.identifierToImageData[identifier], self.identifierToDataUTI[identifier],
                     self.identifierToOrientation[identifier].intValue, nil);
+    }
+  });
+
+  ++self.nextRequestIdentifier;
+  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+  [self.issuedRequests addObject:identifier];
+
+  return self.nextRequestIdentifier;
+}
+
+- (PHImageRequestID)requestPlayerItemForVideo:(PHAsset *)asset
+    options:(PHVideoRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerAVPreviewHandler)resultHandler {
+  NSString *identifier = asset.localIdentifier;
+
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    if (!self.identifierToProgress[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+      });
+      return;
+    }
+
+    if (options.progressHandler) {
+      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                          NSUInteger idx,
+                                                                          BOOL *stop) {
+        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+            self.identifierToProgressError[identifier] : nil;
+        options.progressHandler(progress.doubleValue, error, stop, nil);
+      }];
+    }
+
+    if (self.identifierToError[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: self.identifierToError[identifier]
+      });
+    } else if (self.identifierToProgressError[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: self.identifierToProgressError[identifier]
+      });
+    } else if (self.identifierToPlayerItem[identifier]) {
+      resultHandler(self.identifierToPlayerItem[identifier], nil);
     }
   });
 

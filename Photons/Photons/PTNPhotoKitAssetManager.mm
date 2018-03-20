@@ -869,6 +869,58 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark AV preview fetching
+#pragma mark -
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions *)options {
+  if (![descriptor isKindOfClass:[PHAsset class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
+  /// Although \c descriptor can only be a \c PHAsset, call to \c fetchAssetForDescriptor for its
+  /// authorization check.
+  return [[self fetchAssetForDescriptor:descriptor]
+          flattenMap:^(PHAsset *asset) {
+            return [self videoPreviewForPhotoKitAsset:asset options:[options photoKitOptions]];
+          }];
+
+}
+
+- (RACSignal *)videoPreviewForPhotoKitAsset:(PHAsset *)asset
+                                    options:(PHVideoRequestOptions *)options {
+  return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
+    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
+      if (!error) {
+        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        [subscriber sendNext:progress];
+      }
+    };
+
+    auto resultHandler = ^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
+      if (!playerItem || info[PHImageErrorKey]) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
+        [subscriber sendError:wrappedError];
+      } else {
+        PTNProgress *progress = [[PTNProgress alloc] initWithResult:playerItem];
+        [subscriber sendNext:progress];
+        [subscriber sendCompleted];
+      }
+    };
+
+    PHImageRequestID requestID = [self.imageManager requestPlayerItemForVideo:asset options:options
+                                                                resultHandler:resultHandler];
+
+    return [RACDisposable disposableWithBlock:^{
+      [self.imageManager cancelImageRequest:requestID];
+    }];
+  }];
+}
+
+#pragma mark -
 #pragma mark Delete assets
 #pragma mark -
 

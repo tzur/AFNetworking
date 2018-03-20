@@ -1669,6 +1669,132 @@ context(@"image data fetching", ^{
   });
 });
 
+context(@"AV preview fetching", ^{
+  __block id asset;
+  __block PTNAVAssetFetchOptions *options;
+  __block AVPlayerItem *playerItem;
+  __block NSError *defaultError;
+
+  beforeEach(^{
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    [fetcher registerAsset:asset];
+
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
+
+    playerItem = [AVPlayerItem playerItemWithURL:[NSURL URLWithString:@"foo://bar"]];
+    defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
+  });
+
+  it(@"should make requests with network access allowed", ^{
+    id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+    auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
+                                                            imageManager:imageManager
+                                                    assetResourceManager:assetResourceManager
+                                                    authorizationManager:authorizationManager
+                                                           changeManager:changeManager
+                                                            imageResizer:imageResizer];
+    OCMExpect([imageManager requestPlayerItemForVideo:asset
+        options:[OCMArg checkWithBlock:^BOOL(PHVideoRequestOptions *options) {
+          return options.isNetworkAccessAllowed;
+        }] resultHandler:([OCMArg invokeBlockWithArgs:playerItem, @{}, nil])]);
+
+    expect([assetManager fetchAVPreviewWithDescriptor:asset options:options]).will.complete();
+    OCMVerifyAll((id)imageManager);
+  });
+
+  context(@"fetch preview of asset", ^{
+    it(@"should fetch player item", ^{
+      [imageManager serveAsset:asset withProgress:@[] playerItem:playerItem];
+
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:playerItem]]);
+    });
+
+    it(@"should complete after fetching player item", ^{
+      [imageManager serveAsset:asset withProgress:@[] playerItem:playerItem];
+
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      expect(values).will.sendValuesWithCount(1);
+      expect(values).will.complete();
+    });
+
+    it(@"should fetch player item with progress", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] playerItem:playerItem];
+
+      expect([manager fetchAVPreviewWithDescriptor:asset options:options]).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+        [[PTNProgress alloc] initWithResult:playerItem]
+      ]);
+    });
+
+    it(@"should cancel request upon disposal", ^{
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      RACDisposable *subscriber = [values subscribeNext:^(id) {}];
+      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+
+      [subscriber dispose];
+      expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+    });
+
+    it(@"should err on error after progress finished", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err on progress download error", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
+
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5]
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        [imageManager serveAsset:asset withProgress:@[] playerItem:playerItem];
+
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+        expect(values).will.sendValuesWithCount(1);
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
+
+      RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
+  });
+});
+
 context(@"asset changes", ^{
   __block NSArray *assets;
   __block NSArray *assetCollections;
