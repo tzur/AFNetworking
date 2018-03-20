@@ -22,5 +22,6 @@
   #import "MPSImage+Size.h"
   #import "PNKComputeDispatch.h"
   #import "PNKComputeState.h"
+  #import "PNKTypeDefinitions.h"
 
 #endif

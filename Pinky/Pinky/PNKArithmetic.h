@@ -1,5 +1,5 @@
-// Copyright (c) 2017 Lightricks. All rights reserved.
-// Created by Nofar Noy.
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Gershon Hochman.
 
 #import "PNKKernel.h"
 
@@ -7,14 +7,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
 
-/// Kernel that performs the addition (sum) operation on two textures.
+/// Kernel that performs basic arithmetic per-pixel operations on two textures.
 API_AVAILABLE(ios(10.0))
-@interface PNKAddition : NSObject <PNKBinaryKernel>
+@interface PNKArithmetic : NSObject <PNKBinaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes a new kernel that runs on \c device.
-- (instancetype)initWithDevice:(id<MTLDevice>)device NS_DESIGNATED_INITIALIZER;
+/// Initializes a new kernel that runs on \c device and performs \c operation.
+- (instancetype)initWithDevice:(id<MTLDevice>)device operation:(pnk::ArithmeticOperation)operation
+    NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputImage
 /// and \c secondaryInputImage as input. Output is written asynchronously to \c outputImage.

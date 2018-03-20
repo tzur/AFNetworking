@@ -3,8 +3,6 @@
 
 #import "PNKImageBilinearScale.h"
 
-#import "PNKColorTransformTypes.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS

@@ -5,7 +5,7 @@
 
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
-#import "PNKAddition.h"
+#import "PNKArithmetic.h"
 #import "PNKConcatenation.h"
 #import "PNKConvolutionLayer.h"
 #import "PNKNeuralNetworkModel.h"
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Addition layer in residual stage. Output of this layer is used as input for \c resconv2 and
 /// \c add2.
-@property (readonly, nonatomic) PNKAddition *add1;
+@property (readonly, nonatomic) PNKArithmetic *add1;
 
 /// Convolution layer in residual stage. Output of this layer is used as input for \c dilated2.
 @property (readonly, nonatomic) PNKConvolutionLayer *resconv2;
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Addition layer in residual stage. Output of this layer is used as input for \c resconv3 and
 /// \c add3.
-@property (readonly, nonatomic) PNKAddition *add2;
+@property (readonly, nonatomic) PNKArithmetic *add2;
 
 /// Convolution layer in residual stage. Output of this layer is used as input for \c dilated3.
 @property (readonly, nonatomic) PNKConvolutionLayer *resconv3;
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Addition layer in residual stage. Output of this layer is used as input for \c resconv4 and
 /// \c add4.
-@property (readonly, nonatomic) PNKAddition *add3;
+@property (readonly, nonatomic) PNKArithmetic *add3;
 
 /// Convolution layer in residual stage. Output of this layer is used as input for \c dilated4.
 @property (readonly, nonatomic) PNKConvolutionLayer *resconv4;
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Addition layer in residual stage. Output of this layer is used as input for \c resconv5 and
 /// \c add5.
-@property (readonly, nonatomic) PNKAddition *add4;
+@property (readonly, nonatomic) PNKArithmetic *add4;
 
 /// Convolution layer in residual stage. Output of this layer is used as input for \c dilated5.
 @property (readonly, nonatomic) PNKConvolutionLayer *resconv5;
@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) PNKConvolutionLayer *dilated5;
 
 /// Addition layer in residual stage. Output of this layer is used as input for \c upsample1.
-@property (readonly, nonatomic) PNKAddition *add5;
+@property (readonly, nonatomic) PNKArithmetic *add5;
 
 /// Nearest neighbor dyadic upsampling. Output of this layer is used as input for \c uconv1.
 @property (readonly, nonatomic) PNKUpsampling *upsample1;
@@ -161,7 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated1")
                activationModel:model.activationKernels.at("dilated1__activation__")];
-  _add1 = [[PNKAddition alloc] initWithDevice:self.device];
+  _add1 = [[PNKArithmetic alloc] initWithDevice:self.device
+                                      operation:pnk::ArithmeticOperationAddition];
   _resconv2 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv2")
@@ -170,7 +171,8 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated2")
                activationModel:model.activationKernels.at("dilated2__activation__")];
-  _add2 = [[PNKAddition alloc] initWithDevice:self.device];
+  _add2 = [[PNKArithmetic alloc] initWithDevice:self.device
+                                      operation:pnk::ArithmeticOperationAddition];
   _resconv3 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv3")
@@ -179,7 +181,8 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated3")
                activationModel:model.activationKernels.at("dilated3__activation__")];
-  _add3 = [[PNKAddition alloc] initWithDevice:self.device];
+  _add3 = [[PNKArithmetic alloc] initWithDevice:self.device
+                                      operation:pnk::ArithmeticOperationAddition];
   _resconv4 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv4")
@@ -188,7 +191,8 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated4")
                activationModel:model.activationKernels.at("dilated4__activation__")];
-  _add4 = [[PNKAddition alloc] initWithDevice:self.device];
+  _add4 = [[PNKArithmetic alloc] initWithDevice:self.device
+                                      operation:pnk::ArithmeticOperationAddition];
   _resconv5 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv5")
@@ -197,7 +201,8 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated5")
                activationModel:model.activationKernels.at("dilated5__activation__")];
-  _add5 = [[PNKAddition alloc] initWithDevice:self.device];
+  _add5 = [[PNKArithmetic alloc] initWithDevice:self.device
+                                      operation:pnk::ArithmeticOperationAddition];
   // Upsample.
   _upsample1 = [[PNKUpsampling alloc] initWithDevice:self.device
                                       upsamplingType:PNKUpsamplingTypeNearestNeighbor];
@@ -353,7 +358,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (MPSTemporaryImage *)encodeResidualBlockWithCommandBuffer:(id<MTLCommandBuffer>)buffer
                                       firstConvolutionLayer:(PNKConvolutionLayer *)firstConvLayer
                                      secondConvolutionLayer:(PNKConvolutionLayer *)secondConvLayer
-                                              additionLayer:(PNKAddition *)additionLayer
+                                              additionLayer:(PNKArithmetic *)additionLayer
                                                  inputImage:(MPSTemporaryImage *)inputImage {
   inputImage.readCount += 1;
 
