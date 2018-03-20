@@ -81,10 +81,7 @@ context(@"initialization", ^{
     it(@"should deserialize with correct values", ^{
       // DVNBrushModel
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
-      expect(model.scaleRange == lt::Interval<CGFloat>({1.25, 1.75},
-                                                       lt::Interval<CGFloat>::Open,
-                                                       lt::Interval<CGFloat>::Closed))
-          .to.beTruthy();
+      expect(model.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
       expect(model.scale).to.equal(1.5);
 
       // DVNBrushModelV1
@@ -94,17 +91,10 @@ context(@"initialization", ^{
       expect(model.numberOfSamplesPerSequence).to.equal(8);
       expect(model.sequenceDistance).to.equal(0.0195312);
       expect(model.countRange == lt::Interval<NSUInteger>({9, 10})).to.beTruthy();
-      expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>({0.0234375, 0.0273438},
-                                                                      lt::Interval<CGFloat>::Closed,
-                                                                      lt::Interval<CGFloat>::Open))
+      expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>::co({0.0234375, 0.0273438}))
           .to.beTruthy();
-      expect(model.angleRange == lt::Interval<CGFloat>({0.03125, 0.0351562},
-                                                       lt::Interval<CGFloat>::Open,
-                                                       lt::Interval<CGFloat>::Closed))
-          .to.beTruthy();
-      expect(model.scaleJitterRange == lt::Interval<CGFloat>({0.0390625, 2},
-                                                             lt::Interval<CGFloat>::Open))
-          .to.beTruthy();
+      expect(model.angleRange == lt::Interval<CGFloat>::oc({0.03125, 0.0351562})).to.beTruthy();
+      expect(model.scaleJitterRange == lt::Interval<CGFloat>::oo({0.0390625, 2})).to.beTruthy();
       expect(model.taperingLengths).to.equal(LTVector2(0.046875, 0.0507812));
       expect(model.minimumTaperingScaleFactor).to.equal(0.0546875);
       expect(model.taperingFactors).to.equal(LTVector2(0.0585938, 0.0664062));

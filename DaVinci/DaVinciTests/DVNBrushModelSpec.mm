@@ -18,8 +18,7 @@ context(@"initialization", ^{
     DVNBrushModel *model = [[DVNBrushModel alloc] init];
     expect(model.version).to.equal($(DVNBrushModelVersionV1));
     expect(model.scale).to.equal(1);
-    expect(model.scaleRange == lt::Interval<CGFloat>({0, CGFLOAT_MAX}, lt::Interval<CGFloat>::Open,
-                                                     lt::Interval<CGFloat>::Closed)).to.beTruthy();
+    expect(model.scaleRange == lt::Interval<CGFloat>::oc({0, CGFLOAT_MAX})).to.beTruthy();
   });
 
   context(@"deserialization", ^{
@@ -39,8 +38,7 @@ context(@"initialization", ^{
     it(@"should deserialize with correct values", ^{
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
       expect(model.scale).to.equal(8);
-      expect(model.scaleRange == lt::Interval<CGFloat>({7, 9}, lt::Interval<CGFloat>::Closed,
-                                                       lt::Interval<CGFloat>::Open)).to.beTruthy();
+      expect(model.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
     });
   });
 
