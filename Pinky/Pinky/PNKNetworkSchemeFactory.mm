@@ -8,7 +8,7 @@
 
 #import "LTEasyBoxing+Pinky.h"
 #import "PNKActivationLayer.h"
-#import "PNKAddition.h"
+#import "PNKArithmetic.h"
 #import "PNKBatchNormalizationLayer.h"
 #import "PNKConcatenation.h"
 #import "PNKConditionalInstanceNormLayer.h"
@@ -431,7 +431,12 @@ struct GraphTraversalData {
                                       upsamplingType:PNKUpsamplingTypeNearestNeighbor];
     } break;
     case cms::NeuralNetworkLayer::kAdd:
-      kernel = [[PNKAddition alloc] initWithDevice:device];
+      kernel = [[PNKArithmetic alloc] initWithDevice:device
+                                           operation:pnk::ArithmeticOperationAddition];
+      break;
+    case cms::NeuralNetworkLayer::kMultiply:
+      kernel = [[PNKArithmetic alloc] initWithDevice:device
+                                           operation:pnk::ArithmeticOperationMultiplication];
       break;
     case cms::NeuralNetworkLayer::kConcat:
       kernel = [[PNKConcatenation alloc] initWithDevice:device];
