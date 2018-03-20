@@ -31,6 +31,14 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// random distributions, for the sake of a larger and more interesting variety of brushes.
 @interface DVNBrushModelV1 : DVNBrushModel
 
+/// Returns a copy of the receiver with the exception of the given \c flow, clamped to the
+/// \c flowRange of the receiver.
+- (instancetype)copyWithFlow:(CGFloat)flow;
+
+/// Returns a copy of the receiver with the exception of the given \c edgeAvoidance, clamped to the
+/// \c allowedEdgeAvoidanceRange of this class.
+- (instancetype)copyWithEdgeAvoidance:(CGFloat)edgeAvoidance;
+
 #pragma mark -
 #pragma mark Randomness
 #pragma mark -

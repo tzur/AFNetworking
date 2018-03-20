@@ -24,6 +24,17 @@ static NSDictionary *
 }
 #endif
 
+static NSDictionary *DVNJSONDictionaryOfTestBrushModelV1() {
+  NSDictionary *jsonDictionary = [$(DVNBrushModelVersionV1) JSONDictionaryOfTestBrushModel];
+#if !CGFLOAT_IS_DOUBLE
+    // Since NSJSONSerialization may use double instead of float for deserialization of JSON
+    // dictionaries even if CGFloat is float, the NSNumber values of the dictionary have to be
+    // converted explicitely to new NSNumber objects holding CGFloat values.
+    jsonDictionary = DVNDictionaryWithUpdatedCGFloatValues(jsonDictionary);
+#endif
+  return jsonDictionary;
+}
+
 static NSArray<NSString *> *DVNPropertyKeys(Class classObject) {
   unsigned int count = 0;
   objc_property_t *properties = class_copyPropertyList(classObject, &count);
@@ -60,14 +71,7 @@ context(@"initialization", ^{
   __block NSError *error;
 
   beforeEach(^{
-    jsonDictionary = [$(DVNBrushModelVersionV1) JSONDictionaryOfTestBrushModel];
-#if !CGFLOAT_IS_DOUBLE
-    // Since NSJSONSerialization may use double instead of float for deserialization of JSON
-    // dictionaries even if CGFloat is float, the NSNumber values of the dictionary have to be
-    // converted explicitely to new NSNumber objects holding CGFloat values.
-    jsonDictionary = DVNDictionaryWithUpdatedCGFloatValues(jsonDictionary);
-#endif
-
+    jsonDictionary = DVNJSONDictionaryOfTestBrushModelV1();
     model = [MTLJSONAdapter modelOfClass:[DVNBrushModelV1 class] fromJSONDictionary:jsonDictionary
                                    error:&error];
   });
@@ -121,6 +125,67 @@ context(@"initialization", ^{
   context(@"serialization", ^{
     it(@"should serialize correctly", ^{
       expect([MTLJSONAdapter JSONDictionaryFromModel:model]).to.equal(jsonDictionary);
+    });
+  });
+});
+
+context(@"copy constructors", ^{
+  __block DVNBrushModelV1 *model;
+
+  beforeEach(^{
+    NSDictionary *jsonDictionary = DVNJSONDictionaryOfTestBrushModelV1();
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModelV1 class] fromJSONDictionary:jsonDictionary
+                                   error:nil];
+  });
+
+  context(@"scale", ^{
+    it(@"should return a copy scaled by a given scale", ^{
+      DVNBrushModelV1 *scaledModel = [model scaledBy:2];
+      expect(scaledModel.scale).to.equal(3);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({2.5, 3.5})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given scale", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithScale:1.375];
+      expect(scaledModel.scale).to.equal(1.375);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given scale, clamped to the scale range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithScale:2];
+      expect(scaledModel.scale).to.equal(1.75);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"flow", ^{
+    it(@"should return a copy with a given flow", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0.07];
+      expect(scaledModel.flow).to.equal(0.07);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given flow, clamped to the flow range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0];
+      expect(scaledModel.flow).to.equal(0.0625);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"edge avoidance", ^{
+    it(@"should return a copy with a given edge avoidance", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:0.5];
+      expect(scaledModel.edgeAvoidance).to.equal(0.5);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given edge avoidance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:-1];
+      expect(scaledModel.edgeAvoidance).to.equal(0);
+      expect(scaledModel.spacing).to.equal(0.015625);
     });
   });
 });
