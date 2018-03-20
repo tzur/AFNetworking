@@ -3,6 +3,7 @@
 
 #import "DVNBrushModel.h"
 
+#import <LTEngine/NSValue+LTInterval.h>
 #import <LTEngine/NSValueTransformer+LTEngine.h>
 
 #import "DVNPropertyMacros.h"
@@ -55,6 +56,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Public API
 #pragma mark -
+
+- (instancetype)scaledBy:(CGFloat)scale {
+  DVNBrushModel *model = [self copy];
+  [model setValue:@(scale * self.scale) forKey:@keypath(self, scale)];
+  [model setValue:[NSValue valueWithLTCGFloatInterval:scale * self.scaleRange]
+           forKey:@keypath(self, scaleRange)];
+  return model;
+}
+
+- (instancetype)copyWithScale:(CGFloat)scale {
+  DVNBrushModel *model = [self copy];
+  [model setValue:@(self.scaleRange.clamp(scale).value_or(self.scaleRange.inf()))
+           forKey:@keypath(self, scale)];
+  return model;
+}
 
 /// Must be overridden by subclasses.
 + (NSArray<NSString *> *)imageURLPropertyKeys {

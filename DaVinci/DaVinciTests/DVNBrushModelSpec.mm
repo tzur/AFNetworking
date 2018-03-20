@@ -51,6 +51,35 @@ context(@"initialization", ^{
   });
 });
 
+context(@"copy constructors", ^{
+  __block DVNBrushModel *model;
+
+  beforeEach(^{
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModel class] fromJSONDictionary:kDictionary
+                                   error:nil];
+  });
+
+  context(@"scale", ^{
+    it(@"should return a copy scaled by a given scale", ^{
+      DVNBrushModel *scaledModel = [model scaledBy:2];
+      expect(scaledModel.scale).to.equal(16);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({14, 18})).to.beTruthy();
+    });
+
+    it(@"should return a copy with a given scale", ^{
+      DVNBrushModel *scaledModel = [model copyWithScale:7.5];
+      expect(scaledModel.scale).to.equal(7.5);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
+    });
+
+    it(@"should return a copy with a given scale, clamped to the scale range", ^{
+      DVNBrushModel *scaledModel = [model copyWithScale:1];
+      expect(scaledModel.scale).to.equal(7);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
+    });
+  });
+});
+
 context(@"image URL property keys", ^{
   it(@"should return the correct property keys", ^{
     expect([DVNBrushModel imageURLPropertyKeys]).to.equal(@[]);
