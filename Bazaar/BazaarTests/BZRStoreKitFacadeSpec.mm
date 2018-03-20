@@ -4,7 +4,7 @@
 #import "BZRStoreKitFacade.h"
 
 #import "BZREvent.h"
-#import "BZRPaymentQueue.h"
+#import "BZRPaymentQueueAdapter.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
 #import "BZRStoreKitRequestsFactory.h"
@@ -16,7 +16,7 @@
 
 SpecBegin(BZRStoreKitFacade)
 
-__block BZRPaymentQueue *paymentQueue;
+__block BZRPaymentQueueAdapter *paymentQueueAdapter;
 __block RACSubject *paymentQueueEventsSubject;
 __block RACSubject *unfinishedTransactionsSubject;
 __block BZRPurchaseManager *purchaseManager;
@@ -27,11 +27,12 @@ __block id<BZRStoreKitRequestsFactory> storeKitRequestsFactory;
 __block BZRStoreKitFacade *storeKitFacade;
 
 beforeEach(^{
-  paymentQueue = OCMClassMock([BZRPaymentQueue class]);
+  paymentQueueAdapter = OCMClassMock([BZRPaymentQueueAdapter class]);
   paymentQueueEventsSubject = [RACSubject subject];
-  OCMStub([paymentQueue eventsSignal]).andReturn(paymentQueueEventsSubject);
+  OCMStub([paymentQueueAdapter eventsSignal]).andReturn(paymentQueueEventsSubject);
   unfinishedTransactionsSubject = [RACSubject subject];
-  OCMStub([paymentQueue unfinishedTransactionsSignal]).andReturn(unfinishedTransactionsSubject);
+  OCMStub([paymentQueueAdapter unfinishedTransactionsSignal])
+      .andReturn(unfinishedTransactionsSubject);
 
   purchaseManager = OCMClassMock([BZRPurchaseManager class]);
   unhandledTransactionsSubject = [RACSubject subject];
@@ -41,7 +42,7 @@ beforeEach(^{
   downloadManager = OCMClassMock([BZRProductDownloadManager class]);
   storeKitRequestsFactory = OCMProtocolMock(@protocol(BZRStoreKitRequestsFactory));
   storeKitFacade =
-      [[BZRStoreKitFacade alloc] initWithPaymentQueue:paymentQueue
+      [[BZRStoreKitFacade alloc] initWithPaymentQueueAdapter:paymentQueueAdapter
        purchaseManager:purchaseManager restorationManager:restorationManager
        downloadManager:downloadManager storeKitRequestsFactory:storeKitRequestsFactory];
 });
@@ -224,7 +225,7 @@ context(@"finishing transactions", ^{
 
     [storeKitFacade finishTransaction:transaction];
 
-    OCMVerify([paymentQueue finishTransaction:transaction]);
+    OCMVerify([paymentQueueAdapter finishTransaction:transaction]);
   });
 });
 
@@ -235,7 +236,7 @@ context(@"sending unhandled transactions errors", ^{
 
     @autoreleasepool {
       BZRStoreKitFacade *storeKitFacade =
-          [[BZRStoreKitFacade alloc] initWithPaymentQueue:paymentQueue
+          [[BZRStoreKitFacade alloc] initWithPaymentQueueAdapter:paymentQueueAdapter
            purchaseManager:purchaseManager restorationManager:restorationManager
            downloadManager:downloadManager storeKitRequestsFactory:storeKitRequestsFactory];
       weakStoreKitFacade = storeKitFacade;
@@ -286,7 +287,7 @@ context(@"handling unhandled transactions", ^{
       });
 
       it(@"should not finish transaction", ^{
-        OCMReject([paymentQueue finishTransaction:OCMOCK_ANY]);
+        OCMReject([paymentQueueAdapter finishTransaction:OCMOCK_ANY]);
 
         [unfinishedTransactionsSubject sendNext:@[transaction]];
       });
@@ -366,7 +367,7 @@ context(@"handling unhandled transactions", ^{
 
     @autoreleasepool {
       BZRStoreKitFacade *storeKitFacade =
-          [[BZRStoreKitFacade alloc] initWithPaymentQueue:paymentQueue
+          [[BZRStoreKitFacade alloc] initWithPaymentQueueAdapter:paymentQueueAdapter
            purchaseManager:purchaseManager restorationManager:restorationManager
            downloadManager:downloadManager storeKitRequestsFactory:storeKitRequestsFactory];
       weakStoreKitFacade = storeKitFacade;
