@@ -1,16 +1,19 @@
-// Copyright (c) 2017 Lightricks. All rights reserved.
-// Created by Nofar Noy.
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Gershon Hochman.
 
-#import "PNKAddition.h"
+#import "PNKArithmetic.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
 
-@interface PNKAddition ()
+@interface PNKArithmetic ()
 
 /// Device to encode this kernel operation.
 @property (readonly, nonatomic) id<MTLDevice> device;
+
+/// Operation to be executed by the kernel.
+@property (readonly, nonatomic) pnk::ArithmeticOperation operation;
 
 /// Kernel state to encode single texture addition.
 @property (readonly, nonatomic) id<MTLComputePipelineState> stateSingle;
@@ -20,35 +23,41 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation PNKAddition
+@implementation PNKArithmetic
 
 @synthesize primaryInputFeatureChannels = _primaryInputFeatureChannels;
 @synthesize secondaryInputFeatureChannels = _secondaryInputFeatureChannels;
 
 /// Kernel function name for a single texture.
-static NSString * const kKernelSingleFunctionName = @"additionSingle";
+static NSString * const kKernelSingleFunctionName = @"arithmeticSingle";
 
 /// Kernel function name for texture array.
-static NSString * const kKernelArrayFunctionName = @"additionArray";
+static NSString * const kKernelArrayFunctionName = @"arithmeticArray";
 
 /// Family name of the kernel functions for debug purposes.
-static NSString * const kDebugGroupName = @"addition";
+static NSString * const kDebugGroupName = @"arithmetic";
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device {
+- (instancetype)initWithDevice:(id<MTLDevice>)device operation:(pnk::ArithmeticOperation)operation {
   if (self = [super init]) {
     _device = device;
+    _operation = operation;
     [self createStates];
   }
   return self;
 }
 
 - (void)createStates {
-  _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName);
-  _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName);
+  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
+  [functionConstants setConstantValue:&_operation type:MTLDataTypeUShort withName:@"operation"];
+
+  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
+                                                    functionConstants);
+  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
+                                                   functionConstants);
 }
 
 #pragma mark -

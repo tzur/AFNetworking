@@ -3,7 +3,7 @@
 
 #include <metal_stdlib>
 
-#import "PNKColorTransformTypes.h"
+#include "PNKTypeDefinitions.h"
 
 using namespace metal;
 
