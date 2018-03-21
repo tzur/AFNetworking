@@ -343,6 +343,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     case UIDeviceKindIPadAir1G:
     case UIDeviceKindIPadAir2G:
     case UIDeviceKindIPadPro9_7:
+    case UIDeviceKindIPadPro10_5:
     case UIDeviceKindIPadPro12_9:
     case UIDeviceKindUnknownIPad:
     case UIDeviceKindSimulatorIPad:
