@@ -41,33 +41,37 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
 #pragma mark Initialization - Auxiliary Methods
 #pragma mark -
 
-- (id<LTContinuousSamplerModel>)samplingStageConfigurationFromModel:(DVNBrushModelV1 *)model {
-  CGFloat sequenceDistance = model.sequenceDistance * model.scale;
+- (id<LTContinuousSamplerModel>)samplingStageConfigurationFromModel:(DVNBrushModelV1 *)model
+                                                   conversionFactor:(CGFloat)conversionFactor {
+  CGFloat scaleInSplineCoordinates = conversionFactor * model.scale;
+  CGFloat sequenceDistance = model.sequenceDistance * scaleInSplineCoordinates;
   LTPeriodicFloatSet *floatSet =
       [[LTPeriodicFloatSet alloc] initWithPivotValue:0
                            numberOfValuesPerSequence:model.numberOfSamplesPerSequence
-                                       valueDistance:model.spacing * model.scale
+                                       valueDistance:model.spacing * scaleInSplineCoordinates
                                     sequenceDistance:sequenceDistance];
-  lt::Interval<CGFloat> interval({0, CGFLOAT_MAX});
+  lt::Interval<CGFloat> interval = lt::Interval<CGFloat>::nonNegativeNumbers();
   return [[LTFloatSetSamplerModel alloc] initWithFloatSet:floatSet interval:interval];
 }
 
-- (id<DVNGeometryProviderModel>)geometryStageConfigurationFromModel:(DVNBrushModelV1 *)model {
+- (id<DVNGeometryProviderModel>)geometryStageConfigurationFromModel:(DVNBrushModelV1 *)model
+                                                   conversionFactor:(CGFloat)conversionFactor {
+  CGFloat scaleInSplineCoordinates = conversionFactor * model.scale;
   DVNSquareProviderModel *providerModel = [[DVNSquareProviderModel alloc] initWithEdgeLength:1];
 
   lt::Interval<CGFloat> distance({
-    *model.distanceJitterFactorRange.min() * model.scale,
-    *model.distanceJitterFactorRange.max() * model.scale
+    *model.distanceJitterFactorRange.min() * scaleInSplineCoordinates,
+    *model.distanceJitterFactorRange.max() * scaleInSplineCoordinates
   });
   lt::Interval<CGFloat> angle = model.angleRange;
-  lt::Interval<CGFloat> scale({
-    *model.scaleJitterRange.min() * model.scale,
-    *model.scaleJitterRange.max() * model.scale
+  lt::Interval<CGFloat> scaleJitter({
+    *model.scaleJitterRange.min() * scaleInSplineCoordinates,
+    *model.scaleJitterRange.max() * scaleInSplineCoordinates
   });
   lt::Interval<NSUInteger> count = model.countRange;
   return [[DVNScatteredGeometryProviderModel alloc]
           initWithGeometryProviderModel:providerModel randomState:[self randomStateFromModel:model]
-          count:count distance:distance angle:angle scale:scale
+          count:count distance:distance angle:angle scale:scaleJitter
           lengthOfStartTapering:model.taperingLengths.x lengthOfEndTapering:model.taperingLengths.y
           startTaperingFactor:model.taperingFactors.x endTaperingFactor:model.taperingFactors.y
           minimumTaperingScaleFactor:model.minimumTaperingScaleFactor];
@@ -114,12 +118,17 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
                     @"Edge avoidance guide texture must be provided if corresponding URL (%@) is "
                     "not empty", brushModel.edgeAvoidanceGuideImageURL);
 
+  id<LTContinuousSamplerModel> samplingStageConfiguration =
+      [self samplingStageConfigurationFromModel:brushModel conversionFactor:model.conversionFactor];
+  id<DVNGeometryProviderModel> geometryStageConfiguration =
+      [self geometryStageConfigurationFromModel:brushModel
+                               conversionFactor:model.conversionFactor];
   DVNTextureMappingStageConfiguration *textureMappingStageConfiguration =
       [self textureMappingStageConfigurationFromModel:brushModel textureMapping:textureMapping];
 
   return [[DVNPipelineConfiguration alloc]
-          initWithSamplingStageConfiguration:[self samplingStageConfigurationFromModel:brushModel]
-          geometryStageConfiguration:[self geometryStageConfigurationFromModel:brushModel]
+          initWithSamplingStageConfiguration:samplingStageConfiguration
+          geometryStageConfiguration:geometryStageConfiguration
           textureMappingStageConfiguration:textureMappingStageConfiguration
           attributeStageConfiguration:[self attributeStageConfigurationFromModel:brushModel]
           renderStageConfiguration:[self renderStageConfigurationFromRenderModel:model
@@ -198,7 +207,7 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
     [DVNBrushV1Fsh renderTargetHasSingleChannel]: @(info.renderTargetHasSingleChannel),
     [DVNBrushV1Fsh renderTargetIsNonPremultiplied]: @(info.renderTargetIsNonPremultiplied),
     [DVNBrushV1Vsh edgeAvoidanceSamplingOffset]:
-        $(LTVector2(brushModel.edgeAvoidanceSamplingOffset)),
+        $(LTVector2(model.conversionFactor * brushModel.edgeAvoidanceSamplingOffset)),
     [DVNBrushV1Vsh colorTextureIsNonPremultiplied]: @(brushModel.sourceImageIsNonPremultiplied),
     [DVNBrushV1Vsh sampleUniformColorFromColorTexture]: @(sampleUniformColorFromColorTexture),
   };
