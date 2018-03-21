@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note If the purchase was cancelled, the signal will err with an error code
 /// \c BZRErrorCodeOperationCancelled.
+///
+/// @note If the purchase failed and the underlying error's code is
+/// \c BZRErrorCodeTransactionNotFoundInReceipt, it is possible to retry finalizing the purchase by
+/// calling \c -[BZRProductsManager validateTransaction:] with the transaction identifier taken from
+/// the property \c bzr_transactionIdentifier of the underlying error.
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier;
 
 /// Validates the transaction specified by \c transactionId. Events can be sent on an arbitrary
