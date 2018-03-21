@@ -165,6 +165,21 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 #pragma mark Public API
 #pragma mark -
 
+- (instancetype)copyWithFlow:(CGFloat)flow {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(self.flowRange.clamp(flow).value_or(self.flowRange.inf()))
+           forKey:@keypath(self, flow)];
+  return model;
+}
+
+- (instancetype)copyWithEdgeAvoidance:(CGFloat)edgeAvoidance {
+  DVNBrushModelV1 *model = [self copy];
+  lt::Interval<CGFloat> edgeAvoidanceRange = [[self class] allowedEdgeAvoidanceRange];
+  [model setValue:@(edgeAvoidanceRange.clamp(edgeAvoidance).value_or(edgeAvoidanceRange.inf()))
+           forKey:@keypath(self, edgeAvoidance)];
+  return model;
+}
+
 + (NSArray<NSString *> *)imageURLPropertyKeys {
   return @[@instanceKeypath(DVNBrushModelV1, sourceImageURL),
            @instanceKeypath(DVNBrushModelV1, maskImageURL),

@@ -24,6 +24,17 @@ static NSDictionary *
 }
 #endif
 
+static NSDictionary *DVNJSONDictionaryOfTestBrushModelV1() {
+  NSDictionary *jsonDictionary = [$(DVNBrushModelVersionV1) JSONDictionaryOfTestBrushModel];
+#if !CGFLOAT_IS_DOUBLE
+    // Since NSJSONSerialization may use double instead of float for deserialization of JSON
+    // dictionaries even if CGFloat is float, the NSNumber values of the dictionary have to be
+    // converted explicitely to new NSNumber objects holding CGFloat values.
+    jsonDictionary = DVNDictionaryWithUpdatedCGFloatValues(jsonDictionary);
+#endif
+  return jsonDictionary;
+}
+
 static NSArray<NSString *> *DVNPropertyKeys(Class classObject) {
   unsigned int count = 0;
   objc_property_t *properties = class_copyPropertyList(classObject, &count);
@@ -60,14 +71,7 @@ context(@"initialization", ^{
   __block NSError *error;
 
   beforeEach(^{
-    jsonDictionary = [$(DVNBrushModelVersionV1) JSONDictionaryOfTestBrushModel];
-#if !CGFLOAT_IS_DOUBLE
-    // Since NSJSONSerialization may use double instead of float for deserialization of JSON
-    // dictionaries even if CGFloat is float, the NSNumber values of the dictionary have to be
-    // converted explicitely to new NSNumber objects holding CGFloat values.
-    jsonDictionary = DVNDictionaryWithUpdatedCGFloatValues(jsonDictionary);
-#endif
-
+    jsonDictionary = DVNJSONDictionaryOfTestBrushModelV1();
     model = [MTLJSONAdapter modelOfClass:[DVNBrushModelV1 class] fromJSONDictionary:jsonDictionary
                                    error:&error];
   });
@@ -81,10 +85,7 @@ context(@"initialization", ^{
     it(@"should deserialize with correct values", ^{
       // DVNBrushModel
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
-      expect(model.scaleRange == lt::Interval<CGFloat>({1.25, 1.75},
-                                                       lt::Interval<CGFloat>::Open,
-                                                       lt::Interval<CGFloat>::Closed))
-          .to.beTruthy();
+      expect(model.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
       expect(model.scale).to.equal(1.5);
 
       // DVNBrushModelV1
@@ -94,17 +95,10 @@ context(@"initialization", ^{
       expect(model.numberOfSamplesPerSequence).to.equal(8);
       expect(model.sequenceDistance).to.equal(0.0195312);
       expect(model.countRange == lt::Interval<NSUInteger>({9, 10})).to.beTruthy();
-      expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>({0.0234375, 0.0273438},
-                                                                      lt::Interval<CGFloat>::Closed,
-                                                                      lt::Interval<CGFloat>::Open))
+      expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>::co({0.0234375, 0.0273438}))
           .to.beTruthy();
-      expect(model.angleRange == lt::Interval<CGFloat>({0.03125, 0.0351562},
-                                                       lt::Interval<CGFloat>::Open,
-                                                       lt::Interval<CGFloat>::Closed))
-          .to.beTruthy();
-      expect(model.scaleJitterRange == lt::Interval<CGFloat>({0.0390625, 2},
-                                                             lt::Interval<CGFloat>::Open))
-          .to.beTruthy();
+      expect(model.angleRange == lt::Interval<CGFloat>::oc({0.03125, 0.0351562})).to.beTruthy();
+      expect(model.scaleJitterRange == lt::Interval<CGFloat>::oo({0.0390625, 2})).to.beTruthy();
       expect(model.taperingLengths).to.equal(LTVector2(0.046875, 0.0507812));
       expect(model.minimumTaperingScaleFactor).to.equal(0.0546875);
       expect(model.taperingFactors).to.equal(LTVector2(0.0585938, 0.0664062));
@@ -131,6 +125,67 @@ context(@"initialization", ^{
   context(@"serialization", ^{
     it(@"should serialize correctly", ^{
       expect([MTLJSONAdapter JSONDictionaryFromModel:model]).to.equal(jsonDictionary);
+    });
+  });
+});
+
+context(@"copy constructors", ^{
+  __block DVNBrushModelV1 *model;
+
+  beforeEach(^{
+    NSDictionary *jsonDictionary = DVNJSONDictionaryOfTestBrushModelV1();
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModelV1 class] fromJSONDictionary:jsonDictionary
+                                   error:nil];
+  });
+
+  context(@"scale", ^{
+    it(@"should return a copy scaled by a given scale", ^{
+      DVNBrushModelV1 *scaledModel = [model scaledBy:2];
+      expect(scaledModel.scale).to.equal(3);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({2.5, 3.5})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given scale", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithScale:1.375];
+      expect(scaledModel.scale).to.equal(1.375);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given scale, clamped to the scale range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithScale:2];
+      expect(scaledModel.scale).to.equal(1.75);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"flow", ^{
+    it(@"should return a copy with a given flow", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0.07];
+      expect(scaledModel.flow).to.equal(0.07);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given flow, clamped to the flow range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0];
+      expect(scaledModel.flow).to.equal(0.0625);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"edge avoidance", ^{
+    it(@"should return a copy with a given edge avoidance", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:0.5];
+      expect(scaledModel.edgeAvoidance).to.equal(0.5);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given edge avoidance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:-1];
+      expect(scaledModel.edgeAvoidance).to.equal(0);
+      expect(scaledModel.spacing).to.equal(0.015625);
     });
   });
 });

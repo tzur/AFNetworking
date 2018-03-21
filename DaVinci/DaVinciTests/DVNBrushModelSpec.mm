@@ -18,8 +18,7 @@ context(@"initialization", ^{
     DVNBrushModel *model = [[DVNBrushModel alloc] init];
     expect(model.version).to.equal($(DVNBrushModelVersionV1));
     expect(model.scale).to.equal(1);
-    expect(model.scaleRange == lt::Interval<CGFloat>({0, CGFLOAT_MAX}, lt::Interval<CGFloat>::Open,
-                                                     lt::Interval<CGFloat>::Closed)).to.beTruthy();
+    expect(model.scaleRange == lt::Interval<CGFloat>::oc({0, CGFLOAT_MAX})).to.beTruthy();
   });
 
   context(@"deserialization", ^{
@@ -39,8 +38,7 @@ context(@"initialization", ^{
     it(@"should deserialize with correct values", ^{
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
       expect(model.scale).to.equal(8);
-      expect(model.scaleRange == lt::Interval<CGFloat>({7, 9}, lt::Interval<CGFloat>::Closed,
-                                                       lt::Interval<CGFloat>::Open)).to.beTruthy();
+      expect(model.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
     });
   });
 
@@ -49,6 +47,35 @@ context(@"initialization", ^{
       DVNBrushModel *model = [MTLJSONAdapter modelOfClass:[DVNBrushModel class]
                                        fromJSONDictionary:kDictionary error:nil];
       expect([MTLJSONAdapter JSONDictionaryFromModel:model]).to.equal(kDictionary);
+    });
+  });
+});
+
+context(@"copy constructors", ^{
+  __block DVNBrushModel *model;
+
+  beforeEach(^{
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModel class] fromJSONDictionary:kDictionary
+                                   error:nil];
+  });
+
+  context(@"scale", ^{
+    it(@"should return a copy scaled by a given scale", ^{
+      DVNBrushModel *scaledModel = [model scaledBy:2];
+      expect(scaledModel.scale).to.equal(16);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({14, 18})).to.beTruthy();
+    });
+
+    it(@"should return a copy with a given scale", ^{
+      DVNBrushModel *scaledModel = [model copyWithScale:7.5];
+      expect(scaledModel.scale).to.equal(7.5);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
+    });
+
+    it(@"should return a copy with a given scale, clamped to the scale range", ^{
+      DVNBrushModel *scaledModel = [model copyWithScale:1];
+      expect(scaledModel.scale).to.equal(7);
+      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
     });
   });
 });

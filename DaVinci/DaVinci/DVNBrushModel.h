@@ -24,6 +24,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// derived objects.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
+/// Returns a copy of the receiver with the exception of its spatial properties which are scaled by
+/// the given \c scale.
+///
+/// @note Both the \c scale and the \c scaleRange values of the receiver are affected. For
+/// construction of an identical copy with the exception of the value of the \c scale property, use
+/// the \c copyWithScale: method.
+- (instancetype)scaledBy:(CGFloat)scale;
+
+/// Returns a copy of the receiver with the exception of the given \c scale, clamped to the
+/// \c scaleRange of the receiver.
+- (instancetype)copyWithScale:(CGFloat)scale;
+
 /// Returns the keys of the properties holding the URLs to the images required for rendering brush
 /// strokes defined by the receiver.
 + (NSArray<NSString *> *)imageURLPropertyKeys;
