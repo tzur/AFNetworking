@@ -31,7 +31,8 @@ DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDiction
       [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
                                            renderTargetHasSingleChannel:NO
                                          renderTargetIsNonPremultiplied:NO];
-  return [DVNBrushRenderModel instanceWithBrushModel:brushModel renderTargetInfo:info];
+  return [DVNBrushRenderModel instanceWithBrushModel:brushModel renderTargetInfo:info
+                                    conversionFactor:1];
 }
 
 @interface DVNTestBrushStrokePainter : NSObject <DVNBrushRenderInfoProvider, DVNPainterDelegate>
