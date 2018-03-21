@@ -6,10 +6,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Value object representing properties of a render target onto which brush stroke geometry can be
-/// rendered. In particular, the object determines the relation between the brush stroke geometry
-/// coordinate system, as defined by \c DVNBrushModel, and the coordinate system of the render
-/// target. Additionally, it defines properties of the render target potentially relevant for
-/// objects performing the actual rendering.
+/// rendered along a spline. In particular, the object determines the relation between the
+/// coordinate system of aforementioned spline and the coordinate system of the render target.
+/// Additionally, it defines properties of the render target potentially relevant for objects
+/// performing the actual rendering.
 @interface DVNBrushRenderTargetInformation : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -20,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
                     renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
                   renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied;
 
-/// Location, in units of the brush stroke geometry coordinate system, of the corners of the
-/// render target onto which the brush stroke geometry is to be projected.
+/// Location, in units of the spline coordinate system, of the corners of the render target onto
+/// which the brush stroke geometry is to be projected.
 @property (readonly, nonatomic) lt::Quad renderTargetLocation;
 
 /// Indication whether the render target has a single channel.
