@@ -165,10 +165,22 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 #pragma mark Public API
 #pragma mark -
 
+- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(randomInitialSeed) forKey:@keypath(self, randomInitialSeed)];
+  return model;
+}
+
 - (instancetype)copyWithFlow:(CGFloat)flow {
   DVNBrushModelV1 *model = [self copy];
   [model setValue:@(self.flowRange.clamp(flow).value_or(self.flowRange.inf()))
            forKey:@keypath(self, flow)];
+  return model;
+}
+
+- (instancetype)copyWithColor:(LTVector3)color {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:$(std::clamp(color, 0, 1)) forKey:@keypath(self, color)];
   return model;
 }
 
