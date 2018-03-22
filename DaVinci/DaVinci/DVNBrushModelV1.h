@@ -31,9 +31,16 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// random distributions, for the sake of a larger and more interesting variety of brushes.
 @interface DVNBrushModelV1 : DVNBrushModel
 
+/// Returns a copy of the receiver with the exception of the given \c randomInitialSeed.
+- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed;
+
 /// Returns a copy of the receiver with the exception of the given \c flow, clamped to the
 /// \c flowRange of the receiver.
 - (instancetype)copyWithFlow:(CGFloat)flow;
+
+/// Returns a copy of the receiver with the exception of the given \c color, component-wise clamped
+/// to range <tt>[0, 1]</tt>.
+- (instancetype)copyWithColor:(LTVector3)color;
 
 /// Returns a copy of the receiver with the exception of the given \c edgeAvoidance, clamped to the
 /// \c allowedEdgeAvoidanceRange of this class.

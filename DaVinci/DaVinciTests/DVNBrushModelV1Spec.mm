@@ -161,6 +161,14 @@ context(@"copy constructors", ^{
     });
   });
 
+  context(@"random initial seed indication", ^{
+    it(@"should return a copy with a given random initial seed indication", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithRandomInitialSeed:!model.randomInitialSeed];
+      expect(scaledModel.randomInitialSeed).to.equal(!model.randomInitialSeed);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
   context(@"flow", ^{
     it(@"should return a copy with a given flow", ^{
       DVNBrushModelV1 *scaledModel = [model copyWithFlow:0.07];
@@ -171,6 +179,20 @@ context(@"copy constructors", ^{
     it(@"should return a copy with a given flow, clamped to the flow range", ^{
       DVNBrushModelV1 *scaledModel = [model copyWithFlow:0];
       expect(scaledModel.flow).to.equal(0.0625);
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"color", ^{
+    it(@"should return a copy with a given color", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithColor:LTVector3(0.25, 0.5, 0.75)];
+      expect(scaledModel.color).to.equal(LTVector3(0.25, 0.5, 0.75));
+      expect(scaledModel.spacing).to.equal(0.015625);
+    });
+
+    it(@"should return a copy with a given edge avoidance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *scaledModel = [model copyWithColor:LTVector3(0.25, 0.5, 1.75)];
+      expect(scaledModel.color).to.equal(LTVector3(0.25, 0.5, 1));
       expect(scaledModel.spacing).to.equal(0.015625);
     });
   });
