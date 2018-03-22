@@ -15,19 +15,25 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable id)objectForKey:(NSString *)key {
-  return self.storage[key];
+  @synchronized (self) {
+    return self.storage[key];
+  }
 }
 
 - (void)setObject:(nullable id)object forKey:(NSString *)key {
   if (!object) {
     [self removeObjectForKey:key];
   } else {
-    self.storage[key] = object;
+    @synchronized (self) {
+      self.storage[key] = object;
+    }
   }
 }
 
 - (void)removeObjectForKey:(NSString *)key {
-  [self.storage removeObjectForKey:key];
+  @synchronized (self) {
+    [self.storage removeObjectForKey:key];
+  }
 }
 
 @end

@@ -3,7 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Objects conforming to this protocol persistently store plist compatible objects.
+/// Objects conforming to this protocol persistently store plist compatible objects. Implementers of
+/// this protocol guarantee it to be thread-safe.
 @protocol LTKeyValuePersistentStorage <NSObject>
 
 /// Sets \c value to key \c key. If \c value is \c nil then the key is removed from the receiver.
