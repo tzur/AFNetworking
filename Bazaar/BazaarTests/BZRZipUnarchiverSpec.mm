@@ -52,19 +52,20 @@ context(@"unarchiving", ^{
                                          error:[OCMArg anyObjectRef] delegate:OCMOCK_ANY])
         .andReturn(YES);
 
-    __block BOOL completed = NO;
     __block BOOL completionStatus;
     __block NSError *completionError;
-    [unarchiver unarchiveFilesToPath:targetPath progress:nil
-                          completion:^(BOOL success, NSError *error) {
-                            completed = YES;
-                            completionStatus = success;
-                            completionError = error;
-                          }];
 
-    expect(completed).will.beTruthy();
-    expect(completionStatus).will.beTruthy();
-    expect(completionError).will.beNil();
+    waitUntil(^(DoneCallback done) {
+      [unarchiver unarchiveFilesToPath:targetPath progress:nil
+                            completion:^(BOOL success, NSError *error) {
+                              completionStatus = success;
+                              completionError = error;
+                              done();
+                            }];
+    });
+
+    expect(completionStatus).to.beTruthy();
+    expect(completionError).to.beNil();
   });
 
   it(@"should report error when the underlying archive reports error", ^{
@@ -74,22 +75,23 @@ context(@"unarchiving", ^{
                                          error:[OCMArg setTo:underlyingError] delegate:OCMOCK_ANY])
         .andReturn(NO);
 
-    __block BOOL completed = NO;
     __block BOOL completionStatus;
     __block NSError *completionError;
-    [unarchiver unarchiveFilesToPath:targetPath progress:nil
-                          completion:^(BOOL success, NSError *error) {
-                            completed = YES;
-                            completionStatus = success;
-                            completionError = error;
-                          }];
 
-    expect(completed).will.beTruthy();
-    expect(completionStatus).will.beFalsy();
-    expect(completionError).willNot.beNil();
-    expect(completionError.lt_isLTDomain).will.beTruthy();
-    expect(completionError.code).will.equal(BZRErrorCodeUnarchivingFailed);
-    expect(completionError.lt_underlyingError).will.equal(underlyingError);
+    waitUntil(^(DoneCallback done) {
+      [unarchiver unarchiveFilesToPath:targetPath progress:nil
+                            completion:^(BOOL success, NSError *error) {
+                              completionStatus = success;
+                              completionError = error;
+                              done();
+                            }];
+    });
+
+    expect(completionStatus).to.beFalsy();
+    expect(completionError).toNot.beNil();
+    expect(completionError.lt_isLTDomain).to.beTruthy();
+    expect(completionError.code).to.equal(BZRErrorCodeUnarchivingFailed);
+    expect(completionError.lt_underlyingError).to.equal(underlyingError);
   });
 
   it(@"should report progress as the unarchiving progress", ^{
@@ -106,15 +108,19 @@ context(@"unarchiving", ^{
 
     NSMutableArray<NSNumber *> *reportedTotalBytes = [NSMutableArray array];
     NSMutableArray<NSNumber *> *reportedProcessedBytes = [NSMutableArray array];
-    [unarchiver unarchiveFilesToPath:targetPath
-                            progress:^BOOL(NSNumber *totalBytes, NSNumber *processedBytes) {
-                              [reportedTotalBytes addObject:totalBytes];
-                              [reportedProcessedBytes addObject:processedBytes];
-                              return YES;
-                            } completion:^(BOOL, NSError *) {}];
+    waitUntil(^(DoneCallback done) {
+      [unarchiver unarchiveFilesToPath:targetPath
+                              progress:^BOOL(NSNumber *totalBytes, NSNumber *processedBytes) {
+                                [reportedTotalBytes addObject:totalBytes];
+                                [reportedProcessedBytes addObject:processedBytes];
+                                return YES;
+                              } completion:^(BOOL, NSError *) {
+                                done();
+                              }];
+    });
 
-    expect(reportedTotalBytes).will.equal(@[@100, @100, @100]);
-    expect(reportedProcessedBytes).will.equal(@[@0, @50, @100]);
+    expect(reportedTotalBytes).to.equal(@[@100, @100, @100]);
+    expect(reportedProcessedBytes).to.equal(@[@0, @50, @100]);
   });
 
   it(@"should cancel the unarchiving if the progress block returns NO and complete with error", ^{
@@ -129,24 +135,24 @@ context(@"unarchiving", ^{
           [delegate zipArchiveProgressEvent:100 total:100];
         }).andReturn(NO);
 
-    __block BOOL completed = NO;
     __block BOOL completionStatus;
     __block NSError *completionError;
-    [unarchiver unarchiveFilesToPath:targetPath
-                            progress:^BOOL(NSNumber *totalBytes, NSNumber *processedBytes) {
-                              return
-                                  [processedBytes longLongValue] < ([totalBytes longLongValue] / 2);
-                            } completion:^(BOOL success, NSError *error) {
-                              completed = YES;
-                              completionStatus = success;
-                              completionError = error;
-                            }];
-    
-    expect(completed).will.beTruthy();
-    expect(completionStatus).will.beFalsy();
-    expect(completionError).willNot.beNil();
-    expect(completionError.lt_isLTDomain).will.beTruthy();
-    expect(completionError.code).will.equal(BZRErrorCodeArchivingCancelled);
+    waitUntil(^(DoneCallback done) {
+      [unarchiver unarchiveFilesToPath:targetPath
+                              progress:^BOOL(NSNumber *totalBytes, NSNumber *processedBytes) {
+                                return [processedBytes longLongValue] <
+                                    [totalBytes longLongValue] / 2;
+                              } completion:^(BOOL success, NSError *error) {
+                                completionStatus = success;
+                                completionError = error;
+                                done();
+                              }];
+    });
+
+    expect(completionStatus).to.beFalsy();
+    expect(completionError).toNot.beNil();
+    expect(completionError.lt_isLTDomain).to.beTruthy();
+    expect(completionError.code).to.equal(BZRErrorCodeArchivingCancelled);
   });
 });
 
