@@ -12,17 +12,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithBrushModel:(DVNBrushModel *)brushModel
-                  renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo {
+                  renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo
+                  conversionFactor:(CGFloat)conversionFactor {
   if (self = [super init]) {
     _brushModel = brushModel;
     _renderTargetInfo = renderTargetInfo;
+    _conversionFactor = conversionFactor;
   }
   return self;
 }
 
 + (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
-                      renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo {
-  return [[self alloc] initWithBrushModel:brushModel renderTargetInfo:renderTargetInfo];
+                      renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo
+                      conversionFactor:(CGFloat)conversionFactor {
+  return [[self alloc] initWithBrushModel:brushModel renderTargetInfo:renderTargetInfo
+                         conversionFactor:conversionFactor];
 }
 
 @end

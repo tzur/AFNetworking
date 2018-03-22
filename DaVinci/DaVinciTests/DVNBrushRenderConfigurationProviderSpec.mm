@@ -64,7 +64,8 @@ context(@"creation", ^{
            renderTargetHasSingleChannel:NO
            renderTargetIsNonPremultiplied:NO];
       DVNBrushRenderModel *model = [DVNBrushRenderModel instanceWithBrushModel:brushModel
-                                                              renderTargetInfo:info];
+                                                              renderTargetInfo:info
+                                                              conversionFactor:0.7];
       return @{
         kDVNBrushRenderConfigurationProviderExamplesBrushRenderModel: model,
         kDVNBrushRenderConfigurationProviderExamplesTextureMapping:

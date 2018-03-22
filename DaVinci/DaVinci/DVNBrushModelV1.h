@@ -70,11 +70,10 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 #pragma mark Brush Tip Pattern
 #pragma mark -
 
-/// Distance, in floating point pixel units of the brush stroke geometry coordinate system
-/// multiplied by \c scale, between the centers of the brush tip geometry on the curve along which
-/// the brush stroke is rendered. A value of \c 1 causes the brush tip squares to be adjacent on a
-/// straight line axis-aligned in the brush stroke geometry coordinate system, for any value of
-/// \c scale, while a value of \c 0 causes all squares to be on top of each other.
+/// Factor, multiplied by \c scale, determining the distance between the centers of the brush tip
+/// geometry on the curve along which the brush stroke is rendered. A value of \c 1 causes the brush
+/// tip squares to be adjacent on a straight line axis-aligned in the spline coordinate system, for
+/// any value of \c scale, while a value of \c 0 causes all squares to be on top of each other.
 ///
 /// (Order) Dependencies:
 /// \c scale
@@ -94,11 +93,11 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger>
     allowedNumberOfSamplesPerSequenceRange;
 
-/// Distance, in floating point pixel units of the brush stroke geometry coordinate system
-/// multiplied by \c scale, between the center of the last brush tip geometry of a sequence, as
-/// defined by \c numberOfSamplesPerSequence, and the center of the first brush tip geometry of the
-/// next sequence. A value of \c 1 causes the square brush tip geometry to be adjacent on a straight
-/// line axis-aligned in the brush stroke geometry coordinate system, for any value of \c scale.
+/// Factor, multiplied by \c scale, determining the distance between the center of the last brush
+/// tip geometry of a sequence, as defined by \c numberOfSamplesPerSequence, and the center of the
+/// first brush tip geometry of the next sequence. A value of \c 1 causes the square brush tip
+/// geometry to be adjacent on a straight line axis-aligned in the spline coordinate system, for any
+/// value of \c scale.
 ///
 /// (Order) Dependencies:
 /// \c scale
@@ -168,12 +167,11 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// Allowed range of \c angleRange.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedAngleRange;
 
-/// Non-empty support, with infimum in <tt>[0, 1]</tt> and supremum in <tt>[1, CGFloatMax]</tt>, of
-/// the uniform distribution determining the possible scale factors by which the brush tip squares
-/// are randomly scaled around their centers. A value of <tt>[1, 1]</tt> has the effect that no
-/// brush tip square is scaled; a value of <tt>[0, 0]</tt> has the effect that all brush tip squares
-/// are removed. A value of <tt>[0, CGFloatMax]</tt> has the effect that all sizes are possible for
-/// the brush tip squares.
+/// Non-empty support, in <tt>[0, CGFloatMax]</tt>, of the uniform distribution determining the
+/// possible scale factors by which the brush tip squares are randomly scaled around their centers.
+/// A value of <tt>[1, 1]</tt> has the effect that no brush tip square is scaled; a value of
+/// <tt>[0, 0]</tt> has the effect that all brush tip squares are removed. A value of
+/// <tt>[0, CGFloatMax]</tt> has the effect that all sizes are possible for the brush tip squares.
 ///
 /// (Order) Dependencies:
 /// \c randomInitialSeed
@@ -191,9 +189,8 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 #pragma mark Tapering
 #pragma mark -
 
-/// Lengths, in floating point pixel units of the brush stroke geometry coordinate system
-/// multiplied by \c scale, of the tapering applied to the brush tip geometry at the beginning and
-/// at the end of the brush stroke.
+/// Factor, multiplied by \c scale, determining the length of the tapering applied to the brush tip
+/// geometry at the beginning and at the end of the brush stroke.
 ///
 /// (Order) Dependencies:
 /// \c scale
@@ -445,8 +442,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c edgeAvoidance
 @property (readonly, nonatomic) NSURL *edgeAvoidanceGuideImageURL;
 
-/// Offset, in normalized floating-point units of the coordinate system of each brush tip geometry,
-/// used for sampling the edge avoidance texture.
+/// Offset, in inches, used for sampling the edge avoidance texture.
 @property (readonly, nonatomic) CGFloat edgeAvoidanceSamplingOffset;
 
 /// Allowed range of the x- and y-coordinate of \c edgeAvoidanceSamplingOffset.

@@ -14,9 +14,10 @@ context(@"factory methods", ^{
     DVNBrushRenderTargetInformation *renderTargetInfo =
         OCMClassMock([DVNBrushRenderTargetInformation class]);
     auto model = [DVNBrushRenderModel instanceWithBrushModel:brushModel
-                                            renderTargetInfo:renderTargetInfo];
+                                            renderTargetInfo:renderTargetInfo conversionFactor:0.7];
     expect(model.brushModel).to.equal(brushModel);
     expect(model.renderTargetInfo).to.equal(renderTargetInfo);
+    expect(model.conversionFactor).to.equal(0.7);
   });
 });
 

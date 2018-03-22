@@ -10,9 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Immutable model representing a brush. A brush is determined by a set of well-defined parameters
 /// in form of a model which can be used to construct corresponding objects capable of rendering
 /// geometry along a curve, yielding a so-called brush stroke. The aforementioned geometry resides
-/// in a well-defined coordinate system called the "brush stroke geometry coordinate system".
-/// Conceptually the coordinate system is divided by a grid of square, axis-aligned pixels
-/// determining the units of the coordinate system, in floating-point precision.
+/// in a well-defined two-dimensional orthonormal coordinate system called the "brush stroke
+/// geometry coordinate system". The unit of both coordinate axes is inch, in order to ensure
+/// device-independence.
 ///
 /// There are two main ways for constructing aforementioned geometry:
 /// a) "Brush tip geometry": the geometry is iteratively constructed as individual, possibly
@@ -51,11 +51,11 @@ extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushM
 /// \c kDVNBrushModelVersionMapping.
 @property (readonly, nonatomic) DVNBrushModelVersion *version;
 
-/// Scale of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips with size
-/// <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate system, in case
-/// of brush tip geometry. In case of vector stroke geometry, a value of \c 1 yields geometry for a
-/// brush stroke with width \c 1, in floating-point units of the brush stroke geometry coordinate
-/// system. When initializing with \c init method, this value is \c 1.
+/// Size, in inches, of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips
+/// with size <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate
+/// system, in case of brush tip geometry. In case of vector stroke geometry, a value of \c 1 yields
+/// geometry for a brush stroke with width \c 1 inch. When initializing with \c init method, this
+/// value is \c 1.
 ///
 /// @important This value is the reference point for all additional manipulations applied to the
 /// geometry, such as rotations, random scalings based on additional parameters, distorations, etc.
