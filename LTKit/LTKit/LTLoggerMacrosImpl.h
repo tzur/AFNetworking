@@ -3,10 +3,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Logging is disabled by default. To enable, add LOGGING=1 to the GCC_PREPROCESSOR_DEFINITIONS
+/// Logging is enabled by default. To disable, add LOGGING=0 to the GCC_PREPROCESSOR_DEFINITIONS
 /// build variable.
 #ifndef LOGGING
-  #define LOGGING 0
+  #define LOGGING 1
 #endif
 
 /// Log levels are enabled by default. To disable, add LOGGING_LEVEL_<level>=1 to the
