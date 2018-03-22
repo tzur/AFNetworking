@@ -7,16 +7,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CAMFakeAVCaptureDevice ()
 // The properties below are overridden as readwrite so they can be set from this class.
-@property (readwrite, nonatomic) float lensPosition;
+@property (readwrite, atomic) float lensPosition;
 @property (readwrite, nonatomic) float torchLevel;
-@property (readwrite, nonatomic) BOOL adjustingFocus;
+@property (readwrite, atomic) BOOL adjustingFocus;
 @property (readwrite, nonatomic) float exposureTargetBias;
 @property (readwrite, nonatomic) CMTime exposureDuration;
 @property (readwrite, nonatomic) float ISO;
-@property (readwrite, nonatomic) BOOL adjustingExposure;
+@property (readwrite, atomic) BOOL adjustingExposure;
 @property (readwrite, nonatomic) AVCaptureWhiteBalanceGains deviceWhiteBalanceGains;
-@property (readwrite, nonatomic) BOOL adjustingWhiteBalance;
-@property (readwrite, nonatomic) BOOL rampingVideoZoom;
+@property (readwrite, atomic) BOOL adjustingWhiteBalance;
+@property (readwrite, atomic) BOOL rampingVideoZoom;
 @property (readwrite, nonatomic) CGPoint focusPointOfInterestDuringModeSet;
 @property (readwrite, nonatomic) CGPoint exposurePointOfInterestDuringModeSet;
 @end

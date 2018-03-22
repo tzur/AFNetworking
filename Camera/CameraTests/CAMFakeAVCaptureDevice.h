@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 // From AVCaptureDevice.
 @property (nonatomic) AVCaptureFocusMode focusMode;
 @property (nonatomic) CGPoint focusPointOfInterest;
-@property (readonly, nonatomic) float lensPosition;
+@property (readonly, atomic) float lensPosition;
 @property (strong, nonatomic) AVCaptureDeviceFormat *activeFormat;
 @property (nonatomic) AVCaptureExposureMode exposureMode;
 @property (nonatomic) CGPoint exposurePointOfInterest;
