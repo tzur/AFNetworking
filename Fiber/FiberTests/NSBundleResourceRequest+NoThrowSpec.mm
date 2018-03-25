@@ -18,32 +18,33 @@ it(@"should catch the raised exception and invoke the block with an error", ^{
   OCMStub([resourceRequest beginAccessingResourcesWithCompletionHandler:OCMOCK_ANY])
       .andThrow(exception);
   __block NSError *errorBlockArgument;
-  auto completionHandler = ^(NSError *error) {
-    errorBlockArgument = error;
-  };
 
   expect(^{
-    [resourceRequest fbr_beginAccessingResourcesWithCompletionHandler:completionHandler];
+    waitUntil(^(DoneCallback done) {
+      [resourceRequest fbr_beginAccessingResourcesWithCompletionHandler:^(NSError *error) {
+        errorBlockArgument = error;
+        done();
+      }];
+    });
   }).toNot.raiseAny();
-  expect(errorBlockArgument.code).will.equal(LTErrorCodeExceptionRaised);
+  expect(errorBlockArgument.code).to.equal(LTErrorCodeExceptionRaised);
 });
 
 it(@"should catch the raised exception and invoke the block with NO", ^{
   OCMStub([resourceRequest conditionallyBeginAccessingResourcesWithCompletionHandler:OCMOCK_ANY])
       .andThrow(exception);
-  __block BOOL blockInvoked;
   __block BOOL resourcesAvailableBlockArgument;
-  auto completionHandler = ^(BOOL resourcesAvailable) {
-    blockInvoked = YES;
-    resourcesAvailableBlockArgument = resourcesAvailable;
-  };
 
   expect(^{
-    [resourceRequest
-     fbr_conditionallyBeginAccessingResourcesWithCompletionHandler:completionHandler];
+    waitUntil(^(DoneCallback done) {
+      [resourceRequest
+       fbr_conditionallyBeginAccessingResourcesWithCompletionHandler:^(BOOL resourcesAvailable) {
+         resourcesAvailableBlockArgument = resourcesAvailable;
+         done();
+       }];
+    });
   }).toNot.raiseAny();
-  expect(blockInvoked).will.beTruthy();
-  expect(resourcesAvailableBlockArgument).will.beFalsy();
+  expect(resourcesAvailableBlockArgument).to.beFalsy();
 });
 
 SpecEnd

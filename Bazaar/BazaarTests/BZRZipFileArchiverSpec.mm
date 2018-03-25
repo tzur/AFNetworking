@@ -168,20 +168,25 @@ sharedExamplesFor(kBZRZipArchivingExamples, ^(NSDictionary *data) {
 
     it(@"should indicate cancellation via progress block when subscription is disposed", ^{
       __block BZRZipArchiveProgressBlock progressBlock;
-      OCMStub([zipArchiver archiveFilesAtPaths:filesToArchive withArchivedNames:archivedNames
-                                   fileManager:fileManager progress:[OCMArg isNotNil]
-                                    completion:[OCMArg isNotNil]])
-          .andDo(^(NSInvocation *invocation) {
-            BZRZipArchiveProgressBlock __unsafe_unretained _progressBlock;
-            [invocation getArgument:&_progressBlock atIndex:5];
-            progressBlock = [_progressBlock copy];
-          });
+      __block RACDisposable *disposable;
 
-      RACSignal *signal = archivingBlock(archiver);
-      RACSubject *subject = [RACSubject subject];
-      RACDisposable *disposable = [signal subscribe:subject];
+      waitUntil(^(DoneCallback done) {
+        OCMStub([zipArchiver archiveFilesAtPaths:filesToArchive withArchivedNames:archivedNames
+                                     fileManager:fileManager progress:[OCMArg isNotNil]
+                                      completion:[OCMArg isNotNil]])
+            .andDo(^(NSInvocation *invocation) {
+              BZRZipArchiveProgressBlock __unsafe_unretained _progressBlock;
+              [invocation getArgument:&_progressBlock atIndex:5];
+              progressBlock = [_progressBlock copy];
+              done();
+            });
 
-      expect(progressBlock).willNot.beNil();
+        RACSignal *signal = archivingBlock(archiver);
+        RACSubject *subject = [RACSubject subject];
+        disposable = [signal subscribe:subject];
+      });
+
+      expect(progressBlock).toNot.beNil();
 
       BOOL shouldContinueArchving = progressBlock(@100, @50);
       expect(shouldContinueArchving).to.beTruthy();
@@ -342,20 +347,25 @@ context(@"unarchiving", ^{
 
     it(@"should indicate cancellation via progress block when subscription is disposed", ^{
       __block BZRZipArchiveProgressBlock progressBlock;
-      OCMStub([zipUnarchiver unarchiveFilesToPath:kTargetDirectory progress:[OCMArg isNotNil]
-                                       completion:[OCMArg isNotNil]])
-          .andDo(^(NSInvocation *invocation) {
-            BZRZipArchiveProgressBlock __unsafe_unretained _progressBlock;
-            [invocation getArgument:&_progressBlock atIndex:3];
-            progressBlock = [_progressBlock copy];
-          });
+      __block RACDisposable *disposable;
 
-      RACSignal *signal =
-          [archiver unarchiveArchiveAtPath:kArchiveFile toDirectory:kTargetDirectory];
-      RACSubject *subject = [RACSubject subject];
-      RACDisposable *disposable = [signal subscribe:subject];
+      waitUntil(^(DoneCallback done) {
+        OCMStub([zipUnarchiver unarchiveFilesToPath:kTargetDirectory progress:[OCMArg isNotNil]
+                                         completion:[OCMArg isNotNil]])
+            .andDo(^(NSInvocation *invocation) {
+              BZRZipArchiveProgressBlock __unsafe_unretained _progressBlock;
+              [invocation getArgument:&_progressBlock atIndex:3];
+              progressBlock = [_progressBlock copy];
+              done();
+            });
 
-      expect(progressBlock).willNot.beNil();
+        RACSignal *signal =
+            [archiver unarchiveArchiveAtPath:kArchiveFile toDirectory:kTargetDirectory];
+        RACSubject *subject = [RACSubject subject];
+        disposable = [signal subscribe:subject];
+      });
+
+      expect(progressBlock).toNot.beNil();
 
       BOOL shouldContinueArchving = progressBlock(@100, @50);
       expect(shouldContinueArchving).to.beTruthy();

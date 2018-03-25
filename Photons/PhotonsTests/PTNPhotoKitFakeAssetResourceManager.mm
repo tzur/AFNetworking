@@ -65,30 +65,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)serveResource:(PHAssetResource *)resource withProgress:(NSArray<NSNumber *> *)progress
                  data:(NSData *)data {
-  [self.resourceToProgress setObject:progress forKey:resource];
-  [self.resourceToData setObject:data forKey:resource];
+  @synchronized(self) {
+    [self.resourceToProgress setObject:progress forKey:resource];
+    [self.resourceToData setObject:data forKey:resource];
+  }
 }
 
 - (void)serveResource:(PHAssetResource *)resource withProgress:(NSArray<NSNumber *> *)progress
          finallyError:(NSError *)error {
-  [self.resourceToProgress setObject:progress forKey:resource];
-  [self.resourceToError setObject:error forKey:resource];
+  @synchronized(self) {
+    [self.resourceToProgress setObject:progress forKey:resource];
+    [self.resourceToError setObject:error forKey:resource];
+  }
 }
 
 - (BOOL)isRequestCancelledForResource:(PHAssetResource *)resource {
-  return [self.cancelledRequests containsObject:resource];
+  @synchronized(self) {
+    return [self.cancelledRequests containsObject:resource];
+  }
 }
 
 - (BOOL)isRequestIssuedForResource:(PHAssetResource *)resource {
-  return [self.issuedRequests containsObject:resource];
+  @synchronized(self) {
+    return [self.issuedRequests containsObject:resource];
+  }
 }
 
 - (PHAssetResourceDataRequestID)requestDataForAssetResource:(PHAssetResource *)resource
     options:(nullable PHAssetResourceRequestOptions *)options
     dataReceivedHandler:(void (^)(NSData *))handler
     completionHandler:(void (^)(NSError * _Nullable))completionHandler {
-  auto _Nullable progresses = [self.resourceToProgress objectForKey:resource];
-  auto _Nullable data = [self.resourceToData objectForKey:resource];
+  NSArray * _Nullable progresses;
+  NSData * _Nullable data;
+  @synchronized(self) {
+    progresses = [self.resourceToProgress objectForKey:resource];
+    data = [self.resourceToData objectForKey:resource];
+  }
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if (!progresses) {
@@ -122,11 +134,12 @@ NS_ASSUME_NONNULL_BEGIN
     }
   });
 
-  ++self.nextRequestIdentifier;
-  self.requestToResource[@(self.nextRequestIdentifier)] = resource;
-  [self.issuedRequests addObject:resource];
-
-  return self.nextRequestIdentifier;
+  @synchronized(self) {
+    ++self.nextRequestIdentifier;
+    self.requestToResource[@(self.nextRequestIdentifier)] = resource;
+    [self.issuedRequests addObject:resource];
+    return self.nextRequestIdentifier;
+  }
 }
 
 - (void)writeDataForAssetResource:(PHAssetResource __unused *)resource
@@ -137,8 +150,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cancelDataRequest:(PHAssetResourceDataRequestID)requestID {
-  if (self.requestToResource[@(requestID)]) {
-    [self.cancelledRequests addObject:self.requestToResource[@(requestID)]];
+  @synchronized(self) {
+    if (self.requestToResource[@(requestID)]) {
+      [self.cancelledRequests addObject:self.requestToResource[@(requestID)]];
+    }
   }
 }
 

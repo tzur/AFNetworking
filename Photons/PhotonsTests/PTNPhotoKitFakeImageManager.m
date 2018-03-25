@@ -75,17 +75,21 @@ NS_ASSUME_NONNULL_BEGIN
              image:(UIImage *)image {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToImage[identifier] = image;
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToImage[identifier] = image;
+  }
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
            avasset:(AVAsset *)avasset audioMix:(AVAudioMix *)audioMix {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToAVAsset[identifier] = avasset;
-  self.identifierToAudioMix[identifier] = audioMix;
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToAVAsset[identifier] = avasset;
+    self.identifierToAudioMix[identifier] = audioMix;
+  }
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
@@ -93,34 +97,44 @@ NS_ASSUME_NONNULL_BEGIN
        orientation:(UIImageOrientation)orientation {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToImageData[identifier] = imageData;
-  self.identifierToDataUTI[identifier] = dataUTI;
-  self.identifierToOrientation[identifier] = @(orientation);
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToImageData[identifier] = imageData;
+    self.identifierToDataUTI[identifier] = dataUTI;
+    self.identifierToOrientation[identifier] = @(orientation);
+  }
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
       finallyError:(NSError *)error {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToError[identifier] = error;
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToError[identifier] = error;
+  }
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
    errorInProgress:(NSError *)error {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToProgressError[identifier] = error;
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToProgressError[identifier] = error;
+  }
 }
 
 - (BOOL)isRequestCancelledForAsset:(PHAsset *)asset {
-  return [self.cancelledRequests containsObject:asset.localIdentifier];
+  @synchronized(self) {
+    return [self.cancelledRequests containsObject:asset.localIdentifier];
+  }
 }
 
 - (BOOL)isRequestIssuedForAsset:(PHAsset *)asset {
-  return [self.issuedRequests containsObject:asset.localIdentifier];
+  @synchronized(self) {
+    return [self.issuedRequests containsObject:asset.localIdentifier];
+  }
 }
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset targetSize:(CGSize __unused)targetSize
@@ -130,46 +144,52 @@ NS_ASSUME_NONNULL_BEGIN
   NSString *identifier = asset.localIdentifier;
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    if (!self.identifierToProgress[identifier]) {
-      resultHandler(nil, @{
-        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
-      });
-      return;
-    }
+    @synchronized(self) {
+      if (!self.identifierToProgress[identifier]) {
+        resultHandler(nil, @{
+          PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+        });
+        return;
+      }
 
-    if (options.progressHandler) {
-      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                          NSUInteger idx,
-                                                                          BOOL *stop) {
-        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-            self.identifierToProgressError[identifier] : nil;
-        options.progressHandler(progress.doubleValue, error, stop, nil);
-      }];
-    }
+      if (options.progressHandler) {
+        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                            NSUInteger idx,
+                                                                            BOOL *stop) {
+          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+              self.identifierToProgressError[identifier] : nil;
+          options.progressHandler(progress.doubleValue, error, stop, nil);
+        }];
+      }
 
-    if (self.identifierToError[identifier]) {
-      resultHandler(nil, @{
-        PHImageErrorKey: self.identifierToError[identifier]
-      });
-    } else if (self.identifierToProgressError[identifier]) {
-      resultHandler(nil, @{
-        PHImageErrorKey: self.identifierToProgressError[identifier]
-      });
-    } else if (self.identifierToImage[identifier]) {
-      resultHandler(self.identifierToImage[identifier], nil);
+      if (self.identifierToError[identifier]) {
+        resultHandler(nil, @{
+          PHImageErrorKey: self.identifierToError[identifier]
+        });
+      } else if (self.identifierToProgressError[identifier]) {
+        resultHandler(nil, @{
+          PHImageErrorKey: self.identifierToProgressError[identifier]
+        });
+      } else if (self.identifierToImage[identifier]) {
+        resultHandler(self.identifierToImage[identifier], nil);
+      }
     }
   });
 
-  ++self.nextRequestIdentifier;
-  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
-  [self.issuedRequests addObject:identifier];
+  @synchronized(self) {
+    ++self.nextRequestIdentifier;
+    self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+    [self.issuedRequests addObject:identifier];
 
-  return self.nextRequestIdentifier;
+    return self.nextRequestIdentifier;
+  }
 }
 
 - (void)cancelImageRequest:(PHImageRequestID)requestID {
-  if (self.requestToIdentifier[@(requestID)]) {
-    [self.cancelledRequests addObject:self.requestToIdentifier[@(requestID)]];
+  @synchronized(self) {
+    if (self.requestToIdentifier[@(requestID)]) {
+      [self.cancelledRequests addObject:self.requestToIdentifier[@(requestID)]];
+    }
   }
 }
 
@@ -178,42 +198,46 @@ NS_ASSUME_NONNULL_BEGIN
   NSString *identifier = asset.localIdentifier;
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    if (!self.identifierToProgress[identifier]) {
-      resultHandler(nil, nil, @{
-        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
-      });
-      return;
-    }
+    @synchronized(self) {
+      if (!self.identifierToProgress[identifier]) {
+        resultHandler(nil, nil, @{
+          PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+        });
+        return;
+      }
 
-    if (options.progressHandler) {
-      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                          NSUInteger idx,
-                                                                          BOOL *stop) {
-        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-            self.identifierToProgressError[identifier] : nil;
-        options.progressHandler(progress.doubleValue, error, stop, nil);
-      }];
-    }
+      if (options.progressHandler) {
+        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                            NSUInteger idx,
+                                                                            BOOL *stop) {
+          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+              self.identifierToProgressError[identifier] : nil;
+          options.progressHandler(progress.doubleValue, error, stop, nil);
+        }];
+      }
 
-    if (self.identifierToError[identifier]) {
-      resultHandler(nil, nil, @{
-        PHImageErrorKey: self.identifierToError[identifier]
-      });
-    } else if (self.identifierToProgressError[identifier]) {
-      resultHandler(nil, nil, @{
-        PHImageErrorKey: self.identifierToProgressError[identifier]
-      });
-    } else if (self.identifierToAVAsset[identifier]) {
-      resultHandler(self.identifierToAVAsset[identifier], self.identifierToAudioMix[identifier],
-                    nil);
+      if (self.identifierToError[identifier]) {
+        resultHandler(nil, nil, @{
+          PHImageErrorKey: self.identifierToError[identifier]
+        });
+      } else if (self.identifierToProgressError[identifier]) {
+        resultHandler(nil, nil, @{
+          PHImageErrorKey: self.identifierToProgressError[identifier]
+        });
+      } else if (self.identifierToAVAsset[identifier]) {
+        resultHandler(self.identifierToAVAsset[identifier], self.identifierToAudioMix[identifier],
+                      nil);
+      }
     }
   });
 
-  ++self.nextRequestIdentifier;
-  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
-  [self.issuedRequests addObject:identifier];
+  @synchronized(self) {
+    ++self.nextRequestIdentifier;
+    self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+    [self.issuedRequests addObject:identifier];
 
-  return self.nextRequestIdentifier;
+    return self.nextRequestIdentifier;
+  }
 }
 
 - (PHImageRequestID)requestImageDataForAsset:(PHAsset *)asset
@@ -222,42 +246,46 @@ NS_ASSUME_NONNULL_BEGIN
   NSString *identifier = asset.localIdentifier;
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    if (!self.identifierToProgress[identifier]) {
-      resultHandler(nil, nil, UIImageOrientationUp, @{
-        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
-      });
-      return;
-    }
+    @synchronized(self) {
+      if (!self.identifierToProgress[identifier]) {
+        resultHandler(nil, nil, UIImageOrientationUp, @{
+          PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+        });
+        return;
+      }
 
-    if (options.progressHandler) {
-      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                          NSUInteger idx,
-                                                                          BOOL *stop) {
-        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-            self.identifierToProgressError[identifier] : nil;
-        options.progressHandler(progress.doubleValue, error, stop, nil);
-      }];
-    }
+      if (options.progressHandler) {
+        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                            NSUInteger idx,
+                                                                            BOOL *stop) {
+          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+              self.identifierToProgressError[identifier] : nil;
+          options.progressHandler(progress.doubleValue, error, stop, nil);
+        }];
+      }
 
-    if (self.identifierToError[identifier]) {
-      resultHandler(nil, nil, UIImageOrientationUp, @{
-        PHImageErrorKey: self.identifierToError[identifier]
-      });
-    } else if (self.identifierToProgressError[identifier]) {
-      resultHandler(nil, nil, UIImageOrientationUp, @{
-        PHImageErrorKey: self.identifierToProgressError[identifier]
-      });
-    } else if (self.identifierToImageData[identifier]) {
-      resultHandler(self.identifierToImageData[identifier], self.identifierToDataUTI[identifier],
-                    self.identifierToOrientation[identifier].intValue, nil);
+      if (self.identifierToError[identifier]) {
+        resultHandler(nil, nil, UIImageOrientationUp, @{
+          PHImageErrorKey: self.identifierToError[identifier]
+        });
+      } else if (self.identifierToProgressError[identifier]) {
+        resultHandler(nil, nil, UIImageOrientationUp, @{
+          PHImageErrorKey: self.identifierToProgressError[identifier]
+        });
+      } else if (self.identifierToImageData[identifier]) {
+        resultHandler(self.identifierToImageData[identifier], self.identifierToDataUTI[identifier],
+                      self.identifierToOrientation[identifier].intValue, nil);
+      }
     }
   });
 
-  ++self.nextRequestIdentifier;
-  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
-  [self.issuedRequests addObject:identifier];
+  @synchronized(self) {
+    ++self.nextRequestIdentifier;
+    self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+    [self.issuedRequests addObject:identifier];
 
-  return self.nextRequestIdentifier;
+    return self.nextRequestIdentifier;
+  }
 }
 
 @end

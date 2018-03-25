@@ -3,6 +3,8 @@
 
 #import "LTMMTexture.h"
 
+#import <stdatomic.h>
+
 #import "CVPixelBuffer+LTEngine.h"
 #import "LTFbo.h"
 #import "LTFboAttachable.h"
@@ -194,12 +196,12 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
 
   context(@"synchronization", ^{
     it(@"should not allow sampling while writing", ^{
-      __block BOOL inRead = NO;
+      __block atomic_bool inRead = false;
 
       [texture writeToAttachableWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
           [texture sampleWithGPUWithBlock:^{
-            inRead = YES;
+            inRead = true;
           }];
         });
         expect(inRead).to.beFalsy();
@@ -208,12 +210,12 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
     });
 
     it(@"should not allow writing while reading", ^{
-      __block BOOL inWrite = NO;
+      __block atomic_bool inWrite = false;
 
       [texture sampleWithGPUWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
           [texture writeToAttachableWithBlock:^{
-            inWrite = YES;
+            inWrite = true;
           }];
         });
         expect(inWrite).to.beFalsy();

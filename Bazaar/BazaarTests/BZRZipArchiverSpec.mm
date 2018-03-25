@@ -110,18 +110,19 @@ context(@"archiving", ^{
           .andReturn(YES);
     }
 
-    __block BOOL completed = NO;
     __block BOOL completionStatus = NO;
     __block NSError *completionError = nil;
-    [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                      fileManager:fileManager progress:nil
-                       completion:^(BOOL success, NSError *error) {
-                         completed = YES;
-                         completionStatus = success;
-                         completionError = error;
-                       }];
 
-    expect(completed).will.beTruthy();
+    waitUntil(^(DoneCallback done) {
+      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                        fileManager:fileManager progress:nil
+                         completion:^(BOOL success, NSError *error) {
+                           completionStatus = success;
+                           completionError = error;
+                           done();
+                         }];
+    });
+
     expect(completionStatus).to.beTruthy();
     expect(completionError).to.beNil();
   });
@@ -132,18 +133,18 @@ context(@"archiving", ^{
     OCMReject([underlyingArchive writeFileAtPath:filesToArchive[1] withFileName:filesToArchive[1]
                                   withPassword:password]);
 
-    __block BOOL completed = NO;
     __block BOOL completionStatus = NO;
     __block NSError *completionError = nil;
-    [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                      fileManager:fileManager progress:nil
-                       completion:^(BOOL success, NSError *error) {
-                         completed = YES;
-                         completionStatus = success;
-                         completionError = error;
-                       }];
+    waitUntil(^(DoneCallback done) {
+      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                        fileManager:fileManager progress:nil
+                         completion:^(BOOL success, NSError *error) {
+                           completionStatus = success;
+                           completionError = error;
+                           done();
+                         }];
+    });
 
-    expect(completed).will.beTruthy();
     expect(completionStatus).to.beFalsy();
     expect(completionError).toNot.beNil();
   });
@@ -156,20 +157,24 @@ context(@"archiving", ^{
 
     NSMutableArray<NSNumber *> *reportedTotalBytes = [NSMutableArray array];
     NSMutableArray<NSNumber *> *reportedProcessedBytes = [NSMutableArray array];
-    [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                      fileManager:fileManager
-                         progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
-                           [reportedTotalBytes addObject:totalBytes];
-                           [reportedProcessedBytes addObject:bytesProcessed];
-                           return YES;
-                         } completion:^(BOOL, NSError *) {}];
+    waitUntil(^(DoneCallback done) {
+      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                        fileManager:fileManager
+                           progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
+                             [reportedTotalBytes addObject:totalBytes];
+                             [reportedProcessedBytes addObject:bytesProcessed];
+                             return YES;
+                           } completion:^(BOOL, NSError *) {
+                             done();
+                           }];
+    });
 
-    expect(reportedTotalBytes).will.equal(@[
+    expect(reportedTotalBytes).to.equal(@[
       @(totalSizeOfFilesToArchive),
       @(totalSizeOfFilesToArchive),
       @(totalSizeOfFilesToArchive)
     ]);
-    expect(reportedProcessedBytes).will.equal(@[
+    expect(reportedProcessedBytes).to.equal(@[
       @0,
       @(totalSizeOfFilesToArchive / 2),
       @(totalSizeOfFilesToArchive)
@@ -184,58 +189,69 @@ context(@"archiving", ^{
                                       withPassword:password]);
     });
 
-    it(@"should not strart archiving if progress block return NO on first invocation", ^{
+    it(@"should not start archiving if progress block return NO on first invocation", ^{
       NSMutableArray<NSNumber *> *reportedTotalBytes = [NSMutableArray array];
       NSMutableArray<NSNumber *> *reportedProcessedBytes = [NSMutableArray array];
-      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                       fileManager:fileManager
-                          progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
-                            [reportedTotalBytes addObject:totalBytes];
-                            [reportedProcessedBytes addObject:bytesProcessed];
-                            return NO;
-                          } completion:^(BOOL, NSError *) {}];
+      waitUntil(^(DoneCallback done) {
+        [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                          fileManager:fileManager
+                             progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
+                               [reportedTotalBytes addObject:totalBytes];
+                               [reportedProcessedBytes addObject:bytesProcessed];
+                               return NO;
+                             } completion:^(BOOL, NSError *) {
+                               done();
+                             }];
+      });
 
-      expect(reportedTotalBytes).will.equal(@[@(totalSizeOfFilesToArchive)]);
-      expect(reportedProcessedBytes).will.equal(@[@0]);
+      expect(reportedTotalBytes).to.equal(@[@(totalSizeOfFilesToArchive)]);
+      expect(reportedProcessedBytes).to.equal(@[@0]);
     });
 
     it(@"should stop archiving if progress block returns NO", ^{
       NSMutableArray<NSNumber *> *reportedTotalBytes = [NSMutableArray array];
       NSMutableArray<NSNumber *> *reportedProcessedBytes = [NSMutableArray array];
-      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                       fileManager:fileManager
-                          progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
-                            [reportedTotalBytes addObject:totalBytes];
-                            [reportedProcessedBytes addObject:bytesProcessed];
-                            return [bytesProcessed longLongValue] < (totalSizeOfFilesToArchive / 2);
-                          } completion:^(BOOL, NSError *) {}];
+      waitUntil(^(DoneCallback done) {
+        [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                          fileManager:fileManager
+                             progress:^BOOL(NSNumber *totalBytes, NSNumber *bytesProcessed) {
+                               [reportedTotalBytes addObject:totalBytes];
+                               [reportedProcessedBytes addObject:bytesProcessed];
+                               return [bytesProcessed longLongValue] <
+                                   (totalSizeOfFilesToArchive / 2);
+                             } completion:^(BOOL, NSError *) {
+                               done();
+                             }];
+      });
 
-      expect(reportedTotalBytes).will.equal(@[
+      expect(reportedTotalBytes).to.equal(@[
         @(totalSizeOfFilesToArchive),
         @(totalSizeOfFilesToArchive)
       ]);
-      expect(reportedProcessedBytes).will.equal(@[
+      expect(reportedProcessedBytes).to.equal(@[
         @0,
         @(totalSizeOfFilesToArchive / 2)
       ]);
     });
 
     it(@"should report cancellation error if progress block returns NO", ^{
-      __block BOOL completed = NO;
       __block BOOL completionStatus = NO;
       __block NSError *completionError = nil;
-      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                       fileManager:fileManager
-                          progress:^BOOL(NSNumber *, NSNumber *bytesProcessed) {
-                            return [bytesProcessed longLongValue] < (totalSizeOfFilesToArchive / 2);
-                          } completion:^(BOOL success, NSError *error) {
-                            completed = YES;
-                            completionStatus = success;
-                            completionError = error;
-                          }];
 
-      expect(completed).will.beTruthy();
-      expect(completionStatus).will.beFalsy();
+      waitUntil(^(DoneCallback done) {
+        [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
+                          fileManager:fileManager
+                             progress:^BOOL(NSNumber *, NSNumber *bytesProcessed) {
+                               return [bytesProcessed longLongValue] <
+                                   (totalSizeOfFilesToArchive / 2);
+                             } completion:^(BOOL success, NSError *error) {
+                               completionStatus = success;
+                               completionError = error;
+                               done();
+                             }];
+      });
+
+      expect(completionStatus).to.beFalsy();
       expect(completionError.lt_isLTDomain).to.beTruthy();
       expect(completionError.code).to.equal(BZRErrorCodeArchivingCancelled);
     });
