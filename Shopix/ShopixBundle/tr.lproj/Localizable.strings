@@ -34,6 +34,9 @@
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
 "Please try again. If the problem persists, let us know and we'll get right on it." = "Lütfen tekrar deneyin. Eğer sorun devam ederse, bizleri bilgilendirin ve bizler derhal onu çözmeye koyulacağız.";
 
+/* Title of link to privacy policy document */
+"Privacy" = "Privacy"; /* MISSING TRANSLATION */
+
 /* Title of an alert shown after failed purchase */
 "Purchase Failed" = "Satın alma başarısız";
 
@@ -45,6 +48,9 @@
 
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "Satın Alınanları Geri Yükle";
+
+/* Title of link to terms of use document */
+"Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Tekrar Dene";

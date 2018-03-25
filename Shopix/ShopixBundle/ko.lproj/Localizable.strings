@@ -34,6 +34,9 @@
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
 "Please try again. If the problem persists, let us know and we'll get right on it." = "다시 시도해주시기 바랍니다. 만약 문제가 지속되는 경우, 연락해 주시면 바로 살펴보겠습니다.";
 
+/* Title of link to privacy policy document */
+"Privacy" = "Privacy"; /* MISSING TRANSLATION */
+
 /* Title of an alert shown after failed purchase */
 "Purchase Failed" = "구매 실패";
 
@@ -45,6 +48,9 @@
 
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "구입 항목 복원";
+
+/* Title of link to terms of use document */
+"Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "다시 시도하세요";
