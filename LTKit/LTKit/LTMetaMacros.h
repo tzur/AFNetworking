@@ -11,7 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Interface
 #pragma mark -
 
-/// Foreach separator operators.
+// Foreach macros.
+
+#define _LTUnused(INDEX, VAR) \
+  (void)(VAR)
+
+// Foreach separator operators.
+
 #define _LTComma() ,
 #define _LTNull()
 
