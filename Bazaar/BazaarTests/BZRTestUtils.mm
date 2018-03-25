@@ -39,11 +39,12 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
   BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"foo",
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
-        [NSDate dateWithTimeIntervalSinceNow:1337],
+        [NSDate dateWithTimeIntervalSince1970:2337],
     @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime) :
-        cancelled ? [NSDate dateWithTimeIntervalSinceNow:1337 / 2] : [NSNull null],
+        cancelled ? [NSDate dateWithTimeIntervalSince1970:2337 / 2] : [NSNull null],
     @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expiry)
   } error:nil];
   BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
@@ -52,7 +53,8 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
   } error:nil];
   return [BZRReceiptValidationStatus modelWithDictionary:@{
     @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
-    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
   } error:nil];
 }
@@ -64,7 +66,8 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
   BZRReceiptInAppPurchaseInfo *inAppPurchase = [BZRReceiptInAppPurchaseInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, productId): identifier,
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337]
   } error:nil];
   return [receiptValidationStatus
       modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.inAppPurchases)
@@ -77,9 +80,10 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
   BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
-        [NSDate dateWithTimeIntervalSinceNow:1337],
+        [NSDate dateWithTimeIntervalSince1970:2337],
     @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @NO
   } error:nil];
   return [receiptValidationStatus
