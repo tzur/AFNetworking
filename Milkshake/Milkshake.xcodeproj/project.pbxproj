@@ -20,6 +20,7 @@
 		887D81AB1FFBC23100E9D8E8 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8857C8321FF0FCE6000D7CC6 /* libFBTweak.a */; };
 		887D83401FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887D833F1FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
+		889BCA65205A604900310D42 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 889BCA3F205A604900310D42 /* AdSupport.framework */; };
 		88A482442003759A0046B7D1 /* SHKTweakInlineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A482432003759A0046B7D1 /* SHKTweakInlineSpec.mm */; };
 		88A9ED00202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */; };
 		88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */; };
@@ -366,6 +367,7 @@
 		887D83341FFBC8FE00E9D8E8 /* SHKTweakInlineInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTweakInlineInternal.h; sourceTree = "<group>"; };
 		887D833F1FFBCB8700E9D8E8 /* FBMutableTweak+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBMutableTweak+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		8892CCA81FF92222009A8897 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		889BCA3F205A604900310D42 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		88A482432003759A0046B7D1 /* SHKTweakInlineSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakInlineSpec.mm; sourceTree = "<group>"; };
 		88A9ECFE202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBTweakShakeWindow+Milkshake.mm"; sourceTree = "<group>"; };
 		88A9ECFF202C3E0600F74EA5 /* FBTweakShakeWindow+Milkshake.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBTweakShakeWindow+Milkshake.h"; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				889BCA65205A604900310D42 /* AdSupport.framework in Frameworks */,
 				882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
 				A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */,
@@ -742,6 +745,7 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				889BCA3F205A604900310D42 /* AdSupport.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				A18220B81F0398A500FC7C61 /* MessageUI.framework */,
