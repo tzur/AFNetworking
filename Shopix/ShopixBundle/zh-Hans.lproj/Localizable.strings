@@ -34,6 +34,9 @@
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
 "Please try again. If the problem persists, let us know and we'll get right on it." = "请稍后重试。如果问题依然存在，请告诉我们，我们会尽快解决。";
 
+/* Title of link to privacy policy document */
+"Privacy" = "Privacy"; /* MISSING TRANSLATION */
+
 /* Title of an alert shown after failed purchase */
 "Purchase Failed" = "购买失败";
 
@@ -45,6 +48,9 @@
 
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "恢复购买";
+
+/* Title of link to terms of use document */
+"Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "重新尝试";

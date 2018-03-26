@@ -34,6 +34,9 @@
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
 "Please try again. If the problem persists, let us know and we'll get right on it." = "もう1度やり直してください。問題が継続する場合は、お問い合わせいただくと、すぐに対処いたします。";
 
+/* Title of link to privacy policy document */
+"Privacy" = "Privacy"; /* MISSING TRANSLATION */
+
 /* Title of an alert shown after failed purchase */
 "Purchase Failed" = "購入できませんでした";
 
@@ -45,6 +48,9 @@
 
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "購入を復元";
+
+/* Title of link to terms of use document */
+"Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "再度嘗試";
