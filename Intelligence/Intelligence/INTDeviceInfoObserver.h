@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class INTDeviceInfo, INTDeviceInfoObserver;
+@class INTDeviceInfo, INTDeviceInfoObserver, INTSubscriptionInfo;
 
 @protocol INTDeviceInfoSource, LTKeyValuePersistentStorage;
 
@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Notifies the receiver that the application's run count on the device had been updated to
 /// \c runCount. The underlying type of \c runCount is an \c NSUInteger.
 - (void)appRunCountUpdated:(NSNumber *)runCount;
+
+/// Notifies the receiver that the devices subscription info had changed. \c nil
+/// \c subscriptionInfo means that the subscription info is unavailable.
+- (void)subscriptionInfoDidChanged:(nullable INTSubscriptionInfo *)subscriptionInfo;
 
 @end
 
@@ -65,6 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// previously set device token, \c delegate is notified of the change. \c nil device token means
 /// that push notifications are disabled for the device.
 - (void)setDeviceToken:(nullable NSData *)deviceToken;
+
+/// Sets the current \c subscriptionInfo of the device. If the \c subscriptionInfo is different from
+/// the current subscription info, the \c delegate is notified of the change. \c nil
+/// \c subscriptionInfo means that the subscription info is unavailable.
+- (void)setSubscriptionInfo:(nullable INTSubscriptionInfo *)subscriptionInfo;
 
 @end
 
