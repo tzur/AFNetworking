@@ -109,6 +109,7 @@
 		A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CC21EC082DC0050D534 /* INTAloomaLoggerSpec.mm */; };
 		A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */; };
 		A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */; };
+		A1FE789520690DFF00926CD9 /* INTSubscriptionInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FE789320690DFF00926CD9 /* INTSubscriptionInfo.mm */; };
 		A1FEB7211FCDF03F003C0557 /* NSErrorCodes+Intelligence.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FEB7201FCDF03F003C0557 /* NSErrorCodes+Intelligence.mm */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
@@ -622,6 +623,8 @@
 		A1F24CC21EC082DC0050D534 /* INTAloomaLoggerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAloomaLoggerSpec.mm; sourceTree = "<group>"; };
 		A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A1FE789320690DFF00926CD9 /* INTSubscriptionInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = INTSubscriptionInfo.mm; sourceTree = "<group>"; };
+		A1FE789420690DFF00926CD9 /* INTSubscriptionInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTSubscriptionInfo.h; sourceTree = "<group>"; };
 		A1FEB71F1FCDF03F003C0557 /* NSErrorCodes+Intelligence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Intelligence.h"; sourceTree = "<group>"; };
 		A1FEB7201FCDF03F003C0557 /* NSErrorCodes+Intelligence.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Intelligence.mm"; sourceTree = "<group>"; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
@@ -725,6 +728,8 @@
 				A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */,
 				A11722511ECC556B0039177C /* INTDeviceInfoSource.h */,
 				A11722521ECC556B0039177C /* INTDeviceInfoSource.mm */,
+				A1FE789420690DFF00926CD9 /* INTSubscriptionInfo.h */,
+				A1FE789320690DFF00926CD9 /* INTSubscriptionInfo.mm */,
 			);
 			name = "Device Info";
 			sourceTree = "<group>";
@@ -1690,6 +1695,7 @@
 				A149BC2B1EBE6B2C00DA82B7 /* INTPushNotificationOpenedEvent.json in Sources */,
 				A17E08F91ED1E16E007940A0 /* INTAnalytricksMediaExported.json in Sources */,
 				A157B34E1ED6D212008B920D /* INTDeviceTokenChangedEvent.json in Sources */,
+				A1FE789520690DFF00926CD9 /* INTSubscriptionInfo.mm in Sources */,
 				A157B37E1ED6EFC3008B920D /* INTAnalytricksDeviceTokenChanged.json in Sources */,
 				A11723691ECC76620039177C /* INTDeviceInfo.mm in Sources */,
 				A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */,
