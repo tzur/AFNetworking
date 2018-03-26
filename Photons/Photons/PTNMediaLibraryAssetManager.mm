@@ -3,6 +3,7 @@
 
 #import "PTNMediaLibraryAssetManager.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+Functional.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -332,10 +333,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
                                   options:(PTNAVAssetFetchOptions __unused *)options {
   if (![descriptor isKindOfClass:[MPMediaItem class]]) {
-    return [RACSignal return:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
   }
 
+  return [[self fetchAssetURLWithDescriptor:descriptor] map:^PTNProgress *(NSURL *url) {
+    auto asset = [AVURLAsset URLAssetWithURL:url options:nil];
+    auto result = [[PTNAudiovisualAsset alloc] initWithAVAsset:asset];
+    return [[PTNProgress alloc] initWithResult:result];
+  }];
+}
+
+- (RACSignal *)fetchAssetURLWithDescriptor:(id<PTNDescriptor>)descriptor {
+  @weakify(self);
   return [RACSignal defer:^RACSignal *{
+    @strongify(self);
     if (self.authorizationManager.authorizationStatus.value != PTNAuthorizationStatusAuthorized) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
     }
@@ -346,14 +357,32 @@ NS_ASSUME_NONNULL_BEGIN
                                                     url:item.ptn_identifier]];
     }
 
-    auto asset = [AVURLAsset URLAssetWithURL:item.assetURL options:nil];
-    auto result = [[PTNAudiovisualAsset alloc] initWithAVAsset:asset];
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:result]];
+    return [RACSignal return:item.assetURL];
   }];
 }
 
+#pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
 - (RACSignal *)fetchImageDataWithDescriptor:(__unused id<PTNDescriptor>)descriptor {
   return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnsupportedOperation]];
+}
+
+#pragma mark -
+#pragma mark AV Preview fetching
+#pragma mark -
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions __unused *)options {
+  if (![descriptor isKindOfClass:[MPMediaItem class]]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
+  }
+
+  return [[self fetchAssetURLWithDescriptor:descriptor] map:^PTNProgress *(NSURL *url) {
+    auto playerItem = [AVPlayerItem playerItemWithURL:url];
+    return [[PTNProgress alloc] initWithResult:playerItem];
+  }];
 }
 
 @end

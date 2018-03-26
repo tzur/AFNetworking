@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbum, PTNAudiovisualAsset, PTNImageAsset, PTNImageDataAsset;
 
-@class PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress;
+@class AVPlayerItem, PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress;
 
 /// Value object representing an image request with all of the required parameters for it.
 @interface PTNImageRequest : NSObject
@@ -60,6 +60,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Descriptor used for the image data request.
 @property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
+
+@end
+
+/// Value object representing a AV preview request with all of the required parameters for it.
+@interface PTNAVPreviewRequest : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c descriptor and \c options.
+- (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
+                           options:(nullable PTNAVAssetFetchOptions *)options
+    NS_DESIGNATED_INITIALIZER;
+
+/// Descriptor used for the AV preview request.
+@property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
+
+/// Fetch options used for the AV preview request.
+@property (readonly, nonatomic, nullable) PTNAVAssetFetchOptions *options;
 
 @end
 
@@ -132,6 +150,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// any properties of \c imageDataRequest are \c nil, that property will be treated as a wildcard,
 /// matching all values from that property.
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+                 withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
+
+#pragma mark -
+#pragma mark AV preview Serving
+#pragma mark -
+
+/// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
+/// values), followed by the given \c playerItem, all wrapped in a \c PTNProgress objects and then
+/// completes. If any properties of \c request are \c nil, that property will be treated as a
+/// wildcard, matching all values from that property.
+- (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
+                 withProgress:(NSArray<NSNumber *> *)progress
+                   playerItem:(AVPlayerItem *)playerItem;
+
+/// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
+/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// properties of \c request are \c nil, that property will be treated as a wildcard, matching
+/// all values from that property.
+- (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
                  withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -

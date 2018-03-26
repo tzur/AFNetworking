@@ -111,6 +111,12 @@ NS_ASSUME_NONNULL_BEGIN
                                 associatedDescriptor:descriptor]];
 }
 
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions __unused *)options {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
 #pragma mark -
 #pragma mark Descriptor mapping
 #pragma mark -

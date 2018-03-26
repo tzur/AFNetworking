@@ -113,6 +113,21 @@ NS_ASSUME_NONNULL_BEGIN
                                        resultHandler:resultHandler];
 }
 
+- (PHImageRequestID)requestPlayerItemForVideo:(PHAsset *)asset
+    options:(PHVideoRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerAVPreviewHandler)resultHandler {
+  LTParameterAssert(resultHandler, "resultHandler block cannot be nil");
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+    resultHandler(nil, @{PHImageErrorKey: [NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]});
+    return 0;
+  }
+
+  [self instantiateImageManagerIfNeeded];
+  return [self.imageManager requestPlayerItemForVideo:asset options:options
+                                        resultHandler:resultHandler];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

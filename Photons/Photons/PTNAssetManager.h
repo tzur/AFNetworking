@@ -92,6 +92,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<PTNProgress<PTNImageDataAsset>>.
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor;
 
+/// Fetches an \c AVPlayerItem that contains a preview to the asset backed by \c descriptor.
+///
+/// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
+/// final result is sent and errs if an error occurred while fetching the player item. The result
+/// type will always be a \c AVPlayerItem.
+///
+/// If the asset doesn't exist, the signal will err.
+///
+/// Disposal of the returned signal will abort the current fetch operation, if in progress.
+///
+/// @return RACSignal<PTNProgress<AVPlayerItem>>.
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions *)options;
+
 @optional
 
 /// Permanently deletes the assets backed by the given \c descriptors. Each \c PTNDescriptor must

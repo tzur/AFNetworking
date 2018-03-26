@@ -240,6 +240,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark AV preview fetching
+#pragma mark -
+
+- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                                    options:(PTNAVAssetFetchOptions __unused *)options {
+  return [self.assetManager fetchAVPreviewWithDescriptor:descriptor options:options];
+}
+
+#pragma mark -
 #pragma mark Proxying optional methods
 #pragma mark -
 
