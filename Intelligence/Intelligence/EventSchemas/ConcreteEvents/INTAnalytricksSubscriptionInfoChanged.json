@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Subscription info had changed",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "is_available": {
+          "description": "\\c YES if the subscription info is available, otherwise \\c NO.If the subscription info is unavailable, all fields are set to \\c nil",
+          "type": "boolean"
+        },
+        "subscription_status": {
+          "description": "@see -[INTSubscriptionStatus subscriptionStatus]",
+          "type": ["string", "null"]
+        },
+        "product_id": {
+          "description": "@see -[INTSubscriptionStatus productID]",
+          "type": ["string", "null"]
+        },
+        "transaction_id": {
+          "description": "@see -[INTSubscriptionStatus transactionID]",
+          "type": ["string", "null"]
+        },
+        "purchase_date": {
+          "description": "@see -[INTSubscriptionStatus purchaseDate]",
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "expiration_date": {
+          "description": "@see -[INTSubscriptionStatus expirationDate]",
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "cancellation_date": {
+          "description": "@see -[INTSubscriptionStatus cancellationDate]",
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "is_available",
+        "subscription_status",
+        "product_id",
+        "transaction_id",
+        "purchase_date",
+        "expiration_date",
+        "cancellation_date"
+      ]
+    }
+  ]
+}
+
