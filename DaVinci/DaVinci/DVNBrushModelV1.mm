@@ -162,7 +162,7 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 }
 
 #pragma mark -
-#pragma mark Public API
+#pragma mark Public API - Copying
 #pragma mark -
 
 - (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed {
@@ -191,6 +191,10 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
            forKey:@keypath(self, edgeAvoidance)];
   return model;
 }
+
+#pragma mark -
+#pragma mark Public API - Image URL Property Keys
+#pragma mark -
 
 + (NSArray<NSString *> *)imageURLPropertyKeys {
   return @[@instanceKeypath(DVNBrushModelV1, sourceImageURL),

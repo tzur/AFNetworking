@@ -402,7 +402,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 @property (readonly, nonatomic) NSURL *maskImageURL;
 
 #pragma mark -
-#pragma mark Edge Avoidance
+#pragma mark Blending
 #pragma mark -
 
 /// Blend mode to be used to blend the rendered brush stroke geometry with the render target.
