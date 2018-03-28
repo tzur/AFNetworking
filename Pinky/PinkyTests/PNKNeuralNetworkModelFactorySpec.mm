@@ -252,7 +252,7 @@ context(@"deserialization", ^{
       expect(kernelModel.activationType).to.equal(pnk::ActivationTypePReLU);
       expect(kernelModel.alpha.total()).to.equal(3);
 
-      cv::Mat1f expected(1, 3, (float[]){0, 1, 2});
+      cv::Mat1f expected = (cv::Mat1f(1, 3) << 0, 1, 2);
       expect($(kernelModel.alpha)).to.equalMat($(expected));
     });
   });
@@ -340,8 +340,8 @@ context(@"deserialization", ^{
       auto normalizationKernelsSize = model->normalizationKernels.size();
       expect(normalizationKernelsSize).to.equal(1);
 
-      cv::Mat1f expectedScale(1, 3, (float[]){0, 0.3162119686603546, 0.6029952764511108});
-      cv::Mat1f expectedShift(1, 3, (float[]){3, 1.7865161895751953, 0.17603778839111328});
+      cv::Mat1f expectedScale = (cv::Mat1f(1, 3) << 0, 0.3162119686603546, 0.6029952764511108);
+      cv::Mat1f expectedShift = (cv::Mat1f(1, 3) << 3, 1.7865161895751953, 0.17603778839111328);
       cv::Mat1f expectedMean(1, 3, 0.);
       cv::Mat1f expectedVariance(1, 3, 0.9999899864196777);
 
@@ -375,8 +375,8 @@ context(@"deserialization", ^{
       auto normalizationKernelsSize = model->normalizationKernels.size();
       expect(normalizationKernelsSize).to.equal(1);
 
-      cv::Mat1f expectedScale(1, 3, (float[]){0, 1, 2});
-      cv::Mat1f expectedShift(1, 3, (float[]){3, 4, 5});
+      cv::Mat1f expectedScale = (cv::Mat1f(1, 3) << 0, 1, 2);
+      cv::Mat1f expectedShift = (cv::Mat1f(1, 3) << 3, 4, 5);
 
       std::string layerName = "instance";
       pnk::NormalizationKernelModel kernelModel = model->normalizationKernels[layerName];
