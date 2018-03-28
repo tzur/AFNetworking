@@ -38,11 +38,4 @@ it(@"should convert convertible type from default value to object", ^{
   expect(nn(object, defaultValue)).to.equal(defaultValue);
 });
 
-it(@"should return original array if not nil", ^{
-  char string[4] = "foo";
-
-  auto result = nn(string);
-  expect(result).to.equal(string);
-});
-
 SpecEnd
