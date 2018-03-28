@@ -44,7 +44,7 @@ context(@"orientation and landscape coherence", ^{
 
 context(@"integration", ^{
   it(@"should give correct clockwise rotations", ^{
-      expect(CAMClockwiseRotationsForExifOrientation(5)).to.equal(1);
+    expect(CAMClockwiseRotationsForExifOrientation(5)).to.equal(1);
   });
 
   it(@"should give correct mirroring", ^{
