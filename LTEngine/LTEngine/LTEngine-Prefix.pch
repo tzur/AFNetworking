@@ -1,6 +1,15 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#ifdef __clang_analyzer__
+  // The following statement causes the static analyzer to ignore issues in this file, or in one of
+  // files it imports. This is done in order to ignore issues in 3rd party header files. Usually,
+  // when the prefix header is precompiled, this file is not analyzed and errors are not shown in
+  // any case. In some cases this file is not precompiled and is analyzed, in this case, errors in
+  // 3rd party header files are generated, and are suppressed with this statement.
+  #pragma clang system_header
+#endif
+
 // Apple's Frameworks.
 #import <GLKit/GLKit.h>
 #import <OpenGLES/ES2/glext.h>
