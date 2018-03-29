@@ -32,7 +32,8 @@ failureMessageForTo(^NSString *{
         return [LLReactiveMatchersMessageBuilder actualNotFinished:actualRecorder];
     }
     
-    return [[[[[LLReactiveMatchersMessageBuilder message] actual:actualRecorder] expectedBehaviour:@"complete"] actualBehaviour:@"error instead of completion"] build];
+    return [[[[[LLReactiveMatchersMessageBuilder message] actual:actualRecorder] expectedBehaviour:@"complete"] actualBehaviour:
+        [NSString stringWithFormat:@"error instead of completion. Error is: %@", actualRecorder.error]] build];
 });
 
 failureMessageForNotTo(^NSString *{
