@@ -21,11 +21,24 @@
 @end
 
 @interface LTBasicTestFactory : NSObject <LTBasicParameterizedObjectFactory>
+
+/// Parameterized objects to return on each call to \c baseParameterizedObjectsFromValues:.
+@property (nonatomic) NSArray<id<LTBasicParameterizedObject>> *parameterizedObjects;
+
+/// Next parameterized object to return.
+@property (nonatomic) NSUInteger nextParameterizedObjectIndex;
+
 @end
 
 @implementation LTBasicTestFactory
 
 - (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
+  if (self.nextParameterizedObjectIndex < self.parameterizedObjects.count) {
+    auto object = self.parameterizedObjects[self.nextParameterizedObjectIndex];
+    ++self.nextParameterizedObjectIndex;
+    return object;
+  }
+
   return OCMProtocolMock(@protocol(LTBasicParameterizedObject));
 }
 
@@ -42,15 +55,13 @@
 SpecBegin(LTCompoundParameterizedObjectFactory)
 
 __block LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> *factory;
-__block id<LTBasicParameterizedObjectFactory> basicFactory;
-__block id basicFactoryMock;
+__block LTBasicTestFactory *basicFactory;
 
 beforeEach(^{
   basicFactory = [[LTBasicTestFactory alloc] init];
-  basicFactoryMock = OCMPartialMock(basicFactory);
   factory =
       [[LTCompoundParameterizedObjectFactory<LTTestInterpolatableObject *> alloc]
-       initWithBasicFactory:basicFactoryMock];
+       initWithBasicFactory:basicFactory];
 });
 
 context(@"initialization", ^{
@@ -106,32 +117,26 @@ context(@"parameterized object computation", ^{
       OCMStub([basicObjectMockForX maxParametricValue]).andReturn(8.5);
       OCMStub([basicObjectMockForY minParametricValue]).andReturn(7);
       OCMStub([basicObjectMockForY maxParametricValue]).andReturn(8.5);
+
+      basicFactory.parameterizedObjects = @[basicObjectMockForX, basicObjectMockForY];
     });
 
     it(@"should construct a parameterized object from basic parameterized objects", ^{
       OCMExpect([interpolatableObjectMock valueForKey:@"x"]).andReturn(@1);
       OCMExpect([interpolatableObjectMock valueForKey:@"y"]).andReturn(@2);
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
 
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
 
       expect(result).toNot.beNil();
       OCMVerifyAll(interpolatableObjectMock);
-      OCMVerifyAll(basicFactoryMock);
+      expect(basicFactory.nextParameterizedObjectIndex).to.equal(2);
     });
 
     it(@"should return parameterized object computing correct key to value mappings", ^{
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
-      OCMVerifyAll(basicFactoryMock);
+      expect(basicFactory.nextParameterizedObjectIndex).to.equal(2);
 
       OCMExpect([basicObjectMockForX floatForParametricValue:0]).andReturn(9);
       OCMExpect([basicObjectMockForY floatForParametricValue:0]).andReturn(10);
@@ -142,13 +147,9 @@ context(@"parameterized object computation", ^{
     });
 
     it(@"should return parameterized object computing correct key to values mappings", ^{
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForX);
-      OCMExpect([[basicFactoryMock ignoringNonObjectArgs]
-                 baseParameterizedObjectsFromValues:{}]).andReturn(basicObjectMockForY);
       LTCompoundParameterizedObject *result =
           [factory parameterizedObjectFromInterpolatableObjects:keyFrames];
-      OCMVerifyAll(basicFactoryMock);
+      expect(basicFactory.nextParameterizedObjectIndex).to.equal(2);
 
       OCMExpect([basicObjectMockForX floatForParametricValue:1]).andReturn(11);
       OCMExpect([basicObjectMockForY floatForParametricValue:1]).andReturn(12);
