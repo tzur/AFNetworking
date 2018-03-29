@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Lightricks. All rights reserved.
 # Created by Boris Talesnik.
 
+import io
 import os
 import sys
 import time
@@ -11,6 +12,19 @@ import ClassGenerator
 
 RC_FAILED_PROCESSING = 1
 
+def main(argv):
+    if len(argv) != 3:
+        print("Usage: %s <event file name> <output directory> " %
+              os.path.basename(argv[0]))
+        sys.exit()
+
+    filename, output_dir = argv[1:3]
+
+    try:
+        generator = ValueClassGenerator(filename)
+        generator.write_to(output_dir)
+    except OBJCParseException:
+        sys.exit(RC_FAILED_PROCESSING)
 
 def file_name_to_script_dir(file_name):
     """Converts base file name to a file name inside the script directory."""
@@ -18,6 +32,8 @@ def file_name_to_script_dir(file_name):
 
 
 class ValueClassGenerator(object):
+    # pylint: disable=too-many-instance-attributes
+
     H_TEMPLATE_FILE = "ValueClassTemplate.h.template"
     M_TEMPLATE_FILE = "ValueClassTemplate.mm.template"
 
@@ -67,8 +83,12 @@ class ValueClassGenerator(object):
 
     def __fill_templates(self):
         templates = {
-            self.M_TEMPLATE_FILE: file(file_name_to_script_dir(self.M_TEMPLATE_FILE), "rb").read(),
-            self.H_TEMPLATE_FILE: file(file_name_to_script_dir(self.H_TEMPLATE_FILE), "rb").read()
+            self.M_TEMPLATE_FILE: ValueClassGenerator.__read_template_file(
+                file_name_to_script_dir(self.M_TEMPLATE_FILE)
+            ),
+            self.H_TEMPLATE_FILE: ValueClassGenerator.__read_template_file(
+                file_name_to_script_dir(self.H_TEMPLATE_FILE)
+            )
         }
 
         self.__initializer_declarations, self.__initializer_implementations = \
@@ -97,11 +117,16 @@ class ValueClassGenerator(object):
             "JSON_ASSIGNMENTS": ",\n    ".join(self.__json_assignments)
         }
 
-        for name in templates.iterkeys():
-            for key, value in variables.iteritems():
+        for name in templates:
+            for key, value in variables.items():
                 templates[name] = templates[name].replace("@%s@" % key, str(value))
 
         return templates
+
+    @staticmethod
+    def __read_template_file(file_path):
+        with io.open(file_path, "r", encoding="utf-8") as template_file:
+            return template_file.read()
 
     @staticmethod
     def __add_newlines_to_string(string):
@@ -134,22 +159,11 @@ class ValueClassGenerator(object):
 
         h_file_path = self.__objc_file_name + ".h"
         m_file_path = self.__objc_file_name + ".mm"
-        with file(os.path.join(output_directory, h_file_path), "wb") as h_file:
+        with io.open(os.path.join(output_directory, h_file_path), "w", encoding="utf-8") as h_file:
             h_file.write(self.__filled_templates[self.H_TEMPLATE_FILE])
-        with file(os.path.join(output_directory, m_file_path), "wb") as m_file:
+        with io.open(os.path.join(output_directory, m_file_path), "w", encoding="utf-8") as m_file:
             m_file.write(self.__filled_templates[self.M_TEMPLATE_FILE])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print ("Usage: %s <event file name> <output directory> " %
-               os.path.basename(sys.argv[0]))
-        sys.exit()
-
-    filename, output_dir = sys.argv[1:3]
-
-    try:
-        generator = ValueClassGenerator(filename)
-        generator.write_to(output_dir)
-    except OBJCParseException:
-        sys.exit(RC_FAILED_PROCESSING)
+    main(sys.argv)

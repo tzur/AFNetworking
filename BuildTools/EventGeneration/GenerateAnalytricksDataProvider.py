@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Lightricks. All rights reserved.
 # Created by Boris Talesnik.
 
+import io
 import os
 import sys
 import time
@@ -12,6 +13,19 @@ import ClassGenerator
 
 RC_FAILED_PROCESSING = 1
 
+def main(argv):
+    if len(argv) != 4:
+        print("Usage: %s <event file name> <shared events folder> "
+              "<output directory>" % os.path.basename(argv[0]))
+        sys.exit()
+
+    filename, shared_folder, output_directory = argv[1:]
+
+    try:
+        generator = AnalytricksRawEventGenerator(filename, os.path.realpath(shared_folder))
+        generator.write_to(output_directory)
+    except OBJCParseException:
+        sys.exit(RC_FAILED_PROCESSING)
 
 def file_name_to_script_dir(file_name):
     """Converts base file name to a file name inside the script directory."""
@@ -36,14 +50,14 @@ class AnalytricksRawEventGenerator(object):
 
     @property
     def analytricks_base_objc_name(self):
-        key = self.__event.custom_object_properties.keys()[0]
+        key = list(self.__event.custom_object_properties)[0]
         custom_property = self.__event.custom_object_properties[key]
         objc_object = custom_property[1]
         return objc_object.objc_class_name(True)
 
     @property
     def base_file_import(self):
-        schema_file_path = self.__event.custom_object_properties.keys()[0]
+        schema_file_path = list(self.__event.custom_object_properties)[0]
         schema_base = os.path.splitext(os.path.basename(schema_file_path))[0]
         if self.__shared_events_folder in schema_file_path \
                 and self.__shared_events_folder not in os.path.realpath(self.__event_file_name):
@@ -57,8 +71,8 @@ class AnalytricksRawEventGenerator(object):
         ANALYTRICS = "Analytricks"
         start_index = self.objc_file_name.index(ANALYTRICS) + len(ANALYTRICS)
         stripped_name = self.objc_file_name[start_index:]
-        stripped_name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', stripped_name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', stripped_name).lower()
+        stripped_name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", stripped_name)
+        return re.sub("([a-z0-9])([A-Z])", r"\1_\2", stripped_name).lower()
 
     @property
     def properties_declarations(self):
@@ -86,8 +100,12 @@ class AnalytricksRawEventGenerator(object):
 
     def __fill_templates(self):
         templates = {
-            self.M_TEMPLATE_FILE: file(file_name_to_script_dir(self.M_TEMPLATE_FILE), "rb").read(),
-            self.H_TEMPLATE_FILE: file(file_name_to_script_dir(self.H_TEMPLATE_FILE), "rb").read()
+            self.M_TEMPLATE_FILE: AnalytricksRawEventGenerator.__read_template_file(
+                file_name_to_script_dir(self.M_TEMPLATE_FILE)
+            ),
+            self.H_TEMPLATE_FILE: AnalytricksRawEventGenerator.__read_template_file(
+                file_name_to_script_dir(self.H_TEMPLATE_FILE)
+            )
         }
 
         variables = {
@@ -106,11 +124,16 @@ class AnalytricksRawEventGenerator(object):
             "JSON_FILE_NAME": self.__basename
         }
 
-        for name in templates.iterkeys():
-            for key, value in variables.iteritems():
+        for name in templates:
+            for key, value in variables.items():
                 templates[name] = templates[name].replace("@%s@" % key, str(value))
 
         return templates
+
+    @staticmethod
+    def __read_template_file(file_path):
+        with io.open(file_path, "r", encoding="utf-8") as template_file:
+            return template_file.read()
 
     @staticmethod
     def __generate_initializers(objc_properties):
@@ -135,22 +158,11 @@ class AnalytricksRawEventGenerator(object):
 
         h_file_path = self.objc_file_name + ".h"
         m_file_path = self.objc_file_name + ".mm"
-        with file(os.path.join(output_dir, h_file_path), "wb") as h_file:
+        with io.open(os.path.join(output_dir, h_file_path), "w", encoding="utf-8") as h_file:
             h_file.write(self.__filled_templates[self.H_TEMPLATE_FILE])
-        with file(os.path.join(output_dir, m_file_path), "wb") as m_file:
+        with io.open(os.path.join(output_dir, m_file_path), "w", encoding="utf-8") as m_file:
             m_file.write(self.__filled_templates[self.M_TEMPLATE_FILE])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print ("Usage: %s <event file name> <shared events folder> "
-               "<output directory>" % os.path.basename(sys.argv[0]))
-        sys.exit()
-
-    filename, shared_folder, output_directory = sys.argv[1:]
-
-    try:
-        generator = AnalytricksRawEventGenerator(filename, os.path.realpath(shared_folder))
-        generator.write_to(output_directory)
-    except OBJCParseException:
-        sys.exit(RC_FAILED_PROCESSING)
+    main(sys.argv)

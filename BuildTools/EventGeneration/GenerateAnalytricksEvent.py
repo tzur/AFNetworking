@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Lightricks. All rights reserved.
 # Created by Boris Talesnik.
 
+import io
 import os
 import sys
 import time
@@ -13,6 +14,19 @@ import ClassGenerator
 
 RC_FAILED_PROCESSING = 1
 
+def main(argv):
+    if len(argv) != 4:
+        print("Usage: %s <event file name> <shared events folder> <output directory>" %
+              os.path.basename(argv[0]))
+        sys.exit()
+
+    filename, shared_folder, output_directory = argv[1:]
+
+    try:
+        generator = AnalytricksEventGenerator(filename, shared_folder)
+        generator.write_to(output_directory)
+    except OBJCParseException:
+        sys.exit(RC_FAILED_PROCESSING)
 
 def file_name_to_script_dir(file_name):
     """Converts base file name to a file name inside the script directory."""
@@ -37,7 +51,7 @@ class AnalytricksEventGenerator(object):
     @property
     def custom_type_properties(self):
         properties = []
-        for schema_file_path, custom_property in self.__event.custom_object_properties.iteritems():
+        for schema_file_path, custom_property in self.__event.custom_object_properties.items():
             if os.path.basename(schema_file_path) == "base.intelligence.json":
                 continue
             property_name = custom_property[0]
@@ -108,8 +122,12 @@ class AnalytricksEventGenerator(object):
 
     def __fill_templates(self):
         templates = {
-            self.M_TEMPLATE_FILE: file(file_name_to_script_dir(self.M_TEMPLATE_FILE), "rb").read(),
-            self.H_TEMPLATE_FILE: file(file_name_to_script_dir(self.H_TEMPLATE_FILE), "rb").read()
+            self.M_TEMPLATE_FILE: AnalytricksEventGenerator.__read_template_file(
+                file_name_to_script_dir(self.M_TEMPLATE_FILE)
+            ),
+            self.H_TEMPLATE_FILE: AnalytricksEventGenerator.__read_template_file(
+                file_name_to_script_dir(self.H_TEMPLATE_FILE)
+            )
         }
 
         variables = {
@@ -131,11 +149,16 @@ class AnalytricksEventGenerator(object):
             "JSON_FILE_NAME": self.__basename
         }
 
-        for name in templates.iterkeys():
-            for key, value in variables.iteritems():
+        for name in templates:
+            for key, value in variables.items():
                 templates[name] = templates[name].replace("@%s@" % key, str(value))
 
         return templates
+
+    @staticmethod
+    def __read_template_file(file_path):
+        with io.open(file_path, "r", encoding="utf-8") as template_file:
+            return template_file.read()
 
     def write_to(self, output_directory):
         try:
@@ -145,9 +168,9 @@ class AnalytricksEventGenerator(object):
 
         h_file_path = self.objc_file_name + ".h"
         m_file_path = self.objc_file_name + ".mm"
-        with file(os.path.join(output_directory, h_file_path), "wb") as h_file:
+        with io.open(os.path.join(output_directory, h_file_path), "w", encoding="utf-8") as h_file:
             h_file.write(self.__filled_templates[self.H_TEMPLATE_FILE])
-        with file(os.path.join(output_directory, m_file_path), "wb") as m_file:
+        with io.open(os.path.join(output_directory, m_file_path), "w", encoding="utf-8") as m_file:
             m_file.write(self.__filled_templates[self.M_TEMPLATE_FILE])
 
     @staticmethod
@@ -156,17 +179,4 @@ class AnalytricksEventGenerator(object):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print ("Usage: %s <event file name> <shared events folder> <output directory>" %
-               os.path.basename(sys.argv[0]))
-        sys.exit()
-
-    filename = sys.argv[1]
-    shared_folder = sys.argv[2]
-    output_dir = sys.argv[3]
-
-    try:
-        generator = AnalytricksEventGenerator(filename, shared_folder)
-        generator.write_to(output_dir)
-    except OBJCParseException:
-        sys.exit(RC_FAILED_PROCESSING)
+    main(sys.argv)

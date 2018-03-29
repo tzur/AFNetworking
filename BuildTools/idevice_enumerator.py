@@ -42,7 +42,7 @@ def get_all_devices():
     # iPhone 7 Plus (11.1) + Apple Watch Series 2 - 42mm (4.1) [44E076F6-34BD-44E5-B...] (Simulator)
     device_regex = \
         r"(.*?) \(([\d\.]*)\) (\+ Apple Watch.*?\(([\d\.]*)\))?.*?\[(.*?)\]( \+)?( \(Simulator\))?"
-    matches = re.finditer(device_regex, stdout)
+    matches = re.finditer(device_regex, stdout.decode("utf-8"))
 
     devices = []
     for _, match in enumerate(matches):
@@ -82,10 +82,10 @@ def main():
     args = create_parser().parse_args()
     result = query_devices(args.ios_ver, args.simulator)
     if not result:
-        print "No connected devices matched given parameters"
+        print("No connected devices matched given parameters")
         sys.exit(-1)
 
-    print result[0]["uuid"]
+    print(result[0]["uuid"])
 
 if __name__ == "__main__":
     main()
