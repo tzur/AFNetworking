@@ -9,8 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTUFakeImageCellViewModel : NSObject <PTUImageCellViewModel>
 
 /// Initializes with \c imageSignal to be returned by \c imageSignalForCellSize: with any parameter,
-/// \c titleSignal, \c subtitleSignal and \c traits or \c nil to expose no cell traits.
+/// \c playerItemSignal, \c titleSignal, \c subtitleSignal and \c traits or \c nil to expose no cell
+/// traits.
 - (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
+                   playerItemSignal:(nullable RACSignal *)playerItemSignal
                         titleSignal:(nullable RACSignal *)titleSignal
                      subtitleSignal:(nullable RACSignal *)subtitleSignal
                      durationSignal:(nullable RACSignal *)durationSignal
@@ -19,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Signal used as this view model's \c imageSignalForCellSize: with any size.
 @property (strong, nonatomic, nullable) RACSignal *imageSignal;
+
+/// Signal used as this view model's \c playerItemSignal.
+@property (strong, nonatomic, nullable) RACSignal *playerItemSignal;
 
 /// Signal used as this view model's \c titleSignal.
 @property (strong, nonatomic, nullable) RACSignal *titleSignal;

@@ -27,6 +27,7 @@ beforeEach(^{
   subtitleSubject = [RACSubject subject];
   durationSubject = [RACSubject subject];
   viewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSubject
+                                                    playerItemSignal:nil
                                                          titleSignal:titleSubject
                                                       subtitleSignal:subtitleSubject
                                                       durationSignal:durationSubject
@@ -109,7 +110,9 @@ it(@"should stop taking values from previous view model once changed", ^{
 
   RACSubject *newSubject = [RACSubject subject];
   PTUFakeImageCellViewModel *otherViewModel =
-      [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newSubject titleSignal:nil
+      [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newSubject
+                                            playerItemSignal:nil
+                                                 titleSignal:nil
                                               subtitleSignal:nil
                                               durationSignal:nil
                                                       traits:nil];
@@ -149,6 +152,7 @@ context(@"memory management", ^{
     subtitleSignal = PTNCreateDisposableRetainingSignal();
     durationSignal = PTNCreateDisposableRetainingSignal();
     disposableViewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSignal
+                                                                playerItemSignal:nil
                                                                      titleSignal:titleSignal
                                                                   subtitleSignal:subtitleSignal
                                                                   durationSignal:durationSignal

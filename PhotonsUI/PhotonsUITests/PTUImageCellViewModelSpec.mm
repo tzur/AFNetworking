@@ -4,6 +4,7 @@
 #import "PTUImageCellViewModel.h"
 
 #import <AVFoundation/AVAsset.h>
+#import <AVFoundation/AVPlayerItem.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <Photons/PTNAVAssetFetchOptions.h>
 #import <Photons/PTNAlbum.h>
@@ -25,7 +26,7 @@ __block CGSize cellSize;
 
 beforeEach(^{
   assetManager = [[PTNFakeAssetManager alloc] init];
-  url = [NSURL URLWithString:@"http://www.foo.com"];
+  url = [NSURL URLWithString:@"foo://bar"];
   options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
                                                resizeMode:PTNImageResizeModeExact
                                           includeMetadata:NO];
@@ -80,6 +81,24 @@ context(@"PTNDescriptor", ^{
     ]];
 
     expect(values).will.sendValues(@[image, otherImage]);
+  });
+
+  it(@"should deliver images on the main thread", ^{
+    LLSignalTestRecorder *values = [[viewModel imageSignalForCellSize:cellSize] testRecorder];
+
+    PTNImageRequest *request = [[PTNImageRequest alloc] initWithDescriptor:descriptor
+        resizingStrategy:[PTNResizingStrategy aspectFill:cellSize] options:options];
+    UIImage *image = [[UIImage alloc] init];
+    id<PTNImageAsset> asset = OCMProtocolMock(@protocol(PTNImageAsset));
+    OCMStub([asset fetchImage])
+        .andReturn([[RACSignal return:image] deliverOn:[RACScheduler scheduler]]);
+    [assetManager serveImageRequest:request withProgress:@[] imageAsset:asset];
+
+    expect(values).will.deliverValuesOnMainThread();
+  });
+
+  it(@"should return nil player item signal for non audiovisual assets", ^{
+    expect([viewModel playerItemSignal]).to.beNil();
   });
 
   context(@"traits", ^{
@@ -201,6 +220,7 @@ context(@"video", ^{
   __block id<PTNDescriptor> videoDescriptor;
   __block PTUTimeFormatter *timeFormatter;
   __block NSTimeInterval duration;
+  __block PTUImageCellViewModel *videoViewModel;
 
   beforeEach(^{
     duration = 11;
@@ -208,16 +228,46 @@ context(@"video", ^{
     videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0, traitSet, nil, nil, nil, duration,
                                                0);
     timeFormatter = [[PTUTimeFormatter alloc] init];
+    videoViewModel = [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager
+                                                              descriptor:videoDescriptor
+                                                       imageFetchOptions:options
+                                                           timeFormatter:timeFormatter];
   });
 
   it(@"should deliver video duration string on duration signal", ^{
-    PTUImageCellViewModel *videoViewModel =
-        [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoDescriptor
-                                          imageFetchOptions:options timeFormatter:timeFormatter];
-
     LLSignalTestRecorder *recorder = [videoViewModel.durationSignal testRecorder];
 
     expect(recorder.values).to.equal(@[[timeFormatter timeStringForTimeInterval:duration]]);
+  });
+
+  it(@"should fetch descriptor's AVPlayerItem as player item signal", ^{
+    LLSignalTestRecorder *values = [[videoViewModel playerItemSignal] testRecorder];
+
+    PTNAVPreviewRequest *request = [[PTNAVPreviewRequest alloc] initWithDescriptor:videoDescriptor
+                                                                           options:nil];
+    AVPlayerItem *playerItem =
+        [AVPlayerItem playerItemWithURL:[NSURL URLWithString:@"foo://bar"]];
+
+    [assetManager serveAVPreviewRequest:request withProgress:@[@0.25, @0.5, @0.75]
+                             playerItem:playerItem];
+
+    expect(values).to.sendValues(@[playerItem]);
+  });
+
+  it(@"should deliver player item on the main thread", ^{
+    LLSignalTestRecorder *values = [[videoViewModel playerItemSignal] testRecorder];
+
+    PTNAVPreviewRequest *request = [[PTNAVPreviewRequest alloc] initWithDescriptor:videoDescriptor
+                                                                           options:nil];
+    AVPlayerItem *playerItem =
+        [AVPlayerItem playerItemWithURL:[NSURL URLWithString:@"foo://bar"]];
+
+    dispatch_async(dispatch_queue_create(nil, 0), ^{
+      [assetManager serveAVPreviewRequest:request withProgress:@[@0.25, @0.5, @0.75]
+                               playerItem:playerItem];
+    });
+
+    expect(values).will.deliverValuesOnMainThread();
   });
 });
 
