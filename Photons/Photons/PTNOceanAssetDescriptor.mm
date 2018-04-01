@@ -3,6 +3,7 @@
 
 #import "PTNOceanAssetDescriptor.h"
 
+#import <LTKit/LTKeyPathCoding.h>
 #import <Mantle/Mantle.h>
 
 #import "NSErrorCodes+Photons.h"
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString * const kUnmatchedKeysDescription =
     @"Keys of the provided dictionary %@ do not match the the property keys of %@";
 
-@implementation PTNOceanAssetSizeInfo
+@implementation PTNOceanImageAssetInfo
 
 #pragma mark -
 #pragma mark MTLJSONSerializing
@@ -61,7 +62,7 @@ static NSString * const kUnmatchedKeysDescription =
 - (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
                              error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
-    NSArray *array = dictionaryValue[@"sizes"];
+    NSArray *array = dictionaryValue[@keypath(self, images)];
 
     if (![[[self class] propertyKeys] isEqualToSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
       if (error) {
@@ -85,10 +86,10 @@ static NSString * const kUnmatchedKeysDescription =
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @"sizes": @"all_sizes",
-    @"type": @"asset_type",
-    @"source": @"source_id",
-    @"identifier": @"id"
+    @instanceKeypath(PTNOceanAssetDescriptor, images): @"all_sizes",
+    @instanceKeypath(PTNOceanAssetDescriptor, type): @"asset_type",
+    @instanceKeypath(PTNOceanAssetDescriptor, source): @"source_id",
+    @instanceKeypath(PTNOceanAssetDescriptor, identifier): @"id"
   };
 }
 
@@ -119,8 +120,8 @@ static NSString * const kUnmatchedKeysDescription =
   }];
 }
 
-+ (NSValueTransformer *)sizesJSONTransformer {
-  return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[PTNOceanAssetSizeInfo class]];
++ (NSValueTransformer *)imagesJSONTransformer {
+  return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[PTNOceanImageAssetInfo class]];
 }
 
 #pragma mark -
@@ -140,7 +141,7 @@ static NSString * const kUnmatchedKeysDescription =
 }
 
 - (NSSet<NSString *> *)descriptorTraits {
-  return [NSSet set];
+  return [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey];
 }
 
 - (NSTimeInterval)duration {

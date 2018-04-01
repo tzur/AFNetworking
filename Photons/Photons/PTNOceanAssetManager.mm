@@ -172,7 +172,7 @@ static const NSTimeInterval kAssetMaxAge = 86400;
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
                                                   url:descriptor.ptn_identifier]];
   }
-  if (!assetDescriptor.sizes.count) {
+  if (!assetDescriptor.images.count) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:descriptor]];
   }
@@ -188,21 +188,23 @@ static const NSTimeInterval kAssetMaxAge = 86400;
 - (RACSignal *)fetchImageContentWithDescriptor:(PTNOceanAssetDescriptor *)descriptor
                               resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                        options:(PTNImageFetchOptions *)options {
-  NSArray<PTNOceanAssetSizeInfo *> *orderedSizes = [descriptor.sizes sortedArrayUsingComparator:
-      ^NSComparisonResult(PTNOceanAssetSizeInfo *lhs, PTNOceanAssetSizeInfo *rhs) {
+  NSArray<PTNOceanImageAssetInfo *> *imagesOrderedBySize =
+      [descriptor.images sortedArrayUsingComparator:
+       ^NSComparisonResult(PTNOceanImageAssetInfo *lhs, PTNOceanImageAssetInfo *rhs) {
         return [@(rhs.width * rhs.height) compare:@(lhs.width * lhs.height)];
       }];
 
-  auto imageIndex = [self imageIndexForSizes:orderedSizes resizingStrategy:resizingStrategy];
-  auto thumbnailIndex = orderedSizes.count - 1;
+  auto imageIndex = [self imageIndexForImageInfos:imagesOrderedBySize
+                                 resizingStrategy:resizingStrategy];
+  auto thumbnailIndex = imagesOrderedBySize.count - 1;
 
-  auto imageSignal = [self fetchImageWithURL:orderedSizes[imageIndex].url
+  auto imageSignal = [self fetchImageWithURL:imagesOrderedBySize[imageIndex].url
                             resizingStrategy:resizingStrategy];
 
   if (imageIndex == thumbnailIndex) {
     return imageSignal;
   }
-  auto thumbnailSignal = [self fetchImageWithURL:orderedSizes[thumbnailIndex].url
+  auto thumbnailSignal = [self fetchImageWithURL:imagesOrderedBySize[thumbnailIndex].url
                                 resizingStrategy:resizingStrategy];
 
   switch (options.deliveryMode) {
@@ -215,13 +217,13 @@ static const NSTimeInterval kAssetMaxAge = 86400;
   }
 }
 
-- (NSUInteger)imageIndexForSizes:(NSArray<PTNOceanAssetSizeInfo *> *)sizes
-                resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+- (NSUInteger)imageIndexForImageInfos:(NSArray<PTNOceanImageAssetInfo *> *)images
+                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   NSUInteger index = NSNotFound;
   CGFloat minDistance = CGFLOAT_MAX;
 
-  for (NSUInteger i = 0; i < sizes.count; ++i) {
-    CGSize size = CGSizeMake(sizes[i].width, sizes[i].height);
+  for (NSUInteger i = 0; i < images.count; ++i) {
+    CGSize size = CGSizeMake(images[i].width, images[i].height);
     CGSize outputSize = [resizingStrategy sizeForInputSize:size];
     CGFloat distance = std::hypot(outputSize.width - size.width, outputSize.height - size.height);
 

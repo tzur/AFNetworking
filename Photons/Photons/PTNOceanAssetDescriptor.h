@@ -9,8 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PTNOceanAssetSource, PTNOceanAssetType;
 
-/// Serializable model for a Ocean asset size info.
-@interface PTNOceanAssetSizeInfo : MTLModel <MTLJSONSerializing>
+/// Serializable model for an Ocean image asset info.
+@interface PTNOceanImageAssetInfo : MTLModel <MTLJSONSerializing>
 
 /// Height of the asset.
 @property (readonly, nonatomic) NSUInteger height;
@@ -35,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Type of the asset.
 @property (readonly, nonatomic) PTNOceanAssetType *type;
 
-/// Array of \c PTNOceanAssetSizeInfo objects holding the available sizes for this descriptor.
-@property (readonly, nonatomic) NSArray<PTNOceanAssetSizeInfo *> *sizes;
+/// All the images available for this descriptor.
+@property (readonly, nonatomic) NSArray<PTNOceanImageAssetInfo *> *images;
 
 @end
 

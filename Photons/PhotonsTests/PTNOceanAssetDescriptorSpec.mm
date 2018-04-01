@@ -64,22 +64,22 @@ context(@"invalid dictionaries", ^{
       @"width": @9,
       @"height": @8
     };
-    expect([MTLJSONAdapter modelOfClass:[PTNOceanAssetSizeInfo class]
+    expect([MTLJSONAdapter modelOfClass:[PTNOceanImageAssetInfo class]
                      fromJSONDictionary:invalidDictionary error:nil]).to.beNil();
   });
 });
 
-it(@"should deserialize correctly", ^{
+it(@"should deserialize", ^{
   expect(descriptor.identifier).to.equal(@"foo");
   expect(descriptor.type).to.equal($(PTNOceanAssetTypePhoto));
   expect(descriptor.source).to.equal($(PTNOceanAssetSourcePixabay));
-  expect(descriptor.sizes).to.haveCountOf(2);
-  expect(descriptor.sizes[0].height).to.equal(@8);
-  expect(descriptor.sizes[0].width).to.equal(@9);
-  expect(descriptor.sizes[0].url.absoluteString).to.equal(@"https://bar.com/full.jpg");
-  expect(descriptor.sizes[1].height).to.equal(@10);
-  expect(descriptor.sizes[1].width).to.equal(@11);
-  expect(descriptor.sizes[1].url.absoluteString)
+  expect(descriptor.images).to.haveCountOf(2);
+  expect(descriptor.images[0].height).to.equal(@8);
+  expect(descriptor.images[0].width).to.equal(@9);
+  expect(descriptor.images[0].url.absoluteString).to.equal(@"https://bar.com/full.jpg");
+  expect(descriptor.images[1].height).to.equal(@10);
+  expect(descriptor.images[1].width).to.equal(@11);
+  expect(descriptor.images[1].url.absoluteString)
       .to.equal(@"https://bar.com/thumbnail.jpg");
   expect(descriptor.creationDate).to.beNil();
   expect(descriptor.modificationDate).to.beNil();
@@ -91,10 +91,11 @@ it(@"should deserialize correctly", ^{
                                         identifier:descriptor.identifier]);
   expect(descriptor.localizedTitle).to.beNil();
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
-  expect(descriptor.descriptorTraits).to.equal([NSSet set]);
+  expect(descriptor.descriptorTraits)
+      .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
 });
 
-it(@"should serialize correctly", ^{
+it(@"should serialize", ^{
   expect([MTLJSONAdapter JSONDictionaryFromModel:descriptor]).to.equal(descriptorDictionary);
 });
 
