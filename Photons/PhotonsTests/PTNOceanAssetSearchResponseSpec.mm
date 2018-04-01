@@ -71,6 +71,7 @@ it(@"should deserialize", ^{
   expect(descriptor.images[1].width).to.equal(@11);
   expect(descriptor.images[1].url.absoluteString)
       .to.equal(@"https://bar.com/thumbnail.jpg");
+  expect(descriptor.videos).to.beEmpty();
   expect(descriptor.creationDate).to.beNil();
   expect(descriptor.modificationDate).to.beNil();
   expect(descriptor.filename).to.beNil();
@@ -83,10 +84,6 @@ it(@"should deserialize", ^{
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.descriptorTraits)
       .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
-});
-
-it(@"should serialize", ^{
-  expect([MTLJSONAdapter JSONDictionaryFromModel:response]).to.equal(responseDictionary);
 });
 
 SpecEnd
