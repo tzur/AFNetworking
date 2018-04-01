@@ -299,6 +299,44 @@ context(@"collection control", ^{
     expect([collectionView contentOffset]).to.equal(CGPointZero);
   });
 
+  context(@"cell at location", ^{
+    beforeEach(^{
+      dataSource.data = @[
+        @[OCMProtocolMock(@protocol(PTNAlbumDescriptor))],
+        @[asset, asset, asset]
+      ];
+      dataSource.sectionTitles = @{@0: @"foo", @1: @"bar", @2: @"baz"};
+      [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+    });
+
+    it(@"should return cell at location", ^{
+      auto albumCell = [albumView cellAtPoint:CGPointMake(50, 75)];
+      auto albumCellIndex = [NSIndexPath indexPathForItem:0 inSection:0];
+      expect(albumCell).to.equal([collectionView cellForItemAtIndexPath:albumCellIndex]);
+
+      auto imageCell = [albumView cellAtPoint:CGPointMake(50, 275)];
+      auto imageCellIndex = [NSIndexPath indexPathForItem:1 inSection:1];
+      expect(imageCell).to.equal([collectionView cellForItemAtIndexPath:imageCellIndex]);
+    });
+
+    it(@"should return nil for locations without visible cells", ^{
+      expect([albumView cellAtPoint:CGPointMake(-20, 75)]).to.beNil();
+      expect([albumView cellAtPoint:CGPointMake(50, 12)]).to.beNil();
+      expect([albumView cellAtPoint:CGPointMake(50, 353)]).to.beNil();
+    });
+
+    it(@"should consider current scrolling", ^{
+      collectionView.contentOffset = CGPointMake(0, 102);
+
+      auto cell = [albumView cellAtPoint:CGPointMake(50, 250)];
+      auto cellIndex = [NSIndexPath indexPathForItem:2 inSection:1];
+      expect(cell).to.equal([collectionView cellForItemAtIndexPath:cellIndex]);
+      expect([albumView cellAtPoint:CGPointMake(50, 301)]).to.beNil();
+    });
+  });
+
   context(@"data source provider replacement", ^{
     __block PTUFakeDataSource *otherDataSource;
     __block id<PTUDataSourceProvider> otherDataSourceProvider;
