@@ -71,8 +71,8 @@ static NSString * const kKeyForCycleAggregations = @"CycleAggregations";
 
 - (INTCycleTransformerBlockBuilder * _Nonnull (^)(NSString *, NSString *))cycle {
   return ^(NSString *startEventType, NSString *endEventType) {
-    _startEvent = startEventType;
-    _endEvent = endEventType;
+    self->_startEvent = startEventType;
+    self->_endEvent = endEventType;
     return self;
   };
 }
@@ -92,14 +92,14 @@ static NSString * const kKeyForCycleAggregations = @"CycleAggregations";
 
 - (INTCycleTransformerBlockBuilder *(^)(intl::TransformCompletionBlock))onCycleEnd {
   return ^(intl::TransformCompletionBlock block) {
-    _cycleCompletion = block.getFullBlock();
+    self->_cycleCompletion = block.getFullBlock();
     return self;
   };
 }
 
 - (INTCycleTransformerBlockBuilder *(^)(NSString *key))appendDuration {
   return ^(NSString *key) {
-    _cycleDurationKey = key;
+    self->_cycleDurationKey = key;
     return self;
   };
 }

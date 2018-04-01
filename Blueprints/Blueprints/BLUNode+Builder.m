@@ -34,29 +34,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BLUNodeBuilder *(^)(NSString *))name {
   return ^(NSString *name) {
-    _name = name;
+    self->_name = name;
     return self;
   };
 }
 
 - (BLUNodeBuilder *(^)(id))value {
   return ^(id value) {
-    _value = value;
+    self->_value = value;
     return self;
   };
 }
 
 - (BLUNodeBuilder *(^)(NSArray<BLUNode *> *))childNodes {
   return ^(NSArray<BLUNode *> *childNodes) {
-    _childNodes = childNodes;
+    self->_childNodes = childNodes;
     return self;
   };
 }
 
 - (BLUNode *(^)(void))build {
   return ^{
-    LTParameterAssert(_name, @"Name must be set prior to building the node");
-    return [BLUNode nodeWithName:_name childNodes:_childNodes ?: @[] value:_value];
+    LTParameterAssert(self->_name, @"Name must be set prior to building the node");
+    return [BLUNode nodeWithName:self->_name childNodes:self->_childNodes ?: @[]
+                           value:self->_value];
   };
 }
 

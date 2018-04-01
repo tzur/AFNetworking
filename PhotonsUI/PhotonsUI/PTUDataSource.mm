@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
         // Changes without incremental changes make all changes made before them obsolete, so the
         // \c pendingReloads counter is used to flush the queue as quickly as possible.
         if (!changeset.hasIncrementalChanges) {
-          ++_pendingReloads;
+          ++self->_pendingReloads;
         }
 
         /// Dispatching on a serial queue ensures we process updates serially, without ever blocking
@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
           // Applying incremental changes when a reload is pending is wasteful, so if a reload is
           // pending we try to clear the queue as quickly as possible.
-          if (changeset.hasIncrementalChanges && _pendingReloads) {
+          if (changeset.hasIncrementalChanges && self->_pendingReloads) {
             return;
           }
 
@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
               self.hasData = [[self class] hasDataInDataModel:self.dataModel];
               [self.collectionView reloadData];
               [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
-              --_pendingReloads;
+              --self->_pendingReloads;
               dispatch_semaphore_signal(self.updateQueueSemaphore);
               return;
             }

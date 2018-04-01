@@ -153,7 +153,7 @@
 #pragma clang diagnostic pop
     if (!success) {
       [LTGLException raise:kLTTextureCreationFailedException
-                    format:@"Failed creating OpenGL texture %u backed by %@", _name, surface];
+                    format:@"Failed creating OpenGL texture %u backed by %@", self->_name, surface];
     }
   }];
   LTGLCheckDbg(@"Error occurred when creating OpenGL texture %u backed by IOSurface %@", _name,
@@ -236,21 +236,21 @@
 
   [self.context removeResource:self];
   [self lockTextureAndExecute:^{
-    _pixelBuffer.reset(nullptr);
-    _texture.reset(nullptr);
+    self->_pixelBuffer.reset(nullptr);
+    self->_texture.reset(nullptr);
 
-    if (_textureCache) {
-      CVOpenGLESTextureCacheFlush(_textureCache.get(), 0);
-      _textureCache.reset(nullptr);
-    } else if (_name) {
+    if (self->_textureCache) {
+      CVOpenGLESTextureCacheFlush(self->_textureCache.get(), 0);
+      self->_textureCache.reset(nullptr);
+    } else if (self->_name) {
       [self unbind];
-      glDeleteTextures(1, &_name);
+      glDeleteTextures(1, &self->_name);
       LTGLCheckDbg(@"Error deleting memory mapped texture");
     }
 
     self.readSyncObject = nil;
     self.writeSyncObject = nil;
-    _name = 0;
+    self->_name = 0;
   }];
 }
 
@@ -432,7 +432,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
-    LTAssert(_pixelBuffer, @"Pixel buffer must be created before calling mappedImage:");
+    LTAssert(self->_pixelBuffer, @"Pixel buffer must be created before calling mappedImage:");
 
     // GPU read sync is required only when mapping the texture for writing. There's no hazard when
     // mapping for reading since the texture is not modified.
@@ -444,12 +444,13 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     [self waitForSyncObject:self.writeSyncObject];
     self.writeSyncObject = nil;
 
-    if (!CVPixelBufferIsPlanar(_pixelBuffer.get())) {
-      LTCVPixelBufferImage(_pixelBuffer.get(), lockFlags, ^(cv::Mat *image) {
+    if (!CVPixelBufferIsPlanar(self->_pixelBuffer.get())) {
+      LTCVPixelBufferImage(self->_pixelBuffer.get(), lockFlags, ^(cv::Mat *image) {
         block(image, NO);
       });
     } else {
-      LTCVPixelBufferPlaneImage(_pixelBuffer.get(), self.planeIndex, lockFlags, ^(cv::Mat *image) {
+      LTCVPixelBufferPlaneImage(self->_pixelBuffer.get(), self.planeIndex, lockFlags,
+                                ^(cv::Mat *image) {
         block(image, NO);
       });
     }
@@ -518,7 +519,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
   [self mappedImageForReading:^(const cv::Mat &, BOOL) {
     @autoreleasepool {
-      CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:_pixelBuffer.get() options:@{
+      CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:self->_pixelBuffer.get() options:@{
         kCIImageColorSpace: [NSNull null]
       }];
 
@@ -555,7 +556,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
       }
 
       CIContext *context = [CIContext lt_contextWithPixelFormat:(self.pixelFormat)];
-      [context render:image toCVPixelBuffer:_pixelBuffer.get()
+      [context render:image toCVPixelBuffer:self->_pixelBuffer.get()
                bounds:CGRectFromSize(self.size) colorSpace:NULL];
     }];
   }
