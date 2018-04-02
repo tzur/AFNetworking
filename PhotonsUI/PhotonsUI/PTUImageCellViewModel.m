@@ -4,6 +4,7 @@
 #import "PTUImageCellViewModel.h"
 
 #import <AVFoundation/AVAsset.h>
+#import <AVFoundation/AVPlayerItem.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <Photons/PTNAVAssetFetchOptions.h>
 #import <Photons/PTNAlbum.h>
@@ -14,6 +15,7 @@
 #import <Photons/PTNImageFetchOptions.h>
 #import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
+#import <Photons/RACSignal+Photons.h>
 
 #import "PTUTimeFormatter.h"
 
@@ -63,12 +65,20 @@ NSString * const kPTUImageCellViewModelTraitGIFKey = @"GIF";
   return [[[self.assetManager fetchImageWithDescriptor:self.descriptor
                                       resizingStrategy:[PTNResizingStrategy aspectFill:cellSize]
                                                options:self.imageFetchOptions]
-      filter:^BOOL(PTNProgress *progress) {
-        return progress.result != nil;
-      }]
-      flattenMap:^(PTNProgress<id<PTNImageAsset>> *progress) {
-        return [progress.result fetchImage];
-      }];
+      ptn_image]
+      deliverOnMainThread];
+}
+
+- (nullable RACSignal<AVPlayerItem *> *)playerItemSignal {
+  if (![self.traits containsObject:kPTUImageCellViewModelTraitVideoKey]) {
+    return nil;
+  }
+
+  PTNAVAssetFetchOptions *options =
+      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
+  return [[[self.assetManager fetchAVPreviewWithDescriptor:self.descriptor options:options]
+      ptn_skipProgress]
+      deliverOnMainThread];
 }
 
 - (nullable RACSignal *)titleSignal {

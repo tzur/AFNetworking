@@ -5,6 +5,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAssetManager, PTNDescriptor, PTNImageFetchOptions, PTUTimeFormatter;
 
+@class AVPlayerItem;
+
 /// Cell that represents an editing session.
 extern NSString * const kPTUImageCellViewModelTraitSessionKey;
 
@@ -30,6 +32,10 @@ extern NSString * const kPTUImageCellViewModelTraitGIFKey;
 /// Returns a signal carrying latest image to display in a cell of size \c cellSize in pixels, or
 /// \c nil if no image should be set for such a cell.
 - (nullable RACSignal *)imageSignalForCellSize:(CGSize)cellSize;
+
+/// Returns a signal carrying an \c AVPlayerItem that contains a preview video of the receiver's
+/// content, or \c nil if no preview is available for the receiver.
+- (nullable RACSignal<AVPlayerItem *> *)playerItemSignal;
 
 /// Signal carrying title to display, or \c nil if no values should be set for the title to display,
 /// and it should be set to \c nil.

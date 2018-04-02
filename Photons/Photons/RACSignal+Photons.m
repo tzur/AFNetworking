@@ -125,9 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
                  "%@", NSStringFromClass([progress class]));
         return progress.result != nil;
       }]
-      map:^id<PTNImageAsset>(PTNProgress<id<PTNImageAsset>> *progress) {
-        LTAssert([progress.result conformsToProtocol:@protocol(PTNImageAsset)], @"Expected result "
-                 "to conform to PTNImageAsset. Result: %@", progress.result);
+      map:^id(PTNProgress *progress) {
         return progress.result;
       }]
       setNameWithFormat:@"[%@] -ptn_skipProgress", self.name];;
