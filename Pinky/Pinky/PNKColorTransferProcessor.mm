@@ -199,11 +199,9 @@ static const NSUInteger kLatticeGridSize = 16;
                                                     options:MTLResourceCPUCacheModeWriteCombined |
                                                             MTLResourceStorageModeShared];
 
-    for (NSUInteger d = 0; d < 3; ++d) {
-      for (NSUInteger j = 0; j < 4; ++j) {
-        *((float *)transformBuffer.contents + d * 4 + j) = d < 3 ? mat((int)j, (int)d) : 0;
-      }
-    }
+    cv::Mat1f transformBufferMat(3, 4, (float *)transformBuffer.contents);
+    cv::transpose(mat, transformBufferMat(cv::Rect(0, 0, 3, 3)));
+
     [transformBuffers addObject:transformBuffer];
   }
 
