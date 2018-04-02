@@ -79,7 +79,7 @@ typedef NSMutableDictionary<NSString *, NSArray<INTTransformCompletionBlock> *>
     NSDictionary<NSString *, NSArray<INTTransformCompletionBlock> *> *completionBlocks =
         [self.completionBlocks copy];
 
-    INTEventIdentifierBlock eventIdentifier = _eventIdentifier;
+    INTEventIdentifierBlock eventIdentifier = self->_eventIdentifier;
 
     return ^(NSDictionary<NSString *,id> *aggregatedData, INTAppContext *context,
              INTEventMetadata *metadata, id event) {

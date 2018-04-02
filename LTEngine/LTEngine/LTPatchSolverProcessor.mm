@@ -201,7 +201,7 @@
   [processor process];
 
   [boundary mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    LTConvertMat(mapped, &_boundarySingleChannel, CV_32F);
+    LTConvertMat(mapped, &self->_boundarySingleChannel, CV_32F);
   }];
   std::vector<cv::Mat1f> channels(self.output.pixelFormat.channels, _boundarySingleChannel);
   cv::merge(channels, _boundaryMultipleChannels);

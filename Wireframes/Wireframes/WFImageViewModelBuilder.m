@@ -67,50 +67,50 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(id<WFImageProvider>))imageProvider {
   return ^(id<WFImageProvider> imageProvider) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_imageProvider, @"Image provider has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_imageProvider, @"Image provider has already been specified");
     LTParameterAssert(imageProvider);
 
-    _imageProvider = imageProvider;
+    self->_imageProvider = imageProvider;
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(NSURL * _Nullable))highlightedImageURL {
   return ^(NSURL * _Nullable highlightedImageURL) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_highlightedImageURL, @"URL for highlighted image has already been "
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_highlightedImageURL, @"URL for highlighted image has already been "
                       "specified");
     LTParameterAssert(highlightedImageURL, @"URL must not be nil. If highlighted image is not "
                       "needed, don't use this function at all");
 
-    _highlightedImageURL = highlightedImageURL;
+    self->_highlightedImageURL = highlightedImageURL;
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(CGSize))fixedSize {
   return ^(CGSize size) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_sizeSignal, @"Size has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_sizeSignal, @"Size has already been specified");
     LTParameterAssert(size.width > 0 && size.height > 0, @"Size must be positive");
 
-    _sizeSignal = [RACSignal return:[NSValue valueWithCGSize:size]];
+    self->_sizeSignal = [RACSignal return:[NSValue valueWithCGSize:size]];
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(RACSignal *))sizeSignal {
   return ^(RACSignal *sizeSignal) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_sizeSignal, @"Size has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_sizeSignal, @"Size has already been specified");
     LTParameterAssert(sizeSignal);
 
-    _sizeSignal = [[sizeSignal
+    self->_sizeSignal = [[sizeSignal
         filter:^BOOL(NSValue *value) {
           CGSize size = [value CGSizeValue];
           return size.width > 0 && size.height > 0;
@@ -123,63 +123,63 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(UIView *))sizeToBounds {
   return ^(UIView *view) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_sizeSignal, @"Size has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_sizeSignal, @"Size has already been specified");
     LTParameterAssert(view);
 
-    _sizeSignal = view.wf_positiveSizeSignal;
+    self->_sizeSignal = view.wf_positiveSizeSignal;
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(UIColor *))color {
   return ^(UIColor *color) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_color, @"Color has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_color, @"Color has already been specified");
 
-    _color = color;
+    self->_color = color;
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(UIColor *))highlightedColor {
   return ^(UIColor *highlightedColor) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(!_highlightedColor, @"Highlighted color has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(!self->_highlightedColor, @"Highlighted color has already been specified");
 
-    _highlightedColor = highlightedColor;
+    self->_highlightedColor = highlightedColor;
     return self;
   };
 }
 
 - (WFImageViewModelBuilder *(^)(CGFloat))lineWidth {
   return ^(CGFloat lineWidth) {
-    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
-                      "been built");
-    LTParameterAssert(_lineWidth == 0, @"Line width has already been specified");
+    LTParameterAssert(!self->_isBuilt, @"Builder can not be altered after the view model has "
+                      "already been built");
+    LTParameterAssert(self->_lineWidth == 0, @"Line width has already been specified");
     LTParameterAssert(lineWidth > 0, @"Line width must be positive");
 
-    _lineWidth = lineWidth;
+    self->_lineWidth = lineWidth;
     return self;
   };
 }
 
 - (id<WFImageViewModel> (^)(void))build {
   return ^{
-    LTParameterAssert(!_isBuilt, @"build() can be called only once, and it has already been "
+    LTParameterAssert(!self->_isBuilt, @"build() can be called only once, and it has already been "
                       "called");
 
-    _isBuilt = YES;
+    self->_isBuilt = YES;
 
     RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *imagesSignal =
         [RACSignal return:RACTuplePack([self transformedImageURL],
                                        [self transformedHighlightedImageURL])];
-    if (_sizeSignal) {
+    if (self->_sizeSignal) {
       imagesSignal = [RACSignal
-          combineLatest:@[imagesSignal, _sizeSignal]
+          combineLatest:@[imagesSignal, self->_sizeSignal]
           reduce:^RACTuple *(RACTuple *images, NSValue *sizeValue) {
             RACTupleUnpack(NSURL * _Nullable imageURL,
                            NSURL * _Nullable highlightedImageURL) = images;
@@ -189,7 +189,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
           }];
     }
 
-    id<WFImageProvider> imageProvider = _imageProvider ?: WFDefaultImageProvider();
+    id<WFImageProvider> imageProvider = self->_imageProvider ?: WFDefaultImageProvider();
     return [[WFDynamicImageViewModel alloc] initWithImageProvider:imageProvider
                                                      imagesSignal:imagesSignal];
   };

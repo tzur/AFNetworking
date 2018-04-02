@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)createAtlasTexturePixelFormat {
-  int matsType = _matrices.begin()->second.type();
+  int matsType = self.matrices.begin()->second.type();
   _atlasTexturePixelFormat = [[LTGLPixelFormat alloc] initWithMatType:matsType];
 }
 
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
                                         allocateMemory:YES];
   [atlasTexture clearColor:LTVector4::zeros()];
   [atlasTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-    for (const auto &keyValue : _matrices) {
+    for (const auto &keyValue : self.matrices) {
       NSString *key = keyValue.first;
       cv::Mat unpackedImageMat = keyValue.second;
       CGRect targetRect = packingRects.find(key)->second;

@@ -70,13 +70,13 @@ static const NSUInteger kHistogramSize = 256;
       return;
     }
 
-    _maxRedCount = *std::max_element(&histogram[0][0], &histogram[0][kHistogramSize]);
-    _maxGreenCount = *std::max_element(&histogram[1][0], &histogram[1][kHistogramSize]);
-    _maxBlueCount = *std::max_element(&histogram[2][0], &histogram[2][kHistogramSize]);
+    self->_maxRedCount = *std::max_element(&histogram[0][0], &histogram[0][kHistogramSize]);
+    self->_maxGreenCount = *std::max_element(&histogram[1][0], &histogram[1][kHistogramSize]);
+    self->_maxBlueCount = *std::max_element(&histogram[2][0], &histogram[2][kHistogramSize]);
 
-    std::copy(&histogram[0][0], &histogram[0][kHistogramSize], _redHistogram.begin());
-    std::copy(&histogram[1][0], &histogram[1][kHistogramSize], _greenHistogram.begin());
-    std::copy(&histogram[2][0], &histogram[2][kHistogramSize], _blueHistogram.begin());
+    std::copy(&histogram[0][0], &histogram[0][kHistogramSize], self->_redHistogram.begin());
+    std::copy(&histogram[1][0], &histogram[1][kHistogramSize], self->_greenHistogram.begin());
+    std::copy(&histogram[2][0], &histogram[2][kHistogramSize], self->_blueHistogram.begin());
   }];
 }
 
