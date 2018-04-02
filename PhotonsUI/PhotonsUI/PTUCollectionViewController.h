@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PTUCollectionViewConfiguration;
 
-@protocol PTNAssetManager, PTNDescriptor, PTUDataSourceProvider, PTUErrorViewProvider;
+@protocol PTNAssetManager, PTNDescriptor, PTUDataSourceProvider, PTUErrorViewProvider, PTUImageCell;
 
 /// Available target positions of item being scrolled to.
 typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
@@ -54,6 +54,10 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// Discards the currently used \c PTUDataSource and fetches a new data source from the given
 /// \c PTUDataSourceProvider to use in its place.
 - (void)reloadData;
+
+/// Returns the cell currently displayed at \c point in the receiver's coordinate system, or
+/// \c nil if no cell is presented at \c point.
+- (nullable UICollectionViewCell<PTUImageCell> *)cellAtPoint:(CGPoint)point;
 
 /// Hot signal sending the appropriate \c id<PTNDescriptor> of each selected item as it's being
 /// selected. This signal does not err and completes when the receiver is deallocated.

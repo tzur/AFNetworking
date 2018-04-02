@@ -197,6 +197,10 @@ NS_ASSUME_NONNULL_BEGIN
   [self.collectionViewController reloadData];
 }
 
+- (nullable UICollectionViewCell<PTUImageCell> *)cellAtPoint:(CGPoint)point {
+  return [self.collectionViewController cellAtPoint:point];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

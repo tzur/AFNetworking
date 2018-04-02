@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTUAlbumViewModel, PTUErrorViewProvider;
+@protocol PTUAlbumViewModel, PTUErrorViewProvider, PTUImageCell;
 
 @class PTUCollectionViewConfiguration;
 
@@ -45,6 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Reloads the data of the current album by calling \c reloadData on the internal
 /// \c PTUCollectionViewController.
 - (void)reloadData;
+
+/// Returns the cell currently displayed at \c point in the receiver's coordinate system, or
+/// \c nil if no cell is presented at \c point.
+- (nullable UICollectionViewCell<PTUImageCell> *)cellAtPoint:(CGPoint)point;
 
 /// View model that controls this view controller.
 @property (readonly, nonatomic) id<PTUAlbumViewModel> viewModel;

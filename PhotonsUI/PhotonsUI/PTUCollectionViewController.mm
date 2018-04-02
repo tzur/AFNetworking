@@ -454,6 +454,16 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   return self.view.backgroundColor;
 }
 
+- (nullable UICollectionViewCell<PTUImageCell> *)cellAtPoint:(CGPoint)point {
+  auto convertedPoint = [self.view convertPoint:point toView:self.collectionView];
+  auto _Nullable index = [self.collectionView indexPathForItemAtPoint:convertedPoint];
+  if (!index) {
+    return nil;
+  }
+
+  return (UICollectionViewCell<PTUImageCell> *)[self.collectionView cellForItemAtIndexPath:index];
+}
+
 #pragma mark -
 #pragma mark PTUCollectionViewController
 #pragma mark -
