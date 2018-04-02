@@ -8,11 +8,12 @@
 SpecBegin(LTPixelBufferPool)
 
 it(@"should create pixel buffer pool", ^{
-  expect(^{
-    LTPixelBufferPool * __unused pool = [[LTPixelBufferPool alloc]
-                                         initWithPixelFormat:kCVPixelFormatType_32BGRA
-                                         width:1 height:1 minimumBufferCount:0 maximumBufferAge:0];
-  }).notTo.raiseAny();
+  LTPixelBufferPool *pool = [[LTPixelBufferPool alloc]
+                             initWithPixelFormat:kCVPixelFormatType_32BGRA
+                             width:1 height:2 minimumBufferCount:0 maximumBufferAge:0];
+  expect(pool.pixelFormat).to.equal(kCVPixelFormatType_32BGRA);
+  expect(pool.width).to.equal(1);
+  expect(pool.height).to.equal(2);
 });
 
 it(@"should create pixel buffer pool with preallocated buffers", ^{
