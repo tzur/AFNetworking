@@ -48,8 +48,10 @@ beforeEach(^{
 
   item = OCMClassMock([MPMediaItem class]);
   OCMStub(item.persistentID).andReturn(123ULL);
+  OCMStub(item.ptn_identifier).andReturn([NSURL URLWithString:@"foo://bar"]);
   item2 = OCMClassMock([MPMediaItem class]);
   OCMStub(item2.persistentID).andReturn(1234ULL);
+  OCMStub(item2.ptn_identifier).andReturn([NSURL URLWithString:@"baz://flop"]);
 
   collection = OCMClassMock([MPMediaItemCollection class]);
   OCMStub(collection.representativeItem).andReturn(item);

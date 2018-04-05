@@ -23,8 +23,8 @@ static NSString * const kUnmatchedKeysDescription =
 #pragma mark MTLJSONSerializing
 #pragma mark -
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
     if (![[[self class] propertyKeys] isEqualToSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
       if (error) {
@@ -58,8 +58,8 @@ static NSString * const kUnmatchedKeysDescription =
 #pragma mark MTLJSONSerializing
 #pragma mark -
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
     NSArray *array = dictionaryValue[@"sizes"];
 

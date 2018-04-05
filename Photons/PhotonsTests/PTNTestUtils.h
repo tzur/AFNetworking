@@ -9,13 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PTNDisposableRetainingSignal;
 
-/// Creates and returns a \c PTNAlbum with \c url, \c assets and \c subalbums.
+/// Creates and returns a \c PTNAlbum with \c url or "foo://bar.baz" if \c nil as the URL of the
+/// album, \c assets or an empty collection if \c nil as the assets and \c subalbums or empty
+/// collection if \c nil as subalbums.
 id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> _Nullable assets,
                             id<LTRandomAccessCollection> _Nullable subalbums);
 
 /// Creates and returns a \c PTNDescriptor with \c identifier or \c nil for a default identifier
-/// of \c fake://descriptor, \c localizedTitle, \c capabilities and \c traits or \c nil to support
-/// no traits.
+/// of \c fake://descriptor, \c localizedTitle or \nil for empty localized title, \c capabilities
+/// and \c traits or \c nil to support no traits.
 id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSString * _Nullable localizedTitle,
                                       PTNDescriptorCapabilities capabilities,

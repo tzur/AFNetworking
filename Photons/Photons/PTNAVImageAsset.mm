@@ -69,11 +69,10 @@ NS_ASSUME_NONNULL_BEGIN
     if (!cgImage) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAVImageAssetFetchImageFailed
                                       underlyingError:error]];
+    } else {
+      [subscriber sendNext:[UIImage imageWithCGImage:cgImage.get()]];
+      [subscriber sendCompleted];
     }
-
-    [subscriber sendNext:[UIImage imageWithCGImage:cgImage.get()]];
-    [subscriber sendCompleted];
-
     return [RACDisposable disposableWithBlock:^{
       [imageGenerator cancelAllCGImageGeneration];
     }];

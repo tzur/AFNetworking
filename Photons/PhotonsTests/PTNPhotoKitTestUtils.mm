@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+NSSet.h>
 #import <Photos/Photos.h>
 
+#import "NSURL+PhotoKit.h"
 #import "PTNDescriptor.h"
 #import "PhotoKit+Photons.h"
 
@@ -26,10 +27,10 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localId
   return assetCollection;
 }
 
-PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier) {
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier = nil) {
   PHAsset *asset = OCMClassMock([PHAsset class]);
-  OCMStub([asset localIdentifier]).andReturn(localIdentifier);
-
+  OCMStub(asset.localIdentifier).andReturn(localIdentifier ?: @"LTIdentifier");
+  OCMStub(asset.ptn_identifier).andReturn([NSURL ptn_photoKitAssetURLWithAsset:asset]);
   return asset;
 }
 
@@ -60,7 +61,7 @@ PHAsset *PTNPhotoKitCreateAssetForContentEditing(NSString *localIdentifier,
     NSDictionary * _Nullable contentEditingInfo, PHContentEditingInputRequestID requestID) {
   PHAsset *asset = PTNPhotoKitCreateAsset(localIdentifier);
   id blockInvoker = [OCMArg invokeBlockWithArgs:contentEditingInput ?: [NSNull null],
-                                                contentEditingInfo ?: [NSNull null], nil];
+                                                contentEditingInfo ?: @{}, nil];
   OCMStub([asset requestContentEditingInputWithOptions:OCMOCK_ANY completionHandler:blockInvoker])
       .andReturn(requestID);
   return asset;
@@ -84,6 +85,7 @@ PHContentEditingInput *PTNPhotoKitCreateVideoContentEditingInput(AVAsset * _Null
 PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets) {
   id changeDetails = OCMClassMock([PHFetchResultChangeDetails class]);
   OCMStub([changeDetails fetchResultAfterChanges]).andReturn(assets);
+  OCMStub([changeDetails fetchResultBeforeChanges]).andReturn(@[]);
   return changeDetails;
 }
 

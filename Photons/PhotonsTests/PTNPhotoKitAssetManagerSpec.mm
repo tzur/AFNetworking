@@ -135,14 +135,12 @@ context(@"album fetching", ^{
       });
 
       it(@"should fetch results of an empty User Albums meta album", ^{
-        id assetCollection = PTNPhotoKitCreateCollectionList(@"baz");
         NSURL *url = [NSURL ptn_photoKitUserAlbums];
-        [fetcher registerAssetCollection:assetCollection];
-        [fetcher registerAssets:@[] withAssetCollection:assetCollection];
+        [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeAlbum
+                               andSubtype:PHAssetCollectionSubtypeAny];
 
         id noAssets = @[];
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:noAssets];
-
         expect([manager fetchAlbumWithURL:url]).will.
             sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
       });
@@ -340,6 +338,8 @@ context(@"album fetching", ^{
     it(@"should err when failing to fetch album", ^{
       url = [NSURL ptn_photoKitAlbumWithType:PHAssetCollectionTypeAlbum
                                      subtype:PHAssetCollectionSubtypeSmartAlbumPanoramas];
+      [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeAlbum
+                             andSubtype:PHAssetCollectionSubtypeSmartAlbumPanoramas];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -422,6 +422,8 @@ context(@"album fetching", ^{
     it(@"should err when failing to fetch album", ^{
       url = [NSURL ptn_photoKitAlbumWithType:PHAssetCollectionTypeAlbum
                                      subtype:PHAssetCollectionSubtypeSmartAlbumPanoramas];
+      [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeAlbum
+                             andSubtype:PHAssetCollectionSubtypeSmartAlbumPanoramas];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -499,7 +501,6 @@ context(@"album fetching", ^{
         favoritesCollection = PTNPhotoKitCreateAssetCollection(@"foo", favorites);
         cameraRollCollection = PTNPhotoKitCreateAssetCollection(@"bar", userLibrary);
         userCollection = PTNPhotoKitCreateAssetCollection(@"baz");
-
         albums = @[favoritesCollection, cameraRollCollection, userCollection];
         albumsSubset = @[cameraRollCollection, favoritesCollection];
 
@@ -511,6 +512,7 @@ context(@"album fetching", ^{
 
         [fetcher registerCollectionList:transientList withAssetCollections:albumsSubset];
         [fetcher registerAssetCollections:albumsSubset withCollectionList:transientList];
+        [fetcher registerAssets:@[] withAssetCollection:userCollection];
 
         [fetcher registerAssetCollection:favoritesCollection];
         [fetcher registerAssetCollection:cameraRollCollection];
@@ -765,9 +767,14 @@ context(@"album fetching", ^{
       });
 
       it(@"should not err fetching smart albums with a subalbum filter", ^{
+        PHCollectionList *transientList = OCMClassMock([PHCollectionList class]);
+        OCMStub(transientList.localIdentifier).andReturn(@[@"foo"]);
+
         [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeSmartAlbum
                                andSubtype:PHAssetCollectionSubtypeAny];
-        NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeAlbum
+        [fetcher registerCollectionList:transientList withAssetCollections:@[]];
+        [fetcher registerAssetCollections:@[] withCollectionList:transientList];
+        NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum
                       subalbums:{PHAssetCollectionSubtypeSmartAlbumFavorites}];
 
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
@@ -800,9 +807,14 @@ context(@"album fetching", ^{
           .andReturn(@(PHAssetCollectionSubtypeSmartAlbumBursts));
       OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
 
-      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                   subtype:PHAssetCollectionSubtypeSmartAlbumBursts
-                                                   options:options]);
+      auto asset = PTNPhotoKitCreateAsset(nil);
+      OCMExpect([fetcherMock
+                 fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                 subtype:PHAssetCollectionSubtypeSmartAlbumBursts
+                 options:options]).andReturn(@[asset]);
+      OCMExpect([fetcherMock fetchAssetsInAssetCollection:OCMOCK_ANY options:OCMOCK_ANY])
+          .andReturn(asset);
+
       [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
 
       OCMVerifyAllWithDelay(fetcherMock, 1);
@@ -927,6 +939,8 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error on non-existing asset", ^{
+    [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeAlbum
+                           andSubtype:PHAssetCollectionSubtypeAlbumMyPhotoStream];
     id newAsset = PTNPhotoKitCreateAsset(@"bar");
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:newAsset];
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {

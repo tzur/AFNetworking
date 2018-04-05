@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.underlyingObject class];
 }
 
-- (id)forwardingTargetForSelector:(SEL)selector {
+- (id _Nullable)forwardingTargetForSelector:(SEL)selector {
   return [self.underlyingObject respondsToSelector:selector] ? self.underlyingObject : nil;
 }
 

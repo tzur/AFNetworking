@@ -147,13 +147,6 @@ context(@"avasset request", ^{
     audioMix = OCMClassMock([AVAudioMix class]);
   });
 
-  it(@"should assert when received nil request handler block", ^{
-    PTNPhotoKitImageManagerAVAssetHandler handler = nil;
-    expect(^{
-      [imageManager requestAVAssetForVideo:asset options:options resultHandler:handler];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should return error for avasset requests when used before authorized", ^{
     OCMStub([authorizationManager authorizationStatus]).andReturn($(PTNAuthorizationStatusDenied));
     OCMReject([underlyingImageManger requestImageForAsset:OCMOCK_ANY targetSize:CGSizeZero
@@ -245,13 +238,6 @@ context(@"image data request", ^{
 
   beforeEach(^{
     options = OCMClassMock([PHVideoRequestOptions class]);
-  });
-
-  it(@"should assert when received nil request handler block", ^{
-    PTNPhotoKitImageManagerImageDataHandler handler = nil;
-    expect(^{
-      [imageManager requestImageDataForAsset:asset options:options resultHandler:handler];
-    }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should return error for image data requests when used before authorized", ^{
