@@ -5,14 +5,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RACStream (Photons)
+@interface RACStream<__covariant ValueType> (Photons)
 
 /// Returns a stream of values for which the pointer comparison returns NO when compared to the
 /// previous value.
 ///
 /// @note this operator is similar to the \c distinctUntilChanged operator, but the equality is
 /// determined by pointer comparison only and not by calling \c isEqual:.
-- (instancetype)ptn_identicallyDistinctUntilChanged;
+- (__kindof RACStream<ValueType> *)ptn_identicallyDistinctUntilChanged;
 
 @end
 

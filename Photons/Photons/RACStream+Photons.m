@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation RACStream (Photons)
 
-- (instancetype)ptn_identicallyDistinctUntilChanged {
+- (__kindof RACStream *)ptn_identicallyDistinctUntilChanged {
   Class class = self.class;
 
   return [[self bind:^{
