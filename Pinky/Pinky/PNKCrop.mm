@@ -50,8 +50,8 @@ static NSString * const kDebugGroupName = @"crop";
 
 - (void)createStates {
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  ushort marginsLeftTop[] = {(ushort)self.margins.left, (ushort)self.margins.top};
-  [functionConstants setConstantValue:marginsLeftTop type:MTLDataTypeUShort2
+  uint marginsLeftTop[] = {(uint)self.margins.left, (uint)self.margins.top};
+  [functionConstants setConstantValue:marginsLeftTop type:MTLDataTypeUInt2
                              withName:@"marginsLeftTop"];
 
   _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,

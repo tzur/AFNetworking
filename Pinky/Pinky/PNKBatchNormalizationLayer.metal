@@ -14,17 +14,17 @@ constant const bool hasBetaBuffer [[function_constant(2)]];
 
 template <typename U, typename V>
 void batchNorm(constant half4 *scale, constant half4 *shift, constant half4 *alpha,
-               constant half4 *beta, U inputImage, V outputImage, ushort2 gridIndex,
-               ushort arrayIndex) {
+               constant half4 *beta, U inputImage, V outputImage, uint2 gridIndex,
+               uint arrayIndex) {
   const half4 textureScale = scale[arrayIndex];
   const half4 textureShift = shift[arrayIndex];
 
-  half4 inputValue = lt::read(inputImage, ushort2(gridIndex.x, gridIndex.y), arrayIndex);
+  half4 inputValue = lt::read(inputImage, gridIndex, arrayIndex);
   half4 outputValue = inputValue * textureScale + textureShift;
   half4 valueAfterActivation = pnk::ActivatedValue(outputValue, activationType, alpha, beta,
                                                    arrayIndex);
 
-  lt::write(outputImage, valueAfterActivation, ushort2(gridIndex.x, gridIndex.y), arrayIndex);
+  lt::write(outputImage, valueAfterActivation, gridIndex, arrayIndex);
 }
 
 kernel void batchNormArray(constant half4 *scale [[buffer(0)]],
@@ -33,8 +33,8 @@ kernel void batchNormArray(constant half4 *scale [[buffer(0)]],
                            constant half4 *beta [[buffer(3), function_constant(hasBetaBuffer)]],
                            texture2d_array<half, access::read> inputImage [[texture(0)]],
                            texture2d_array<half, access::write> outputImage [[texture(1)]],
-                           ushort3 gridIndex [[thread_position_in_grid]]) {
-  const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());
+                           uint3 gridIndex [[thread_position_in_grid]]) {
+  const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y ||
       gridIndex.z >= outputImage.get_array_size()) {
     return;
@@ -49,8 +49,8 @@ kernel void batchNormSingle(constant half4 *scale [[buffer(0)]],
                             constant half4 *beta [[buffer(3), function_constant(hasBetaBuffer)]],
                             texture2d<half, access::read> inputImage [[texture(0)]],
                             texture2d<half, access::write> outputImage [[texture(1)]],
-                            ushort3 gridIndex [[thread_position_in_grid]]) {
-  const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());
+                            uint3 gridIndex [[thread_position_in_grid]]) {
+  const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y) {
     return;
   }

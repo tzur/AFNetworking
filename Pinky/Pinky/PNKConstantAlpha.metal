@@ -10,13 +10,13 @@ constant float alpha [[function_constant(0)]];
 
 kernel void setConstantAlpha(texture2d<half, access::read> inputImage [[texture(0)]],
                              texture2d<half, access::write> outputImage [[texture(1)]],
-                             ushort2 gridIndex [[thread_position_in_grid]]) {
+                             uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= inputImage.get_width() || gridIndex.y >= inputImage.get_height()) {
     return;
   }
-  
+
   half4 color = inputImage.read(gridIndex);
   color.a = alpha;
-  
+
   outputImage.write(color, gridIndex.xy);
 }

@@ -14,8 +14,8 @@ constant const bool hasBetaBuffer [[function_constant(2)]];
 
 template <typename U, typename V>
 void activation(constant half4 *alpha, constant half4 *beta, U inputImage, V outputImage,
-                ushort2 gridIndex, ushort arrayIndex) {
-  const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());
+                uint2 gridIndex, uint arrayIndex) {
+  const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y) {
     return;
   }
@@ -28,7 +28,7 @@ kernel void activationArray(constant half4 *alpha [[buffer(0), function_constant
                             constant half4 *beta [[buffer(1), function_constant(hasBetaBuffer)]],
                             texture2d_array<half, access::read> inputImage [[texture(0)]],
                             texture2d_array<half, access::write> outputImage [[texture(1)]],
-                            ushort3 gridIndex [[thread_position_in_grid]]) {
+                            uint3 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.z >= outputImage.get_array_size()) {
     return;
   }
@@ -40,6 +40,6 @@ kernel void activationSingle(constant half4 *alpha [[buffer(0), function_constan
                              constant half4 *beta [[buffer(1), function_constant(hasBetaBuffer)]],
                              texture2d<half, access::read> inputImage [[texture(0)]],
                              texture2d<half, access::write> outputImage [[texture(1)]],
-                             ushort3 gridIndex [[thread_position_in_grid]]) {
+                             uint3 gridIndex [[thread_position_in_grid]]) {
   activation(alpha, beta, inputImage, outputImage, gridIndex.xy, 0);
 }

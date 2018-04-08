@@ -9,8 +9,8 @@ using namespace metal;
 
 template <typename U, typename V, typename W>
 void concat(constant ushort *featureChannelCounts [[buffer(0)]], U inputImageA [[texture(0)]],
-            V inputImageB [[texture(1)]], W outputImage [[texture(2)]],
-            ushort2 gridIndex [[thread_position_in_grid]]) {
+    V inputImageB [[texture(1)]], W outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= inputImageA.get_width() || gridIndex.y >= inputImageA.get_height()) {
     return;
   }
@@ -73,41 +73,41 @@ void concat(constant ushort *featureChannelCounts [[buffer(0)]], U inputImageA [
 }
 
 kernel void concatSingleAndSingleToSingle(constant ushort *featureChannelCounts [[buffer(0)]],
-                                          texture2d<half, access::read> inputImageA [[texture(0)]],
-                                          texture2d<half, access::read> inputImageB [[texture(1)]],
-                                          texture2d<half, access::write> outputImage [[texture(2)]],
-                                          ushort2 gridIndex [[thread_position_in_grid]]) {
+    texture2d<half, access::read> inputImageA [[texture(0)]],
+    texture2d<half, access::read> inputImageB [[texture(1)]],
+    texture2d<half, access::write> outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
 kernel void concatSingleAndSingleToArray(constant ushort *featureChannelCounts [[buffer(0)]],
-                                         texture2d<half, access::read> inputImageA [[texture(0)]],
-                                         texture2d<half, access::read> inputImageB [[texture(1)]],
-                                         texture2d_array<half, access::write> outputImage [[texture(2)]],
-                                         ushort2 gridIndex [[thread_position_in_grid]]) {
+    texture2d<half, access::read> inputImageA [[texture(0)]],
+    texture2d<half, access::read> inputImageB [[texture(1)]],
+    texture2d_array<half, access::write> outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
 kernel void concatSingleAndArrayToArray(constant ushort *featureChannelCounts [[buffer(0)]],
-                                        texture2d<half, access::read> inputImageA [[texture(0)]],
-                                        texture2d_array<half, access::read> inputImageB [[texture(1)]],
-                                        texture2d_array<half, access::write> outputImage [[texture(2)]],
-                                        ushort2 gridIndex [[thread_position_in_grid]]) {
+    texture2d<half, access::read> inputImageA [[texture(0)]],
+    texture2d_array<half, access::read> inputImageB [[texture(1)]],
+    texture2d_array<half, access::write> outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
 kernel void concatArrayAndSingleToArray(constant ushort *featureChannelCounts [[buffer(0)]],
-                                        texture2d_array<half, access::read> inputImageA [[texture(0)]],
-                                        texture2d<half, access::read> inputImageB [[texture(1)]],
-                                        texture2d_array<half, access::write> outputImage [[texture(2)]],
-                                        ushort2 gridIndex [[thread_position_in_grid]]) {
+    texture2d_array<half, access::read> inputImageA [[texture(0)]],
+    texture2d<half, access::read> inputImageB [[texture(1)]],
+    texture2d_array<half, access::write> outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
 kernel void concatArrayAndArrayToArray(constant ushort *featureChannelCounts [[buffer(0)]],
-                                       texture2d_array<half, access::read> inputImageA [[texture(0)]],
-                                       texture2d_array<half, access::read> inputImageB [[texture(1)]],
-                                       texture2d_array<half, access::write> outputImage [[texture(2)]],
-                                       ushort2 gridIndex [[thread_position_in_grid]]) {
+    texture2d_array<half, access::read> inputImageA [[texture(0)]],
+    texture2d_array<half, access::read> inputImageB [[texture(1)]],
+    texture2d_array<half, access::write> outputImage [[texture(2)]],
+    uint2 gridIndex [[thread_position_in_grid]]) {
   concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }

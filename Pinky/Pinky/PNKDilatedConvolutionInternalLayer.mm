@@ -135,9 +135,9 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 - (void)createStatesWithActivationModel:(const pnk::ActivationKernelModel &)activationModel {
-  vector_ushort2 dilationRate = {(ushort)self.dilationX, (ushort)self.dilationY};
-  vector_ushort2 kernelGap = {(ushort)(self.kernelWidth / 2), (ushort)(self.kernelHeight / 2)};
-  vector_ushort2 stride = {(ushort)self.strideX, (ushort)self.strideY};
+  vector_uint2 dilationRate = {(uint)self.dilationX, (uint)self.dilationY};
+  vector_uint2 kernelGap = {(uint)(self.kernelWidth / 2), (uint)(self.kernelHeight / 2)};
+  vector_uint2 stride = {(uint)self.strideX, (uint)self.strideY};
 
   auto needsAlphaBeta = PNKActivationNeedsAlphaBetaParameters(activationModel.activationType);
   _hasAlphaBuffer = needsAlphaBeta.first;
@@ -146,11 +146,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   ushort activationTypeAsUshort = (ushort)activationModel.activationType;
 
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUShort2
+  [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUInt2
                              withName:@"dilationRate"];
-  [functionConstants setConstantValue:&kernelGap type:MTLDataTypeUShort2
+  [functionConstants setConstantValue:&kernelGap type:MTLDataTypeUInt2
                              withName:@"kernelGap"];
-  [functionConstants setConstantValue:&stride type:MTLDataTypeUShort2
+  [functionConstants setConstantValue:&stride type:MTLDataTypeUInt2
                              withName:@"stride"];
   [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
                              withName:@"activationType"];
@@ -171,7 +171,8 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 - (void)createBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {
-  _bufferForFullPaddingTF = [self bufferForPairOfUShorts];
+  _bufferForFullPaddingTF = [self.device newBufferWithLength:2 * sizeof(uint)
+                                                     options:MTLResourceCPUCacheModeWriteCombined];
 
   _alphaBuffer = self.hasAlphaBuffer ?
       PNKHalfBufferFromFloatVector(self.device, model.alpha, YES) : nil;
@@ -179,15 +180,10 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
       PNKHalfBufferFromFloatVector(self.device, model.beta, YES) : nil;
 }
 
-- (id<MTLBuffer>)bufferForPairOfUShorts {
-  id<MTLBuffer> buffer = [self.device newBufferWithLength:2 * sizeof(ushort)
-                                                  options:MTLResourceCPUCacheModeWriteCombined];
-  return buffer;
-}
-
 - (void)fillBuffer:(id<MTLBuffer>)buffer withFirst:(NSUInteger)first second:(NSUInteger)second {
-  vector_ushort2 value = {(ushort)first, (ushort)second};
-  memcpy(buffer.contents, &value, sizeof(value));
+  auto contents = (uint *)buffer.contents;
+  contents[0] = (uint)first;
+  contents[1] = (uint)second;
 }
 
 #pragma mark -

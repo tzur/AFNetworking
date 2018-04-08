@@ -15,7 +15,7 @@ kernel void bilinearScale(texture2d<half, access::sample> inputImage [[texture(0
                           texture2d<half, access::write> outputImage [[texture(1)]],
                           constant float *inverseOutputSize [[buffer(0)]],
                           constant pnk::ColorTransformType *colorTransformType [[buffer(1)]],
-                          ushort2 gridIndex [[thread_position_in_grid]]) {
+                          uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= outputImage.get_width() || gridIndex.y >= outputImage.get_height()) {
     return;
   }

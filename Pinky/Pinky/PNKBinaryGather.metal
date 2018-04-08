@@ -16,7 +16,7 @@ template <typename U, typename V, typename W>
 void binaryGather(U inputImageA, V inputImageB, W outputImage,
                   constant ushort *primaryFeatureChannelIndices,
                   constant ushort *secondaryFeatureChannelIndices,
-                  ushort2 gridIndex [[thread_position_in_grid]]) {
+                  uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= outputImage.get_width() || gridIndex.y >= outputImage.get_height()) {
     return;
   }
@@ -75,7 +75,7 @@ kernel void gatherSingleAndSingleToSingle(
     texture2d<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -86,7 +86,7 @@ kernel void gatherSingleAndSingleToArray(
     texture2d_array<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -97,7 +97,7 @@ kernel void gatherSingleAndArrayToSingle(
     texture2d<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -108,7 +108,7 @@ kernel void gatherSingleAndArrayToArray(
     texture2d_array<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -119,7 +119,7 @@ kernel void gatherArrayAndSingleToSingle(
     texture2d<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -130,7 +130,7 @@ kernel void gatherArrayAndSingleToArray(
     texture2d_array<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -141,7 +141,7 @@ kernel void gatherArrayAndArrayToSingle(
     texture2d<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }
@@ -152,7 +152,7 @@ kernel void gatherArrayAndArrayToArray(
     texture2d_array<half, access::write> outputImage [[texture(2)]],
     constant ushort *primaryFeatureChannelIndices [[buffer(0)]],
     constant ushort *secondaryFeatureChannelIndices [[buffer(1)]],
-    ushort2 gridIndex [[thread_position_in_grid]]) {
+    uint2 gridIndex [[thread_position_in_grid]]) {
   binaryGather(inputImageA, inputImageB, outputImage, primaryFeatureChannelIndices,
                secondaryFeatureChannelIndices, gridIndex);
 }

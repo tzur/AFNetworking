@@ -13,7 +13,7 @@ constant ushort4 outputFeatureChannelsShortList [[function_constant(1)]];
 template <typename T>
 void gatherToSingle(T inputImage [[texture(0)]],
                     texture2d<half, access::write> outputImage [[texture(1)]],
-                    ushort2 gridIndex [[thread_position_in_grid]]) {
+                    uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= outputImage.get_width() || gridIndex.y >= outputImage.get_height()) {
     return;
   }
@@ -51,13 +51,13 @@ void gatherToSingle(T inputImage [[texture(0)]],
 
 kernel void gatherSingleToSingle(texture2d<half, access::read> inputImage [[texture(0)]],
                                  texture2d<half, access::write> outputImage [[texture(1)]],
-                                 ushort2 gridIndex [[thread_position_in_grid]]) {
+                                 uint2 gridIndex [[thread_position_in_grid]]) {
   gatherToSingle(inputImage, outputImage, gridIndex);
 }
 
 kernel void gatherArrayToSingle(texture2d_array<half, access::read> inputImage [[texture(0)]],
                                 texture2d<half, access::write> outputImage [[texture(1)]],
-                                ushort2 gridIndex [[thread_position_in_grid]]) {
+                                uint2 gridIndex [[thread_position_in_grid]]) {
   gatherToSingle(inputImage, outputImage, gridIndex);
 }
 
@@ -65,7 +65,7 @@ template <typename T>
 void gatherToArray(T inputImage [[texture(0)]],
                    texture2d_array<half, access::write> outputImage [[texture(1)]],
                    constant ushort *outputFeatureChannelsLongList [[buffer(0)]],
-                   ushort2 gridIndex [[thread_position_in_grid]]) {
+                   uint2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= outputImage.get_width() || gridIndex.y >= outputImage.get_height()) {
     return;
   }
@@ -98,13 +98,13 @@ void gatherToArray(T inputImage [[texture(0)]],
 kernel void gatherSingleToArray(texture2d<half, access::read> inputImage [[texture(0)]],
                                 texture2d_array<half, access::write> outputImage [[texture(1)]],
                                 constant ushort *outputFeatureChannelsLongList [[buffer(0)]],
-                                ushort2 gridIndex [[thread_position_in_grid]]) {
+                                uint2 gridIndex [[thread_position_in_grid]]) {
   gatherToArray(inputImage, outputImage, outputFeatureChannelsLongList, gridIndex);
 }
 
 kernel void gatherArrayToArray(texture2d_array<half, access::read> inputImage [[texture(0)]],
                                texture2d_array<half, access::write> outputImage [[texture(1)]],
                                constant ushort *outputFeatureChannelsLongList [[buffer(0)]],
-                               ushort2 gridIndex [[thread_position_in_grid]]) {
+                               uint2 gridIndex [[thread_position_in_grid]]) {
   gatherToArray(inputImage, outputImage, outputFeatureChannelsLongList, gridIndex);
 }
