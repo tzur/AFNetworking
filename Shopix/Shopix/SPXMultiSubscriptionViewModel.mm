@@ -8,6 +8,7 @@
 #import <LTKit/LTTimer.h>
 #import <LTKit/NSArray+Functional.h>
 
+#import "SPXAlertViewModel+ShopixPresets.h"
 #import "SPXColorScheme.h"
 #import "SPXPurchaseSubscriptionEvent.h"
 #import "SPXRestorePurchasesButtonPressedEvent.h"
@@ -171,8 +172,13 @@ NS_ASSUME_NONNULL_BEGIN
                               receiptInfo:subscriptionInfo
                               purchaseDuration:[timer stop]
                               error:error]];
+
      if (subscriptionInfo) {
-       [self requestDismiss];
+       if (!self.subscriptionManager.userID) {
+         [self sendNoICloudAccountAlertRequest];
+       } else {
+         [self requestDismiss];
+       }
      }
    }];
 }
@@ -198,9 +204,23 @@ NS_ASSUME_NONNULL_BEGIN
                               restoreDuration:[timer stop] error:error]];
 
      if (receiptInfo.subscription && !receiptInfo.subscription.isExpired) {
-       [self requestDismiss];
+       if (!self.subscriptionManager.userID) {
+         [self sendNoICloudAccountAlertRequest];
+       } else {
+         [self requestDismiss];
+       }
      }
    }];
+}
+
+- (void)sendNoICloudAccountAlertRequest {
+  id<SPXAlertViewModel> iCloudAlertViewModel =
+      [SPXAlertViewModel noICloudAccountAlertWithSettingsAction:^{
+        [self requestDismiss];
+      } cancelAction:^{
+        [self requestDismiss];
+      }];
+  [self.alertRequestedSubject sendNext:iCloudAlertViewModel];
 }
 
 - (void)scrolledToPosition:(CGFloat)position {

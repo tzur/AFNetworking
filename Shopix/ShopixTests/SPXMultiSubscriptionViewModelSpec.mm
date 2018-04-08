@@ -170,7 +170,8 @@ context(@"purchasing", ^{
     expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
   });
 
-  it(@"should request dismissal if purchase was successful", ^{
+  it(@"should request dismissal if purchase was successful and iCloud account is available", ^{
+    OCMStub([subscriptionManager userID]).andReturn(@"userID");
     OCMStub([subscriptionManager purchaseSubscription:@"foo1" completionHandler:
              ([OCMArg invokeBlockWithArgs:subscriptionInformation, [NSNull null], nil])]);
     auto recorder = [viewModel.dismissRequested testRecorder];
@@ -187,6 +188,44 @@ context(@"purchasing", ^{
     [viewModel subscriptionButtonPressed:0 atPageIndex:0];
 
     expect(recorder).to.sendValuesWithCount(0);
+  });
+
+  context(@"no iCloud account alert", ^{
+    __block LLSignalTestRecorder *dismissalRecorder;
+
+    beforeEach(^{
+      OCMStub([subscriptionManager purchaseSubscription:@"foo1" completionHandler:
+               ([OCMArg invokeBlockWithArgs:subscriptionInformation, [NSNull null], nil])]);
+      dismissalRecorder = [viewModel.dismissRequested testRecorder];
+    });
+
+    it(@"should present an alert if purchase was successful and iCloud account is unavailable", ^{
+      auto recorder = [viewModel.alertRequested testRecorder];
+
+      [viewModel subscriptionButtonPressed:0 atPageIndex:0];
+
+      expect(recorder).to.sendValuesWithCount(1);
+    });
+
+    it(@"should request dismissal if purchase was successful and the user pressed on the first "
+       "alert button", ^{
+      [viewModel.alertRequested subscribeNext:^(id<SPXAlertViewModel> alertViewModel) {
+         alertViewModel.buttons[0].action();
+      }];
+      [viewModel subscriptionButtonPressed:0 atPageIndex:0];
+
+      expect(dismissalRecorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
+
+    it(@"should request dismissal if purchase was successful and the user pressed on the second "
+       "alert button", ^{
+      [viewModel.alertRequested subscribeNext:^(id<SPXAlertViewModel> alertViewModel) {
+         alertViewModel.buttons[1].action();
+      }];
+      [viewModel subscriptionButtonPressed:0 atPageIndex:0];
+
+      expect(dismissalRecorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
   });
 });
 
@@ -216,6 +255,7 @@ context(@"restoration", ^{
   });
 
   it(@"should request dismissal if restoration was successful and a subscription is active", ^{
+    OCMStub([subscriptionManager userID]).andReturn(@"userID");
     OCMStub([subscriptionInformation isExpired]).andReturn(NO);
     OCMStub([subscriptionManager
              restorePurchasesWithCompletionHandler:([OCMArg invokeBlockWithArgs:receiptInfo,
@@ -245,6 +285,45 @@ context(@"restoration", ^{
     [viewModel restorePurchasesButtonPressed];
 
     expect(recorder).to.sendValuesWithCount(0);
+  });
+
+  context(@"no iCloud account alert", ^{
+    __block LLSignalTestRecorder *dismissalRecorder;
+
+    beforeEach(^{
+    OCMStub([subscriptionManager
+             restorePurchasesWithCompletionHandler:([OCMArg invokeBlockWithArgs:receiptInfo,
+                                                     [NSNull null], nil])]);
+      dismissalRecorder = [viewModel.dismissRequested testRecorder];
+    });
+
+    it(@"should present an alert if restore was successful and iCloud account is unavailable", ^{
+      auto recorder = [viewModel.alertRequested testRecorder];
+
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(recorder).to.sendValuesWithCount(1);
+    });
+
+    it(@"should request dismissal if restore was successful and the user pressed on the first "
+       "alert button", ^{
+      [viewModel.alertRequested subscribeNext:^(id<SPXAlertViewModel> alertViewModel) {
+         alertViewModel.buttons[0].action();
+      }];
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(dismissalRecorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
+
+    it(@"should request dismissal if restore was successful and the user pressed on the second "
+       "alert button", ^{
+      [viewModel.alertRequested subscribeNext:^(id<SPXAlertViewModel> alertViewModel) {
+         alertViewModel.buttons[1].action();
+      }];
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(dismissalRecorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
   });
 });
 

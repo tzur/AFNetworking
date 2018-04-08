@@ -138,4 +138,48 @@ context(@"purchase failed alert", ^{
   });
 });
 
+context(@"no iCloud account alert", ^{
+  __block SPXAlertViewModel *viewModel;
+  __block LTVoidBlock settingsAction;
+  __block NSUInteger settingsActionInvocationCount;
+
+  beforeEach(^{
+    settingsActionInvocationCount = 0;
+    settingsAction = ^{
+      ++settingsActionInvocationCount;
+    };
+
+    viewModel = [SPXAlertViewModel noICloudAccountAlertWithSettingsAction:settingsAction
+                                                             cancelAction:cancelAction];
+  });
+
+  it(@"should generate an alert with 2 buttons", ^{
+    expect(viewModel.buttons.count).to.equal(2);
+  });
+
+  it(@"should invoke the cancel action block when the cancel button is pressed", ^{
+    viewModel.buttons[0].action();
+
+    expect(settingsActionInvocationCount).to.equal(0);
+    expect(cancelActionInvocationCount).to.equal(1);
+  });
+
+  it(@"should invoke the settings action block when the settings button is pressed", ^{
+    viewModel.buttons[1].action();
+
+    expect(settingsActionInvocationCount).to.equal(1);
+    expect(cancelActionInvocationCount).to.equal(0);
+  });
+
+  it(@"should open the settings url when the settings button is pressed", ^{
+    UIApplication *application = OCMPartialMock([UIApplication sharedApplication]);
+    auto iCloudSettingsURL = [NSURL URLWithString:@"App-Prefs:root=CASTLE"];
+    OCMExpect([application openURL:iCloudSettingsURL]);
+
+    viewModel.buttons[1].action();
+
+    OCMVerifyAll((id)application);
+  });
+});
+
 SpecEnd

@@ -8,6 +8,7 @@
 #import <Bazaar/BZRProductsManager.h>
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationStatus.h>
+#import <Bazaar/BZRiCloudUserIDProvider.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 
 #import "SPXAlertViewModel+ShopixPresets.h"
@@ -21,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Manager used to purchase subscriptions.
 @property (readonly, nonatomic) id<BZRProductsManager> productsManager;
+
+/// Provider used to receive the unique identifier of the user.
+@property (readonly, nonatomic) id<BZRUserIDProvider> userIDProvider;
 
 @end
 
@@ -45,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _productsInfoProvider = productsInfoProvider;
     _productsManager = productsManager;
+    _userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
   }
 
   return self;
@@ -263,6 +268,14 @@ NS_ASSUME_NONNULL_BEGIN
     completionHandler(nil, error);
   }];
   [self.delegate presentAlertWithViewModel:alertViewModel];
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (nullable NSString *)userID {
+  return self.userIDProvider.userID;
 }
 
 @end

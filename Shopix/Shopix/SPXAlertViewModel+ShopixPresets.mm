@@ -41,6 +41,33 @@ using namespace spx;
       .build();
 }
 
++ (instancetype)noICloudAccountAlertWithSettingsAction:(LTVoidBlock)settingsAction
+                                          cancelAction:(LTVoidBlock)cancelAction {
+  auto title = _LDefault(@"iCloud account is not available",
+                         @"Title of an alert shown after successful restoration of user purchases");
+  auto message = _LDefault(@"To get the best experience of your subscription, please make sure "
+                           "iCloud is enabled.", @"Message shown after successful subscription "
+                           "restoration");
+  auto settingsButtonTitle =
+      _LDefault(@"Settings", @"Title of a button shown in an information alert");
+  auto cancelButtonTitle = _LDefault(@"Not Now",
+                                     @"Text on a button shown to the user on failed action, "
+                                     "dismissing the alert and canceling the operation");
+  auto concatedSettingsAction = ^{
+    settingsAction();
+
+    auto iCloudSettingsURL = [NSURL URLWithString:@"App-Prefs:root=CASTLE"];
+    [[UIApplication sharedApplication] openURL:iCloudSettingsURL];
+  };
+
+  return [SPXAlertViewModelBuilder builder]
+      .setTitle(title)
+      .setMessage(message)
+      .addButton(cancelButtonTitle, cancelAction)
+      .addDefaultButton(settingsButtonTitle, concatedSettingsAction)
+      .build();
+}
+
 + (instancetype)restorationFailedAlertWithTryAgainAction:(LTVoidBlock)tryAgainAction
                                          contactUsAction:(LTVoidBlock)contactUsAction
                                             cancelAction:(LTVoidBlock)cancelAction {

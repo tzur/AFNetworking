@@ -3,9 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct, BZRReceiptInfo, BZRReceiptSubscriptionInfo, SPXSubscriptionManager;
+@class BZRProduct, BZRReceiptInfo, BZRReceiptSubscriptionInfo;
 
-@protocol BZRProductsManager, BZRProductsInfoProvider, SPXAlertViewModel;
+@protocol BZRProductsInfoProvider, BZRProductsManager, BZRUserIDProvider, SPXAlertViewModel;
 
 /// Delegate for \c SPXSubscriptionManager, used by the manager to present UI during asynchronous
 /// operations. The manager may use it to present alerts successful completion of some operations or
@@ -96,6 +96,10 @@ typedef void (^SPXRestorationCompletionBlock)
 /// authentication dialog) then \c completionHandler is invoked with \c subscriptionInfo set to
 /// \c nil and \c error.code will be \c BZRErrorCodeOperationCancelled.
 - (void)restorePurchasesWithCompletionHandler:(SPXRestorationCompletionBlock)completionHandler;
+
+/// Specifies a unique identifier of the user. \c nil signifies that the user ID is currently
+/// unavailable.
+@property (readonly, nonatomic, nullable) NSString *userID;
 
 /// Delegate used to present UI to the user during asynchronous operations.
 @property (weak, nonatomic, nullable) id<SPXSubscriptionManagerDelegate> delegate;
