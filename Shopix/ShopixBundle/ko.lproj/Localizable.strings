@@ -22,6 +22,9 @@
 /* Title of an alert shown after failing attempt to fetch products information */
 "Network Error" = "네트워크 오류";
 
+/* Title of an alert shown after successful purchase restoration attempt that revealed that the user has no active subscription */
+"No Active Subscription" = "활성화된 구독 없음";
+
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "나중에";
 
