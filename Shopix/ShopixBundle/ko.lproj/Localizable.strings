@@ -5,13 +5,13 @@
 "Contact Us" = "고객 센터";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "일";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "일";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "iCloud 계정을 사용할 수 없음";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "개월";
@@ -53,32 +53,32 @@
 "Restore Purchases" = "구입 항목 복원";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "설정";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "최상의 구독 경험을 위해 iCloud를 켜주십시오.";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "다시 시도하세요";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "주";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "주";
 
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "년";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "년";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
 
 /* Message shown after successful subscription restoration */
-"Your subscription was restored successfully" = "구독 기간이 성공적으로 복원되었습니다.";
+"Your subscription was restored successfully" = "구독 기간이 성공적으로 복원되었습니다";
 

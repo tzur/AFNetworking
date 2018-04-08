@@ -5,13 +5,13 @@
 "Contact Us" = "Contate-nos";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "Dia";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "Dias";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "A conta do iCloud não está disponível";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "Mês";
@@ -20,7 +20,7 @@
 "Months" = "Meses";
 
 /* Title of an alert shown after failing attempt to fetch products information */
-"Network Error" = "Erro de rede";
+"Network Error" = "Erro de Rede";
 
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "Agora Não";
@@ -41,40 +41,40 @@
 "Privacy" = "Privacy"; /* MISSING TRANSLATION */
 
 /* Title of an alert shown after failed purchase */
-"Purchase Failed" = "A compra falhou";
+"Purchase Failed" = "A Compra Falhou";
 
 /* Title of an alert shown after successful restoration of user purchases */
 "Restoration Completed" = "Restauração Concluída";
 
 /* Title of an alert shown after failing attempt to restore purchases */
-"Restoration Failed" = "A restauração falhou";
+"Restoration Failed" = "A Restauração Falhou";
 
 /* Label on a button that restored previously purchased products */
 "Restore Purchases" = "Restaurar Compras";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "Ajustes";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "Para obter a melhor experiência de assinatura, certifique-se de que o iCloud esteja ativado.";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
-"Try Again" = "Tente de Novo";
+"Try Again" = "Tentar de Novo";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "Semana";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "Semanas";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "ano";
+"Year" = "Ano";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "Anos";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "As compras foram restauradas com sucesso. Nenhuma assinatura ativa encontrada";

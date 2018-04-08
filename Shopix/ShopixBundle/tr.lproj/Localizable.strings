@@ -5,13 +5,13 @@
 "Contact Us" = "Bizlere Ulaşın";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "Günlük";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "Günlük";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "iCloud hesabı şu an kullanılamıyor";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "Ay";
@@ -53,28 +53,28 @@
 "Restore Purchases" = "Satın Alınanları Geri Yükle";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "Ayarlar";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "Aboneliğinizden en iyi şekilde yararlanmak için lütfen iCloud’u etkinleştirin.";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Tekrar Dene";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "Haftalık";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "Haftalık";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "yıllık";
+"Year" = "Yıllık";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "Yıllık";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Satın aldıklarınız başarıyla geri yüklendi, aktif abonelik bulunamadı";
