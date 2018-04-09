@@ -48,6 +48,7 @@ context(@"with document", ^{
             @{
               @"type": @"image",
               @"associatedProductIdentifiers": @[@"id2"],
+              @"image": @"foo"
             },
             @{
               @"type": @"video",
