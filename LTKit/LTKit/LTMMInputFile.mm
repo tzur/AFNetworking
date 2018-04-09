@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
     self.path = path;
 
