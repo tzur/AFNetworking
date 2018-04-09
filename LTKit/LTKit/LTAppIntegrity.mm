@@ -77,6 +77,10 @@ static bool LTIsMachHeader64Bit(const struct mach_header *header) {
   return header->magic == MH_MAGIC_64 || header->magic == MH_CIGAM_64;
 }
 
+static bool LTIsMachHeader(uint32_t magic) {
+  return magic == MH_MAGIC || magic == MH_MAGIC_64;
+}
+
 static uintptr_t LTGetPostHeaderPointer(const struct mach_header *header) {
   return (uintptr_t)header + (LTIsMachHeader64Bit(header) ? sizeof(mach_header_64) :
                               sizeof(mach_header));
@@ -94,7 +98,7 @@ static LTMachHeaderInfo LTGetExecutableMachHeaderInfo() {
   // access this data is to read the image from disk. Note that this increases the attack surface of
   // malicious code.
   auto _Nullable file = [[LTMMInputFile alloc] initWithPath:@(dlinfo.dli_fname) error:nil];
-  if (!file) {
+  if (!file || file.size < sizeof(uint32_t) || !LTIsMachHeader(*(uint32_t *)file.data)) {
     return {.file = nil, .header = nullptr, .is64Bit = false};
   }
 
