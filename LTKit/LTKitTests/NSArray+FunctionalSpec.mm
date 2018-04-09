@@ -14,14 +14,6 @@ context(@"map", ^{
     }];
     expect(mapped).to.equal(@[@1, @9, @9, @49]);
   });
-
-  it(@"should raise if mapping block returns nil", ^{
-    expect(^{
-      [kSourceArray lt_map:^id _Nonnull(NSNumber * _Nonnull) {
-        return nil;
-      }];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 context(@"reduce", ^{

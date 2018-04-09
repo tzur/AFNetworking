@@ -16,14 +16,6 @@ context(@"map", ^{
     }];
     expect(mapped).to.equal([@[@1, @4, @25, @36] lt_set]);
   });
-
-  it(@"should raise if mapping block returns nil", ^{
-    expect(^{
-      [kSourceSet lt_map:^id _Nonnull(NSNumber *) {
-        return nil;
-      }];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 context(@"filter", ^{
