@@ -199,7 +199,7 @@ typedef struct {
 #pragma mark Current context
 #pragma mark -
 
-+ (LTGLContext *)currentContext {
++ (nullable LTGLContext *)currentContext {
   return [[NSThread currentThread] threadDictionary][kCurrentContextKey];
 }
 

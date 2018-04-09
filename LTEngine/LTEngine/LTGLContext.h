@@ -95,7 +95,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 @interface LTGLContext : NSObject
 
 /// Returns the current rendering context for the calling thread.
-+ (LTGLContext *)currentContext;
++ (nullable LTGLContext *)currentContext;
 
 /// Makes the specified context the current rendering context for the calling thread. If the given
 /// \c context is \c nil, the rendering context will be unbound from any context.
