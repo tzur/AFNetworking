@@ -114,24 +114,6 @@ context(@"data tasks", ^{
                          fbr_serializedRequestWithRequest:request error:nil];
   });
 
-  context(@"parameter validation", ^{
-    it(@"should raise exception if success block is nil", ^{
-      FBRHTTPTaskSuccessBlock success;
-      FBRHTTPTaskFailureBlock failure = ^(NSError *) {};
-      expect(^{
-        [sessionAdapter dataTaskWithRequest:request progress:nil success:success failure:failure];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise exception if failure block is nil", ^{
-      FBRHTTPTaskSuccessBlock success = ^(FBRHTTPResponse *) {};
-      FBRHTTPTaskFailureBlock failure = nil;
-      expect(^{
-        [sessionAdapter dataTaskWithRequest:request progress:nil success:success failure:failure];
-      }).to.raise(NSInvalidArgumentException);
-    });
-  });
-
   context(@"request serialization error", ^{
     __block NSError *serializationError;
 

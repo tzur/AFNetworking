@@ -70,6 +70,9 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestParametersEncoding,
 @implementation FBRHTTPRequest
 
 + (BOOL)isProtocolSupported:(NSURL *)URL {
+  if (!URL.scheme) {
+    return NO;
+  }
   return [[self supportedProtocols] containsObject:[URL.scheme lowercaseString]];
 }
 
@@ -82,8 +85,6 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestParametersEncoding,
                    headers:nil];
 }
 
-
-
 - (instancetype)initWithURL:(NSURL *)URL method:(FBRHTTPRequestMethod *)method
                  parameters:(nullable FBRHTTPRequestParameters *)parameters
          parametersEncoding:(nullable FBRHTTPRequestParametersEncoding *)parametersEncoding
@@ -91,7 +92,7 @@ LTEnumImplement(NSUInteger, FBRHTTPRequestParametersEncoding,
   LTParameterAssert([[self class] isProtocolSupported:URL], @"Invalid URL specified, the protocol "
                     "%@ is not valid for HTTP requests. Supported protocols: %@", URL.scheme,
                     [[self class] supportedProtocols]);
-                    
+
   if (self = [super init]) {
     _URL = [URL copy];
     _method = [method copy];
