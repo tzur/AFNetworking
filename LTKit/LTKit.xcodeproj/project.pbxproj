@@ -63,7 +63,7 @@
 		28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */; };
 		28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D86F551962AB8C00145674 /* LTRandomSpec.mm */; };
 		28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E55DFF1961B21A00EBF9DA /* LTRandom.h */; };
-		28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28E55E001961B21A00EBF9DA /* LTRandom.mm */; };
+		28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28E55E001961B21A00EBF9DA /* LTRandom.mm */; settings = {COMPILER_FLAGS = " -fno-sanitize=unsigned-integer-overflow"; }; };
 		28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */; };
 		503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 503442A51A0FB8AF008E0ED3 /* LTCFExtensions.h */; };
 		503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */; };
