@@ -52,6 +52,22 @@ MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger h
   return [MPSImage pnk_unorm8ImageWithDevice:device width:width height:height channels:channels];
 }
 
+MPSImage *PNKImageMakeAndClearHalf(id<MTLDevice> device, MTLSize size) {
+  auto image = [MPSImage pnk_float16ImageWithDevice:device size:size];
+
+  auto slices = (int)image.pnk_textureArrayDepth;
+  auto channelsPerSlice = (size.depth <= 2) ? (int)size.depth : 4;
+
+  cv::Mat zeroes((int)size.height, (int)size.width, CV_16FC(channelsPerSlice));
+  zeroes = 0;
+
+  for (int slice = 0; slice < slices; ++slice) {
+    PNKCopyMatToMTLTexture(image.texture, zeroes, slice);
+  }
+
+  return image;
+}
+
 cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource) {
   NSString * _Nullable path = [bundle lt_pathForResource:resource];
   LTParameterAssert(path, @"File %@ from bundle %@ failed to load", resource, bundle);

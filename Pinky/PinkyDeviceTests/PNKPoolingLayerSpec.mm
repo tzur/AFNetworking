@@ -236,12 +236,8 @@ context(@"parameter checks", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 1};
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                               format:MPSImageFeatureChannelFormatFloat16
-                                                 size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                                format:MPSImageFeatureChannelFormatFloat16
-                                                  size:outputSize];
+      auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
+      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];
@@ -252,12 +248,8 @@ context(@"parameter checks", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 1};
       MTLSize outputSize{kInputWidth + 1, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                               format:MPSImageFeatureChannelFormatFloat16
-                                                 size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                                format:MPSImageFeatureChannelFormatFloat16
-                                                  size:outputSize];
+      auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
+      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];
@@ -268,12 +260,8 @@ context(@"parameter checks", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 2};
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                               format:MPSImageFeatureChannelFormatFloat16
-                                                 size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                                format:MPSImageFeatureChannelFormatFloat16
-                                                  size:outputSize];
+      auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
+      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];

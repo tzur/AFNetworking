@@ -3,6 +3,7 @@
 
 #import "PNKTemporaryImageExamples.h"
 
+#import "PNKFillWithZeroesKernel.h"
 #import "PNKKernel.h"
 
 NSString * const kPNKTemporaryImageUnaryExamples = @"PNKTemporaryImageUnaryExamples";
@@ -34,6 +35,9 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                                                                         size:inputSize];
+
+      auto fillWithZeroes = [[PNKFillWithZeroesKernel alloc] initWithDevice:device];
+      [fillWithZeroes encodeToCommandBuffer:commandBuffer outputImage:inputImage];
       expect(inputImage.readCount == 1);
 
       [unaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
