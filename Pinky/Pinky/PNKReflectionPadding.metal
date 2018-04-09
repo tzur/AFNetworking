@@ -10,7 +10,7 @@ constant short2 paddingLeftTop [[function_constant(0)]];
 /// Right and bottom padding.
 constant short2 paddingRightBottom [[function_constant(1)]];
 
-ushort2 calculateReadCoordinates(ushort2 gridIndex, const ushort2 outputSize) {
+ushort2 calculateReadCoordinates(uint2 gridIndex, const uint2 outputSize) {
   short2 inputSize = (short2)outputSize - paddingLeftTop - paddingRightBottom;
 
   short2 readCoordinates = abs((short2)gridIndex - paddingLeftTop);
@@ -21,8 +21,8 @@ ushort2 calculateReadCoordinates(ushort2 gridIndex, const ushort2 outputSize) {
 
 kernel void reflectionPaddingSingle(texture2d<half, access::read> inputImage [[texture(0)]],
                               texture2d<half, access::write> outputImage [[texture(1)]],
-                              ushort2 gridIndex [[thread_position_in_grid]]) {
-  const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());
+                              uint2 gridIndex [[thread_position_in_grid]]) {
+  const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y) {
     return;
   }
@@ -33,8 +33,8 @@ kernel void reflectionPaddingSingle(texture2d<half, access::read> inputImage [[t
 
 kernel void reflectionPaddingArray(texture2d_array<half, access::read> inputImage [[texture(0)]],
                                    texture2d_array<half, access::write> outputImage [[texture(1)]],
-                                   ushort3 gridIndex [[thread_position_in_grid]]) {
-  const ushort2 outputSize = ushort2(outputImage.get_width(), outputImage.get_height());
+                                   uint3 gridIndex [[thread_position_in_grid]]) {
+  const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y ||
       gridIndex.z >= outputImage.get_array_size()) {
     return;

@@ -11,7 +11,7 @@ using namespace metal;
 constant ushort operation [[function_constant(0)]];
 
 template <typename U, typename V>
-void arithmetic(U inputImageA, U inputImageB, V outputImage, ushort2 gridIndex, ushort arrayIndex) {
+void arithmetic(U inputImageA, U inputImageB, V outputImage, uint2 gridIndex, ushort arrayIndex) {
   if (gridIndex.x >= inputImageA.get_width() || gridIndex.y >= inputImageA.get_height()) {
     return;
   }
@@ -39,17 +39,17 @@ void arithmetic(U inputImageA, U inputImageB, V outputImage, ushort2 gridIndex, 
 kernel void arithmeticSingle(texture2d<half, access::read> inputImageA [[texture(0)]],
                              texture2d<half, access::read> inputImageB [[texture(1)]],
                              texture2d<half, access::write> outputImage [[texture(2)]],
-                             ushort2 gridIndex [[thread_position_in_grid]]) {
+                             uint2 gridIndex [[thread_position_in_grid]]) {
   arithmetic(inputImageA, inputImageB, outputImage, gridIndex, 0);
 }
 
 kernel void arithmeticArray(texture2d_array<half, access::read> inputImageA [[texture(0)]],
                             texture2d_array<half, access::read> inputImageB [[texture(1)]],
                             texture2d_array<half, access::write> outputImage [[texture(2)]],
-                            ushort3 gridIndex [[thread_position_in_grid]]) {
+                            uint3 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.z >= inputImageA.get_array_size()) {
     return;
   }
 
-  arithmetic(inputImageA, inputImageB, outputImage,  gridIndex.xy, gridIndex.z);
+  arithmetic(inputImageA, inputImageB, outputImage, gridIndex.xy, gridIndex.z);
 }

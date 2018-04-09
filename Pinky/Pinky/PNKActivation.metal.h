@@ -8,7 +8,6 @@
 using namespace metal;
 
 namespace pnk {
-
   /// Calculates the activation of \c value with given \c activationType, \c alpha and \beta. The
   /// calculation is done for 4 feature channels together. \c arrayIndex must equal the index of the
   /// texture to which the \c value belongs in a texture array.

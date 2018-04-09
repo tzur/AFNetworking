@@ -25,7 +25,7 @@ void instanceNormAll(constant half4 *scale, constant half4 *shift, constant half
   threadgroupSum[threadIndex] = 0;
   for (ushort y = gridIndex.y; y < height; y += threadCount.y) {
     for (ushort x = gridIndex.x; x < width; x += threadCount.x) {
-      threadgroupSum[threadIndex] += static_cast<float4>(lt::read(inputImage, ushort2(x, y),
+      threadgroupSum[threadIndex] += static_cast<float4>(lt::read(inputImage, uint2(x, y),
                                                                   arrayIndex)) / pixelCount;
     }
   }
@@ -58,7 +58,7 @@ void instanceNormAll(constant half4 *scale, constant half4 *shift, constant half
   threadgroupSum[threadIndex] = 0;
   for (ushort y = gridIndex.y; y < height; y += threadCount.y) {
     for (ushort x = gridIndex.x; x < width; x += threadCount.x) {
-      float4 delta = static_cast<float4>(lt::read(inputImage, ushort2(x, y), arrayIndex)) - mean;
+      float4 delta = static_cast<float4>(lt::read(inputImage, uint2(x, y), arrayIndex)) - mean;
       threadgroupSum[threadIndex] += delta * delta / pixelCount;
     }
   }
@@ -94,10 +94,10 @@ void instanceNormAll(constant half4 *scale, constant half4 *shift, constant half
 
   for (ushort y = gridIndex.y; y < height; y += threadCount.y) {
     for (ushort x = gridIndex.x; x < width; x += threadCount.x) {
-      float4 floatInput = static_cast<float4>(lt::read(inputImage, ushort2(x, y), arrayIndex));
+      float4 floatInput = static_cast<float4>(lt::read(inputImage, uint2(x, y), arrayIndex));
       half4 scaled = static_cast<half4>(floatInput * correctedScale + correctedShift);
       half4 activated = pnk::ActivatedValue(scaled, activationType, alpha, beta, arrayIndex);
-      lt::write(outputImage, activated, ushort2(x, y), arrayIndex);
+      lt::write(outputImage, activated, uint2(x, y), arrayIndex);
     }
   }
 }
