@@ -362,7 +362,7 @@ context(@"version 1", ^{
     beforeEach(^{
       cv::Mat4b source(kSize.height, kSize.width);
       for (int i = 0; i < source.cols; ++i) {
-        char value = (CGFloat)i / source.cols * 255;
+        unsigned char value = (CGFloat)i / source.cols * 255;
         source.col(i) = cv::Vec4b(value, value, value, 255);
       }
 
