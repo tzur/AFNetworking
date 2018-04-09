@@ -57,7 +57,7 @@ sharedExamplesFor(kPNKUnaryKernelExamples, ^(NSDictionary *data) {
       id<PNKUnaryKernel> unaryKernel = data[kPNKKernelExamplesKernel];
       id<MTLDevice> device = data[kPNKKernelExamplesDevice];
       MPSImageFeatureChannelFormat pixelFormat =
-      (MPSImageFeatureChannelFormat)[data[kPNKKernelExamplesPixelFormat] unsignedIntegerValue];
+          (MPSImageFeatureChannelFormat)[data[kPNKKernelExamplesPixelFormat] unsignedIntegerValue];
       NSUInteger outputChannels = [data[kPNKKernelExamplesOutputChannels] unsignedIntegerValue];
       NSUInteger outputWidth = [data[kPNKKernelExamplesOutputWidth] unsignedIntegerValue];
       NSUInteger outputHeight = [data[kPNKKernelExamplesOutputHeight] unsignedIntegerValue];

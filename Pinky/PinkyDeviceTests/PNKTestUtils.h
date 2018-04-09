@@ -15,6 +15,10 @@ MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels);
 
+/// Creates a new \c MPSImage for use on \c device with \c MPSImageFeatureChannelFormatFloat16 as
+/// the channel format and given \c size. The new image is then filled with zeroes.
+MPSImage *PNKImageMakeAndClearHalf(id<MTLDevice> device, MTLSize size);
+
 /// Reads an array of float32 numbers from \c resource and returns them as a row vector.
 cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource);
 
