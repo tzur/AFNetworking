@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
   BLUNode *currentNode = node;
 
   // Update all the nodes in the path from the parent's parent to the root of the tree.
-  for (NSInteger i = path.count - 2; i >= 0; --i) {
+  for (NSInteger i = (NSInteger)path.count - 2; i >= 0; --i) {
     NSUInteger indexToReplace = [path[i].childNodes indexOfObject:path[i + 1]];
     NSIndexSet *indexes = [NSIndexSet indexSetWithIndex:indexToReplace];
     currentNode = [path[i] nodeByReplacingChildNodesAtIndexes:indexes
@@ -236,7 +236,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)treeDescription {
-  
   __block NSMutableArray *nodeDescriptions = [NSMutableArray array];
   [self enumerateTreeWithEnumerationType:BLUTreeEnumerationTypePreOrder
                               usingBlock:^(BLUNode *node, NSString *path,
