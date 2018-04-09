@@ -41,8 +41,11 @@ context(@"custom configuration", ^{
 
   beforeEach(^{
     providerA = OCMProtocolMock(@protocol(WFImageProvider));
+    OCMStub([providerA imageWithURL:OCMOCK_ANY]).andReturn([RACSignal never]);
     providerB = OCMProtocolMock(@protocol(WFImageProvider));
+    OCMStub([providerB imageWithURL:OCMOCK_ANY]).andReturn([RACSignal never]);
     providerC = OCMProtocolMock(@protocol(WFImageProvider));
+    OCMStub([providerC imageWithURL:OCMOCK_ANY]).andReturn([RACSignal never]);
 
     imageLoader = [[WFImageLoader alloc] initWithProviders:@{
       @"a": providerA,
