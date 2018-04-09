@@ -133,8 +133,8 @@ context(@"JSON serialization", ^{
         } error:nil];
     NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:receiptValidationStatus];
 
-    expect(JSONDictionary[@"isValid"]).to.equal(YES);
-    expect(JSONDictionary[@"validationDateTime"])
+    expect(JSONDictionary[@"valid"]).to.equal(YES);
+    expect(JSONDictionary[@"currentDateTime"])
         .to.equal([millisecondsDateTimeTransformer reverseTransformedValue:validationDateTime]);
     expect(JSONDictionary[@instanceKeypath(BZRReceiptValidationStatus, receipt)])
         .to.equal(receiptJSONDictionary);
@@ -148,10 +148,10 @@ context(@"JSON serialization", ^{
 
     NSDate *validationDateTime = [NSDate dateWithTimeIntervalSince1970:1337];
     NSDictionary *JSONDictionary = @{
-      @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
-      @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
+      @"valid": @YES,
+      @"currentDateTime":
           [millisecondsDateTimeTransformer reverseTransformedValue:validationDateTime],
-      @instanceKeypath(BZRReceiptValidationStatus, receipt): receiptJSONDictionary
+      @"receipt": receiptJSONDictionary
     };
 
     NSError *error;

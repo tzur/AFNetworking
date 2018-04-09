@@ -13,7 +13,7 @@
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
-#import "BZRValidatricksReceiptValidationStatus.h"
+#import "BZRReceiptValidationStatus.h"
 #import "NSErrorCodes+Bazaar.h"
 
 /// Generates and returns an \c LTProgress object wrapping an \c FBRHTTPResponse with the given
@@ -111,8 +111,8 @@ context(@"receipt validation", ^{
     });
 
     it(@"should send the deserialized validation response and then complete", ^{
-      BZRValidatricksReceiptValidationStatus *status =
-          [MTLJSONAdapter modelOfClass:[BZRValidatricksReceiptValidationStatus class]
+      BZRReceiptValidationStatus *status =
+          [MTLJSONAdapter modelOfClass:[BZRReceiptValidationStatus class]
                     fromJSONDictionary:JSONResponse error:nil];
       [subject sendNext:BZRValidatricksResponseWithJSONObject(JSONResponse)];
       [subject sendCompleted];
@@ -182,8 +182,8 @@ context(@"receipt validation", ^{
     });
 
     it(@"should send BZREvent when receipt validation status is received", ^{
-      BZRValidatricksReceiptValidationStatus *status =
-          [MTLJSONAdapter modelOfClass:[BZRValidatricksReceiptValidationStatus class]
+      BZRReceiptValidationStatus *status =
+          [MTLJSONAdapter modelOfClass:[BZRReceiptValidationStatus class]
                     fromJSONDictionary:JSONResponse error:nil];
       RACSignal *responseSignal =
           [RACSignal return:BZRValidatricksResponseWithJSONObject(JSONResponse)];

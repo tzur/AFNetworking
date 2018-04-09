@@ -10,7 +10,7 @@
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRMultiHostValidatricksClientProvider.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
-#import "BZRValidatricksReceiptValidationStatus.h"
+#import "BZRReceiptValidationStatus.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
 
@@ -66,14 +66,14 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
     return [[[[[self.client
         POST:kReceiptValidationEndpoint withParameters:requestParameters headers:nil]
         fbr_deserializeJSON]
-        bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]]
+        bzr_deserializeModel:[BZRReceiptValidationStatus class]]
         doError:^(NSError *) {
           @strongify(self);
           @synchronized (self) {
             self.client = nil;
           }
         }]
-        doNext:^(BZRValidatricksReceiptValidationStatus *receiptValidationStatus) {
+        doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
           @strongify(self);
           [self.eventsSubject sendNext:
            [BZREvent receiptValidationStatusReceivedEvent:receiptValidationStatus

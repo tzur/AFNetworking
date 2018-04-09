@@ -2,6 +2,7 @@
 // Created by Daniel Lahyani.
 
 #import "BZRReceiptModel.h"
+#import "BZRReceiptValidationStatus.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,8 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRValidatricksReceiptInAppPurchaseInfo
 #pragma mark -
 
-/// Extends \c BZRReceiptInAppPurchaseInfo by providing instant deserialization from Validatricks
-/// JSON response.
+/// Deprecated, use \c BZRReceiptInAppPurchaseInfo instead.
+/// Left for backward compatibility purposes.
 @interface BZRValidatricksReceiptInAppPurchaseInfo : BZRReceiptInAppPurchaseInfo
 @end
 
@@ -18,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRValidatricksSubscriptionPendingRenewalInfo
 #pragma mark -
 
+/// Deprecated, use \c BZRSubscriptionPendingRenewalInfo instead.
+/// Left for backward compatibility purposes.
 @interface BZRValidatricksSubscriptionPendingRenewalInfo : BZRSubscriptionPendingRenewalInfo
 @end
 
@@ -25,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRValidatricksReceiptSubscriptionInfo
 #pragma mark -
 
-/// Extends \c BZRReceiptSubscriptionInfo by providing instant deserialization from Validatricks
-/// JSON response.
+/// Deprecated, use \c BZRReceiptSubscriptionInfo instead.
+/// Left for backward compatibility purposes.
 @interface BZRValidatricksReceiptSubscriptionInfo : BZRReceiptSubscriptionInfo
 @end
 
@@ -34,9 +37,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRValidatricksReceiptInfo
 #pragma mark -
 
-/// Extends \c BZRReceiptInfo by providing instant deserialization from Validatricks
-/// JSON response.
+/// Deprecated, use \c BZRReceiptInfo instead.
+/// Left for backward compatibility purposes.
 @interface BZRValidatricksReceiptInfo : BZRReceiptInfo
+@end
+
+#pragma mark -
+#pragma mark BZRValidatricksReceiptValidationStatus
+#pragma mark -
+
+/// Deprecated, use \c BZRReceiptValidationStatus instead.
+/// Left for backward compatibility purposes.
+@interface BZRValidatricksReceiptValidationStatus : BZRReceiptValidationStatus
 @end
 
 NS_ASSUME_NONNULL_END
