@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, LTBipartiteGraphPartition) {
 ///
 /// Time complexity: \c O(max{n_A,n_B,m}), where \c n_X is the maximum number of vertices in
 /// partition \c X and \c m is the number of edges of the graph.
-- (BOOL)isEqual:(id)object;
+- (BOOL)isEqual:(nullable id)object;
 
 /// Adds a \c copy of the given \c vertex to the given \c partition. Is silently ignored, if the
 /// given \c vertex already exists in the graph. After adding, the graph does not contain any edges

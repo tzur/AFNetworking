@@ -38,7 +38,7 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(LTBipartiteGraph *)bipartiteGraph {
+- (BOOL)isEqual:(nullable LTBipartiteGraph *)bipartiteGraph {
   if (bipartiteGraph == self) {
     return YES;
   }
