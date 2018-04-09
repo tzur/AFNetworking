@@ -140,7 +140,12 @@ typedef struct {
   if (self = [super init]) {
     for (NSNumber *version in versions) {
       EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
-      _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+      if (sharegroup) {
+        _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+      } else {
+        _context = [[EAGLContext alloc] initWithAPI:api];
+      }
+
       if (_context) {
         break;
       }
