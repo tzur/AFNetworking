@@ -43,12 +43,14 @@ typedef void (^LTTreeTraversalBlock)(LTTreeNode *node, BOOL * stop);
 /// Returns \c YES if the given \c node is of class \c LTTreeNode with an equal \c object and equal
 /// \c children.
 ///
+/// Returns \n NO if \c node is \c nil.
+///
 /// @important calling this method might be expensive if the number of \c children is large.
 ///
 /// Time complexity: \c O(n * m), where \c n equals the number of descendants of the receiver and
 /// \c m equals the time complexity of testing equality of the \c object objects of the two involved
 /// vertices.
-- (BOOL)isEqual:(id)node;
+- (BOOL)isEqual:(nullable id)node;
 
 /// Returns a number that can be used as a table address in a hash table structure.
 ///

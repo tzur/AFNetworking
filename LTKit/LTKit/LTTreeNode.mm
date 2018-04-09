@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(LTTreeNode *)node {
+- (BOOL)isEqual:(nullable LTTreeNode *)node {
   if (node == self) {
     return YES;
   }
