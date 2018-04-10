@@ -23,13 +23,17 @@ it(@"should return UTI for every compression extension", ^{
   }];
 });
 
-it(@"should report supported formats on simulator", ^{
+it(@"should support correct formats", ^{
   [LTCompressionFormat enumerateEnumUsingBlock:^(LTCompressionFormat *format) {
-    if ([format isEqual:$(LTCompressionFormatHEIC)]) {
-      /// LTCompressionFormatHEIC isn't supported on simulator
-      expect(format.isSupported).to.beFalsy();
-    } else {
+    if (@available(iOS 11.3, *)) {
       expect(format.isSupported).to.beTruthy();
+    } else {
+      if ([format isEqual:$(LTCompressionFormatHEIC)]) {
+        /// LTCompressionFormatHEIC isn't supported on simulator
+        expect(format.isSupported).to.beFalsy();
+      } else {
+        expect(format.isSupported).to.beTruthy();
+      }
     }
   }];
 });
