@@ -15,8 +15,10 @@ NSString *LTValueObjectDescription(NSObject *object);
 /// Returns \c YES if \c first points to \c second or if \c first's class is kind of \c second's
 /// class and \c first's properties are equal to \c second's.
 ///
+/// Returns \c NO if either \c first or \c second is \c nil.
+///
 /// @note The properties of both \c first and \c second must all respond to \c -isEqual:.
-BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second);
+BOOL LTValueObjectIsEqual(NSObject * _Nullable first, NSObject * _Nullable second);
 
 /// Returns the hash value of the \c object by iterating the class property list, and performing
 /// \c lt::hash_combine on each property's \c hash value.

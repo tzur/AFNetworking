@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// If the file cannot be opened, or memory mapped, \c error will be populated and \c nil will be
 /// returned.
-- (instancetype)initWithPath:(NSString *)path error:(NSError **)error NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path error:(NSError **)error
+    NS_DESIGNATED_INITIALIZER;
 
 /// Path to the memory mapped file.
 @property (readonly, nonatomic) NSString *path;

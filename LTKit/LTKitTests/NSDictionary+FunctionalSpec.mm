@@ -70,14 +70,6 @@ context(@"map to array", ^{
     expect([mapped lt_set])
         .to.equal([@[@"4 foo", @"8 bar", @"5 baz", @"9 ping", @"3 pong"] lt_set]);
   });
-
-  it(@"should raise if mapping block returns nil", ^{
-    expect(^{
-      [kSourceDictionary lt_mapToArray:^id(NSNumber *, NSString *) {
-        return nil;
-      }];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 SpecEnd

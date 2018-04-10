@@ -184,7 +184,8 @@ CG_INLINE CGPoint operator*(const CGAffineTransform &lhs, const CGPoint &rhs) {
 }
 
 /// Returns a hash code for the given point.
-CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
+CG_INLINE NSUInteger CGPointHash(const CGPoint &point)
+    __attribute__((no_sanitize("unsigned-integer-overflow"))) {
   return 31 * [@(point.x) hash] + [@(point.y) hash];
 }
 
@@ -379,7 +380,7 @@ CG_INLINE CGRects CGRectRegularGrid(CGRect rect, NSUInteger horizontalCount,
   CGRects rects(horizontalCount * verticalCount);
   CGSize size = CGSizeMake(rect.size.width / horizontalCount, rect.size.height / verticalCount);
   NSUInteger k = 0;
-  
+
   for (NSUInteger i = 0; i < horizontalCount; ++i) {
     for (NSUInteger j = 0; j < verticalCount; ++j) {
       rects[k] = CGRectFromOriginAndSize(CGPointMake(i * size.width, j * size.height), size);

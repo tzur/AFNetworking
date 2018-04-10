@@ -83,15 +83,15 @@ NSString *LTValueObjectDescription(NSObject *object) {
   return [description copy];
 }
 
-BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second) {
+BOOL LTValueObjectIsEqual(NSObject * _Nullable first, NSObject * _Nullable second) {
   if (first == second) {
     return YES;
   }
-  if (![second isKindOfClass:first.class]) {
+  if (!first || ![second isKindOfClass:first.class]) {
     return NO;
   }
 
-  for (NSString *key in LTCachedPropertyKeys(first.class)) {
+  for (NSString *key in LTCachedPropertyKeys(nn(first.class))) {
     id firstValue = [first valueForKey:key];
     id secondValue = [second valueForKey:key];
 
@@ -123,7 +123,7 @@ NSUInteger LTValueObjectHash(NSObject *object) {
   return LTValueObjectDescription(self);
 }
 
-- (BOOL)isEqual:(LTValueObject *)object {
+- (BOOL)isEqual:(nullable LTValueObject *)object {
   return LTValueObjectIsEqual(self, object);
 }
 
