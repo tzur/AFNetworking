@@ -42,7 +42,7 @@ it(@"should clamp quality value", ^{
 
 // The following tests should run only on HEIC compression supporting devices.
 if ($(LTCompressionFormatHEIC).isSupported) {
-  dit(@"should create HEVC format data", ^{
+  it(@"should create HEVC format data", ^{
     UIImage *image = LTLoadImage([self class], @"Lena.png");
 
     NSError *error;
@@ -52,7 +52,7 @@ if ($(LTCompressionFormatHEIC).isSupported) {
     expect(error).to.beNil();
   });
 
-  dit(@"should verify that the quality option affects the output", ^{
+  it(@"should verify that the quality option affects the output", ^{
     UIImage *image = LTLoadImage([self class], @"Gray.jpg");
 
     NSError *error;
@@ -67,7 +67,7 @@ if ($(LTCompressionFormatHEIC).isSupported) {
     expect(highQualityData).notTo.equal(lowQualityData);
   });
 
-  dit(@"should compress same data to file as to in memory data", ^{
+  it(@"should compress same data to file as to in memory data", ^{
     UIImage *image = LTLoadImage([self class], @"Lena.png");
     auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.heic")];
 
