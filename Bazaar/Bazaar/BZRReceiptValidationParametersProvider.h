@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
     (NSString *)applicationBundleID userID:(nullable NSString *)userID;
 
-/// AppStore locale. KVO-compliant.
+/// App Store locale. KVO-compliant.
 @property (strong, atomic, nullable) NSLocale *appStoreLocale;
 
 @end

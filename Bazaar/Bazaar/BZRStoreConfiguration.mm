@@ -9,6 +9,7 @@
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRAppStoreLocaleCache.h"
+#import "BZRAppStoreLocaleProvider.h"
 #import "BZRCachedContentFetcher.h"
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
@@ -132,7 +133,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     BZRReceiptValidationStatusCache *receiptValidationStatusCache =
         [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
 
-     auto cacheReceiptValidationStatusProvider =
+    auto cachedReceiptValidationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
                                                      underlyingProvider:modifiedExpiryProvider];
@@ -142,7 +143,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
-         initWithUnderlyingProvider:cacheReceiptValidationStatusProvider
+         initWithUnderlyingProvider:cachedReceiptValidationStatusProvider
          currentApplicationBundleID:applicationBundleID
          bundleIDsForValidation:relevantApplicationsBundleIDs
          multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
@@ -164,6 +165,9 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          initWithUnderlyingFetcher:self.storeKitMetadataUnderlyingFetcher];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
+    _appStoreLocaleProvider = [[BZRAppStoreLocaleProvider alloc]
+                               initWithProductsProvider:self.netherProductsProvider
+                               metadataFetcher:self.storeKitMetadataUnderlyingFetcher];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 

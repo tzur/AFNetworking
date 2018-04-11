@@ -9,6 +9,7 @@
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
+#import "BZRFakeAppStoreLocaleProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
@@ -74,6 +75,7 @@ __block BZRFakeReceiptValidationParametersProvider *validationParametersProvider
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
+__block BZRFakeAppStoreLocaleProvider *appStoreLocaleProvider;
 __block BZRKeychainStorage *keychainStorage;
 __block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
 __block NSBundle *bundle;
@@ -104,6 +106,7 @@ beforeEach(^{
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   storeKitMetadataFetcher = OCMClassMock([BZRStoreKitCachedMetadataFetcher class]);
+  appStoreLocaleProvider = [[BZRFakeAppStoreLocaleProvider alloc] init];
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
   bundle = OCMClassMock([NSBundle class]);
@@ -151,6 +154,7 @@ beforeEach(^{
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
   OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
+  OCMStub([configuration appStoreLocaleProvider]).andReturn(appStoreLocaleProvider);
   OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -1224,21 +1228,9 @@ context(@"getting product list", ^{
     [productListSignal sendCompleted];
   });
 
-  it(@"should set app store locale from product price locale", ^{
+  it(@"should set App Store locale from app store locale provider", ^{
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
-    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
-    OCMStub([underlyingProduct priceLocale]).andReturn(locale);
-    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    product = [product modelByOverridingProperty:@keypath(product, underlyingProduct)
-                                       withValue:underlyingProduct];
-    OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
-        .andReturn(productIdentifier);
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-    LLSignalTestRecorder *recorder = [[store productList] testRecorder];
-
-    expect(recorder).will.complete();
+    appStoreLocaleProvider.appStoreLocale = locale;
     expect(validationParametersProvider.appStoreLocale).to.equal(locale);
   });
 });
