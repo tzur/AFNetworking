@@ -140,7 +140,12 @@ typedef struct {
   if (self = [super init]) {
     for (NSNumber *version in versions) {
       EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
-      _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+      if (sharegroup) {
+        _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+      } else {
+        _context = [[EAGLContext alloc] initWithAPI:api];
+      }
+
       if (_context) {
         break;
       }
@@ -199,7 +204,7 @@ typedef struct {
 #pragma mark Current context
 #pragma mark -
 
-+ (LTGLContext *)currentContext {
++ (nullable LTGLContext *)currentContext {
   return [[NSThread currentThread] threadDictionary][kCurrentContextKey];
 }
 

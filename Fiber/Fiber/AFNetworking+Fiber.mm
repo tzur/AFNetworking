@@ -53,7 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
   (FBRHTTPSessionRequestMarshalling *)requestMarhsalling {
   AFHTTPRequestSerializer *serializer =
       [self fbr_requestSerializerForParametersEncoding:requestMarhsalling.parametersEncoding];
-  [serializer fbr_appendHeaders:requestMarhsalling.headers];
+  if (requestMarhsalling.headers) {
+    [serializer fbr_appendHeaders:requestMarhsalling.headers];
+  }
   return serializer;
 }
 

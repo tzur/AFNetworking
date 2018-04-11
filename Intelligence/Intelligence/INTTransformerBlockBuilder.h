@@ -176,7 +176,7 @@ extern "C" {
 /// is a shortcut for <tt>+[INTTransformerBlockBuilder defaultBuilder]</tt>, otherwise this is a
 /// shortcut for <tt>+[INTTransformerBlockBuilder builderWithEventIdentifier:]</tt>.
 inline INTTransformerBlockBuilder *INTTransformerBuilder
-    (INTEventIdentifierBlock eventIdentifier = nil) {
+    (INTEventIdentifierBlock _Nullable eventIdentifier = nil) {
   if (!eventIdentifier) {
     return [INTTransformerBlockBuilder defaultBuilder];
   }
