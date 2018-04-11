@@ -5,19 +5,19 @@
 "Contact Us" = "Связаться с нами";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "день";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "дн.";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "Недоступна учётная запись iCloud";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "месяц";
 
 /* Label on a button for purchasing subscription that renews every x months */
-"Months" = "месяцев";
+"Months" = "мес.";
 
 /* Title of an alert shown after failing attempt to fetch products information */
 "Network Error" = "Ошибка сети";
@@ -53,28 +53,28 @@
 "Restore Purchases" = "Восстановить покупки";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "Настройки";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "Для удобства работы с подписками активируйте iCloud.";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
-"Try Again" = "Еще раз";
+"Try Again" = "Ещё раз";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "нед.";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "нед.";
 
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "год";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "года";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Покупки восстановлены. Активных подписок нет";

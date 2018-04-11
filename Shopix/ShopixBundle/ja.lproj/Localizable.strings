@@ -5,13 +5,13 @@
 "Contact Us" = "お問い合わせ";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "日";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "日";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "iCloudアカウントを利用できません";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "か月";
@@ -53,28 +53,28 @@
 "Restore Purchases" = "購入を復元";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "設定";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "購読を快適にご利用いただくために、iCloudがオンになっていることを確認してください。";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "再度嘗試";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "週";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "週";
 
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "年";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "年";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "購入を問題なく復元しました。有効な購読を見つけられませんでした";

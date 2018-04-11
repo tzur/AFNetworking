@@ -5,13 +5,13 @@
 "Contact Us" = "Nous contacter";
 
 /* Label on a button for purchasing subscription that renews every one day */
-"Day" = "Day"; /* MISSING TRANSLATION */
+"Day" = "jour";
 
 /* Label on a button for purchasing subscription that renews every x days */
-"Days" = "Days"; /* MISSING TRANSLATION */
+"Days" = "jours";
 
 /* Title of an alert shown after successful restoration of user purchases */
-"iCloud account is not available" = "iCloud account is not available"; /* MISSING TRANSLATION */
+"iCloud account is not available" = "Le compte iCloud n’est pas disponible";
 
 /* Label on a button for purchasing subscription that renews every one month */
 "Month" = "mois";
@@ -53,28 +53,28 @@
 "Restore Purchases" = "Restaurer les achats";
 
 /* Title of a button shown in an information alert */
-"Settings" = "Settings"; /* MISSING TRANSLATION */
+"Settings" = "Réglages";
 
 /* Title of link to terms of use document */
 "Terms of Use" = "Terms of Use"; /* MISSING TRANSLATION */
 
 /* Message shown after successful subscription restoration */
-"To get the best experience of your subscription, please make sure iCloud is enabled." = "To get the best experience of your subscription, please make sure iCloud is enabled."; /* MISSING TRANSLATION */
+"To get the best experience of your subscription, please make sure iCloud is enabled." = "Pour profiter au mieux de votre abonnement, assurez-vous qu’iCloud est activé.";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Réessayez";
 
 /* Label on a button for purchasing subscription that renews every one week */
-"Week" = "Week"; /* MISSING TRANSLATION */
+"Week" = "semaine";
 
 /* Label on a button for purchasing subscription that renews every x weeks */
-"Weeks" = "Weeks"; /* MISSING TRANSLATION */
+"Weeks" = "semaines";
 
 /* Label on a button for purchasing subscription that renews every one year */
 "Year" = "an";
 
 /* Label on a button for purchasing subscription that renews every x years */
-"Years" = "Years"; /* MISSING TRANSLATION */
+"Years" = "ans";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Vos achats ont bien été restaurés, aucun abonnement actif n'a été trouvé";
