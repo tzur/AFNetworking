@@ -10,16 +10,60 @@
 typedef NSDictionary<NSString *, id> BZRJSONDictionary;
 
 #pragma mark -
+#pragma mark BZRReceiptTransactionInfo
+#pragma mark -
+
+SpecBegin(BZRReceiptTransactionInfo)
+
+it(@"should correctly build model with JSON dictionary", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"productId": @"foo",
+    @"transactionId": @"bar",
+    @"purchaseDateTime": @1000,
+    @"originalTransactionId": @"baz",
+    @"originalPurchaseDateTime": @2000,
+    @"quantity": @2
+  };
+  NSError *error;
+
+  BZRReceiptTransactionInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRReceiptTransactionInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(model.productId).to.equal(@"foo");
+  expect(model.transactionId).to.equal(@"bar");
+  expect(model.purchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:1]);
+  expect(model.originalTransactionId).to.equal(@"baz");
+  expect(model.originalPurchaseDateTime).to.equal([NSDate dateWithTimeIntervalSince1970:2]);
+  expect(model.quantity).to.equal(2);
+});
+
+it(@"should fail if the JSON dictionary is missing a mandatory key", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"productId": @"foo",
+    @"transactionId": @"bar",
+    @"purchaseDateTime": @1000,
+    @"originalTransactionId": @"baz",
+    @"originalPurchaseDateTime": @2000
+  };
+  NSError *error;
+
+  BZRReceiptTransactionInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRReceiptTransactionInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).toNot.beNil();
+  expect(model).to.beNil();
+});
+
+SpecEnd
+
+#pragma mark -
 #pragma mark BZRReceiptInAppPurchaseInfo
 #pragma mark -
 
 SpecBegin(BZRReceiptInAppPurchaseInfo)
-
-context(@"initialization", ^{
-  it(@"should not allow nil properties", ^{
-    expect([BZRReceiptInAppPurchaseInfo optionalPropertyKeys].count).to.equal(0);
-  });
-});
 
 it(@"should correctly build model with JSON dictionary", ^{
   BZRJSONDictionary *JSONDictionary = @{
@@ -183,20 +227,6 @@ SpecEnd
 
 SpecBegin(BZRReceiptSubscriptionInfo)
 
-context(@"initialization", ^{
-  it(@"should correctly specify optional properties", ^{
-    NSSet<NSString *> *nullableProperties = [BZRReceiptSubscriptionInfo optionalPropertyKeys];
-
-    expect(nullableProperties.count).to.equal(3);
-    expect(nullableProperties).to
-        .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, lastPurchaseDateTime));
-    expect(nullableProperties).to
-        .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime));
-    expect(nullableProperties).to
-        .contain(@instanceKeypath(BZRReceiptSubscriptionInfo, pendingRenewalInfo));
-  });
-});
-
 it(@"should correctly build model with JSON dictionary", ^{
   BZRJSONDictionary *JSONDictionary = @{
     @"productId": @"foo",
@@ -296,18 +326,6 @@ static NSString * const kValidatricksProductionEnvironment =
     [[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
      reverseTransformedValue:$(BZRReceiptEnvironmentProduction)];
 
-context(@"initialization", ^{
-  it(@"should correctly specifiy optional properties", ^{
-    NSSet<NSString *> *nullableProperties = [BZRReceiptInfo optionalPropertyKeys];
-
-    expect(nullableProperties.count).to.equal(3);
-    expect(nullableProperties).to
-        .contain(@instanceKeypath(BZRReceiptInfo, originalPurchaseDateTime));
-    expect(nullableProperties).to.contain(@instanceKeypath(BZRReceiptInfo, inAppPurchases));
-    expect(nullableProperties).to.contain(@instanceKeypath(BZRReceiptInfo, subscription));
-  });
-});
-
 __block BZRReceiptInAppPurchaseInfo *inAppPurchase;
 __block BZRJSONDictionary *inAppPurchaseJSONDictionary;
 __block BZRReceiptSubscriptionInfo *subscription;
@@ -346,6 +364,20 @@ it(@"should correctly build model with JSON dictionary", ^{
   expect(model.environment).toNot.beNil();
   expect(model.inAppPurchases).to.beNil();
   expect(model.subscription).to.beNil();
+});
+
+it(@"should set default transactions array to an empty array", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"environment": kValidatricksProductionEnvironment
+  };
+  NSError *error;
+
+  BZRReceiptInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRReceiptInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(model.transactions).to.equal(@[]);
 });
 
 it(@"should correctly transform receipt environment value", ^{

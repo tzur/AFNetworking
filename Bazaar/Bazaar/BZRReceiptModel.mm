@@ -9,6 +9,61 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
+#pragma mark BZRReceiptTransactionInfo
+#pragma mark -
+
+@implementation BZRReceiptTransactionInfo
+
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    optionalPropertyKeys = [NSSet setWithArray:@[
+        @instanceKeypath(BZRReceiptTransactionInfo, expirationDateTime),
+        @instanceKeypath(BZRReceiptTransactionInfo, cancellationDateTime)
+    ]];
+  });
+
+  return optionalPropertyKeys;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{
+    @instanceKeypath(BZRReceiptTransactionInfo, productId): @"productId",
+    @instanceKeypath(BZRReceiptTransactionInfo, transactionId): @"transactionId",
+    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime): @"purchaseDateTime",
+    @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"originalTransactionId",
+    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
+        @"originalPurchaseDateTime",
+    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @"quantity",
+    @instanceKeypath(BZRReceiptTransactionInfo, expirationDateTime): @"expiresDateTime",
+    @instanceKeypath(BZRReceiptTransactionInfo, cancellationDateTime): @"cancellationDateTime"
+  };
+}
+
++ (NSValueTransformer *)purchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)expirationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (NSValueTransformer *)cancellationDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_millisecondsDateTimeValueTransformer];
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+@end
+
+#pragma mark -
 #pragma mark BZRReceiptInAppPurchaseInfo
 #pragma mark -
 
@@ -174,11 +229,24 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
     optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRReceiptInfo, originalPurchaseDateTime),
       @instanceKeypath(BZRReceiptInfo, inAppPurchases),
-      @instanceKeypath(BZRReceiptInfo, subscription)
+      @instanceKeypath(BZRReceiptInfo, subscription),
+      @instanceKeypath(BZRReceiptInfo, transactions)
     ]];
   });
 
   return optionalPropertyKeys;
+}
+
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{
+      @instanceKeypath(BZRReceiptInfo, transactions): @[]
+    };
+  });
+
+  return defaultPropertyValues;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -186,7 +254,8 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
     @instanceKeypath(BZRReceiptInfo, environment): @"environment",
     @instanceKeypath(BZRReceiptInfo, originalPurchaseDateTime): @"originalPurchaseDateTime",
     @instanceKeypath(BZRReceiptInfo, inAppPurchases): @"inAppPurchases",
-    @instanceKeypath(BZRReceiptInfo, subscription): @"subscription"
+    @instanceKeypath(BZRReceiptInfo, subscription): @"subscription",
+    @instanceKeypath(BZRReceiptInfo, transactions): @"transactions"
   };
 }
 
@@ -206,6 +275,11 @@ LTEnumImplement(NSUInteger, BZRSubscriptionExpirationReason,
 + (NSValueTransformer *)subscriptionJSONTransformer {
   return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:
           [BZRReceiptSubscriptionInfo class]];
+}
+
++ (NSValueTransformer *)transactionsJSONTransformer {
+  return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:
+      [BZRReceiptTransactionInfo class]];
 }
 
 + (BOOL)supportsSecureCoding {

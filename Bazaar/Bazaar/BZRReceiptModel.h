@@ -8,6 +8,42 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRReceiptEnvironment;
 
 #pragma mark -
+#pragma mark BZRReceiptTransactionInfo
+#pragma mark -
+
+/// Describes a single transaction that is listed in an application receipt. The transaction can be
+/// associated with an in-app purchase, a subscription purchase or a subscription renewal.
+@interface BZRReceiptTransactionInfo : BZRModel <MTLJSONSerializing, NSSecureCoding>
+
+/// iTunes-Connect product ID associated with the transaction.
+@property (readonly, nonatomic) NSString *productId;
+
+/// ID of the transaction associated with a purchase or renewal.
+@property (readonly, nonatomic) NSString *transactionId;
+
+/// Date and time of the purchase or renewal.
+@property (readonly, nonatomic) NSDate *purchaseDateTime;
+
+/// ID of the original transaction associated with a purchase.
+@property (readonly, nonatomic) NSString *originalTransactionId;
+
+/// Date and time of the purchase of the original transaction.
+@property (readonly, nonatomic) NSDate *originalPurchaseDateTime;
+
+/// Number of products that were purchased through the transaction.
+@property (readonly, nonatomic) NSUInteger quantity;
+
+/// Date and time of the subscription expiration. \c nil if the transaction is not associated with a
+/// subscription product.
+@property (readonly, nonatomic, nullable) NSDate *expirationDateTime;
+
+/// Date and time of the subscription cancellation or \c nil if it was not cancelled or the
+/// transaction is not associated with a subscription product.
+@property (readonly, nonatomic, nullable) NSDate *cancellationDateTime;
+
+@end
+
+#pragma mark -
 #pragma mark BZRReceiptInAppPurchaseInfo
 #pragma mark -
 
@@ -120,6 +156,9 @@ LTEnumDeclare(NSUInteger, BZRSubscriptionExpirationReason,
 
 /// The environment that the receipt was issued for.
 @property (readonly, nonatomic) BZRReceiptEnvironment *environment;
+
+/// Array of transactions associated with purchases and renewals of the user.
+@property (readonly, nonatomic) NSArray<BZRReceiptTransactionInfo *> *transactions;
 
 /// Date and time the application was originally acquired from the AppStore.
 @property (readonly, nonatomic, nullable) NSDate *originalPurchaseDateTime;
