@@ -82,25 +82,47 @@ associated with a product identifier that appears in that set.
 A protocol that provides an interface of purchase related actions:
 purchasing of products, restoring purchases etc.
 
-### BZRStore
+## Bazaar's interface
 
-The main class of Bazaar. Implements both
-`BZRProductsInfoProvider` and `BZRProductsManager`. There should only be
-one instance of `BZRStore` and it should be shared amongst all the
-objects that need to have access to it.
+The integration with Bazaar mostly includes instantiating a single
+class - `BZRStore` Which implements two protocols: `BZRProductsInfoProvider`
+and `BZRProductsManager`.
 
-**Note** `BZRStore` should be created as soon as possible during the
-application runtime. This is because the products' prices are fetched
-in every run of the application. The earlier the prices are fetched,
-the shorter the user would have to wait when the application wants to
-show prices.
+### - BZRProductsInfoProvider
 
-### BZRStoreConfiguration
+A protocol that provides a read-only access to all sorts of information
+regarding user purchases through KVO compliant properties. The most
+interesting property is the one named `allowedProducts`, which
+is a set of product identifiers that the user is allowed to use. This means
+that the application should allow access to every product that is
+associated with a product identifier that appears in that set.
 
-`BZRStore` is initialized with an instance of `BZRStoreConfiguration`.
+### - BZRProductsManager
+
+A protocol that provides an interface to purchase-related actions:
+purchasing of products, restoring purchases etc.
+
+### Initialization of BZRStore 
+
+`BZRStore` is initialized with an instance of `BZRStoreConfiguration` by calling
+
+```objc
+- (instancetype)initWithConfiguration:(BZRStoreConfiguration *)configuration
+```
+
+There should be only a single instance of `BZRStore`, which should be 
+shared amongst all the objects that need to have access to it.
+
+**Note** The instance should be created as soon as possible during the
+application runtime. This is because the products prices are fetched
+in every run of the application. The sooner the prices are fetched,
+the shorter the user would have to wait when the application wants to show prices.
+
+### - BZRStoreConfiguration
+
 The convenience initializer of `BZRStoreConfiguration` is created with
 two parameters: the path to the product list JSON file and decryption key if the JSON file is
-[encrypted](#json-files-compression-and-encryption) . The format of the product list file is
+[encrypted](#json-files-compression-and-encryption). The format of the product list file is
 specified [below](#product-list-json-file).
 
 The purpose of this class is twofold:
@@ -109,6 +131,7 @@ The purpose of this class is twofold:
 - Providing a way to change the configuration easily. This is done by
   exposing all the classes that `BZRStore` needs from
   `BZRStoreConfiguration` as read-write properties.
+
 
 ## Product list JSON file
 
