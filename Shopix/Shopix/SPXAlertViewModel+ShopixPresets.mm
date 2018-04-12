@@ -24,14 +24,18 @@ using namespace spx;
 
 + (instancetype)successfulRestorationAlertWithAction:(LTVoidBlock)action
                                 subscriptionRestored:(BOOL)subscriptionRestored {
-  auto title = _LDefault(@"Restoration Completed",
-                         @"Title of an alert shown after successful restoration of user purchases");
+  auto title = subscriptionRestored ?
+      _LDefault(@"Restoration Completed",
+                @"Title of an alert shown after successful restoration of user purchases") :
+      _LDefault(@"No Active Subscription",
+                @"Title of an alert shown after successful purchase restoration attempt that "
+                "revealed that the user has no active subscription");
   auto message = subscriptionRestored ?
-            _LDefault(@"Your subscription was restored successfully",
-                      @"Message shown after successful subscription restoration") :
-            _LDefault(@"Your purchases were restored successfully, no active subscription found",
-                      @"Message shown after a successful products restoration, but no active "
-                       "subscription was found");
+      _LDefault(@"Your subscription was restored successfully",
+                @"Message shown after successful subscription restoration") :
+      _LDefault(@"Your purchases were restored successfully, no active subscription found",
+                @"Message shown after a successful products restoration, but no active "
+                "subscription was found");
   auto OKButtonTitle = _LDefault(@"OK", @"Title of a button shown in an information alert");
 
   return [SPXAlertViewModelBuilder builder]
