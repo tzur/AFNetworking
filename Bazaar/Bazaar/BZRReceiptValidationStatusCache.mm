@@ -5,12 +5,10 @@
 
 #import <LTKit/NSArray+Functional.h>
 
-#import "BZREvent.h"
 #import "BZRKeychainStorageMigrator.h"
 #import "BZRKeychainStorageRoute.h"
-#import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
-#import "BZRTimeProvider.h"
+#import "BZRValidatricksReceiptModelDeprecated.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -45,9 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptValidationStatusCache
 
-/// Storage key to which the cached cache entry will be written to. The cached entry is stored
-/// as an \c NSDictionary with two entries, one is the receipt validation status and the other is
-/// a timestamp.
+/// Storage key to which the cache entry is written to. The cached entry is stored as an
+/// \c NSDictionary with two entries, one is the receipt validation status and the other is a
+/// timestamp.
 NSString * const kCachedReceiptValidationStatusStorageKey = @"receiptValidationStatus";
 
 /// Key to a \c BZRReceiptValidationStatus in the cached entry.
@@ -82,35 +80,20 @@ NSString * const kValidationDateKey = @"validationDate";
 #pragma mark Storing receipt validation status
 #pragma mark -
 
-- (BOOL)storeCacheEntry:
-    (nullable BZRReceiptValidationStatusCacheEntry *)receiptValidationStatusCacheEntry
-    applicationBundleID:(NSString *)applicationBundleID
-    error:(NSError * __autoreleasing *)error {
-  NSDictionary<NSString *, NSObject *> *receiptValidationStatusForCaching;
-  if (receiptValidationStatusCacheEntry) {
+- (BOOL)storeCacheEntry:(nullable BZRReceiptValidationStatusCacheEntry *)cacheEntry
+    applicationBundleID:(NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
+  NSDictionary<NSString *, id> * _Nullable receiptValidationStatusForCaching;
+
+  if (cacheEntry) {
     receiptValidationStatusForCaching = @{
-      kValidationStatusKey: receiptValidationStatusCacheEntry.receiptValidationStatus,
-      kValidationDateKey: receiptValidationStatusCacheEntry.cachingDateTime
+      kValidationStatusKey: cacheEntry.receiptValidationStatus,
+      kValidationDateKey: cacheEntry.cachingDateTime
     };
   }
-  return [self storeValue:receiptValidationStatusForCaching
-          forKey:kCachedReceiptValidationStatusStorageKey applicationBundleID:applicationBundleID
-          error:error];
-}
 
-- (BOOL)storeValue:(nullable id)value forKey:(NSString *)key
-    applicationBundleID:(NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSError *storageError;
-  BOOL success = [self.keychainStorageRoute setValue:value forKey:key
-                                         serviceName:applicationBundleID error:&storageError];
-  if (!success && error) {
-    auto description =
-        [NSString stringWithFormat:@"Failed to store the value: %@ for key: %@", value, key];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeStoringToKeychainStorageFailed
-                       underlyingError:storageError description:@"%@", description];
-  }
-
-  return success;
+  return [self.keychainStorageRoute setValue:receiptValidationStatusForCaching
+                                      forKey:kCachedReceiptValidationStatusStorageKey
+                                 serviceName:applicationBundleID error:error];
 }
 
 #pragma mark -
@@ -119,17 +102,77 @@ NSString * const kValidationDateKey = @"validationDate";
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSDictionary<NSString *, id> * _Nullable cachedReceiptValidationStatus =
+  NSDictionary<NSString *, id> * _Nullable receiptValidationStatusDictionary =
       (NSDictionary *)[self.keychainStorageRoute
                        valueForKey:kCachedReceiptValidationStatusStorageKey
                        serviceName:applicationBundleID error:error];
+  auto _Nullable cacheEntry =
+      [self cacheEntryFromCachedDictionary:receiptValidationStatusDictionary error:error];
 
-  if (!cachedReceiptValidationStatus) {
+  if ([receiptValidationStatusDictionary[kValidationStatusKey] isKindOfClass:
+       BZRValidatricksReceiptValidationStatus.class]) {
+    [self storeCacheEntry:cacheEntry applicationBundleID:applicationBundleID error:nil];
+  }
+
+  return cacheEntry;
+}
+
+- (nullable BZRReceiptValidationStatusCacheEntry *)cacheEntryFromCachedDictionary:
+    (nullable NSDictionary<NSString *, id> *)cachedDictionary
+    error:(NSError * __autoreleasing *)error {
+  if (!cachedDictionary) {
     return nil;
   }
+
+  BZRReceiptValidationStatus * _Nullable receiptValidationStatus;
+  if ([cachedDictionary[kValidationStatusKey] isKindOfClass:
+      BZRValidatricksReceiptValidationStatus.class]) {
+    receiptValidationStatus =
+        [self validatricksReceiptValidationStatusToBaseClass:cachedDictionary[kValidationStatusKey]
+                                                       error:error];
+
+    if (!receiptValidationStatus) {
+      return nil;
+    }
+  } else {
+    receiptValidationStatus = cachedDictionary[kValidationStatusKey];
+  }
+
   return [[BZRReceiptValidationStatusCacheEntry alloc]
-          initWithReceiptValidationStatus:cachedReceiptValidationStatus[kValidationStatusKey]
-          cachingDateTime:cachedReceiptValidationStatus[kValidationDateKey]];
+          initWithReceiptValidationStatus:lt::nn(receiptValidationStatus)
+          cachingDateTime:cachedDictionary[kValidationDateKey]];
+}
+
+- (nullable BZRReceiptValidationStatus *)validatricksReceiptValidationStatusToBaseClass:
+    (BZRValidatricksReceiptValidationStatus *)validatricksReceiptValidationStatus
+    error:(NSError * __autoreleasing *)error {
+  auto _Nullable receiptValidationStatusJSON =
+      [MTLJSONAdapter JSONDictionaryFromModel:validatricksReceiptValidationStatus];
+  if (!receiptValidationStatusJSON) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONSerializationFailed
+                             description:@"Failed to serialize model of class %@ into JSON. Model "
+                                         "is: %@", validatricksReceiptValidationStatus.class,
+                                         validatricksReceiptValidationStatus];
+    }
+    return nil;
+  }
+
+  NSError *serializationError;
+  BZRReceiptValidationStatus * _Nullable receiptValidationStatus =
+      [MTLJSONAdapter modelOfClass:BZRReceiptValidationStatus.class
+                fromJSONDictionary:receiptValidationStatusJSON error:&serializationError];
+  if (!receiptValidationStatus) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                         underlyingError:serializationError
+                             description:@"Failed to deserialize JSON into model of class %@. JSON "
+                                         "is: %@", BZRReceiptValidationStatus.class,
+                                         receiptValidationStatusJSON];
+    }
+  }
+
+  return receiptValidationStatus;
 }
 
 @end

@@ -21,6 +21,8 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeModelJSONDeserializationFailed,
   /// Deserialization of a JSON object from raw data has failed.
   BZRErrorCodeJSONDataDeserializationFailed,
+  /// Serialization of a model instance to JSON dictionary has failed.
+  BZRErrorCodeModelJSONSerializationFailed,
   /// Failure during data archiving.
   BZRErrorCodeKeychainStorageArchivingError,
   /// Loading data from storage has failed.
