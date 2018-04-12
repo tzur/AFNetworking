@@ -59,16 +59,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)scaledBy:(CGFloat)scale {
   DVNBrushModel *model = [self copy];
-  [model setValue:@(scale * self.scale) forKey:@keypath(self, scale)];
   [model setValue:[NSValue valueWithLTCGFloatInterval:scale * self.scaleRange]
-           forKey:@keypath(self, scaleRange)];
+           forKey:@keypath(model, scaleRange)];
+  // Ensure that the scale is updated after the scale range since the scale range might be clamped.
+  [model setValue:@(model.scaleRange.clamp(scale * self.scale).value_or(model.scaleRange.inf()))
+           forKey:@keypath(model, scale)];
   return model;
 }
 
 - (instancetype)copyWithScale:(CGFloat)scale {
   DVNBrushModel *model = [self copy];
-  [model setValue:@(self.scaleRange.clamp(scale).value_or(self.scaleRange.inf()))
-           forKey:@keypath(self, scale)];
+  [model setValue:@(model.scaleRange.clamp(scale).value_or(model.scaleRange.inf()))
+           forKey:@keypath(model, scale)];
   return model;
 }
 
@@ -84,6 +86,10 @@ LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVer
 
 DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
                               std::numeric_limits<CGFloat>::max());
+
+- (void)setScaleRange:(lt::Interval<CGFloat>)scaleRange {
+  _scaleRange = *scaleRange.clampedTo([[self class] allowedScaleRange]);
+}
 
 @end
 

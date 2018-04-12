@@ -34,17 +34,103 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// Returns a copy of the receiver with the exception of the given \c randomInitialSeed.
 - (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed;
 
+/// Returns a copy of the receiver with the exception of the given \c initialSeed.
+- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed;
+
+/// Returns a copy of the receiver with the exception of the given \c spacing, clamped to the
+/// \c allowedSpacingRange of the receiver.
+- (instancetype)copyWithSpacing:(CGFloat)spacing;
+
+/// Returns a copy of the receiver with the exception of the given \c numberOfSamplesPerSequence,
+/// clamped to the \c allowedNumberOfSamplesPerSequenceRange of the receiver.
+- (instancetype)copyWithNumberOfSamplesPerSequence:(NSUInteger)numberOfSamplesPerSequence;
+
+/// Returns a copy of the receiver with the exception of the given \c sequenceDistance, clamped to
+/// the \c allowedSequenceDistanceRange of the receiver.
+- (instancetype)copyWithSequenceDistance:(CGFloat)sequenceDistance;
+
+/// Returns a copy of the receiver with the exception of the given \c countRange, clamped to the
+/// \c allowedCountRange of the receiver.
+- (instancetype)copyWithCountRange:(lt::Interval<NSUInteger>)countRange;
+
+/// Returns a copy of the receiver with the exception of the given \c distanceJitterFactorRange,
+/// clamped to the \c allowedDistanceJitterFactorRange of the receiver.
+- (instancetype)copyWithDistanceJitterFactorRange:(lt::Interval<CGFloat>)distanceJitterFactorRange;
+
+/// Returns a copy of the receiver with the exception of the given \c angleRange, clamped to the
+/// \c allowedAngleRange of the receiver.
+- (instancetype)copyWithAngleRange:(lt::Interval<CGFloat>)angleRange;
+
+/// Returns a copy of the receiver with the exception of the given \c scaleJitterRange, clamped to
+/// the \c allowedScaleJitterRange of the receiver.
+- (instancetype)copyWithScaleJitterRange:(lt::Interval<CGFloat>)scaleJitterRange;
+
+/// Returns a copy of the receiver with the exception of the given \c taperingLengths,
+/// component-wise clamped to the \c allowedTaperingLengthRange of the receiver.
+- (instancetype)copyWithTaperingLengths:(LTVector2)taperingLengths;
+
+/// Returns a copy of the receiver with the exception of the given \c minimumTaperingScaleFactor,
+/// clamped to the \c allowedMinimumTaperingScaleFactorRange of the receiver.
+- (instancetype)copyWithMinimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor;
+
+/// Returns a copy of the receiver with the exception of the given \c taperingFactors, clamped to
+/// the \c allowedTaperingFactorRange of the receiver.
+- (instancetype)copyWithTaperingFactors:(LTVector2)taperingFactors;
+
 /// Returns a copy of the receiver with the exception of the given \c flow, clamped to the
 /// \c flowRange of the receiver.
 - (instancetype)copyWithFlow:(CGFloat)flow;
+
+/// Returns a copy of the receiver with the exception of the given \c flowExponent, clamped to the
+/// range of positive numbers.
+- (instancetype)copyWithFlowExponent:(CGFloat)flowExponent;
 
 /// Returns a copy of the receiver with the exception of the given \c color, component-wise clamped
 /// to range <tt>[0, 1]</tt>.
 - (instancetype)copyWithColor:(LTVector3)color;
 
+/// Returns a copy of the receiver with the exception of the given \c brightnessJitter, clamped to
+/// the \c allowedBrightnessJitterRange of the receiver.
+- (instancetype)copyWithBrightnessJitter:(CGFloat)brightnessJitter;
+
+/// Returns a copy of the receiver with the exception of the given \c hueJitter, clamped to the
+/// \c allowedHueJitterRange of the receiver.
+- (instancetype)copyWithHueJitter:(CGFloat)hueJitter;
+
+/// Returns a copy of the receiver with the exception of the given \c saturationJitter, clamped to
+/// the \c allowedSaturationJitterRange of the receiver.
+- (instancetype)copyWithSaturationJitter:(CGFloat)saturationJitter;
+
+/// Returns a copy of the receiver with the exception of the given \c sourceSamplingMode.
+- (instancetype)copyWithSourceSamplingMode:(DVNSourceSamplingMode *)sourceSamplingMode;
+
+/// Returns a copy of the receiver with the exception of the given \c brushTipImageGridSize,
+/// component-wise rounded to the closest positive integer number.
+- (instancetype)copyWithBrushTipImageGridSize:(LTVector2)brushTipImageGridSize;
+
+/// Returns a copy of the receiver with the exception of the given \c sourceImageURL.
+- (instancetype)copyWithSourceImageURL:(NSURL *)sourceImageURL;
+
+/// Returns a copy of the receiver with the exception of the given \c sourceImageIsNonPremultiplied
+/// indication.
+- (instancetype)copyWithSourceImageIsNonPremultiplied:(BOOL)sourceImageIsNonPremultiplied;
+
+/// Returns a copy of the receiver with the exception of the given \c maskImageURL.
+- (instancetype)copyWithMaskImageURL:(NSURL *)maskImageURL;
+
+/// Returns a copy of the receiver with the exception of the given \c blendMode.
+- (instancetype)copyWithBlendMode:(DVNBlendMode *)blendMode;
+
 /// Returns a copy of the receiver with the exception of the given \c edgeAvoidance, clamped to the
 /// \c allowedEdgeAvoidanceRange of this class.
 - (instancetype)copyWithEdgeAvoidance:(CGFloat)edgeAvoidance;
+
+/// Returns a copy of the receiver with the exception of the given \c edgeAvoidanceGuideImageURL.
+- (instancetype)copyWithEdgeAvoidanceGuideImageURL:(NSURL *)edgeAvoidanceGuideImageURL;
+
+/// Returns a copy of the receiver with the exception of the given \c edgeAvoidanceSamplingOffset,
+/// clamped to the \c allowedEdgeAvoidanceSamplingOffsetRange of this class.
+- (instancetype)copyWithEdgeAvoidanceSamplingOffset:(CGFloat)edgeAvoidanceSamplingOffset;
 
 #pragma mark -
 #pragma mark Randomness
@@ -402,7 +488,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 @property (readonly, nonatomic) NSURL *maskImageURL;
 
 #pragma mark -
-#pragma mark Edge Avoidance
+#pragma mark Blending
 #pragma mark -
 
 /// Blend mode to be used to blend the rendered brush stroke geometry with the render target.

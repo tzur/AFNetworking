@@ -3,6 +3,7 @@
 
 #import "DVNBrushModelV1.h"
 
+#import <LTEngine/NSValue+LTInterval.h>
 #import <LTEngine/NSValueTransformer+LTEngine.h>
 
 #import "DVNBlendMode.h"
@@ -162,35 +163,181 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 }
 
 #pragma mark -
-#pragma mark Public API
+#pragma mark Public API - Copying
 #pragma mark -
 
 - (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed {
   DVNBrushModelV1 *model = [self copy];
-  [model setValue:@(randomInitialSeed) forKey:@keypath(self, randomInitialSeed)];
+  [model setValue:@(randomInitialSeed) forKey:@keypath(model, randomInitialSeed)];
+  return model;
+}
+
+- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(initialSeed) forKey:@keypath(model, initialSeed)];
+  return model;
+}
+
+- (instancetype)copyWithSpacing:(CGFloat)spacing {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(spacing) forKey:@keypath(model, spacing)];
+  return model;
+}
+
+- (instancetype)copyWithNumberOfSamplesPerSequence:(NSUInteger)numberOfSamplesPerSequence {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(numberOfSamplesPerSequence) forKey:@keypath(model, numberOfSamplesPerSequence)];
+  return model;
+}
+
+- (instancetype)copyWithSequenceDistance:(CGFloat)sequenceDistance {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(sequenceDistance) forKey:@keypath(model, sequenceDistance)];
+  return model;
+}
+
+- (instancetype)copyWithCountRange:(lt::Interval<NSUInteger>)countRange {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:[NSValue valueWithLTNSUIntegerInterval:countRange]
+           forKey:@keypath(model, countRange)];
+  return model;
+}
+
+- (instancetype)copyWithDistanceJitterFactorRange:(lt::Interval<CGFloat>)distanceJitterFactorRange {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:[NSValue valueWithLTCGFloatInterval:distanceJitterFactorRange]
+           forKey:@keypath(model, distanceJitterFactorRange)];
+  return model;
+}
+
+- (instancetype)copyWithAngleRange:(lt::Interval<CGFloat>)angleRange {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:[NSValue valueWithLTCGFloatInterval:angleRange]
+           forKey:@keypath(model, angleRange)];
+  return model;
+}
+
+- (instancetype)copyWithScaleJitterRange:(lt::Interval<CGFloat>)scaleJitterRange {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:[NSValue valueWithLTCGFloatInterval:scaleJitterRange]
+           forKey:@keypath(model, scaleJitterRange)];
+  return model;
+}
+
+- (instancetype)copyWithTaperingLengths:(LTVector2)taperingLengths {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:$(taperingLengths) forKey:@keypath(model, taperingLengths)];
+  return model;
+}
+
+- (instancetype)copyWithMinimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(minimumTaperingScaleFactor) forKey:@keypath(model, minimumTaperingScaleFactor)];
+  return model;
+}
+
+- (instancetype)copyWithTaperingFactors:(LTVector2)taperingFactors {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:$(taperingFactors) forKey:@keypath(model, taperingFactors)];
   return model;
 }
 
 - (instancetype)copyWithFlow:(CGFloat)flow {
   DVNBrushModelV1 *model = [self copy];
-  [model setValue:@(self.flowRange.clamp(flow).value_or(self.flowRange.inf()))
-           forKey:@keypath(self, flow)];
+  [model setValue:@(model.flowRange.clamp(flow).value_or(model.flowRange.inf()))
+           forKey:@keypath(model, flow)];
+  return model;
+}
+
+- (instancetype)copyWithFlowExponent:(CGFloat)flowExponent {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(flowExponent) forKey:@keypath(model, flowExponent)];
   return model;
 }
 
 - (instancetype)copyWithColor:(LTVector3)color {
   DVNBrushModelV1 *model = [self copy];
-  [model setValue:$(std::clamp(color, 0, 1)) forKey:@keypath(self, color)];
+  [model setValue:$(std::clamp(color, 0, 1)) forKey:@keypath(model, color)];
+  return model;
+}
+
+- (instancetype)copyWithBrightnessJitter:(CGFloat)brightnessJitter {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(brightnessJitter) forKey:@keypath(model, brightnessJitter)];
+  return model;
+}
+
+- (instancetype)copyWithHueJitter:(CGFloat)hueJitter {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(hueJitter) forKey:@keypath(model, hueJitter)];
+  return model;
+}
+
+- (instancetype)copyWithSaturationJitter:(CGFloat)saturationJitter {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(saturationJitter) forKey:@keypath(model, saturationJitter)];
+  return model;
+}
+
+- (instancetype)copyWithSourceSamplingMode:(DVNSourceSamplingMode *)sourceSamplingMode {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:sourceSamplingMode forKey:@keypath(model, sourceSamplingMode)];
+  return model;
+}
+
+- (instancetype)copyWithBrushTipImageGridSize:(LTVector2)brushTipImageGridSize {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:$(brushTipImageGridSize) forKey:@keypath(model, brushTipImageGridSize)];
+  return model;
+}
+
+- (instancetype)copyWithSourceImageURL:(NSURL *)sourceImageURL {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:sourceImageURL forKey:@keypath(model, sourceImageURL)];
+  return model;
+}
+
+- (instancetype)copyWithSourceImageIsNonPremultiplied:(BOOL)sourceImageIsNonPremultiplied {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(sourceImageIsNonPremultiplied)
+           forKey:@keypath(model, sourceImageIsNonPremultiplied)];
+  return model;
+}
+
+- (instancetype)copyWithMaskImageURL:(NSURL *)maskImageURL {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:maskImageURL forKey:@keypath(model, maskImageURL)];
+  return model;
+}
+
+- (instancetype)copyWithBlendMode:(DVNBlendMode *)blendMode {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:blendMode forKey:@keypath(model, blendMode)];
   return model;
 }
 
 - (instancetype)copyWithEdgeAvoidance:(CGFloat)edgeAvoidance {
   DVNBrushModelV1 *model = [self copy];
-  lt::Interval<CGFloat> edgeAvoidanceRange = [[self class] allowedEdgeAvoidanceRange];
-  [model setValue:@(edgeAvoidanceRange.clamp(edgeAvoidance).value_or(edgeAvoidanceRange.inf()))
-           forKey:@keypath(self, edgeAvoidance)];
+  [model setValue:@(edgeAvoidance) forKey:@keypath(model, edgeAvoidance)];
   return model;
 }
+
+- (instancetype)copyWithEdgeAvoidanceGuideImageURL:(NSURL *)edgeAvoidanceGuideImageURL {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:edgeAvoidanceGuideImageURL forKey:@keypath(model, edgeAvoidanceGuideImageURL)];
+  return model;
+}
+
+- (instancetype)copyWithEdgeAvoidanceSamplingOffset:(CGFloat)edgeAvoidanceSamplingOffset {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(edgeAvoidanceSamplingOffset)
+           forKey:@keypath(model, edgeAvoidanceSamplingOffset)];
+  return model;
+}
+
+#pragma mark -
+#pragma mark Public API - Image URL Property Keys
+#pragma mark -
 
 + (NSArray<NSString *> *)imageURLPropertyKeys {
   return @[@instanceKeypath(DVNBrushModelV1, sourceImageURL),
@@ -199,32 +346,130 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 }
 
 DVNClosedRangeClassProperty(NSUInteger, allowedInitialSeed, AllowedInitialSeed, 0, NSUIntegerMax);
+
 DVNClosedRangeClassProperty(CGFloat, allowedSpacing, AllowedSpacing, 0.001,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setSpacing:(CGFloat)spacing {
+  _spacing = *[[self class] allowedSpacingRange].clamp(spacing);
+}
+
 DVNClosedRangeClassProperty(NSUInteger, allowedNumberOfSamplesPerSequence,
                             AllowedNumberOfSamplesPerSequence, 1, NSUIntegerMax);
+
+- (void)setNumberOfSamplesPerSequence:(NSUInteger)numberOfSamplesPerSequence {
+  _numberOfSamplesPerSequence =
+      *[[self class] allowedNumberOfSamplesPerSequenceRange].clamp(numberOfSamplesPerSequence);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedSequenceDistance, AllowedSequenceDistance, 0.001,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setSequenceDistance:(CGFloat)sequenceDistance {
+  _sequenceDistance = *[[self class] allowedSequenceDistanceRange].clamp(sequenceDistance);
+}
+
 DVNClosedRangeClassProperty(NSUInteger, allowedCount, AllowedCount, 0, NSUIntegerMax);
+
+- (void)setCountRange:(lt::Interval<NSUInteger>)countRange {
+  _countRange = *countRange.clampedTo([[self class] allowedCountRange]);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedDistanceJitterFactor, AllowedDistanceJitterFactor, 0,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setDistanceJitterFactorRange:(lt::Interval<CGFloat>)distanceJitterFactorRange {
+  _distanceJitterFactorRange =
+      *distanceJitterFactorRange.clampedTo([[self class] allowedDistanceJitterFactorRange]);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedAngle, AllowedAngle, 0, 4 * M_PI);
+
+- (void)setAngleRange:(lt::Interval<CGFloat>)angleRange {
+  _angleRange = *angleRange.clampedTo([[self class] allowedAngleRange]);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedScaleJitter, AllowedScaleJitter, 0,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setScaleJitterRange:(lt::Interval<CGFloat>)scaleJitterRange {
+  _scaleJitterRange = *scaleJitterRange.clampedTo([[self class] allowedScaleJitterRange]);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedTaperingLength, AllowedTaperingLength, 0,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setTaperingLengths:(LTVector2)taperingLengths {
+  lt::Interval<CGFloat> range = [[self class] allowedTaperingLengthRange];
+  _taperingLengths = std::clamp(taperingLengths, *range.min(), *range.max());
+}
+
 DVNLeftOpenRangeClassProperty(CGFloat, allowedMinimumTaperingScaleFactor,
                               AllowedMinimumTaperingScaleFactor, 0, 1);
+
+- (void)setMinimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
+  _minimumTaperingScaleFactor =
+      *[[self class] allowedMinimumTaperingScaleFactorRange].clamp(minimumTaperingScaleFactor);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedTaperingFactor, AllowedTaperingFactor, 0, 1);
+
+- (void)setTaperingFactors:(LTVector2)taperingFactors {
+  lt::Interval<CGFloat> range = [[self class] allowedTaperingFactorRange];
+  _taperingFactors = std::clamp(taperingFactors, *range.min(), *range.max());
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedFlow, AllowedFlow, 0, 1);
+
+- (void)setFlow:(CGFloat)flow {
+  _flow = *[[self class] allowedFlowRange].clamp(flow);
+}
+
 DVNLeftOpenRangeClassProperty(CGFloat, allowedFlowExponent, AllowedFlowExponent, 0, 20);
+
+- (void)setFlowExponent:(CGFloat)flowExponent {
+  _flowExponent = *[[self class] allowedFlowExponentRange].clamp(flowExponent);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedBrightnessJitter, AllowedBrightnessJitter, 0, 1);
+
+- (void)setBrightnessJitter:(CGFloat)brightnessJitter {
+  _brightnessJitter = *[[self class] allowedBrightnessJitterRange].clamp(brightnessJitter);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedHueJitter, AllowedHueJitter, 0, 1);
+
+- (void)setHueJitter:(CGFloat)hueJitter {
+  _hueJitter = *[[self class] allowedHueJitterRange].clamp(hueJitter);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedSaturationJitter, AllowedSaturationJitter, 0, 1);
+
+- (void)setSaturationJitter:(CGFloat)saturationJitter {
+  _saturationJitter = *[[self class] allowedSaturationJitterRange].clamp(saturationJitter);
+}
+
+- (void)setBrushTipImageGridSize:(LTVector2)brushTipImageGridSize {
+  lt::Interval<NSUInteger> range = lt::Interval<NSUInteger>::positiveNumbers();
+  _brushTipImageGridSize =
+      LTVector2(*range.clamp(std::round(std::max<CGFloat>(brushTipImageGridSize.x, 0))),
+                *range.clamp(std::round(std::max<CGFloat>(brushTipImageGridSize.y, 0))));
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedEdgeAvoidance, AllowedEdgeAvoidance, 0, 1);
+
+- (void)setEdgeAvoidance:(CGFloat)edgeAvoidance {
+  _edgeAvoidance = *[[self class] allowedEdgeAvoidanceRange].clamp(edgeAvoidance);
+}
+
 DVNClosedRangeClassProperty(CGFloat, allowedEdgeAvoidanceSamplingOffset,
                             AllowedEdgeAvoidanceSamplingOffset, 0,
                             std::numeric_limits<CGFloat>::max());
+
+- (void)setEdgeAvoidanceSamplingOffset:(CGFloat)edgeAvoidanceSamplingOffset {
+  _edgeAvoidanceSamplingOffset =
+      *[[self class] allowedEdgeAvoidanceSamplingOffsetRange].clamp(edgeAvoidanceSamplingOffset);
+}
 
 @end
 
