@@ -28,15 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
                    error:(NSError * __autoreleasing *)error {
-  BOOL success;
-
   [session createPreviewLayer];
   [session.session beginConfiguration];
   session.session.sessionPreset = AVCaptureSessionPresetInputPriority;
 
-  success = [session setupVideoInputWithDevice:preset.camera.device
-                                formatStrategy:preset.formatStrategy error:error] &&
-  [session setupVideoOutputWithError:error];
+  BOOL success = [session setupVideoInputWithDevice:preset.camera.device
+                                     formatStrategy:preset.formatStrategy error:error];
+  if (!success) {
+    return NO;
+  }
+
+  success = [session setupVideoOutputWithError:error];
   if (!success) {
     return NO;
   }
@@ -47,10 +49,17 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
+  session.session.automaticallyConfiguresApplicationAudioSession =
+      preset.automaticallyConfiguresApplicationAudioSession;
+
   if (preset.enableAudio) {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-    success = [session setupAudioInputWithDevice:device error:error] &&
-    [session setupAudioOutputWithError:error];
+    success = [session setupAudioInputWithDevice:device error:error];
+    if (!success) {
+      return NO;
+    }
+
+    success = [session setupAudioOutputWithError:error];
     if (!success) {
       return NO;
     }
