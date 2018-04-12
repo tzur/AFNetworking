@@ -5,12 +5,14 @@
 
 #import <LTKit/NSData+HexString.h>
 
+#import "INTAnalytricksSubscriptionInfoChanged.h"
 #import "INTAppRunCountUpdatedEvent.h"
 #import "INTDeviceInfoLoadedEvent.h"
 #import "INTDeviceTokenChangedEvent.h"
 #import "INTEventLogger.h"
 #import "INTEventMetadata.h"
 #import "INTEventTransformer.h"
+#import "INTSubscriptionInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -109,6 +111,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)appRunCountUpdated:(NSNumber *)runCount {
   [self reportLowLevelEvent:[[INTAppRunCountUpdatedEvent alloc] initWithRunCount:runCount]];
+}
+
+- (void)subscriptionInfoDidChanged:(nullable INTSubscriptionInfo *)subscriptionInfo {
+  auto event = [[INTAnalytricksSubscriptionInfoChanged alloc]
+                initWithIsAvailable:(subscriptionInfo != nil)
+                subscriptionStatus:subscriptionInfo.subscriptionStatus.name
+                productID:subscriptionInfo.productID transactionID:subscriptionInfo.transactionID
+                purchaseDate:subscriptionInfo.purchaseDate
+                expirationDate:subscriptionInfo.expirationDate
+                cancellationDate:subscriptionInfo.cancellationDate];
+
+  [self reportLowLevelEvent:event];
 }
 
 @end

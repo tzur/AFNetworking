@@ -8,6 +8,7 @@
 
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"
+#import "INTSubscriptionInfo.h"
 
 @interface INTFakeDeviceInfoObserverDelegate : NSObject <INTDeviceInfoObserverDelegate>
 @property (strong, nonatomic) INTDeviceInfoObserver *reportingDeviceInfoObserver;
@@ -16,6 +17,7 @@
 @property (nonatomic) BOOL reportedIsNewRevision;
 @property (strong, nonatomic, nullable) NSData *reportedDeviceToken;
 @property (strong, nonatomic, nullable) NSNumber *reportedAppRunCount;
+@property (strong, nonatomic, nullable) INTSubscriptionInfo *reportedSubscriptionInfo;
 @end
 
 @implementation INTFakeDeviceInfoObserverDelegate
@@ -36,6 +38,10 @@
 
 - (void)appRunCountUpdated:(NSNumber *)appRunCount {
   self.reportedAppRunCount = appRunCount;
+}
+
+- (void)subscriptionInfoDidChanged:(INTSubscriptionInfo *)subscriptionInfo {
+  self.reportedSubscriptionInfo = subscriptionInfo;
 }
 
 @end
@@ -148,6 +154,51 @@ it(@"should increment app run count when run count exists in a given storage", ^
   observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
                                                             delegate:delegate];
   expect(delegate.reportedAppRunCount).to.equal(@2);
+});
+
+it(@"should report a new subscription info if none was stored", ^{
+  auto subscriptionInfo =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"bar" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:nil];
+  [observer setSubscriptionInfo:subscriptionInfo];
+  expect(delegate.reportedSubscriptionInfo).to.equal(subscriptionInfo);
+});
+
+it(@"should persist subscription info over instances", ^{
+  auto subscriptionInfo =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"bar" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:nil];
+  [observer setSubscriptionInfo:subscriptionInfo];
+  delegate = [[INTFakeDeviceInfoObserverDelegate alloc] init];
+  observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
+                                                            delegate:delegate];
+  [observer setSubscriptionInfo:subscriptionInfo];
+  expect(delegate.reportedSubscriptionInfo).to.beNil();
+});
+
+it(@"should report changes to the subscription info", ^{
+  auto subscriptionInfo =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"bar" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:nil];
+  [observer setSubscriptionInfo:subscriptionInfo];
+  expect(delegate.reportedSubscriptionInfo).to.equal(subscriptionInfo);
+
+  auto newSubscriptionInfo =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"baz" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:nil];
+  [observer setSubscriptionInfo:newSubscriptionInfo];
+  expect(delegate.reportedSubscriptionInfo).to.equal(newSubscriptionInfo);
+
+  [observer setSubscriptionInfo:nil];
+  expect(delegate.reportedSubscriptionInfo).to.equal(nil);
 });
 
 SpecEnd

@@ -7,6 +7,7 @@
 
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoSource.h"
+#import "INTSubscriptionInfo.h"
 #import "NSUUID+Zero.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,7 +24,10 @@ static NSString * const kINTStorageDeviceTokenKey = @"DeviceToken";
 
 /// Key in the storage that holds the \c NSNumber that is the number of times the app had launched
 /// on the device.
-static NSString * const kINTStorageAppRunCount = @"AppRunCount";
+static NSString * const kINTStorageAppRunCountKey = @"AppRunCount";
+
+/// Key in the storage that holds the \c INTSubscriptionInfo.
+static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
 
 @interface INTDeviceInfoObserver ()
 
@@ -61,11 +65,11 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 }
 
 - (void)updateRunCount {
-  NSNumber *runCount = [self loadStoredObjectForKey:kINTStorageAppRunCount type:NSNumber.class]
+  NSNumber *runCount = [self loadStoredObjectForKey:kINTStorageAppRunCountKey type:NSNumber.class]
       ?: @0;
   runCount = @([runCount integerValue] + 1);
 
-  [self.storage setObject:runCount forKey:kINTStorageAppRunCount];
+  [self.storage setObject:runCount forKey:kINTStorageAppRunCountKey];
   [self.delegate appRunCountUpdated:runCount];
 }
 
@@ -94,23 +98,25 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 }
 
 - (nullable INTDeviceInfo *)loadStoredDeviceInfo {
-  NSData * _Nullable cachedData = [self loadStoredObjectForKey:kINTStorageDeviceInfoKey
-                                                          type:NSData.class];
+  return [self loadArchivedObjectForKey:kINTStorageDeviceInfoKey class:INTDeviceInfo.class];
+}
+
+- (nullable id)loadArchivedObjectForKey:(NSString *)key class:(Class)expectedClass {
+  NSData * _Nullable cachedData = [self loadStoredObjectForKey:key type:NSData.class];
   if (!cachedData) {
     return nil;
   }
 
   NSError *error;
-  INTDeviceInfo * _Nullable result =
+  id _Nullable result =
       [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:cachedData error:&error];
   if (!result) {
-    LogError(@"Failed to load model from key %@, error: %@", kINTStorageDeviceInfoKey, error);
+    LogError(@"Failed to load model from key %@, error: %@", key, error);
     return nil;
   }
 
-  if (![result isKindOfClass:INTDeviceInfo.class]) {
-    LogError(@"Expected cached model to be of type: %@, got: %@", INTDeviceInfo.class,
-             [result class]);
+  if (![result isKindOfClass:expectedClass]) {
+    LogError(@"Expected cached model to be of type: %@, got: %@", expectedClass, [result class]);
     return nil;
   }
 
@@ -162,6 +168,24 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
   [self.storage setObject:[NSKeyedArchiver archivedDataWithRootObject:deviceInfo]
                    forKey:kINTStorageDeviceInfoKey];
   [self.storage setObject:revisionID.UUIDString forKey:kINTStorageDeviceInfoRevisionIDKey];
+}
+
+- (void)setSubscriptionInfo:(nullable INTSubscriptionInfo *)subscriptionInfo {
+  @synchronized (self) {
+    auto _Nullable storedSubscriptionInfo = [self loadStoredSubscriptionInfo];
+    if (storedSubscriptionInfo == subscriptionInfo ||
+        [storedSubscriptionInfo isEqual:subscriptionInfo]) {
+      return;
+    }
+
+    [self.delegate subscriptionInfoDidChanged:subscriptionInfo];
+    [self.storage setObject:[NSKeyedArchiver archivedDataWithRootObject:subscriptionInfo]
+                     forKey:kINTSubscriptionInfoKey];
+  }
+}
+
+- (nullable INTSubscriptionInfo *)loadStoredSubscriptionInfo {
+  return [self loadArchivedObjectForKey:kINTSubscriptionInfoKey class:INTSubscriptionInfo.class];
 }
 
 @end

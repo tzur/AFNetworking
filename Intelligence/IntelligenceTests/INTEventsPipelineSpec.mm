@@ -3,6 +3,7 @@
 
 #import "INTEventsPipeline.h"
 
+#import <Intelligence/INTAnalytricksSubscriptionInfoChanged.h>
 #import <Intelligence/INTAppRunCountUpdatedEvent.h>
 #import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <LTKit/NSArray+Functional.h>
@@ -13,6 +14,7 @@
 #import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
 #import "INTRecorderLogger.h"
+#import "INTSubscriptionInfo.h"
 
 @interface INTFakeAppLifecycleTimer : NSObject <INTAppLifecycleTimer>
 @property (readwrite, nonatomic) INTAppRunTimes appRunTimes;
@@ -269,6 +271,54 @@ it(@"should report app run count updated event", ^{
   auto expected = @[
     [[INTAppRunCountUpdatedEvent alloc] initWithRunCount:@1],
     [[INTAppRunCountUpdatedEvent alloc] initWithRunCount:@3]
+  ];
+
+  expect(logger.eventsLogged).will.equal(expected);
+});
+
+it(@"should report subscription info changed events", ^{
+  auto passThroughTransformerBlock =
+      ^(NSDictionary<NSString *, id> *, INTAppContext *, INTEventMetadata *, id event) {
+        return intl::TransformerBlockResult(nil, @[event]);
+      };
+
+  auto intelligenceEvents = [[INTEventsPipeline alloc] initWithConfiguration:{
+    .contextGeneratorBlock = INTIdentityAppContextGenerator(),
+    .transformerBlocks = {
+      passThroughTransformerBlock
+    },
+    .eventLoggers = @[logger],
+    .appLifecycleTimer = timer
+  }];
+
+  auto subscriptionInfo1 =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"bar" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:nil];
+  auto subscriptionInfo2 =
+      [[INTSubscriptionInfo alloc]
+       initWithSubscriptionStatus:$(INTSubscriptionStatusActive) productID:@"foo"
+       transactionID:@"baz" purchaseDate:[NSDate date] expirationDate:[NSDate date]
+       cancellationDate:[NSDate date]];
+
+  [intelligenceEvents subscriptionInfoDidChanged:subscriptionInfo1];
+  [intelligenceEvents subscriptionInfoDidChanged:subscriptionInfo2];
+  [intelligenceEvents subscriptionInfoDidChanged:nil];
+
+  auto expected = @[
+    [[INTAnalytricksSubscriptionInfoChanged alloc]
+     initWithIsAvailable:YES subscriptionStatus:@"INTSubscriptionStatusActive" productID:@"foo"
+     transactionID:@"bar" purchaseDate:subscriptionInfo1.purchaseDate
+     expirationDate:subscriptionInfo1.expirationDate cancellationDate:nil],
+    [[INTAnalytricksSubscriptionInfoChanged alloc]
+     initWithIsAvailable:YES subscriptionStatus:@"INTSubscriptionStatusActive" productID:@"foo"
+     transactionID:@"baz" purchaseDate:subscriptionInfo2.purchaseDate
+     expirationDate:subscriptionInfo2.expirationDate
+     cancellationDate:subscriptionInfo2.cancellationDate],
+    [[INTAnalytricksSubscriptionInfoChanged alloc]
+     initWithIsAvailable:NO subscriptionStatus:nil productID:nil transactionID:nil purchaseDate:nil
+     expirationDate:nil cancellationDate:nil]
   ];
 
   expect(logger.eventsLogged).will.equal(expected);
