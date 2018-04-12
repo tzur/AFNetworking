@@ -11,6 +11,7 @@
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
+#import "BZRAppStoreLocaleProvider.h"
 #import "BZRCachedContentFetcher.h"
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRExternalTriggerReceiptValidator.h"
@@ -86,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to fetch products metadata.
 @property (readonly, nonatomic) BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 
+/// Provider used to provide the current user's App Store locale.
+@property (readonly, nonatomic) BZRAppStoreLocaleProvider *appStoreLocaleProvider;
+
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
@@ -141,6 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
+    _appStoreLocaleProvider = configuration.appStoreLocaleProvider;
     _keychainStorage = configuration.keychainStorage;
     _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                    initWithValidationStatusProvider:self.validationStatusProvider];
@@ -154,6 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
     [self setupAllowedProductsUpdates];
+    [self setupAppStoreLocaleUpdates];
   }
   return self;
 }
@@ -278,20 +284,9 @@ NS_ASSUME_NONNULL_BEGIN
   @synchronized(self) {
     _productDictionary = productDictionary;
 
-    [self updateAppStoreLocaleFromProductDictionary:productDictionary];
     [self createVariantSelectorWithProductDictionary:productDictionary];
     [self addPreAcquiredProductsToAcquiredViaSubscription:productDictionary];
   }
-}
-
-- (void)updateAppStoreLocaleFromProductDictionary:(BZRProductDictionary *)productDictionary {
-  BZRProductList *productsWithPriceInfo =
-      [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
-        return product.underlyingProduct != nil;
-      }];
-
-  self.validationParametersProvider.appStoreLocale =
-      productsWithPriceInfo.firstObject.underlyingProduct.priceLocale;
 }
 
 - (void)createVariantSelectorWithProductDictionary:(BZRProductDictionary *)productDictionary {
@@ -377,6 +372,17 @@ NS_ASSUME_NONNULL_BEGIN
       return product.identifier;
     }]
     lt_set];
+}
+
+- (void)setupAppStoreLocaleUpdates {
+  @weakify(self);
+  [[[RACObserve(self.appStoreLocaleProvider, appStoreLocale)
+      ignore:nil]
+      takeUntil:self.rac_willDeallocSignal]
+      subscribeNext:^(NSLocale *appStoreLocale) {
+        @strongify(self);
+        self.validationParametersProvider.appStoreLocale = appStoreLocale;
+      }];
 }
 
 #pragma mark -

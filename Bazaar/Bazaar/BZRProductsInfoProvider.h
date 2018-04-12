@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// thread.
 @property (readonly, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
 
-/// AppStore locale. KVO-compliant. Changes may be delivered on an arbitrary thread.
+/// App Store locale. KVO-compliant. Changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) NSLocale *appStoreLocale;
 
 /// Dictionary that contains products information based only on the products JSON file.

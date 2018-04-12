@@ -4,9 +4,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
-    BZRAllowedProductsProvider, BZRKeychainStorage,
-    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRStoreKitFacade,
-    BZRStoreKitCachedMetadataFetcher, LTPath;
+    BZRAllowedProductsProvider, BZRAppStoreLocaleProvider, BZRKeychainStorage,
+    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager,
+    BZRStoreKitCachedMetadataFetcher, BZRStoreKitFacade, LTPath;
 
 @protocol BZRMultiAppSubscriptionClassifier, BZRProductsProvider, BZRProductContentFetcher,
     BZRProductsVariantSelectorFactory, BZRReceiptValidationParametersProvider;
@@ -121,7 +121,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
 /// Fetcher used to fetch products metadata.
-@property (readonly, nonatomic) BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
+@property (strong, nonatomic) BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
+
+/// Provider used to provide the current user's App Store locale.
+@property (strong, nonatomic) BZRAppStoreLocaleProvider *appStoreLocaleProvider;
 
 /// Activator used to control the periodic receipt validation.
 @property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
@@ -142,10 +145,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
 /// Storage used to store and retrieve values from keychain storage.
-@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+@property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// An object used to identify multi-app subscription products.
-@property (readonly, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
+@property (strong, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
     multiAppSubscriptionClassifier;
 
 @end

@@ -291,6 +291,10 @@
 		B9FD09D31D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD09D11D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm */; };
 		B9FD0A021D645DBF00523BB4 /* BZRTimeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */; };
 		B9FF3C6E1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FF3C6D1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm */; };
+		CD28822D2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD28822B2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm */; };
+		CD28822E2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = CD28822C2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h */; };
+		CD28832A205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD288329205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm */; };
+		CD2883B9205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2883B7205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.mm */; };
 		CD315C891F28C7EC005C3152 /* BZRRetryContentFetcherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD315C881F28C7EC005C3152 /* BZRRetryContentFetcherSpec.mm */; };
 		CD3A72B41EF281CD00FA4FBD /* BZRRemoteContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CD3A72B21EF281CD00FA4FBD /* BZRRemoteContentFetcher.h */; };
 		CD3A72B51EF281CD00FA4FBD /* BZRRemoteContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD3A72B31EF281CD00FA4FBD /* BZRRemoteContentFetcher.mm */; };
@@ -1073,6 +1077,11 @@
 		B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeProviderSpec.mm; sourceTree = "<group>"; };
 		B9FF3C6C1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeAllowedProductsProvider.h; sourceTree = "<group>"; };
 		B9FF3C6D1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeAllowedProductsProvider.mm; sourceTree = "<group>"; };
+		CD28822B2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRAppStoreLocaleProvider.mm; sourceTree = "<group>"; };
+		CD28822C2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRAppStoreLocaleProvider.h; sourceTree = "<group>"; };
+		CD288329205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRAppStoreLocaleProviderSpec.mm; sourceTree = "<group>"; };
+		CD2883B7205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeAppStoreLocaleProvider.mm; sourceTree = "<group>"; };
+		CD2883B8205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRFakeAppStoreLocaleProvider.h; sourceTree = "<group>"; };
 		CD315C881F28C7EC005C3152 /* BZRRetryContentFetcherSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRRetryContentFetcherSpec.mm; sourceTree = "<group>"; };
 		CD3A72B21EF281CD00FA4FBD /* BZRRemoteContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRRemoteContentFetcher.h; sourceTree = "<group>"; };
 		CD3A72B31EF281CD00FA4FBD /* BZRRemoteContentFetcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRRemoteContentFetcher.mm; sourceTree = "<group>"; };
@@ -1609,6 +1618,8 @@
 				B9A850321DE1DF70001AA37C /* Products Variant Providers */,
 				B98505C21D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm */,
 				B9FCBA171E83BFC600A9CEDF /* BZRAllowedProductsProviderSpec.mm */,
+				CD2883B8205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.h */,
+				CD2883B7205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.mm */,
 				B93FC4651D58CB8F00A2170C /* BZRProductContentManagerSpec.mm */,
 				CD4BE05C201F165100C69C0D /* BZRStoreKitCachedMetadataFetcherSpec.mm */,
 				B964749E1FBC59610056510D /* BZRStoreKitMetadataFetcherSpec.mm */,
@@ -1894,6 +1905,7 @@
 			children = (
 				63F08B3C1FEAB4C90060B597 /* Base */,
 				65B939A61E251AD600C067A7 /* Internal */,
+				CD288329205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm */,
 				6347C6E3201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm */,
 				B973487B1D8C35CB006CF28A /* BZRStoreSpec.mm */,
 			);
@@ -1938,6 +1950,8 @@
 			children = (
 				65B939A51E251A4000C067A7 /* Base */,
 				65B939631E25151900C067A7 /* Internal */,
+				CD28822C2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h */,
+				CD28822B2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm */,
 				B90D4AF01FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.h */,
 				B90D4AF11FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.mm */,
 				B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */,
@@ -2175,6 +2189,7 @@
 				CDC75AA51F04DBEB00247591 /* BZRReceiptValidationStatusCache.h in Headers */,
 				B9C9C85020177B430035432E /* BZRPurchaseHelper.h in Headers */,
 				B9237ADE1D69D60C0069B4F1 /* BZRProductDownloadManager.h in Headers */,
+				CD28822E2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h in Headers */,
 				65D67B451D53AAA000B647ED /* BZRZipArchiver.h in Headers */,
 				65D67B491D53AB6A00B647ED /* BZRZipUnarchiver.h in Headers */,
 				6501EFE11D5B54EA007B76CC /* BZRZipArchiving.h in Headers */,
@@ -2738,6 +2753,7 @@
 				B9FCBA181E83BFC600A9CEDF /* BZRAllowedProductsProviderSpec.mm in Sources */,
 				B9D5208B1D8A842E009C8F9E /* BZRModifiedExpiryReceiptValidationStatusProviderSpec.mm in Sources */,
 				65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */,
+				CD28832A205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm in Sources */,
 				B9237B111D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm in Sources */,
 				CDC762F81F08DCBC00247591 /* BZRReceiptValidationStatusCacheSpec.mm in Sources */,
 				6347C6E4201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm in Sources */,
@@ -2807,6 +2823,7 @@
 				B9EF55451FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm in Sources */,
 				CD3A74381EF69DD400FA4FBD /* BZRMulticastContentFetcherSpec.mm in Sources */,
 				B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */,
+				CD2883B9205A878700E8B8D8 /* BZRFakeAppStoreLocaleProvider.mm in Sources */,
 				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
 				CDC7667B1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm in Sources */,
 				2E154D67B22875EDB41F3257 /* NSValueTransformer+BazaarSpec.mm in Sources */,
@@ -2838,6 +2855,7 @@
 				B9EF55021FCD8E0800083414 /* BZRKeychainStorageRoute.mm in Sources */,
 				B90F92EC1FE7AD0000986BA1 /* BZRMultiAppReceiptValidationStatusAggregator.mm in Sources */,
 				B9A851631DE2468F001AA37C /* BZRProductsVariantSelector.mm in Sources */,
+				CD28822D2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm in Sources */,
 				CD3A74091EF6989600FA4FBD /* BZRMulticastContentFetcher.mm in Sources */,
 				B9FD07FF1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.mm in Sources */,
 				6502EFA41D341809000CD68B /* BZRValidatricksReceiptModelDeprecated.mm in Sources */,
