@@ -140,74 +140,352 @@ context(@"copy constructors", ^{
 
   context(@"scale", ^{
     it(@"should return a copy scaled by a given scale", ^{
-      DVNBrushModelV1 *scaledModel = [model scaledBy:2];
-      expect(scaledModel.scale).to.equal(3);
-      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({2.5, 3.5})).to.beTruthy();
-      expect(scaledModel.spacing).to.equal(0.015625);
+      DVNBrushModelV1 *modelCopy = [model scaledBy:2];
+      expect(modelCopy.scale).to.equal(3);
+      expect(modelCopy.scaleRange == lt::Interval<CGFloat>::oc({2.5, 3.5})).to.beTruthy();
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
 
-    it(@"should return a copy with a given scale", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithScale:1.375];
-      expect(scaledModel.scale).to.equal(1.375);
-      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given scale", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithScale:1.375];
+      expect(modelCopy.scale).to.equal(1.375);
+      expect(modelCopy.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
 
-    it(@"should return a copy with a given scale, clamped to the scale range", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithScale:2];
-      expect(scaledModel.scale).to.equal(1.75);
-      expect(scaledModel.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given scale, clamped to the scale range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithScale:2];
+      expect(modelCopy.scale).to.equal(1.75);
+      expect(modelCopy.scaleRange == lt::Interval<CGFloat>::oc({1.25, 1.75})).to.beTruthy();
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
   });
 
   context(@"random initial seed indication", ^{
-    it(@"should return a copy with a given random initial seed indication", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithRandomInitialSeed:!model.randomInitialSeed];
-      expect(scaledModel.randomInitialSeed).to.equal(!model.randomInitialSeed);
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given random initial seed indication", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithRandomInitialSeed:!model.randomInitialSeed];
+      expect(modelCopy.randomInitialSeed).to.equal(!model.randomInitialSeed);
+      expect(modelCopy.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"initial seed", ^{
+    it(@"should return a copy with initial seed", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithInitialSeed:7];
+      expect(modelCopy.initialSeed).to.equal(7);
+      expect(modelCopy.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"spacing", ^{
+    it(@"should return a copy with spacing", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSpacing:7];
+      expect(modelCopy.spacing).toNot.equal(model.spacing);
+      expect(modelCopy.spacing).to.equal(7);
+    });
+
+    it(@"should return a copy with spacing, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSpacing:-1];
+      expect(modelCopy.spacing).toNot.equal(model.spacing);
+      expect(modelCopy.spacing).to.equal(0.001);
+    });
+  });
+
+  context(@"number of samples per sequence", ^{
+    it(@"should return a copy with number of samples per sequence", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithNumberOfSamplesPerSequence:7];
+      expect(modelCopy.numberOfSamplesPerSequence).toNot.equal(model.numberOfSamplesPerSequence);
+      expect(modelCopy.numberOfSamplesPerSequence).to.equal(7);
+    });
+  });
+
+  context(@"sequence distance", ^{
+    it(@"should return a copy with sequence distance", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSequenceDistance:7];
+      expect(modelCopy.sequenceDistance).toNot.equal(model.sequenceDistance);
+      expect(modelCopy.sequenceDistance).to.equal(7);
+    });
+
+    it(@"should return a copy with sequence distance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSequenceDistance:-1];
+      expect(modelCopy.sequenceDistance).toNot.equal(model.sequenceDistance);
+      expect(modelCopy.sequenceDistance).to.equal(0.001);
+    });
+  });
+
+  context(@"count range", ^{
+    it(@"should return a copy with count range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithCountRange:lt::Interval<NSUInteger>({1, 7})];
+      expect(modelCopy.countRange != model.countRange).to.beTruthy();
+      expect(modelCopy.countRange == lt::Interval<NSUInteger>({1, 7})).to.beTruthy();
+    });
+  });
+
+  context(@"distance jitter factor range", ^{
+    it(@"should return a copy with distance jitter factor range", ^{
+      DVNBrushModelV1 *modelCopy =
+          [model copyWithDistanceJitterFactorRange:lt::Interval<CGFloat>({1, 7})];
+      expect(modelCopy.distanceJitterFactorRange != model.distanceJitterFactorRange)
+          .to.beTruthy();
+      expect(modelCopy.distanceJitterFactorRange == lt::Interval<CGFloat>({1, 7})).to.beTruthy();
+    });
+
+    it(@"should return a copy with distance jitter factor range, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy =
+          [model copyWithDistanceJitterFactorRange:lt::Interval<CGFloat>({-1, 7})];
+      expect(modelCopy.distanceJitterFactorRange != model.distanceJitterFactorRange).to.beTruthy();
+      expect(modelCopy.distanceJitterFactorRange == lt::Interval<CGFloat>({0, 7})).to.beTruthy();
+    });
+  });
+
+  context(@"angle range", ^{
+    it(@"should return a copy with angle range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithAngleRange:lt::Interval<CGFloat>({1, 2})];
+      expect(modelCopy.angleRange != model.angleRange).to.beTruthy();
+      expect(modelCopy.angleRange == lt::Interval<CGFloat>({1, 2})).to.beTruthy();
+    });
+
+    it(@"should return a copy with distance jitter factor range, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithAngleRange:lt::Interval<CGFloat>({-1, 20})];
+      expect(modelCopy.angleRange != model.angleRange).to.beTruthy();
+      expect(modelCopy.angleRange == lt::Interval<CGFloat>({0, 4 * M_PI})).to.beTruthy();
+    });
+  });
+
+  context(@"scale jitter factor range", ^{
+    it(@"should return a copy with scale jitter factor range", ^{
+      DVNBrushModelV1 *modelCopy =
+      [model copyWithScaleJitterRange:lt::Interval<CGFloat>({1, 7})];
+      expect(modelCopy.scaleJitterRange != model.scaleJitterRange).to.beTruthy();
+      expect(modelCopy.scaleJitterRange == lt::Interval<CGFloat>({1, 7})).to.beTruthy();
+    });
+
+    it(@"should return a copy with scale jitter factor range, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy =
+      [model copyWithScaleJitterRange:lt::Interval<CGFloat>({-1, 7})];
+      expect(modelCopy.scaleJitterRange != model.scaleJitterRange).to.beTruthy();
+      expect(modelCopy.scaleJitterRange == lt::Interval<CGFloat>({0, 7})).to.beTruthy();
+    });
+  });
+
+  context(@"tapering lengths", ^{
+    it(@"should return a copy with tapering lengths", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithTaperingLengths:LTVector2(0.5, 0.75)];
+      expect(modelCopy.taperingLengths).toNot.equal(model.taperingLengths);
+      expect(modelCopy.taperingLengths).to.equal(LTVector2(0.5, 0.75));
+    });
+
+    it(@"should return a copy with tapering lengths, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithTaperingLengths:LTVector2(-0.5, 1.5)];
+      expect(modelCopy.taperingLengths).toNot.equal(model.taperingLengths);
+      expect(modelCopy.taperingLengths).to.equal(LTVector2(0, 1.5));
+    });
+  });
+
+  context(@"minimum tapering scale factor", ^{
+    it(@"should return a copy with minimum tapering scale factor", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithMinimumTaperingScaleFactor:0.5];
+      expect(modelCopy.minimumTaperingScaleFactor).toNot.equal(model.minimumTaperingScaleFactor);
+      expect(modelCopy.minimumTaperingScaleFactor).to.equal(0.5);
+    });
+
+    it(@"should return a copy with minimum tapering scale factor, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithMinimumTaperingScaleFactor:7];
+      expect(modelCopy.minimumTaperingScaleFactor).toNot.equal(model.minimumTaperingScaleFactor);
+      expect(modelCopy.minimumTaperingScaleFactor).to.equal(1);
+    });
+  });
+
+  context(@"tapering factors", ^{
+    it(@"should return a copy with tapering factors", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithTaperingFactors:LTVector2(0.5, 0.75)];
+      expect(modelCopy.taperingFactors).toNot.equal(model.taperingFactors);
+      expect(modelCopy.taperingFactors).to.equal(LTVector2(0.5, 0.75));
+    });
+
+    it(@"should return a copy with tapering factors, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithTaperingFactors:LTVector2(-0.5, 0.75)];
+      expect(modelCopy.taperingFactors).toNot.equal(model.taperingFactors);
+      expect(modelCopy.taperingFactors).to.equal(LTVector2(0, 0.75));
     });
   });
 
   context(@"flow", ^{
-    it(@"should return a copy with a given flow", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0.07];
-      expect(scaledModel.flow).to.equal(0.07);
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with flow", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithFlow:0.07];
+      expect(modelCopy.flow).to.equal(0.07);
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
 
-    it(@"should return a copy with a given flow, clamped to the flow range", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithFlow:0];
-      expect(scaledModel.flow).to.equal(0.0625);
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with flow, clamped to the flow range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithFlow:0];
+      expect(modelCopy.flow).to.equal(0.0625);
+      expect(modelCopy.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"flow exponent", ^{
+    it(@"should return a copy with flow exponent", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithFlowExponent:7];
+      expect(modelCopy.flowExponent).toNot.equal(model.flowExponent);
+      expect(modelCopy.flowExponent).to.equal(7);
+    });
+
+    it(@"should return a copy with flow exponent, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithFlowExponent:-7];
+      expect(modelCopy.flowExponent).toNot.equal(model.flowExponent);
+      expect(modelCopy.flowExponent).to.equal(std::nextafter((CGFloat)0, (CGFloat)1));
     });
   });
 
   context(@"color", ^{
-    it(@"should return a copy with a given color", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithColor:LTVector3(0.25, 0.5, 0.75)];
-      expect(scaledModel.color).to.equal(LTVector3(0.25, 0.5, 0.75));
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given color", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithColor:LTVector3(0.25, 0.5, 0.75)];
+      expect(modelCopy.color).to.equal(LTVector3(0.25, 0.5, 0.75));
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
 
-    it(@"should return a copy with a given edge avoidance, clamped to the allowed range", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithColor:LTVector3(0.25, 0.5, 1.75)];
-      expect(scaledModel.color).to.equal(LTVector3(0.25, 0.5, 1));
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given edge avoidance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithColor:LTVector3(0.25, 0.5, 1.75)];
+      expect(modelCopy.color).to.equal(LTVector3(0.25, 0.5, 1));
+      expect(modelCopy.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"brightness jitter", ^{
+    it(@"should return a copy with brightness jitter", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithBrightnessJitter:0.5];
+      expect(modelCopy.brightnessJitter).toNot.equal(model.brightnessJitter);
+      expect(modelCopy.brightnessJitter).to.equal(0.5);
+    });
+
+    it(@"should return a copy with brightness jitter, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithBrightnessJitter:1.5];
+      expect(modelCopy.brightnessJitter).toNot.equal(model.brightnessJitter);
+      expect(modelCopy.brightnessJitter).to.equal(1);
+    });
+  });
+
+  context(@"hue jitter", ^{
+    it(@"should return a copy with hue jitter", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithHueJitter:0.5];
+      expect(modelCopy.hueJitter).toNot.equal(model.hueJitter);
+      expect(modelCopy.hueJitter).to.equal(0.5);
+    });
+
+    it(@"should return a copy with hue jitter, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithHueJitter:1.5];
+      expect(modelCopy.hueJitter).toNot.equal(model.hueJitter);
+      expect(modelCopy.hueJitter).to.equal(1);
+    });
+  });
+
+  context(@"saturation jitter", ^{
+    it(@"should return a copy with saturation jitter", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSaturationJitter:0.5];
+      expect(modelCopy.saturationJitter).toNot.equal(model.saturationJitter);
+      expect(modelCopy.saturationJitter).to.equal(0.5);
+    });
+
+    it(@"should return a copy with saturation jitter, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithSaturationJitter:1.5];
+      expect(modelCopy.saturationJitter).toNot.equal(model.saturationJitter);
+      expect(modelCopy.saturationJitter).to.equal(1);
+    });
+  });
+
+  context(@"source sampling mode", ^{
+    it(@"should return a copy with given source sampling mode", ^{
+      DVNBrushModelV1 *modelCopy =
+          [model copyWithSourceSamplingMode:$(DVNSourceSamplingModeFixed)];
+      expect(modelCopy.sourceSamplingMode).toNot.equal(model.sourceSamplingMode);
+      expect(modelCopy.sourceSamplingMode).to.equal($(DVNSourceSamplingModeFixed));
+    });
+  });
+
+  context(@"grid size", ^{
+    it(@"should return a copy with grid size", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithBrushTipImageGridSize:LTVector2(8, 9)];
+      expect(modelCopy.brushTipImageGridSize).toNot.equal(model.brushTipImageGridSize);
+      expect(modelCopy.brushTipImageGridSize).to.equal(LTVector2(8, 9));
+    });
+
+    it(@"should return a copy with grid size, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithBrushTipImageGridSize:LTVector2(-7, 8.7)];
+      expect(modelCopy.brushTipImageGridSize).toNot.equal(model.brushTipImageGridSize);
+      expect(modelCopy.brushTipImageGridSize).to.equal(LTVector2(1, 9));
+    });
+  });
+
+  context(@"source image URL", ^{
+    it(@"should return a copy with given source image URL", ^{
+      NSURL *url = [NSURL URLWithString:@"foo"];
+      DVNBrushModelV1 *modelCopy = [model copyWithSourceImageURL:url];
+      expect(modelCopy.sourceImageURL).toNot.equal(model.sourceImageURL);
+      expect(modelCopy.sourceImageURL).to.equal(url);
+    });
+  });
+
+  context(@"source image is non premultiplied indication", ^{
+    it(@"should return a copy with given source image is non premultiplied indication", ^{
+      DVNBrushModelV1 *modelCopy =
+          [model copyWithSourceImageIsNonPremultiplied:!model.sourceImageIsNonPremultiplied];
+      expect(modelCopy.sourceImageIsNonPremultiplied)
+          .to.equal(!model.sourceImageIsNonPremultiplied);
+    });
+  });
+
+  context(@"mask image URL", ^{
+    it(@"should return a copy with given mask image URL", ^{
+      NSURL *url = [NSURL URLWithString:@"foo"];
+      DVNBrushModelV1 *modelCopy = [model copyWithMaskImageURL:url];
+      expect(modelCopy.maskImageURL).toNot.equal(model.maskImageURL);
+      expect(modelCopy.maskImageURL).to.equal(url);
+    });
+  });
+
+  context(@"blend mode", ^{
+    it(@"should return a copy with given blend mode", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithBlendMode:$(DVNBlendModeDarken)];
+      expect(modelCopy.blendMode).to.equal($(DVNBlendModeDarken));
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
   });
 
   context(@"edge avoidance", ^{
-    it(@"should return a copy with a given edge avoidance", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:0.5];
-      expect(scaledModel.edgeAvoidance).to.equal(0.5);
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given edge avoidance", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithEdgeAvoidance:0.5];
+      expect(modelCopy.edgeAvoidance).to.equal(0.5);
+      expect(modelCopy.spacing).to.equal(0.015625);
     });
 
-    it(@"should return a copy with a given edge avoidance, clamped to the allowed range", ^{
-      DVNBrushModelV1 *scaledModel = [model copyWithEdgeAvoidance:-1];
-      expect(scaledModel.edgeAvoidance).to.equal(0);
-      expect(scaledModel.spacing).to.equal(0.015625);
+    it(@"should return a copy with given edge avoidance, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithEdgeAvoidance:-1];
+      expect(modelCopy.edgeAvoidance).to.equal(0);
+      expect(modelCopy.spacing).to.equal(0.015625);
+    });
+  });
+
+  context(@"edge avoidance guide image URL", ^{
+    it(@"should return a copy with given edge avoidance guide image URL", ^{
+      NSURL *url = [NSURL URLWithString:@"foo"];
+      DVNBrushModelV1 *modelCopy = [model copyWithEdgeAvoidanceGuideImageURL:url];
+      expect(modelCopy.edgeAvoidanceGuideImageURL).toNot.equal(model.edgeAvoidanceGuideImageURL);
+      expect(modelCopy.edgeAvoidanceGuideImageURL).to.equal(url);
+    });
+  });
+
+  context(@"edge avoidance sampling offset", ^{
+    it(@"should return a copy with edge avoidance sampling offset", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithEdgeAvoidanceSamplingOffset:7];
+      expect(modelCopy.edgeAvoidanceSamplingOffset).toNot.equal(model.edgeAvoidanceSamplingOffset);
+      expect(modelCopy.edgeAvoidanceSamplingOffset).to.equal(7);
+    });
+
+    it(@"should return a copy with flow exponent, clamped to the allowed range", ^{
+      DVNBrushModelV1 *modelCopy = [model copyWithEdgeAvoidanceSamplingOffset:-7];
+      expect(modelCopy.edgeAvoidanceSamplingOffset).toNot.equal(model.edgeAvoidanceSamplingOffset);
+      expect(modelCopy.edgeAvoidanceSamplingOffset).to.equal(0);
     });
   });
 });
