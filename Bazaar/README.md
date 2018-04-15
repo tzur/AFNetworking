@@ -173,7 +173,8 @@ Bazaar's product list provider supports compressed and encrypted file using LZFS
 compression and AES-128 algorithm for encryption.
 The suggested flow for achieving this with Foundations tools is as the following: 
 - Add a User-Defined setting at the project Build Settings named `JSON_ENCRYPTION_KEY` with a valid
-hex string of a length of 32 bytes.
+hex string of a length of 32 characters, for example ```349be3c634bc67f0e9d8da966bae3c09```.
+
 - Make sure the [python modules](#installing-pip) `pycrypto` and `pylzfse` are installed. If needed,
 run `pip install pycrypto` and `pip install git+https://github.com/dimkr/pylzfse`.
 - Add a Build Rule to your project for files with names matching `*.secure.json` that runs custom
