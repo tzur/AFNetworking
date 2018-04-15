@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns the App Store locale of the application with \c bundleID. If the App Store locale was
 /// not found \c nil will be returned. If there was an error \c nil will be returned and \c error
-/// will be popuplated with an appropriate error.
+/// will be populated with an appropriate error.
 - (nullable NSLocale *)appStoreLocaleForBundleID:(NSString *)bundleID error:(NSError **)error;
 
 @end

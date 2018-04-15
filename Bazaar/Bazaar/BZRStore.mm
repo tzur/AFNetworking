@@ -25,7 +25,6 @@
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel+ProductPurchased.h"
-#import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitCachedMetadataFetcher.h"
@@ -75,10 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c variantSelectorFactory is called which returns a new \c BZRProductsVariantSelector. If the
 /// selector was created successfully, \c variantSelector is set to that selector.
 @property (strong, atomic) id<BZRProductsVariantSelector> variantSelector;
-
-/// Provider used to provide validation parameters sent to validatricks.
-@property (readonly, nonatomic) id<BZRReceiptValidationParametersProvider>
-    validationParametersProvider;
 
 /// Provider used to provide products the user is allowed to use.
 @property (readonly, nonatomic) BZRAllowedProductsProvider *allowedProductsProvider;
@@ -146,7 +141,6 @@ NS_ASSUME_NONNULL_BEGIN
     _storeKitFacade = configuration.storeKitFacade;
     _variantSelectorFactory = configuration.variantSelectorFactory;
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
-    _validationParametersProvider = configuration.validationParametersProvider;
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
@@ -163,7 +157,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
     [self setupAllowedProductsUpdates];
-    [self setupAppStoreLocaleUpdates];
   }
   return self;
 }
@@ -196,7 +189,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal<BZREvent *> *)appStoreLocaleChangedEvents {
-  return [[[RACObserve(self, validationParametersProvider.appStoreLocale)
+  return [[[RACObserve(self, appStoreLocaleProvider.appStoreLocale)
       distinctUntilChanged]
       skip:1]
       map:^BZREvent *(NSLocale * _Nullable appStoreLocale) {
@@ -214,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
   // We want to wait for the first value of the App Store locale that is fetched from the products'
   // metadata before doing validation that is triggered from the completed transactions signal.
   auto appStoreLocaleFetchedSignal =
-      [[RACObserve(self.validationParametersProvider, appStoreLocale) skip:1] take:1];
+      [[RACObserve(self.appStoreLocaleProvider, appStoreLocale) skip:1] take:1];
 
   @weakify(self);
   auto triggerSignal = [appStoreLocaleFetchedSignal then:^{
@@ -370,17 +363,6 @@ NS_ASSUME_NONNULL_BEGIN
     lt_set];
 }
 
-- (void)setupAppStoreLocaleUpdates {
-  @weakify(self);
-  [[[RACObserve(self.appStoreLocaleProvider, appStoreLocale)
-      ignore:nil]
-      takeUntil:self.rac_willDeallocSignal]
-      subscribeNext:^(NSLocale *appStoreLocale) {
-        @strongify(self);
-        self.validationParametersProvider.appStoreLocale = appStoreLocale;
-      }];
-}
-
 #pragma mark -
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
@@ -442,7 +424,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable NSLocale *)appStoreLocale {
-  return self.validationParametersProvider.appStoreLocale;
+  return self.appStoreLocaleProvider.appStoreLocale;
 }
 
 #pragma mark -
@@ -983,7 +965,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet *)keyPathsForValuesAffectingAppStoreLocale {
   return [NSSet setWithObject:
-      @instanceKeypath(BZRStore, validationParametersProvider.appStoreLocale)];
+      @instanceKeypath(BZRStore, appStoreLocaleProvider.appStoreLocale)];
 }
 
 @end

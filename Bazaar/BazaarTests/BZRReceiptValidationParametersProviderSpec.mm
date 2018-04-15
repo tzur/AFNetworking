@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationParametersProvider.h"
 
-#import "BZRAppStoreLocaleCache.h"
+#import "BZRFakeAppStoreLocaleProvider.h"
 #import "BZRReceiptDataCache.h"
 #import "BZRReceiptValidationParameters.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -11,68 +11,20 @@
 SpecBegin(BZRReceiptValidationParametersProvider)
 
 __block BZRReceiptDataCache *receiptDataCache;
-__block BZRAppStoreLocaleCache *appStoreLocaleCache;
+__block BZRFakeAppStoreLocaleProvider *appStoreLocaleProvider;
 __block NSString *currentApplicationBundleID;
 __block NSString *userID;
 __block BZRReceiptValidationParametersProvider *parametersProvider;
 
 beforeEach(^{
   receiptDataCache = OCMClassMock([BZRReceiptDataCache class]);
-  appStoreLocaleCache = OCMClassMock([BZRAppStoreLocaleCache class]);
+  appStoreLocaleProvider = [[BZRFakeAppStoreLocaleProvider alloc] init];
   currentApplicationBundleID = @"foo";
   userID = @"bar";
   parametersProvider =
       [[BZRReceiptValidationParametersProvider alloc]
-       initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
+       initWithAppStoreLocaleProvider:appStoreLocaleProvider receiptDataCache:receiptDataCache
        currentApplicationBundleID:currentApplicationBundleID];
-});
-
-context(@"loading app store locale from cache", ^{
-  it(@"should be nil if app store locale not found in cache", ^{
-    expect([parametersProvider appStoreLocale]).to.beNil();
-  });
-
-  it(@"should be nil if there was an error loading the app store locale", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([appStoreLocaleCache appStoreLocaleForBundleID:currentApplicationBundleID
-                                                     error:[OCMArg setTo:error]]);
-
-    expect([parametersProvider appStoreLocale]).to.beNil();
-  });
-});
-
-context(@"storing app store locale to cache", ^{
-  it(@"should store app store locale to cache after it has been set", ^{
-    NSLocale *appStoreLocale = [NSLocale currentLocale];
-
-    parametersProvider.appStoreLocale = appStoreLocale;
-
-    OCMVerify([appStoreLocaleCache appStoreLocaleForBundleID:currentApplicationBundleID
-                                                       error:[OCMArg anyObjectRef]]);
-  });
-
-  it(@"should not store app store locale if the new value is identical to the old one", ^{
-    NSLocale *appStoreLocale = [NSLocale currentLocale];
-    parametersProvider.appStoreLocale = appStoreLocale;
-
-    OCMReject([appStoreLocaleCache appStoreLocaleForBundleID:currentApplicationBundleID
-                                                       error:[OCMArg anyObjectRef]]);
-
-    parametersProvider.appStoreLocale = [NSLocale currentLocale];
-  });
-});
-
-context(@"KVO-compliance", ^{
-  it(@"should update when app store locale changes", ^{
-    RACSignal *appStoreLocaleSignal = [RACObserve(parametersProvider, appStoreLocale) testRecorder];
-
-    parametersProvider.appStoreLocale = [NSLocale currentLocale];
-
-    expect(appStoreLocaleSignal).to.sendValues(@[
-      [NSNull null],
-      [NSLocale currentLocale]
-    ]);
-  });
 });
 
 context(@"providing receipt validation parameters", ^{
@@ -142,7 +94,7 @@ context(@"providing receipt validation parameters", ^{
         error:[OCMArg anyObjectRef]]).andReturn(receiptData);
 
     NSLocale *appStoreLocale = [NSLocale localeWithLocaleIdentifier:@"de_DE"];
-    OCMStub([appStoreLocaleCache appStoreLocaleForBundleID:@"bar"
+    OCMStub([appStoreLocaleProvider appStoreLocaleForBundleID:@"bar"
         error:[OCMArg anyObjectRef]]).andReturn(appStoreLocale);
 
     auto receiptValidationParameters =
@@ -153,19 +105,14 @@ context(@"providing receipt validation parameters", ^{
 
   it(@"should insert the current application's App Store locale from the property rather than from "
      "cache", ^{
-    NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-    NSData *receiptDataFromFile =
-        [@"Receipt Data from file" dataUsingEncoding:NSUTF8StringEncoding];
-    id mockData = OCMClassMock([NSData class]);
-    OCMStub([mockData dataWithContentsOfURL:receiptURL]).andReturn(receiptDataFromFile);
-
-    parametersProvider.appStoreLocale = [NSLocale currentLocale];
+    NSLocale *appStoreLocale = [NSLocale localeWithLocaleIdentifier:@"de_DE"];
+    appStoreLocaleProvider.appStoreLocale = appStoreLocale;
 
     auto receiptValidationParameters =
         [parametersProvider receiptValidationParametersForApplication:
          currentApplicationBundleID userID:userID];
 
-    expect(receiptValidationParameters.appStoreLocale).to.equal(parametersProvider.appStoreLocale);
+    expect(receiptValidationParameters.appStoreLocale).to.equal(appStoreLocale);
   });
 });
 

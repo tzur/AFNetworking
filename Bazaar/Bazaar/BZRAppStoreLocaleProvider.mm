@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZRAppStoreLocaleCache.h"
 #import "BZRProduct+StoreKit.h"
 #import "BZRProductsProvider.h"
 #import "BZRStoreKitMetadataFetcher.h"
@@ -13,25 +14,37 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRAppStoreLocaleProvider ()
 
+/// Cache used to store and retrieve App Store locale of multiple applications.
+@property (readonly, nonatomic) BZRAppStoreLocaleCache *appStoreLocaleCache;
+
 /// Provider used to provide the list of products.
 @property (readonly, nonatomic) id<BZRProductsProvider> productsProvider;
 
 /// Fetcher used to fetch the App Store locale from a list of products.
 @property (readonly, nonatomic) BZRStoreKitMetadataFetcher *metadataFetcher;
 
-/// App Store locale. KVO-compliant.
+/// App Store locale of the currently running application. KVO-compliant.
 @property (strong, readwrite, atomic, nullable) NSLocale *appStoreLocale;
+
+/// Bundle ID of the current application.
+@property (readonly, nonatomic) NSString *currentApplicationBundleID;
 
 @end
 
 @implementation BZRAppStoreLocaleProvider
 
-- (instancetype)initWithProductsProvider:(id<BZRProductsProvider>)productsProvider
-                         metadataFetcher:(BZRStoreKitMetadataFetcher *)metadataFetcher {
+- (instancetype)initWithCache:(BZRAppStoreLocaleCache *)appStoreLocaleCache
+             productsProvider:(id<BZRProductsProvider>)productsProvider
+              metadataFetcher:(BZRStoreKitMetadataFetcher *)metadataFetcher
+   currentApplicationBundleID:(NSString *)currentApplicationBundleID {
   if (self = [super init]) {
+    _appStoreLocaleCache = appStoreLocaleCache;
     _productsProvider = productsProvider;
     _metadataFetcher = metadataFetcher;
+    _currentApplicationBundleID = [currentApplicationBundleID copy];
 
+    _appStoreLocale = [self.appStoreLocaleCache
+                       appStoreLocaleForBundleID:self.currentApplicationBundleID error:nil];
     [self refreshAppStoreLocale];
   }
   return self;
@@ -39,18 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)refreshAppStoreLocale {
   @weakify(self);
-  [[[[self.productsProvider fetchProductList]
+  [[[[[self.productsProvider fetchProductList]
       map:^BZRProductList *(BZRProductList *productList) {
         return [productList lt_filter:^BOOL(BZRProduct *product) {
           return product.isSubscriptionProduct;
         }];
       }]
+      filter:^BOOL(BZRProductList *productList) {
+        return productList.count;
+      }]
       flattenMap:^RACSignal<NSLocale *> *(BZRProductList *productList) {
         @strongify(self);
-        if (!self) {
-          return [RACSignal empty];
-        }
-
         return [self fetchLocaleFromProductList:productList];
       }]
       subscribeNext:^(NSLocale *appStoreLocale) {
@@ -58,6 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
         if (appStoreLocale != self.appStoreLocale &&
             ![appStoreLocale isEqual:self.appStoreLocale]) {
           self.appStoreLocale = appStoreLocale;
+          [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
+                                               bundleID:self.currentApplicationBundleID
+                                                  error:nil];
         }
       }];
 }
@@ -92,6 +107,17 @@ NS_ASSUME_NONNULL_BEGIN
             }];
       }]
       retry:numberOfRetries];
+}
+
+- (BOOL)storeAppStoreLocale:(nullable NSLocale *)appStoreLocale bundleID:(NSString *)bundleID
+                      error:(NSError * __autoreleasing *)error {
+  return [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale bundleID:bundleID
+                                                 error:error];
+}
+
+- (nullable NSLocale *)appStoreLocaleForBundleID:(NSString *)bundleID
+                                           error:(NSError * __autoreleasing *)error {
+  return [self.appStoreLocaleCache appStoreLocaleForBundleID:bundleID error:error];
 }
 
 @end

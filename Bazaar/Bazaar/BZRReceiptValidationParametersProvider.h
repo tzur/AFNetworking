@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAppStoreLocaleCache, BZRReceiptDataCache, BZRReceiptValidationParameters;
+@class BZRAppStoreLocaleProvider, BZRReceiptDataCache, BZRReceiptValidationParameters;
 
 /// Protocol for providing \c BZRReceiptValidationParameters.
 @protocol BZRReceiptValidationParametersProvider
@@ -14,9 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
     (NSString *)applicationBundleID userID:(nullable NSString *)userID;
 
-/// App Store locale. KVO-compliant.
-@property (strong, atomic, nullable) NSLocale *appStoreLocale;
-
 @end
 
 /// Default implementation of \c BZRReceiptValidationParametersProvider.
@@ -25,12 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c appStoreLocaleCache, used to load App Store locale of multiple applications
-/// from cache. \c receiptDataCache is used to load receipt data of multiple applications from
+/// Initializes with \c appStoreLocaleProvider, used to provide App Store locale of multiple
+/// applications. \c receiptDataCache is used to load receipt data of multiple applications from
 /// cache. \c currentApplicationBundleID is the bundle ID of the current application.
-- (instancetype)initWithAppStoreLocaleCache:(BZRAppStoreLocaleCache *)appStoreLocaleCache
-                           receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-                 currentApplicationBundleID:(NSString *)currentApplicationBundleID;
+- (instancetype)initWithAppStoreLocaleProvider:(BZRAppStoreLocaleProvider *)appStoreLocaleProvider
+                              receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+                    currentApplicationBundleID:(NSString *)currentApplicationBundleID;
 
 @end
 
