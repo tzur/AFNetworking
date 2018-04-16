@@ -8,7 +8,9 @@
 #import <Fiber/RACSignal+Fiber.h>
 #import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
+#import <LTKit/LTUTICache.h>
 #import <LTKit/NSURL+Query.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "NSErrorCodes+Photons.h"
@@ -243,8 +245,12 @@ static const NSTimeInterval kAssetMaxAge = 86400;
         if (!progress.result) {
           return [[PTNProgress alloc] initWithProgress:@(progress.progress)];
         }
-        auto result = [[PTNDataBackedImageAsset alloc] initWithData:progress.result.content
-                                                   resizingStrategy:resizingStrategy];
+        static LTUTICache *utiCache = [LTUTICache sharedCache];
+        auto _Nullable uti = progress.result.metadata.MIMEType ?
+            [utiCache preferredUTIForMIMEType:progress.result.metadata.MIMEType] : nil;
+        auto result = [[PTNDataBackedImageAsset alloc]
+                       initWithData:progress.result.content uniformTypeIdentifier:uti
+                       resizingStrategy:resizingStrategy];
         auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
                                                  responseTime:[self.dateProvider date]
                                                     entityTag:nil];
@@ -269,8 +275,11 @@ static const NSTimeInterval kAssetMaxAge = 86400;
 #pragma mark -
 
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
-  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
-                                associatedDescriptor:descriptor]];
+  return [self fetchImageWithDescriptor:descriptor resizingStrategy:[PTNResizingStrategy identity]
+                                options:[PTNImageFetchOptions
+                                         optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
+                                         resizeMode:PTNImageResizeModeExact
+                                         includeMetadata:YES]];
 }
 
 #pragma mark -

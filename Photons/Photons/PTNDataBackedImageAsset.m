@@ -29,10 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNDataBackedImageAsset
 
-- (instancetype)initWithData:(NSData *)data resizer:(PTNImageResizer *)resizer
+@synthesize uniformTypeIdentifier = _uniformTypeIdentifier;
+
+- (instancetype)initWithData:(NSData *)data
+       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier
+                     resizer:(PTNImageResizer *)resizer
             resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   if (self = [super init]) {
     _data = data;
+    _uniformTypeIdentifier = uniformTypeIdentifier;
     _resizer = resizer;
     _resizingStrategy = resizingStrategy;
   }
@@ -40,9 +45,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithData:(NSData *)data
+       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier
             resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
-  return [self initWithData:data resizer:[[PTNImageResizer alloc] init]
+  return [self initWithData:data uniformTypeIdentifier:uniformTypeIdentifier
+                    resizer:[[PTNImageResizer alloc] init] resizingStrategy:resizingStrategy];
+}
+
+- (instancetype)initWithData:(NSData *)data resizer:(PTNImageResizer *)resizer
+            resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  return [self initWithData:data uniformTypeIdentifier:nil resizer:resizer
            resizingStrategy:resizingStrategy];
+}
+
+- (instancetype)initWithData:(NSData *)data
+            resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  return [self initWithData:data uniformTypeIdentifier:nil
+           resizingStrategy:resizingStrategy];
+}
+
+- (instancetype)initWithData:(NSData *)data
+       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier {
+  return [self initWithData:data uniformTypeIdentifier:uniformTypeIdentifier
+           resizingStrategy:[PTNResizingStrategy identity]];
 }
 
 - (instancetype)initWithData:(NSData *)data {
@@ -110,7 +134,9 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.data isEqual:object.data];
+  return [self.data isEqual:object.data] &&
+          (self.uniformTypeIdentifier == object.uniformTypeIdentifier ||
+           [self.uniformTypeIdentifier isEqualToString:object.uniformTypeIdentifier]);
 }
 
 - (NSUInteger)hash {
