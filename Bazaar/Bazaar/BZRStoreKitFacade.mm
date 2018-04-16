@@ -106,12 +106,8 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
       deliverOn:[RACScheduler scheduler]];
 }
 
-- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product {
-  return [self.purchaseManager purchaseProduct:product quantity:1];
-}
-
-- (RACSignal<SKPaymentTransaction *> *)purchaseConsumableProduct:(SKProduct *)product
-                                                        quantity:(NSUInteger)quantity {
+- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product
+                                              quantity:(NSUInteger)quantity {
   return [self.purchaseManager purchaseProduct:product quantity:quantity];
 }
 

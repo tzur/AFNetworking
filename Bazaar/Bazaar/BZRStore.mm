@@ -475,9 +475,23 @@ NS_ASSUME_NONNULL_BEGIN
                "product while the user is not a subscriber. Product id: %@", variantIdentifier];
           return [RACSignal error:error];
         }
-        return [self purchaseProductWithStoreKit:variantIdentifier];
+        return [self purchaseProductWithStoreKit:variantIdentifier quantity:1];
       }]
       setNameWithFormat:@"%@ -purchaseProduct", self];
+}
+
+- (RACSignal *)purchaseConsumableProduct:(NSString *)productIdentifier
+                                quantity:(NSUInteger)quantity {
+  static const NSUInteger kMaxQuantity = 10;
+
+  if (quantity > kMaxQuantity) {
+    auto description = [NSString stringWithFormat:@"Cannot purchase more than %lu products in one "
+                        "transaction (requested quantity: %lu).", kMaxQuantity, quantity];
+    return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeInvalidQuantityForPurchasing
+                                          description:@"%@", description]];
+  }
+
+  return [self purchaseProductWithStoreKit:productIdentifier quantity:quantity];
 }
 
 - (RACSignal<NSNumber *> *)isProductClearedForSale:(NSString *)productIdentifier {
@@ -510,10 +524,18 @@ NS_ASSUME_NONNULL_BEGIN
   return [subscriptionProduct enablesProductWithIdentifier:productIdentifier];
 }
 
-- (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {
-  SKProduct *product = self.productDictionary[productIdentifier].underlyingProduct;
+- (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier
+                                  quantity:(NSUInteger)quantity {
+  SKProduct * _Nullable product = self.productDictionary[productIdentifier].underlyingProduct;
+  if (!product) {
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidProductForPurchasing
+                               description:@"Received a request to purchase a product that doesn't "
+                  "exist or doesn't contain StoreKit product. Product id: %@", productIdentifier];
+    return [RACSignal error:error];
+  }
+
   @weakify(self);
-  return [[[[[[self.storeKitFacade purchaseProduct:product]
+  return [[[[[[self.storeKitFacade purchaseProduct:product quantity:quantity]
       doError:^(NSError *error) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:error.bzr_transaction];

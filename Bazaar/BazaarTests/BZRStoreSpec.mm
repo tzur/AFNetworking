@@ -550,7 +550,8 @@ context(@"purchasing products", ^{
         .andReturn([RACSignal empty]);
     OCMReject([acquiredViaSubscriptionProvider
                addAcquiredViaSubscriptionProduct:subscriptionIdentifier]);
-    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
+        .andReturn([RACSignal empty]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
@@ -571,7 +572,8 @@ context(@"purchasing products", ^{
         .andReturn([RACSignal empty]);
     OCMReject([acquiredViaSubscriptionProvider
                addAcquiredViaSubscriptionProduct:subscriptionIdentifier]);
-    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
+        .andReturn([RACSignal empty]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
@@ -592,7 +594,8 @@ context(@"purchasing products", ^{
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    OCMStub([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+    OCMStub([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
+        .andReturn([RACSignal empty]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
     OCMReject([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:OCMOCK_ANY]);
@@ -613,7 +616,7 @@ context(@"purchasing products", ^{
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
-    OCMReject([storeKitFacade purchaseProduct:OCMOCK_ANY]);
+    OCMReject([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1]);
     OCMExpect([acquiredViaSubscriptionProvider
                addAcquiredViaSubscriptionProduct:productIdentifier]);
 
@@ -679,12 +682,16 @@ context(@"purchasing products", ^{
             BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
         OCMStub([receiptValidationStatusProvider receiptValidationStatus])
             .andReturn(receiptValidationStatus);
+
+        BZRStubProductDictionaryToReturnProduct(product, productsProvider);
+        store = [[BZRStore alloc] initWithConfiguration:configuration];
       });
 
       it(@"should send non-critical error event when store kit facade fails", ^{
         LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
         NSError *error = [NSError lt_errorWithCode:1337];
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal error:error]);
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+            .andReturn([RACSignal error:error]);
 
         expect([store purchaseProduct:productIdentifier]).will.finish();
         expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
@@ -698,7 +705,7 @@ context(@"purchasing products", ^{
         NSError *error = [NSError lt_errorWithCode:1337];
         SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
         OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
             .andReturn([RACSignal return:transaction]);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal error:error]);
@@ -711,7 +718,8 @@ context(@"purchasing products", ^{
       });
 
       it(@"should not add product to acquired via subscription if subscription is expired", ^{
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+            .andReturn([RACSignal empty]);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal empty]);
 
@@ -721,24 +729,44 @@ context(@"purchasing products", ^{
       });
 
       it(@"should purchase with correct SKProduct", ^{
-        SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
-        BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
-        bazaarProduct = [bazaarProduct
-                         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
-                         withValue:underlyingProduct];
-        OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"]).andReturn(@"bar");
-        BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
-        store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-        OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+        OCMExpect([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
+            .andReturn([RACSignal empty]);
 
         BZRReceiptValidationStatus *receiptValidationWithPurchasedProduct =
-            BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
+            BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal return:receiptValidationWithPurchasedProduct]);
 
-        expect([store purchaseProduct:@"bar"]).will.complete();
+        expect([store purchaseProduct:productIdentifier]).will.complete();
         OCMVerifyAll((id)storeKitFacade);
+      });
+
+      context(@"purchase consumable product", ^{
+        it(@"should purchase with the correct quantity", ^{
+         OCMExpect([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:3])
+            .andReturn([RACSignal empty]);
+         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal return:receiptValidationStatus]);
+
+         expect([store purchaseConsumableProduct:productIdentifier quantity:3]).will.complete();
+         OCMVerifyAll((id)storeKitFacade);
+        });
+
+        it(@"should send an error if the purchase quantity is invalid", ^{
+          auto recorder =
+              [[store purchaseConsumableProduct:productIdentifier quantity:11] testRecorder];
+
+          expect(recorder).to.matchError(^BOOL(NSError *error) {
+            return error.code == BZRErrorCodeInvalidQuantityForPurchasing;
+          });
+        });
+
+        it(@"should send an error if the underlying StoreKit product was not found", ^{
+          expect([store purchaseConsumableProduct:@"bar" quantity:1])
+              .matchError(^BOOL(NSError *error) {
+                return error.code == BZRErrorCodeInvalidProductForPurchasing;
+              });
+        });
       });
 
       context(@"validating receipt and finishing transactions", ^{
@@ -749,7 +777,7 @@ context(@"purchasing products", ^{
           OCMStub([purchasedTransaction transactionState])
               .andReturn(SKPaymentTransactionStatePurchased);
           OCMStub([purchasedTransaction transactionIdentifier]).andReturn(@"foo");
-          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
               .andReturn([RACSignal return:purchasedTransaction]);
         });
 
@@ -817,7 +845,7 @@ context(@"purchasing products", ^{
         SKPaymentTransaction *purchasingTransaction = OCMClassMock([SKPaymentTransaction class]);
         OCMStub([purchasingTransaction transactionState])
             .andReturn(SKPaymentTransactionStatePurchasing);
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
             .andReturn([RACSignal return:purchasingTransaction]);
         receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
             @keypath(receiptValidationStatus, receipt.transactions)
@@ -831,13 +859,13 @@ context(@"purchasing products", ^{
 
       it(@"should dealloc when all strong references are relinquished", ^{
         BZRStore * __weak weakStore;
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+            .andReturn([RACSignal empty]);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal empty]);
 
         @autoreleasepool {
-          BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier,
-                                                                productsProvider);
+          BZRStubProductDictionaryToReturnProduct(product, productsProvider);
           BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
           weakStore = store;
 
