@@ -15,7 +15,10 @@ beforeEach(^{
       forwardMapBlock:^NSNumber *(NSNumber *value) {
         return @(value.unsignedIntegerValue * 10);
       }
-      reverseMapBlock:^NSNumber *(NSNumber *value) {
+      reverseMapBlock:^NSNumber * _Nullable (NSNumber *value) {
+        if (value.unsignedIntegerValue == 1337) {
+          return nil;
+        }
         return @(value.unsignedIntegerValue / 10.0);
       }];
 });
@@ -37,6 +40,10 @@ context(@"LTRandomAccessCollection", ^{
     expect([collection indexOfObject:nn(collection.lastObject)]).to.equal(2);
 
     expect([collection indexOfObject:@15]).to.equal(NSNotFound);
+  });
+
+  it(@"should not find items that have no mapping", ^{
+    expect([collection indexOfObject:@1337]).to.equal(NSNotFound);
   });
 
   it(@"should return first object", ^{
