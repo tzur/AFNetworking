@@ -31,6 +31,7 @@
 #import "BZRProductsWithVariantsProvider.h"
 #import "BZRPurchaseHelper.h"
 #import "BZRReceiptDataCache.h"
+#import "BZRReceiptValidationDateProvider.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRReceiptValidationStatusProvider.h"
@@ -180,11 +181,17 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          bundleIDsForValidation:relevantApplicationsBundleIDs
          multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
 
+    auto validationDateProvider =
+        [[BZRReceiptValidationDateProvider alloc]
+         initWithReceiptValidationStatusCache:receiptValidationStatusCache
+         receiptValidationStatusProvider:self.validationStatusProvider
+         bundledApplicationsIDs:relevantApplicationsBundleIDs cachedEntryDaysToLive:14];
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithReceiptValidationStatusCache:receiptValidationStatusCache
-         timeProvider:timeProvider bundledApplicationsIDs:relevantApplicationsBundleIDs
-         aggregatedValidationStatusProvider:self.validationStatusProvider];
+         initWithAggregatedValidationStatusProvider:self.validationStatusProvider
+                             validationDateProvider:validationDateProvider
+                                       timeProvider:timeProvider];
+
     _allowedProductsProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider
          validationStatusProvider:self.validationStatusProvider

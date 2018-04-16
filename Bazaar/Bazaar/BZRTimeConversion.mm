@@ -13,8 +13,8 @@ static const NSTimeInterval kNumberOfSecondsInDay = 24 * 60 * 60;
   return ((NSTimeInterval)days) * kNumberOfSecondsInDay;
 }
 
-+ (NSInteger)numberOfDaysInSeconds:(NSTimeInterval)seconds {
-  return (NSInteger)std::round(seconds / kNumberOfSecondsInDay);
++ (NSUInteger)numberOfDaysInSeconds:(NSTimeInterval)seconds {
+  return (NSUInteger)std::round(seconds / kNumberOfSecondsInDay);
 }
 
 @end

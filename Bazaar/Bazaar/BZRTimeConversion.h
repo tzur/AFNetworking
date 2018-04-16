@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSTimeInterval)numberOfSecondsInDays:(NSUInteger)days;
 
 /// Returns the number of days in \c seconds.
-+ (NSInteger)numberOfDaysInSeconds:(NSTimeInterval)seconds;
++ (NSUInteger)numberOfDaysInSeconds:(NSTimeInterval)seconds;
 
 @end
 
