@@ -97,6 +97,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[[self.underlyingProvider fetchReceiptValidationStatus:applicationBundleID]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
+        if (!self) {
+          return;
+        }
+
         [self rac_liftSelector:
             @selector(storeReceiptValidationStatus:cachingDateTime:applicationBundleID:)
             withSignalsFromArray:@[
@@ -167,6 +171,10 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^BZRMultiAppReceiptValidationStatus * _Nullable(NSArray<RACTuple *> *events,
                                                              NSError * __autoreleasing *error) {
         @strongify(self);
+        if (!self) {
+          return @{};
+        }
+
         return [self multiAppReceiptValidationStatusFromTuples:events error:error];
       }];
 }

@@ -53,17 +53,13 @@ static void BZRStubCurrentTimeWithIntervalSinceDate(id<BZRTimeProvider> timeProv
 // set to be the current time plus \c subscriptionPeriod.
 static BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionPeriod
     (NSTimeInterval subscriptionPeriod) {
-  BZRReceiptValidationStatus *receiptValidationStatus =
-      OCMClassMock([BZRReceiptValidationStatus class]);
-  BZRReceiptInfo *receipt = OCMClassMock([BZRReceiptInfo class]);
-  BZRReceiptSubscriptionInfo *subscription = OCMClassMock([BZRReceiptSubscriptionInfo class]);
-  OCMStub([receiptValidationStatus receipt]).andReturn(receipt);
-  OCMStub([receipt subscription]).andReturn(subscription);
-  OCMStub([subscription expirationDateTime])
-      .andReturn([[NSDate date] dateByAddingTimeInterval:subscriptionPeriod]);
-  OCMStub([subscription originalPurchaseDateTime]).andReturn([NSDate date]);
-
-  return receiptValidationStatus;
+  auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+  auto expirationDateTime =
+      [receiptValidationStatus.receipt.subscription.originalPurchaseDateTime
+       dateByAddingTimeInterval:subscriptionPeriod];
+  return [receiptValidationStatus
+      modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus,
+      receipt.subscription.expirationDateTime) withValue:expirationDateTime];
 }
 
 SpecBegin(BZRPeriodicReceiptValidatorActivator)
@@ -94,7 +90,7 @@ beforeEach(^{
       bundledApplicationsIDs:bundledApplicationsIDs
       aggregatedValidationStatusProvider:aggregatedReceiptValidationStatusProvider]);
 
-  lastValidationDate = [NSDate date];
+  lastValidationDate = [NSDate dateWithTimeIntervalSince1970:2337];
 });
 
 context(@"deallocating object", ^{
