@@ -191,12 +191,12 @@ static const NSTimeInterval kAssetMaxAge = 86400;
   NSArray<PTNOceanImageAssetInfo *> *imagesOrderedBySize =
       [descriptor.images sortedArrayUsingComparator:
        ^NSComparisonResult(PTNOceanImageAssetInfo *lhs, PTNOceanImageAssetInfo *rhs) {
-        return [@(rhs.width * rhs.height) compare:@(lhs.width * lhs.height)];
+        return [@(lhs.width * lhs.height) compare:@(rhs.width * rhs.height)];
       }];
 
   auto imageIndex = [self imageIndexForImageInfos:imagesOrderedBySize
                                  resizingStrategy:resizingStrategy];
-  auto thumbnailIndex = imagesOrderedBySize.count - 1;
+  NSUInteger thumbnailIndex = 0;
 
   auto imageSignal = [self fetchImageWithURL:imagesOrderedBySize[imageIndex].url
                             resizingStrategy:resizingStrategy];
@@ -217,24 +217,17 @@ static const NSTimeInterval kAssetMaxAge = 86400;
   }
 }
 
+/// Returns the image info from \c images matching \c resizing strategy. \c images must be sorted
+/// ascending by pixel count.
 - (NSUInteger)imageIndexForImageInfos:(NSArray<PTNOceanImageAssetInfo *> *)images
                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
-  NSUInteger index = NSNotFound;
-  CGFloat minDistance = CGFLOAT_MAX;
-
   for (NSUInteger i = 0; i < images.count; ++i) {
     CGSize size = CGSizeMake(images[i].width, images[i].height);
-    CGSize outputSize = [resizingStrategy sizeForInputSize:size];
-    CGFloat distance = std::hypot(outputSize.width - size.width, outputSize.height - size.height);
-
-    // Using strict inequality will ensure that in scenarios where there are more than one
-    // size candidates, the one which has the biggest pixel count is preferred.
-    if (distance < minDistance) {
-      minDistance = distance;
-      index = i;
+    if ([resizingStrategy inputSizeBoundedBySize:size]) {
+      return i;
     }
   }
-  return index;
+  return images.count - 1;
 }
 
 - (RACSignal *)fetchImageWithURL:(NSURL *)url
