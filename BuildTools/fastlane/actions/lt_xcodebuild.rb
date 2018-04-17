@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../helpers/executor"
+require_relative "../helpers/xcodebuild_errors"
 require_relative "../helpers/fastlane_bugfixes"
 require_relative "options/lt_xcodebuild_options"
 
@@ -8,6 +9,8 @@ module Fastlane
   module Actions
     # Action that wraps most of xcodebuild flags.
     class LtXcodebuildAction < Action
+      MAX_ATTEMPTS = 3
+
       def self.description
         "Executes 'xcodebuild' with the given options"
       end
@@ -40,12 +43,30 @@ module Fastlane
                   "tee \"#{raw_logfile_path}\" | " \
                   "xcpretty #{xcpretty_flags}"
 
-        exit_code, = Executor.execute(command)
-        if exit_code.zero?
-          UI.success("xcodebuild completed successfully")
-        else
-          UI.error("xcodebuild failed. Exit code #{exit_code}")
+
+        attempts_left = MAX_ATTEMPTS
+        while attempts_left > 0
+          attempts_left -= 1
+          exit_code, _, stderr = Executor.execute(command)
+          if exit_code.zero?
+            UI.success("xcodebuild completed successfully")
+            break
+          else
+            XcodebuildErrors.filter_errors(stderr).each { |line| UI.error(line) }
+            UI.error("xcodebuild failed. Exit code #{exit_code}")
+            unless XcodebuildErrors.should_retry_xcodebuild?(stderr)
+              break
+            end
+
+            if attempts_left > 0
+              UI.important("An error due to a bug in the simulator has been detected. retrying " \
+                           "xcodebuild again. #{attempts_left} attempts left")
+            else
+              UI.error("xcodebuild failed too many times (#{MAX_ATTEMPTS})")
+            end
+          end          
         end
+
 
         exit_code
       end
