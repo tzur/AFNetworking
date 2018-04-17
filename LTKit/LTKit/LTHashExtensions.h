@@ -11,7 +11,6 @@ namespace lt {
 #ifdef __LP64__
 /// 64-bit hash function borrowed from Boost.
 template <class T>
-__attribute__((no_sanitize("unsigned-integer-overflow")))
 inline void hash_combine(std::size_t &seed, const T &v) {
   std::hash<T> hasher;
   uint64_t k = hasher(v);

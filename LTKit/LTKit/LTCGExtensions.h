@@ -184,8 +184,7 @@ CG_INLINE CGPoint operator*(const CGAffineTransform &lhs, const CGPoint &rhs) {
 }
 
 /// Returns a hash code for the given point.
-CG_INLINE NSUInteger CGPointHash(const CGPoint &point)
-    __attribute__((no_sanitize("unsigned-integer-overflow"))) {
+CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
   return 31 * [@(point.x) hash] + [@(point.y) hash];
 }
 
