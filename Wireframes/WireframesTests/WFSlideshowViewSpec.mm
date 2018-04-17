@@ -108,6 +108,41 @@ context(@"delegate", ^{
       slideshowView.transition = WFSlideshowTransitionFade;
     });
   });
+
+  context(@"transition", ^{
+    __block UIView *firstView;
+    __block UIView *secondView;
+
+    beforeEach(^{
+      firstView = [[UIView alloc] initWithFrame:CGRectZero];
+      secondView = [[UIView alloc] initWithFrame:CGRectZero];
+      OCMStub([delegate numberOfSlidesInSlideshowView:slideshowView]).andReturn(2);
+      OCMStub([delegate slideshowView:slideshowView viewForSlideIndex:0]).andReturn(firstView);
+      OCMStub([delegate slideshowView:slideshowView viewForSlideIndex:1]).andReturn(secondView);
+
+      slideshowView.delegate = delegate;
+    });
+
+    it(@"should set received views as descendants of itself by default", ^{
+      expect([firstView isDescendantOfView:slideshowView]).to.beTruthy();
+      expect([secondView isDescendantOfView:slideshowView]).to.beTruthy();
+    });
+
+    it(@"should set received views as descendants of itself in fade transition", ^{
+      slideshowView.transition = WFSlideshowTransitionFade;
+
+      expect([firstView isDescendantOfView:slideshowView]).to.beTruthy();
+      expect([secondView isDescendantOfView:slideshowView]).to.beTruthy();
+    });
+
+    it(@"should set received views as descendants of itself in curtain transition", ^{
+      slideshowView.transition = WFSlideshowTransitionFade;
+      slideshowView.transition = WFSlideshowTransitionCurtain;
+
+      expect([firstView isDescendantOfView:slideshowView]).to.beTruthy();
+      expect([secondView isDescendantOfView:slideshowView]).to.beTruthy();
+    });
+  });
 });
 
 SpecEnd
