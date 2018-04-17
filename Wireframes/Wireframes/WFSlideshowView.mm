@@ -43,10 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    [self setup];
     self.stillDuration = 1;
     self.transitionDuration = 1;
     self.transition = WFSlideshowTransitionCurtain;
+    [self setup];
   }
   return self;
 }
@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   [self setupImageViews];
   [self setupSlideView];
+  [self updateTransition];
 }
 
 - (void)setupImageViews {
@@ -270,10 +271,10 @@ NS_ASSUME_NONNULL_BEGIN
   }
   _transition = transition;
   [self reloadSlides];
-  [self setupTransition];
+  [self updateTransition];
 }
 
-- (void)setupTransition {
+- (void)updateTransition {
   switch (self.transition) {
     case WFSlideshowTransitionCurtain:
     [self setupCurtainTransition];
