@@ -85,17 +85,35 @@ context(@"preset object", ^{
     queue = dispatch_queue_create("test queue", DISPATCH_QUEUE_SERIAL);
   });
 
-  it(@"should return set values", ^{
+  it(@"should return values set with designated initializer", ^{
     id<CAMFormatStrategy> formatStrategy = OCMProtocolMock(@protocol(CAMFormatStrategy));
     CAMDevicePreset *preset = [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
                                                                     camera:$(CAMDeviceCameraFront)
                                                                enableAudio:YES
+                            automaticallyConfiguresApplicationAudioSession:NO
                                                             formatStrategy:formatStrategy
                                                                outputQueue:queue];
 
     expect(preset.pixelFormat).to.equal($(CAMPixelFormatBGRA));
     expect(preset.camera).to.equal($(CAMDeviceCameraFront));
     expect(preset.enableAudio).to.beTruthy();
+    expect(preset.automaticallyConfiguresApplicationAudioSession).to.beFalsy();
+    expect(preset.formatStrategy).to.equal(formatStrategy);
+    expect(preset.outputQueue).to.equal(queue);
+  });
+
+  it(@"should return values set with convenience initializer", ^{
+    id<CAMFormatStrategy> formatStrategy = OCMProtocolMock(@protocol(CAMFormatStrategy));
+    CAMDevicePreset *preset = [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormat420f)
+                                                                    camera:$(CAMDeviceCameraBack)
+                                                               enableAudio:NO
+                                                            formatStrategy:formatStrategy
+                                                               outputQueue:queue];
+
+    expect(preset.pixelFormat).to.equal($(CAMPixelFormat420f));
+    expect(preset.camera).to.equal($(CAMDeviceCameraBack));
+    expect(preset.enableAudio).to.beFalsy();
+    expect(preset.automaticallyConfiguresApplicationAudioSession).to.beTruthy();
     expect(preset.formatStrategy).to.equal(formatStrategy);
     expect(preset.outputQueue).to.equal(queue);
   });

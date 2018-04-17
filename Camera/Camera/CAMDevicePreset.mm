@@ -61,19 +61,30 @@ LTEnumImplement(NSUInteger, CAMDeviceCamera,
 
 @implementation CAMDevicePreset
 
+- (instancetype)initWithPixelFormat:(CAMPixelFormat *)pixelFormat camera:(CAMDeviceCamera *)camera
+    enableAudio:(BOOL)enableAudio automaticallyConfiguresApplicationAudioSession:
+    (BOOL)automaticallyConfiguresApplicationAudioSession
+    formatStrategy:(id<CAMFormatStrategy>)formatStrategy outputQueue:(dispatch_queue_t)outputQueue {
+  if (self = [super init]) {
+    _pixelFormat = pixelFormat;
+    _camera = camera;
+    _enableAudio = enableAudio;
+    _automaticallyConfiguresApplicationAudioSession =
+        automaticallyConfiguresApplicationAudioSession;
+    _formatStrategy = formatStrategy;
+    _outputQueue = outputQueue;
+  }
+  return self;
+}
+
 - (instancetype)initWithPixelFormat:(CAMPixelFormat *)pixelFormat
                              camera:(CAMDeviceCamera *)camera
                         enableAudio:(BOOL)enableAudio
                      formatStrategy:(id<CAMFormatStrategy>)formatStrategy
                         outputQueue:(dispatch_queue_t)outputQueue {
-  if (self = [super init]) {
-    _pixelFormat = pixelFormat;
-    _camera = camera;
-    _enableAudio = enableAudio;
-    _formatStrategy = formatStrategy;
-    _outputQueue = outputQueue;
-  }
-  return self;
+  return [self initWithPixelFormat:pixelFormat camera:camera enableAudio:enableAudio
+      automaticallyConfiguresApplicationAudioSession:YES formatStrategy:formatStrategy
+      outputQueue:outputQueue];
 }
 
 @end
