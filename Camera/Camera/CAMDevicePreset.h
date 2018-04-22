@@ -59,10 +59,17 @@ LTEnumDeclare(NSUInteger, CAMDeviceCamera,
 
 /// Initializes with the given values.
 - (instancetype)initWithPixelFormat:(CAMPixelFormat *)pixelFormat camera:(CAMDeviceCamera *)camera
+    enableAudio:(BOOL)enableAudio automaticallyConfiguresApplicationAudioSession:
+    (BOOL)automaticallyConfiguresApplicationAudioSession
+    formatStrategy:(id<CAMFormatStrategy>)formatStrategy outputQueue:(dispatch_queue_t)outputQueue
+    NS_DESIGNATED_INITIALIZER;
+
+/// Initializes with the given values and \c automaticallyConfiguresApplicationAudioSession set to
+/// \c YES.
+- (instancetype)initWithPixelFormat:(CAMPixelFormat *)pixelFormat camera:(CAMDeviceCamera *)camera
                         enableAudio:(BOOL)enableAudio
                      formatStrategy:(id<CAMFormatStrategy>)formatStrategy
-                        outputQueue:(dispatch_queue_t)outputQueue
-    NS_DESIGNATED_INITIALIZER;
+                        outputQueue:(dispatch_queue_t)outputQueue;
 
 /// Pixel format of the video frames delivered by the camera.
 @property (readonly, nonatomic) CAMPixelFormat *pixelFormat;
@@ -75,6 +82,12 @@ LTEnumDeclare(NSUInteger, CAMDeviceCamera,
 /// @note There's a limitation in iOS that causes audio not to be captured for some video formats.
 /// When enabling audio, a suitable \c formatStrategy should be selected.
 @property (readonly, nonatomic) BOOL enableAudio;
+
+/// If \c YES the capture session will automatically configure the app’s shared AVAudioSession
+/// instance for optimal recording.
+///
+/// @see AVCaptureSession.automaticallyConfiguresApplicationAudioSession.
+@property (readonly, nonatomic) BOOL automaticallyConfiguresApplicationAudioSession;
 
 /// Strategy to select a \c AVCaptureDeviceFormat to use for capturing video, out of the available
 /// formats for the current physical \c camera.
