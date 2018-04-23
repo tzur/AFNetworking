@@ -59,13 +59,14 @@ LTEnumImplement(NSUInteger, PTNImageOrientation,
 
 @end
 
-static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef _Nullable sourceRef,
+                                               NSURL * _Nullable url,
                                                NSError *__autoreleasing *error);
 
 static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NSURL * _Nullable url,
                         NSString * _Nullable description);
 
-static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing *error) {
+static NSDictionary * _Nullable PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing *error) {
   __block CGImageSourceRef sourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)url, NULL);
   @onExit {
     LTCFSafeRelease(sourceRef);
@@ -82,7 +83,8 @@ static NSDictionary * _Nullable PTNGetMetadataFromData(NSData *data,
   return PTNGetMetadata(sourceRef, nil, error);
 }
 
-static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef _Nullable sourceRef,
+                                               NSURL * _Nullable url,
                                                NSError *__autoreleasing *error) {
   if (!sourceRef) {
     PTNSetError(error, PTNErrorCodeDescriptorCreationFailed, url, @"Failed creating CGImageSource");
@@ -438,8 +440,8 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
 }
 
 - (void)setOriginalTime:(nullable NSDate *)originalTime {
-  NSString *dateTime = [self exifDateTimeFor:originalTime];
-  NSString *subsecTime = [self exifSubsecTimeFor:originalTime];
+  NSString * _Nullable dateTime = originalTime ? [self exifDateTimeFor:originalTime] : nil;
+  NSString * _Nullable subsecTime = originalTime ? [self exifSubsecTimeFor:originalTime] : nil;
   [self.data[BRIDGE(kCGImagePropertyExifDictionary)]
       setValue:dateTime forKey:BRIDGE(kCGImagePropertyExifDateTimeOriginal)];
   [self.data[BRIDGE(kCGImagePropertyTIFFDictionary)]
@@ -452,10 +454,10 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
 
 - (void)setDigitizedTime:(nullable NSDate *)digitizedTime {
   [self.data[BRIDGE(kCGImagePropertyExifDictionary)]
-      setValue:[self exifDateTimeFor:digitizedTime]
+   setValue:digitizedTime ? [self exifDateTimeFor:digitizedTime] : nil
         forKey:BRIDGE(kCGImagePropertyExifDateTimeDigitized)];
   [self.data[BRIDGE(kCGImagePropertyExifDictionary)]
-      setValue:[self exifSubsecTimeFor:digitizedTime]
+   setValue:digitizedTime ? [self exifSubsecTimeFor:digitizedTime] : nil
         forKey:BRIDGE(kCGImagePropertyExifSubsecTimeDigitized)];
 }
 

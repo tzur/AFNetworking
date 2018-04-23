@@ -118,6 +118,10 @@ NS_ASSUME_NONNULL_BEGIN
           options.progressHandler(progress.doubleValue);
         }
 
+        if (!data) {
+          continue;
+        }
+
         NSUInteger length = data.length * progress.doubleValue - location;
         auto range = NSMakeRange(location, length);
         auto partialData = [data subdataWithRange:range];

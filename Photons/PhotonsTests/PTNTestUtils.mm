@@ -3,6 +3,8 @@
 
 #import "PTNTestUtils.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTNAlbum.h"
 #import "PTNDisposableRetainingSignal.h"
 #import "PTNFakeAlbumDescriptor.h"
@@ -13,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> _Nullable assets,
                             id<LTRandomAccessCollection> _Nullable subalbums) {
-  return [[PTNAlbum alloc] initWithURL:url subalbums:subalbums assets:assets];
+  return [[PTNAlbum alloc] initWithURL:url ?: [NSURL URLWithString:@"foo://bar.baz"]
+                             subalbums:subalbums ?: @[] assets:assets ?: @[]];
 }
 
 id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
@@ -22,7 +25,7 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSSet<NSString *> * _Nullable traits) {
   return [[PTNFakeDescriptor alloc]
           initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor"]
-          localizedTitle:localizedTitle
+          localizedTitle:localizedTitle ?: @""
           descriptorCapabilities:capabilities
           descriptorTraits:traits ?: [NSSet set]];
 }

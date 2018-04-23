@@ -40,8 +40,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @weakify(self)
     void (^completionHandler)(PHContentEditingInput *contentEditingInput, NSDictionary *info) =
-        ^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+        ^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary *info) {
           @strongify(self)
+          if (!contentEditingInput) {
+            NSError *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                                   url:self.asset.ptn_identifier
+                                       underlyingError:info[PHContentEditingInputErrorKey]];
+            [subscriber sendError:error];
+            return;
+          }
+
           NSError *error;
           PTNImageMetadata *metadata = [self metadataForContentEditingInput:contentEditingInput
                                                                        info:info error:&error];

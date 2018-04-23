@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark MTLJSONSerializing
 #pragma mark -
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError *__autoreleasing *)error {
   if (![[[self class] propertyKeys] isEqualToSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
     if (error) {
       *error = [NSError lt_errorWithCode:PTNErrorCodeDeserializationFailed];

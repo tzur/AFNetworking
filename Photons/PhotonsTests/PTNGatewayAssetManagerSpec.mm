@@ -142,6 +142,7 @@ context(@"image fetching", ^{
 
   it(@"should return error for invalid descriptors", ^{
     id<PTNDescriptor> descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    OCMStub(descriptor.ptn_identifier).andReturn([NSURL URLWithString:@"foo://bar.com"]);
 
     RACSignal *values = [manager fetchImageWithDescriptor:descriptor
                                          resizingStrategy:resizingStrategy

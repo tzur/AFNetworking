@@ -91,7 +91,7 @@
 		84455E441CD0F2AB00042CB7 /* LTFastEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */; };
 		84455E451CD0F2AB00042CB7 /* LTFastEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E431CD0F2AB00042CB7 /* LTFastEnumerator.mm */; };
 		84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */; };
-		84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */; };
+		84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.mm */; };
 		84455E4E1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */; };
 		8482E2B01D2260DA0084D565 /* LTValueObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 8482E2AE1D2260DA0084D565 /* LTValueObject.h */; };
 		8482E2B11D2260DA0084D565 /* LTValueObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E2AF1D2260DA0084D565 /* LTValueObject.mm */; };
@@ -582,7 +582,7 @@
 		84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFastEnumerator.h; sourceTree = "<group>"; };
 		84455E431CD0F2AB00042CB7 /* LTFastEnumerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFastEnumerator.mm; sourceTree = "<group>"; };
 		84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFastEnumeratorSpec.mm; sourceTree = "<group>"; };
-		84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTMappingRandomAccessCollection.m; sourceTree = "<group>"; };
+		84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMappingRandomAccessCollection.mm; sourceTree = "<group>"; };
 		84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMappingRandomAccessCollectionSpec.mm; sourceTree = "<group>"; };
 		84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMappingRandomAccessCollection.h; sourceTree = "<group>"; };
 		8482E2AE1D2260DA0084D565 /* LTValueObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTValueObject.h; sourceTree = "<group>"; };
@@ -1358,7 +1358,7 @@
 				84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */,
 				84455E431CD0F2AB00042CB7 /* LTFastEnumerator.mm */,
 				84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */,
-				84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */,
+				84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.mm */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
 				5067221719EA80B5003AF8D2 /* LTQueue.mm */,
 				8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */,
@@ -1879,7 +1879,7 @@
 				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
 				835204ED1D2A43B300000EEC /* LTEventBus.mm in Sources */,
 				A1006D001E026EFB0061D8BB /* NSDateFormatter+Formatters.mm in Sources */,
-				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
+				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.mm in Sources */,
 				888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */,
 				CDA09B951E81368000753A41 /* NSData+Encryption.mm in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,

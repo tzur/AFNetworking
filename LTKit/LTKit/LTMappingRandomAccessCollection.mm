@@ -43,7 +43,7 @@
 }
 
 - (id)objectAtIndex:(NSUInteger)idx {
-  return self.forwardMap(self.collection[idx]);
+  return nn(self.forwardMap(self.collection[idx]));
 }
 
 - (BOOL)containsObject:(id)object {
@@ -51,7 +51,12 @@
 }
 
 - (NSUInteger)indexOfObject:(id)object {
-  return [self.collection indexOfObject:self.reverseMap(object)];
+  id _Nullable underlyingObject = self.reverseMap(object);
+  if (!underlyingObject) {
+    return NSNotFound;
+  }
+
+  return [self.collection indexOfObject:nn(underlyingObject)];
 }
 
 - (nullable id)firstObject {

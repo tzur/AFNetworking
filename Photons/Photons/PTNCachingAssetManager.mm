@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static BOOL PTNIsCacheEqual(id lhs, id rhs) {
+static BOOL PTNIsCacheEqual(id _Nullable lhs, id _Nullable rhs) {
   return [lhs isEqual:rhs] ||
       ([lhs isKindOfClass:[PTNCacheProxy class]] &&
       [((PTNCacheProxy *)lhs).underlyingObject isEqual:rhs]) ||

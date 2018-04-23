@@ -15,15 +15,20 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localId
                                                     PHAssetCollectionSubtype subtype);
 
 /// Creates a fake PhotoKit asset.
-/// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be \c nil.
+/// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be
+/// "LTIdentifier".
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier);
 
 /// Creates a fake PhotoKit asset with \c localIdentifier for the \c localIdentifier property and
 /// \c traits as the \c descriptorTraits property.
+/// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be
+/// "LTIdentifier".
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, NSArray<NSString *> *traits);
 
 /// Creates a fake PhotoKit asset with \c pixelWidth and \c pixelHeight properties as specified by
 /// \c size.
+/// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be
+/// "LTIdentifier".
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize size);
 
 /// Creates a fake PhotoKit asset collection list with given \c localIdentifier.
@@ -51,7 +56,7 @@ PHContentEditingInput *PTNPhotoKitCreateImageContentEditingInput(NSURL * _Nullab
 PHContentEditingInput *PTNPhotoKitCreateVideoContentEditingInput(AVAsset * _Nullable avAsset);
 
 /// Creates a \c PHFetchResultChangeDetails that returns the \c assets array for its
-/// \c fetchResultAfterChanges property.
+/// \c fetchResultAfterChanges property. \c fetchResultBeforeChanges is set to an empty array.
 PHFetchResultChangeDetails *PTNPhotoKitCreateChangeDetailsForAssets(NSArray<PHAsset *> *assets);
 
 /// Creates a \c PHObjectChangeDetails that returns \c asset for its \c objectAfterChanges property.

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Block for mapping values in this collection to transformed values or mapping transformed values
 /// back to the original values held by the underlying collection.
-typedef id _Nonnull(^LTRandomAccessCollectionMappingBlock)(id value);
+typedef id _Nullable(^LTRandomAccessCollectionMappingBlock)(id value);
 
 /// Initializes a new mapping collection with the given underlying \c collection, which serves as
 /// the objects to be mapped in the returned collection. The collection holds a reference to the
@@ -28,6 +28,10 @@ typedef id _Nonnull(^LTRandomAccessCollectionMappingBlock)(id value);
 /// value of the original object or fixed values. \c reverseMap is used to map objects returned by
 /// the receiver back to the original objects of the underlying collection. This mapping is used
 /// for performing actions on the collection itself, such as getting the index of a given object.
+///
+/// Although collections can't contain nullable entries, the \c LTRandomAccessCollectionMappingBlock
+/// can return \c nil to support a scenario where \c indexOfObject should return \c NSNotFound
+/// i.e. where the \c reverseMap should map to a "non-existing" asset.
 ///
 /// @note It must hold that <tt>[reverseMap(forwardMap(object)) isEqual:object]</tt> for every
 /// object in the input space of \c forwardMap.

@@ -94,7 +94,8 @@ context(@"fetching albums", ^{
       expectedParameters[@"phrase"] = @"foo";
       expectedParameters[@"page"] = @"2";
       NSString *expectedURLString = @"https://ocean.lightricks.com/search";
-      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil]);
+      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil])
+          .andReturn([RACSignal empty]);
 
       auto __unused recorder = [[manager fetchAlbumWithURL:requestURL] testRecorder];
 
@@ -195,7 +196,8 @@ context(@"fetching descriptors", ^{
     it(@"should use correct request arguments", ^{
       FBRHTTPRequestParameters *expectedParameters = PTNFakeRequestParameters();
       NSString *expectedURLString = @"https://ocean.lightricks.com/asset/bar";
-      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil]);
+      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil])
+          .andReturn([RACSignal empty]);;
 
       auto __unused recorder = [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
 
@@ -270,14 +272,10 @@ context(@"fetching images", ^{
   context(@"ocean descriptors", ^{
     context(@"invalid descriptors", ^{
       it(@"should send error if there are no available assets", ^{
-        PTNOceanAssetDescriptor *invalidDescriptor = [MTLJSONAdapter
-                                                      modelOfClass:[PTNOceanAssetDescriptor class]
-                                                      fromJSONDictionary:@{
-          @"all_sizes": @[],
-          @"asset_type": @"photo",
-          @"source_id": @"pixabay",
-          @"id": @"foo"
-        } error:nil];
+        PTNOceanAssetDescriptor *invalidDescriptor = OCMClassMock([PTNOceanAssetDescriptor class]);
+        OCMStub(invalidDescriptor.sizes).andReturn(@[]);
+        OCMStub(invalidDescriptor.type).andReturn($(PTNOceanAssetTypePhoto));
+
         RACSignal *fetch = [manager
                             fetchImageWithDescriptor:invalidDescriptor
                             resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
@@ -315,7 +313,7 @@ context(@"fetching images", ^{
 
       it(@"should send progress", ^{
         RACSubject *subject = [RACSubject subject];
-        OCMStub([client GET:@"http://b" withParameters:nil headers:nil]).andReturn(subject);
+        OCMStub([client GET:OCMOCK_ANY withParameters:nil headers:nil]).andReturn(subject);
 
         LLSignalTestRecorder *recorder = [[manager fetchImageWithDescriptor:descriptor
                                                            resizingStrategy:resizingStrategy
@@ -334,6 +332,8 @@ context(@"fetching images", ^{
         OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeFast);
 
         RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:@"http://b" withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn([RACSubject empty]);
         OCMStub([client GET:@"http://a" withParameters:nil headers:nil]).andReturn(subject);
         NSData *data = OCMClassMock([NSData class]);
         LTProgress *progress = PTNFakeLTProgress(data);
@@ -352,6 +352,8 @@ context(@"fetching images", ^{
       it(@"should fetch image in high quality delivery mode", ^{
         OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeHighQuality);
 
+        OCMStub([client GET:@"http://a" withParameters:nil headers:nil])
+            .andReturn([RACSignal empty]);
         RACSubject *subject = [RACSubject subject];
         OCMStub([client GET:@"http://b" withParameters:nil headers:nil]).andReturn(subject);
         NSData *data = OCMClassMock([NSData class]);
@@ -372,6 +374,8 @@ context(@"fetching images", ^{
       it(@"should prefer image with biggest pixel count where applicable", ^{
         OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeHighQuality);
 
+        OCMStub([client GET:@"http://a" withParameters:nil headers:nil])
+            .andReturn([RACSignal empty]);
         RACSubject *subject = [RACSubject subject];
         OCMStub([client GET:@"http://c" withParameters:nil headers:nil]).andReturn(subject);
         NSData *data = OCMClassMock([NSData class]);
@@ -429,6 +433,8 @@ context(@"fetching images", ^{
                                                            cacheInfo:cacheInfo];
         OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeFast);
 
+        OCMStub([client GET:@"http://b" withParameters:nil headers:nil])
+            .andReturn([RACSignal empty]);
         RACSubject *subject = [RACSubject subject];
         OCMStub([client GET:@"http://a" withParameters:nil headers:nil]).andReturn(subject);
         NSData *data = OCMClassMock([NSData class]);
@@ -591,7 +597,7 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
                       initWithClient:OCMClassMock([FBRHTTPClient class])
-                      dateProvider:OCMClassMock([PTNDateProvider class])];
+                      dateProvider:dateProvider];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       auto disposable = [[manager fetchDescriptorWithURL:url] subscribeNext:^(id) {}];
@@ -607,7 +613,7 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
                       initWithClient:OCMClassMock([FBRHTTPClient class])
-                      dateProvider:OCMClassMock([PTNDateProvider class])];
+                      dateProvider:dateProvider];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       fetchSignal = [manager fetchDescriptorWithURL:url];

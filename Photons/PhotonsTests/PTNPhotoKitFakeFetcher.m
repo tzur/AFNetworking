@@ -140,7 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerAssetCollection:(PHAssetCollection *)assetCollection
                 withFetchResult:(PHFetchResult *)fetchResult {
-  @synchronized (self.fetchResultToAssetCollection) {
+  @synchronized (self.mediaTypeToAssets) {
     self.mediaTypeToAssets[fetchResult] = assetCollection;
   }
 }
@@ -173,7 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                        title:(NSString __unused *)title {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PHCollectionList *result;
-  @synchronized (self.typeToAssetCollections) {
+  @synchronized (self.assetCollectionsToCollectionList) {
     result = self.assetCollectionsToCollectionList[collections];
   }
   return result;
@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
     options:(nullable PHFetchOptions __unused *)options {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PTNCollectionsFetchResult *result;
-  @synchronized (self.typeToAssetCollections) {
+  @synchronized (self.collectionListToAssetCollections) {
     result = self.collectionListToAssetCollections[collectionList.localIdentifier];
   }
   return result;
@@ -223,7 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
                                            options:(nullable PHFetchOptions __unused *)options {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   id fetchResult;
-  @synchronized (self.localIdentifierToAsset) {
+  @synchronized (self.mediaTypeToAssets) {
     fetchResult = self.mediaTypeToAssets[@(mediaType)];
   }
 
@@ -255,7 +255,7 @@ NS_ASSUME_NONNULL_BEGIN
                                            title:(nullable NSString __unused *)title {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   id assetCollection;
-  @synchronized (self.fetchResultToAssetCollection) {
+  @synchronized (self.mediaTypeToAssets) {
     assetCollection = self.mediaTypeToAssets[fetchResult];
   }
 

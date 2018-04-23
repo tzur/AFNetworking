@@ -8,7 +8,6 @@
 
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
-#import "PTNAlbumInterceptionController.h"
 #import "PTNDescriptor.h"
 #import "PTNIncrementalChanges.h"
 
@@ -91,7 +90,6 @@ NS_ASSUME_NONNULL_BEGIN
       [PTNIncrementalChanges changesWithRemovedIndexes:nil insertedIndexes:nil
                                         updatedIndexes:updatedAssetIndexes moves:nil] : nil;
 
-
   id<PTNAlbum> interceptingBeforeAlbum =
       [[self class] interceptingAlbum:parameters.changeset.afterAlbum
                        inteceptionMap:parameters.previousInterceptionMap
@@ -106,7 +104,8 @@ NS_ASSUME_NONNULL_BEGIN
                                         assetChanges:interceptedAssetChanges];
 }
 
-+ (nullable PTNIncrementalChanges *)stripInterceptedUpdates:(PTNIncrementalChanges *)changes
++ (nullable PTNIncrementalChanges *)stripInterceptedUpdates:
+    (nullable PTNIncrementalChanges *)changes
     inteceptionMap:(PTNDescriptorBidirectionalMap *)interceptionMap
     originalCollection:(id<LTRandomAccessCollection>)collection {
   if (!changes.updatedIndexes) {
@@ -211,7 +210,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[LTMappingRandomAccessCollection alloc] initWithCollection:collection
       forwardMapBlock:^id<PTNDescriptor>(id<PTNDescriptor> descriptor) {
         return interceptionMap[descriptor.ptn_identifier] ?: descriptor;
-      } reverseMapBlock:^id<PTNDescriptor>(id<PTNDescriptor> descriptor) {
+      } reverseMapBlock:^id<PTNDescriptor> _Nullable (id<PTNDescriptor> descriptor) {
         NSURL * _Nullable interceptedIdentifer = [interceptionMap keyForObject:descriptor];
         if (interceptedIdentifer) {
           return originalMap[interceptedIdentifer];

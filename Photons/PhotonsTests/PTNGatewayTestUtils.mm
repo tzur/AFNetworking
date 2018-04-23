@@ -24,6 +24,7 @@ PTNGatewayAlbumDescriptor *PTNGatewayCreateAlbumDescriptor(NSString *key, RACSig
   OCMStub(descriptor.ptn_identifier).andReturn(identifier);
   OCMStub(descriptor.albumSignal).andReturn(albumSignal);
   OCMStub(descriptor.imageSignalBlock).andReturn([imageSignalBlock copy]);
+  OCMStub(descriptor.localizedTitle).andReturn(@"Foo");
   return descriptor;
 }
 
