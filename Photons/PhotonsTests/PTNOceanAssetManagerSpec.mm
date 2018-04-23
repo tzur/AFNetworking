@@ -273,7 +273,7 @@ context(@"fetching images", ^{
     context(@"invalid descriptors", ^{
       it(@"should send error if there are no available assets", ^{
         PTNOceanAssetDescriptor *invalidDescriptor = OCMClassMock([PTNOceanAssetDescriptor class]);
-        OCMStub(invalidDescriptor.sizes).andReturn(@[]);
+        OCMStub(invalidDescriptor.images).andReturn(@[]);
         OCMStub(invalidDescriptor.type).andReturn($(PTNOceanAssetTypePhoto));
 
         RACSignal *fetch = [manager
