@@ -137,6 +137,9 @@ it(@"should dequeue cells from collection view", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1]]];
   [dataSignal sendNext:changeset];
 
+  expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]])
+      .will.equal(@1);
+
   id cell = [[cellClass alloc] initWithFrame:CGRectZero];
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY

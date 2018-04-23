@@ -3,6 +3,7 @@
 
 #import "PTUImageCellViewModelProvider.h"
 
+#import <Photons/PTNAssetManager.h>
 #import <Photons/PTNImageFetchOptions.h>
 
 #import "PTNTestUtils.h"

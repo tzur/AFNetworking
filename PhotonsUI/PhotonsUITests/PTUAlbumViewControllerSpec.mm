@@ -510,6 +510,8 @@ context(@"collection control", ^{
 
     OCMExpect([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]);
 
+    [albumView loadViewIfNeeded];
+    [albumView.view layoutIfNeeded];
     [albumView reloadData];
 
     OCMVerifyAll((id)dataSourceProvider);

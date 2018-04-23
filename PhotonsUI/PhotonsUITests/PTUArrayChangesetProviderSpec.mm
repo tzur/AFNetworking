@@ -22,17 +22,6 @@ beforeEach(^{
                                                      changesetTitle:kChangesetTitle];
 });
 
-context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil descriptors", ^{
-    NSArray<id<PTNDescriptor>> *descriptors = nil;
-    expect(^{
-      PTUArrayChangesetProvider * __unused provider =
-          [[PTUArrayChangesetProvider alloc] initWithDescriptors:descriptors
-                                                  changesetTitle:kChangesetTitle];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
 context(@"fetchChangeset", ^{
   it(@"should return a signal that sends the descriptors and completes", ^{
     LLSignalTestRecorder *recorder = [[provider fetchChangeset] testRecorder];

@@ -28,7 +28,7 @@ beforeEach(^{
   assetManager = OCMProtocolMock(@protocol(PTNAssetManager));
   url = [NSURL URLWithString:@"http://www.foo.com"];
   provider = [[PTUAlbumChangesetProvider alloc] initWithManager:assetManager albumURL:url];
-  album = PTNCreateAlbum(nil, @[@"bar"], @[@"foo", @"bar"]);
+  album = PTNCreateAlbum(url, @[@"bar"], @[@"foo", @"bar"]);
   descriptor = PTNCreateDescriptor(@"foo");
 });
 
@@ -49,8 +49,8 @@ context(@"data fetching", ^{
     __block PTNIncrementalChanges *changes;
 
     beforeEach(^{
-      afterAlbum = PTNCreateAlbum(nil, @[@"bar"], @[@"foo", @"bar"]);
-      beforeAlbum = PTNCreateAlbum(nil, @[@"bar", @"baz"], @[@"foo"]);
+      afterAlbum = PTNCreateAlbum(url, @[@"bar"], @[@"foo", @"bar"]);
+      beforeAlbum = PTNCreateAlbum(url, @[@"bar", @"baz"], @[@"foo"]);
 
       NSIndexSet *removed = [[NSIndexSet alloc] initWithIndex:0];
       NSIndexSet *inserted = [[NSIndexSet alloc] initWithIndex:1];

@@ -196,21 +196,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// by the collectionO view prior to insertion.
 - (void)performIncrementalUpdatesFromChangeset:(PTUChangeset *)changeset {
   // Backtrack insertion offsets to get inserts from updates.
-  NSArray<NSIndexPath *> *updateInserts = [self offsetIndexPaths:changeset.updatedIndexes
-                                                    byIndexPaths:changeset.insertedIndexes
+  NSArray<NSIndexPath *> *updateInserts = [self offsetIndexPaths:changeset.updatedIndexes ?: @[]
+                                                    byIndexPaths:changeset.insertedIndexes ?: @[]
                                                          removed:NO];
 
   // Backtrack deletion offsets to get deletions from update inserts.
   NSArray<NSIndexPath *> *updateDeletions = [self offsetIndexPaths:updateInserts
-                                                      byIndexPaths:changeset.deletedIndexes
+                                                      byIndexPaths:changeset.deletedIndexes ?: @[]
                                                            removed:YES];
 
   // Move indexes are already correct and require no offset application.
-  NSArray<NSIndexPath *> *moveFromIndexes = [changeset.movedIndexes
+  NSArray<NSIndexPath *> *moveFromIndexes = [(changeset.movedIndexes ?: @[])
       lt_map:^NSIndexPath *(PTUChangesetMove *move) {
         return move.fromIndex;
       }];
-  NSArray<NSIndexPath *> *moveToIndexes = [changeset.movedIndexes
+  NSArray<NSIndexPath *> *moveToIndexes = [(changeset.movedIndexes ?: @[])
       lt_map:^NSIndexPath *(PTUChangesetMove *move) {
         return move.toIndex;
       }];
@@ -219,7 +219,7 @@ NS_ASSUME_NONNULL_BEGIN
     arrayByAddingObjectsFromArray:updateDeletions]
     arrayByAddingObjectsFromArray:moveFromIndexes];
   NSArray<NSIndexPath *> *insertions = [[(changeset.insertedIndexes ?: @[])
-    arrayByAddingObjectsFromArray:changeset.updatedIndexes]
+    arrayByAddingObjectsFromArray:changeset.updatedIndexes ?: @[]]
     arrayByAddingObjectsFromArray:moveToIndexes];
 
   // Duplicates need to be removed since updates and moves can be sent in regard to the same

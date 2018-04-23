@@ -3,6 +3,8 @@
 
 #import "PTUDataSourceProvider.h"
 
+#import <Photons/PTNAssetManager.h>
+
 #import "PTUChangesetProvider.h"
 #import "PTUDataSource.h"
 #import "PTUHeaderCell.h"
@@ -25,13 +27,13 @@ context(@"designated initializer", ^{
 
   beforeEach(^{
     id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
+    OCMStub([changesetProvider fetchChangeset]).andReturn([RACSignal empty]);
     id<PTUImageCellViewModelProvider> cellViewModelProvider =
         OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
     provider = [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
                                                   cellViewModelProvider:cellViewModelProvider
                                                               cellClass:[PTUImageCell class]
                                                         headerCellClass:[PTUHeaderCell class]];
-
     collectionView = OCMClassMock([UICollectionView class]);
   });
 

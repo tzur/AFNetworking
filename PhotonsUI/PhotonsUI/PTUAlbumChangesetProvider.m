@@ -96,8 +96,8 @@ static NSArray *PTUIndexPathArray(NSIndexSet * _Nullable albumIndexSet,
   return [albumArray arrayByAddingObjectsFromArray:assetArray];
 }
 
-static PTUChangesetMoves *PTUMovesIndexPathArray(PTNAlbumChangesetMoves *albumMoves,
-                                                 PTNAlbumChangesetMoves *assetMoves) {
+static PTUChangesetMoves *PTUMovesIndexPathArray(PTNAlbumChangesetMoves * _Nullable albumMoves,
+                                                 PTNAlbumChangesetMoves * _Nullable assetMoves) {
   NSArray *albumArray = PTUMovesWithSection(albumMoves, kAlbumSection) ?: @[];
   NSArray *assetArray = PTUMovesWithSection(assetMoves, kAssetSection) ?: @[];
 

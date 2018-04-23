@@ -39,7 +39,8 @@ static BOOL PTUCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
   return YES;
 }
 
-static BOOL PTUDataModelSemanticallyEqual(PTUDataModel *lhs, PTUDataModel *rhs) {
+static BOOL PTUDataModelSemanticallyEqual(PTUDataModel * _Nullable lhs,
+                                          PTUDataModel * _Nullable rhs) {
   if (lhs == rhs) {
     return YES;
   }
@@ -57,7 +58,7 @@ static BOOL PTUDataModelSemanticallyEqual(PTUDataModel *lhs, PTUDataModel *rhs) 
   return YES;
 }
 
-static BOOL PTUCompare(NSObject *lhs, NSObject *rhs) {
+static BOOL PTUCompare(NSObject * _Nullable lhs, NSObject * _Nullable rhs) {
   return rhs == lhs || [lhs isEqual:rhs];
 }
 
