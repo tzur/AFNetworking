@@ -146,6 +146,10 @@ static const NSUInteger kInverseCDFScaleFactor = 20;
   auto size = byteChannels[0].size();
 
   std::vector<Floats> channels = {Floats(size), Floats(size), Floats(size)};
+  if (!size) {
+    return channels;
+  }
+
   for (NSUInteger dimension = 0; dimension < channels.size(); ++dimension) {
     vDSP_vfltu8(byteChannels[dimension].data(), 1, channels[dimension].data(), 1, size);
   }
