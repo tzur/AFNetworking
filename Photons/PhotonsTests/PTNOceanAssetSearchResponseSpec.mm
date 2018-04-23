@@ -50,7 +50,7 @@ it(@"should return nil for an invalid dictionary", ^{
                    fromJSONDictionary:invalidDictionary error:nil]).to.beNil();
 });
 
-it(@"should deserialize correctly", ^{
+it(@"should deserialize", ^{
   expect(parseError).to.beNil();
   expect(response.count).to.equal(@1);
   expect(response.page).to.equal(@2);
@@ -63,14 +63,15 @@ it(@"should deserialize correctly", ^{
   expect(descriptor.identifier).to.equal(@"foo");
   expect(descriptor.type).to.equal($(PTNOceanAssetTypePhoto));
   expect(descriptor.source).to.equal($(PTNOceanAssetSourcePixabay));
-  expect(descriptor.sizes).to.haveCountOf(2);
-  expect(descriptor.sizes[0].height).to.equal(@8);
-  expect(descriptor.sizes[0].width).to.equal(@9);
-  expect(descriptor.sizes[0].url.absoluteString).to.equal(@"https://bar.com/full.jpg");
-  expect(descriptor.sizes[1].height).to.equal(@10);
-  expect(descriptor.sizes[1].width).to.equal(@11);
-  expect(descriptor.sizes[1].url.absoluteString)
+  expect(descriptor.images).to.haveCountOf(2);
+  expect(descriptor.images[0].height).to.equal(@8);
+  expect(descriptor.images[0].width).to.equal(@9);
+  expect(descriptor.images[0].url.absoluteString).to.equal(@"https://bar.com/full.jpg");
+  expect(descriptor.images[1].height).to.equal(@10);
+  expect(descriptor.images[1].width).to.equal(@11);
+  expect(descriptor.images[1].url.absoluteString)
       .to.equal(@"https://bar.com/thumbnail.jpg");
+  expect(descriptor.videos).to.beEmpty();
   expect(descriptor.creationDate).to.beNil();
   expect(descriptor.modificationDate).to.beNil();
   expect(descriptor.filename).to.beNil();
@@ -81,11 +82,8 @@ it(@"should deserialize correctly", ^{
                                         identifier:descriptor.identifier]);
   expect(descriptor.localizedTitle).to.beNil();
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
-  expect(descriptor.descriptorTraits).to.equal([NSSet set]);
-});
-
-it(@"should serialize correctly", ^{
-  expect([MTLJSONAdapter JSONDictionaryFromModel:response]).to.equal(responseDictionary);
+  expect(descriptor.descriptorTraits)
+      .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
 });
 
 SpecEnd

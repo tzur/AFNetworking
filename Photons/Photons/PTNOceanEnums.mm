@@ -8,7 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Types of assets that can be retrieved by the Ocean server.
 LTEnumImplement(NSUInteger, PTNOceanAssetType,
   /// Photo asset type.
-  PTNOceanAssetTypePhoto
+  PTNOceanAssetTypePhoto,
+  /// Video asset type.
+  PTNOceanAssetTypeVideo
 );
 
 /// Types of Ocean assets sources.

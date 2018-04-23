@@ -303,12 +303,12 @@ context(@"fetching images", ^{
                                fromJSONDictionary:jsonDictionary error:nil];
 
         resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
-        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(100, 60)])
-            .andReturn(CGSizeMake(100, 60));
-        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(50, 20)])
-            .andReturn(CGSizeMake(100, 60));
-        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(500, 200)])
-            .andReturn(CGSizeMake(100, 60));
+        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(50, 20)])
+            .andReturn(NO);
+        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(100, 60)])
+            .andReturn(YES);
+        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(500, 200)])
+            .andReturn(YES);
 
         options = OCMClassMock([PTNImageFetchOptions class]);
       });
