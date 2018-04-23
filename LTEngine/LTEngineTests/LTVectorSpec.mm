@@ -149,11 +149,20 @@ context(@"LTVector2", ^{
     expect(angle).to.beLessThan(2 * M_PI);
   });
 
-  it(@"should return the correct perpendicular vector", ^{
+  context(@"perpendicular", ^{
     LTVector2 v(1, 2);
-    v = v.perpendicular();
-    expect(v.x).to.equal(2);
-    expect(v.y).to.equal(-1);
+
+    it(@"should return a perpendicular vector, resulting from clockwise rotation", ^{
+      expect(v.perpendicular(YES)).to.equal(LTVector2(2, -1));
+    });
+
+    it(@"should return a perpendicular vector, resulting from counter-clockwise rotation", ^{
+      expect(v.perpendicular(NO)).to.equal(LTVector2(-2, 1));
+    });
+
+    it(@"should return a perpendicular vector, resulting from default (clockwise) rotation", ^{
+      expect(v.perpendicular()).to.equal(v.perpendicular(YES));
+    });
   });
 
   it(@"should access data correctly", ^{

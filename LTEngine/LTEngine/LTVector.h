@@ -164,10 +164,12 @@ struct LTVector2 {
   }
 
   /// Returns a new vector that is perpendicular to the given \c vector.
-  /// The length of the returned vector is equal to the length of the given \c vector, and its
-  /// direction reflects a counter clockwise rotation (in bottom-left origin coordinate system).
-  inline LTVector2 perpendicular() const {
-    return LTVector2(this->y, -this->x);
+  /// The length of the returned vector is equal to the length of the given \c vector.
+  /// If \c clockwise is set to \c YES, its direction reflects a clockwise rotation (in bottom-left
+  /// origin coordinate system), otherwise it reflects a counter-clockwise one. By default
+  /// \c clockwise is set to \c YES.
+  inline LTVector2 perpendicular(BOOL clockwise = YES) const {
+    return clockwise ? LTVector2(this->y, -this->x) : LTVector2(-this->y, this->x);
   }
 
   /// Returns pointer to the first element of the vector.
