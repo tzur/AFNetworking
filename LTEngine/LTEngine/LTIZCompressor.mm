@@ -94,20 +94,19 @@ static const uint32_t kDecodeTable[1 << kContextBits][kMaxCodeValue] = {
   }
 };
 
-NS_INLINE int LTIZPredict0(const uchar __unused * const data, size_t __unused bpp,
-                           size_t __unused bpr) {
+NS_INLINE int LTIZPredict0(const uchar __unused * const data, int __unused bpp, int __unused bpr) {
   return 0;
 }
 
-NS_INLINE int LTIZPredict1x(const uchar * const data, size_t bpp, size_t __unused  bpr) {
+NS_INLINE int LTIZPredict1x(const uchar * const data, int bpp, int __unused bpr) {
   return data[-bpp];
 }
 
-NS_INLINE int LTIZPredict1y(const uchar * const data, size_t __unused bpp, size_t bpr) {
+NS_INLINE int LTIZPredict1y(const uchar * const data, int __unused bpp, int bpr) {
   return data[-bpr];
 }
 
-NS_INLINE int LTIZPredict3(const uchar * const data, size_t bpp, size_t bpr)  {
+NS_INLINE int LTIZPredict3(const uchar * const data, int bpp, int bpr)  {
   int x = data[-bpp];
   int y = data[-bpr];
   int xy = data[-bpp - bpr];
@@ -222,9 +221,9 @@ static const uint16_t kImageZeroVersion = 2;
 
 /// Initializes the encoder's bit cache.
 #define LTEncoderInitialize() \
-  size_t bpr = shard.step[0]; \
-  size_t bpp = shard.elemSize(); \
-  size_t runLength = (shard.cols - 1) * bpp; \
+  int bpr = (int)shard.step[0]; \
+  int bpp = (int)shard.elemSize(); \
+  int runLength = (int)((shard.cols - 1) * bpp); \
   const uchar *data = shard.data; \
   uint32_t context = kInitialContextValue; \
   LTBitCache bitCache = 0; \
@@ -251,8 +250,10 @@ static const uint16_t kImageZeroVersion = 2;
   }
 
 /// Stores a code word of a given \c value to memory.
-#define LTEncoderStoreCode(value) \
-  *output++ = (value)
+#define LTEncoderStoreCode(value) { \
+  LTIZCodeWord temp = (value); \
+  memcpy(output++, &(temp), sizeof(LTIZCodeWord)); \
+}
 
 - (BOOL)compressImage:(const cv::Mat &)image toPath:(NSString *)path
                 error:(NSError *__autoreleasing *)error withAlpha:(BOOL)withAlpha {
@@ -578,12 +579,12 @@ static const uint16_t kImageZeroVersion = 2;
   uint32_t length = 0; \
   \
   if ((uchar *)(code + 1) <= fileEnd) { \
-    bitCache = LTDecoderFetchCodeWord(); \
+    LTDecoderFetchCodeWord(bitCache); \
     length = (uint32_t)kCodeBits; \
   } \
-  size_t bpr = shard->step[0]; \
-  size_t bpp = shard->elemSize(); \
-  size_t runLength = (shard->cols - 1) * bpp; \
+  int bpr = (int)shard->step[0]; \
+  int bpp = (int)shard->elemSize(); \
+  int runLength = (int)((shard->cols - 1) * bpp); \
   uint32_t bitCount; \
   uint32_t previousBitCount = kInitialContextValue; \
   uchar *data = shard->data;
@@ -608,14 +609,16 @@ static const uint16_t kImageZeroVersion = 2;
   if (length < kCodeBits) { \
     bitCache <<= kCodeBits; \
     if ((uchar *)(code + 1) <= fileEnd) { \
-      bitCache |= LTDecoderFetchCodeWord(); \
+      LTIZCodeWord temp; \
+      LTDecoderFetchCodeWord(temp); \
+      bitCache |= temp; \
     } \
     length += kCodeBits; \
   }
 
 /// Fetches a the next code word from memory.
-#define LTDecoderFetchCodeWord() \
-  *code++
+#define LTDecoderFetchCodeWord(bitCache) \
+  memcpy(&(bitCache), code++, sizeof(LTIZCodeWord))
 
 - (BOOL)decompressFromPath:(NSString *)path toImage:(cv::Mat *)image
                      error:(NSError *__autoreleasing *)error {
@@ -728,7 +731,7 @@ static const uint16_t kImageZeroVersion = 2;
 }
 
 - (void)decompressToRGBShard:(cv::Mat4b *)shard fromCode:(LTIZCodeWord *)code
-                      fileEnd:(const uchar *)fileEnd {
+                     fileEnd:(const uchar *)fileEnd {
   LTDecoderInitialize();
 
   // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
