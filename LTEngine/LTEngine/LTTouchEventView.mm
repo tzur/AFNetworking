@@ -284,8 +284,10 @@ NS_ASSUME_NONNULL_BEGIN
   NSNumber * _Nullable mostRecentTimestamp = self.sequenceIDToMostRecentTimestamp[@(sequenceID)];
 
   if (!coalescedTouches.count) {
-    LogDebug(@"No coalesced touches despite valid event (%@) and main touch (%@)", event,
-             mainTouch);
+    if (mainTouch.phase != UITouchPhaseCancelled) {
+      LogDebug(@"No coalesced touches despite valid event (%@) and non-cancelled main touch (%@)",
+               event, mainTouch);
+    }
 
     NSTimeInterval timestamp = std::max((NSTimeInterval)[mostRecentTimestamp doubleValue],
                                         mainTouch.timestamp);
