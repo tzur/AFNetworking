@@ -16,6 +16,32 @@ context(@"map", ^{
   });
 });
 
+context(@"compactMap", ^{
+  it(@"should return a mapped array with only the non nil mapped results", ^{
+    NSArray *mapped = [kSourceArray lt_compactMap:^id _Nullable(NSNumber *object) {
+      if ([object isEqual:@3]) {
+        return nil;
+      }
+      return @([object integerValue] * [object integerValue]);
+    }];
+    expect(mapped).to.equal(@[@1, @49]);
+  });
+
+  it(@"should return a full mapped array if block returns non nil results for all values", ^{
+    NSArray *mapped = [kSourceArray lt_compactMap:^id _Nullable(NSNumber *object) {
+      return @([object integerValue] * [object integerValue]);
+    }];
+    expect(mapped).to.equal(@[@1, @9, @9, @49]);
+  });
+
+  it(@"should return an empty array if block returns nil for all values", ^{
+    NSArray *mapped = [kSourceArray lt_compactMap:^id _Nullable(NSNumber *) {
+      return nil;
+    }];
+    expect(mapped).to.beEmpty();
+  });
+});
+
 context(@"reduce", ^{
   it(@"should reduce the source array using the provided block and initial value", ^{
     NSNumber *value =
@@ -42,7 +68,7 @@ context(@"filter", ^{
       return NO;
     }];
 
-    expect(filteredArray).to.equal(@[]);
+    expect(filteredArray).to.beEmpty();
   });
 });
 
