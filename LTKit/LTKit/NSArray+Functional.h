@@ -22,6 +22,23 @@ typedef id _Nonnull(^LTArrayMapBlock)(ObjectType _Nonnull object);
 /// @endcode
 - (NSArray *)lt_map:(NS_NOESCAPE LTArrayMapBlock)block;
 
+/// Callback block used with \c lt_compactMap: method.
+typedef id _Nullable(^LTArrayCompactMapBlock)(ObjectType _Nonnull object);
+
+/// Returns a new array with the results of calling the provided \c block on every element in this
+/// array and filtering out values that have been mapped by the \c block to \c nil.
+///
+/// <b>Example for compact mapping an array:</b>
+/// @code
+/// NSArray<NSNumber *> *source = ...; // Array with numbers 0 to 10.
+/// NSArray<NSNumber *> *oddSquares = [source lt_compactMap:^(NSNumber *object) {
+///   NSUInteger number = object.unsignedIntegerValue;
+///   return (number % 2 == 1) ? @(number * number) : nil;
+/// }];
+/// oddSquares = [1, 9, 25, 49, 81]
+/// @endcode
+- (NSArray *)lt_compactMap:(NS_NOESCAPE LTArrayCompactMapBlock)block;
+
 /// Callback block used with \c lt_reduce:initial:.
 typedef id _Nonnull(^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
 

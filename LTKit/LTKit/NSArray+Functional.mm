@@ -17,6 +17,19 @@ NS_ASSUME_NONNULL_BEGIN
   return mapped;
 }
 
+- (NSArray *)lt_compactMap:(LTArrayCompactMapBlock)block {
+  LTParameterAssert(block);
+
+  NSMutableArray *mapped = [NSMutableArray array];
+  for (id object in self) {
+    id _Nullable mappedObject = block(object);
+    if (mappedObject) {
+      [mapped addObject:(id _Nonnull)mappedObject];
+    }
+  }
+  return mapped;
+}
+
 - (id)lt_reduce:(NS_NOESCAPE LTArrayReduceBlock)block initial:(id)initialValue {
   LTParameterAssert(block);
 
