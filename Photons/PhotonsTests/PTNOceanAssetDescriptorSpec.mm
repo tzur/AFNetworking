@@ -16,7 +16,7 @@ it(@"should deserialize", ^{
     @"height": @8,
     @"width": @9,
     @"size": @1337,
-    @"download_url" : @"https://bar.com/full.jpg",
+    @"download_url" : @"https://bar.com/full.mp4",
     @"streaming_url": @"bar://steam.foo"
   };
   PTNOceanVideoAssetInfo *assetInfo = [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
@@ -25,7 +25,7 @@ it(@"should deserialize", ^{
   expect(assetInfo.height).to.equal(@8);
   expect(assetInfo.width).to.equal(@9);
   expect(assetInfo.size).to.equal(@1337);
-  expect(assetInfo.url.absoluteString).to.equal(@"https://bar.com/full.jpg");
+  expect(assetInfo.url.absoluteString).to.equal(@"https://bar.com/full.mp4");
   expect(assetInfo.streamURL.absoluteString).to.equal(@"bar://steam.foo");
 });
 
@@ -114,6 +114,7 @@ context(@"photos", ^{
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
+                                           assetType:descriptor.type
                                           identifier:descriptor.identifier]);
     expect(descriptor.localizedTitle).to.beNil();
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
@@ -240,6 +241,7 @@ context(@"video", ^{
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
+                                           assetType:descriptor.type
                                           identifier:descriptor.identifier]);
     expect(descriptor.localizedTitle).to.beNil();
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);

@@ -43,9 +43,9 @@ static NSString * const kUnmatchedKeysDescription =
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @"height": @"height",
-    @"width": @"width",
-    @"url": @"url"
+    @instanceKeypath(PTNOceanImageAssetInfo, height): @"height",
+    @instanceKeypath(PTNOceanImageAssetInfo, width): @"width",
+    @instanceKeypath(PTNOceanImageAssetInfo, url): @"url"
   };
 }
 
@@ -78,11 +78,11 @@ static NSString * const kUnmatchedKeysDescription =
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @"height": @"height",
-    @"width": @"width",
-    @"url": @"download_url",
-    @"streamURL": @"streaming_url",
-    @"size": @"size",
+    @instanceKeypath(PTNOceanVideoAssetInfo, height): @"height",
+    @instanceKeypath(PTNOceanVideoAssetInfo, width): @"width",
+    @instanceKeypath(PTNOceanVideoAssetInfo, url): @"download_url",
+    @instanceKeypath(PTNOceanVideoAssetInfo, streamURL): @"streaming_url",
+    @instanceKeypath(PTNOceanVideoAssetInfo, size): @"size",
   };
 }
 
@@ -231,7 +231,8 @@ static NSString * const kUnmatchedKeysDescription =
 #pragma mark -
 
 - (NSURL *)ptn_identifier {
-  return [NSURL ptn_oceanAssetURLWithSource:self.source identifier:self.identifier];
+  return [NSURL ptn_oceanAssetURLWithSource:self.source assetType:self.type
+                                 identifier:self.identifier];
 }
 
 - (nullable NSString *)localizedTitle {

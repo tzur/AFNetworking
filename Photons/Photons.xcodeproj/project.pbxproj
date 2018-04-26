@@ -32,7 +32,7 @@
 		2873CBA01F5466C100677B2C /* PTNOceanAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */; };
 		2873CBCA1F5466E000677B2C /* PTNOceanAssetManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */; };
 		2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */; };
-		2873CC321F54675C00677B2C /* OceanFakeAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */; };
+		2873CC321F54675C00677B2C /* OceanFakePhotoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CC311F54675C00677B2C /* OceanFakePhotoAssetResponse.json */; };
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
 		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
 		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
@@ -144,6 +144,7 @@
 		84FABB671CA2DBF5009283F0 /* PTNPhotoKitTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.mm */; };
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
 		84FF77F11C91606500D1DA9F /* NSURL+Gateway.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */; };
+		883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */; };
 		8861FDAF1E5A2B4600CA1436 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAE1E5A2B4600CA1436 /* Photos.framework */; };
 		8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */; };
 		8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDCF1E5A2B5800CA1436 /* UIKit.framework */; };
@@ -586,7 +587,7 @@
 		2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManager.mm; sourceTree = "<group>"; };
 		2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManagerSpec.mm; sourceTree = "<group>"; };
 		2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeSearchResponse.json; path = Resources/OceanFakeSearchResponse.json; sourceTree = "<group>"; };
-		2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeAssetResponse.json; path = Resources/OceanFakeAssetResponse.json; sourceTree = "<group>"; };
+		2873CC311F54675C00677B2C /* OceanFakePhotoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakePhotoAssetResponse.json; path = Resources/OceanFakePhotoAssetResponse.json; sourceTree = "<group>"; };
 		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
@@ -732,6 +733,7 @@
 		84FABBBF1CA2F0AA009283F0 /* PTNOpenURLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNOpenURLHandler.h; sourceTree = "<group>"; };
 		84FF77A71C906A5900D1DA9F /* NSURL+Gateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Gateway.h"; sourceTree = "<group>"; };
 		84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Gateway.m"; sourceTree = "<group>"; };
+		883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetResponse.json; path = Resources/OceanFakeVideoAssetResponse.json; sourceTree = "<group>"; };
 		8861FDAE1E5A2B4600CA1436 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FDCF1E5A2B5800CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1601,9 +1603,10 @@
 		8BCF585B1BCD2350001EE2ED /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */,
+				2873CC311F54675C00677B2C /* OceanFakePhotoAssetResponse.json */,
 				2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */,
 				799E70B31FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json */,
+				883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */,
 				0DBC67E81EAF653C005EE862 /* OneSecondVideo16x16.mp4 */,
 				848D2D2E1C4E24E500491AB3 /* PTNImageAsset.jpg */,
 				8428F2F01C67489B0007B0A5 /* PTNImageAsset.txt */,
@@ -2090,13 +2093,14 @@
 				8BCF586B1BCD25AB001EE2ED /* PTNImageMetadataLeftMirrored.jpg in Resources */,
 				8BCF58681BCD25AB001EE2ED /* PTNImageMetadataDownMirrored.jpg in Resources */,
 				8BCF586C1BCD25AB001EE2ED /* PTNImageMetadataRight.jpg in Resources */,
+				883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */,
 				2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */,
 				8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */,
 				799E70DD1FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json in Resources */,
 				8BCF58691BCD25AB001EE2ED /* PTNImageMetadataImage.jpg in Resources */,
 				8428F2F11C67489B0007B0A5 /* PTNImageAsset.txt in Resources */,
 				8BCF586E1BCD25AB001EE2ED /* PTNImageMetadataUp.jpg in Resources */,
-				2873CC321F54675C00677B2C /* OceanFakeAssetResponse.json in Resources */,
+				2873CC321F54675C00677B2C /* OceanFakePhotoAssetResponse.json in Resources */,
 				8BCF586A1BCD25AB001EE2ED /* PTNImageMetadataLeft.jpg in Resources */,
 				8BCF58671BCD25AB001EE2ED /* PTNImageMetadataDown.jpg in Resources */,
 			);
