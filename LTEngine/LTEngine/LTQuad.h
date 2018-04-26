@@ -594,4 +594,11 @@ struct ::std::hash<lt::Quad> {
 /// for \c <i> in <tt>{0, 1, 2, 3}</tt>.
 NSString *NSStringFromLTQuad(lt::Quad quad);
 
+/// Returns an instance from the given \c string representation. Returns \c lt::Quad() if the given
+/// \c string does not have the format
+/// <tt>@"{{v0_x, v0_y}, {v1_x, v1_y}, {v2_x, v2_y}, {v3_x, v3_y}}"</tt>, where \c v<i>_x and
+/// \c v<i>_y are the string representations of \c quad.v<i>().x and \c quad.v<i>().y, respectively,
+/// for \c <i> in <tt>{0, 1, 2, 3}</tt>.
+lt::Quad LTQuadFromString(NSString *string);
+
 NS_ASSUME_NONNULL_END

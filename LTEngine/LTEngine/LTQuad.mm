@@ -5,6 +5,7 @@
 
 #import "LTRotatedRect.h"
 #import "LTTriangle.h"
+#import "NSScanner+LTEngine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -744,6 +745,41 @@ NSString *NSStringFromLTQuad(lt::Quad quad) {
   return [NSString stringWithFormat:@"{{%g, %g}, {%g, %g}, {%g, %g}, {%g, %g}}",
           quad.v0().x, quad.v0().y, quad.v1().x, quad.v1().y, quad.v2().x, quad.v2().y,
           quad.v3().x, quad.v3().y];
+}
+
+static CGPoint LTQuadVertexFromScanner(NSScanner *scanner, BOOL scanComma) {
+  float x, y;
+  if (![scanner scanString:@"{" intoString:nil]) return CGPointNull;
+  if (![scanner lt_scanFloat:&x]) return CGPointNull;
+  if (![scanner scanString:@"," intoString:nil]) return CGPointNull;
+  if (![scanner lt_scanFloat:&y]) return CGPointNull;
+  if (![scanner scanString:@"}" intoString:nil]) return CGPointNull;
+  if (scanComma) {
+    if (![scanner scanString:@"," intoString:nil]) return CGPointNull;
+  }
+  return CGPointMake(x, y);
+}
+
+lt::Quad LTQuadFromString(NSString *string) {
+  NSScanner *scanner = [NSScanner scannerWithString:string];
+  CGPoint v0, v1, v2, v3;
+  if (![scanner scanString:@"{" intoString:nil]) return lt::Quad();
+
+  v0 = LTQuadVertexFromScanner(scanner, YES);
+  if (CGPointIsNull(v0)) return lt::Quad();
+
+  v1 = LTQuadVertexFromScanner(scanner, YES);
+  if (CGPointIsNull(v1)) return lt::Quad();
+
+  v2 = LTQuadVertexFromScanner(scanner, YES);
+  if (CGPointIsNull(v2)) return lt::Quad();
+
+  v3 = LTQuadVertexFromScanner(scanner, NO);
+  if (CGPointIsNull(v3)) return lt::Quad();
+
+  if (![scanner scanString:@"}" intoString:nil]) return lt::Quad();
+  if (![scanner isAtEnd]) return lt::Quad();
+  return lt::Quad(v0, v1, v2, v3);
 }
 
 NS_ASSUME_NONNULL_END

@@ -1664,10 +1664,22 @@ context(@"equality", ^{
   });
 });
 
-context(@"string from quad", ^{
+context(@"de/serialization", ^{
   it(@"should return a string from a given quad", ^{
     expect(NSStringFromLTQuad(lt::Quad::canonicalSquare()))
         .to.equal(@"{{0, 0}, {1, 0}, {1, 1}, {0, 1}}");
+  });
+
+  context(@"deserialization", ^{
+    it(@"should return a quad from a given string", ^{
+      expect(LTQuadFromString(@"{{0, 0}, {1, 0}, {1, 1}, {0, 1}}") == lt::Quad::canonicalSquare())
+          .to.beTruthy();
+    });
+
+    it(@"should return a null quad from a given incorrectly formatted string", ^{
+      expect(LTQuadFromString(@"{{0, 0}, {1, 0}, {1, 1}}").isNull()).to.beTruthy();
+      expect(LTQuadFromString(@"{}").isNull()).to.beTruthy();
+    });
   });
 });
 
