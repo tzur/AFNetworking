@@ -11,6 +11,7 @@
 #import "LTInterval.h"
 #import "LTVector.h"
 #import "NSValue+LTInterval.h"
+#import "NSValue+LTQuad.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,6 +32,7 @@ NSString * const kGLKMatrix4ValueTransformer = @"GLKMatrix4ValueTransformer";
 NSString * const kLTCGFloatIntervalValueTransformer = @"LTCGFloatIntervalValueTransformer";
 NSString * const kLTNSIntegerIntervalValueTransformer = @"LTNSIntegerIntervalValueTransformer";
 NSString * const kLTNSUIntegerIntervalValueTransformer = @"LTNSUIntegerIntervalValueTransformer";
+NSString * const kLTQuadValueTransformer = @"LTQuadValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
 NSString * const kLTModelValueTransformerEnumNameKey = @"name";
@@ -78,6 +80,8 @@ NSString * const kLTModelValueTransformerColorKey = @"color";
                                     forName:kLTNSIntegerIntervalValueTransformer];
     [NSValueTransformer setValueTransformer:[self lt_LTNSUIntegerIntervalValueTransformer]
                                     forName:kLTNSUIntegerIntervalValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTQuadValueTransformer]
+                                    forName:kLTQuadValueTransformer];
   }
 }
 
@@ -328,6 +332,19 @@ LTMakeIntervalValueTransformer(NSInteger);
 LTMakeIntervalValueTransformer(NSUInteger);
 
 #undef LTMakeIntervalValueTransformer
+
++ (NSValueTransformer *)lt_LTQuadValueTransformer {
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:^NSValue *(NSString *string) {
+    LTParameterAssert([string isKindOfClass:NSString.class], @"Invalid class: %@", string.class);
+    lt::Quad quad = LTQuadFromString(string);
+    NSValue *result = !quad.isNull() ? [NSValue valueWithLTQuad:quad] : nil;
+    LTParameterAssert(result, @"Given string %@ is not according to expected format", string);
+    return result;
+  } reverseBlock:^NSString *(NSValue *quad) {
+    LTParameterAssert([quad isKindOfClass:NSValue.class], @"Invalid class: %@", quad.class);
+    return NSStringFromLTQuad([quad LTQuadValue]);
+  }];
+}
 
 #pragma mark -
 #pragma mark Transformer methods

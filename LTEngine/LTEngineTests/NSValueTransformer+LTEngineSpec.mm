@@ -11,6 +11,7 @@
 #import "LTTestMTLModel.h"
 #import "LTVector.h"
 #import "NSValue+LTInterval.h"
+#import "NSValue+LTQuad.h"
 
 @interface LTTestNonJSONMTLModel : MTLModel
 @end
@@ -1018,6 +1019,40 @@ context(@"NSUInteger interval transformer", ^{
 
   it(@"should perform reverse transform", ^{
     expect([transformer reverseTransformedValue:boxedInterval]).to.equal(intervalString);
+  });
+
+  itShouldBehaveLike(kLTInvalidValuesExamples, @{
+    kLTInvalidValuesExamplesTransformer:
+        [NSValueTransformer valueTransformerForName:kLTCGFloatIntervalValueTransformer],
+    kLTInvalidObjectForTransforming: @0,
+    kLTInvalidObjectForReverseTransforming: @0
+  });
+});
+
+context(@"Quad transformer", ^{
+  __block NSValueTransformer *transformer;
+  __block NSString *quadString;
+  __block lt::Quad quad;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTQuadValueTransformer];
+    quadString = @"{{0, 0}, {1, 0}, {2, 2}, {-0.5, 1.5}}";
+    quad = lt::Quad(CGPointZero, CGPointMake(1, 0), CGPointMake(2, 2), CGPointMake(-0.5, 1.5));
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([[transformer transformedValue:quadString] LTQuadValue] == quad).to.beTruthy();
+  });
+
+  it(@"should raise if invalid string is given", ^{
+    expect(^{
+      NSValue __unused *quadValue = [transformer transformedValue:@""];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:[NSValue valueWithLTQuad:quad]])
+        .to.equal(quadString);
   });
 
   itShouldBehaveLike(kLTInvalidValuesExamples, @{

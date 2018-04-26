@@ -228,6 +228,18 @@ extern NSString * const kLTNSIntegerIntervalValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTNSUIntegerIntervalValueTransformer;
 
+/// Returns a reversible transformer that converts an \c NSString path representation to an
+/// \c NSValue instance boxing the corresponding \c lt::Quad and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with format
+/// <tt>{(x0, y0), (x1, y1), (x2, y2), (x3, y3)}</tt>.
+///
+/// The input to the reverse transformer must be an \c NSValue boxing an \c lt::Quad.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTQuadValueTransformer;
+
 @interface NSValueTransformer (LTEngine)
 
 /// Reversible transformer that accepts a JSON dictionary with \c NSString as keys and
