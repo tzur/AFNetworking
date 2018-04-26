@@ -92,6 +92,46 @@ context(@"find", ^{
   });
 });
 
+context(@"max", ^{
+  it(@"should return the largest number", ^{
+    NSArray<NSNumber *> *array = @[@3, @1, @4, @3, @7];
+    NSNumber *foundItem = [array lt_max:^BOOL(NSNumber *a, NSNumber *b) {
+      return [a intValue] < [b intValue];
+    }];
+
+    expect(foundItem).to.equal(@7);
+  });
+
+  it(@"should return nil if the array is empty", ^{
+    NSArray<NSNumber *> *array = @[];
+    NSNumber *foundItem = [array lt_max:^BOOL(NSNumber *a, NSNumber *b) {
+      return [a intValue] < [b intValue];
+    }];
+
+    expect(foundItem).to.beNil();
+  });
+});
+
+context(@"min", ^{
+  it(@"should return the smallest number", ^{
+    NSArray<NSNumber *> *array = @[@3, @1, @4, @3, @7];
+    NSNumber *foundItem = [array lt_min:^BOOL(NSNumber *a, NSNumber *b) {
+      return [a intValue] < [b intValue];
+    }];
+
+    expect(foundItem).to.equal(@1);
+  });
+
+  it(@"should return nil if the array is empty", ^{
+    NSArray<NSNumber *> *array = @[];
+    NSNumber *foundItem = [array lt_min:^BOOL(NSNumber *a, NSNumber *b) {
+      return [a intValue] < [b intValue];
+    }];
+
+    expect(foundItem).to.beNil();
+  });
+});
+
 context(@"classify", ^{
   it(@"should return a dictionary mapping objects to their labels", ^{
     NSArray<NSNumber *> *array = @[@(-1), @0, @1];
