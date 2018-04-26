@@ -67,9 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Processes the given \c controlPoints belonging to an ongoing control point sequence by a)
 /// creating a spline, in the form of a continuous \c id<LTParameterizedObject>, from the
-/// \c controlPoints or extending the already existing spline with them and b) rendering
-/// quadrilateral geometry created from discrete samples of the spline, according to the
-/// \c configuration provided upon intialization.
+/// \c controlPoints or extending the already existing spline with them and b) rendering geometry
+/// created according to the spline.
 ///
 /// In order to indicate the end of a process sequence, the \c end indication must be \c YES.
 - (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints end:(BOOL)end;
