@@ -67,22 +67,44 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Ocean base endpoint.
-static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
+static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com";
 
 /// Max age, in seconds, of cached \c PTNAlbum objects.
 static const NSTimeInterval kAlbumMaxAge = 300;
+
+NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
+  static NSDictionary *assetTypeToEndpointPath = @{
+    $(PTNOceanAssetTypePhoto): @"image",
+    $(PTNOceanAssetTypeVideo): @"video"
+  };
+
+  NSString * _Nullable endpointPath = assetTypeToEndpointPath[assetType];
+  if (!endpointPath) {
+    return nil;
+  }
+  return [@[kBaseEndpoint, endpointPath, @"search"] componentsJoinedByString:@"/"];
+}
 
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
   if (![url.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAlbum)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
+
+  auto _Nullable assetType = url.ptn_oceanAssetType;
+  if (!assetType) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+  }
+
   NSMutableDictionary<NSString *, NSObject *> *requestParameters =
       [[self oceanRequestParametersWithURL:url] mutableCopy];
   requestParameters[@"phrase"] = url.lt_queryDictionary[@"phrase"];
   requestParameters[@"page"] = url.lt_queryDictionary[@"page"];
 
-  return [[[[[self.client GET:[kBaseEndpoint stringByAppendingString:@"search"]
-               withParameters:requestParameters headers:nil]
+  NSString * _Nullable endpoint = PTNSearchEndpointFromType(assetType);
+  if (!endpoint) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
+  }
+  return [[[[[self.client GET:endpoint withParameters:requestParameters headers:nil]
       fbr_deserializeJSON]
       ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
       map:^PTNAlbumChangeset *(PTNOceanAssetSearchResponse *response) {
@@ -134,8 +156,17 @@ static const NSTimeInterval kAssetMaxAge = 86400;
       return [RACSignal return:cacheProxy];
     }
     case PTNOceanURLTypeAsset: {
-      NSString *urlString = [@[kBaseEndpoint, @"asset/", url.lt_queryDictionary[@"id"]]
-          componentsJoinedByString:@""];
+      auto _Nullable assetType = url.ptn_oceanAssetType;
+      if (!assetType) {
+        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+      }
+
+      if (![assetType isEqual:$(PTNOceanAssetTypePhoto)]) {
+        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
+      }
+
+      NSString *urlString = [@[kBaseEndpoint, @"asset", url.lt_queryDictionary[@"id"]]
+          componentsJoinedByString:@"/"];
       auto requestParameters = [self oceanRequestParametersWithURL:url];
 
       return [[[[[self.client GET:urlString withParameters:requestParameters headers:nil]
@@ -168,10 +199,6 @@ static const NSTimeInterval kAssetMaxAge = 86400;
   }
   auto assetDescriptor = (PTNOceanAssetDescriptor *)descriptor;
 
-  if (![assetDescriptor.type isEqual:$(PTNOceanAssetTypePhoto)]) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
-                                                  url:descriptor.ptn_identifier]];
-  }
   if (!assetDescriptor.images.count) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:descriptor]];

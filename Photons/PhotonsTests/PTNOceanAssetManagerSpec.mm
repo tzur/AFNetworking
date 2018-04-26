@@ -55,8 +55,10 @@ static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> r
   return PTNAssetCacheProxy(data, nil, resizingStrategy, responseTime);
 }
 
-static NSURL *PTNFakeAlbumRequestURL(NSUInteger page = 2) {
-  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:page];
+static NSURL *PTNFakeAlbumRequestURL(NSUInteger page = 2,
+                                     PTNOceanAssetType *assetType = $(PTNOceanAssetTypePhoto)) {
+  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) assetType:assetType
+                                     phrase:@"foo" page:page];
 }
 
 static LTProgress *PTNFakeLTProgress(NSData *data, NSString * _Nullable mimeType = nil) {
@@ -89,15 +91,33 @@ beforeEach(^{
 
 context(@"fetching albums", ^{
   context(@"valid URL", ^{
-    it(@"should use correct request arguments", ^{
+    it(@"should use parameters from request URL when issuing album search request", ^{
       NSMutableDictionary *expectedParameters = [PTNFakeRequestParameters() mutableCopy];
       expectedParameters[@"phrase"] = @"foo";
       expectedParameters[@"page"] = @"2";
-      NSString *expectedURLString = @"https://ocean.lightricks.com/search";
-      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil])
-          .andReturn([RACSignal empty]);
+      OCMExpect([client GET:OCMOCK_ANY withParameters:expectedParameters headers:nil]);
 
       auto __unused recorder = [[manager fetchAlbumWithURL:requestURL] testRecorder];
+
+      OCMVerifyAll(client);
+    });
+
+    it(@"should use image search endpoint when searching for images", ^{
+      NSURL *imageAlbumRequest = PTNFakeAlbumRequestURL(2, $(PTNOceanAssetTypePhoto));
+      OCMExpect([client GET:@"https://ocean.lightricks.com/image/search" withParameters:OCMOCK_ANY
+                    headers:nil]);
+
+      auto __unused recorder = [[manager fetchAlbumWithURL:imageAlbumRequest] testRecorder];
+
+      OCMVerifyAll(client);
+    });
+
+    it(@"should use image search endpoint when searching for videos", ^{
+      NSURL *imageAlbumRequest = PTNFakeAlbumRequestURL(2, $(PTNOceanAssetTypeVideo));
+      OCMExpect([client GET:@"https://ocean.lightricks.com/video/search" withParameters:OCMOCK_ANY
+                    headers:nil]);
+
+      auto __unused recorder = [[manager fetchAlbumWithURL:imageAlbumRequest] testRecorder];
 
       OCMVerifyAll(client);
     });
@@ -186,68 +206,81 @@ context(@"fetching descriptors", ^{
   });
 
   context(@"fetching asset descriptor", ^{
-    __block NSURL *assetRequestURL;
+    context(@"image asset", ^{
+      __block NSURL *assetRequestURL;
 
-    beforeEach(^{
-      assetRequestURL = [NSURL ptn_oceanAssetURLWithSource:$(PTNOceanAssetSourcePixabay)
-                                                identifier:@"bar"];
+      beforeEach(^{
+        assetRequestURL = [NSURL ptn_oceanAssetURLWithSource:$(PTNOceanAssetSourcePixabay)
+                                                   assetType:$(PTNOceanAssetTypePhoto)
+                                                  identifier:@"bar"];
+      });
+
+      it(@"should use correct request arguments", ^{
+        FBRHTTPRequestParameters *expectedParameters = PTNFakeRequestParameters();
+        NSString *expectedURLString = @"https://ocean.lightricks.com/asset/bar";
+        OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil])
+            .andReturn([RACSignal empty]);
+
+        auto __unused recorder = [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
+
+        OCMVerifyAll(client);
+      });
+
+      it(@"should fetch asset descriptor", ^{
+        NSString *path = [NSBundle lt_pathForResource:@"OceanFakePhotoAssetResponse.json"
+                                            nearClass:[self class]];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
+                                                             error:nil];
+        PTNOceanAssetDescriptor *expectedDescriptor = [MTLJSONAdapter
+                                                       modelOfClass:[PTNOceanAssetDescriptor class]
+                                                       fromJSONDictionary:jsonDictionary
+                                                       error:nil];
+        auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:86400 responseTime:date
+                                                    entityTag:nil];
+        auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc]
+                           initWithUnderlyingObject:expectedDescriptor
+                           cacheInfo:cacheInfo];
+
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn(subject);
+        LLSignalTestRecorder *recorder =
+            [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
+
+        [subject sendNext:PTNFakeLTProgress(data)];
+
+        expect(expectedDescriptor).toNot.beNil();
+        expect(recorder).to.sendValues(@[cacheProxy]);
+      });
+
+      it(@"should forward deserialization errors", ^{
+        NSError *error = [NSError lt_errorWithCode:71070];
+        RACSubject *subject = [RACSubject subject];
+        RACSignal *request = OCMClassMock([RACSignal class]);
+        OCMStub([request fbr_deserializeJSON]).andReturn(request);
+        OCMStub([request ptn_parseDictionaryWithClass:[PTNOceanAssetDescriptor class]])
+            .andReturn(subject);
+        OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn(request);
+        LLSignalTestRecorder *recorder =
+            [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
+
+        [subject sendError:error];
+
+        expect(recorder).to.sendError([NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                            url:assetRequestURL
+                                                underlyingError:error]);
+      });
     });
+  });
 
-    it(@"should use correct request arguments", ^{
-      FBRHTTPRequestParameters *expectedParameters = PTNFakeRequestParameters();
-      NSString *expectedURLString = @"https://ocean.lightricks.com/asset/bar";
-      OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil])
-          .andReturn([RACSignal empty]);;
-
-      auto __unused recorder = [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
-
-      OCMVerifyAll(client);
-    });
-
-    it(@"should fetch asset descriptor", ^{
-      NSString *path = [NSBundle lt_pathForResource:@"OceanFakeAssetResponse.json"
-                                          nearClass:[self class]];
-      NSData *data = [NSData dataWithContentsOfFile:path];
-      NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
-                                                           error:nil];
-      PTNOceanAssetDescriptor *expectedDescriptor = [MTLJSONAdapter
-                                                     modelOfClass:[PTNOceanAssetDescriptor class]
-                                                     fromJSONDictionary:jsonDictionary
-                                                     error:nil];
-      auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:86400 responseTime:date entityTag:nil];
-      auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:expectedDescriptor
-                                                                        cacheInfo:cacheInfo];
-
-      RACSubject *subject = [RACSubject subject];
-      OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
-          .andReturn(subject);
-      LLSignalTestRecorder *recorder =
-          [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
-
-      [subject sendNext:PTNFakeLTProgress(data)];
-
-      expect(expectedDescriptor).toNot.beNil();
-      expect(recorder).to.sendValues(@[cacheProxy]);
-    });
-
-    it(@"should forward deserialization errors", ^{
-      NSError *error = [NSError lt_errorWithCode:71070];
-      RACSubject *subject = [RACSubject subject];
-      RACSignal *request = OCMClassMock([RACSignal class]);
-      OCMStub([request fbr_deserializeJSON]).andReturn(request);
-      OCMStub([request ptn_parseDictionaryWithClass:[PTNOceanAssetDescriptor class]])
-          .andReturn(subject);
-      OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
-          .andReturn(request);
-      LLSignalTestRecorder *recorder =
-          [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
-
-      [subject sendError:error];
-
-      expect(recorder).to.sendError([NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                          url:assetRequestURL
-                                              underlyingError:error]);
-    });
+  it(@"should send error when using an video asset", ^{
+    auto videoAssetURL = [NSURL ptn_oceanAssetURLWithSource:$(PTNOceanAssetSourcePixabay)
+                                                  assetType:$(PTNOceanAssetTypeVideo)
+                                                 identifier:@"bar"];
+    expect([manager fetchDescriptorWithURL:videoAssetURL])
+        .to.sendError([NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:videoAssetURL]);
   });
 
   it(@"should send error when using an invalid URL", ^{
@@ -262,8 +295,8 @@ context(@"fetching images", ^{
     id<PTNDescriptor> invalidDescriptor = OCMProtocolMock(@protocol(PTNDescriptor));
     RACSignal *fetch = [manager
                         fetchImageWithDescriptor:invalidDescriptor
-                        resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
-                        options:OCMClassMock([PTNImageFetchOptions class])];
+                        resizingStrategy:[PTNResizingStrategy identity]
+                        options:[PTNImageFetchOptions options]];
 
     expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                      associatedDescriptor:invalidDescriptor]);
@@ -292,8 +325,8 @@ context(@"fetching images", ^{
       __block PTNOceanAssetDescriptor *descriptor;
 
       beforeEach(^{
-        NSString *path = [NSBundle lt_pathForResource:@"OceanFakeAssetResponse.json"
-                                            nearClass:[self class]];
+        NSString *path = [NSBundle lt_pathForResource:@"OceanFakePhotoAssetResponse.json"
+                                          nearClass:[self class]];
         NSData *data = [NSData dataWithContentsOfFile:path];
         NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
                                                                          error:nil];
@@ -468,14 +501,10 @@ context(@"fetching image data", ^{
   context(@"ocean descriptors", ^{
     context(@"invalid descriptors", ^{
       it(@"should send error if there are no available assets", ^{
-        PTNOceanAssetDescriptor *invalidDescriptor = [MTLJSONAdapter
-                                                      modelOfClass:[PTNOceanAssetDescriptor class]
-                                                      fromJSONDictionary:@{
-          @"all_sizes": @[],
-          @"asset_type": @"photo",
-          @"source_id": @"pixabay",
-          @"id": @"foo"
-        } error:nil];
+        PTNOceanAssetDescriptor *invalidDescriptor = OCMClassMock([PTNOceanAssetDescriptor class]);
+        OCMStub(invalidDescriptor.images).andReturn(@[]);
+        OCMStub(invalidDescriptor.type).andReturn(PTNOceanAssetTypePhoto);
+
         RACSignal *fetch = [manager fetchImageDataWithDescriptor:invalidDescriptor];
 
         expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
@@ -487,7 +516,7 @@ context(@"fetching image data", ^{
       __block PTNOceanAssetDescriptor *descriptor;
 
       beforeEach(^{
-        NSString *path = [NSBundle lt_pathForResource:@"OceanFakeAssetResponse.json"
+        NSString *path = [NSBundle lt_pathForResource:@"OceanFakePhotoAssetResponse.json"
                                             nearClass:[self class]];
         NSData *data = [NSData dataWithContentsOfFile:path];
         NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
@@ -554,9 +583,11 @@ context(@"fetching image data", ^{
 
 context(@"unsupported operations", ^{
   it(@"should send error when attempting to fetch audiovisual asset", ^{
+    auto options = [PTNAVAssetFetchOptions
+                    optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     RACSignal *fetch = [manager
                         fetchAVAssetWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
-                        options:OCMClassMock([PTNAVAssetFetchOptions class])];
+                        options:options];
 
     expect(fetch).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
@@ -577,16 +608,15 @@ context(@"caching", ^{
 
   it(@"should invalidate image", ^{
     expect([manager validateImageWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
-                               resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
-                                        options:OCMClassMock([PTNImageFetchOptions class])
+                               resizingStrategy:[PTNResizingStrategy identity]
+                                        options:[PTNImageFetchOptions options]
                                       entityTag:@"foo"]).to.sendValues(@[@NO]);
   });
 
   it(@"should not have canonical URL", ^{
-    expect([manager
-            canonicalURLForDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
-            resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
-            options:OCMClassMock([PTNImageFetchOptions class])]).to.beNil();
+    expect([manager canonicalURLForDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
+                             resizingStrategy:[PTNResizingStrategy identity]
+                                      options:[PTNImageFetchOptions options]]).to.beNil();
   });
 });
 

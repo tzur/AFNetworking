@@ -79,6 +79,7 @@ it(@"should deserialize", ^{
   expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
   expect(descriptor.ptn_identifier)
       .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
+                                         assetType:descriptor.type
                                         identifier:descriptor.identifier]);
   expect(descriptor.localizedTitle).to.beNil();
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);

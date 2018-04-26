@@ -3,6 +3,8 @@
 
 #import "NSURL+Ocean.h"
 
+#import <LTKit/NSURL+Query.h>
+
 #import "PTNOceanEnums.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,18 +24,21 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
 }
 
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
+                             assetType:(PTNOceanAssetType *)assetType
                                 phrase:(nullable NSString *)phrase {
-  return [NSURL ptn_oceanAlbumURLWithSource:source phrase:phrase page:1];
+  return [NSURL ptn_oceanAlbumURLWithSource:source assetType:assetType phrase:phrase page:1];
 }
 
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
+                             assetType:(PTNOceanAssetType *)assetType
                                 phrase:(nullable NSString *)phrase page:(NSUInteger)page {
   NSURLComponents *components = [[NSURLComponents alloc] init];
   components.scheme = [self ptn_oceanScheme];
   components.host = @"album";
 
   NSMutableArray *queryItems =
-      [@[[NSURLQueryItem queryItemWithName:@"source" value:source.identifier]] mutableCopy];
+      [@[[NSURLQueryItem queryItemWithName:@"source" value:source.identifier],
+         [NSURLQueryItem queryItemWithName:@"type" value:assetType.name]] mutableCopy];
 
   if (phrase) {
     [queryItems addObject:[NSURLQueryItem queryItemWithName:@"phrase" value:phrase]];
@@ -45,13 +50,15 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
 }
 
 + (NSURL *)ptn_oceanAssetURLWithSource:(PTNOceanAssetSource *)source
+                             assetType:(PTNOceanAssetType *)assetType
                             identifier:(NSString *)identifier {
   NSURLComponents *components = [[NSURLComponents alloc] init];
   components.scheme = [self ptn_oceanScheme];
   components.host = @"asset";
   components.queryItems = @[
     [NSURLQueryItem queryItemWithName:@"id" value:identifier],
-    [NSURLQueryItem queryItemWithName:@"source" value:source.identifier]
+    [NSURLQueryItem queryItemWithName:@"source" value:source.identifier],
+    [NSURLQueryItem queryItemWithName:@"type" value:assetType.name]
   ];
   return components.URL;
 }
@@ -67,6 +74,17 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
     return $(PTNOceanURLTypeAsset);
   }
   return nil;
+}
+
+- (nullable PTNOceanAssetType *)ptn_oceanAssetType {
+  if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
+    return nil;
+  }
+  NSString * _Nullable type = [self lt_queryDictionary][@"type"];
+  if (!type) {
+    return nil;
+  }
+  return [PTNOceanAssetType enumWithName:type];
 }
 
 @end
