@@ -3,18 +3,21 @@
 
 #import "PTNOceanAssetManager.h"
 
+#import <AVFoundation/AVPlayerItem.h>
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPResponse.h>
 #import <Fiber/RACSignal+Fiber.h>
 #import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/LTUTICache.h>
+#import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSURL+Query.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "NSErrorCodes+Photons.h"
 #import "NSURL+Ocean.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNCacheInfo.h"
@@ -308,10 +311,53 @@ static const NSTimeInterval kAssetMaxAge = 86400;
 #pragma mark AV Preview fetching
 #pragma mark -
 
-- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
-                                    options:(PTNAVAssetFetchOptions __unused *)options {
-  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
-                                associatedDescriptor:descriptor]];
+- (RACSignal<PTNProgress<AVPlayerItem *> *> *)
+    fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+                         options:(PTNAVAssetFetchOptions *)options {
+  if (![descriptor isKindOfClass:[PTNOceanAssetDescriptor class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+  auto assetDescriptor = (PTNOceanAssetDescriptor *)descriptor;
+
+  if (![assetDescriptor.type isEqual:$(PTNOceanAssetTypeVideo)]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
+                                                  url:descriptor.ptn_identifier]];
+  }
+  if (!assetDescriptor.videos.count) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+  auto videoAssetInfo = [self videoAssetInfoForDescriptor:assetDescriptor options:options];
+  AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:videoAssetInfo.streamURL];
+  return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
+}
+
+/// Returns a comparator that compares video assets by how close their pixel count is to a given
+/// resolution.
+NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
+  return ^NSComparisonResult(PTNOceanVideoAssetInfo *lhs, PTNOceanVideoAssetInfo *rhs) {
+    NSInteger rhsPixels = rhs.width * rhs.height;
+    NSInteger lhsPixels = lhs.width * lhs.height;
+    return [@(std::llabs(pixelCount - rhsPixels)) compare:@(std::llabs(pixelCount - lhsPixels))];
+  };
+}
+
+- (PTNOceanVideoAssetInfo *)videoAssetInfoForDescriptor:(PTNOceanAssetDescriptor *)descriptor
+                                                options:(PTNAVAssetFetchOptions *)options {
+  // This strategy is derived from PhotoKit's documentation for \c PHVideoRequestOptionsDeliveryMode
+  // which states that fast returns 360p video, medium returns 720p and auto is like medium.
+  static auto comparatorForDeliveryMode = @{
+    @(PTNAVAssetDeliveryModeAutomatic) : comparatorByDistanceToPixelCount(720 * 1280),
+    @(PTNAVAssetDeliveryModeHighQualityFormat) :
+      comparatorByDistanceToPixelCount(NSIntegerMax),
+    @(PTNAVAssetDeliveryModeMediumQualityFormat) : comparatorByDistanceToPixelCount(720 * 1280),
+    @(PTNAVAssetDeliveryModeFastFormat) : comparatorByDistanceToPixelCount(360 * 640)
+  };
+
+  NSComparator comparator = comparatorForDeliveryMode[@(options.deliveryMode)];
+
+  return [[descriptor.videos sortedArrayUsingComparator:comparator] lastObject];
 }
 
 #pragma mark -

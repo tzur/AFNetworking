@@ -3,6 +3,8 @@
 
 #import "PTNOceanAssetManager.h"
 
+#import <AVFoundation/AVAsset.h>
+#import <AVFoundation/AVPlayerItem.h>
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPResponse.h>
 #import <Fiber/NSErrorCodes+Fiber.h>
@@ -576,6 +578,109 @@ context(@"fetching image data", ^{
                                                                  [PTNResizingStrategy identity],
                                                                  date)]
         ]);
+      });
+    });
+  });
+});
+
+context(@"fetching AV preview", ^{
+  it(@"should send error for an invalid descriptor class", ^{
+    id<PTNDescriptor> invalidDescriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    RACSignal *fetch = [manager
+                        fetchAVPreviewWithDescriptor:invalidDescriptor
+                        options:OCMClassMock([PTNAVAssetFetchOptions class])];
+
+    expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                     associatedDescriptor:invalidDescriptor]);
+  });
+
+  context(@"ocean descriptors", ^{
+    context(@"invalid descriptors", ^{
+      it(@"should send error if there are no available assets", ^{
+        PTNOceanAssetDescriptor *invalidDescriptor = OCMClassMock([PTNOceanAssetDescriptor class]);
+        OCMStub([invalidDescriptor videos]).andReturn(@[]);
+        OCMStub([invalidDescriptor type]).andReturn(PTNOceanAssetTypeVideo);
+
+        RACSignal *fetch = [manager
+                            fetchImageWithDescriptor:invalidDescriptor
+                            resizingStrategy:[PTNResizingStrategy identity]
+                            options:[PTNImageFetchOptions options]];
+
+        expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                         associatedDescriptor:invalidDescriptor]);
+      });
+    });
+
+    context(@"valid descriptors", ^{
+      __block PTNOceanAssetDescriptor *descriptor;
+
+      beforeEach(^{
+        NSString *path = [NSBundle lt_pathForResource:@"OceanFakeVideoAssetResponse.json"
+                                          nearClass:[self class]];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
+                                                                         error:nil];
+        descriptor = [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                               fromJSONDictionary:jsonDictionary error:nil];
+      });
+
+      it(@"should fetch the video closes to 360p in fast delivery mode", ^{
+        auto *options = [PTNAVAssetFetchOptions
+                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
+
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+          AVPlayerItem *playerItem = progress.result;
+          if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+            return NO;
+          }
+          return [((AVURLAsset *)playerItem.asset).URL
+                  isEqual:[NSURL URLWithString:@"https://stream/350_630"]];
+        });
+      });
+
+      it(@"should fetch the video closes to 720p in medium quality delivery mode", ^{
+        auto options = [PTNAVAssetFetchOptions
+                        optionsWithDeliveryMode:PTNAVAssetDeliveryModeMediumQualityFormat];
+
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+          AVPlayerItem *playerItem = progress.result;
+          if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+            return NO;
+          }
+          return [((AVURLAsset *)playerItem.asset).URL
+                  isEqual:[NSURL URLWithString:@"https://stream/710_1270"]];
+        });
+      });
+
+      it(@"should fetch the largest video in high quality delivery mode", ^{
+        auto options = [PTNAVAssetFetchOptions
+                        optionsWithDeliveryMode:PTNAVAssetDeliveryModeHighQualityFormat];
+
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+          AVPlayerItem *playerItem = progress.result;
+          if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+            return NO;
+          }
+          return [((AVURLAsset *)playerItem.asset).URL
+                  isEqual:[NSURL URLWithString:@"https://stream/1080_1920"]];
+        });
+      });
+
+      it(@"should fetch the video closes to 720p in automatic delivery mode", ^{
+        auto options = [PTNAVAssetFetchOptions
+                        optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+          AVPlayerItem *playerItem = progress.result;
+          if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+            return NO;
+          }
+          return [((AVURLAsset *)playerItem.asset).URL
+                  isEqual:[NSURL URLWithString:@"https://stream/710_1270"]];
+        });
       });
     });
   });
