@@ -139,12 +139,16 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// its dispatch \c targetQueue. Restores the original context afterwards.
 - (void)executeAsyncBlock:(LTVoidBlock)block;
 
+#ifdef __cplusplus
+
 /// Fills the currently bound framebuffer with the given \c colorValue and depth renderbuffer with
 /// the given \c depthValue.
 - (void)clearColor:(LTVector4)colorValue depth:(GLfloat)depthValue;
 
 /// Fills all color attachables of the currently bound framebuffer with the given \c color.
 - (void)clearColor:(LTVector4)color;
+
+#endif
 
 /// Fills the depth attachable to the currently bound framebuffer with the given \c depth.
 - (void)clearDepth:(GLfloat)depth;
