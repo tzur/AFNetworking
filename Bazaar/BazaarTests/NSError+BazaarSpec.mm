@@ -86,17 +86,32 @@ context(@"archiving error", ^{
 });
 
 context(@"transaction error", ^{
-  it(@"should return an error with the given transaction and underlying error", ^{
+  it(@"should return an error with the given transaction that has an error", ^{
     BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
     transaction.transactionState = SKPaymentTransactionStateFailed;
+    transaction.transactionIdentifier = @"foo";
     transaction.error = [NSError lt_errorWithCode:133737];
 
     NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
 
-    expect(error).toNot.beNil();
-    expect(error.lt_isLTDomain).to.beTruthy();
     expect(error.code).to.equal(1337);
     expect(error.lt_underlyingError).to.equal(transaction.error);
+    expect(error.bzr_transaction).to.equal(transaction);
+    expect(error.bzr_transactionIdentifier).to.equal(transaction.transactionIdentifier);
+  });
+
+  it(@"should return an error with the given transaction that doesn't have an error", ^{
+    BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
+    transaction.transactionState = SKPaymentTransactionStateFailed;
+    transaction.transactionIdentifier = @"foo";
+    transaction.error = [NSError lt_errorWithCode:133737];
+
+    NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
+
+    expect(error.code).to.equal(1337);
+    expect(error.lt_underlyingError).to.equal(transaction.error);
+    expect(error.bzr_transaction).to.equal(transaction);
+    expect(error.bzr_transactionIdentifier).to.equal(transaction.transactionIdentifier);
   });
 
   it(@"should return an error with the given transaction without an underlying error", ^{
@@ -105,8 +120,6 @@ context(@"transaction error", ^{
 
     NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
 
-    expect(error).toNot.beNil();
-    expect(error.lt_isLTDomain).to.beTruthy();
     expect(error.code).to.equal(1337);
     expect(error.lt_underlyingError).to.beNil();
   });
@@ -185,7 +198,7 @@ context(@"purchased product not in receipt error", ^{
     NSError *error = [NSError bzr_purchasedProductNotFoundInReceipt:@"foo"];
 
     expect(error.domain).to.equal(kLTErrorDomain);
-    expect(error.code).to.equal(BZRErrorCodePurchasedProductNotFoundInReceipt);
+    expect(error.code).to.equal(BZRErrorCodeTransactionNotFoundInReceipt);
     expect(error.bzr_purchasedProductIdentifier).to.equal(@"foo");
   });
 });

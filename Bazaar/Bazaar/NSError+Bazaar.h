@@ -89,6 +89,9 @@ extern NSString * const kBZRApplicationBundleIDKey;
 /// Failed transaction wrapped by this error.
 @property (readonly, nonatomic, nullable) SKPaymentTransaction *bzr_transaction;
 
+/// Identifier of the failed transaction wrapped by this error.
+@property (readonly, nonatomic, nullable) NSString *bzr_transactionIdentifier;
+
 /// Invalid product identifiers related to the error.
 @property (readonly, nonatomic, nullable) NSSet<NSString *> *bzr_productIdentifiers;
 
