@@ -4,8 +4,8 @@
 #import "PTNFileBackedImageAsset.h"
 
 #import <LTKit/LTPath.h>
+#import <LTKit/LTUTICache.h>
 #import <LTKit/NSFileManager+LTKit.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
@@ -14,12 +14,6 @@
 #import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-NSString * _Nullable PTNUTIFromPath(LTPath *path) {
-  return (__bridge_transfer NSString *)
-      UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
-                                            (__bridge CFStringRef)path.path.pathExtension, nil);
-}
 
 @interface PTNFileBackedImageAsset ()
 
@@ -46,7 +40,8 @@ NSString * _Nullable PTNUTIFromPath(LTPath *path) {
                 resizingStrategy:(nullable id<PTNResizingStrategy>)resizingStrategy {
   if (self = [super init]) {
     _path = path;
-    _uniformTypeIdentifier = PTNUTIFromPath(path);
+    _uniformTypeIdentifier = path.url.pathExtension ?
+        [LTUTICache.sharedCache preferredUTIForFileExtension:path.url.pathExtension] : nil;
     _fileManager = fileManager;
     _imageResizer = imageResizer;
     _resizingStrategy = resizingStrategy ?: [PTNResizingStrategy identity];
