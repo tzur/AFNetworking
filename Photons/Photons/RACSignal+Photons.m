@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation RACSignal (Photons)
 
-- (instancetype)ptn_replayLastLazily {
+- (RACSignal *)ptn_replayLastLazily {
   RACMulticastConnection *connection = [self multicast:[RACReplaySubject
                                                         replaySubjectWithCapacity:1]];
   // A new signal is created here instead of defer since under specific race conditions a value
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
   }] setNameWithFormat:@"[%@] -ptn_replayLastLazily", self.name];
 }
 
-- (instancetype)ptn_wrapErrorWithError:(NSError *)error {
+- (RACSignal *)ptn_wrapErrorWithError:(NSError *)error {
   return [[self
       catch:^RACSignal *(NSError *underlyingError) {
         NSMutableDictionary *userInfo = [error.userInfo mutableCopy];

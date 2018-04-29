@@ -1,11 +1,11 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <ReactiveObjC/RACSignal.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RACSignal (Photons)
+@class PTNImageMetadata;
+
+@interface RACSignal<__covariant ValueType> (Photons)
 
 /// Multicasts the signal to a \c RACReplaySubject of capacity 1, and lazily connects to the
 /// resulting \c RACMulticastConnection.
@@ -14,14 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// receives its first subscription.
 ///
 /// Returns the lazily connected, multicasted signal.
-- (instancetype)ptn_replayLastLazily;
+- (RACSignal<ValueType> *)ptn_replayLastLazily;
 
 /// Catches errors sent by the receiver and maps them to \c error with the original error as its
 /// underlying error. If \c error already has an underlying error, it will be overwritten.
 ///
 /// @note Underlying error is stored in the error's \c userInfo property under the
 /// \c NSUnderlyingErrorKey key.
-- (instancetype)ptn_wrapErrorWithError:(NSError *)error;
+- (RACSignal<ValueType> *)ptn_wrapErrorWithError:(NSError *)error;
 
 /// Combines the latest values from each of the given \c signals by sending the latest value from
 /// each signal accompanied with the index of the signal that caused a new value to be sent over the
@@ -35,9 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the index in the range <tt>{0, 1, ..., n}</tt> of the latest signal that caused a new value to
 /// be sent over the receiver. The returned signal forwards any \c error events, and completes when
 /// all input signals complete.
-///
-/// @return RACSignal<RACTuple *>.
-+ (RACSignal *)ptn_combineLatestWithIndex:(id<NSFastEnumeration>)signals;
++ (RACSignal<RACTuple *> *)ptn_combineLatestWithIndex:(id<NSFastEnumeration>)signals;
 
 /// Skips incomplete progress values and combines the latest image and image metadata signals of
 /// completed progress objects.
@@ -51,9 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// sending a completed \c PTNProgress or when the receiver, the image fetching signal and the image
 /// metadata fetching signal complete. It errs when the receiver, the image fetching signal or the
 /// image metadata fetching signal errs.
-///
-/// @return RACSignal<RACTuple<UIImage *, PTNImageMetadata *> *>.
-- (RACSignal *)ptn_imageAndMetadata;
+- (RACSignal<RACTwoTuple<UIImage *, PTNImageMetadata *> *> *)ptn_imageAndMetadata;
 
 /// Skips incomplete progress values and flattens image signal of completed progress objects.
 ///
@@ -64,9 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the image fetching signal of the \c id<PTNImageAsset> \c result. It completes when the receiver
 /// completes before sending a completed \c PTNProgress or when both the receiver and the image
 /// fetching signal complete. It errs when the receiver or the image fetching signal errs.
-///
-/// @return RACSignal<UIImage *>.
-- (RACSignal *)ptn_image;
+- (RACSignal<UIImage *> *)ptn_image;
 
 /// Skips incomplete progress values.
 ///
