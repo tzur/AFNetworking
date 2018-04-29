@@ -3,7 +3,7 @@
 
 #import "PTNAudiovisualAsset.h"
 
-#import <AVFoundation/AVFoundation.h>
+#import <AVFoundation/AVAsset.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)fetchAVAsset {
+- (RACSignal<AVAsset *> *)fetchAVAsset {
   return [RACSignal return:self.asset];
 }
 

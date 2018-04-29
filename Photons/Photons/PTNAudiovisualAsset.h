@@ -13,9 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetches the \c AVAsset backed by this asset. The returned signal sends a single \c AVAsset
 /// object on an arbitrary thread, and completes. If the \c AVAsset cannot be fetched the signal
 /// errs instead.
-///
-/// @return <tt>RACSignal<AVAsset *></tt>.
-- (RACSignal *)fetchAVAsset;
+- (RACSignal<AVAsset *> *)fetchAVAsset;
 
 @end
 
