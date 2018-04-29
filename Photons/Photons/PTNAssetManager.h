@@ -1,13 +1,19 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <AVFoundation/AVPlayerItem.h>
+
+#import "PTNAudiovisualAsset.h"
+#import "PTNImageAsset.h"
 #import "PTNImageContentMode.h"
+#import "PTNImageDataAsset.h"
+#import "PTNProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbumDescriptor, PTNAssetDescriptor, PTNDescriptor, PTNResizingStrategy;
 
-@class PTNAVAssetFetchOptions, PTNImageFetchOptions;
+@class PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions;
 
 @protocol PTNAssetManager <NSObject>
 
@@ -26,9 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///     complete.
 ///
 /// If the album doesn't exist, the signal will error.
-///
-/// @return RACSignal<PTNAlbumChangeset>.
-- (RACSignal *)fetchAlbumWithURL:(NSURL *)url;
+- (RACSignal<PTNAlbumChangeset *> *)fetchAlbumWithURL:(NSURL *)url;
 
 /// Fetches the \c PTNDescriptor of the asset identified by the given \url, and continues to stream
 /// updates about the asset in the returned signal.
@@ -41,9 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///     will be infinite, where each value is sent upon asset update.
 ///   - If the manager is not capable of such observation, a single \c id<PTNDescriptor> value will
 ///     be sent upon fetch, and then the signal will complete.
-///
-/// @return RACSignal<id<PTNDescriptor>>.
-- (RACSignal *)fetchDescriptorWithURL:(NSURL *)url;
+- (RACSignal<id<PTNDescriptor>> *)fetchDescriptorWithURL:(NSURL *)url;
 
 /// Fetches the image which is backed by the given \c descriptor. For asset descriptors, the
 /// returned image is the image represented by the asset. For album descriptors, the returned image
@@ -57,11 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// If the asset doesn't exist, the signal will err.
 ///
 /// Disposal of the returned signal will abort the current image fetch operation, if in progress.
-///
-/// @return RACSignal<PTNProgress<PTNImageAsset>>.
-- (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                       resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
-                                options:(PTNImageFetchOptions *)options;
+- (RACSignal<PTNProgress<id<PTNImageAsset>> *> *)
+    fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
+    resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+    options:(PTNImageFetchOptions *)options;
 
 /// Fetches the audiovisual asset which is backed by the given \c descriptor.
 ///
@@ -72,10 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// If the asset doesn't exist, the signal will err.
 ///
 /// Disposal of the returned signal will abort the current asset fetch operation, if in progress.
-///
-/// @return RACSignal<PTNProgress<PTNAudiovisualAsset>>.
-- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNAVAssetFetchOptions *)options;
+- (RACSignal<PTNProgress<id<PTNAudiovisualAsset>> *> *)
+    fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+    options:(PTNAVAssetFetchOptions *)options;
 
 /// Fetches the image data which is backed by the given \c descriptor. The returned signal will err
 /// if \c descriptor is not an asset descriptor.
@@ -88,9 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Disposal of the returned signal will abort the current image data fetch operation, if in
 /// progress.
-///
-/// @return RACSignal<PTNProgress<PTNImageDataAsset>>.
-- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor;
+- (RACSignal<PTNProgress<id<PTNImageDataAsset>> *> *)
+    fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor;
 
 /// Fetches an \c AVPlayerItem that contains a preview to the asset backed by \c descriptor.
 ///
@@ -101,10 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// If the asset doesn't exist, the signal will err.
 ///
 /// Disposal of the returned signal will abort the current fetch operation, if in progress.
-///
-/// @return RACSignal<PTNProgress<AVPlayerItem>>.
-- (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
-                                    options:(PTNAVAssetFetchOptions *)options;
+- (RACSignal<PTNProgress<AVPlayerItem *> *> *)
+    fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
+    options:(PTNAVAssetFetchOptions *)options;
 
 @optional
 
