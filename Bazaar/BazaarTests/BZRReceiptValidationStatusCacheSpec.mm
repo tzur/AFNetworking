@@ -138,10 +138,9 @@ context(@"cache access", ^{
       auto cachedDate = [NSDate date];
       auto receiptValidationStatusJSON =
           [MTLJSONAdapter JSONDictionaryFromModel:receiptValidationStatus];
-      NSError *error;
       BZRValidatricksReceiptValidationStatus *validatricksReceiptValidationStatus =
           [MTLJSONAdapter modelOfClass:BZRValidatricksReceiptValidationStatus.class
-                    fromJSONDictionary:receiptValidationStatusJSON error:&error];
+                    fromJSONDictionary:receiptValidationStatusJSON error:nil];
       NSDictionary<NSString *, id> *cachedReceiptDictionary = @{
         kValidationStatusKey: validatricksReceiptValidationStatus,
         kValidationDateKey: cachedDate
@@ -150,11 +149,11 @@ context(@"cache access", ^{
           serviceName:applicationBundleID error:[OCMArg anyObjectRef]])
           .andReturn(cachedReceiptDictionary);
 
-      NSDictionary<NSString *, id> *expectedReceiptDictionaryToStore = @{
-        kValidationStatusKey: receiptValidationStatus,
-        kValidationDateKey: cachedDate
+      auto checkCorrectClassStoredBlock = ^BOOL(NSDictionary<NSString *, id> *storedDictionary) {
+        return [storedDictionary[kValidationStatusKey]
+            isKindOfClass:BZRReceiptValidationStatus.class];
       };
-      OCMExpect([keychainStorageRoute setValue:expectedReceiptDictionaryToStore
+      OCMExpect([keychainStorageRoute setValue:[OCMArg checkWithBlock:checkCorrectClassStoredBlock]
           forKey:kCachedReceiptValidationStatusStorageKey serviceName:applicationBundleID
           error:[OCMArg anyObjectRef]]).andReturn(YES);
 

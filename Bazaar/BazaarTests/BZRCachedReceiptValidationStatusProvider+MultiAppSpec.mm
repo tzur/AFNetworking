@@ -63,9 +63,9 @@ context(@"deallocating object", ^{
     expect(signal).will.complete();
   });
 
-  it(@"should dealloc when all strong references are relinquished", ^{
-    BZRCachedReceiptValidationStatusProvider * __weak weakValidationStatusProvider;
-    LLSignalTestRecorder *recorder;
+  it(@"should complete successfully if self was deallocated when the signal is subscribed to", ^{
+    __weak BZRCachedReceiptValidationStatusProvider * weakValidationStatusProvider;
+    RACSignal *signal;
 
     @autoreleasepool {
       BZRCachedReceiptValidationStatusProvider *provider =
@@ -81,11 +81,34 @@ context(@"deallocating object", ^{
       OCMStub([underlyingProvider fetchReceiptValidationStatus:@"bar"])
           .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(NO)]);
 
-      recorder = [[provider fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set] testRecorder];
+      signal = [provider fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set];
+    }
+
+    expect(signal).will.complete();
+  });
+
+  it(@"should not hold the provider strongly before subscribing to the signal", ^{
+    __weak BZRCachedReceiptValidationStatusProvider * weakValidationStatusProvider;
+    RACSignal *signal;
+
+    @autoreleasepool {
+      BZRCachedReceiptValidationStatusProvider *provider =
+          [[BZRCachedReceiptValidationStatusProvider alloc]
+           initWithCache:receiptValidationStatusCache
+           timeProvider:timeProvider
+           underlyingProvider:underlyingProvider
+           cachedEntryDaysToLive:14];
+      weakValidationStatusProvider = provider;
+
+      OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+      OCMStub([underlyingProvider fetchReceiptValidationStatus:@"bar"])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(NO)]);
+
+      signal = [provider fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set];
     }
 
     expect(weakValidationStatusProvider).to.beNil();
-    expect(recorder).will.complete();
   });
 });
 
