@@ -164,6 +164,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// starts.
 - (void)finishTransaction:(SKPaymentTransaction *)transaction;
 
+/// Array of unfinished transactions.
+@property (readonly, nonatomic) NSArray<SKPaymentTransaction *> *transactions;
+
 /// Sends all transactions related errors as \c BZREvent encompassing an \c NSError. The events can
 /// can be one of the following:
 /// \c BZREventTypeUnhandledTransactionReceived - when a transaction without an associated payment

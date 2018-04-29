@@ -845,6 +845,93 @@ context(@"purchasing products", ^{
   });
 });
 
+context(@"validating transaction", ^{
+  __block SKPaymentTransaction *transaction;
+
+  beforeEach(^{
+    transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+  });
+
+  it(@"should err if transaction identifier wasn't found in transactions array", ^{
+    OCMStub([storeKitFacade transactions]).andReturn(@[]);
+
+    expect([store validateTransaction:@"foo"]).will.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeInvalidTransactionIdentifier;
+    });
+  });
+
+  it(@"should err if transaction in transactions array is not in state purchased", ^{
+    OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+
+    expect([store validateTransaction:@"foo"]).will.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeInvalidTransactionIdentifier;
+    });
+  });
+
+  context(@"transaction is valid", ^{
+    beforeEach(^{
+      OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    });
+
+    it(@"should not validate receipt if refresh receipt erred with cancellation", ^{
+      auto error = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+      OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+      expect([store validateTransaction:@"foo"]).will.sendError(error);
+    });
+
+    it(@"should validate the receipt if the refresh receipt erred", ^{
+      OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+
+      expect([store validateTransaction:@"foo"]).will.finish();
+      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    });
+
+    it(@"should err if validation failed", ^{
+      OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal error:error]);
+
+      expect([store validateTransaction:@"foo"]).will.sendError(error);
+    });
+
+    it(@"should err if transaction is not found in receipt after validation", ^{
+      OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+
+      auto recorder = [store validateTransaction:@"foo"];
+      expect(recorder).will.matchError(^BOOL(NSError *error) {
+        return error.code == BZRErrorCodeTransactionNotFoundInReceipt &&
+            error.bzr_transaction == transaction;
+      });
+    });
+
+    it(@"should complete if transaction is found in receipt after validation", ^{
+      OCMStub([storeKitFacade transactions]).andReturn(@[transaction]);
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+      auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+      receiptValidationStatus = [receiptValidationStatus
+          modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.transactions)
+                                   withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+
+      expect([store validateTransaction:@"foo"]).will.complete();
+    });
+  });
+});
+
 context(@"fetching product content", ^{
   it(@"should complete when product has no content", ^{
     LLSignalTestRecorder *recorder = [[store fetchProductContent:productIdentifier] testRecorder];

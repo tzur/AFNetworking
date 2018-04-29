@@ -269,6 +269,15 @@ context(@"sending unhandled transactions errors", ^{
   });
 });
 
+context(@"transactions array", ^{
+  it(@"should return transactions array returned by underlying payment queue", ^{
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([paymentQueueAdapter transactions]).andReturn((@[transaction, transaction]));
+
+    expect(storeKitFacade.transactions).to.equal(@[transaction, transaction]);
+  });
+});
+
 context(@"handling unhandled transactions", ^{
   __block LLSignalTestRecorder *unhandledSuccessfulTransactionsSignal;
 

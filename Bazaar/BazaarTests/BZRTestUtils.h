@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRContentFetcherParameters, BZRProduct, BZRReceiptInAppPurchaseInfo,
-    BZRReceiptSubscriptionInfo, BZRReceiptValidationStatus;
+    BZRReceiptSubscriptionInfo, BZRReceiptTransactionInfo, BZRReceiptValidationStatus;
 
 /// Returns a \c BZRProduct with identifier set to \c identifier with content.
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier);
@@ -46,5 +46,8 @@ SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier);
 
 /// Returns an \c SKProductsResponse with \c SKProducts with identifiers \c productIdentifiers.
 SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers);
+
+/// Returns a \c BZRReceiptTransactionInfo with transaction identifier set to \c transactionId.
+BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *transactionId);
 
 NS_ASSUME_NONNULL_END

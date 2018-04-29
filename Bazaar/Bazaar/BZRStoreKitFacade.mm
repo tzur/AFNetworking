@@ -169,6 +169,10 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
   }];
 }
 
+- (NSArray<SKPaymentTransaction *> *)transactions {
+  return self.paymentQueueAdapter.transactions;
+}
+
 #pragma mark -
 #pragma mark Handling transactions errors
 #pragma mark -

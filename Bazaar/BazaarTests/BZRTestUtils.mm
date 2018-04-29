@@ -119,4 +119,17 @@ SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *product
   return BZRProductsResponseWithSKProducts(products);
 }
 
+BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *transactionId) {
+  return [BZRReceiptTransactionInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptTransactionInfo, productId): @"foo",
+    @instanceKeypath(BZRReceiptTransactionInfo, transactionId): transactionId,
+    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:2337],
+    @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"00000",
+    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
+    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
+  } error:nil];
+}
+
 NS_ASSUME_NONNULL_END
