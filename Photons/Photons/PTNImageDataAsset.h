@@ -16,11 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// be fetched the signal errs instead.
 - (RACSignal<PTNImageMetadata *> *)fetchImageMetadata;
 
-/// The uniform type identifier of the data or \c nil if UTI was not specified.
-///
-/// @see https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
-@property (readonly, nonatomic, nullable) NSString *uniformTypeIdentifier;
-
 @end
 
 /// Default implementation of \c PTNImageDataAsset.

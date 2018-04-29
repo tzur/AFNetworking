@@ -145,6 +145,8 @@
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
 		84FF77F11C91606500D1DA9F /* NSURL+Gateway.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */; };
 		883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */; };
+		885AA7322095EA8000B40FE5 /* PTNFileBackedAVAsset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */; };
+		885AA7342095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7332095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm */; };
 		8861FDAF1E5A2B4600CA1436 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAE1E5A2B4600CA1436 /* Photos.framework */; };
 		8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */; };
 		8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDCF1E5A2B5800CA1436 /* UIKit.framework */; };
@@ -734,6 +736,10 @@
 		84FF77A71C906A5900D1DA9F /* NSURL+Gateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Gateway.h"; sourceTree = "<group>"; };
 		84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Gateway.m"; sourceTree = "<group>"; };
 		883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetResponse.json; path = Resources/OceanFakeVideoAssetResponse.json; sourceTree = "<group>"; };
+		885AA7042095AFB100B40FE5 /* PTNAVDataAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAVDataAsset.h; sourceTree = "<group>"; };
+		885AA7302095EA8000B40FE5 /* PTNFileBackedAVAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNFileBackedAVAsset.h; sourceTree = "<group>"; };
+		885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNFileBackedAVAsset.mm; sourceTree = "<group>"; };
+		885AA7332095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNFileBackedAVAssetSpec.mm; sourceTree = "<group>"; };
 		8861FDAE1E5A2B4600CA1436 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FDCF1E5A2B5800CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1353,6 +1359,7 @@
 				8414EAB21C5DFE0700014DD1 /* NSURL+PTNResizingStrategy.m */,
 				BE40BE1D1DF6F561007F4F57 /* PTNAVAssetFetchOptions.h */,
 				BE40BE1E1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm */,
+				885AA7042095AFB100B40FE5 /* PTNAVDataAsset.h */,
 				8B2FD0761AFA0BDE00757B1F /* PTNAlbum.h */,
 				84333C761CC7B75200EC5FB2 /* PTNAlbum.m */,
 				8B3832161B57D6FE00620560 /* PTNAlbumChangeset.h */,
@@ -1369,6 +1376,8 @@
 				2855B0C81FC6EFEF004C2187 /* PTNDateProvider.mm */,
 				8B2FD0851B00E81100757B1F /* PTNDescriptor.h */,
 				8430E00C1D8839350071C3C3 /* PTNDescriptor.m */,
+				885AA7302095EA8000B40FE5 /* PTNFileBackedAVAsset.h */,
+				885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */,
 				842A3C461C54D42000BD10C1 /* PTNFileBackedImageAsset.h */,
 				842A3C471C54D42000BD10C1 /* PTNFileBackedImageAsset.m */,
 				848D2C7A1C4D061400491AB3 /* PTNImageAsset.h */,
@@ -1511,6 +1520,7 @@
 				841B00F01CEA05FD00B3CFD7 /* PTNFakeAssetManager.m */,
 				845B68E61CF3251C00D405ED /* PTNFakeDescriptor.h */,
 				845B68E71CF3251C00D405ED /* PTNFakeDescriptor.m */,
+				885AA7332095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm */,
 				842A3C4C1C54D65D00BD10C1 /* PTNFileBackedImageAssetSpec.m */,
 				88F8E5221EA950BB0057DE07 /* PTNImageDataAssetSpec.mm */,
 				8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */,
@@ -2162,6 +2172,7 @@
 				B411A0291EEE76B500756808 /* PTNMediaLibraryAuthorizationManager.mm in Sources */,
 				84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */,
 				BE40BE1F1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm in Sources */,
+				885AA7322095EA8000B40FE5 /* PTNFileBackedAVAsset.mm in Sources */,
 				2873CA421F54659500677B2C /* NSValueTransformer+Photons.mm in Sources */,
 				84E55C431C8EC86B00D91339 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
 				84E55C3E1C8EC86000D91339 /* PTNFileSystemFileDescriptor.m in Sources */,
@@ -2255,6 +2266,7 @@
 				8463DA051D1008A000FF4935 /* PTNFakeAlbumDescriptor.m in Sources */,
 				842C09B71CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm in Sources */,
 				8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m in Sources */,
+				885AA7342095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm in Sources */,
 				8478045E1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.mm in Sources */,
 				84515E971C96A4DC00AD8B5B /* NSURL+GatewaySpec.m in Sources */,
 				B4D8986F1EF6495200348896 /* MPMediaItem+PhotonsSpec.mm in Sources */,

@@ -18,6 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// arbitrary thread. If data writing fails the signals errs instead.
 - (RACSignal *)writeToFileAtPath:(LTPath *)path usingFileManager:(NSFileManager *)fileManager;
 
+/// The uniform type identifier of the asset or \c nil if UTI was not specified.
+///
+/// @see https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+@property (readonly, nonatomic, nullable) NSString *uniformTypeIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END
