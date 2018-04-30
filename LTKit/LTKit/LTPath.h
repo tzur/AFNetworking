@@ -45,6 +45,11 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 /// @see <tt>-[LTPath relativeURL]</tt> for more details.
 + (nullable instancetype)pathWithRelativeURL:(NSURL *)relativeURL;
 
+/// Initializes a new \c LTPath of a random and unique file in the root of the temporary directory.
+/// \c baseDirectory is set to \c LTPathBaseDirectoryTemp and \c relativePath is a random UUID with
+/// \c extension as the file extension.
++ (instancetype)temporaryPathWithExtension:(NSString *)extension;
+
 /// Returns a new path made by appending \c pathComponent to the receiver's \c relativePath
 /// component. \c baseDirectory is the same as the receiver's.
 ///

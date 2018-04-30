@@ -205,6 +205,15 @@ context(@"no relative path", ^{
   });
 });
 
+it(@"should create a file with UUID as file name", ^{
+  auto path = [LTPath temporaryPathWithExtension:@"bar"];
+  expect(path.baseDirectory).to.equal(LTPathBaseDirectoryTemp);
+  auto uuidString = [[path.relativePath lastPathComponent] stringByDeletingPathExtension];
+  auto uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+  expect(uuid).notTo.beNil();
+  expect([path.relativePath pathExtension]).to.equal(@"bar");
+});
+
 context(@"path operations", ^{
   it(@"should append path component", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];

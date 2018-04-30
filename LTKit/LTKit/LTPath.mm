@@ -59,6 +59,11 @@ static NSString * const kPathScheme = @"com.lightricks.path";
                                andRelativePath:nn(relativeURL.path)];
 }
 
++ (instancetype)temporaryPathWithExtension:(NSString *)extension {
+  NSString *filename = [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:extension];
+  return [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:filename];
+}
+
 - (NSString *)baseDirectoryPath {
   switch (self.baseDirectory) {
     case LTPathBaseDirectoryNone:
