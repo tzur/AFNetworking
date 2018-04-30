@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)fetchImageMetadata {
+- (RACSignal<PTNImageMetadata *> *)fetchImageMetadata {
   return [[RACSignal
       defer:^RACSignal *{
         NSError *error;
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTNDataAsset
 #pragma mark -
 
-- (RACSignal *)fetchData {
+- (RACSignal<NSData *> *)fetchData {
   return [RACSignal return:self.data];
 }
 

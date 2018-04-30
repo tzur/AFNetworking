@@ -28,10 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNFileSystemAssetManager ()
 
 /// Used for shallow iteration of a file system and fetching files and directories.
-@property (strong, nonatomic) id<PTNFileSystemFileManager> fileManager;
+@property (readonly, nonatomic) id<PTNFileSystemFileManager> fileManager;
 
 /// Used for resizing local images.
-@property (strong, nonatomic) PTNImageResizer *imageResizer;
+@property (readonly, nonatomic) PTNImageResizer *imageResizer;
 
 @end
 
@@ -40,8 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFileManager:(id<PTNFileSystemFileManager>)fileManager
                        imageResizer:(PTNImageResizer *)imageResizer {
   if (self = [super init]) {
-    self.fileManager = fileManager;
-    self.imageResizer = imageResizer;
+    _fileManager = fileManager;
+    _imageResizer = imageResizer;
   }
   return self;
 }
