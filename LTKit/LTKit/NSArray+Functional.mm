@@ -59,6 +59,34 @@ NS_ASSUME_NONNULL_BEGIN
   return index != NSNotFound ? [self objectAtIndex:index] : nil;
 }
 
+- (id _Nullable)lt_max:(LTArrayCompareBlock)areInIncreasingOrder {
+  if (self.count == 0) {
+    return nil;
+  }
+
+  id result = self.firstObject;
+  for (id element in self) {
+    if (areInIncreasingOrder(result, element)) {
+      result = element;
+    }
+  }
+  return result;
+}
+
+- (id _Nullable)lt_min:(LTArrayCompareBlock)areInIncreasingOrder {
+  if (self.count == 0) {
+    return nil;
+  }
+
+  id result = self.firstObject;
+  for (id element in self) {
+    if (areInIncreasingOrder(element, result)) {
+      result = element;
+    }
+  }
+  return result;
+}
+
 - (NSDictionary<id<NSCopying>, NSArray<id> *> *)
     lt_classify:(NS_NOESCAPE LTArrayClassifierBlock)block {
   LTParameterAssert(block);

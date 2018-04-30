@@ -71,6 +71,58 @@ typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
 /// if \c block has returned \c NO for all array's elements.
 - (nullable ObjectType)lt_find:(NS_NOESCAPE LTArrayFilterBlock)block;
 
+/// Callback block used with \c lt_max: and \c lt_min: methods. Returns \c YES if \c a should be
+/// ordered before \c b (in ascending order).
+typedef BOOL (^LTArrayCompareBlock)(ObjectType _Nonnull a, ObjectType _Nonnull b);
+
+/// Returns the maximum element in the array, using the given predicate as the comparison between
+/// elements. Returns \c nil If the array is empty.
+/// The predicate must be a strict weak ordering over the elements. That is, for any elements a, b,
+/// and c, the following conditions must hold:
+///
+/// - <tt>areInIncreasingOrder(a, a)</tt> is always false. (Irreflexivity)
+///
+/// - If <tt>areInIncreasingOrder(a, b)</tt> and <tt>areInIncreasingOrder(b, c)</tt> are both true,
+///   then <tt>areInIncreasingOrder(a, c)</tt> is also true. (Transitive comparability)
+///
+/// - Two elements are incomparable if neither is ordered before the other according to the
+///   predicate. If a and b are incomparable, and b and c are incomparable, then a and c are also
+///   incomparable. (Transitive incomparability)
+///
+/// @example Finding the maximum object in an array.
+/// @code
+/// NSArray<NSString *> *words = @[@"The", @"quick", @"brown", @"fox", @"jumped", @"over", @"me"];
+/// NSString *longestWord = [words lt_max:^BOOL(NSString * _Nonnull a, NSString * _Nonnull b) {
+///  return a.length < b.length;
+/// }];
+/// // longestWord == @"jumped"
+/// @endcode
+- (ObjectType _Nullable)lt_max:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
+
+/// Returns the mimum element in the array using the given predicate as the comparison between
+/// elements. Returns \c nil If the array is empty.
+/// The predicate must be a strict weak ordering over the elements. That is, for any elements a, b,
+/// and c, the following conditions must hold:
+///
+/// - <tt>areInIncreasingOrder(a, a)</tt> is always false. (Irreflexivity)
+///
+/// - If <tt>areInIncreasingOrder(a, b)</tt> and <tt>areInIncreasingOrder(b, c)</tt> are both true,
+///   then <tt>areInIncreasingOrder(a, c)</tt> is also true. (Transitive comparability)
+///
+/// - Two elements are incomparable if neither is ordered before the other according to the
+///   predicate. If a and b are incomparable, and b and c are incomparable, then a and c are also
+///   incomparable. (Transitive incomparability)
+///
+/// @example Finding the mimmum object in an array.
+/// @code
+/// NSArray<NSString *> *words = @[@"The", @"quick", @"brown", @"fox", @"jumped", @"over", @"me"];
+/// NSString *shortestWord = [words lt_min:^BOOL(NSString * _Nonnull a, NSString * _Nonnull b) {
+///  return a.length < b.length;
+/// }];
+/// // shortestWord == @"me"
+/// @endcode
+- (ObjectType _Nullable)lt_min:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
+
 /// Callback block used to classify objects of an array.
 ///
 /// \c object is the array element to classify. The block returns a label for that item. The
