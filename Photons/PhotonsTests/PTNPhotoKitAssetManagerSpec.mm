@@ -1809,6 +1809,14 @@ context(@"AV preview fetching", ^{
   });
 });
 
+it(@"should err when fetching AV data", ^{
+  RACSignal *values = [manager fetchAVDataWithDescriptor:PTNPhotoKitCreateAsset(@"foo")];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
+  });
+});
+
 context(@"asset changes", ^{
   __block NSArray *assets;
   __block NSArray *assetCollections;

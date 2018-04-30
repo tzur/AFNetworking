@@ -210,12 +210,21 @@ typedef RACSignal<NSNumber *> *(^PTNValidationBlock)(NSString *entityTag);
 }
 
 #pragma mark -
-#pragma mark AV Preview fetching
+#pragma mark AV preview fetching
 #pragma mark -
 
 - (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
                                     options:(PTNAVAssetFetchOptions *)options {
   return [self.assetManager fetchAVPreviewWithDescriptor:descriptor options:options];
+}
+
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [self.assetManager fetchAVDataWithDescriptor:descriptor];
 }
 
 #pragma mark -

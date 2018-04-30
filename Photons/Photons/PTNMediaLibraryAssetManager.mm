@@ -9,6 +9,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "MPMediaItem+Photons.h"
+#import "NSError+Photons.h"
 #import "NSErrorCodes+Photons.h"
 #import "NSURL+MediaLibrary.h"
 #import "PTNAlbum.h"
@@ -16,6 +17,7 @@
 #import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNMediaLibraryAuthorizationManager.h"
 #import "PTNMediaLibraryAuthorizer.h"
 #import "PTNMediaLibraryCollectionDescriptor.h"
@@ -383,6 +385,16 @@ NS_ASSUME_NONNULL_BEGIN
     auto playerItem = [AVPlayerItem playerItemWithURL:url];
     return [[PTNProgress alloc] initWithResult:playerItem];
   }];
+}
+
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
 }
 
 @end

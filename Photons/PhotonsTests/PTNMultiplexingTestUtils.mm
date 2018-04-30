@@ -15,6 +15,8 @@ id<PTNAssetManager> PTNCreateRejectingManager() {
                                      options:OCMOCK_ANY];
   [[manager reject] fetchAVAssetWithDescriptor:OCMOCK_ANY options:OCMOCK_ANY];
   [[manager reject] fetchImageDataWithDescriptor:OCMOCK_ANY];
+  [[manager reject] fetchAVPreviewWithDescriptor:OCMOCK_ANY options:OCMOCK_ANY];
+  [[manager reject] fetchAVDataWithDescriptor:OCMOCK_ANY];
   [[manager reject] deleteDescriptors:OCMOCK_ANY];
   [[manager reject] removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY];
   [[[manager reject] ignoringNonObjectArgs] favoriteDescriptors:OCMOCK_ANY favorite:YES];
@@ -29,6 +31,8 @@ id<PTNAssetManager> PTNCreateAcceptingManager(RACSignal * _Nullable value) {
                                     options:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager fetchAVAssetWithDescriptor:OCMOCK_ANY options:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager fetchImageDataWithDescriptor:OCMOCK_ANY]).andReturn(value);
+  OCMStub([manager fetchAVPreviewWithDescriptor:OCMOCK_ANY options:OCMOCK_ANY]).andReturn(value);
+  OCMStub([manager fetchAVDataWithDescriptor:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager deleteDescriptors:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY]).andReturn(value);
   [[[[manager stub] ignoringNonObjectArgs] andReturn:value]

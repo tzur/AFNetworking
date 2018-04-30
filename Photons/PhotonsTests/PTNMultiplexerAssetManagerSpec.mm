@@ -150,6 +150,44 @@ context(@"image data fetching", ^{
   });
 });
 
+context(@"AV preview fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNAVAssetFetchOptions class]);
+  });
+
+  it(@"should correctly forward AV preview requests", ^{
+    RACSignal *signal = [multiplexerManager fetchAVPreviewWithDescriptor:descriptorA
+                                                                 options:options];
+    expect(signal).to.equal(returnSignalA);
+    OCMVerify([managerA fetchAVPreviewWithDescriptor:descriptorA options:options]);
+  });
+
+  it(@"should error on AV perview requests with unconfigured scheme", ^{
+    RACSignal *signal = [multiplexerManager fetchAVPreviewWithDescriptor:descriptorD
+                                                                 options:options];
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnrecognizedURLScheme;
+    });
+  });
+});
+
+context(@"av data fetching", ^{
+  it(@"should forward image data requests", ^{
+    RACSignal *signal = [multiplexerManager fetchAVDataWithDescriptor:descriptorA];
+    expect(signal).to.equal(returnSignalA);
+    OCMVerify([managerA fetchAVDataWithDescriptor:descriptorA]);
+  });
+
+  it(@"should error on image data requests with unconfigured scheme", ^{
+    RACSignal *signal = [multiplexerManager fetchAVDataWithDescriptor:descriptorD];
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnrecognizedURLScheme;
+    });
+  });
+});
+
 context(@"changes", ^{
   context(@"asset deletion", ^{
     it(@"should forward delete requests to underlying managers", ^{

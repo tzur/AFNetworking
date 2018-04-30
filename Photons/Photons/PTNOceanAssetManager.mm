@@ -361,6 +361,16 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
 }
 
 #pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
+#pragma mark -
 #pragma mark Caching
 #pragma mark -
 

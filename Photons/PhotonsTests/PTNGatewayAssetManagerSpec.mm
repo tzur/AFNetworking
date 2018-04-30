@@ -193,7 +193,7 @@ context(@"AVAsset fetching", ^{
   __block PTNAVAssetFetchOptions *options;
 
   beforeEach(^{
-    options = OCMClassMock([PTNImageFetchOptions class]);
+    options = OCMClassMock([PTNAVAssetFetchOptions class]);
   });
 
   it(@"should err", ^{
@@ -207,6 +207,28 @@ context(@"AVAsset fetching", ^{
 
 it(@"should err when fetching image data", ^{
   RACSignal *values = [manager fetchImageDataWithDescriptor:fooDescriptor];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
+  });
+});
+
+it(@"should err when fetching AV preview", ^{
+  __block PTNAVAssetFetchOptions *options;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNAVAssetFetchOptions class]);
+  });
+
+  RACSignal *values = [manager fetchAVPreviewWithDescriptor:fooDescriptor options:options];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
+  });
+});
+
+it(@"should err when fetching AV data", ^{
+  RACSignal *values = [manager fetchAVDataWithDescriptor:fooDescriptor];
 
   expect(values).will.matchError(^BOOL(NSError *error) {
     return error.code == PTNErrorCodeUnsupportedOperation;

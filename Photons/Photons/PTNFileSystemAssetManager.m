@@ -365,6 +365,16 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

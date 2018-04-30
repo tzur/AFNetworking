@@ -249,6 +249,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [self.assetManager fetchAVDataWithDescriptor:descriptor];
+}
+
+#pragma mark -
 #pragma mark Proxying optional methods
 #pragma mark -
 

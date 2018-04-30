@@ -687,7 +687,7 @@ context(@"fetching AV preview", ^{
 });
 
 context(@"unsupported operations", ^{
-  it(@"should send error when attempting to fetch audiovisual asset", ^{
+  it(@"should err when fetching audiovisual asset", ^{
     auto options = [PTNAVAssetFetchOptions
                     optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     RACSignal *fetch = [manager
@@ -695,6 +695,15 @@ context(@"unsupported operations", ^{
                         options:options];
 
     expect(fetch).to.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnsupportedOperation;
+    });
+  });
+
+  it(@"should err when fetching AV data", ^{
+    RACSignal *values = [manager
+                         fetchAVDataWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
     });
   });
