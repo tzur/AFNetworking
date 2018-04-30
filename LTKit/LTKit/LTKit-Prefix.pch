@@ -34,6 +34,7 @@ extern "C" {
 #import "LTAssert.h"
 #import "LTCopyGenerics.h"
 #import "LTDefines.h"
+#import "LTEnum.h"
 #import "LTLogger.h"
 #import "LTPropertyMacros.h"
 #import "LTTypedefs.h"
@@ -41,7 +42,6 @@ extern "C" {
 
 #ifdef __cplusplus
   #import "LTEasyBoxing.h"
-  #import "LTEnum.h"
   #import "LTNullability.h"
   #import "LTRef.h"
   #import "LTStructBoxing.h"
