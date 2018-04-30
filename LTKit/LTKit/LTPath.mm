@@ -40,6 +40,14 @@ static NSString * const kPathScheme = @"com.lightricks.path";
   return [[LTPath alloc] initWithBaseDirectory:LTPathBaseDirectoryNone andRelativePath:path];
 }
 
++ (nullable instancetype)pathWithFileURL:(NSURL *)url {
+  if (!url.isFileURL || !url.path) {
+    return nil;
+  }
+  return [[LTPath alloc] initWithBaseDirectory:LTPathBaseDirectoryNone
+                               andRelativePath:nn(url.path)];
+}
+
 + (instancetype)pathWithBaseDirectory:(LTPathBaseDirectory)baseDirectory
                       andRelativePath:(NSString *)relativePath {
   return [[LTPath alloc] initWithBaseDirectory:baseDirectory andRelativePath:relativePath];

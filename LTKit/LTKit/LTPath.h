@@ -32,6 +32,11 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 /// base directory and the relative path.
 + (instancetype)pathWithPath:(NSString *)path;
 
+/// Initializes a new \c LTPath object with the given \c url by taking its \c path component as
+/// \c relativePath and \c LTPathBaseDirectoryNone as its \c baseDirectory. Returns \c nil if \c url
+/// is not a file URL or if the \c path component of \c url is \c nil.
++ (nullable instancetype)pathWithFileURL:(NSURL *)url;
+
 /// Initializes a new \c LTPath object with the given \c baseDirectory and \c relativePath.
 /// \c relativePath will be standardized and will be converted to absolute path (by adding a leading
 /// '/'). The path will be constructed by resolving the path of the concatenated base directory and

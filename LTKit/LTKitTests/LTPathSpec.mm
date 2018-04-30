@@ -214,6 +214,30 @@ it(@"should create a file with UUID as file name", ^{
   expect([path.relativePath pathExtension]).to.equal(@"bar");
 });
 
+context(@"path from URL", ^{
+  it(@"should initialize with the path of the URL", ^{
+    auto _Nullable path = [LTPath pathWithFileURL:nn([NSURL URLWithString:@"file:///var/foo.bar"])];
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryNone);
+    expect(path.path).to.equal(@"/var/foo.bar");
+  });
+
+  it(@"should return the same URL the path was initialized with", ^{
+    auto url = [NSURL URLWithString:@"file:///var/foo.bar"];
+    auto path = [LTPath pathWithFileURL:url];
+    expect(path.url).to.equal(url);
+  });
+
+  it(@"should return nil if URL is not file URL", ^{
+    auto _Nullable path = [LTPath pathWithFileURL:nn([NSURL URLWithString:@"https://foo/bar"])];
+    expect(path).to.beNil();
+  });
+
+  it(@"should return nil if URL does not contain a path", ^{
+    auto _Nullable path = [LTPath pathWithFileURL:nn([NSURL URLWithString:@"file://"])];
+    expect(path).to.beNil();
+  });
+});
+
 context(@"path operations", ^{
   it(@"should append path component", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp andRelativePath:kPath];
