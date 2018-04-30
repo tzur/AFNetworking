@@ -120,7 +120,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
         [bundledApplicationsIDs setByAddingObject:applicationBundleID] :
         [NSSet setWithObject:applicationBundleID];
     auto purchaseHelper = [[BZRPurchaseHelper alloc] init];
-    auto timeProvider = [[BZRTimeProvider alloc] init];
+    auto timeProvider = [BZRTimeProvider defaultTimeProvider];
 
     auto keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup

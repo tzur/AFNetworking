@@ -31,8 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup
                             service:(NSString *)service {
-  UICKeyChainStore *keychainStore =
-      [[UICKeyChainStore alloc] initWithService:service accessGroup:accessGroup];
+  auto keychainStore = [UICKeyChainStore keyChainStoreWithService:service accessGroup:accessGroup];
 
   return [self initWithKeychainStore:keychainStore];
 }

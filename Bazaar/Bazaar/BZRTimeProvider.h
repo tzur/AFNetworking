@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Default implementation that provides the current time on the currently running device.
 @interface BZRTimeProvider : NSObject <BZRTimeProvider>
+
+/// Returns the default implementation of \c BZRTimeProvider.
++ (BZRTimeProvider *)defaultTimeProvider;
+
 @end
 
 NS_ASSUME_NONNULL_END

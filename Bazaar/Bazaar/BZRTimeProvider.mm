@@ -7,6 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRTimeProvider
 
++ (BZRTimeProvider *)defaultTimeProvider {
+  return [[BZRTimeProvider alloc] init];
+}
+
 - (RACSignal<NSDate *> *)currentTime {
   return [RACSignal defer:^{
     return [RACSignal return:[NSDate date]];
