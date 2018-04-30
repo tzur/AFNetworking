@@ -3,6 +3,6 @@
 
 #import "BZRPaymentQueue.h"
 
-/// Category that declares that \c SKPaymentQueue conforms to \c BZRInternalPaymentQueue.
+/// Category that declares that \c SKPaymentQueue conforms to \c BZRPaymentQueue.
 @interface SKPaymentQueue (Bazaar) <BZRPaymentQueue>
 @end
