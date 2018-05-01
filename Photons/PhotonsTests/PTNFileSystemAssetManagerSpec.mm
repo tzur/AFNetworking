@@ -15,6 +15,7 @@
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFakeFileManager.h"
@@ -332,14 +333,11 @@ context(@"image fetching", ^{
 context(@"AVAsset fetching", ^{
   __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block LTPath *descriptorPath;
   __block PTNAudiovisualAsset *expectedAsset;
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
-    descriptorPath = PTNFileSystemPathFromString(PTNOneSecondVideoPath().path);
-    descriptor = [[PTNFileSystemFileDescriptor alloc]
-                  initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
     AVAsset *underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
     expectedAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   });
@@ -452,15 +450,12 @@ context(@"image data fetching", ^{
 context(@"AVPreview fetching", ^{
   __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block LTPath *descriptorPath;
   __block NSURL *assetURL;
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     assetURL = PTNOneSecondVideoPath();
-    descriptorPath = PTNFileSystemPathFromString(assetURL.path);
-    descriptor = [[PTNFileSystemFileDescriptor alloc]
-                  initWithPath:[LTPath pathWithPath:assetURL.path]];
+    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
   });
 
   it(@"should fetch AVAsset", ^{
@@ -476,7 +471,7 @@ context(@"AVPreview fetching", ^{
     });
   });
 
-  it(@"should complete after fetching an AVAsset", ^{
+  it(@"should complete after fetching a player item", ^{
     RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
     expect(values).will.sendValuesWithCount(1);
     expect(values).will.complete();
@@ -502,6 +497,56 @@ context(@"AVPreview fetching", ^{
   it(@"should verify file existence on subscription", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
     RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"
+                                                                      path:@"/foo/bar"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
+  });
+});
+
+context(@"AV data fetching", ^{
+  __block id<PTNDescriptor> descriptor;
+  __block NSURL *assetURL;
+
+  beforeEach(^{
+    assetURL = PTNOneSecondVideoPath();
+    descriptor = PTNFileSystemFileFromFileURL(assetURL);
+  });
+
+  it(@"should fetch AV data", ^{
+    LLSignalTestRecorder *values = [[manager fetchAVDataWithDescriptor:descriptor] testRecorder];
+
+    PTNFileBackedAVAsset *expectedAsset =
+        [[PTNFileBackedAVAsset alloc] initWithFilePath:[LTPath pathWithFileURL:assetURL]];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should error on non audiovisual descriptor", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  it(@"should error on non-existing assets", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetNotFound;
+    });
+  });
+
+  it(@"should verify file existence on subscription", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
 
     PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
     auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"

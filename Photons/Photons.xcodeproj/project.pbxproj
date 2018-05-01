@@ -121,7 +121,7 @@
 		84E55C381C8EC85700D91339 /* RACSignal+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */; };
 		84E55C391C8EC85800D91339 /* RACStream+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFE37B1B14C0AD003FB8F5 /* RACStream+Photons.m */; };
 		84E55C3A1C8EC85B00D91339 /* NSURL+FileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */; };
-		84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.m */; };
+		84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.mm */; };
 		84E55C3D1C8EC85F00D91339 /* PTNFileSystemDirectoryDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 848188831C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.m */; };
 		84E55C3E1C8EC86000D91339 /* PTNFileSystemFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 848188851C3BF48E0070462E /* PTNFileSystemFileDescriptor.m */; };
 		84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 848189BC1C3C14720070462E /* PTNMultiplexerAssetManager.m */; };
@@ -612,7 +612,7 @@
 		8414EAB21C5DFE0700014DD1 /* NSURL+PTNResizingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PTNResizingStrategy.m"; sourceTree = "<group>"; };
 		8414EACC1C5E307500014DD1 /* NSURL+PTNResizingStrategySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+PTNResizingStrategySpec.m"; sourceTree = "<group>"; };
 		84182D7B1C43992700F762DF /* PTNFileSystemAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFileSystemAssetManager.h; path = Photons/PTNFileSystemAssetManager.h; sourceTree = SOURCE_ROOT; };
-		84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFileSystemAssetManager.m; path = Photons/PTNFileSystemAssetManager.m; sourceTree = SOURCE_ROOT; };
+		84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PTNFileSystemAssetManager.mm; path = Photons/PTNFileSystemAssetManager.mm; sourceTree = SOURCE_ROOT; };
 		84182D971C43993B00F762DF /* PTNFileSystemFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFileSystemFileManager.h; path = Photons/PTNFileSystemFileManager.h; sourceTree = SOURCE_ROOT; };
 		84182D991C43996400F762DF /* PTNFileSystemAssetManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNFileSystemAssetManagerSpec.mm; sourceTree = "<group>"; };
 		84182D9D1C43998C00F762DF /* PTNFileSystemFakeFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNFileSystemFakeFileManager.h; sourceTree = "<group>"; };
@@ -1574,7 +1574,7 @@
 				0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */,
 				0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */,
 				84182D7B1C43992700F762DF /* PTNFileSystemAssetManager.h */,
-				84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.m */,
+				84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.mm */,
 				848188821C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.h */,
 				848188831C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.m */,
 				848188841C3BF48E0070462E /* PTNFileSystemFileDescriptor.h */,
@@ -2180,7 +2180,7 @@
 				84ED227C1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm in Sources */,
 				845161691C984B3B00AD8B5B /* PTNGatewayAlbumDescriptor.mm in Sources */,
 				2855B0C91FC6EFEF004C2187 /* PTNDateProvider.mm in Sources */,
-				84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.m in Sources */,
+				84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.mm in Sources */,
 				B4D898931EF6498B00348896 /* MPMediaItem+Photons.mm in Sources */,
 				84E55C411C8EC86900D91339 /* PhotoKit+Photons.mm in Sources */,
 				842A38B41CB145AF00AECE4F /* PTNPhotoKitChangeManager.m in Sources */,
