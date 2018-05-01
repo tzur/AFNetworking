@@ -144,6 +144,8 @@
 		84FABB671CA2DBF5009283F0 /* PTNPhotoKitTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.mm */; };
 		84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E55C161C8EC72E00D91339 /* libPhotons.a */; };
 		84FF77F11C91606500D1DA9F /* NSURL+Gateway.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */; };
+		8809F88F20989A8300236B6D /* PTNOceanClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8809F88E20989A8300236B6D /* PTNOceanClient.mm */; };
+		881D81E12099D304001EDEE3 /* PTNOceanClientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */; };
 		883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */; };
 		885AA7322095EA8000B40FE5 /* PTNFileBackedAVAsset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */; };
 		885AA7342095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7332095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm */; };
@@ -736,6 +738,9 @@
 		84FABBBF1CA2F0AA009283F0 /* PTNOpenURLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNOpenURLHandler.h; sourceTree = "<group>"; };
 		84FF77A71C906A5900D1DA9F /* NSURL+Gateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Gateway.h"; sourceTree = "<group>"; };
 		84FF77A81C906A5900D1DA9F /* NSURL+Gateway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Gateway.m"; sourceTree = "<group>"; };
+		8809F88D20989A8300236B6D /* PTNOceanClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNOceanClient.h; sourceTree = "<group>"; };
+		8809F88E20989A8300236B6D /* PTNOceanClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClient.mm; sourceTree = "<group>"; };
+		881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClientSpec.mm; sourceTree = "<group>"; };
 		883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetResponse.json; path = Resources/OceanFakeVideoAssetResponse.json; sourceTree = "<group>"; };
 		885AA7042095AFB100B40FE5 /* PTNAVDataAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAVDataAsset.h; sourceTree = "<group>"; };
 		885AA7302095EA8000B40FE5 /* PTNFileBackedAVAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNFileBackedAVAsset.h; sourceTree = "<group>"; };
@@ -952,6 +957,8 @@
 				2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */,
 				2873CB531F54667A00677B2C /* PTNOceanAssetSearchResponse.h */,
 				2873CB541F54667A00677B2C /* PTNOceanAssetSearchResponse.mm */,
+				8809F88D20989A8300236B6D /* PTNOceanClient.h */,
+				8809F88E20989A8300236B6D /* PTNOceanClient.mm */,
 				2873C9C01F54650800677B2C /* PTNOceanEnums.h */,
 				2873C9C11F54650800677B2C /* PTNOceanEnums.mm */,
 				2873C97C1F54648900677B2C /* RACSignal+Mantle.h */,
@@ -969,6 +976,7 @@
 				2873CB081F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm */,
 				2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */,
 				2873CB7E1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm */,
+				881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */,
 				2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */,
 				2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */,
 			);
@@ -2145,6 +2153,7 @@
 				88D5813E2018712900A403CF /* NSString+UTI.m in Sources */,
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.mm in Sources */,
+				8809F88F20989A8300236B6D /* PTNOceanClient.mm in Sources */,
 				2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */,
 				B411A0491EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm in Sources */,
 				0DF0D2001EACF36D000EEF37 /* PTNAVImageAsset.mm in Sources */,
@@ -2282,6 +2291,7 @@
 				8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m in Sources */,
 				885AA7342095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm in Sources */,
 				8478045E1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.mm in Sources */,
+				881D81E12099D304001EDEE3 /* PTNOceanClientSpec.mm in Sources */,
 				84515E971C96A4DC00AD8B5B /* NSURL+GatewaySpec.m in Sources */,
 				B4D8986F1EF6495200348896 /* MPMediaItem+PhotonsSpec.mm in Sources */,
 				84884C6B1C71CD2C00DBB987 /* PTNPhotoKitImageAssetSpec.mm in Sources */,
