@@ -35,8 +35,6 @@
 		062EEA4F1F25315400AB4958 /* PNKUpsamplingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA4E1F25315400AB4958 /* PNKUpsamplingSpec.mm */; };
 		06368F5F2031959000D8369E /* Lena128_echo55.png in Resources */ = {isa = PBXBuildFile; fileRef = 06368F5E2031958F00D8369E /* Lena128_echo55.png */; };
 		0636A0831F8173F70064E561 /* PNKInstanceNormLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */; };
-		06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */; };
-		06415FB51FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */; };
 		064160C31FD57CDD00F9F70C /* PNKPoolingLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */; };
 		064160C51FD57CF300F9F70C /* PNKPoolingLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */; };
 		06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06447DB01FA892610077346E /* PNKInstanceNormInternalKernel.mm */; };
@@ -687,9 +685,6 @@
 		0636A0811F8173F70064E561 /* PNKInstanceNormLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKInstanceNormLayer.h; sourceTree = "<group>"; };
 		0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInstanceNormLayer.mm; sourceTree = "<group>"; };
 		0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKProtobufMacros.h; sourceTree = "<group>"; };
-		06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetworkSpec.mm; sourceTree = "<group>"; };
-		06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSkySegmentationNetwork.h; sourceTree = "<group>"; };
-		06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetwork.mm; sourceTree = "<group>"; };
 		064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPoolingLayer.h; sourceTree = "<group>"; };
 		064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayer.mm; sourceTree = "<group>"; };
 		064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayerSpec.mm; sourceTree = "<group>"; };
@@ -1918,8 +1913,6 @@
 				E4196CC81FEF9E8A004D1075 /* PNKNeuralNode.mm */,
 				E4BED1401FEFDE3A00160C9B /* PNKRunnableNeuralNetwork.h */,
 				E4BED1411FEFDE3A00160C9B /* PNKRunnableNeuralNetwork.mm */,
-				06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */,
-				06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */,
 			);
 			name = "Neural Networks";
 			sourceTree = "<group>";
@@ -1928,7 +1921,6 @@
 			isa = PBXGroup;
 			children = (
 				E4BED1461FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm */,
-				06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */,
 			);
 			name = "Neural Networks";
 			sourceTree = "<group>";
@@ -2589,7 +2581,6 @@
 				2835A9621FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm in Sources */,
 				E4606D7A202341DF00CFBE3A /* PNKBinaryGatherSpec.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
-				06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */,
 				06B924CA1F8946D300D07848 /* PNKInstanceNormLayerSpec.mm in Sources */,
 				E43F3D9D207B9D060017AE3A /* PNKFillWithZeroesKernel.metal in Sources */,
 			);
@@ -2659,7 +2650,6 @@
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
-				06415FB51FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm in Sources */,
 				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
