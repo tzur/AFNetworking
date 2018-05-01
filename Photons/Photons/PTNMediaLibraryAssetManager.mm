@@ -4,6 +4,7 @@
 #import "PTNMediaLibraryAssetManager.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTPath.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+Functional.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -393,8 +394,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
-  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
-                                associatedDescriptor:descriptor]];
+  if (![descriptor isKindOfClass:[MPMediaItem class]]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
+  }
+
+  return [[self fetchAssetURLWithDescriptor:descriptor]
+    tryMap:^PTNProgress<id<PTNAVDataAsset>> * _Nullable(NSURL *url,
+                                                        NSError *__autoreleasing *error) {
+      auto _Nullable path = [LTPath pathWithFileURL:url];
+      if (!path) {
+        if (error) {
+          auto description = [NSString stringWithFormat:@"URL %@ provided by the system for "
+                              "descriptor %@ is not a valid file URL", url, descriptor];
+          *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidURL associatedDescriptor:descriptor
+                                  description:description];
+        }
+        return nil;
+      }
+      auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
+      return [[PTNProgress alloc] initWithResult:asset];
+  }];
 }
 
 @end
