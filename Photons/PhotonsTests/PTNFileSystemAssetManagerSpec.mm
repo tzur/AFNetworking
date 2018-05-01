@@ -62,7 +62,7 @@ beforeEach(^{
 
 context(@"album fetching", ^{
  it(@"should fetch current results of an album", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"/")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"/"]];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *directories = @[
       PTNFileSystemDirectoryFromString(@"baz"),
@@ -80,7 +80,7 @@ context(@"album fetching", ^{
   });
 
   it(@"should only fetch supported UTI files", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"baz"]];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *files = @[
       PTNFileSystemFileFromString(@"baz/foo.jpg"),
@@ -99,7 +99,7 @@ context(@"album fetching", ^{
 
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@""]];
       RACSignal *values = [manager fetchAlbumWithURL:url];
 
       expect(values).will.sendValuesWithCount(1);
@@ -117,7 +117,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error on non existing file", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"bar")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"bar"]];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -125,7 +125,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error on non directory file", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -136,7 +136,7 @@ context(@"album fetching", ^{
 
 context(@"asset fetching", ^{
   it(@"should fetch asset with URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/foo.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/foo.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       PTNFileSystemFileFromString(@"baz/foo.jpg")
@@ -144,7 +144,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error on non-existing asset", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/qux.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetNotFound;
@@ -152,7 +152,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should verify file existence on subscription", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/qux.jpg"]];
     RACSignal *values = [manager fetchDescriptorWithURL:url];
 
     PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
@@ -165,7 +165,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should fetch directory descriptor for directory URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"baz"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       PTNFileSystemDirectoryFromString(@"baz")
@@ -173,7 +173,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error when fetching asset of non-directory with directory descriptor URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAlbumNotFound;
@@ -190,7 +190,7 @@ context(@"asset fetching", ^{
 
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
-      NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+      NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
       RACSignal *values = [manager fetchDescriptorWithURL:url];
 
       expect(values).will.sendValuesWithCount(1);

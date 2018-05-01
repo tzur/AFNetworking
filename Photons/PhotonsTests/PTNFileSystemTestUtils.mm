@@ -16,16 +16,20 @@
 @implementation PTNClassInTestBundle
 @end
 
-LTPath *PTNFileSystemPathFromString(NSString *path) {
-  return [LTPath pathWithBaseDirectory:LTPathBaseDirectoryNone andRelativePath:path];
+PTNFileSystemFileDescriptor *PTNFileSystemFileFromString(NSString *path) {
+  return [[PTNFileSystemFileDescriptor alloc] initWithPath:[LTPath pathWithPath:path]];
 }
 
-PTNFileSystemFileDescriptor *PTNFileSystemFileFromString(NSString *path) {
-  return [[PTNFileSystemFileDescriptor alloc] initWithPath:PTNFileSystemPathFromString(path)];
+PTNFileSystemFileDescriptor *PTNFileSystemFileFromFileURL(NSURL *url) {
+  return [[PTNFileSystemFileDescriptor alloc] initWithPath:[LTPath pathWithFileURL:url]];
 }
 
 PTNFileSystemDirectoryDescriptor *PTNFileSystemDirectoryFromString(NSString *path) {
-  return [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:PTNFileSystemPathFromString(path)];
+  return [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:[LTPath pathWithPath:path]];
+}
+
+PTNFileSystemDirectoryDescriptor *PTNFileSystemDirectoryFromString(NSURL *url) {
+  return [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:[LTPath pathWithFileURL:url]];
 }
 
 NSURL *PTNOneSecondVideoPath() {
