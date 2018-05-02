@@ -10,8 +10,6 @@
 #import "PNKConstantAlpha.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKImageBilinearScale.h"
-#import "PNKNeuralNetworkModel.h"
-#import "PNKNeuralNetworkModelFactory.h"
 #import "PNKPixelBufferUtils.h"
 #import "PNKRunnableNeuralNetwork.h"
 #import "PNKStyleTransferState.h"
