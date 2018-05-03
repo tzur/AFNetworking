@@ -26,23 +26,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used for resizing underlying image.
 @property (readonly, nonatomic) PTNImageResizer *imageResizer;
 
-/// File manager for file system interaction.
-@property (readonly, nonatomic) NSFileManager *fileManager;
-
 @end
 
 @implementation PTNFileBackedImageAsset
 
 @synthesize uniformTypeIdentifier = _uniformTypeIdentifier;
 
-- (instancetype)initWithFilePath:(LTPath *)path fileManager:(NSFileManager *)fileManager
-                    imageResizer:(PTNImageResizer *)imageResizer
+- (instancetype)initWithFilePath:(LTPath *)path imageResizer:(PTNImageResizer *)imageResizer
                 resizingStrategy:(nullable id<PTNResizingStrategy>)resizingStrategy {
   if (self = [super init]) {
     _path = path;
     _uniformTypeIdentifier = path.url.pathExtension ?
         [LTUTICache.sharedCache preferredUTIForFileExtension:path.url.pathExtension] : nil;
-    _fileManager = fileManager;
     _imageResizer = imageResizer;
     _resizingStrategy = resizingStrategy ?: [PTNResizingStrategy identity];
   }
@@ -58,50 +53,50 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchImageMetadata {
   return [[RACSignal defer:^RACSignal *{
-        NSError *error;
-        PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithImageURL:self.path.url
-                                                                          error:&error];
-        if (error) {
-          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                        url:self.path.url
-                                            underlyingError:error]];
-        }
+    NSError *error;
+    PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithImageURL:self.path.url
+                                                                      error:&error];
+    if (error) {
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                                    url:self.path.url
+                                        underlyingError:error]];
+    }
 
-        return [RACSignal return:metadata];
-      }]
-      subscribeOn:RACScheduler.scheduler];
+    return [RACSignal return:metadata];
+  }]
+  subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)fetchData {
   return [[RACSignal defer:^RACSignal *{
-        NSError *error;
-        NSData *data = [self.fileManager lt_dataWithContentsOfFile:self.path.path
-                                                           options:NSDataReadingMappedIfSafe
-                                                             error:&error];
-        if (!data) {
-          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
-                                                        url:self.path.url
-                                            underlyingError:error]];
-        }
+    NSError *error;
+    NSData *data = [NSData dataWithContentsOfFile:self.path.path
+                                          options:NSDataReadingMappedIfSafe
+                                            error:&error];
+    if (!data) {
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                    url:self.path.url
+                                        underlyingError:error]];
+    }
 
-        return [RACSignal return:data];
-      }]
-      subscribeOn:RACScheduler.scheduler];
+    return [RACSignal return:data];
+  }]
+  subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)writeToFileAtPath:(LTPath *)path usingFileManager:(NSFileManager *)fileManager {
   return [[RACSignal defer:^RACSignal *{
-        NSError *error;
-        BOOL success = [fileManager copyItemAtURL:self.path.url toURL:path.url error:&error];
-        if (!success) {
-          return [RACSignal error:[NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
-                                                        url:self.path.url
-                                            underlyingError:error]];
-        }
+    NSError *error;
+    BOOL success = [fileManager copyItemAtURL:self.path.url toURL:path.url error:&error];
+    if (!success) {
+      return [RACSignal error:[NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                                                    url:self.path.url
+                                        underlyingError:error]];
+    }
 
-        return [RACSignal empty];
-      }]
-      subscribeOn:RACScheduler.scheduler];
+    return [RACSignal empty];
+  }]
+  subscribeOn:RACScheduler.scheduler];
 }
 
 #pragma mark -

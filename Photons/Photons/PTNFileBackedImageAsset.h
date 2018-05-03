@@ -17,16 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// read operation from \c path, followed by decoding of the image from the retrieved data.
 @interface PTNFileBackedImageAsset : NSObject <PTNImageDataAsset>
 
-/// Initializes with file located at \c path, \c fileManager, \c resizer and \c resizingStrategy.
-/// \c fileManager will be used to handle file system interaction. \c resizer and
-/// \c resizingStrategy will be used when fetching the underlying image.  \c PTNResizingStrategy is
-/// required for optimization; it allows a single underlying file to be shared by multiple instances
-/// of \c PTNImageAsset conforming classes, each using a different resizing strategy to resolve the
-/// desired size from the original.
+/// Initializes with file located at \c path, \c resizer and \c resizingStrategy.
+/// \c resizer and \c resizingStrategy will be used when fetching the underlying image.
+/// \c PTNResizingStrategy is required for optimization; it allows a single underlying file to be
+/// shared by multiple instances of \c PTNImageAsset conforming classes, each using a different
+/// resizing strategy to resolve the desired size from the original.
 ///
 /// If \c resizingStrategy is \c nil, the identity resizing strategy is used.
-- (instancetype)initWithFilePath:(LTPath *)path fileManager:(NSFileManager *)fileManager
-                    imageResizer:(PTNImageResizer *)resizier
+- (instancetype)initWithFilePath:(LTPath *)path imageResizer:(PTNImageResizer *)resizier
                 resizingStrategy:(nullable id<PTNResizingStrategy>)resizingStrategy;
 
 @end

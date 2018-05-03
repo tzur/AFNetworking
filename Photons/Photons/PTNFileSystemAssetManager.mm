@@ -243,8 +243,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     PTNFileBackedImageAsset *imageAsset =
-        [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
-                                             imageResizer:self.imageResizer
+        [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath imageResizer:self.imageResizer
                                          resizingStrategy:resizingStrategy];
 
     return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
@@ -332,8 +331,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     PTNFileBackedImageAsset *imageAsset =
-    [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
-                                         imageResizer:self.imageResizer resizingStrategy:nil];
+        [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath imageResizer:self.imageResizer
+                                         resizingStrategy:nil];
 
     return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
   }];

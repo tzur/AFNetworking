@@ -212,7 +212,6 @@ context(@"image fetching", ^{
                                                  resizeMode:PTNImageResizeModeFast
                                             includeMetadata:NO];
     imageAsset = [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"foo.jpg"]
-                                                       fileManager:fileManager
                                                       imageResizer:imageResizer
                                                   resizingStrategy:resizingStrategy];
     asset = PTNFileSystemFileFromString(@"foo.jpg");
@@ -263,7 +262,6 @@ context(@"image fetching", ^{
     beforeEach(^{
       imageAsset =
           [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz1/foo1.jpg"]
-                                                fileManager:fileManager
                                                imageResizer:imageResizer
                                            resizingStrategy:resizingStrategy];
     });
@@ -424,7 +422,6 @@ context(@"image data fetching", ^{
 
     PTNFileBackedImageAsset *imageAsset = [[PTNFileBackedImageAsset alloc]
                                            initWithFilePath:[LTPath pathWithPath:@"foo.jpg"]
-                                           fileManager:fileManager
                                            imageResizer:imageResizer
                                            resizingStrategy:[PTNResizingStrategy identity]];
 
