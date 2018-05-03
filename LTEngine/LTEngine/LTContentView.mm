@@ -12,7 +12,6 @@
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventSequenceSplitter.h"
 #import "LTTouchEventSequenceValidator.h"
-#import "LTTouchEventTimestampFilter.h"
 #import "LTTouchEventView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -162,12 +161,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createTouchEventValidatorAndFilter {
   LTAssert(self.touchEventSequenceSplitter);
-
-  LTTouchEventTimestampFilter *filter =
-      [[LTTouchEventTimestampFilter alloc]
-       initWithTouchEventDelegate:self.touchEventSequenceSplitter];
   _touchEventSequenceValidator =
-      [[LTTouchEventSequenceValidator alloc] initWithDelegate:filter heldStrongly:YES];
+      [[LTTouchEventSequenceValidator alloc] initWithDelegate:self.touchEventSequenceSplitter
+                                                 heldStrongly:NO];
 }
 
 - (void)createTouchEventViewWithFrame:(CGRect)frame {

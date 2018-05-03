@@ -17,7 +17,6 @@
 #import "LTTouchEventSequenceSplitter.h"
 #import "LTTouchEventSequenceValidator.h"
 #import "LTTouchEventSequenceValidatorExamples.h"
-#import "LTTouchEventTimestampFilter.h"
 #import "LTTouchEventView.h"
 
 @interface LTContentView ()
@@ -535,21 +534,15 @@ context(@"touch event sequence pipeline", ^{
     expect(view.touchEventView.delegate).to.beKindOf([LTTouchEventSequenceValidator class]);
   });
 
-  it(@"should use a touch event timestamp filter concatenated to the validator", ^{
+  it(@"should use a touch event sequence splitter concatenated to the touch event validator", ^{
     LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
-    expect(validator.delegate).to.beKindOf([LTTouchEventTimestampFilter class]);
-  });
-
-  it(@"should use a touch event sequence splitter concatenated to the timestamp validator", ^{
-    LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
-    LTTouchEventTimestampFilter *filter = validator.delegate;
-    expect(filter.delegate).to.beKindOf([LTTouchEventSequenceSplitter class]);
+    LTTouchEventSequenceSplitter *splitter = validator.delegate;
+    expect(splitter).to.beKindOf([LTTouchEventSequenceSplitter class]);
   });
 
   it(@"should be the delegate of the touch event sequence splitter", ^{
     LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
-    LTTouchEventTimestampFilter *filter = validator.delegate;
-    LTTouchEventSequenceSplitter *splitter = filter.delegate;
+    LTTouchEventSequenceSplitter *splitter = validator.delegate;
     expect(splitter.delegate).to.beIdenticalTo(view);
   });
 
