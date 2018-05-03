@@ -19,6 +19,19 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
 
 @implementation NSURL (Ocean)
 
+NSString * const kPTNOceanURLQueryItemSourceKey = @"source";
+NSString * const kPTNOceanURLQueryItemTypeKey = @"type";
+NSString * const kPTNOceanURLQueryItemPhraseKey = @"phrase";
+NSString * const kPTNOceanURLQueryItemPageKey = @"page";
+NSString * const kPTNOceanURLQueryItemIdentifierKey = @"id";
+
+/// Returns a number formatter that can convert numbers with digits [0-9] to strings and vice-versa.
+NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
+  auto formatter = [[NSNumberFormatter alloc] init];
+  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+  return formatter;
+}
+
 + (NSString *)ptn_oceanScheme {
   return @"com.lightricks.Photons.Ocean";
 }
@@ -36,14 +49,16 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
   components.scheme = [self ptn_oceanScheme];
   components.host = @"album";
 
-  NSMutableArray *queryItems =
-      [@[[NSURLQueryItem queryItemWithName:@"source" value:source.identifier],
-         [NSURLQueryItem queryItemWithName:@"type" value:assetType.name]] mutableCopy];
+  NSMutableArray *queryItems =[@[
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemSourceKey value:source.name],
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemTypeKey value:assetType.name]
+  ] mutableCopy];
 
   if (phrase) {
-    [queryItems addObject:[NSURLQueryItem queryItemWithName:@"phrase" value:phrase]];
+    [queryItems addObject:[NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPhraseKey
+                                                      value:phrase]];
   }
-  [queryItems addObject:[NSURLQueryItem queryItemWithName:@"page"
+  [queryItems addObject:[NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPageKey
                          value:[NSString stringWithFormat:@"%lu", (unsigned long)page]]];
   components.queryItems = queryItems;
   return components.URL;
@@ -56,9 +71,9 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
   components.scheme = [self ptn_oceanScheme];
   components.host = @"asset";
   components.queryItems = @[
-    [NSURLQueryItem queryItemWithName:@"id" value:identifier],
-    [NSURLQueryItem queryItemWithName:@"source" value:source.identifier],
-    [NSURLQueryItem queryItemWithName:@"type" value:assetType.name]
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemIdentifierKey value:identifier],
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemSourceKey value:source.name],
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemTypeKey value:assetType.name]
   ];
   return components.URL;
 }
@@ -80,11 +95,44 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
   if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
     return nil;
   }
-  NSString * _Nullable type = [self lt_queryDictionary][@"type"];
+  NSString * _Nullable type = [self lt_queryDictionary][kPTNOceanURLQueryItemTypeKey];
   if (!type) {
     return nil;
   }
   return [PTNOceanAssetType enumWithName:type];
+}
+
+- (nullable PTNOceanAssetSource *)ptn_oceanAssetSource {
+  if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
+    return nil;
+  }
+  NSString * _Nullable type = [self lt_queryDictionary][kPTNOceanURLQueryItemSourceKey];
+  if (!type) {
+    return nil;
+  }
+  return [PTNOceanAssetSource enumWithName:type];
+}
+
+- (nullable NSString *)ptn_oceanSearchPhrase {
+  if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
+    return nil;
+  }
+  return [self lt_queryDictionary][kPTNOceanURLQueryItemPhraseKey];
+}
+
+- (nullable NSNumber *)ptn_oceanPageNumber {
+  if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
+    return nil;
+  }
+  auto formatter = PTNLocaleNeutralNumberFormatter();
+  return [formatter numberFromString:[self lt_queryDictionary][kPTNOceanURLQueryItemPageKey]];
+}
+
+- (nullable NSString *)ptn_oceanAssetIdentifier {
+  if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
+    return nil;
+  }
+  return [self lt_queryDictionary][kPTNOceanURLQueryItemIdentifierKey];
 }
 
 @end

@@ -100,8 +100,8 @@ NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
 
   NSMutableDictionary<NSString *, NSObject *> *requestParameters =
       [[self oceanRequestParametersWithURL:url] mutableCopy];
-  requestParameters[@"phrase"] = url.lt_queryDictionary[@"phrase"];
-  requestParameters[@"page"] = url.lt_queryDictionary[@"page"];
+  requestParameters[@"phrase"] = url.ptn_oceanSearchPhrase;
+  requestParameters[@"page"] = url.ptn_oceanPageNumber.stringValue;
 
   NSString * _Nullable endpoint = PTNSearchEndpointFromType(assetType);
   if (!endpoint) {
@@ -112,7 +112,7 @@ NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
       ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
       map:^PTNAlbumChangeset *(PTNOceanAssetSearchResponse *response) {
         auto _Nullable nextAlbumURL = response.page < response.pagesCount ?
-            [url lt_URLByReplacingQueryItemsWithName:@"page"
+            [url lt_URLByReplacingQueryItemsWithName:kPTNOceanURLQueryItemPageKey
                                            withValue:[@(response.page + 1) stringValue]] : nil;
         auto album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:response.results
                                       nextAlbumURL:nextAlbumURL];
@@ -131,7 +131,7 @@ NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
 
 - (FBRHTTPRequestParameters *)oceanRequestParametersWithURL:(NSURL *)url {
   return @{
-    @"source_id": url.lt_queryDictionary[@"source"],
+    @"source_id": url.ptn_oceanAssetSource.identifier,
     @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString
   };
 }
@@ -168,7 +168,7 @@ static const NSTimeInterval kAssetMaxAge = 86400;
         return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
       }
 
-      NSString *urlString = [@[kBaseEndpoint, @"asset", url.lt_queryDictionary[@"id"]]
+      NSString *urlString = [@[kBaseEndpoint, @"asset", url.ptn_oceanAssetIdentifier]
           componentsJoinedByString:@"/"];
       auto requestParameters = [self oceanRequestParametersWithURL:url];
 
