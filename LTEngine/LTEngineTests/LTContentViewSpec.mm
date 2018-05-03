@@ -145,6 +145,29 @@ context(@"initialization", ^{
   });
 });
 
+context(@"deallocation", ^{
+  it(@"should deallocate", ^{
+    id<LTPresentationViewDrawDelegate> drawDelegate =
+        OCMProtocolMock(@protocol(LTPresentationViewDrawDelegate));
+    id<LTPresentationViewFramebufferDelegate> framebufferDelegate =
+        OCMProtocolMock(@protocol(LTPresentationViewFramebufferDelegate));
+    id<LTContentNavigationDelegate> navigationDelegate =
+        OCMProtocolMock(@protocol(LTContentNavigationDelegate));
+    __weak LTContentView *weaklyHeldView;
+
+    @autoreleasepool {
+      LTContentView *view = [[LTContentView alloc] initWithContext:currentContext];
+      view.drawDelegate = drawDelegate;
+      view.framebufferDelegate = framebufferDelegate;
+      view.navigationDelegate = navigationDelegate;
+      weaklyHeldView = view;
+      expect(weaklyHeldView).toNot.beNil();
+    }
+
+    expect(weaklyHeldView).to.beNil();
+  });
+});
+
 context(@"protocols", ^{
   context(@"LTContentCoordinateConverter", ^{
     __block LTContentView *view;
