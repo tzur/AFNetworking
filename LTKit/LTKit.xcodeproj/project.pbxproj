@@ -101,7 +101,7 @@
 		84B63E591DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */; };
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.mm */; };
-		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
+		84F7AB291C3290D600AA502F /* LTPathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.mm */; };
 		85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */; };
 		85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */; };
 		85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */; };
@@ -593,7 +593,7 @@
 		84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundRandomAccessCollectionSpec.mm; sourceTree = "<group>"; };
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPath.mm; sourceTree = "<group>"; };
-		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
+		84F7AB281C3290D600AA502F /* LTPathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPathSpec.mm; sourceTree = "<group>"; };
 		85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSSet.h"; sourceTree = "<group>"; };
 		85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSet.mm"; sourceTree = "<group>"; };
 		85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSetSpec.mm"; sourceTree = "<group>"; };
@@ -969,7 +969,7 @@
 			children = (
 				8B7C6CA61B52832600B90DBE /* LTMMInputFileSpec.mm */,
 				8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */,
-				84F7AB281C3290D600AA502F /* LTPathSpec.m */,
+				84F7AB281C3290D600AA502F /* LTPathSpec.mm */,
 				8B87D54D1C04BC2F0005410A /* NSBundle+PathSpec.mm */,
 				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 				8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */,
@@ -1920,7 +1920,7 @@
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B6BE9621F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
-				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
+				84F7AB291C3290D600AA502F /* LTPathSpec.mm in Sources */,
 				84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */,
 				84455E4E1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm in Sources */,
 				6AB518801CC2A8D700540CC6 /* NSURL+QuerySpec.mm in Sources */,
