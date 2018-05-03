@@ -52,8 +52,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark PTNDataAsset
+#pragma mark PTNImageDataAsset
 #pragma mark -
+
+- (RACSignal *)fetchImage {
+  return [RACSignal defer:^RACSignal<UIImage *> *{
+    auto _Nullable image = [UIImage imageWithData:self.data];
+    if (!image) {
+      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                            description:@"unable to create UIImage from data"]];
+    }
+
+    return [RACSignal return:nn(image)];
+  }];
+}
 
 - (RACSignal<NSData *> *)fetchData {
   return [RACSignal return:self.data];

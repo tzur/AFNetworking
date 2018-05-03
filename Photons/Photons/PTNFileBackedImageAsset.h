@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note \c saveToFile: will trigger a file copying operation, \c fetchImage will trigger a file
 /// read operation from \c path, followed by decoding of the image from the retrieved data.
-@interface PTNFileBackedImageAsset : NSObject <PTNDataAsset, PTNImageAsset, PTNImageDataAsset>
+@interface PTNFileBackedImageAsset : NSObject <PTNImageDataAsset>
 
 /// Initializes with file located at \c path, \c fileManager, \c resizer and \c resizingStrategy.
 /// \c fileManager will be used to handle file system interaction. \c resizer and
