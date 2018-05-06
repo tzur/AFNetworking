@@ -25,6 +25,7 @@
 #import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNFileSystemAssetManager)
 
@@ -53,7 +54,7 @@ beforeEach(^{
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz1" path:@"/" isDirectory:YES],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo1.jpg" path:@"/baz1"
                                                isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"" path:PTNOneSecondVideoPath().path
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"" path:PTNOneSecondVideoURL().path
                                                isDirectory:NO],
   ]];
   imageResizer = OCMClassMock([PTNImageResizer class]);
@@ -309,7 +310,7 @@ context(@"image fetching", ^{
   it(@"should fetch image from video descriptor", ^{
     id<PTNDescriptor> descriptor =
         [[PTNFileSystemFileDescriptor alloc]
-         initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+         initWithPath:[LTPath pathWithFileURL:PTNOneSecondVideoURL()]];
 
     id<PTNResizingStrategy> resizing = [PTNResizingStrategy identity];
     PTNImageFetchOptions *imageOptions =
@@ -335,8 +336,10 @@ context(@"AVAsset fetching", ^{
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
-    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
-    AVAsset *underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
+    auto assetURL = PTNOneSecondVideoURL();
+    descriptor = [[PTNFileSystemFileDescriptor alloc]
+                  initWithPath:[LTPath pathWithFileURL:assetURL]];
+    AVAsset *underlyingAsset = [AVAsset assetWithURL:assetURL];
     expectedAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   });
 
@@ -431,7 +434,7 @@ context(@"image data fetching", ^{
 
   it(@"should fetch image data from audiovisual descriptor", ^{
     descriptor = [[PTNFileSystemFileDescriptor alloc]
-                  initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+                  initWithPath:[LTPath pathWithFileURL:PTNOneSecondVideoURL()]];
     RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
 
     AVAsset *videoAsset =
@@ -451,8 +454,9 @@ context(@"AVPreview fetching", ^{
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
-    assetURL = PTNOneSecondVideoPath();
-    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
+    assetURL = PTNOneSecondVideoURL();
+    descriptor = [[PTNFileSystemFileDescriptor alloc]
+                  initWithPath:[LTPath pathWithFileURL:assetURL]];
   });
 
   it(@"should fetch AVAsset", ^{
@@ -510,7 +514,7 @@ context(@"AV data fetching", ^{
   __block NSURL *assetURL;
 
   beforeEach(^{
-    assetURL = PTNOneSecondVideoPath();
+    assetURL = PTNOneSecondVideoURL();
     descriptor = PTNFileSystemFileFromFileURL(assetURL);
   });
 

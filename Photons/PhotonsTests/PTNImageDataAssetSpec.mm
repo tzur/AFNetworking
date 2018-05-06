@@ -7,6 +7,7 @@
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNImageDataAsset)
 
@@ -45,11 +46,10 @@ context(@"image fetch", ^{
 
 context(@"metadata fetching", ^{
   it(@"should fetch metadata", ^{
-    NSURL *url = [NSBundle.lt_testBundle URLForResource:@"PTNImageMetadataImage"
-                                          withExtension:@"jpg"];
-
+    NSURL *url = PTNImageWithMetadataURL();
     NSData *imageData = [NSData dataWithContentsOfURL:url];
     asset = [[PTNImageDataAsset alloc] initWithData:imageData];
+
     expect([asset fetchImageMetadata]).will.matchValue(0, ^BOOL(PTNImageMetadata *metadata) {
       return metadata != nil;
     });

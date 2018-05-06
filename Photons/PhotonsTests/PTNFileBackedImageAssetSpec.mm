@@ -11,6 +11,7 @@
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
 #import "PTNResizingStrategy.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNFileBackedImageAsset)
 
@@ -22,8 +23,7 @@ __block NSData *imageData;
 __block LTPath *path;
 
 beforeEach(^{
-  NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"jpg"];
-  path = [LTPath pathWithPath:pathString];
+  path = [LTPath pathWithFileURL:PTNSmallImageURL()];
   imageData = [NSData dataWithContentsOfFile:path.path];
   fileManager = [NSFileManager defaultManager];
   resizer = OCMClassMock([PTNImageResizer class]);
@@ -75,8 +75,7 @@ it(@"should write data to disk", ^{
 
 context(@"path of unsupported data", ^{
   beforeEach(^{
-    NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"txt"];
-    path = [LTPath pathWithPath:pathString];
+    path = [LTPath pathWithFileURL:PTNTextFileURL()];
     asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path imageResizer:resizer
                                              resizingStrategy:resizingStrategy];
   });

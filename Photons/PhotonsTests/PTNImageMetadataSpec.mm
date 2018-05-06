@@ -6,6 +6,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <LTKit/LTCGExtensions.h>
 
+#import "PTNTestResources.h"
+
 /// Returns a ISO8601 formatter that uses the system timezone.
 static NSDateFormatter *PTNISO8601SystemTimezoneDateFormatter() {
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -192,12 +194,10 @@ context(@"NSCopying", ^{
 context(@"initialization", ^{
   static NSString * const kMetadataInitializingExamples = @"metadata initializing";
   static NSString * const kMetadataInitializingMetadataKey = @"metadata";
-
-  __block NSString *path;
+  __block NSURL *url;
 
   beforeEach(^{
-    path = [NSBundle.lt_testBundle pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
-    expect(path).toNot.beNil();
+    url = PTNImageWithMetadataURL();
   });
 
   sharedExamplesFor(kMetadataInitializingExamples, ^(NSDictionary *data) {
@@ -253,8 +253,7 @@ context(@"initialization", ^{
 
     beforeEach(^{
       NSError *error;
-      metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]
-                                                      error:&error];
+      metadata = [[PTNImageMetadata alloc] initWithImageURL:url error:&error];
       expect(error).to.beNil();
       expect(metadata).toNot.beNil();
     });
@@ -278,7 +277,7 @@ context(@"initialization", ^{
     __block PTNImageMetadata *metadata;
 
     beforeEach(^{
-      NSData *data = [NSData dataWithContentsOfFile:path];
+      NSData *data = [NSData dataWithContentsOfURL:url];
       expect(data).toNot.beNil();
       NSError *error;
       metadata = [[PTNImageMetadata alloc] initWithImageData:data error:&error];
@@ -359,12 +358,9 @@ context(@"compliance", ^{
 
   beforeEach(^{
     // Read an image created with Apple's Camera.
-    NSString *path = [NSBundle.lt_testBundle pathForResource:@"PTNImageMetadataImage"
-                                                      ofType:@"jpg"];
-    expect(path).toNot.beNil();
+    NSURL *url = PTNImageWithMetadataURL();
     NSError *error;
-    metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]
-                                                    error:&error];
+    metadata = [[PTNImageMetadata alloc] initWithImageURL:url error:&error];
     expect(error).to.beNil();
     expect(metadata).toNot.beNil();
 

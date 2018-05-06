@@ -14,6 +14,7 @@
 #import "PTNFileSystemTestUtils.h"
 #import "PTNImageMetadata.h"
 #import "PTNResizingStrategy.h"
+#import "PTNTestResources.h"
 
 static UIImage *PTNImageWithColor(UIColor *color, CGRect rect) {
   UIGraphicsBeginImageContextWithOptions(rect.size, NO, 1);
@@ -38,7 +39,7 @@ beforeEach(^{
   OCMStub([imageGeneratorFactory imageGeneratorForAsset:OCMOCK_ANY]).andReturn(imageGenerator);
   resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
   OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(16, 16)]).andReturn(CGSizeMake(10, 10));
-  asset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
+  asset = [AVAsset assetWithURL:PTNOneSecondVideoURL()];
   imageAsset = [[PTNAVImageAsset alloc] initWithAsset:asset
                                 imageGeneratorFactory:imageGeneratorFactory
                                      resizingStrategy:resizingStrategy];
@@ -125,7 +126,7 @@ it(@"should fetch image metadata", ^{
 
 it(@"should be deallocated when fetch image completes", ^{
   __weak PTNAVImageAsset *weakImage;
-  AVAsset *demoAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
+  AVAsset *demoAsset = [AVAsset assetWithURL:PTNOneSecondVideoURL()];
   @autoreleasepool {
     PTNAVImageAsset *imageAsset =
         [[PTNAVImageAsset alloc] initWithAsset:demoAsset

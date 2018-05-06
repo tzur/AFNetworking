@@ -10,6 +10,7 @@
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
 #import "PTNResizingStrategy.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNDataBackedImageAsset)
 
@@ -22,8 +23,7 @@ __block PTNImageResizer *resizer;
 __block id<PTNResizingStrategy> resizingStrategy;
 
 beforeEach(^{
-  NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"jpg"];
-  path = [LTPath pathWithPath:pathString];
+  path = [LTPath pathWithFileURL:PTNSmallImageURL()];
   imageData = [NSData dataWithContentsOfFile:path.path];
   image = [[UIImage alloc] init];
   fileManager = OCMClassMock([NSFileManager class]);

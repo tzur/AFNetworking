@@ -7,6 +7,7 @@
 
 #import "NSURL+FileSystem.h"
 #import "PTNFileSystemTestUtils.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNFileSystemFileDescriptor)
 
@@ -84,7 +85,7 @@ context(@"equality", ^{
 });
 
 it(@"should have underlying asset's duration when given a path of an audiovisual file", ^{
-  LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
+  LTPath *oneSecondVideoPath = [LTPath pathWithFileURL:PTNOneSecondVideoURL()];
   PTNFileSystemFileDescriptor *descriptor =
       [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
   expect(round(descriptor.duration)).to.equal(1);
@@ -92,7 +93,7 @@ it(@"should have underlying asset's duration when given a path of an audiovisual
 
 context(@"traits", ^{
   it(@"should have audiovisual trait when given a path of an audiovisual file", ^{
-    LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
+    LTPath *oneSecondVideoPath = [LTPath pathWithFileURL:PTNOneSecondVideoURL()];
     PTNFileSystemFileDescriptor *descriptor =
         [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
     expect(descriptor.descriptorTraits).to.equal([NSSet
