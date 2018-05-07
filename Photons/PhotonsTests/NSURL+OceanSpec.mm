@@ -20,14 +20,12 @@ it(@"should initialize a correct album URL with no page argument", ^{
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"album");
-  expect(url.lt_queryDictionary).to.equal(@{
-    @"source": @"pixabay",
-    @"type": @"PTNOceanAssetTypeVideo",
-    @"phrase": @"foo bar",
-    @"page": @"1"
-  });
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
   expect(url.ptn_oceanAssetType).to.equal($(PTNOceanAssetTypeVideo));
+  expect(url.ptn_oceanAssetSource).to.equal($(PTNOceanAssetSourcePixabay));
+  expect(url.ptn_oceanSearchPhrase).to.equal(@"foo bar");
+  expect(url.ptn_oceanPageNumber).to.equal(@1);
+  expect(url.ptn_oceanAssetIdentifier).to.beNil();
 });
 
 it(@"should initialize a correct album URL", ^{
@@ -37,14 +35,12 @@ it(@"should initialize a correct album URL", ^{
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"album");
-  expect(url.lt_queryDictionary).to.equal(@{
-    @"source": @"pixabay",
-    @"type": @"PTNOceanAssetTypePhoto",
-    @"phrase": @"foo bar",
-    @"page": @"1337"
-  });
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
   expect(url.ptn_oceanAssetType).to.equal($(PTNOceanAssetTypePhoto));
+  expect(url.ptn_oceanAssetSource).to.equal($(PTNOceanAssetSourcePixabay));
+  expect(url.ptn_oceanSearchPhrase).to.equal(@"foo bar");
+  expect(url.ptn_oceanPageNumber).to.equal(@1337);
+  expect(url.ptn_oceanAssetIdentifier).to.beNil();
 });
 
 it(@"should initialize a correct album URL with no phrase", ^{
@@ -54,13 +50,12 @@ it(@"should initialize a correct album URL with no phrase", ^{
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"album");
-  expect(url.lt_queryDictionary).to.equal(@{
-    @"source": @"pixabay",
-    @"type": @"PTNOceanAssetTypeVideo",
-    @"page": @"1337"
-  });
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
   expect(url.ptn_oceanAssetType).to.equal($(PTNOceanAssetTypeVideo));
+  expect(url.ptn_oceanAssetSource).to.equal($(PTNOceanAssetSourcePixabay));
+  expect(url.ptn_oceanSearchPhrase).to.beNil();
+  expect(url.ptn_oceanPageNumber).to.equal(@1337);
+  expect(url.ptn_oceanAssetIdentifier).to.beNil();
 });
 
 it(@"should initialize a correct asset URL", ^{
@@ -70,12 +65,12 @@ it(@"should initialize a correct asset URL", ^{
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"asset");
-  expect(url.lt_queryDictionary).to.equal(@{
-    @"id": @"bar",
-    @"source": @"pixabay",
-    @"type": @"PTNOceanAssetTypePhoto"
-  });
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAsset));
+  expect(url.ptn_oceanAssetType).to.equal($(PTNOceanAssetTypePhoto));
+  expect(url.ptn_oceanAssetSource).to.equal($(PTNOceanAssetSourcePixabay));
+  expect(url.ptn_oceanSearchPhrase).to.beNil();
+  expect(url.ptn_oceanPageNumber).to.beNil();
+  expect(url.ptn_oceanAssetIdentifier).to.equal(@"bar");
 });
 
 it(@"should have an invalid Ocean URL type", ^{

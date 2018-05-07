@@ -13,6 +13,21 @@ LTEnumDeclare(NSUInteger, PTNOceanURLType,
   PTNOceanURLTypeAsset
 );
 
+/// Query item key containing the source associated with the URL.
+extern NSString * const kPTNOceanURLQueryItemSourceKey;
+
+/// Query item key containing the asset type associated with the URL.
+extern NSString * const kPTNOceanURLQueryItemTypeKey;
+
+/// Query item key containing the search phrase associated with the URL.
+extern NSString * const kPTNOceanURLQueryItemPhraseKey;
+
+/// Query item key containing the page number associated with the URL.
+extern NSString * const kPTNOceanURLQueryItemPageKey;
+
+/// Query item key containing the identifier associated with the URL.
+extern NSString * const kPTNOceanURLQueryItemIdentifierKey;
+
 /// Category for easy analysis and synthesis of URLs related to Ocean objects.
 ///
 /// The following URL types are supported:
@@ -42,11 +57,29 @@ LTEnumDeclare(NSUInteger, PTNOceanURLType,
                              assetType:(PTNOceanAssetType *)assetType
                             identifier:(NSString *)identifier;
 
-/// Ocean type associated with this instance, or \c nil if the URL is not of Ocean type.
+/// Ocean type associated with this instance, or \c nil if the URL is not of Ocean type or isn't an
+/// Ocean url.
 @property (readonly, nonatomic, nullable) PTNOceanURLType *ptn_oceanURLType;
 
-/// Asset type associated with this instance, or \c nil if the URL does not contain asset type.
+/// Asset type associated with this instance, or \c nil if the URL does not contain asset type or
+/// isn't an Ocean url.
 @property (readonly, nonatomic, nullable) PTNOceanAssetType *ptn_oceanAssetType;
+
+/// Asset source associated with this instance, or \c nil if the URL does not contain asset source
+/// or isn't an Ocean url.
+@property (readonly, nonatomic, nullable) PTNOceanAssetSource *ptn_oceanAssetSource;
+
+/// Seach phrase associated with this instance, or \c nil if the URL does not contain search phrase
+/// or isn't an Ocean url.
+@property (readonly, nonatomic, nullable) NSString *ptn_oceanSearchPhrase;
+
+/// Page number associated with this instance, or \c nil if the URL does not contain a page number
+/// or isn't an Ocean url.
+@property (readonly, nonatomic, nullable) NSNumber *ptn_oceanPageNumber;
+
+/// Asset identifier associated with this instance, or \c nil if the URL does not contain an asset
+/// identifier or isn't an Ocean url.
+@property (readonly, nonatomic, nullable) NSString *ptn_oceanAssetIdentifier;
 
 @end
 
