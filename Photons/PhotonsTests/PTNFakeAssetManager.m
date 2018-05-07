@@ -71,6 +71,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@implementation PTNAVDataRequest
+
+- (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor {
+  if (self = [super init]) {
+    _descriptor = descriptor;
+  }
+  return self;
+}
+
+@end
+
 @interface PTNFakeAssetManager ()
 
 /// Mapping of \c PTNImageRequest to the \c RACSubject returned for an image request with those
@@ -84,6 +95,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mapping of \c PTNAVPreviewRequest to the \c RACSubject returned for a AV preview request with
 /// those parameters.
 @property (readonly, nonatomic) NSMapTable<PTNAVPreviewRequest *, RACSubject *> *avPreviewRequests;
+
+/// Mapping of \c PTNAVDataRequest to the \c RACSubject returned for a AV data request with
+/// those parameters.
+@property (readonly, nonatomic) NSMapTable<PTNAVDataRequest *, RACSubject *> *avDataRequests;
 
 /// Mapping of \c PTNImageDataRequest to the \c RACSubject returned for a image data request with
 /// those parameters.
@@ -104,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
     _imageRequests = [NSMapTable strongToStrongObjectsMapTable];
     _avRequests = [NSMapTable strongToStrongObjectsMapTable];
     _avPreviewRequests = [NSMapTable strongToStrongObjectsMapTable];
+    _avDataRequests = [NSMapTable strongToStrongObjectsMapTable];
     _imageDataRequests = [NSMapTable strongToStrongObjectsMapTable];
     _descriptorRequests = [NSMutableDictionary dictionary];
     _albumRequests = [NSMutableDictionary dictionary];
@@ -174,6 +190,20 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [self.avPreviewRequests objectForKey:request];
+}
+
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  PTNAVDataRequest *request = [[PTNAVDataRequest alloc] initWithDescriptor:descriptor];
+  if (![self.avDataRequests objectForKey:request]) {
+    [self.avDataRequests setObject:[RACSubject subject] forKey:request];
+  }
+
+  return [self.avDataRequests objectForKey:request];
 }
 
 #pragma mark -
@@ -390,6 +420,55 @@ NS_ASSUME_NONNULL_BEGIN
       map:^RACSubject *(PTNAVPreviewRequest *request) {
         return [self.avPreviewRequests objectForKey:request];
       }].array;
+}
+
+#pragma mark -
+#pragma mark AV data serving
+#pragma mark -
+
+- (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
+              withProgress:(NSArray<NSNumber *> *)progress
+               avDataAsset:(id<PTNAVDataAsset>)avDataAsset {
+  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:avDataAsset]];
+
+  [self serveAVDataRequest:avDataRequest withProgressObjects:progressObjects then:nil];
+}
+
+- (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
+              withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
+  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }];
+
+  [self serveAVDataRequest:avDataRequest withProgressObjects:progressObjects then:error];
+}
+
+- (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
+       withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+  for (RACSubject *signal in [self requestsMatchingAVDataRequest:avDataRequest]) {
+    for (PTNProgress *progressObject in progress) {
+      [signal sendNext:progressObject];
+    }
+
+    if (error) {
+      [signal sendError:error];
+    } else {
+      [signal sendCompleted];
+    }
+  }
+}
+
+- (NSArray<RACSubject *> *)requestsMatchingAVDataRequest:(PTNAVDataRequest *)avDataRequest {
+  return [[self.avDataRequests.keyEnumerator.rac_sequence
+    filter:^BOOL(PTNAVDataRequest *request) {
+      return (avDataRequest.descriptor == nil ||
+              [avDataRequest.descriptor isEqual:request.descriptor]);
+    }]
+    map:^RACSubject *(PTNAVDataRequest *request) {
+      return [self.avDataRequests objectForKey:request];
+    }].array;
 }
 
 #pragma mark -

@@ -15,6 +15,7 @@
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFakeFileManager.h"
@@ -62,7 +63,7 @@ beforeEach(^{
 
 context(@"album fetching", ^{
  it(@"should fetch current results of an album", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"/")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"/"]];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *directories = @[
       PTNFileSystemDirectoryFromString(@"baz"),
@@ -80,7 +81,7 @@ context(@"album fetching", ^{
   });
 
   it(@"should only fetch supported UTI files", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"baz"]];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *files = @[
       PTNFileSystemFileFromString(@"baz/foo.jpg"),
@@ -99,7 +100,7 @@ context(@"album fetching", ^{
 
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@""]];
       RACSignal *values = [manager fetchAlbumWithURL:url];
 
       expect(values).will.sendValuesWithCount(1);
@@ -117,7 +118,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error on non existing file", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"bar")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"bar"]];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -125,7 +126,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error on non directory file", ^{
-      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+      NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeAlbumNotFound;
@@ -136,7 +137,7 @@ context(@"album fetching", ^{
 
 context(@"asset fetching", ^{
   it(@"should fetch asset with URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/foo.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/foo.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       PTNFileSystemFileFromString(@"baz/foo.jpg")
@@ -144,7 +145,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error on non-existing asset", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/qux.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAssetNotFound;
@@ -152,7 +153,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should verify file existence on subscription", ^{
-    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"baz/qux.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"baz/qux.jpg"]];
     RACSignal *values = [manager fetchDescriptorWithURL:url];
 
     PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
@@ -165,7 +166,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should fetch directory descriptor for directory URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"baz"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
       PTNFileSystemDirectoryFromString(@"baz")
@@ -173,7 +174,7 @@ context(@"asset fetching", ^{
   });
 
   it(@"should error when fetching asset of non-directory with directory descriptor URL", ^{
-    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
 
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeAlbumNotFound;
@@ -190,7 +191,7 @@ context(@"asset fetching", ^{
 
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
-      NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+      NSURL *url = [NSURL ptn_fileSystemAssetURLWithPath:[LTPath pathWithPath:@"foo.jpg"]];
       RACSignal *values = [manager fetchDescriptorWithURL:url];
 
       expect(values).will.sendValuesWithCount(1);
@@ -332,14 +333,11 @@ context(@"image fetching", ^{
 context(@"AVAsset fetching", ^{
   __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block LTPath *descriptorPath;
   __block PTNAudiovisualAsset *expectedAsset;
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
-    descriptorPath = PTNFileSystemPathFromString(PTNOneSecondVideoPath().path);
-    descriptor = [[PTNFileSystemFileDescriptor alloc]
-                  initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
     AVAsset *underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
     expectedAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   });
@@ -452,15 +450,12 @@ context(@"image data fetching", ^{
 context(@"AVPreview fetching", ^{
   __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block LTPath *descriptorPath;
   __block NSURL *assetURL;
 
   beforeEach(^{
     options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     assetURL = PTNOneSecondVideoPath();
-    descriptorPath = PTNFileSystemPathFromString(assetURL.path);
-    descriptor = [[PTNFileSystemFileDescriptor alloc]
-                  initWithPath:[LTPath pathWithPath:assetURL.path]];
+    descriptor = PTNFileSystemFileFromFileURL(PTNOneSecondVideoPath());
   });
 
   it(@"should fetch AVAsset", ^{
@@ -476,7 +471,7 @@ context(@"AVPreview fetching", ^{
     });
   });
 
-  it(@"should complete after fetching an AVAsset", ^{
+  it(@"should complete after fetching a player item", ^{
     RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
     expect(values).will.sendValuesWithCount(1);
     expect(values).will.complete();
@@ -502,6 +497,56 @@ context(@"AVPreview fetching", ^{
   it(@"should verify file existence on subscription", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
     RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
+
+    PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
+    auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"
+                                                                      path:@"/foo/bar"
+                                                               isDirectory:NO];
+    fakeFileManager.files = [fakeFileManager.files arrayByAddingObject:fakeFile];
+
+    expect(values).will.complete();
+  });
+});
+
+context(@"AV data fetching", ^{
+  __block id<PTNDescriptor> descriptor;
+  __block NSURL *assetURL;
+
+  beforeEach(^{
+    assetURL = PTNOneSecondVideoPath();
+    descriptor = PTNFileSystemFileFromFileURL(assetURL);
+  });
+
+  it(@"should fetch AV data", ^{
+    LLSignalTestRecorder *values = [[manager fetchAVDataWithDescriptor:descriptor] testRecorder];
+
+    PTNFileBackedAVAsset *expectedAsset =
+        [[PTNFileBackedAVAsset alloc] initWithFilePath:[LTPath pathWithFileURL:assetURL]];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should error on non audiovisual descriptor", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  it(@"should error on non-existing assets", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetNotFound;
+    });
+  });
+
+  it(@"should verify file existence on subscription", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchAVDataWithDescriptor:descriptor];
 
     PTNFileSystemFakeFileManager *fakeFileManager = (PTNFileSystemFakeFileManager *)fileManager;
     auto fakeFile = [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz.mp4"

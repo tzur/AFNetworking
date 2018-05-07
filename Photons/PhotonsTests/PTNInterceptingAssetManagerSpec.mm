@@ -996,4 +996,76 @@ context(@"image data fetching", ^{
   });
 });
 
+context(@"AV preview fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
+  __block id<PTNDescriptor> descriptor;
+  __block PTNAVPreviewRequest *request;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNImageFetchOptions class]);
+    descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    request = [[PTNAVPreviewRequest alloc] initWithDescriptor:descriptor options:options];
+  });
+
+  it(@"should forward values from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchAVPreviewWithDescriptor:descriptor options:options]
+         testRecorder];
+    AVPlayerItem *playerItem = OCMClassMock([AVPlayerItem class]);
+
+    [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[] playerItem:playerItem];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:playerItem]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should forward errors from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchAVPreviewWithDescriptor:descriptor options:options]
+         testRecorder];
+
+    NSError *error = [NSError lt_errorWithCode:1337];
+
+    [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[@0.666]
+                                     finallyError:error];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.error();
+    expect(values.error).will.equal(error);
+  });
+});
+
+context(@"av data fetching", ^{
+  __block id<PTNAssetDescriptor> descriptor;
+  __block PTNAVDataRequest *request;
+
+  beforeEach(^{
+    descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    request = [[PTNAVDataRequest alloc] initWithDescriptor:descriptor];
+  });
+
+  it(@"should forward values from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchAVDataWithDescriptor:descriptor] testRecorder];
+    id<PTNAVDataAsset> avDataAsset = OCMProtocolMock(@protocol(PTNAVDataAsset));
+
+    [underlyingAssetManager serveAVDataRequest:request withProgress:@[] avDataAsset:avDataAsset];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:avDataAsset]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should forward errors from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchAVDataWithDescriptor:descriptor] testRecorder];
+
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [underlyingAssetManager serveAVDataRequest:request withProgress:@[@0.123] finallyError:error];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
+    expect(values).will.error();
+    expect(values.error).will.equal(error);
+  });
+});
+
 SpecEnd

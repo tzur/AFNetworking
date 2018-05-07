@@ -3,6 +3,7 @@
 
 #import <AVFoundation/AVPlayerItem.h>
 
+#import "PTNAVDataAsset.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNImageAsset.h"
 #import "PTNImageContentMode.h"
@@ -103,6 +104,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<PTNProgress<AVPlayerItem *> *> *)
     fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
     options:(PTNAVAssetFetchOptions *)options;
+
+/// Fetches the audiovisual data which is backed by the given \c descriptor. The returned signal
+/// will err if \c descriptor is not an asset descriptor.
+///
+/// The returned signal sends \c PTNProgress objects on a arbitrary thread, complete once the final
+/// result is sent and errs if an error occurs while fetching the data. The result type will
+/// always be a \c PTNAVDataAsset.
+///
+/// If the asset doesn't exist, the signal will err.
+///
+/// Disposal of the returned signal will abort the current data fetch operation, if in progress.
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor;
 
 @optional
 

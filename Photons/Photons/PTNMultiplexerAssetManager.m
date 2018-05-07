@@ -99,6 +99,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
+  if (!assetManager) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                  associatedDescriptor:descriptor]];
+  }
+  return [assetManager fetchAVDataWithDescriptor:descriptor];
+}
+
+#pragma mark -
 #pragma mark Deletion
 #pragma mark -
 

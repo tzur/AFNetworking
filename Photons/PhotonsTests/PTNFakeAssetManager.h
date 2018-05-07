@@ -81,6 +81,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Value object representing a AV data request with all of the required parameters for it.
+@interface PTNAVDataRequest : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c descriptor.
+- (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
+    NS_DESIGNATED_INITIALIZER;
+
+/// Descriptor used for the AV data request.
+@property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
+
+@end
+
 /// Fake \c PTNAssetManager implementation used for testing.
 @interface PTNFakeAssetManager : NSObject <PTNAssetManager>
 
@@ -170,6 +184,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// all values from that property.
 - (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
                  withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
+
+#pragma mark -
+#pragma mark AV data Serving
+#pragma mark -
+
+/// Serves the given \c avDataRequest by sending the given \c progress reports (array of \c NSNumber
+/// values), followed by the given \c avDataRequest, all wrapped in a \c PTNProgress objects and
+/// then completes. If any properties of \c avDataRequest are \c nil, that property will be treated
+/// as a wildcard, matching all values from that property.
+- (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
+              withProgress:(NSArray<NSNumber *> *)progress
+               avDataAsset:(id<PTNAVDataAsset>)avDataAsset;
+
+/// Serves the given \c avDataRequest by sending the given \c progress reports (array of \c NSNumber
+/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// properties of \c avDataRequest are \c nil, that property will be treated as a wildcard, matching
+/// all values from that property.
+- (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
+              withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -
 #pragma mark Descriptor Serving

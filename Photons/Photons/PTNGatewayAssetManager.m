@@ -117,6 +117,12 @@ NS_ASSUME_NONNULL_BEGIN
                                 associatedDescriptor:descriptor]];
 }
 
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
 #pragma mark -
 #pragma mark Descriptor mapping
 #pragma mark -

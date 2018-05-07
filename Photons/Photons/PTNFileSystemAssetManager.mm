@@ -13,6 +13,7 @@
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileDescriptor.h"
@@ -362,6 +363,33 @@ NS_ASSUME_NONNULL_BEGIN
 
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:filePath.url];
     return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
+  }];
+}
+
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+    if (![self nonDirectoryExistsAtURL:descriptor.ptn_identifier]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
+
+    if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+      NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                             associatedDescriptor:descriptor];
+      return [RACSignal error:error];
+    }
+
+    auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:filePath];
+    return [RACSignal return:[[PTNProgress alloc] initWithResult:asset]];
   }];
 }
 

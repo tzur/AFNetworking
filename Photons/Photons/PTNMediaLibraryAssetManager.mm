@@ -4,11 +4,13 @@
 #import "PTNMediaLibraryAssetManager.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTPath.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+Functional.h>
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "MPMediaItem+Photons.h"
+#import "NSError+Photons.h"
 #import "NSErrorCodes+Photons.h"
 #import "NSURL+MediaLibrary.h"
 #import "PTNAlbum.h"
@@ -16,6 +18,7 @@
 #import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNMediaLibraryAuthorizationManager.h"
 #import "PTNMediaLibraryAuthorizer.h"
 #import "PTNMediaLibraryCollectionDescriptor.h"
@@ -382,6 +385,34 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fetchAssetURLWithDescriptor:descriptor] map:^PTNProgress *(NSURL *url) {
     auto playerItem = [AVPlayerItem playerItemWithURL:url];
     return [[PTNProgress alloc] initWithResult:playerItem];
+  }];
+}
+
+#pragma mark -
+#pragma mark AV data fetching
+#pragma mark -
+
+- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+    fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  if (![descriptor isKindOfClass:[MPMediaItem class]]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
+  }
+
+  return [[self fetchAssetURLWithDescriptor:descriptor]
+    tryMap:^PTNProgress<id<PTNAVDataAsset>> * _Nullable(NSURL *url,
+                                                        NSError *__autoreleasing *error) {
+      auto _Nullable path = [LTPath pathWithFileURL:url];
+      if (!path) {
+        if (error) {
+          auto description = [NSString stringWithFormat:@"URL %@ provided by the system for "
+                              "descriptor %@ is not a valid file URL", url, descriptor];
+          *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidURL associatedDescriptor:descriptor
+                                  description:description];
+        }
+        return nil;
+      }
+      auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
+      return [[PTNProgress alloc] initWithResult:asset];
   }];
 }
 
