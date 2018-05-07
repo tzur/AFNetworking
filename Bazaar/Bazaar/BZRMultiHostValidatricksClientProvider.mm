@@ -26,7 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
   @"oregon-api.lightricks.com",
   @"virginia-api.lightricks.com",
-  @"hk-api.lightricks.com",
+
+  // Validatricks Hong-Kong server used to simply redirect all HTTP request to the Tokyo server by
+  // sending the client an HTTP 301 response. This is problematic since Chinese clients (in some
+  // regions in China) may have issues accessing cloud services outside of China. The desired
+  // behavior is that the server will actively proxy requests to the Tokyo server and forward the
+  // responses to clients. Replacing the HTTP redirection mechanism with proxy may break clients
+  // using older versions of Bazaar due to the SSL pinning that did not contain the HK server
+  // certificate. In order to not affect users with old versions of Bazaar a specialized route was
+  // added to the HK server - "/proxy/*", which performs the proxying while all other routes still
+  // perform the HTTP redirection. Bazaar should revert to using the default route once it will be
+  // changed to perform proxying instead of redirection, which should happen when the adoption of
+  // newer Bazaar revisions, that contain the HK server certificate, is high enough.
+  @"hk-api.lightricks.com/proxy",
   @"frankfurt-api.lightricks.com",
   @"ireland-api.lightricks.com",
   @"tokyo-api.lightricks.com",
