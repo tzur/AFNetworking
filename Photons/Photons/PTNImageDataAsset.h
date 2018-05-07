@@ -4,12 +4,13 @@
 #import <LTKit/LTValueObject.h>
 
 #import "PTNDataAsset.h"
+#import "PTNImageAsset.h"
 #import "PTNImageMetadata.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for an image in an \c NSData format, enabling fetching of image data and metadata.
-@protocol PTNImageDataAsset <PTNDataAsset>
+@protocol PTNImageDataAsset <PTNDataAsset, PTNImageAsset>
 
 /// Fetches the image metadata of image backed by this asset. The returned signal sends a single
 /// \c PTNImageMetadata object on an arbitrary thread, and completes. If the image metadata cannot

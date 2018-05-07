@@ -25,10 +25,10 @@ beforeEach(^{
   NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"jpg"];
   path = [LTPath pathWithPath:pathString];
   imageData = [NSData dataWithContentsOfFile:path.path];
-  fileManager = OCMClassMock([NSFileManager class]);
+  fileManager = [NSFileManager defaultManager];
   resizer = OCMClassMock([PTNImageResizer class]);
   resizingStrategy = [PTNResizingStrategy identity];
-  asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
+  asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path
                                                imageResizer:resizer
                                            resizingStrategy:resizingStrategy];
 });
@@ -58,30 +58,26 @@ it(@"should return image metadata", ^{
 });
 
 it(@"should return underlying data", ^{
-  OCMStub([fileManager lt_dataWithContentsOfFile:path.path options:NSDataReadingMappedIfSafe
-                                           error:[OCMArg setTo:nil]]).andReturn(imageData);
-
+  auto data = nn([NSData dataWithContentsOfFile:path.path]);
   RACSignal *values = [asset fetchData];
 
-  expect(values).will.sendValues(@[imageData]);
+  expect(values).will.sendValues(@[data]);
   expect(values).will.complete();
 });
 
 it(@"should write data to disk", ^{
-  LTPath *writePath = [LTPath pathWithPath:@"foo"];
-  OCMExpect([fileManager copyItemAtURL:path.url toURL:writePath.url error:[OCMArg setTo:nil]])
-      .andReturn(YES);
-
+  LTPath *writePath = [LTPath
+                       pathWithPath:[LTTemporaryPath() stringByAppendingPathComponent:@"foo"]];
+  auto data = nn([NSData dataWithContentsOfFile:path.path]);
   expect([asset writeToFileAtPath:writePath usingFileManager:fileManager]).will.complete();
-  OCMVerifyAll((id)fileManager);
+  expect([NSData dataWithContentsOfFile:writePath.path]).to.equal(data);
 });
 
 context(@"path of unsupported data", ^{
   beforeEach(^{
     NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"txt"];
     path = [LTPath pathWithPath:pathString];
-    asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
-                                                 imageResizer:resizer
+    asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path imageResizer:resizer
                                              resizingStrategy:resizingStrategy];
   });
 
@@ -95,8 +91,7 @@ context(@"path of unsupported data", ^{
 context(@"invalid path", ^{
   beforeEach(^{
     path = [LTPath pathWithPath:@"foo"];
-    asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
-                                                 imageResizer:resizer
+    asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path imageResizer:resizer
                                              resizingStrategy:resizingStrategy];
   });
 
@@ -111,24 +106,18 @@ context(@"invalid path", ^{
   });
 
   it(@"should err when fetching data", ^{
-    NSError *dataError = [NSError lt_errorWithCode:1337];
-    OCMStub([fileManager lt_dataWithContentsOfFile:path.path options:NSDataReadingMappedIfSafe
-                                             error:[OCMArg setTo:dataError]]);
-
     expect([asset fetchData]).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeAssetLoadingFailed;
+      return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_isLTDomain;
     });
   });
 });
 
 it(@"should err when writing data to disk fails", ^{
-  NSError *writeError = [NSError lt_errorWithCode:1337];
-  LTPath *writePath = [LTPath pathWithPath:@"foo"];
-  OCMStub([fileManager copyItemAtURL:path.url toURL:writePath.url error:[OCMArg setTo:writeError]]);
+  LTPath *writePath = [LTPath pathWithPath:@"f:a*/\f\\"];
 
   expect([asset writeToFileAtPath:writePath usingFileManager:fileManager])
       .will.matchError(^BOOL(NSError *error) {
-    return error.code == LTErrorCodeFileWriteFailed;
+    return error.code == LTErrorCodeFileWriteFailed && error.lt_isLTDomain;
   });
 });
 
@@ -152,9 +141,6 @@ context(@"thread transitions", ^{
   });
 
   it(@"should not operate on the main thread when fetching data", ^{
-    OCMStub([fileManager lt_dataWithContentsOfFile:path.path options:NSDataReadingMappedIfSafe
-                                             error:[OCMArg setTo:nil]]).andReturn(imageData);
-
     RACSignal *values = [asset fetchData];
 
     expect(values).will.sendValuesWithCount(1);
@@ -168,14 +154,11 @@ context(@"equality", ^{
   __block PTNFileBackedImageAsset *otherImage;
 
   beforeEach(^{
-    firstImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
-                                                      imageResizer:resizer
+    firstImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path imageResizer:resizer
                                                   resizingStrategy:resizingStrategy];
-    secondImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
-                                                       imageResizer:resizer
+    secondImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:path imageResizer:resizer
                                                    resizingStrategy:resizingStrategy];
     otherImage = [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"foo"]
-                                                       fileManager:fileManager
                                                       imageResizer:resizer
                                                   resizingStrategy:resizingStrategy];
   });
