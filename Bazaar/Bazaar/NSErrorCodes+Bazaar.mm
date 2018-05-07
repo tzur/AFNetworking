@@ -61,6 +61,10 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeLoadingFileFailed,
   /// Product was purchased successfully but not found in the receipt.
   BZRErrorCodePurchasedProductNotFoundInReceipt,
+  /// Transaction that has completed but was not found in the receipt.
+  BZRErrorCodeTransactionNotFoundInReceipt,
+  /// Received an invalid transaction identifier.
+  BZRErrorCodeInvalidTransactionIdentifier,
   /// Received request to purchase product that is not valid for purchasing.
   BZRErrorCodeInvalidProductForPurchasing,
   /// Received request to acquire all products for a user that's not a subscriber.

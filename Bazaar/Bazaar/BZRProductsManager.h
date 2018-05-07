@@ -30,6 +30,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c BZRErrorCodeOperationCancelled.
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier;
 
+/// Validates the transaction specified by \c transactionId. Events can be sent on an arbitrary
+/// thread.
+///
+/// Returns a signal that refreshes and validates the receipt. If the transaction specified by
+/// \c transactionId appears in the receipt validation response, it will be finished and the
+/// signal will complete. If the transaction specified by \c transactionId isn't found in the queue
+/// of active transactions or if the state of the transaction is not
+/// \c SKPaymentTransactionStatePurchased, the signal errs with code
+/// \c BZRErrorCodeInvalidTransactionIdentifier. If validating the transaction has failed, or if a
+/// transaction with the specified identifier does not appear in the receipt validation response,
+/// the signal errs with an appropriate error. In that case retrying the operation may succeed.
+///
+/// @note If the refresh receipt was cancelled, the signal will err with an error code
+/// \c BZRErrorCodeOperationCancelled. In that case retrying the operation is not recommended as it
+/// is against the user intention.
+- (RACSignal *)validateTransaction:(NSString *)transactionId;
+
 /// Provides access to the content of the given \c product. Events can be sent on an arbitrary
 /// thread.
 ///

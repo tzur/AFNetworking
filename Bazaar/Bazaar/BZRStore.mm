@@ -571,6 +571,92 @@ NS_ASSUME_NONNULL_BEGIN
       ignoreValues];
 }
 
+- (RACSignal *)validateTransaction:(NSString *)transactionId {
+  return [[[[RACSignal
+      defer:^{
+        auto * _Nullable transaction =
+            [self.storeKitFacade.transactions lt_find:^BOOL(SKPaymentTransaction *transaction) {
+              return [transaction.transactionIdentifier isEqualToString:transactionId] &&
+                  transaction.transactionState == SKPaymentTransactionStatePurchased;
+            }];
+
+        return [RACSignal return:transaction];
+      }]
+      try:^BOOL(SKPaymentTransaction * _Nullable transaction, NSError *__autoreleasing *error) {
+        if (!transaction && error) {
+          *error = [NSError lt_errorWithCode:BZRErrorCodeInvalidTransactionIdentifier];
+        }
+        return transaction != nil;
+      }]
+      flattenMap:^RACSignal *(SKPaymentTransaction *transaction) {
+        return [[self refreshReceiptInternal]
+            concat:[self validateAndFinishTransaction:transaction]];
+      }]
+      ignoreValues];
+}
+
+- (RACSignal *)refreshReceiptInternal {
+  @weakify(self);
+  return [[[self.storeKitFacade refreshReceipt]
+      doError:^(NSError *error) {
+        @strongify(self);
+        [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
+      }]
+      catch:^RACSignal *(NSError *error) {
+        if (error.code == BZRErrorCodeOperationCancelled) {
+          return [RACSignal error:error];
+        }
+
+        return [RACSignal empty];
+      }];
+}
+
+- (RACSignal *)validateAndFinishTransaction:(SKPaymentTransaction *)transaction {
+  @weakify(self);
+  return [[[self validateTransactions:@[transaction]]
+      tryMap:^SKPaymentTransaction * _Nullable(BZRPaymentTransactionList *validatedTransactions,
+                                               NSError *__autoreleasing *error) {
+        if (!validatedTransactions.firstObject) {
+          if (error) {
+            *error = [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
+                                    transaction:transaction];
+          }
+        }
+
+        return validatedTransactions.firstObject;
+      }]
+      doNext:^(SKPaymentTransaction *validatedTransaction) {
+        @strongify(self);
+        [self.storeKitFacade finishTransaction:validatedTransaction];
+      }];
+}
+
+- (RACSignal<BZRPaymentTransactionList *> *)validateTransactions:
+    (BZRPaymentTransactionList *)transactions {
+  @weakify(self);
+  return [[[self validateReceipt]
+      map:^BZRPaymentTransactionList *(BZRReceiptValidationStatus *receiptValidationStatus) {
+        return [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
+          return [[receiptValidationStatus.receipt.transactions
+              valueForKey:@instanceKeypath(BZRReceiptTransactionInfo, transactionId)]
+              containsObject:transaction.transactionIdentifier];
+        }];
+      }]
+      doNext:^(BZRPaymentTransactionList *validatedTransactions) {
+        @strongify(self);
+        auto notValidatedTransactions =
+            [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
+              return ![validatedTransactions containsObject:transaction];
+            }];
+
+        for (SKPaymentTransaction *transaction in notValidatedTransactions) {
+          auto error = [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
+                                      transaction:transaction];
+          [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+        }
+      }];
+}
+
 - (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(NSString *)productIdentifier {
   if (!self.productsJSONDictionary[productIdentifier].contentFetcherParameters) {
     return [RACSignal return:nil];
@@ -693,11 +779,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt {
   @weakify(self);
-  return [[self.validationStatusProvider fetchReceiptValidationStatus]
-    doError:^(NSError *error) {
-      @strongify(self);
-      [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
-    }];
+  return [[RACSignal
+      defer:^{
+        @strongify(self);
+        return [self.validationStatusProvider fetchReceiptValidationStatus];
+      }]
+      doError:^(NSError *error) {
+        @strongify(self);
+        [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+      }];
 }
 
 - (RACSignal *)acquireAllEnabledProducts {
