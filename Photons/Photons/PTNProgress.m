@@ -23,6 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
++ (instancetype)progressWithProgress:(NSNumber *)progress {
+  return [[PTNProgress alloc] initWithProgress:progress];
+}
+
++ (instancetype)progressWithResult:(id<NSObject>)result {
+  return [[PTNProgress alloc] initWithResult:result];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -

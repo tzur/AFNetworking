@@ -22,6 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes a \c PTNProgress object with the current \c progress in [0, 1].
 - (instancetype)initWithProgress:(NSNumber *)progress NS_DESIGNATED_INITIALIZER;
 
+/// Returns an initialized \c PTNProgress object with the resulting value.
++ (instancetype)progressWithResult:(ResultType)result;
+
+/// Returns an initialized \c \c PTNProgress object with the given \c progress in [0, 1].
++ (instancetype)progressWithProgress:(NSNumber *)progress;
+
 /// Value in [0, 1] that reports the current progress. If \c progress is \c nil, \c value must be
 /// set to the resulting value.
 @property (readonly, nonatomic, nullable) NSNumber *progress;
