@@ -32,14 +32,6 @@ beforeEach(^{
   button = [[CUIMenuItemIconButton alloc] initWithModel:model];
 });
 
-it(@"should raise an exception when initialized with nil model", ^{
-  CUISimpleMenuItemViewModel *nilModel = nil;
-  expect(^{
-    CUIMenuItemIconButton * __unused iconButton =
-        [[CUIMenuItemIconButton alloc] initWithModel:nilModel];
-  }).to.raise(NSInvalidArgumentException);
-});
-
 it(@"should set the model property correctly", ^{
   expect(button.model).to.beIdenticalTo(model);
 });

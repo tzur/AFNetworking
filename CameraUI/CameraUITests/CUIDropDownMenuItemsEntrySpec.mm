@@ -31,16 +31,6 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil item", ^{
-    CUISimpleMenuItemViewModel *nilModel = nil;
-    expect(^{
-      CUIDropDownMenuItemsEntry * __unused entry =
-          [[CUIDropDownMenuItemsEntry alloc] initWithItem:nilModel
-                                     mainBarItemViewClass:mainBarViewClass
-                                     submenuItemViewClass:mainBarViewClass];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should raise an exception when initialized with invalid main bar item view class", ^{
     expect(^{
       CUIDropDownMenuItemsEntry * __unused entry =

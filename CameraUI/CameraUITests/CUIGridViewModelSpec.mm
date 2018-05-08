@@ -26,14 +26,6 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil container", ^{
-    id<CUIGridContainer> nilContainer = nil;
-    expect(^{
-      CUIGridViewModel * __unused viewModel =
-          [[CUIGridViewModel alloc] initWithGridContainer:nilContainer title:title iconURL:iconURL];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should set correct defaults", ^{
     expect(gridViewModel.enabled).will.beTruthy();
     expect(gridViewModel.hidden).to.beFalsy();

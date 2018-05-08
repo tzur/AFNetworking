@@ -32,22 +32,6 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil flash device", ^{
-    id<CAMFlashDevice> device = nil;
-    expect(^{
-      CUIFlashMenuViewModel * __unused flashViewModel =
-          [[CUIFlashMenuViewModel alloc] initWithFlashDevice:device flashModes:flashModes];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise an exception when initialized with nil flash modes", ^{
-    NSArray<CUIFlashModeViewModel *> *flashModes = nil;
-    expect(^{
-      CUIFlashMenuViewModel * __unused flashViewModel =
-          [[CUIFlashMenuViewModel alloc] initWithFlashDevice:device flashModes:flashModes];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should set the selected property to NO", ^{
     expect(flashViewModel.selected).to.beFalsy();
   });

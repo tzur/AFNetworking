@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class for defining the fonts and colors used in \c CameraUI.
 @interface CUITheme : NSObject
 
-- (instancetype)init NS_UNAVAILABLE;
+- (nullable instancetype)init NS_UNAVAILABLE;
 
 /// Initializes properties with given arguments and no shadow.
 - (instancetype)initWithTitleFont:(UIFont *)titleFont

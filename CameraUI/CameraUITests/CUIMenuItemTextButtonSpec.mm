@@ -29,13 +29,6 @@ beforeEach(^{
   button = [[CUIMenuItemTextButton alloc] initWithModel:model];
 });
 
-it(@"should raise an exception when initialized with nil model", ^{
-  id<CUIMenuItemViewModel> model = nil;
-  expect(^{
-    CUIMenuItemTextButton __unused *button = [[CUIMenuItemTextButton alloc] initWithModel:model];
-  }).to.raise(NSInvalidArgumentException);
-});
-
 it(@"should set the model property correctly", ^{
   expect(button.model).to.beIdenticalTo(model);
 });
