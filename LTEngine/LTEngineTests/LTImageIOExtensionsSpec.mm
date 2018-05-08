@@ -3,6 +3,8 @@
 
 #import "LTImageIOExtensions.h"
 
+#import <LTKit/NSBundle+Path.h>
+
 #import "LTImage.h"
 
 static NSString * const kUserComment = @"user comment";
@@ -106,21 +108,22 @@ context(@"combining to data", ^{
   });
 
   it(@"should save correct image and metadata when combining tiff image data with metadata", ^{
-    std::vector<uchar> tiffBuffer;
-    cv::imencode(".tiff", imageBGR, tiffBuffer);
-    auto tiffData = [NSData dataWithBytesNoCopy:tiffBuffer.data() length:tiffBuffer.size()
-                                   freeWhenDone:NO];
+    NSBundle *bundle = NSBundle.lt_testBundle;
+    NSString *path = [bundle lt_pathForResource:@"Flower.tiff"];
+
+    auto originalData = [[NSFileManager defaultManager] contentsAtPath:path];
+    auto originalImage = [[LTImage alloc] initWithImage:[UIImage imageWithData:originalData]];
+
     NSError *error;
-    NSData *combinedTiffData = LTCombineImageWithMetadata(tiffData, metadata, &error);
+    NSData *combinedData = LTCombineImageWithMetadata(originalData, metadata, &error);
 
     expect(error).to.beNil();
-    expect(LTVerifyTIFFFormat(combinedTiffData)).to.beTruthy();
-    expect(LTVerifyMetadata(combinedTiffData)).to.beTruthy();
+    expect(LTVerifyTIFFFormat(combinedData)).to.beTruthy();
+    expect(LTVerifyMetadata(combinedData)).to.beTruthy();
 
-    auto compressedImage = [[LTImage alloc]
-                            initWithImage:[UIImage imageWithData:combinedTiffData]];
+    auto combinedImage = [[LTImage alloc] initWithImage:[UIImage imageWithData:combinedData]];
 
-    expect($(compressedImage.mat)).to.beCloseToMatWithin($(imageRGBA), 2);
+    expect($(combinedImage.mat)).to.beCloseToMat($(originalImage.mat));
   });
 });
 
