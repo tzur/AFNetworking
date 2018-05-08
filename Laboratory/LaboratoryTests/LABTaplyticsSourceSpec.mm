@@ -85,6 +85,11 @@ static auto const kAPIKey = @"foo_key";
 
 @end
 
+static NSDictionary *kExistingExperimentsToVariations = @{
+  @"Exp1": [@[@"Exp1Var1", @"Exp1Var2"] lt_set],
+  @"ExistingUsersExp2": [@[@"Exp2Var1", @"Exp2Var2"] lt_set],
+};
+
 static NSDictionary *k4ExperimentsToVariations = @{
   @"Exp1": [@[@"Exp1Var1", @"Exp1Var2"] lt_set],
   @"Exp2": [@[@"Exp2Var1", @"Exp2Var2"] lt_set],
@@ -423,6 +428,104 @@ context(@"properties change", ^{
     expect(source.activeVariants).to.equal([@[exp1var2] lt_set]);
   });
 
+  it(@"should expose new experiments for existing users after stabilization was requested", ^{
+    auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"Exp1Key1": @"foo",
+      @"Exp1Key2": @"bar",
+    };
+    taplyticsProperties.allExperimentsToVariations = k1ExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var2",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    [source stabilizeUserExperienceAssignments];
+
+    taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"__Keys_ExistingUsersExp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"Exp1Key1": @"flip",
+      @"Exp1Key2": @"flop",
+      @"Exp2Key1": @"ding",
+      @"Exp2Key2": @"dong"
+    };
+    taplyticsProperties.allExperimentsToVariations = kExistingExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var1",
+      @"ExistingUsersExp2": @"Exp2Var2",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    auto exp1var2 = [[LABVariant alloc] initWithName:@"Exp1Var2"
+                                         assignments:@{@"Exp1Key1": @"foo", @"Exp1Key2": @"bar"}
+                                          experiment:@"Exp1"];
+    auto exp2var2 = [[LABVariant alloc] initWithName:@"Exp2Var2"
+                                         assignments:@{@"Exp2Key1": @"ding", @"Exp2Key2": @"dong"}
+                                          experiment:@"ExistingUsersExp2"];
+    expect(source.activeVariants).to.equal([@[exp1var2, exp2var2] lt_set]);
+  });
+
+  it(@"should not change experiments for existing users after stabilization was requested", ^{
+    auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"Exp1Key1": @"foo",
+      @"Exp1Key2": @"bar",
+    };
+    taplyticsProperties.allExperimentsToVariations = k1ExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var2",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    [source stabilizeUserExperienceAssignments];
+
+    taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"__Keys_ExistingUsersExp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"Exp1Key1": @"flip",
+      @"Exp1Key2": @"flop",
+      @"Exp2Key1": @"ding",
+      @"Exp2Key2": @"dong"
+    };
+    taplyticsProperties.allExperimentsToVariations = kExistingExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var1",
+      @"ExistingUsersExp2": @"Exp2Var2",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    auto exp1var2 = [[LABVariant alloc] initWithName:@"Exp1Var2"
+                                         assignments:@{@"Exp1Key1": @"foo", @"Exp1Key2": @"bar"}
+                                          experiment:@"Exp1"];
+    auto exp2var2 = [[LABVariant alloc] initWithName:@"Exp2Var2"
+                                         assignments:@{@"Exp2Key1": @"ding", @"Exp2Key2": @"dong"}
+                                          experiment:@"ExistingUsersExp2"];
+    expect(source.activeVariants).to.equal([@[exp1var2, exp2var2] lt_set]);
+
+    taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"__Keys_ExistingUsersExp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"Exp1Key1": @"flip",
+      @"Exp1Key2": @"flop",
+      @"Exp2Key1": @"pong",
+      @"Exp2Key2": @"bong"
+    };
+    taplyticsProperties.allExperimentsToVariations = kExistingExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var1",
+      @"ExistingUsersExp2": @"Exp2Var1",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    expect(source.activeVariants).to.equal([@[exp1var2, exp2var2] lt_set]);
+  });
+
   it(@"should not expose archived experiments even after stabilization was requested", ^{
     auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
     taplyticsProperties.activeDynamicVariables = @{
@@ -503,6 +606,41 @@ context(@"properties change", ^{
                                          assignments:@{@"Exp2Key1": @"baz", @"Exp2Key2": @"flu"}
                                           experiment:@"Exp2"];
     expect(source.activeVariants).to.equal([@[exp1var2, exp2var1] lt_set]);
+  });
+
+  it(@"should update overriden keys for existing users experiments after stabilization", ^{
+    auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_ExistingUsersExp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"Exp2Key1": @"ding",
+      @"Exp2Key2": @"dong"
+    };
+    taplyticsProperties.allExperimentsToVariations = kExistingExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"ExistingUsersExp2": @"Exp2Var2",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    [source stabilizeUserExperienceAssignments];
+
+    taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_ExistingUsersExp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"__Override_ExistingUsersExp2": @"[\"Exp2Key1\"]",
+      @"Exp2Key1": @"pong",
+      @"Exp2Key2": @"bong"
+    };
+    taplyticsProperties.allExperimentsToVariations = kExistingExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"ExistingUsersExp2": @"Exp2Var1",
+    };
+    taplytics.properties = taplyticsProperties;
+
+    auto exp2var2 = [[LABVariant alloc] initWithName:@"Exp2Var2"
+                                         assignments:@{@"Exp2Key1": @"pong", @"Exp2Key2": @"dong"}
+                                          experiment:@"ExistingUsersExp2"];
+
+    expect(source.activeVariants).to.equal([@[exp2var2] lt_set]);
   });
 });
 

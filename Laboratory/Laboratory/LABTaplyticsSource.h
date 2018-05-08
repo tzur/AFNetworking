@@ -38,6 +38,8 @@ extern NSString * const kLABCustomDataExperimentsTokenKey;
 /// "__Override_<Experiment Name>" with a JOSN array value containing the names of the keys you want
 /// to overide. In that case the string values in the array will be treated as keys that should not
 /// be pulled from the storage, but their value should be pulled from the latest value in Taplytics.
+/// 3. New experiments having "ExistingUsers" prefix are exposed, but do not change after the first
+/// time.
 ///
 /// You should use overriden key when certain keys for experiments need to be updated even though
 /// \c stabilizeUserExperienceAssignments has been previously called.

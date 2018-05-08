@@ -57,6 +57,10 @@ static auto const kStoredVariantsKey = @"LABTaplyticsSourceVariants";
 /// Prefix for a Taplytics defined experiment or variable that is used as a remote configuration.
 static auto const kRemoteConfigurationExperimentPrefix = @"__Remote_";
 
+/// Prefix for a Taplytics defined experiment that should be exposed for existing users, overriding
+/// the lock once.
+static auto const kExperimentForExistingUsersPrefix = @"ExistingUsers";
+
 /// Custom data key for experiments token.
 NSString * const kLABCustomDataExperimentsTokenKey = @"ExperimentsToken";
 
@@ -122,8 +126,17 @@ NSString * const kLABCustomDataExperimentsTokenKey = @"ExperimentsToken";
       }];
 
       auto overridenKeys = [self overridenKeysFromTaplyticsProperties:properties];
-      return [self overrideVariantsKeys:overridenKeys inVariants:activeVariants
-                      fromLatestVariant:latestVariants];
+      auto variants = [self overrideVariantsKeys:overridenKeys inVariants:activeVariants
+                               fromLatestVariant:latestVariants];
+      auto allActiveExperiments = [variants lt_map:^NSString *(LABVariant *variant) {
+        return variant.experiment;
+      }];
+      auto newVariantForExistingUsers = [latestVariants lt_filter:^BOOL(LABVariant *variant) {
+        return [variant.experiment hasPrefix:kExperimentForExistingUsersPrefix] &&
+            ![allActiveExperiments containsObject:variant.experiment];
+      }];
+
+      return [variants setByAddingObjectsFromSet:newVariantForExistingUsers];
     }]
     doNext:^(NSSet<LABVariant *> *variants) {
       @strongify(self);
