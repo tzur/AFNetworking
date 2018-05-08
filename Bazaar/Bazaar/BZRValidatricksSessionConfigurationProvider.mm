@@ -80,8 +80,9 @@ static NSString * const kAPIKeyHeaderName = @"x-api-key";
 }
 
 - (FBRHTTPSessionSecurityPolicy *)securityPolicy {
-  return self.pinnedCertificates ?
-      [FBRHTTPSessionSecurityPolicy securityPolicyWithPinnedCertificates:self.pinnedCertificates] :
+  return self.pinnedCertificates.count ?
+      [FBRHTTPSessionSecurityPolicy
+       securityPolicyWithPinnedPublicKeysFromCertificates:self.pinnedCertificates] :
       [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
 }
 
