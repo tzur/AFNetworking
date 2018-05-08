@@ -5,7 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import "PTNFileSystemTestUtils.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNAudiovisualAsset)
 
@@ -16,7 +16,7 @@ __block PTNAudiovisualAsset *otherAudioVisualAsset;
 
 beforeEach(^{
   otherAudioVisualAsset = OCMClassMock([AVAsset class]);
-  underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
+  underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoURL()];
   audioVisualAsset1 = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   audioVisualAsset2 = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
 });

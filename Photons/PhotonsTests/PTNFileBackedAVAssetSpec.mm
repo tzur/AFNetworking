@@ -9,6 +9,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSErrorCodes+Photons.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNFileBackedAVAsset)
 
@@ -19,10 +20,9 @@ __block NSData *data;
 
 beforeEach(^{
   fileManager = [NSFileManager defaultManager];
-  auto *pathString = [NSBundle.lt_testBundle pathForResource:@"OneSecondVideo16x16"
-                                                          ofType:@"mp4"];
-  path = [LTPath pathWithPath:pathString];
-  data = [NSData dataWithContentsOfFile:pathString];
+  auto url = PTNOneSecondVideoURL();
+  path = [LTPath pathWithFileURL:url];
+  data = [NSData dataWithContentsOfURL:url];
   asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
 });
 

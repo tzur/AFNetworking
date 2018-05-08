@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitTestUtils.h"
+#import "PTNTestResources.h"
 
 SpecBegin(PTNPhotoKitImageAsset)
 
@@ -60,8 +61,7 @@ context(@"metadata fetching", ^{
 
   context(@"image media type", ^{
     it(@"should fetch metadata", ^{
-      NSURL *url = [NSBundle.lt_testBundle URLForResource:@"PTNImageMetadataImage"
-                                            withExtension:@"jpg"];
+      NSURL *url = PTNImageWithMetadataURL();
       PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(url);
       photoKitAsset = PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
       asset = [[PTNPhotoKitImageAsset alloc] initWithImage:image asset:photoKitAsset];
