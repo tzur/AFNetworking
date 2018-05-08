@@ -179,8 +179,10 @@ static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
     }
 
     [self.delegate subscriptionInfoDidChanged:subscriptionInfo];
-    [self.storage setObject:[NSKeyedArchiver archivedDataWithRootObject:subscriptionInfo]
-                     forKey:kINTSubscriptionInfoKey];
+
+    auto _Nullable dataToStore = subscriptionInfo ?
+        [NSKeyedArchiver archivedDataWithRootObject:subscriptionInfo] : nil;
+    [self.storage setObject:dataToStore forKey:kINTSubscriptionInfoKey];
   }
 }
 
