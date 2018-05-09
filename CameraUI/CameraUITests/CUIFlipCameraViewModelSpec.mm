@@ -24,14 +24,6 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil flip device", ^{
-    CAMDeviceStub *nilDevice = nil;
-    expect(^{
-      CUIFlipCameraViewModel * __unused flipViewModel =
-          [[CUIFlipCameraViewModel alloc] initWithFlipDevice:nilDevice title:title iconURL:iconURL];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should set properties", ^{
     expect(flipViewModel.title).to.equal(title);
     expect(flipViewModel.iconURL).to.equal(iconURL);

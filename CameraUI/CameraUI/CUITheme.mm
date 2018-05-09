@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUITheme
 
-- (instancetype)init {
+- (nullable instancetype)init {
   /// Prevents JSObjection from initializing instance with default values if it's not bound already.
   return nil;
 }
