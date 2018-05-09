@@ -396,11 +396,11 @@ DVNClosedRangeClassProperty(CGFloat, allowedScaleJitter, AllowedScaleJitter, 0,
   _scaleJitterRange = *scaleJitterRange.clampedTo([[self class] allowedScaleJitterRange]);
 }
 
-DVNClosedRangeClassProperty(CGFloat, allowedTaperingLength, AllowedTaperingLength, 0,
-                            std::numeric_limits<CGFloat>::max());
+DVNClosedRangeClassProperty(float, allowedTaperingLength, AllowedTaperingLength, 0,
+                            std::numeric_limits<float>::max());
 
 - (void)setTaperingLengths:(LTVector2)taperingLengths {
-  lt::Interval<CGFloat> range = [[self class] allowedTaperingLengthRange];
+  lt::Interval<float> range = [[self class] allowedTaperingLengthRange];
   _taperingLengths = std::clamp(taperingLengths, *range.min(), *range.max());
 }
 
