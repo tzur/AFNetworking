@@ -290,7 +290,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 @property (readonly, nonatomic) LTVector2 taperingLengths;
 
 /// Allowed range of the x- and y-coordinate of \c taperingLengths.
-@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingLengthRange;
+@property (class, readonly, nonatomic) lt::Interval<float> allowedTaperingLengthRange;
 
 /// Multiplicative factor, in range <tt>[0, 1]</tt>, used for determining the effect of the tapering
 /// on the first (/last) brush tip of the entire brush stroke geometry. A value of \c 0 results in

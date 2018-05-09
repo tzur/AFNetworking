@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTControlPointModel.h>
 #import <LTEngine/LTParameterizedObjectType.h>
+#import <LTEngine/LTSplineControlPoint.h>
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "DVNBrushRenderInfoProvider.h"
@@ -223,8 +224,13 @@ context(@"retrieval of data from DVNBrushRenderInfoProvider", ^{
 });
 
 it(@"should cause the generation ID of the canvas to update when processing models", ^{
+  NSArray<LTSplineControlPoint *> *controlPoints = @[
+    [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointZero],
+    [[LTSplineControlPoint alloc] initWithTimestamp:1 location:CGPointMake(0, 1)]
+  ];
   LTControlPointModel *controlPointModel =
-      [[LTControlPointModel alloc] initWithType:$(LTParameterizedObjectTypeLinear)];
+      [[LTControlPointModel alloc] initWithType:$(LTParameterizedObjectTypeLinear)
+                                  controlPoints:controlPoints];
   DVNSplineRenderModel *model =
       [[DVNSplineRenderModel alloc] initWithControlPointModel:controlPointModel
                                                 configuration:DVNTestPipelineConfiguration()

@@ -512,6 +512,7 @@ context(@"JSON serialization strings", ^{
 });
 
 context(@"allowed ranges", ^{
+  static const CGFloat kFloatMax = std::numeric_limits<float>::max();
   static const CGFloat kCGFloatMax = std::numeric_limits<CGFloat>::max();
   static const NSUInteger kNSUIntegerMax = std::numeric_limits<NSUInteger>::max();
 
@@ -534,7 +535,7 @@ context(@"allowed ranges", ^{
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedScaleJitterRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
         .to.beTruthy();
-    expect([DVNBrushModelV1 allowedTaperingLengthRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
+    expect([DVNBrushModelV1 allowedTaperingLengthRange] == lt::Interval<float>({0, kFloatMax}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedMinimumTaperingScaleFactorRange] ==
            lt::Interval<CGFloat>::oc({0, 1})).to.beTruthy();
