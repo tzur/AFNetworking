@@ -11,12 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for an image in an \c NSData format, enabling fetching of image data and metadata.
 @protocol PTNImageDataAsset <PTNDataAsset, PTNImageAsset>
-
-/// Fetches the image metadata of image backed by this asset. The returned signal sends a single
-/// \c PTNImageMetadata object on an arbitrary thread, and completes. If the image metadata cannot
-/// be fetched the signal errs instead.
-- (RACSignal<PTNImageMetadata *> *)fetchImageMetadata;
-
 @end
 
 /// Default implementation of \c PTNImageDataAsset.
