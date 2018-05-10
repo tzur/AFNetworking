@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   case Progress(Double)
 /// }
 /// @endcode
-@interface PTNProgress<ResultType : id<NSObject>> : NSObject
+@interface PTNProgress<__covariant ResultType : id<NSObject>> : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
