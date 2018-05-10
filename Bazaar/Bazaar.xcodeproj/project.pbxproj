@@ -16,6 +16,7 @@
 		6347C6E4201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6347C6E3201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm */; };
 		635BA7EE1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 635BA7ED1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm */; };
 		635BAC3520025EB20012E6FA /* BZRProduct+StoreKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 635BAC3420025EB20012E6FA /* BZRProduct+StoreKitSpec.mm */; };
+		63E500452064094700B5FBA0 /* ValidatricksHKServer.cer in Sources */ = {isa = PBXBuildFile; fileRef = 63E5000B2064092300B5FBA0 /* ValidatricksHKServer.cer */; };
 		63F08B2E1FEAA72A0060B597 /* BZRBillingPeriod.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F08B2C1FEAA72A0060B597 /* BZRBillingPeriod.h */; };
 		63F08B2F1FEAA72A0060B597 /* BZRBillingPeriod.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63F08B2D1FEAA72A0060B597 /* BZRBillingPeriod.mm */; };
 		63F08B321FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F08B301FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h */; };
@@ -781,6 +782,7 @@
 		6347C6E3201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRMultiAppSubscriptionClassifierSpec.mm; sourceTree = "<group>"; };
 		635BA7ED1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRSubscriptionIntroductoryDiscountSpec.mm; sourceTree = "<group>"; };
 		635BAC3420025EB20012E6FA /* BZRProduct+StoreKitSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProduct+StoreKitSpec.mm"; sourceTree = "<group>"; };
+		63E5000B2064092300B5FBA0 /* ValidatricksHKServer.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ValidatricksHKServer.cer; sourceTree = "<group>"; };
 		63F08B2C1FEAA72A0060B597 /* BZRBillingPeriod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRBillingPeriod.h; sourceTree = "<group>"; };
 		63F08B2D1FEAA72A0060B597 /* BZRBillingPeriod.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRBillingPeriod.mm; sourceTree = "<group>"; };
 		63F08B301FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+StoreKit.h"; sourceTree = "<group>"; };
@@ -1206,6 +1208,7 @@
 				651A26191D392B79001D418B /* BZRValidatricksReceiptValidator.mm */,
 				6527D6001D39411600A3AB29 /* BZRValidatricksSessionConfigurationProvider.h */,
 				6527D6011D39411600A3AB29 /* BZRValidatricksSessionConfigurationProvider.mm */,
+				63E5000B2064092300B5FBA0 /* ValidatricksHKServer.cer */,
 				65C6A2E41D7DAA9700F13649 /* ValidatricksServer.cer */,
 			);
 			name = Validatricks;
@@ -2835,6 +2838,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C6A2E51D7DAB4500F13649 /* ValidatricksServer.cer in Sources */,
+				63E500452064094700B5FBA0 /* ValidatricksHKServer.cer in Sources */,
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
 				B9502A7D1D6DCDC500E633BE /* BZRCachedContentFetcher.mm in Sources */,
 				B97A87021D461067004390FC /* BZRLocalProductsProvider.mm in Sources */,

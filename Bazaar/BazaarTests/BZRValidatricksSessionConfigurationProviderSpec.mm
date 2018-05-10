@@ -69,8 +69,9 @@ it(@"should configure the session with certificate pinning if certificates are p
   FBRHTTPSessionConfiguration *sessionConfiguration =
       [configurationProvider HTTPSessionConfiguration];
 
-  expect(sessionConfiguration.securityPolicy).to
-      .equal([FBRHTTPSessionSecurityPolicy securityPolicyWithPinnedCertificates:certificates]);
+  expect(sessionConfiguration.securityPolicy).to.equal(
+      [FBRHTTPSessionSecurityPolicy securityPolicyWithPinnedPublicKeysFromCertificates:certificates]
+  );
 });
 
 SpecEnd

@@ -8,6 +8,7 @@
 #import <Fiber/FBRHTTPSessionRequestMarshalling.h>
 #import <Fiber/FBRHTTPSessionSecurityPolicy.h>
 
+#import "BZRValidatricksHKServerCert.h"
 #import "BZRValidatricksServerCert.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,7 +36,10 @@ static NSString * const kAPIKeyHeaderName = @"x-api-key";
 }
 
 + (NSSet<NSData *> *)validatricksServerCertificates {
-  return [NSSet setWithObject:BZRValidatricksServerCertificateData()];
+  return [NSSet setWithObjects:
+          BZRValidatricksServerCertificateData(),
+          BZRValidatricksHKServerCertificateData(),
+          nil];
 }
 
 - (instancetype)init {
@@ -76,8 +80,9 @@ static NSString * const kAPIKeyHeaderName = @"x-api-key";
 }
 
 - (FBRHTTPSessionSecurityPolicy *)securityPolicy {
-  return self.pinnedCertificates ?
-      [FBRHTTPSessionSecurityPolicy securityPolicyWithPinnedCertificates:self.pinnedCertificates] :
+  return self.pinnedCertificates.count ?
+      [FBRHTTPSessionSecurityPolicy
+       securityPolicyWithPinnedPublicKeysFromCertificates:self.pinnedCertificates] :
       [FBRHTTPSessionSecurityPolicy standardSecurityPolicy];
 }
 
