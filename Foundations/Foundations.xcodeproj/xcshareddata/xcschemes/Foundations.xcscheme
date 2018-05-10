@@ -188,6 +188,20 @@
                ReferencedContainer = "container:../Milkshake/Milkshake.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1964BF5720A31E9900FF28F5"
+               BuildableName = "WarehouseTests.xctest"
+               BlueprintName = "WarehouseTests"
+               ReferencedContainer = "container:../Warehouse/Warehouse.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -374,6 +388,16 @@
                BuildableName = "HelpUITests.xctest"
                BlueprintName = "HelpUITests"
                ReferencedContainer = "container:../HelpUI/HelpUI.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1964BF5720A31E9900FF28F5"
+               BuildableName = "WarehouseTests.xctest"
+               BlueprintName = "WarehouseTests"
+               ReferencedContainer = "container:../Warehouse/Warehouse.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
