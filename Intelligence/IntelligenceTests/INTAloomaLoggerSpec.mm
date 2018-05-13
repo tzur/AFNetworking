@@ -4,6 +4,7 @@
 #import "INTAloomaLogger.h"
 
 #import <Alooma-iOS/Alooma.h>
+#import <LTKit/NSArray+NSSet.h>
 
 #import "NSUUID+Zero.h"
 
@@ -14,7 +15,8 @@ __block INTAloomaLogger *logger;
 
 beforeEach(^{
   alooma = OCMClassMock(Alooma.class);
-  logger = [[INTAloomaLogger alloc] initWithAlooma:alooma];
+  logger = [[INTAloomaLogger alloc] initWithAlooma:alooma
+                                 whitelistedEvents:[@[@"foo", @"bar"] lt_set]];
 });
 
 context(@"serialization error event", ^{
@@ -49,6 +51,31 @@ it(@"should replace non json serializable events with error event", ^{
   [logger logEvent:event];
 
   OCMVerify([alooma trackCustomEvent:INTAloomaJSONSerializationErrorEvent(event)]);
+});
+
+it(@"should resume supporting non mandatory events", ^{
+  auto nonWhitelistedEvents1 = @{@"event": @"baz"};
+  OCMReject([alooma trackCustomEvent:nonWhitelistedEvents1]);
+  logger.shouldWhitelistEvents = YES;
+
+  [logger logEvent:@{@"event": @"foo"}];
+  OCMVerify([alooma trackCustomEvent:@{@"event": @"foo"}]);
+  [logger logEvent:@{@"event": @"bar"}];
+  OCMVerify([alooma trackCustomEvent:@{@"event": @"bar"}]);
+  [logger logEvent:nonWhitelistedEvents1];
+
+  logger.shouldWhitelistEvents = NO;
+  [logger logEvent:@{@"event": @"foo"}];
+  OCMVerify([alooma trackCustomEvent:@{@"event": @"foo"}]);
+  [logger logEvent:@{@"event": @"bar"}];
+  OCMVerify([alooma trackCustomEvent:@{@"event": @"bar"}]);
+  auto nonWhitelistedEvents2 = @{@"event": @"baz", @"bob": @"flop"};
+  [logger logEvent:nonWhitelistedEvents2];
+  OCMVerify([alooma trackCustomEvent:nonWhitelistedEvents2]);
+});
+
+it(@"should have default NO value for shouldWhitelistEvents", ^{
+  expect(logger.shouldWhitelistEvents).to.beFalsy();
 });
 
 SpecEnd
