@@ -227,6 +227,8 @@
 		E47248D61FE7A418008E57EE /* ResizeInput.png in Resources */ = {isa = PBXBuildFile; fileRef = E47248D51FE7A418008E57EE /* ResizeInput.png */; };
 		E47546751FD96E3C006E66C6 /* PNKConvolutionUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E47546741FD96E3C006E66C6 /* PNKConvolutionUtils.mm */; };
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
+		E480A485209856CF00423308 /* PNKImageMotionStaticLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */; };
+		E480A488209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */; };
 		E483D41720517CF5000D4809 /* instance_normalization_relu_beta_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = E483D40B20517CF3000D4809 /* instance_normalization_relu_beta_32.weights */; };
 		E483D41820517CF5000D4809 /* instance_normalization_basic_beta_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = E483D40C20517CF4000D4809 /* instance_normalization_basic_beta_32.weights */; };
 		E483D41920517CF5000D4809 /* instance_normalization_basic_gamma_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = E483D40D20517CF4000D4809 /* instance_normalization_basic_gamma_32.weights */; };
@@ -936,6 +938,10 @@
 		E47546731FD96E3C006E66C6 /* PNKConvolutionUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKConvolutionUtils.h; sourceTree = "<group>"; };
 		E47546741FD96E3C006E66C6 /* PNKConvolutionUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionUtils.mm; sourceTree = "<group>"; };
 		E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+FactorySpec.mm"; sourceTree = "<group>"; };
+		E480A482209856CE00423308 /* PNKImageMotionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayer.h; sourceTree = "<group>"; };
+		E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionStaticLayer.h; sourceTree = "<group>"; };
+		E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionStaticLayer.mm; sourceTree = "<group>"; };
+		E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionStaticLayerSpec.mm; sourceTree = "<group>"; };
 		E483D40B20517CF3000D4809 /* instance_normalization_relu_beta_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = instance_normalization_relu_beta_32.weights; path = Resources/instance_normalization_relu_beta_32.weights; sourceTree = "<group>"; };
 		E483D40C20517CF4000D4809 /* instance_normalization_basic_beta_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = instance_normalization_basic_beta_32.weights; path = Resources/instance_normalization_basic_beta_32.weights; sourceTree = "<group>"; };
 		E483D40D20517CF4000D4809 /* instance_normalization_basic_gamma_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = instance_normalization_basic_gamma_32.weights; path = Resources/instance_normalization_basic_gamma_32.weights; sourceTree = "<group>"; };
@@ -1568,6 +1574,7 @@
 			isa = PBXGroup;
 			children = (
 				285D3AFF1FD6ACC6006A55AF /* Color Transfer */,
+				E480A460209856AD00423308 /* Image Motion */,
 				E45CA9DE201F275100A0DCCE /* Segmentation */,
 				06C2F395202B4DE9004B7F86 /* StyleTransfer */,
 			);
@@ -1578,6 +1585,7 @@
 			isa = PBXGroup;
 			children = (
 				285D3B481FD6B551006A55AF /* ColorTransfer */,
+				E480A486209856DE00423308 /* Image Motion */,
 				061C66381FD7E05600F1BF1B /* Segmentation */,
 				06C2F3B7202B4E0D004B7F86 /* StyleTransfer */,
 			);
@@ -1887,6 +1895,24 @@
 				E40F42A92022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm */,
 			);
 			name = Segmentation;
+			sourceTree = "<group>";
+		};
+		E480A460209856AD00423308 /* Image Motion */ = {
+			isa = PBXGroup;
+			children = (
+				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
+				E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */,
+				E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */,
+			);
+			name = "Image Motion";
+			sourceTree = "<group>";
+		};
+		E480A486209856DE00423308 /* Image Motion */ = {
+			isa = PBXGroup;
+			children = (
+				E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */,
+			);
+			name = "Image Motion";
 			sourceTree = "<group>";
 		};
 		E4BAEE911FE7C446009F594D /* Neural Networks */ = {
@@ -2521,6 +2547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E480A488209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm in Sources */,
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
 				E461C82020173DD800261FCD /* PNKCropSpec.mm in Sources */,
@@ -2588,6 +2615,7 @@
 				E4B6AEE7200F30FA0086D55E /* PNKActivationUtils.mm in Sources */,
 				06C2F3BC202B4E32004B7F86 /* PNKStyleTransferProcessor.mm in Sources */,
 				06D36EE71F6ACA6D00090584 /* FeatureTypes.proto in Sources */,
+				E480A485209856CF00423308 /* PNKImageMotionStaticLayer.mm in Sources */,
 				E41D72681FFE817A00A2B26D /* PNKActivationCustomInternalLayer.mm in Sources */,
 				06D36EE81F6ACA6D00090584 /* Identity.proto in Sources */,
 				06D36EE91F6ACA6D00090584 /* Model.proto in Sources */,
