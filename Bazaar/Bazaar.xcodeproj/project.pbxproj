@@ -89,7 +89,6 @@
 		65D90B971D5BB56D00BEB74C /* BZRPaymentQueueAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65D90B951D5BB56D00BEB74C /* BZRPaymentQueueAdapter.mm */; };
 		65D90BC61D5BB6E500BEB74C /* BZRPaymentQueueAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65D90BC51D5BB6E500BEB74C /* BZRPaymentQueueAdapterSpec.mm */; };
 		65D91BA51D399EE6000D6A3B /* BZRValidatricksSessionConfigurationProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65D91BA41D399EE6000D6A3B /* BZRValidatricksSessionConfigurationProviderSpec.mm */; };
-		65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D91BB31D39A482000D6A3B /* AFNetworking.framework */; };
 		65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 658355431D2F9D6C00B88A70 /* libFiber.a */; };
 		65DA71C01D4A6ACC00B4FA45 /* NSFileManager+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65DA71BF1D4A6ACC00B4FA45 /* NSFileManager+BazaarSpec.mm */; };
 		65E8F96C1D57841A00E0B936 /* SKReceiptRefreshRequest+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F96B1D57841A00E0B936 /* SKReceiptRefreshRequest+RACSignalSupportSpec.mm */; };
@@ -124,6 +123,12 @@
 		8B10C76F1F3EF6D200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C76C1F3EF6C300F76142 /* libLLReactiveMatchers.a */; };
 		8B54E9E01D89926800104102 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		8B6867571F3B275100F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B68640E1F33477D00F0EF4C /* ReactiveObjC.framework */; };
+		9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4FE02520976B5F00FC64E1 /* MessageUI.framework */; };
+		9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31A208F5FA800080BEA /* libFBTweak.a */; };
+		9FCBD31B208F5FD500080BEA /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6BFA202085F197002800F9 /* libMilkshake.a */; };
+		9FCBD31F208F615900080BEA /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31C208F608500080BEA /* AdSupport.framework */; };
+		9FE289092096FEBB00D33E43 /* BZRTweaksCollectionsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C477D825D5AA2474FB758A3C /* BZRTweaksCollectionsProviderSpec.mm */; };
+		9FE2896C2097055600D33E43 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D91BB31D39A482000D6A3B /* AFNetworking.framework */; };
 		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
 		9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */; };
 		9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */; };
@@ -292,6 +297,8 @@
 		B9FD09D31D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD09D11D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm */; };
 		B9FD0A021D645DBF00523BB4 /* BZRTimeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */; };
 		B9FF3C6E1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FF3C6D1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm */; };
+		C477DC2572446D4A6A413EF1 /* BZRSubscriptionCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C477D78D56A1BA6AB2074265 /* BZRSubscriptionCollectionsProvider.mm */; };
+		C477DD938EAFFC3B8C66D9A2 /* BZRSubscriptionCollectionsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = C477D8F9516E862882129D29 /* BZRSubscriptionCollectionsProvider.h */; };
 		CD28822D2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD28822B2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.mm */; };
 		CD28822E2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = CD28822C2058341C00E8B8D8 /* BZRAppStoreLocaleProvider.h */; };
 		CD28832A205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD288329205942B200E8B8D8 /* BZRAppStoreLocaleProviderSpec.mm */; };
@@ -735,6 +742,34 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		9F6BFA1F2085F197002800F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Milkshake;
+		};
+		9F6BFA212085F197002800F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = MilkshakeTests;
+		};
+		9FCBD2C0208F52A000080BEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37952C261F63B50D00DD6677;
+			remoteInfo = "ZipArchive-tvos";
+		};
+		9FCBD2C2208F52A000080BEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37952C5E1F63BB7100DD6677;
+			remoteInfo = "ZipArchive-watchos";
+		};
 		B9EF54E61FCD8E0800083414 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
@@ -901,6 +936,10 @@
 		88A67E101FD5C176005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B10C7631F3EF6C300F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863FF1F33477D00F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
+		9F4FE02520976B5F00FC64E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
+		9FCBD31A208F5FA800080BEA /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FCBD31C208F608500080BEA /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
 		9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManager.mm; sourceTree = "<group>"; };
 		9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManagerSpec.mm; sourceTree = "<group>"; };
@@ -1129,11 +1168,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
+				9FE2896C2097055600D33E43 /* AFNetworking.framework in Frameworks */,
+				9FCBD31F208F615900080BEA /* AdSupport.framework in Frameworks */,
 				65F8A5E01F93418D007F80F6 /* CloudKit.framework in Frameworks */,
 				8861FCB21E5A273600CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCB01E5A272500CA1436 /* GLKit.framework in Frameworks */,
 				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
+				9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */,
 				88A67E441FD5C177005BA17A /* MobileCoreServices.framework in Frameworks */,
 				8861FCB41E5A274500CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6867571F3B275100F0EF4C /* ReactiveObjC.framework in Frameworks */,
@@ -1143,9 +1184,11 @@
 				65D189381D4E46B6005987F9 /* ZipArchive.framework in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
+				9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */,
 				65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */,
 				8B10C76F1F3EF6D200F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
+				9FCBD31B208F5FD500080BEA /* libMilkshake.a in Frameworks */,
 				6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */,
 				6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */,
 				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
@@ -1247,6 +1290,8 @@
 			children = (
 				6526DF061D4108AA0034DE01 /* ZipArchive.framework */,
 				6526DF081D4108AA0034DE01 /* ZipArchive.framework */,
+				9FCBD2C1208F52A000080BEA /* ZipArchive.framework */,
+				9FCBD2C3208F52A000080BEA /* ZipArchive.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1377,6 +1422,7 @@
 				8B10C7631F3EF6C300F76142 /* LLReactiveMatchers.xcodeproj */,
 				6580F0751CEB319F007EABDD /* LTKit.xcodeproj */,
 				6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */,
+				9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */,
 				654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */,
 				8B6863FF1F33477D00F0EF4C /* ReactiveObjC.xcodeproj */,
 				654B1F391CE2228C001F36FA /* Specta.xcodeproj */,
@@ -1803,14 +1849,17 @@
 		8861FC7A1E5A269B00CA1436 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9FCBD31C208F608500080BEA /* AdSupport.framework */,
 				65F8A5DF1F93418D007F80F6 /* CloudKit.framework */,
 				8861FCB11E5A273600CA1436 /* CoreGraphics.framework */,
 				8861FCAF1E5A272400CA1436 /* GLKit.framework */,
+				9F4FE02520976B5F00FC64E1 /* MessageUI.framework */,
 				88A67E101FD5C176005BA17A /* MobileCoreServices.framework */,
 				8861FCB31E5A274500CA1436 /* QuartzCore.framework */,
 				8861FC7B1E5A269B00CA1436 /* Security.framework */,
 				8861FCAC1E5A26E000CA1436 /* StoreKit.framework */,
 				8861FCAA1E5A26B600CA1436 /* UIKit.framework */,
+				9FCBD31A208F5FA800080BEA /* libFBTweak.a */,
 				CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */,
 			);
 			name = Frameworks;
@@ -1835,6 +1884,15 @@
 				8B6864121F33477D00F0EF4C /* ReactiveObjC.framework */,
 				8B6864141F33477D00F0EF4C /* ReactiveObjC.framework */,
 				8B6864161F33477D00F0EF4C /* ReactiveObjCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9F6BFA1B2085F196002800F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F6BFA202085F197002800F9 /* libMilkshake.a */,
+				9F6BFA222085F197002800F9 /* MilkshakeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2304,6 +2362,10 @@
 					ProjectRef = 6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */;
 				},
 				{
+					ProductGroup = 9F6BFA1B2085F196002800F9 /* Products */;
+					ProjectRef = 9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */;
+				},
+				{
 					ProductGroup = 654B1F4F1CE22299001F36FA /* Products */;
 					ProjectRef = 654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */;
 				},
@@ -2694,6 +2756,34 @@
 			remoteRef = 8B6864151F33477D00F0EF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9F6BFA202085F197002800F9 /* libMilkshake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMilkshake.a;
+			remoteRef = 9F6BFA1F2085F197002800F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9F6BFA222085F197002800F9 /* MilkshakeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MilkshakeTests.xctest;
+			remoteRef = 9F6BFA212085F197002800F9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9FCBD2C1208F52A000080BEA /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 9FCBD2C0208F52A000080BEA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9FCBD2C3208F52A000080BEA /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 9FCBD2C2208F52A000080BEA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B9EF54E71FCD8E0800083414 /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3073,11 +3163,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_TESTABILITY = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../Fiber",
-					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../Fiber",
+					"$(SRCROOT)/../third_party/UICKeyChainStore/Lib",
 					"$(SRCROOT)/../third_party/Mantle",
+					"$(SRCROOT)/../Milkshake",
+					"$(SRCROOT)/../third_party/Tweaks",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -3091,11 +3183,14 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../third_party/libextobjc",
 					"$(inherited)",
 					"$(SRCROOT)/../Fiber",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
+					"$(SRCROOT)/../Milkshake",
+					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/UICKeyChainStore/Lib",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
