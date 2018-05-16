@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */; };
 		1964BF5D20A31E9900FF28F5 /* libWarehouse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1533020A314E100F0F438 /* libWarehouse.a */; };
 		1964BFB220A3258100FF28F5 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1964BF9520A3244C00FF28F5 /* libOCMock.a */; };
 		1964BFB320A3259000FF28F5 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1964BFB020A3245C00FF28F5 /* libSpecta.a */; };
@@ -250,6 +251,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "WHSProjectSnapshot+Tests.mm"; sourceTree = "<group>"; };
+		1910C69420BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WHSProjectSnapshot+Tests.h"; sourceTree = "<group>"; };
 		1964BF5320A3179A00FF28F5 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		1964BF5820A31E9900FF28F5 /* WarehouseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WarehouseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1964BF5C20A31E9900FF28F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -310,12 +313,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		192A2B9120BAE03A0045422C /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1910C69420BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.h */,
+				1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */,
+			);
+			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		192A2BAD20BAE0740045422C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
 		1964BF5920A31E9900FF28F5 /* WarehouseTests */ = {
 			isa = PBXGroup;
 			children = (
 				1964BF6520A322BF00FF28F5 /* SupportingFiles */,
-				1964BF5C20A31E9900FF28F5 /* Info.plist */,
-				198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */,
+				192A2B9120BAE03A0045422C /* Test Utils */,
+				192A2BAD20BAE0740045422C /* Tests */,
 			);
 			path = WarehouseTests;
 			sourceTree = "<group>";
@@ -331,6 +351,7 @@
 		1964BF6520A322BF00FF28F5 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				1964BF5C20A31E9900FF28F5 /* Info.plist */,
 				1964BF6620A322D000FF28F5 /* WarehouseTests-Prefix.pch */,
 			);
 			name = SupportingFiles;
@@ -811,6 +832,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */,
 				198CE4A820A327DA000E70BF /* WHSProjectSnapshotSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -887,6 +909,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 			};
 			name = Debug;
 		};
@@ -902,6 +928,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 			};
 			name = Release;
 		};
