@@ -59,6 +59,9 @@
       location = "group:../HelpUI/HelpUI.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../Warehouse/Warehouse.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Wireframes/Wireframes.xcodeproj">
    </FileRef>
 </Workspace>

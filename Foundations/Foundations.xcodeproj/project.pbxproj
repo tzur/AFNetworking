@@ -13,6 +13,8 @@
 			buildPhases = (
 			);
 			dependencies = (
+				198CE84620A41CF0000E70BF /* PBXTargetDependency */,
+				198CE82620A41CCD000E70BF /* PBXTargetDependency */,
 				190965C81FBC39E200AD5B91 /* PBXTargetDependency */,
 				B4D68AFB1FB1ACF7009A5300 /* PBXTargetDependency */,
 				0627764C1ED586E50006024E /* PBXTargetDependency */,
@@ -86,12 +88,40 @@
 			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		198CE82520A41CCD000E70BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 19E1532F20A314E100F0F438;
+			remoteInfo = Warehouse;
+		};
+		198CE84220A41CCD000E70BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1964BF5820A31E9900FF28F5;
+			remoteInfo = WarehouseTests;
+		};
+		198CE84520A41CF0000E70BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 19E95BDC1FF9256900078026;
+			remoteInfo = HelpUI;
+		};
 		19C43CD21FF930B6007BB06E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 19E95BDD1FF9256900078026;
 			remoteInfo = HelpUI;
+		};
+		19E1535920A314EF00F0F438 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19E1533020A314E100F0F438;
+			remoteInfo = Warehouse;
 		};
 		65BAF1031D47F99C009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -463,6 +493,7 @@
 		062776391ED586D50006024E /* Pinky.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinky.xcodeproj; path = ../Pinky/Pinky.xcodeproj; sourceTree = "<group>"; };
 		1984CF221FF3A8CE00873DA0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HelpUI.xcodeproj; path = ../HelpUI/HelpUI.xcodeproj; sourceTree = "<group>"; };
+		19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Warehouse.xcodeproj; path = ../Warehouse/Warehouse.xcodeproj; sourceTree = "<group>"; };
 		65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
 		65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
 		65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUI.xcodeproj; path = ../CameraUI/CameraUI.xcodeproj; sourceTree = "<group>"; };
@@ -510,6 +541,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		19E1533D20A314E100F0F438 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19E1535A20A314EF00F0F438 /* libWarehouse.a */,
+				198CE84320A41CCD000E70BF /* WarehouseTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		652397371D47F69F00222BCB = {
 			isa = PBXGroup;
 			children = (
@@ -538,6 +578,7 @@
 				CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */,
 				1984CF221FF3A8CE00873DA0 /* TestHost.xcodeproj */,
 				B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */,
+				19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */,
 				65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */,
 			);
 			name = Projects;
@@ -789,6 +830,10 @@
 					ProjectRef = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
 				},
 				{
+					ProductGroup = 19E1533D20A314E100F0F438 /* Products */;
+					ProjectRef = 19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */;
+				},
+				{
 					ProductGroup = 65BAF1531D47F9EA009BBB6F /* Products */;
 					ProjectRef = 65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */;
 				},
@@ -829,11 +874,25 @@
 			remoteRef = 1984CF281FF3A8D000873DA0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		198CE84320A41CCD000E70BF /* WarehouseTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WarehouseTests.xctest;
+			remoteRef = 198CE84220A41CCD000E70BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		19C43CD31FF930B6007BB06E /* libHelpUI.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libHelpUI.a;
 			remoteRef = 19C43CD21FF930B6007BB06E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19E1535A20A314EF00F0F438 /* libWarehouse.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libWarehouse.a;
+			remoteRef = 19E1535920A314EF00F0F438 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BAF1041D47F99C009BBB6F /* libBazaar.a */ = {
@@ -1119,6 +1178,16 @@
 			isa = PBXTargetDependency;
 			name = LTKitTestUtils;
 			targetProxy = 190965C71FBC39E200AD5B91 /* PBXContainerItemProxy */;
+		};
+		198CE82620A41CCD000E70BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Warehouse;
+			targetProxy = 198CE82520A41CCD000E70BF /* PBXContainerItemProxy */;
+		};
+		198CE84620A41CF0000E70BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HelpUI;
+			targetProxy = 198CE84520A41CF0000E70BF /* PBXContainerItemProxy */;
 		};
 		65BAF4281D48B1C5009BBB6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
