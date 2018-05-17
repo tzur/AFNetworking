@@ -5,6 +5,7 @@
 
 #import <LTEngine/NSValue+LTInterval.h>
 #import <LTEngine/NSValueTransformer+LTEngine.h>
+#import <LTKit/NSArray+NSSet.h>
 
 #import "DVNPropertyMacros.h"
 
@@ -72,6 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
   [model setValue:@(model.scaleRange.clamp(scale).value_or(model.scaleRange.inf()))
            forKey:@keypath(model, scale)];
   return model;
+}
+
+/// Must be overridden by subclasses.
+- (BOOL)isValidTextureMapping:(NSDictionary<NSString *, LTTexture *> *)textureMapping {
+  return [textureMapping.allKeys.lt_set isSubsetOfSet:[[self class] imageURLPropertyKeys].lt_set];
 }
 
 /// Must be overridden by subclasses.

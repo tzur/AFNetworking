@@ -3,6 +3,8 @@
 
 #import "DVNBrushModel.h"
 
+#import <LTEngine/LTTexture.h>
+
 #import "DVNBrushModelVersion.h"
 
 SpecBegin(DVNBrushModel)
@@ -77,6 +79,23 @@ context(@"copy constructors", ^{
       expect(scaledModel.scale).to.equal(7);
       expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
     });
+  });
+});
+
+context(@"texture mapping validation", ^{
+  __block DVNBrushModel *model;
+
+  beforeEach(^{
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModel class] fromJSONDictionary:kDictionary
+                                   error:nil];
+  });
+
+  it(@"should claim that texture mapping is valid if keys are subset of image URL property keys", ^{
+    expect([model isValidTextureMapping:@{}]).to.beTruthy();
+  });
+
+  it(@"should claim that texture mapping is invalid if keys are not subset of property keys", ^{
+    expect([model isValidTextureMapping:@{@"foo": OCMClassMock([LTTexture class])}]).to.beFalsy();
   });
 });
 

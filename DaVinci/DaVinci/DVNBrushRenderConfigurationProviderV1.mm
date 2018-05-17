@@ -8,7 +8,6 @@
 #import <LTEngine/LTTexture.h>
 #import <LTEngine/LTTextureAtlas.h>
 #import <LTKit/LTRandom.h>
-#import <LTKit/NSArray+NSSet.h>
 
 #import "DVNAttributeStageConfiguration.h"
 #import "DVNBlendMode.h"
@@ -104,19 +103,9 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
                     model.brushModel);
   DVNBrushModelV1 *brushModel = (DVNBrushModelV1 *)model.brushModel;
 
-  LTParameterAssert(textureMapping[@keypath(brushModel, sourceImageURL)],
-                    @"Texture mapping (%@) must provide texture for source image", textureMapping);
-  LTParameterAssert(textureMapping[@keypath(brushModel, maskImageURL)],
-                    @"Texture mapping (%@) must provide texture for mask image", textureMapping);
-  LTParameterAssert([textureMapping.allKeys.lt_set
-                     isSubsetOfSet:[[brushModel class] imageURLPropertyKeys].lt_set],
-                    @"Keys of texture mapping %@ must be subset of image URL property keys %@ of "
-                    "brush model %@", textureMapping, [[brushModel class] imageURLPropertyKeys],
+  LTParameterAssert([brushModel isValidTextureMapping:textureMapping],
+                    @"Invalid texture mapping (%@) for given brush model (%@)", textureMapping,
                     brushModel);
-  LTParameterAssert([brushModel.edgeAvoidanceGuideImageURL.absoluteString isEqualToString:@""] ||
-                    textureMapping[@keypath(brushModel, edgeAvoidanceGuideImageURL)],
-                    @"Edge avoidance guide texture must be provided if corresponding URL (%@) is "
-                    "not empty", brushModel.edgeAvoidanceGuideImageURL);
 
   id<LTContinuousSamplerModel> samplingStageConfiguration =
       [self samplingStageConfigurationFromModel:brushModel conversionFactor:model.conversionFactor];
