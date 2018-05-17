@@ -135,6 +135,9 @@
 		9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4FE02520976B5F00FC64E1 /* MessageUI.framework */; };
 		9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31A208F5FA800080BEA /* libFBTweak.a */; };
 		9F50B25520AB06BE00334641 /* BZRFakeProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */; };
+		9FA8961620AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */; };
+		9FA8961720AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA8961520AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h */; };
+		9FA8965020AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */; };
 		9FCBD31B208F5FD500080BEA /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6BFA202085F197002800F9 /* libMilkshake.a */; };
 		9FCBD31F208F615900080BEA /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31C208F608500080BEA /* AdSupport.framework */; };
 		9FE289092096FEBB00D33E43 /* BZRTweaksCollectionsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C477D825D5AA2474FB758A3C /* BZRTweaksCollectionsProviderSpec.mm */; };
@@ -966,6 +969,9 @@
 		9F50B25320AB06BE00334641 /* BZRFakeProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeProductsInfoProvider.h; sourceTree = "<group>"; };
 		9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeProductsInfoProvider.mm; sourceTree = "<group>"; };
 		9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
+		9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksProductsInfoProvider.mm; sourceTree = "<group>"; };
+		9FA8961520AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksProductsInfoProvider.h; sourceTree = "<group>"; };
+		9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksProductsInfoProviderSpec.mm; sourceTree = "<group>"; };
 		9FCBD31A208F5FA800080BEA /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FCBD31C208F608500080BEA /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
@@ -2147,6 +2153,7 @@
 			children = (
 				9F4D852F20A9B0A800529017 /* BZRTweaksCategorySpec.mm */,
 				C477D825D5AA2474FB758A3C /* BZRTweaksCollectionsProviderSpec.mm */,
+				9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -2159,6 +2166,8 @@
 				C477D259167704EA25DB082A /* BZRTweakCollectionsProvider.h */,
 				9F4D84F420A9B09200529017 /* BZRTweaksCategory.h */,
 				9F4D84F520A9B09200529017 /* BZRTweaksCategory.mm */,
+				9FA8961520AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h */,
+				9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -2340,6 +2349,7 @@
 				B93FC33D1D586C4800A2170C /* BZRReceiptValidationStatusProvider.h in Headers */,
 				2E1542C7D3C4BDA6018A15A1 /* NSValueTransformer+Bazaar.h in Headers */,
 				2E154F18BF2D6A3928FB9F63 /* BZRPaymentQueue.h in Headers */,
+				9FA8961720AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h in Headers */,
 				2E1549AAD33FDD9828243F3F /* SKPaymentQueue+Bazaar.h in Headers */,
 				C477DD938EAFFC3B8C66D9A2 /* BZRSubscriptionCollectionsProvider.h in Headers */,
 				C477D407D06D4718FD1687C8 /* BZRTweakCollectionsProvider.h in Headers */,
@@ -3016,6 +3026,7 @@
 				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
 				CDC7667B1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm in Sources */,
 				2E154D67B22875EDB41F3257 /* NSValueTransformer+BazaarSpec.mm in Sources */,
+				9FA8965020AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3071,6 +3082,7 @@
 				65D90B971D5BB56D00BEB74C /* BZRPaymentQueueAdapter.mm in Sources */,
 				65F785C71F8D026E00FD74ED /* BZRCloudKitAccountInfo.mm in Sources */,
 				B9A84FF41DE1DA60001AA37C /* BZRLocaleBasedVariantSelectorFactory.mm in Sources */,
+				9FA8961620AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm in Sources */,
 				B9484B5B1D50A09900910066 /* BZRLocalContentFetcher.mm in Sources */,
 				B97A871A1D4610A7004390FC /* BZRRemoteProductsProvider.mm in Sources */,
 				B9ABD5901D7FF793004D2877 /* BZRAcquiredViaSubscriptionProvider.mm in Sources */,
