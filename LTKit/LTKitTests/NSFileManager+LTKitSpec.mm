@@ -49,7 +49,26 @@ context(@"plist dictionaries", ^{
     error = nil;
   });
 
-  it(@"should write a dictionary containing a valid plist", ^{
+  it(@"should write a dictionary containing a valid plist in binary format", ^{
+    OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+      NSError *error;
+      NSPropertyListFormat format;
+      NSDictionary *dictionary = [NSPropertyListSerialization
+                                  propertyListWithData:data options:NSPropertyListImmutable
+                                  format:&format error:&error];
+      return [dictionary isEqual:validDictionary] && !error &&
+      format == NSPropertyListBinaryFormat_v1_0;
+    }] toFile:kPath options:NSDataWritingAtomic error:[OCMArg anyObjectRef]]).andReturn(YES);
+
+    BOOL success = [fileManager lt_writeDictionary:validDictionary toFile:kPath
+                                            format:NSPropertyListBinaryFormat_v1_0 error:&error];
+
+    expect(success).to.beTruthy();
+    expect(error).to.beNil();
+    OCMVerifyAll(mockedManager);
+  });
+
+  it(@"should write a dictionary containing a valid plist in XML format by default", ^{
     OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
       NSError *error;
       NSPropertyListFormat format;
@@ -90,7 +109,7 @@ context(@"plist dictionaries", ^{
     OCMVerifyAll(mockedManager);
   });
 
-  it(@"should read a file containing a valid plist", ^{
+  it(@"should read a file containing a valid plist in XML format", ^{
     __block NSData *serializedData;
     OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
       serializedData = data;
@@ -102,6 +121,28 @@ context(@"plist dictionaries", ^{
 
     OCMExpect([mockedManager lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
                                         error:[OCMArg anyObjectRef]]).andReturn(serializedData);
+
+    NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
+
+    expect(dictionary).to.equal(validDictionary);
+    expect(error).to.beNil();
+    OCMVerifyAll(mockedManager);
+  });
+
+  it(@"should read a file containing a valid plist in binary format", ^{
+    __block NSData *serializedData;
+    OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+      serializedData = data;
+      return YES;
+    }] toFile:kPath options:NSDataWritingAtomic error:[OCMArg anyObjectRef]]).andReturn(YES);
+    [fileManager lt_writeDictionary:validDictionary toFile:kPath
+                             format:NSPropertyListBinaryFormat_v1_0 error:&error];
+    expect(serializedData).notTo.beNil();
+    OCMVerifyAll(mockedManager);
+
+    OCMExpect([mockedManager lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+                                                 error:[OCMArg anyObjectRef]])
+        .andReturn(serializedData);
 
     NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
 

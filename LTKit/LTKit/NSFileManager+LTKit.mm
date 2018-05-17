@@ -57,10 +57,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path
                      error:(NSError *__autoreleasing *)error {
+  return [self lt_writeDictionary:dictionary toFile:path format:NSPropertyListXMLFormat_v1_0
+                            error:error];
+}
+
+- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path
+                     format:(NSPropertyListFormat)format error:(NSError *__autoreleasing *)error {
   NSError *serializationError;
   NSData *data = [NSPropertyListSerialization dataWithPropertyList:dictionary
-                                                            format:NSPropertyListXMLFormat_v1_0
-                                                           options:0 error:&serializationError];
+                                                            format:format options:0
+                                                             error:&serializationError];
   if (!data || serializationError) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed

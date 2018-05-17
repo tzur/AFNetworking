@@ -24,6 +24,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
 /// is written successfully, otherwise returns \c NO and populates \c error. The plist is saved in
+/// the given \c format, and the file is written atomically.
+///
+/// This method recursively validates that all the contained objects are property list objects
+/// (instances of \c NSData, \c NSDate, \c NSNumber, \c NSString, \c NSArray, or \c NSDictionary)
+/// before writing out the file, and returns \c NO if all the objects are not property list objects,
+/// since the resultant file would not be a valid property list.
+- (BOOL)lt_writeDictionary:(NSDictionary *)dictionary toFile:(NSString *)path
+                    format:(NSPropertyListFormat)format error:(NSError **)error;
+
+/// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
+/// is written successfully, otherwise returns \c NO and populates \c error. The plist is saved in
 /// the XML property list format (\c NSPropertyListXMLFormat_v1_0), and the file is written
 /// atomically.
 ///
