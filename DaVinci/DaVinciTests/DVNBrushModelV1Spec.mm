@@ -3,6 +3,7 @@
 
 #import "DVNBrushModelV1.h"
 
+#import <LTEngine/LTTexture.h>
 #import <LTKit/NSArray+NSSet.h>
 
 #import "DVNBlendMode.h"
@@ -487,6 +488,37 @@ context(@"copy constructors", ^{
       expect(modelCopy.edgeAvoidanceSamplingOffset).toNot.equal(model.edgeAvoidanceSamplingOffset);
       expect(modelCopy.edgeAvoidanceSamplingOffset).to.equal(0);
     });
+  });
+});
+
+context(@"texture mapping validation", ^{
+  __block DVNBrushModelV1 *model;
+
+  beforeEach(^{
+    NSDictionary *jsonDictionary = DVNJSONDictionaryOfTestBrushModelV1();
+    model = [MTLJSONAdapter modelOfClass:[DVNBrushModelV1 class] fromJSONDictionary:jsonDictionary
+                                   error:nil];
+  });
+
+  it(@"should claim that given texture mapping is valid", ^{
+    auto textureMapping = @{
+      @keypath(model, sourceImageURL): OCMClassMock([LTTexture class]),
+      @keypath(model, maskImageURL): OCMClassMock([LTTexture class]),
+      @keypath(model, edgeAvoidanceGuideImageURL): OCMClassMock([LTTexture class])
+    };
+
+    expect([model isValidTextureMapping:textureMapping]).to.beTruthy();
+  });
+
+  it(@"should claim that texture mapping is invalid if keys are not subset of property keys", ^{
+    auto textureMapping = @{
+      @keypath(model, sourceImageURL): OCMClassMock([LTTexture class]),
+      @keypath(model, maskImageURL): OCMClassMock([LTTexture class]),
+      @keypath(model, edgeAvoidanceGuideImageURL): OCMClassMock([LTTexture class]),
+      @"foo": OCMClassMock([LTTexture class])
+    };
+
+    expect([model isValidTextureMapping:textureMapping]).to.beFalsy();
   });
 });
 

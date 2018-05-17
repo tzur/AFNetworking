@@ -29,6 +29,12 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// by colors sampled from a so-called source image (short: source) and a single-channel image, the
 /// so-called mask image (short: mask), is mapped. The model allows several parameters to define
 /// random distributions, for the sake of a larger and more interesting variety of brushes.
+///
+/// The \c isValidTextureMapping: method of an instance of this class returns \c YES if
+/// a) the texture mapping contains a value for keys \c sourceImageURL and \c maskImageURL, and
+/// b) the texture mapping contains a value for key \c edgeAvoidanceGuideImageURL if the value
+/// of the \c edgeAvoidanceGuideImageURL property is not the empty string, and
+/// c) the keys of the texture mapping are a subset of the \c imageURLPropertyKeys of the class.
 @interface DVNBrushModelV1 : DVNBrushModel
 
 /// Returns a copy of the receiver with the exception of the given \c randomInitialSeed.

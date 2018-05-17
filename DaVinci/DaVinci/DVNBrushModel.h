@@ -7,6 +7,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LTTexture;
+
 /// Immutable model representing a brush. A brush is determined by a set of well-defined parameters
 /// in form of a model which can be used to construct corresponding objects capable of rendering
 /// geometry along a curve, yielding a so-called brush stroke. The aforementioned geometry resides
@@ -35,6 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a copy of the receiver with the exception of the given \c scale, clamped to the
 /// \c scaleRange of the receiver.
 - (instancetype)copyWithScale:(CGFloat)scale;
+
+/// Returns \c YES if the given \c textureMapping is valid for this model. In particular, checks
+/// whether the keys of the given \c textureMapping are an appropriate subset of the
+/// \c imageURLPropertyKeys of this class.
+- (BOOL)isValidTextureMapping:(NSDictionary<NSString *, LTTexture *> *)textureMapping;
 
 /// Returns the keys of the properties holding the URLs to the images required for rendering brush
 /// strokes defined by the receiver.

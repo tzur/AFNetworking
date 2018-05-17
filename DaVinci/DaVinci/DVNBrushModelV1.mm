@@ -3,6 +3,7 @@
 
 #import "DVNBrushModelV1.h"
 
+#import <LTEngine/LTTexture.h>
 #import <LTEngine/NSValue+LTInterval.h>
 #import <LTEngine/NSValueTransformer+LTEngine.h>
 
@@ -333,6 +334,18 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
   [model setValue:@(edgeAvoidanceSamplingOffset)
            forKey:@keypath(model, edgeAvoidanceSamplingOffset)];
   return model;
+}
+
+#pragma mark -
+#pragma mark Public API - Texture Mapping
+#pragma mark -
+
+- (BOOL)isValidTextureMapping:(NSDictionary<NSString *, LTTexture *> *)textureMapping {
+  return [super isValidTextureMapping:textureMapping] &&
+      textureMapping[@keypath(self, sourceImageURL)] &&
+      textureMapping[@keypath(self, maskImageURL)] &&
+      ([self.edgeAvoidanceGuideImageURL.absoluteString isEqualToString:@""] ||
+       textureMapping[@keypath(self, edgeAvoidanceGuideImageURL)]);
 }
 
 #pragma mark -
