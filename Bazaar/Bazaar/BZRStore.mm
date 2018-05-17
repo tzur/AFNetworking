@@ -30,6 +30,9 @@
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRUserIDProvider.h"
+#import "BZRValidatricksClient.h"
+#import "BZRValidatricksModels.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
@@ -92,6 +95,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
+/// Client used to make HTTP requests to Validatricks.
+@property (readonly, nonatomic) BZRValidatricksClient *validatricksClient;
+
+/// Provider used to provide a unique identifier of the user.
+@property (readonly, nonatomic) id<BZRUserIDProvider> userIDProvider;
+
 /// List of products that their content is already available on the device and ready to be used.
 /// Products without content will be in the list as well.
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
@@ -143,6 +152,8 @@ NS_ASSUME_NONNULL_BEGIN
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
     _appStoreLocaleProvider = configuration.appStoreLocaleProvider;
     _keychainStorage = configuration.keychainStorage;
+    _validatricksClient = configuration.validatricksClient;
+    _userIDProvider = configuration.userIDProvider;
     _downloadedContentProducts = [NSSet set];
     _productListWasFetched = NO;
 
@@ -643,6 +654,65 @@ NS_ASSUME_NONNULL_BEGIN
           [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
         }
       }];
+}
+
+- (RACSignal<BZRUserCreditStatus *> *)getUserCreditStatus:(NSString *)creditType {
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    if (!self.userIDProvider.userID) {
+      return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
+    }
+    return [self.validatricksClient getCreditOfType:creditType forUser:self.userIDProvider.userID];
+  }];
+}
+
+- (RACSignal<NSDictionary<NSString *, NSNumber *> *> *)getCreditPriceOfType:(NSString *)creditType
+    consumableTypes:(NSSet<NSString *> *)consumableTypes {
+  return [[self.validatricksClient
+      getPricesInCreditType:creditType forConsumableTypes:[consumableTypes allObjects]]
+      tryMap:^NSDictionary<NSString *, NSNumber *> *
+          (BZRConsumableTypesPriceInfo *consumableTypesPriceInfo, NSError *__autoreleasing *error) {
+        auto consumableTypesWithoutPrice = [consumableTypes mutableCopy];
+        [consumableTypesWithoutPrice
+            minusSet:consumableTypesPriceInfo.consumableTypesPrices.allKeys.lt_set];
+
+        if (consumableTypesWithoutPrice.count) {
+          if (error) {
+            *error = [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed
+                                   description:@"Couldn't find prices for the consumable types: %@",
+                                               consumableTypesWithoutPrice];
+          }
+          return nil;
+        }
+
+        return consumableTypesPriceInfo.consumableTypesPrices;
+      }];
+}
+
+- (RACSignal<BZRRedeemConsumablesStatus *> *)
+    redeemConsumableItems:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+    ofCreditType:(NSString *)creditType {
+  auto itemsToRedeem = [[consumableItemIDToType
+      lt_mapValues:^BZRConsumableItemDescriptor *(NSString *consumableItemID,
+                                                  NSString *consumableType) {
+        return lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): consumableItemID,
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableType): consumableType,
+        } error:nil]);
+      }]
+      allValues];
+
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    if (!self.userIDProvider.userID) {
+      return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
+    }
+
+    return [self.validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
+                                                   userId:self.userIDProvider.userID];
+  }];
 }
 
 - (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(NSString *)productIdentifier {

@@ -51,11 +51,6 @@ extern NSString * const kBZRApplicationBundleIDKey;
     underlyingError:(NSError *)underlyingError;
 
 /// Creates and returns an instance of \c NSError with \c code set to
-/// \c BZRErrorCodePurchasedProductNotFoundInReceipt and \c bzr_purchasedProductIdentifier set to
-/// the given \c productIdentifier.
-+ (instancetype)bzr_purchasedProductNotFoundInReceipt:(NSString *)productIdentifier;
-
-/// Creates and returns an instance of \c NSError with \c code set to
 /// \c BZRErrorCodeFetchingProductContentFailed and \c bzr_contentFetcherParameters set to the
 /// given \c parameters. \c underlyingError specifies the reason for the failure in the content
 /// fetching.
@@ -110,9 +105,6 @@ extern NSString * const kBZRApplicationBundleIDKey;
 
 /// Date of the last time receipt was validated.
 @property (readonly, nonatomic, nullable) NSDate *bzr_lastReceiptValidationDate;
-
-/// Identifier of the product that was purchased but not found in the receipt.
-@property (readonly, nonatomic, nullable) NSString *bzr_purchasedProductIdentifier;
 
 /// Parameters of the content whose fetching has failed.
 @property (readonly, nonatomic, nullable) BZRContentFetcherParameters *bzr_contentFetcherParameters;

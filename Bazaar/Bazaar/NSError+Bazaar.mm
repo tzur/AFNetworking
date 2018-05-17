@@ -18,7 +18,6 @@ NSString * const kBZRErrorProductIdentifiersKey = @"BZRErrorProductIdentifiers";
 NSString * const kBZRErrorSecondsUntilSubscriptionInvalidationKey =
     @"BZRErrorSecondsUntilSubscriptionInvalidation";
 NSString * const kBZRErrorLastReceiptValidationDateKey = @"BZRErrorLastReceiptValidationDate";
-NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedProductIdentifier";
 NSString * const kBZRErrorContentFetcherParametersKey = @"BZRErrorContentFetcherParameters";
 NSString * const kBZRErrorKeychainStorageServiceNameKey = @"BZRErrorKeychainStorageServiceName";
 NSString * const kBZRErrorKeychainStorageKeyKey = @"BZRKeychainStorageKey";
@@ -132,13 +131,6 @@ NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
   return [NSError lt_errorWithCode:BZRErrorCodePeriodicReceiptValidationFailed userInfo:userInfo];
 }
 
-+ (instancetype)bzr_purchasedProductNotFoundInReceipt:(NSString *)productIdentifier {
-  NSDictionary *userInfo = @{
-    kBZRErrorPurchasedProductIdentifierKey: [productIdentifier copy]
-  };
-  return [self lt_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt userInfo:userInfo];
-}
-
 + (instancetype)bzr_errorWithContentFetcherParameters:(BZRContentFetcherParameters *)parameters
                                       underlyingError:(NSError *)underlyingError {
   NSDictionary *userInfo = @{
@@ -215,10 +207,6 @@ NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
 
 - (nullable NSDate *)bzr_lastReceiptValidationDate {
   return self.userInfo[kBZRErrorLastReceiptValidationDateKey];
-}
-
-- (nullable NSString *)bzr_purchasedProductIdentifier {
-  return self.userInfo[kBZRErrorPurchasedProductIdentifierKey];
 }
 
 - (nullable NSString *)bzr_contentFetcherParameters {

@@ -26,6 +26,8 @@
 #import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRTestUtils.h"
+#import "BZRUserIDProvider.h"
+#import "BZRValidatricksClient.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -77,6 +79,9 @@ __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 __block BZRFakeAppStoreLocaleProvider *appStoreLocaleProvider;
 __block BZRKeychainStorage *keychainStorage;
+__block BZRValidatricksClient *validatricksClient;
+__block id<BZRUserIDProvider> userIDProvider;
+
 __block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
@@ -108,6 +113,8 @@ beforeEach(^{
   storeKitMetadataFetcher = OCMClassMock([BZRStoreKitCachedMetadataFetcher class]);
   appStoreLocaleProvider = [[BZRFakeAppStoreLocaleProvider alloc] init];
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
+  validatricksClient = OCMClassMock([BZRValidatricksClient class]);
+  userIDProvider = OCMProtocolMock(@protocol(BZRUserIDProvider));
   multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
@@ -156,6 +163,8 @@ beforeEach(^{
   OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
   OCMStub([configuration appStoreLocaleProvider]).andReturn(appStoreLocaleProvider);
   OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
+  OCMStub([configuration validatricksClient]).andReturn(validatricksClient);
+  OCMStub([configuration userIDProvider]).andReturn(userIDProvider);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -961,6 +970,208 @@ context(@"validating transaction", ^{
           .andReturn([RACSignal return:receiptValidationStatus]);
 
       expect([store validateTransaction:@"foo"]).will.complete();
+    });
+  });
+});
+
+context(@"getting user credit status", ^{
+  it(@"should forward request to Validatricks client with correct parameters", ^{
+    auto userCreditStatus = lt::nn([[BZRUserCreditStatus alloc] initWithDictionary:@{
+      @instanceKeypath(BZRUserCreditStatus, requestId): @"request",
+      @instanceKeypath(BZRUserCreditStatus, creditType): @"bar",
+      @instanceKeypath(BZRUserCreditStatus, credit): @13,
+      @instanceKeypath(BZRUserCreditStatus, consumedItems): @[]
+    } error:nil]);
+    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
+        .andReturn([RACSignal return:userCreditStatus]);
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+    auto recorder = [[store getUserCreditStatus:@"bar"] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[userCreditStatus]);
+  });
+
+  it(@"should not access user ID before subscription to the signal", ^{
+    OCMStub([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
+
+    auto signal = [store getUserCreditStatus:@"bar"];
+
+    OCMExpect([userIDProvider userID]).andReturn(@"foo");
+    expect(signal).to.complete();
+
+    OCMExpect([userIDProvider userID]).andReturn(@"bar");
+    expect(signal).to.complete();
+
+    OCMVerifyAll((id)userIDProvider);
+  });
+
+  it(@"should send error sent by Validatricks client", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
+        .andReturn([RACSignal error:error]);
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+    auto signal = [store getUserCreditStatus:@"bar"];
+
+    expect(signal).to.sendError(error);
+  });
+
+  it(@"should send error if user ID is nil", ^{
+    OCMReject([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY]);
+
+    auto signal = [store getUserCreditStatus:@"bar"];
+
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeUserIdentifierNotAvailable;
+    });
+  });
+});
+
+context(@"getting credit price for consumable types", ^{
+  it(@"should forward request to Validatricks client with correct parameters", ^{
+    auto consumableTypes = @[@"fooType", @"barType"].lt_set;
+    auto creditType = @"baz";
+    auto consumableTypeToPrice = @{
+      @"fooType": @1,
+      @"barType": @3
+    };
+    auto typesPriceInfo = lt::nn([[BZRConsumableTypesPriceInfo alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableTypesPriceInfo, requestId): @"requestId",
+      @instanceKeypath(BZRConsumableTypesPriceInfo, creditType): creditType,
+      @instanceKeypath(BZRConsumableTypesPriceInfo, consumableTypesPrices): consumableTypeToPrice
+    } error:nil]);
+
+    OCMStub([validatricksClient getPricesInCreditType:creditType
+                                   forConsumableTypes:consumableTypes.allObjects])
+        .andReturn([RACSignal return:typesPriceInfo]);
+
+    auto recorder = [[store getCreditPriceOfType:creditType
+                                 consumableTypes:consumableTypes] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[consumableTypeToPrice]);
+  });
+
+  it(@"should send error sent by Validatricks client", ^{
+    auto consumableTypes = @[@"fooType", @"barType"].lt_set;
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([validatricksClient getPricesInCreditType:OCMOCK_ANY forConsumableTypes:OCMOCK_ANY])
+        .andReturn([RACSignal error:error]);
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+    auto signal = [store getCreditPriceOfType:@"foo" consumableTypes:consumableTypes];
+
+    expect(signal).to.sendError(error);
+  });
+
+  it(@"should send error if price of one of the elements in consumable types wasn't fetched", ^{
+    auto consumableTypes = @[@"fooType", @"barType"].lt_set;
+    auto creditType = @"baz";
+    auto consumableTypeToPrice = @{@"fooType": @1};
+    auto typesPriceInfo = lt::nn([[BZRConsumableTypesPriceInfo alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableTypesPriceInfo, requestId): @"requestId",
+      @instanceKeypath(BZRConsumableTypesPriceInfo, creditType): creditType,
+      @instanceKeypath(BZRConsumableTypesPriceInfo, consumableTypesPrices): consumableTypeToPrice
+    } error:nil]);
+
+    OCMStub([validatricksClient getPricesInCreditType:creditType
+                                   forConsumableTypes:consumableTypes.allObjects])
+        .andReturn([RACSignal return:typesPriceInfo]);
+
+    auto signal = [store getCreditPriceOfType:creditType consumableTypes:consumableTypes];
+
+    expect(signal).to.matchError(^BOOL(NSError *error){
+      return error.code == BZRErrorCodeValidatricksRequestFailed;
+    });
+  });
+});
+
+context(@"redeeming consumable items", ^{
+  it(@"should call Validatricks redeem request with correct parameters", ^{
+    auto consumableItemIDToType = @{
+      @"foo": @"fooType",
+      @"bar": @"barType"
+    };
+
+    auto creditType = @"baz";
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+    auto itemsToRedeem = @[
+      lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+        @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+        @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"fooType",
+      } error:nil]),
+      lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+        @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
+        @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"barType",
+      } error:nil])
+    ];
+    auto redeemStatus = lt::nn([[BZRRedeemConsumablesStatus alloc] initWithDictionary:@{
+      @instanceKeypath(BZRRedeemConsumablesStatus, requestId): @"requestId",
+      @instanceKeypath(BZRRedeemConsumablesStatus, creditType): creditType,
+      @instanceKeypath(BZRRedeemConsumablesStatus, currentCredit): @13,
+      @instanceKeypath(BZRRedeemConsumablesStatus, consumedItems): @[]
+    } error:nil]);
+    OCMStub([validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
+                                               userId:@"foo"])
+        .andReturn([RACSignal return:redeemStatus]);
+
+    auto recorder =
+        [[store redeemConsumableItems:consumableItemIDToType ofCreditType:creditType] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).will.sendValues(@[redeemStatus]);
+  });
+
+  it(@"should not access user ID before subscription to the signal", ^{
+    OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                               userId:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
+
+    auto consumableItemIDToType = @{
+      @"foo": @"fooType",
+      @"bar": @"barType"
+    };
+    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"foo"];
+
+    OCMExpect([userIDProvider userID]).andReturn(@"foo");
+    expect(signal).to.complete();
+
+    OCMExpect([userIDProvider userID]).andReturn(@"bar");
+    expect(signal).to.complete();
+
+    OCMVerifyAll((id)userIDProvider);
+  });
+
+  it(@"should send error sent by Validatricks client", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                               userId:OCMOCK_ANY])
+        .andReturn([RACSignal error:error]);
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+    auto consumableItemIDToType = @{
+      @"foo": @"fooType",
+      @"bar": @"barType"
+    };
+    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+
+    expect(signal).to.sendError(error);
+  });
+
+  it(@"should send error if user ID is nil", ^{
+    OCMReject([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY]);
+
+    auto consumableItemIDToType = @{
+      @"foo": @"fooType",
+      @"bar": @"barType"
+    };
+    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeUserIdentifierNotAvailable;
     });
   });
 });

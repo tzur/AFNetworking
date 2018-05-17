@@ -193,16 +193,6 @@ context(@"periodic validation errors", ^{
   });
 });
 
-context(@"purchased product not in receipt error", ^{
-  it(@"should return an error with identifier of the given product", ^{
-    NSError *error = [NSError bzr_purchasedProductNotFoundInReceipt:@"foo"];
-
-    expect(error.domain).to.equal(kLTErrorDomain);
-    expect(error.code).to.equal(BZRErrorCodeTransactionNotFoundInReceipt);
-    expect(error.bzr_purchasedProductIdentifier).to.equal(@"foo");
-  });
-});
-
 context(@"error with storage failure", ^{
   it(@"should return an error with the given values", ^{
     NSError *underlyingError = [NSError lt_errorWithCode:1337];

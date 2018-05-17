@@ -59,8 +59,6 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodePeriodicReceiptValidationFailed,
   /// Loading of file has failed.
   BZRErrorCodeLoadingFileFailed,
-  /// Product was purchased successfully but not found in the receipt.
-  BZRErrorCodePurchasedProductNotFoundInReceipt,
   /// Transaction that has completed but was not found in the receipt.
   BZRErrorCodeTransactionNotFoundInReceipt,
   /// Received an invalid transaction identifier.
@@ -87,7 +85,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Trying to purchase a product with an invalid quantity.
   BZRErrorCodeInvalidQuantityForPurchasing,
   /// Request to Validatricks server has failed.
-  BZRErrorCodeValidatricksRequestFailed
+  BZRErrorCodeValidatricksRequestFailed,
+  /// Failure because the user identifier couldn't be retrieved.
+  BZRErrorCodeUserIdentifierNotAvailable
 );
 
 NS_ASSUME_NONNULL_END
