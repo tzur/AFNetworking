@@ -42,6 +42,9 @@
 		9FF05EEC20ADA22000A83DC2 /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05EED20ADA22000A83DC2 /* libMilkshake.a */; };
 		9FF05F1720ADA40000A83DC2 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05F1620ADA40000A83DC2 /* AdSupport.framework */; };
 		B93EFE0620BC158200C30545 /* SPXConsumableItemsModels.mm in Sources */ = {isa = PBXBuildFile; fileRef = B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */; };
+		B94CFDCF20BC57DA00DEC2CD /* SPXConsumablesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94CFDCE20BC57DA00DEC2CD /* SPXConsumablesManager.mm */; };
+		B94CFDD220BC580A00DEC2CD /* SPXConsumablesManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94CFDD120BC580900DEC2CD /* SPXConsumablesManagerSpec.mm */; };
+		B94CFDD320BC581D00DEC2CD /* libBazaarTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9B699CA20BC152500E22BDB /* libBazaarTestUtils.a */; };
 		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
 		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
@@ -543,6 +546,9 @@
 		9FF05F1620ADA40000A83DC2 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		B93EFE0420BC158200C30545 /* SPXConsumableItemsModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXConsumableItemsModels.h; sourceTree = "<group>"; };
 		B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXConsumableItemsModels.mm; sourceTree = "<group>"; };
+		B94CFDA420BC57D900DEC2CD /* SPXConsumablesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXConsumablesManager.h; sourceTree = "<group>"; };
+		B94CFDCE20BC57DA00DEC2CD /* SPXConsumablesManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXConsumablesManager.mm; sourceTree = "<group>"; };
+		B94CFDD120BC580900DEC2CD /* SPXConsumablesManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXConsumablesManagerSpec.mm; sourceTree = "<group>"; };
 		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
 		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
@@ -712,6 +718,7 @@
 				CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */,
 				CD4572871F71730200713681 /* ZipArchive.framework in Frameworks */,
 				CD45727F1F7172C400713681 /* libBazaar.a in Frameworks */,
+				B94CFDD320BC581D00DEC2CD /* libBazaarTestUtils.a in Frameworks */,
 				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
 				9F53AC9620A85DCD0076D8EE /* libFBTweak.a in Frameworks */,
 				CD4572811F7172E500713681 /* libFiber.a in Frameworks */,
@@ -883,6 +890,7 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B94CFDD020BC57FA00DEC2CD /* Consumable Products */,
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
 				885CA28D1FB301C6005380BD /* Promotions */,
 				CDB513A31F66B07D0013577C /* User Interface */,
@@ -1099,11 +1107,21 @@
 			name = "AppStore Product Screen";
 			sourceTree = "<group>";
 		};
+		B94CFDD020BC57FA00DEC2CD /* Consumable Products */ = {
+			isa = PBXGroup;
+			children = (
+				B94CFDD120BC580900DEC2CD /* SPXConsumablesManagerSpec.mm */,
+			);
+			name = "Consumable Products";
+			sourceTree = "<group>";
+		};
 		B9B699C520BC152500E22BDB /* Consumable Products */ = {
 			isa = PBXGroup;
 			children = (
 				B93EFE0420BC158200C30545 /* SPXConsumableItemsModels.h */,
 				B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */,
+				B94CFDA420BC57D900DEC2CD /* SPXConsumablesManager.h */,
+				B94CFDCE20BC57DA00DEC2CD /* SPXConsumablesManager.mm */,
 			);
 			name = "Consumable Products";
 			sourceTree = "<group>";
@@ -1904,6 +1922,7 @@
 				CDA6E0EA1FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm in Sources */,
 				63DC6CE71FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
+				B94CFDD220BC580A00DEC2CD /* SPXConsumablesManagerSpec.mm in Sources */,
 				CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */,
 				CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */,
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
@@ -1941,6 +1960,7 @@
 				CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */,
 				8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */,
 				CDDA512420179C6A009E5777 /* SPXDismissIcon.m in Sources */,
+				B94CFDCF20BC57DA00DEC2CD /* SPXConsumablesManager.mm in Sources */,
 				CD2E04642029B6040038EC7F /* NSDecimalNumber+Localization.mm in Sources */,
 				CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
