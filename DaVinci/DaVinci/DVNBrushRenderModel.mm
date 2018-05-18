@@ -51,6 +51,15 @@ NS_ASSUME_NONNULL_BEGIN
                          conversionFactor:conversionFactor];
 }
 
+#pragma mark -
+#pragma mark Copying Methods
+#pragma mark -
+
+- (instancetype)copyWithBrushModel:(DVNBrushModel *)brushModel {
+  return [[[self class] alloc] initWithBrushModel:brushModel renderTargetInfo:self.renderTargetInfo
+                                 conversionFactor:self.conversionFactor];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
