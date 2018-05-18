@@ -3,6 +3,8 @@
 
 #import "DVNBrushRenderModel.h"
 
+#import "DVNBrushRenderTargetInformation.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNBrushRenderModel
@@ -25,10 +27,27 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+#pragma mark -
+#pragma mark Factory Methods
+#pragma mark -
+
 + (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
                       renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo
                       conversionFactor:(CGFloat)conversionFactor {
   return [[self alloc] initWithBrushModel:brushModel renderTargetInfo:renderTargetInfo
+                         conversionFactor:conversionFactor];
+}
+
++ (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
+                  renderTargetLocation:(lt::Quad)location
+          renderTargetHasSingleChannel:(BOOL)hasSingleChannel
+        renderTargetIsNonPremultiplied:(BOOL)isNonPremultiplied
+                      conversionFactor:(CGFloat)conversionFactor {
+  return [[self alloc] initWithBrushModel:brushModel
+                         renderTargetInfo:[DVNBrushRenderTargetInformation
+                                           instanceWithRenderTargetLocation:location
+                                           renderTargetHasSingleChannel:hasSingleChannel
+                                           renderTargetIsNonPremultiplied:isNonPremultiplied]
                          conversionFactor:conversionFactor];
 }
 
