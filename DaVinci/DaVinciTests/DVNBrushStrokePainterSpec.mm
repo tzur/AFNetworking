@@ -81,6 +81,7 @@ SpecBegin(DVNBrushStrokePainter)
 
 static const CGSize kSize = CGSizeMake(37, 7);
 
+__block DVNBrushModel *brushModel;
 __block DVNTestBrushStrokePainterDelegate *delegate;
 __block DVNBrushStrokePainter *painter;
 __block LTParameterizedObjectType *type;
@@ -92,7 +93,7 @@ beforeEach(^{
   NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data
                                                              options:(NSJSONReadingOptions)0
                                                                error:nil];
-  DVNBrushModel *brushModel = [DVNBrushModel modelFromJSONDictionary:dictionary error:nil];
+  brushModel = [DVNBrushModel modelFromJSONDictionary:dictionary error:nil];
   lt::Quad quad(CGRectFromSize(kSize));
   DVNBrushRenderTargetInformation *renderTargetInfo =
       [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
@@ -265,6 +266,36 @@ context(@"delegate information", ^{
     expect(delegate.brushStroke).toNot.beNil();
     expect(delegate.brushStroke.controlPointModel).to.equal(controlPointModel);
     expect(delegate.brushStroke.brushRenderModel).to.equal(delegate.brushRenderModel);
+    expect(delegate.brushStroke.endInterval == interval).to.beTruthy();
+  });
+
+  it(@"should inform delegate about end of painting of random brush stroke", ^{
+    brushModel = [brushModel copyWithRandomInitialSeed:YES];
+    delegate.brushRenderModel = [delegate.brushRenderModel copyWithBrushModel:brushModel];
+
+    [painter processControlPoints:@[] end:NO];
+
+    expect(delegate.brushStroke).to.beNil();
+    LTControlPointModel *controlPointModel = OCMClassMock([LTControlPointModel class]);
+    DVNPipelineConfiguration *configuration = OCMClassMock([DVNPipelineConfiguration class]);
+    lt::Interval<CGFloat> interval({7, 8});
+    DVNSplineRenderModel *model =
+        [[DVNSplineRenderModel alloc] initWithControlPointModel:controlPointModel
+                                                  configuration:configuration
+                                                    endInterval:interval];
+
+    [painter renderingOfSplineRenderer:splineRendererMock endedWithModel:model];
+
+    DVNBrushModel *delegateBrushModel = delegate.brushStroke.brushRenderModel.brushModel;
+    brushModel = [[brushModel copyWithRandomInitialSeed:NO]
+                  copyWithInitialSeed:delegateBrushModel.initialSeed];
+    DVNBrushRenderModel *brushRenderModel =
+        [delegate.brushRenderModel copyWithBrushModel:brushModel];
+
+    expect(delegate.brushStroke).toNot.beNil();
+    expect(delegate.brushStroke.controlPointModel).to.equal(controlPointModel);
+    expect(delegate.brushStroke.brushRenderModel).toNot.equal(delegate.brushRenderModel);
+    expect(delegate.brushStroke.brushRenderModel).to.equal(brushRenderModel);
     expect(delegate.brushStroke.endInterval == interval).to.beTruthy();
   });
 });
