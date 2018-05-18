@@ -38,6 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c scaleRange of the receiver.
 - (instancetype)copyWithScale:(CGFloat)scale;
 
+/// Returns a copy of the receiver with the exception of the given \c randomInitialSeed.
+- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed;
+
+/// Returns a copy of the receiver with the exception of the given \c initialSeed.
+- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed;
+
 /// Returns \c YES if the given \c textureMapping is valid for this model. In particular, checks
 /// whether the keys of the given \c textureMapping are an appropriate subset of the
 /// \c imageURLPropertyKeys of this class.
@@ -51,12 +57,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// serialization of the \c version property of \c DVNBrushModel objects.
 extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping;
 
+#pragma mark -
+#pragma mark Version
+#pragma mark -
+
 /// Version of this brush model. Value, when initializing with \c init method, is
 /// \c DVNBrushModelVersionV1.
 ///
 /// @note The mapping between the enum values and the corresponding serialization strings is
 /// \c kDVNBrushModelVersionMapping.
 @property (readonly, nonatomic) DVNBrushModelVersion *version;
+
+#pragma mark -
+#pragma mark Scale
+#pragma mark -
 
 /// Size, in inches, of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips
 /// with size <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate
@@ -74,6 +88,26 @@ extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushM
 
 /// Allowed range of \c scaleRange.
 @property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedScaleRange;
+
+#pragma mark -
+#pragma mark Randomness
+#pragma mark -
+
+/// If \c YES, \c initialSeed is used as initial seed for the \c LTRandom used for computing all
+/// random values required by this instance.
+///
+/// (Order) Dependencies: none
+@property (readonly, nonatomic) BOOL randomInitialSeed;
+
+/// Initial seed for the \c LTRandom used for computing all random values required by this instance.
+/// Is used only if \c randomInitialSeed is YES.
+///
+/// (Order) Dependencies:
+/// \c randomInitialSeed
+@property (readonly, nonatomic) NSUInteger initialSeed;
+
+/// Allowed range of \c initialSeed.
+@property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedInitialSeedRange;
 
 @end
 

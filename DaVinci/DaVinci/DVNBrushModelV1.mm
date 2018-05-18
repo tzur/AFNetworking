@@ -45,8 +45,6 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
     NSMutableDictionary<NSString *, NSString *> *dictionary =
         [[super JSONKeyPathsByPropertyKey] mutableCopy];
     [dictionary addEntriesFromDictionary:@{
-      @instanceKeypath(DVNBrushModelV1, randomInitialSeed): @"randomInitialSeed",
-      @instanceKeypath(DVNBrushModelV1, initialSeed): @"initialSeed",
       @instanceKeypath(DVNBrushModelV1, spacing): @"spacing",
       @instanceKeypath(DVNBrushModelV1, numberOfSamplesPerSequence): @"numberOfSamplesPerSequence",
       @instanceKeypath(DVNBrushModelV1, sequenceDistance): @"sequenceDistance",
@@ -166,18 +164,6 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 #pragma mark -
 #pragma mark Public API - Copying
 #pragma mark -
-
-- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed {
-  DVNBrushModelV1 *model = [self copy];
-  [model setValue:@(randomInitialSeed) forKey:@keypath(model, randomInitialSeed)];
-  return model;
-}
-
-- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed {
-  DVNBrushModelV1 *model = [self copy];
-  [model setValue:@(initialSeed) forKey:@keypath(model, initialSeed)];
-  return model;
-}
 
 - (instancetype)copyWithSpacing:(CGFloat)spacing {
   DVNBrushModelV1 *model = [self copy];
@@ -357,8 +343,6 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
            @instanceKeypath(DVNBrushModelV1, maskImageURL),
            @instanceKeypath(DVNBrushModelV1, edgeAvoidanceGuideImageURL)];
 }
-
-DVNClosedRangeClassProperty(NSUInteger, allowedInitialSeed, AllowedInitialSeed, 0, NSUIntegerMax);
 
 DVNClosedRangeClassProperty(CGFloat, allowedSpacing, AllowedSpacing, 0.001,
                             std::numeric_limits<CGFloat>::max());

@@ -37,12 +37,6 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// c) the keys of the texture mapping are a subset of the \c imageURLPropertyKeys of the class.
 @interface DVNBrushModelV1 : DVNBrushModel
 
-/// Returns a copy of the receiver with the exception of the given \c randomInitialSeed.
-- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed;
-
-/// Returns a copy of the receiver with the exception of the given \c initialSeed.
-- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed;
-
 /// Returns a copy of the receiver with the exception of the given \c spacing, clamped to the
 /// \c allowedSpacingRange of the receiver.
 - (instancetype)copyWithSpacing:(CGFloat)spacing;
@@ -137,26 +131,6 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// Returns a copy of the receiver with the exception of the given \c edgeAvoidanceSamplingOffset,
 /// clamped to the \c allowedEdgeAvoidanceSamplingOffsetRange of this class.
 - (instancetype)copyWithEdgeAvoidanceSamplingOffset:(CGFloat)edgeAvoidanceSamplingOffset;
-
-#pragma mark -
-#pragma mark Randomness
-#pragma mark -
-
-/// If \c YES, \c initialSeed is used as initial seed for the \c LTRandom used for computing all
-/// random values required by this instance.
-///
-/// (Order) Dependencies: none
-@property (readonly, nonatomic) BOOL randomInitialSeed;
-
-/// Initial seed for the \c LTRandom used for computing all random values required by this instance.
-/// Is used only if \c randomInitialSeed is YES.
-///
-/// (Order) Dependencies:
-/// \c randomInitialSeed
-@property (readonly, nonatomic) NSUInteger initialSeed;
-
-/// Allowed range of \c initialSeed.
-@property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedInitialSeedRange;
 
 #pragma mark -
 #pragma mark Brush Tip Pattern
