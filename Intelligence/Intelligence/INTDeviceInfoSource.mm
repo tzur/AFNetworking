@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation INTDeviceInfoSource
 
-- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry {
+- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry
+                             usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled {
   auto device = [UIDevice currentDevice];
   auto locale = [NSLocale currentLocale];
   auto infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -41,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
                                             purchaseReceipt:[INTDeviceInfoSource purchaseReceipt]
                                             appStoreCountry:appStoreCountry
                                              inLowPowerMode:@(LTIsJailbroken())
-                                                 firmwareID:LTSigningTeamIdentifier()];
+                                                 firmwareID:LTSigningTeamIdentifier()
+                                        usageEventsDisabled:usageEventsDisabled];
 }
 
 + (nullable NSData *)purchaseReceipt {

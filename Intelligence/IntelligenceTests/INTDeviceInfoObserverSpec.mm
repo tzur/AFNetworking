@@ -54,7 +54,8 @@ INTDeviceInfo *INTFakeDeviceInfo() {
                                                    timeZone:@"foo" country:@"foo"
                                           preferredLanguage:@"foo" currentAppLanguage:@"foo"
                                             purchaseReceipt:[NSData data] appStoreCountry:nil
-                                             inLowPowerMode:@NO firmwareID:@"foo"];
+                                             inLowPowerMode:@NO firmwareID:@"foo"
+                                        usageEventsDisabled:@NO];
 }
 
 SpecBegin(INTDeviceInfoObserver)
@@ -96,7 +97,8 @@ it(@"should call delegate with new device info if new app store coutry is set", 
   [observer setAppStoreCountry:@"UK"];
 
   expect(delegate.reportingDeviceInfoObserver).to.equal(observer);
-  expect(delegate.reportedDeviceInfo).to.equal([source deviceInfoWithAppStoreCountry:@"UK"]);
+  expect(delegate.reportedDeviceInfo)
+      .to.equal([source deviceInfoWithAppStoreCountry:@"UK" usageEventsDisabled:@NO]);
   expect(delegate.reportedDeviceInfoRevisionID).notTo.equal(revisionID);
   expect(delegate.reportedIsNewRevision).to.equal(YES);
 });
@@ -199,6 +201,25 @@ it(@"should report changes to the subscription info", ^{
 
   [observer setSubscriptionInfo:nil];
   expect(delegate.reportedSubscriptionInfo).to.equal(nil);
+});
+
+it(@"should call delegate with new device info if new usage events disabled is set", ^{
+  auto revisionID = delegate.reportedDeviceInfoRevisionID;
+  [observer setUsageEventsDisabled:YES];
+
+  expect(delegate.reportingDeviceInfoObserver).to.equal(observer);
+  expect(delegate.reportedDeviceInfo)
+      .to.equal([source deviceInfoWithAppStoreCountry:nil usageEventsDisabled:@YES]);
+  expect(delegate.reportedDeviceInfoRevisionID).notTo.equal(revisionID);
+  expect(delegate.reportedIsNewRevision).to.equal(YES);
+
+  [observer setUsageEventsDisabled:NO];
+
+  expect(delegate.reportingDeviceInfoObserver).to.equal(observer);
+  expect(delegate.reportedDeviceInfo)
+      .to.equal([source deviceInfoWithAppStoreCountry:nil usageEventsDisabled:@NO]);
+  expect(delegate.reportedDeviceInfoRevisionID).notTo.equal(revisionID);
+  expect(delegate.reportedIsNewRevision).to.equal(YES);
 });
 
 SpecEnd

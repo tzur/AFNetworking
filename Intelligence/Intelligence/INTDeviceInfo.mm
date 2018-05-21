@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
                             purchaseReceipt:(nullable NSData *)purchaseReceipt
                             appStoreCountry:(nullable NSString *)appStoreCountry
                              inLowPowerMode:(nullable NSNumber *)inLowPowerMode
-                                 firmwareID:(nullable NSString *)firmwareID {
+                                 firmwareID:(nullable NSString *)firmwareID
+                        usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled {
   if (self = [super init]) {
     _identifierForVendor = identifierForVendor;
     _advertisingID = advertisingID;
@@ -37,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     _appStoreCountry = appStoreCountry;
     _inLowPowerMode = inLowPowerMode;
     _firmwareID = firmwareID;
+    _usageEventsDisabled = usageEventsDisabled;
   }
 
   return self;
@@ -57,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
                                             purchaseReceipt:self.purchaseReceipt
                                             appStoreCountry:self.appStoreCountry
                                              inLowPowerMode:self.inLowPowerMode
-                                                 firmwareID:self.firmwareID];
+                                                 firmwareID:self.firmwareID
+                                        usageEventsDisabled:self.usageEventsDisabled];
 }
 
 @end
