@@ -13,6 +13,7 @@ NSString * const kBZRErrorProductsRequestKey = @"BZRErrorProductsRequest";
 NSString * const kBZRErrorArchivePathKey = @"BZRErrorArchivePath";
 NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPath";
 NSString * const kBZRErrorTransactionKey = @"BZRErrorTransaction";
+NSString * const kBZRErrorTransactionIdentifierKey = @"BZRErrorTransactionIdentifier";
 NSString * const kBZRErrorProductIdentifiersKey = @"BZRErrorProductIdentifiers";
 NSString * const kBZRErrorSecondsUntilSubscriptionInvalidationKey =
     @"BZRErrorSecondsUntilSubscriptionInvalidation";
@@ -103,6 +104,7 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
                       transaction:(SKPaymentTransaction *)transaction {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   userInfo[kBZRErrorTransactionKey] = transaction;
+  userInfo[kBZRErrorTransactionIdentifierKey] = transaction.transactionIdentifier;
   userInfo[kLTErrorDescriptionKey] = transaction.bzr_description;
   if (transaction.transactionState == SKPaymentTransactionStateFailed) {
     userInfo[NSUnderlyingErrorKey] = transaction.error;
@@ -133,7 +135,7 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
   NSDictionary *userInfo = @{
     kBZRErrorPurchasedProductIdentifierKey: [productIdentifier copy]
   };
-  return [self lt_errorWithCode:BZRErrorCodePurchasedProductNotFoundInReceipt userInfo:userInfo];
+  return [self lt_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt userInfo:userInfo];
 }
 
 + (instancetype)bzr_errorWithContentFetcherParameters:(BZRContentFetcherParameters *)parameters
@@ -186,6 +188,10 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
 
 - (nullable SKPaymentTransaction *)bzr_transaction {
   return self.userInfo[kBZRErrorTransactionKey];
+}
+
+- (nullable SKPaymentTransaction *)bzr_transactionIdentifier {
+  return self.userInfo[kBZRErrorTransactionIdentifierKey];
 }
 
 - (nullable NSSet<NSString *> *)bzr_productIdentifiers {

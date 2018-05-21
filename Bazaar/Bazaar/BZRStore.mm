@@ -14,7 +14,6 @@
 #import "BZRAppStoreLocaleProvider.h"
 #import "BZRCachedContentFetcher.h"
 #import "BZREvent+AdditionalInfo.h"
-#import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRKeychainStorage.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -93,9 +92,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
-/// Validator used to validate receipt on initialization if required.
-@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *backgroundReceiptValidator;
-
 /// List of products that their content is already available on the device and ready to be used.
 /// Products without content will be in the list as well.
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
@@ -147,14 +143,11 @@ NS_ASSUME_NONNULL_BEGIN
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
     _appStoreLocaleProvider = configuration.appStoreLocaleProvider;
     _keychainStorage = configuration.keychainStorage;
-    _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
-                                   initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
     _productListWasFetched = NO;
 
     [self initializeEventsSignal];
     [self initializeCompletedTransactionsSignal];
-    [self finishUnfinishedTransactions];
     [self activateBackgroundValidation];
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
@@ -176,7 +169,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.storeKitMetadataFetcher.eventsSignal,
     self.keychainStorage.eventsSignal,
     self.storeKitFacade.eventsSignal,
-    [self.backgroundReceiptValidator.eventsSignal replay],
     [self appStoreLocaleChangedEvents]
   ]]
   takeUntil:[self rac_willDeallocSignal]]
@@ -203,19 +195,10 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (void)finishUnfinishedTransactions {
-  @weakify(self);
-  [self.completedTransactionsSignal
-      subscribeNext:^(SKPaymentTransaction *transaction) {
-        @strongify(self);
-        [self.storeKitFacade finishTransaction:transaction];
-      }];
-}
-
 - (void)activateBackgroundValidation {
   RACSignal *completedTransactionsSignal =
-      [[self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-        deliverOn:[RACScheduler scheduler]] mapReplace:[RACUnit defaultUnit]];
+      [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
+      deliverOn:[RACScheduler scheduler]];
 
   // We want to wait for the first value of the App Store locale that is fetched from the products'
   // metadata before doing validation that is triggered from the completed transactions signal.
@@ -225,19 +208,21 @@ NS_ASSUME_NONNULL_BEGIN
   @weakify(self);
   auto triggerSignal = [appStoreLocaleFetchedSignal then:^{
     @strongify(self);
-    if (!self) {
-      return [RACSignal empty];
-    }
-
-    if (!self.receiptValidationStatus) {
-      // Trigger validation if there is no receipt validation status, usually after first app usage.
-      return [completedTransactionsSignal startWith:[RACUnit defaultUnit]];
-    }
-
-    return completedTransactionsSignal;
+    return self.receiptValidationStatus ? completedTransactionsSignal :
+        [completedTransactionsSignal startWith:@[]];
   }];
 
-  [self.backgroundReceiptValidator activateWithTrigger:triggerSignal];
+  [[triggerSignal
+      flattenMap:^(BZRPaymentTransactionList *transactions) {
+        @strongify(self);
+        return [self validateTransactions:transactions];
+      }]
+      subscribeNext:^(BZRPaymentTransactionList *validatedTransactions) {
+        @strongify(self);
+        for (SKPaymentTransaction *transaction in validatedTransactions) {
+          [self.storeKitFacade finishTransaction:transaction];
+        }
+      }];
 }
 
 - (void)prefetchProductDictionary {
@@ -529,45 +514,27 @@ NS_ASSUME_NONNULL_BEGIN
   SKProduct *product = self.productDictionary[productIdentifier].underlyingProduct;
   @weakify(self);
   return [[[[[[self.storeKitFacade purchaseProduct:product]
-      filter:^BOOL(SKPaymentTransaction *transaction) {
-        return transaction.transactionState == SKPaymentTransactionStatePurchased;
-      }]
-      doNext:^(SKPaymentTransaction *transaction) {
-        @strongify(self);
-        [self.storeKitFacade finishTransaction:transaction];
-      }]
       doError:^(NSError *error) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:error.bzr_transaction];
         [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
       }]
-      then:^RACSignal *{
+      filter:^BOOL(SKPaymentTransaction *transaction) {
+        return transaction.transactionState == SKPaymentTransactionStatePurchased;
+      }]
+      take:1]
+      flattenMap:^(SKPaymentTransaction *transaction) {
         @strongify(self);
-        return [[self.validationStatusProvider fetchReceiptValidationStatus]
+        return [[[self validateAndFinishTransaction:transaction]
+            catch:^(NSError *error) {
+              return [RACSignal error:
+                  [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed underlyingError:error]];
+            }]
             doError:^(NSError *error) {
               @strongify(self);
               [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
             }];
       }]
-      flattenMap:^(BZRReceiptValidationStatus *receiptValidationStatus) {
-        @strongify(self);
-        BZRReceiptInfo *receipt = receiptValidationStatus.receipt;
-        if (![receipt wasProductPurchased:productIdentifier] &&
-            ![receipt.subscription.productId isEqualToString:productIdentifier]) {
-          return [self handlePurchasedProductNotFoundInReceipt:productIdentifier];
-        }
-
-        return [RACSignal empty];
-      }];
-}
-
-- (RACSignal *)handlePurchasedProductNotFoundInReceipt:(NSString *)productIdentifier {
-  NSError *error = [NSError bzr_purchasedProductNotFoundInReceipt:productIdentifier];
-  [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
-
-  RACSignal *fetchReceiptSignal = [self.validationStatusProvider fetchReceiptValidationStatus];
-  return [[[self.storeKitFacade refreshReceipt]
-      concat:fetchReceiptSignal]
       ignoreValues];
 }
 
@@ -616,11 +583,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[self validateTransactions:@[transaction]]
       tryMap:^SKPaymentTransaction * _Nullable(BZRPaymentTransactionList *validatedTransactions,
                                                NSError *__autoreleasing *error) {
-        if (!validatedTransactions.firstObject) {
-          if (error) {
-            *error = [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
-                                    transaction:transaction];
-          }
+        if (!validatedTransactions.firstObject && error) {
+          *error = [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
+                                  transaction:transaction];
         }
 
         return validatedTransactions.firstObject;

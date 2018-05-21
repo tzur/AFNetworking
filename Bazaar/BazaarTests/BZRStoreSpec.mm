@@ -202,7 +202,7 @@ context(@"initial receipt validation", ^{
     validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
+      return [event.eventType isEqual:$(BZREventTypeCriticalError)] && event.eventError == error;
     });
   });
 });
@@ -247,7 +247,6 @@ context(@"App Store locale", ^{
 
     @autoreleasepool {
       BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
-
       eventsRecorder = [store.eventsSignal testRecorder];
     }
 
@@ -687,7 +686,7 @@ context(@"purchasing products", ^{
         NSError *error = [NSError lt_errorWithCode:1337];
         OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal error:error]);
 
-        [[store purchaseProduct:productIdentifier] subscribeNext:^(id) {}];
+        expect([store purchaseProduct:productIdentifier]).will.finish();
         expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
           return event.eventError.lt_isLTDomain && event.eventError == error &&
               [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
@@ -697,11 +696,14 @@ context(@"purchasing products", ^{
       it(@"should send critical error event when receipt validation fails", ^{
         LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
         NSError *error = [NSError lt_errorWithCode:1337];
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
+            .andReturn([RACSignal return:transaction]);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal error:error]);
 
-        [[store purchaseProduct:productIdentifier] subscribeNext:^(id) {}];
+        expect([store purchaseProduct:productIdentifier]).will.finish();
         expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
           return event.eventError.lt_isLTDomain && event.eventError == error &&
               [event.eventType isEqual:$(BZREventTypeCriticalError)];
@@ -726,7 +728,7 @@ context(@"purchasing products", ^{
                          withValue:underlyingProduct];
         OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"]).andReturn(@"bar");
         BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
-        BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
+        store = [[BZRStore alloc] initWithConfiguration:configuration];
 
         OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
 
@@ -739,76 +741,76 @@ context(@"purchasing products", ^{
         OCMVerifyAll((id)storeKitFacade);
       });
 
-      it(@"should call validate receipt when store kit signal finishes", ^{
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
-        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal return:receiptValidationStatus]);
+      context(@"validating receipt and finishing transactions", ^{
+        __block SKPaymentTransaction *purchasedTransaction;
 
-        expect([store purchaseProduct:productIdentifier]).will.complete();
-        OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-      });
-
-      it(@"should not refresh receipt when product is found in receipt after purchasing", ^{
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
-        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal return:receiptValidationStatus]);
-
-        OCMReject([storeKitFacade refreshReceipt]);
-        expect([store purchaseProduct:productIdentifier]).will.complete();
-      });
-
-      context(@"product not found in receipt after purchasing", ^{
         beforeEach(^{
-          BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
-          bazaarProduct = [bazaarProduct
-                           modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
-                           withValue:OCMClassMock([SKProduct class])];
-          OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"])
-              .andReturn(@"bar");
-          BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
-          store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+          purchasedTransaction = OCMClassMock([SKPaymentTransaction class]);
+          OCMStub([purchasedTransaction transactionState])
+              .andReturn(SKPaymentTransactionStatePurchased);
+          OCMStub([purchasedTransaction transactionIdentifier]).andReturn(@"foo");
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
+              .andReturn([RACSignal return:purchasedTransaction]);
         });
 
-        it(@"should refresh receipt when product is not found in receipt after purchasing", ^{
-          OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        it(@"should validate receipt when store kit signal sends a transaction", ^{
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal return:receiptValidationStatus]);
-          OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
-              .andReturn([RACSignal return:receiptValidationStatus]);
-          OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-
-          expect([store purchaseProduct:@"bar"]).will.complete();
-          OCMVerify([storeKitFacade refreshReceipt]);
+          expect([store purchaseProduct:productIdentifier]).will.finish();
+          OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
         });
 
-        it(@"should send error event when product is not found in receipt after purchasing", ^{
-          LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+        it(@"should send error when validation fails", ^{
+          auto validationError = [NSError lt_errorWithCode:1337];
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal error:validationError]);
 
+          expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+            return error.code == BZRErrorCodePurchaseFailed &&
+                error.lt_underlyingError == validationError;
+          });
+        });
+
+        it(@"should send two error events when validation fails", ^{
+          auto recorder = [store.eventsSignal testRecorder];
+          auto validationError = [NSError lt_errorWithCode:1337];
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal error:validationError]);
+
+          expect([store purchaseProduct:productIdentifier]).will.finish();
+          expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+            auto error = event.eventError;
+            return [event.eventType isEqual:$(BZREventTypeCriticalError)] &&
+                error == validationError;
+          });
+          expect(recorder).will.matchValue(1, ^BOOL(BZREvent *event) {
+            auto error = event.eventError;
+            return [event.eventType isEqual:$(BZREventTypeCriticalError)] &&
+                error.code == BZRErrorCodePurchaseFailed &&
+                error.lt_underlyingError == validationError;
+          });
+        });
+
+        it(@"should finish product's transaction if it appears in receipt transactions", ^{
+          receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
+              @keypath(receiptValidationStatus, receipt.transactions)
+              withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal return:receiptValidationStatus]);
 
-          expect([store purchaseProduct:@"bar"]).will.complete();
-          expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-            return event.eventError.lt_isLTDomain &&
-                event.eventError.code == BZRErrorCodePurchasedProductNotFoundInReceipt &&
-                [event.eventError.bzr_purchasedProductIdentifier isEqualToString:@"bar"] &&
-                [event.eventType isEqual:$(BZREventTypeCriticalError)];
-          });
+          expect([store purchaseProduct:productIdentifier]).will.complete();
+
+          OCMVerify([storeKitFacade finishTransaction:purchasedTransaction]);
         });
-      });
 
-      it(@"should call finish transaction when received a transaction with state purchased", ^{
-        SKPaymentTransaction *purchasedTransaction = OCMClassMock([SKPaymentTransaction class]);
-        OCMStub([purchasedTransaction transactionState])
-            .andReturn(SKPaymentTransactionStatePurchased);
-        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
-            .andReturn([RACSignal return:purchasedTransaction]);
-        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal empty]);
+        it(@"should not finish product's transaction if it doesn't appear in receipt "
+           "transactions", ^{
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal return:receiptValidationStatus]);
+          OCMReject([storeKitFacade finishTransaction:OCMOCK_ANY]);
 
-        expect([store purchaseProduct:productIdentifier]).will.complete();
-        OCMVerify([storeKitFacade finishTransaction:purchasedTransaction]);
+          expect([store purchaseProduct:productIdentifier]).will.finish();
+        });
       });
 
       it(@"should not finish transaction when received a transaction with state purchasing", ^{
@@ -817,8 +819,11 @@ context(@"purchasing products", ^{
             .andReturn(SKPaymentTransactionStatePurchasing);
         OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY])
             .andReturn([RACSignal return:purchasingTransaction]);
+        receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
+            @keypath(receiptValidationStatus, receipt.transactions)
+            withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal empty]);
+            .andReturn([RACSignal return:receiptValidationStatus]);
         OCMReject([storeKitFacade finishTransaction:OCMOCK_ANY]);
 
         expect([store purchaseProduct:productIdentifier]).will.complete();
@@ -1555,15 +1560,37 @@ context(@"handling unfinished completed transactions", ^{
     OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
 
-  it(@"should finish transaction", ^{
+  it(@"should finish transaction if it appears in receipt transactions", ^{
     validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
-    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    auto receiptValidationStatus = [BZRReceiptValidationStatusWithExpiry(YES)
+        modelByOverridingPropertyAtKeypath:
+        @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
+        withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:receiptValidationStatus]);
 
     SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
     OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+
+    OCMExpect([storeKitFacade finishTransaction:transaction]);
+
     [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-    OCMVerify([storeKitFacade finishTransaction:transaction]);
+    OCMVerifyAllWithDelay((id)storeKitFacade, 0.01);
+  });
+
+  it(@"should not finish transaction if it doesn't appear in receipt transactions", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+    OCMReject([storeKitFacade finishTransaction:transaction]);
+
+    [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
   });
 });
 

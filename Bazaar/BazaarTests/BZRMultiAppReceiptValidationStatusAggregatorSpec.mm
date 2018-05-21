@@ -251,8 +251,11 @@ context(@"aggregating receipt validation statuses correctly", ^{
           @"com.lt.anotherApp": anotherAppReceiptReceiptValidationStatus
         };
 
+        auto expectedAppReceiptReceiptValidationStatus = [otherAppReceiptReceiptValidationStatus
+            modelByOverridingPropertyAtKeypath:
+            @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions) withValue:@[]];
         expect([aggregator aggregateMultiAppReceiptValidationStatuses:
-            bundleIDToReceiptValidationStatus]).to.equal(otherAppReceiptReceiptValidationStatus);
+            bundleIDToReceiptValidationStatus]).to.equal(expectedAppReceiptReceiptValidationStatus);
       });
 
       it(@"should return the only non-cancelled multi app subscription", ^{
@@ -270,8 +273,11 @@ context(@"aggregating receipt validation statuses correctly", ^{
           @"com.lt.anotherApp": anotherAppReceiptReceiptValidationStatus
         };
 
+        auto expectedAppReceiptReceiptValidationStatus = [otherAppReceiptReceiptValidationStatus
+            modelByOverridingPropertyAtKeypath:
+            @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions) withValue:@[]];
         expect([aggregator aggregateMultiAppReceiptValidationStatuses:
-            bundleIDToReceiptValidationStatus]).to.equal(otherAppReceiptReceiptValidationStatus);
+            bundleIDToReceiptValidationStatus]).to.equal(expectedAppReceiptReceiptValidationStatus);
       });
     });
   });
