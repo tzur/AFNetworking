@@ -20,4 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Adds JSON deserialization helper methods.
+@interface FBRHTTPResponse (JSONDeserialization)
+
+/// Try to deserialize the response \c content into a JSON object. The returned object can be either
+/// an \c NSDictionary or \c NSArray (meaning this does not supports multi-part responses containing
+/// partial JSON data). In case of an error during the deserialization or if the response has no
+/// content \c nil is returned and \c error will be filled with appropriate error information. For
+/// any error that occurs the error code will be \c FBRErrorCodeJSONDeserializationFailed and it
+/// also may contain an underlying error depending on the cause.
+- (nullable id)deserializeJSONContentWithError:(NSError **)error;
+
+@end
+
 NS_ASSUME_NONNULL_END

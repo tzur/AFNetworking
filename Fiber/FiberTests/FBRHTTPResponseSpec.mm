@@ -3,6 +3,12 @@
 
 #import "FBRHTTPResponse.h"
 
+#import "NSErrorCodes+Fiber.h"
+
+#pragma mark -
+#pragma mark FBRHTTPResponse Specs
+#pragma mark -
+
 SpecBegin(FBRHTTPResponse)
 
 __block NSURL *URL;
@@ -63,6 +69,70 @@ context(@"copying", ^{
 
     expect(response).to.equal(responseCopy);
   });
+});
+
+SpecEnd
+
+#pragma mark -
+#pragma mark FBRHTTPResponse+JSONDeserialization Specs
+#pragma mark -
+
+SpecBegin(FBRHTTPResponse_JSONDeserialization)
+
+__block NSURL *URL;
+__block NSHTTPURLResponse *responseMetadata;
+
+beforeEach(^{
+  URL = [NSURL URLWithString:@"http://foo.bar"];
+  responseMetadata =
+      [[NSHTTPURLResponse alloc] initWithURL:URL statusCode:200 HTTPVersion:nil headerFields:nil];
+});
+
+it(@"should successfully deserialize JSON array", ^{
+  auto responseContent = [@"[1, 2, \"3\"]" dataUsingEncoding:NSUTF8StringEncoding];
+  auto response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata
+                                                    content:responseContent];
+
+  NSError *error;
+  id deserializedContent = [response deserializeJSONContentWithError:&error];
+
+  expect(error).to.beNil();
+  expect(deserializedContent).to.equal(@[@1, @2, @"3"]);
+});
+
+it(@"should successfully deserialize JSON object", ^{
+  auto responseContent = [@"{\"foo\": \"bar\"}" dataUsingEncoding:NSUTF8StringEncoding];
+  auto response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata
+                                                    content:responseContent];
+
+  NSError *error;
+  id deserializedContent = [response deserializeJSONContentWithError:&error];
+
+  expect(error).to.beNil();
+  expect(deserializedContent).to.equal(@{@"foo": @"bar"});
+});
+
+it(@"should fail if response content is nil", ^{
+  auto response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata content:nil];
+
+  NSError *error;
+  id deserializedContent = [response deserializeJSONContentWithError:&error];
+
+  expect(error.code).to.equal(FBRErrorCodeJSONDeserializationFailed);
+  expect(deserializedContent).to.beNil();
+});
+
+it(@"should fail if response content is not a valid JSON", ^{
+  auto responseContent = [@"foo-bar" dataUsingEncoding:NSUTF8StringEncoding];
+  auto response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata
+                                                    content:responseContent];
+
+  NSError *error;
+  id deserializedContent = [response deserializeJSONContentWithError:&error];
+
+  expect(error.code).to.equal(FBRErrorCodeJSONDeserializationFailed);
+  expect(error.lt_underlyingError).toNot.beNil();
+  expect(deserializedContent).to.beNil();
 });
 
 SpecEnd
