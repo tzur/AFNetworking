@@ -67,6 +67,10 @@
         "firmware_id": {
           "description": "@see -[INTDeviceInfo firmwareID]",
           "type": ["string", "null"]
+        },
+        "usage_events_disabled": {
+          "description": "@see -[INTDeviceInfo usageEventsDisabled]",
+          "type": ["boolean", "null"]
         }
       },
       "required": [
@@ -84,7 +88,8 @@
         "purchase_receipt",
         "app_store_country",
         "in_low_power_mode",
-        "firmware_id"
+        "firmware_id",
+        "usage_events_disabled"
       ]
     }
   ]
