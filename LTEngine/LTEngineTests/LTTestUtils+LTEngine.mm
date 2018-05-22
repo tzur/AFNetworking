@@ -547,6 +547,17 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
   return [kMatOutputBasedir stringByAppendingPathComponent:filename];
 }
 
+static cv::Mat4b LTFourChannelMatrixFromTwoChannels(const cv::Mat2b &mat) {
+  cv::Mat ones = cv::Mat::ones(mat.rows, mat.cols, CV_8U) * 255;
+  cv::Mat zeros = cv::Mat::zeros(mat.rows, mat.cols, CV_8U);
+  cv::Mat paddedMat(mat.rows, mat.cols, CV_8UC4);
+  const int fromTo[] = {0, 2, 1, 1, 2, 0, 3, 3};
+  Matrices inputs{mat, zeros, ones};
+  Matrices outputs{paddedMat};
+  cv::mixChannels(inputs, outputs, fromTo, 4);
+  return paddedMat;
+}
+
 static void LTWriteMat(const cv::Mat &mat, NSString *path) {
   LTParameterAssert(mat.dims == 2, "Non 2-dimenional matrices don't have writing support. "
                     @"Input matrix is %d-dimensional.", mat.dims);
@@ -556,13 +567,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
       break;
     case CV_8UC2: {
-      cv::Mat ones = cv::Mat::ones(mat.rows, mat.cols, CV_8U) * 255;
-      cv::Mat zeros = cv::Mat::zeros(mat.rows, mat.cols, CV_8U);
-      cv::Mat paddedMat(mat.rows, mat.cols, CV_8UC4);
-      const int fromTo[] = {0, 2, 1, 1, 2, 0, 3, 3};
-      Matrices inputs{mat, zeros, ones};
-      Matrices outputs{paddedMat};
-      cv::mixChannels(inputs, outputs, fromTo, 4);
+      auto paddedMat = LTFourChannelMatrixFromTwoChannels(mat);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], paddedMat);
     } break;
     case CV_8UC3: {
@@ -581,12 +586,13 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       LTConvertMat(mat, &converted, converted.type());
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
     } break;
-    case CV_16FC4: {
-      cv::Mat4b converted;
+    case CV_16FC2:
+    case CV_32FC2: {
+      cv::Mat2b converted;
       LTConvertMat(mat, &converted, converted.type());
-      cv::Mat bgrMat;
-      cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
-      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
+
+      auto paddedMat = LTFourChannelMatrixFromTwoChannels(converted);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], paddedMat);
     } break;
     case CV_16U:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
@@ -608,6 +614,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(converted, bgrMat, CV_RGB2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
+    case CV_16FC4:
     case CV_32FC4:
     case CV_64FC4: {
       cv::Mat converted;
