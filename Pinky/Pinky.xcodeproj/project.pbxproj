@@ -287,6 +287,7 @@
 		E4C11CB620318041002CC63E /* sketch.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB220318040002CC63E /* sketch.nnmodel */; };
 		E4C11CB720318041002CC63E /* sky.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB320318041002CC63E /* sky.nnmodel */; };
 		E4C2FCFB2021E51F002EF963 /* person_grayscale_processor_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = E4C2FCD92021E51F002EF963 /* person_grayscale_processor_mask.png */; };
+		E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */; };
 		E4D719331FE145580047E620 /* PNKGather.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719321FE145580047E620 /* PNKGather.mm */; };
 		E4D719571FE1491E0047E620 /* PNKGather.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D719551FE148F90047E620 /* PNKGather.metal */; };
 		E4D719591FE16D650047E620 /* PNKGatherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719581FE16D650047E620 /* PNKGatherSpec.mm */; };
@@ -1006,6 +1007,8 @@
 		E4C11CB220318040002CC63E /* sketch.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sketch.nnmodel; path = Models/style_transfer/sketch.nnmodel; sourceTree = SOURCE_ROOT; };
 		E4C11CB320318041002CC63E /* sky.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sky.nnmodel; path = Models/segmentation/sky.nnmodel; sourceTree = SOURCE_ROOT; };
 		E4C2FCD92021E51F002EF963 /* person_grayscale_processor_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person_grayscale_processor_mask.png; path = Resources/person_grayscale_processor_mask.png; sourceTree = "<group>"; };
+		E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionLayerUtils.mm; sourceTree = "<group>"; };
+		E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayerUtils.h; sourceTree = "<group>"; };
 		E4D0B9C61FFCE64800BF5DBF /* PNKActivation.metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivation.metal.h; sourceTree = "<group>"; };
 		E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKActivation.metal; sourceTree = "<group>"; };
 		E4D719311FE145580047E620 /* PNKGather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKGather.h; sourceTree = "<group>"; };
@@ -1901,6 +1904,8 @@
 			isa = PBXGroup;
 			children = (
 				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
+				E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */,
+				E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */,
 				E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */,
 				E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */,
 			);
@@ -2622,6 +2627,7 @@
 				E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */,
 				06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */,
 				06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */,
+				E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */,
 				E461C81D20173DB700261FCD /* PNKCrop.mm in Sources */,
 				E41D72411FFE7D8B00A2B26D /* PNKActivationLayer.mm in Sources */,
 				E4196CC91FEF9E8A004D1075 /* PNKNeuralNode.mm in Sources */,
