@@ -52,6 +52,7 @@ context(@"photos", ^{
       @"id": @"foo",
       @"asset_type": @"photo",
       @"source_id": @"pixabay",
+      @"artist": @"foo",
       @"all_sizes": @[
         @{
           @"height": @8,
@@ -111,6 +112,7 @@ context(@"photos", ^{
     expect(descriptor.modificationDate).to.beNil();
     expect(descriptor.filename).to.beNil();
     expect(descriptor.duration).to.equal(0);
+    expect(descriptor.artist).to.equal(@"foo");
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
@@ -121,6 +123,16 @@ context(@"photos", ^{
     expect(descriptor.descriptorTraits)
         .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
   });
+
+  it(@"should deserialize without artist", ^{
+    auto noArtistDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"artist"]];
+    PTNOceanAssetDescriptor *noArtistDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noArtistDictionary error:&parseError];
+    expect(noArtistDescriptor).notTo.beNil();
+    expect(noArtistDescriptor.artist).to.beNil();
+  });
 });
 
 context(@"video", ^{
@@ -129,6 +141,7 @@ context(@"video", ^{
       @"id": @"foo",
       @"asset_type": @"video",
       @"source_id": @"pixabay",
+      @"artist": @"foo",
       @"duration": @1337,
       @"all_sizes": @[
         @{
@@ -247,6 +260,16 @@ context(@"video", ^{
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
     expect(descriptor.descriptorTraits)
         .to.equal([@[kPTNDescriptorTraitCloudBasedKey, kPTNDescriptorTraitAudiovisualKey] lt_set]);
+  });
+
+  it(@"should deserialize without artist", ^{
+    auto noArtistDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"artist"]];
+    PTNOceanAssetDescriptor *noArtistDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noArtistDictionary error:&parseError];
+    expect(noArtistDescriptor).notTo.beNil();
+    expect(noArtistDescriptor.artist).to.beNil();
   });
 });
 

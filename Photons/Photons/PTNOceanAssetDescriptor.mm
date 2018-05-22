@@ -99,6 +99,7 @@ static NSString * const kUnmatchedKeysDescription =
 @implementation PTNOceanAssetDescriptor
 
 @synthesize duration = _duration;
+@synthesize artist = _artist;
 
 #pragma mark -
 #pragma mark MTLJSONSerializing
@@ -180,6 +181,7 @@ static NSString * const kUnmatchedKeysDescription =
     @instanceKeypath(PTNOceanAssetDescriptor, images): @"all_sizes",
     @instanceKeypath(PTNOceanAssetDescriptor, duration): @"duration",
     @instanceKeypath(PTNOceanAssetDescriptor, videos): @"videos",
+    @instanceKeypath(PTNOceanAssetDescriptor, artist): @"artist",
     @instanceKeypath(PTNOceanAssetDescriptor, type): @"asset_type",
     @instanceKeypath(PTNOceanAssetDescriptor, source): @"source_id",
     @instanceKeypath(PTNOceanAssetDescriptor, identifier): @"id"

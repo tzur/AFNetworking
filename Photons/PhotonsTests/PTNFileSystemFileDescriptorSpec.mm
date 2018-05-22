@@ -27,6 +27,7 @@ it(@"should initialize with path", ^{
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
   expect(descriptor.descriptorTraits).to.equal([NSSet set]);
+  expect(descriptor.artist).to.beNil();
 });
 
 it(@"should use last path component as localized title", ^{

@@ -114,6 +114,9 @@ extern NSString * const kPTNDescriptorTraitGIFKey;
 /// Capabilities supported by the asset backed by this descriptor.
 @property (readonly, nonatomic) PTNAssetDescriptorCapabilities assetDescriptorCapabilities;
 
+/// The name of the artist that created the asset or \c nil if that information is unavailable.
+@property (readonly, nonatomic, nullable) NSString *artist;
+
 @optional
 
 /// Current favorite status of the asset backed by this descriptor. This property must be available

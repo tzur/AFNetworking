@@ -135,7 +135,7 @@
 		84E55C471C8EC87200D91339 /* PTNPhotoKitFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0901B01059B00757B1F /* PTNPhotoKitFetcher.m */; };
 		84E55C481C8EC87400D91339 /* PTNPhotoKitImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C541C71C72E00DBB987 /* PTNPhotoKitImageAsset.m */; };
 		84E55C491C8EC87700D91339 /* PTNPhotoKitObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */; };
-		84E700FC1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m */; };
+		84E700FC1D0043D8005A9AFC /* PTNFakeAssetDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.mm */; };
 		84E72BCE1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E72BCD1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm */; };
 		84E9E9081CBE7D8D006EBDB3 /* NSURLCache+Photons.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E9E9021CBE7D8D006EBDB3 /* NSURLCache+Photons.m */; };
 		84E9E9591CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E9E9581CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm */; };
@@ -731,7 +731,7 @@
 		84E079E21C06F0A900446A3B /* PTNPhotoKitFakeFetchResultChangeDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetchResultChangeDetails.m; sourceTree = "<group>"; };
 		84E55C161C8EC72E00D91339 /* libPhotons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotons.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E700FA1D0043D8005A9AFC /* PTNFakeAssetDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNFakeAssetDescriptor.h; sourceTree = "<group>"; };
-		84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNFakeAssetDescriptor.m; sourceTree = "<group>"; };
+		84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNFakeAssetDescriptor.mm; sourceTree = "<group>"; };
 		84E72BCD1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNInterceptingAssetManagerSpec.mm; sourceTree = "<group>"; };
 		84E9E9011CBE7D8D006EBDB3 /* NSURLCache+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLCache+Photons.h"; sourceTree = "<group>"; };
 		84E9E9021CBE7D8D006EBDB3 /* NSURLCache+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLCache+Photons.m"; sourceTree = "<group>"; };
@@ -1546,7 +1546,7 @@
 				8463DA031D1008A000FF4935 /* PTNFakeAlbumDescriptor.h */,
 				8463DA041D1008A000FF4935 /* PTNFakeAlbumDescriptor.m */,
 				84E700FA1D0043D8005A9AFC /* PTNFakeAssetDescriptor.h */,
-				84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m */,
+				84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.mm */,
 				841B00EF1CEA05FD00B3CFD7 /* PTNFakeAssetManager.h */,
 				841B00F01CEA05FD00B3CFD7 /* PTNFakeAssetManager.m */,
 				845B68E61CF3251C00D405ED /* PTNFakeDescriptor.h */,
@@ -2327,7 +2327,7 @@
 				8414EACD1C5E307500014DD1 /* NSURL+PTNResizingStrategySpec.m in Sources */,
 				88F8E5231EA950BB0057DE07 /* PTNImageDataAssetSpec.mm in Sources */,
 				8B5619681B654515006B0DA0 /* PTNProgressSpec.m in Sources */,
-				84E700FC1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m in Sources */,
+				84E700FC1D0043D8005A9AFC /* PTNFakeAssetDescriptor.mm in Sources */,
 				8B5619661B654227006B0DA0 /* RACStream+PhotonsSpec.m in Sources */,
 				8B56196A1B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.mm in Sources */,
 				BE40BE431DF71230007F4F57 /* PTNAVAssetFetchOptions+PhotoKitSpec.mm in Sources */,

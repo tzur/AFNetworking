@@ -129,6 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
   return _duration;
 }
 
+- (nullable NSString *)artist {
+  return nil;
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
