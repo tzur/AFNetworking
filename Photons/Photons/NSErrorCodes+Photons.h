@@ -50,5 +50,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   // Caused when failing while validating a cached response.
   PTNErrorCodeCacheValidationFailed,
   // Caused when extracting image data from asset has failed.
-  PTNErrorCodeAVImageAssetFetchImageDataFailed
+  PTNErrorCodeAVImageAssetFetchImageDataFailed,
+  // Caused when a fetch operation of remote asset failed.
+  PTNErrorCodeRemoteFetchFailed
 );

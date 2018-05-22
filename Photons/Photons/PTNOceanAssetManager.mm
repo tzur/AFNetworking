@@ -4,9 +4,6 @@
 #import "PTNOceanAssetManager.h"
 
 #import <AVFoundation/AVPlayerItem.h>
-#import <Fiber/FBRHTTPClient.h>
-#import <Fiber/FBRHTTPResponse.h>
-#import <Fiber/RACSignal+Fiber.h>
 #import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/LTUTICache.h>
@@ -24,22 +21,23 @@
 #import "PTNCacheProxy.h"
 #import "PTNDataBackedImageAsset.h"
 #import "PTNDateProvider.h"
+#import "PTNFileBackedAVAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNOceanAlbumDescriptor.h"
 #import "PTNOceanAssetDescriptor.h"
 #import "PTNOceanAssetSearchResponse.h"
+#import "PTNOceanClient.h"
 #import "PTNOceanEnums.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "RACSignal+Mantle.h"
 #import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNOceanAssetManager ()
 
-/// HTTP Client for sending GET requests to Ocean.
-@property (readonly, nonatomic) FBRHTTPClient *client;
+/// Ocean client used to communicate with Ocean servers.
+@property (readonly, nonatomic) PTNOceanClient *client;
 
 /// Used for initial time reference for the maximum ages of the cached objects.
 @property (readonly, nonatomic) PTNDateProvider *dateProvider;
@@ -53,10 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)init {
-  return [self initWithClient:[FBRHTTPClient client] dateProvider:[[PTNDateProvider alloc] init]];
+  return [self initWithClient:[[PTNOceanClient alloc] init]
+                 dateProvider:[[PTNDateProvider alloc] init]];
 }
 
-- (instancetype)initWithClient:(FBRHTTPClient *)client
+- (instancetype)initWithClient:(PTNOceanClient *)client
                   dateProvider:(PTNDateProvider *)dateProvider {
   if (self = [super init]) {
     _dateProvider = dateProvider;
@@ -69,47 +68,31 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Album Fetching
 #pragma mark -
 
-/// Ocean base endpoint.
-static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com";
-
 /// Max age, in seconds, of cached \c PTNAlbum objects.
 static const NSTimeInterval kAlbumMaxAge = 300;
 
-NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
-  static NSDictionary *assetTypeToEndpointPath = @{
-    $(PTNOceanAssetTypePhoto): @"image",
-    $(PTNOceanAssetTypeVideo): @"video"
-  };
-
-  NSString * _Nullable endpointPath = assetTypeToEndpointPath[assetType];
-  if (!endpointPath) {
+static PTNOceanSearchParameters * _Nullable PTNAlbumURLToSearchParameters(NSURL *url) {
+  if (![url.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAlbum)]) {
     return nil;
   }
-  return [@[kBaseEndpoint, endpointPath, @"search"] componentsJoinedByString:@"/"];
+
+  if (!url.ptn_oceanAssetType || !url.ptn_oceanAssetSource || !url.ptn_oceanSearchPhrase ||
+      !url.ptn_oceanPageNumber) {
+    return nil;
+  }
+
+  return [[PTNOceanSearchParameters alloc]
+          initWithType:url.ptn_oceanAssetType source:url.ptn_oceanAssetSource
+          phrase:url.ptn_oceanSearchPhrase page:[url.ptn_oceanPageNumber unsignedIntegerValue]];
 }
 
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
-  if (![url.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAlbum)]) {
+  auto _Nullable parameters = PTNAlbumURLToSearchParameters(url);
+  if (!parameters) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  auto _Nullable assetType = url.ptn_oceanAssetType;
-  if (!assetType) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
-  }
-
-  NSMutableDictionary<NSString *, NSObject *> *requestParameters =
-      [[self oceanRequestParametersWithURL:url] mutableCopy];
-  requestParameters[@"phrase"] = url.ptn_oceanSearchPhrase;
-  requestParameters[@"page"] = url.ptn_oceanPageNumber.stringValue;
-
-  NSString * _Nullable endpoint = PTNSearchEndpointFromType(assetType);
-  if (!endpoint) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
-  }
-  return [[[[[self.client GET:endpoint withParameters:requestParameters headers:nil]
-      fbr_deserializeJSON]
-      ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
+  return [[[self.client searchWithParameters:parameters]
       map:^PTNAlbumChangeset *(PTNOceanAssetSearchResponse *response) {
         auto _Nullable nextAlbumURL = response.page < response.pagesCount ?
             [url lt_URLByReplacingQueryItemsWithName:kPTNOceanURLQueryItemPageKey
@@ -129,13 +112,6 @@ NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
       }];
 }
 
-- (FBRHTTPRequestParameters *)oceanRequestParametersWithURL:(NSURL *)url {
-  return @{
-    @"source_id": url.ptn_oceanAssetSource.identifier,
-    @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString
-  };
-}
-
 #pragma mark -
 #pragma mark Asset fetching
 #pragma mark -
@@ -143,6 +119,20 @@ NSString * _Nullable PTNSearchEndpointFromType(PTNOceanAssetType *assetType) {
 /// Max age, in seconds, of cached \c PTNOceanAssetDescriptor and \c PTNDataBackedImageAsset
 /// objects.
 static const NSTimeInterval kAssetMaxAge = 86400;
+
+static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameters(NSURL *url) {
+  if (![url.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAsset)]) {
+    return nil;
+  }
+
+  if (!url.ptn_oceanAssetType || !url.ptn_oceanAssetSource || !url.ptn_oceanAssetIdentifier) {
+    return nil;
+  }
+
+  return [[PTNOceanAssetFetchParameters alloc]
+          initWithType:url.ptn_oceanAssetType source:url.ptn_oceanAssetSource
+          identifier:url.ptn_oceanAssetIdentifier];
+}
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (!url.ptn_oceanURLType) {
@@ -159,22 +149,12 @@ static const NSTimeInterval kAssetMaxAge = 86400;
       return [RACSignal return:cacheProxy];
     }
     case PTNOceanURLTypeAsset: {
-      auto _Nullable assetType = url.ptn_oceanAssetType;
-      if (!assetType) {
+      auto _Nullable parameters = PTNAssetURLToAssetFetchParameters(url);
+      if (!parameters) {
         return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
       }
 
-      if (![assetType isEqual:$(PTNOceanAssetTypePhoto)]) {
-        return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
-      }
-
-      NSString *urlString = [@[kBaseEndpoint, @"asset", url.ptn_oceanAssetIdentifier]
-          componentsJoinedByString:@"/"];
-      auto requestParameters = [self oceanRequestParametersWithURL:url];
-
-      return [[[[[self.client GET:urlString withParameters:requestParameters headers:nil]
-          fbr_deserializeJSON]
-          ptn_parseDictionaryWithClass:[PTNOceanAssetDescriptor class]]
+      return [[[self.client fetchAssetDescriptorWithParameters:parameters]
           map:^PTNCacheProxy *(PTNOceanAssetDescriptor *descriptor) {
             auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
                                                      responseTime:[self.dateProvider date]
@@ -265,17 +245,18 @@ static const NSTimeInterval kAssetMaxAge = 86400;
   if (!url.absoluteString) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
-  return [[self.client GET:url.absoluteString withParameters:nil headers:nil]
-      map:^PTNProgress<id<PTNImageAsset>> *(LTProgress<FBRHTTPResponse *> *progress) {
+
+  return [[self.client downloadDataWithURL:url]
+      map:^PTNProgress<id<PTNImageAsset>> *
+          (PTNProgress<RACTwoTuple<NSData *, NSString *> *> *progress) {
         if (!progress.result) {
-          return [[PTNProgress alloc] initWithProgress:@(progress.progress)];
+          return [PTNProgress progressWithProgress:progress.progress];
         }
-        static LTUTICache *utiCache = [LTUTICache sharedCache];
-        auto _Nullable uti = progress.result.metadata.MIMEType ?
-            [utiCache preferredUTIForMIMEType:progress.result.metadata.MIMEType] : nil;
-        auto result = [[PTNDataBackedImageAsset alloc]
-                       initWithData:progress.result.content uniformTypeIdentifier:uti
-                       resizingStrategy:resizingStrategy];
+
+        RACTupleUnpack(NSData *data, NSString * _Nullable uti) = progress.result;
+
+        auto result = [[PTNDataBackedImageAsset alloc] initWithData:data uniformTypeIdentifier:uti
+                                                   resizingStrategy:resizingStrategy];
         auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
                                                  responseTime:[self.dateProvider date]
                                                     entityTag:nil];
@@ -366,8 +347,35 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
 
 - (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
-  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
-                                associatedDescriptor:descriptor]];
+  if (![descriptor isKindOfClass:[PTNOceanAssetDescriptor class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+  auto assetDescriptor = (PTNOceanAssetDescriptor *)descriptor;
+
+  if (![assetDescriptor.type isEqual:$(PTNOceanAssetTypeVideo)]) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
+                                                  url:descriptor.ptn_identifier]];
+  }
+  if (!assetDescriptor.videos.count) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
+  auto largestVideo = [assetDescriptor.videos lt_max:^BOOL(PTNOceanVideoAssetInfo *a,
+                                                           PTNOceanVideoAssetInfo *b) {
+    return a.height * a.width < b.height * b.width;
+  }];
+
+  return [[self.client downloadFileWithURL:largestVideo.url]
+          map:^PTNProgress<id<PTNAVDataAsset>> *(PTNProgress<LTPath *> *progress) {
+            if (!progress.result) {
+              return [PTNProgress progressWithProgress:progress.progress];
+            }
+
+            auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:progress.result];
+            return [[PTNProgress alloc] initWithResult:asset];
+          }];
 }
 
 #pragma mark -
