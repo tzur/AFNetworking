@@ -3,6 +3,8 @@
 
 #import "PNKImageMotionStaticLayer.h"
 
+#import "PNKImageMotionLayerExamples.h"
+
 SpecBegin(PNKImageMotionStaticLayer)
 
 // Image width.
@@ -17,13 +19,15 @@ beforeEach(^{
                  initWithImageSize:cv::Size(kImageHeight, kImageWidth)];
 });
 
-it(@"should return the same image size as passed through initializer", ^{
-  auto imageSize = staticLayer.imageSize;
-  expect(imageSize.width).to.equal(kImageWidth);
-  expect(imageSize.height).to.equal(kImageHeight);
+itShouldBehaveLike(kPNKImageMotionLayerExamples, ^{
+  return @{
+    kPNKImageMotionLayerExamplesLayer: staticLayer,
+    kPNKImageMotionLayerExamplesImageWidth: @(kImageWidth),
+    kPNKImageMotionLayerExamplesImageHeight: @(kImageHeight)
+  };
 });
 
-it(@"should fill displacements matrix with zeroes", ^{
+it(@"should fill displacements matrix with zeroes for non-zero time", ^{
   cv::Mat2hf displacements(kImageHeight, kImageWidth);
   [staticLayer displacements:&displacements forTime:1.5];
 
