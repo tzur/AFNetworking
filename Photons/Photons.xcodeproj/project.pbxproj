@@ -36,6 +36,7 @@
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
 		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
 		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
+		6381F1E220B4541D006D7B57 /* libFiberTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6381F1E120B4541D006D7B57 /* libFiberTestUtils.a */; };
 		655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99E31CA6BF2200ED2334 /* libExpecta.a */; };
 		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
 		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
@@ -269,6 +270,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
 			remoteInfo = "Mantle-iOSTests";
+		};
+		6381F1E020B4541D006D7B57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6381F1BE20B44B0D006D7B57;
+			remoteInfo = FiberTestUtils;
 		};
 		6512CFFB1D48DA7B00D2C216 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -928,6 +936,7 @@
 				8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */,
 				655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */,
 				28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */,
+				6381F1E220B4541D006D7B57 /* libFiberTestUtils.a in Frameworks */,
 				8B10C8951F3EFAFE00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
 				19D95D1F1FBB1C2500357EB9 /* libLTKitTestUtils.a in Frameworks */,
@@ -988,6 +997,7 @@
 			children = (
 				28BAD5BA1F1E031C001048D0 /* libFiber.a */,
 				28BAD5BC1F1E031C001048D0 /* FiberTests.xctest */,
+				6381F1E120B4541D006D7B57 /* libFiberTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1857,6 +1867,13 @@
 			fileType = wrapper.cfbundle;
 			path = "Mantle-iOSTests.xctest";
 			remoteRef = 28BAD5E71F1E033A001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6381F1E120B4541D006D7B57 /* libFiberTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFiberTestUtils.a;
+			remoteRef = 6381F1E020B4541D006D7B57 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		655DCB061D46506700E44DAA /* libextobjc_OSX.a */ = {
