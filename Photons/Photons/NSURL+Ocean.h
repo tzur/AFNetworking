@@ -57,6 +57,11 @@ extern NSString * const kPTNOceanURLQueryItemIdentifierKey;
                              assetType:(PTNOceanAssetType *)assetType
                             identifier:(NSString *)identifier;
 
+/// Initializes an asset URL by prasing the given \c bazaarIdentifier, see the
+/// \c ptn_bazaarIdentifier property a description of Bazaar identifier. If the given
+/// \c bazaarIdentifier cannot be parsed \c nil is returned.
++ (nullable NSURL *)ptn_oceanAssetURLWithBazaarIdentifier:(NSString *)bazaarIdentifier;
+
 /// Ocean type associated with this instance, or \c nil if the URL is not of Ocean type or isn't an
 /// Ocean url.
 @property (readonly, nonatomic, nullable) PTNOceanURLType *ptn_oceanURLType;
@@ -80,6 +85,15 @@ extern NSString * const kPTNOceanURLQueryItemIdentifierKey;
 /// Asset identifier associated with this instance, or \c nil if the URL does not contain an asset
 /// identifier or isn't an Ocean url.
 @property (readonly, nonatomic, nullable) NSString *ptn_oceanAssetIdentifier;
+
+/// A unique identifier representing the asset. The identifier is comprised of Ocean URL scheme,
+/// the source, the asset type and the identifier of the asset, separated by a dot.
+///
+/// @example \c com.lightricks.Photons.Ocean.pixabay.image.ba84nsk3n1vkdsn3l4k
+/// @example \c com.lightricks.Photons.Ocean.getty.video.574852058740
+///
+/// Returns \c nil if the URL does not represent an asset or isn't an Ocean url.
+@property (readonly, nonatomic, nullable) NSString *ptn_bazaarIdentifier;
 
 @end
 

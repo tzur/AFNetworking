@@ -74,6 +74,29 @@ NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
   return components.URL;
 }
 
++ (nullable NSURL *)ptn_oceanAssetURLWithBazaarIdentifier:(NSString *)bazaarIdentifier {
+  auto identifierPrefix = [NSString stringWithFormat:@"%@.", [self class].ptn_oceanScheme];
+  if (![bazaarIdentifier hasPrefix:identifierPrefix]) {
+    return nil;
+  }
+
+  auto bazaarIdentifierWithoutPrefix = [bazaarIdentifier
+                                        substringFromIndex:identifierPrefix.length];
+  auto identifierComponents = [bazaarIdentifierWithoutPrefix componentsSeparatedByString:@"."];
+  if (identifierComponents.count != 3) {
+    return nil;
+  }
+
+  auto _Nullable assetSource = [PTNOceanAssetSource sourceWithIdentifier:identifierComponents[0]];
+  auto _Nullable assetType = [PTNOceanAssetType typeWithIdentifier:identifierComponents[1]];
+  if (!assetType || !assetSource) {
+    return nil;
+  }
+
+  return [NSURL ptn_oceanAssetURLWithSource:assetSource assetType:assetType
+                                 identifier:identifierComponents[2]];
+}
+
 - (nullable PTNOceanURLType *)ptn_oceanURLType {
   if (![self.scheme isEqualToString:[NSURL ptn_oceanScheme]]) {
     return nil;
@@ -129,6 +152,19 @@ NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
     return nil;
   }
   return [self lt_queryDictionary][kPTNOceanURLQueryItemIdentifierKey];
+}
+
+- (nullable NSString *)ptn_bazaarIdentifier {
+  if (![self.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAsset)]) {
+    return nil;
+  }
+
+  return [@[
+    [self class].ptn_oceanScheme,
+    self.ptn_oceanAssetSource.identifier,
+    self.ptn_oceanAssetType.identifier,
+    self.ptn_oceanAssetIdentifier,
+  ] componentsJoinedByString:@"."];
 }
 
 @end
