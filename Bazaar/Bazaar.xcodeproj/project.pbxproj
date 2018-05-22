@@ -123,6 +123,9 @@
 		8B10C76F1F3EF6D200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C76C1F3EF6C300F76142 /* libLLReactiveMatchers.a */; };
 		8B54E9E01D89926800104102 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		8B6867571F3B275100F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B68640E1F33477D00F0EF4C /* ReactiveObjC.framework */; };
+		9F4D84F620A9B09200529017 /* BZRTweaksCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F4D84F420A9B09200529017 /* BZRTweaksCategory.h */; };
+		9F4D84F720A9B09200529017 /* BZRTweaksCategory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F4D84F520A9B09200529017 /* BZRTweaksCategory.mm */; };
+		9F4D853020A9B0A800529017 /* BZRTweaksCategorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F4D852F20A9B0A800529017 /* BZRTweaksCategorySpec.mm */; };
 		9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4FE02520976B5F00FC64E1 /* MessageUI.framework */; };
 		9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31A208F5FA800080BEA /* libFBTweak.a */; };
 		9F50B25520AB06BE00334641 /* BZRFakeProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */; };
@@ -938,6 +941,9 @@
 		88A67E101FD5C176005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B10C7631F3EF6C300F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863FF1F33477D00F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
+		9F4D84F420A9B09200529017 /* BZRTweaksCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksCategory.h; sourceTree = "<group>"; };
+		9F4D84F520A9B09200529017 /* BZRTweaksCategory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksCategory.mm; sourceTree = "<group>"; };
+		9F4D852F20A9B0A800529017 /* BZRTweaksCategorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksCategorySpec.mm; sourceTree = "<group>"; };
 		9F4FE02520976B5F00FC64E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9F50B25320AB06BE00334641 /* BZRFakeProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeProductsInfoProvider.h; sourceTree = "<group>"; };
 		9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeProductsInfoProvider.mm; sourceTree = "<group>"; };
@@ -2098,6 +2104,7 @@
 		C477D0917F20DB72D45CF687 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
+				9F4D852F20A9B0A800529017 /* BZRTweaksCategorySpec.mm */,
 				C477D825D5AA2474FB758A3C /* BZRTweaksCollectionsProviderSpec.mm */,
 			);
 			name = Tweaks;
@@ -2109,6 +2116,8 @@
 				C477D8F9516E862882129D29 /* BZRSubscriptionCollectionsProvider.h */,
 				C477D78D56A1BA6AB2074265 /* BZRSubscriptionCollectionsProvider.mm */,
 				C477D259167704EA25DB082A /* BZRTweakCollectionsProvider.h */,
+				9F4D84F420A9B09200529017 /* BZRTweaksCategory.h */,
+				9F4D84F520A9B09200529017 /* BZRTweaksCategory.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -2275,6 +2284,7 @@
 				63F08B361FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.h in Headers */,
 				6526DEF51D41070E0034DE01 /* BZRZipFileArchiver.h in Headers */,
 				B9EF55031FCD8E0800083414 /* BZRKeychainStorageRoute.h in Headers */,
+				9F4D84F620A9B09200529017 /* BZRTweaksCategory.h in Headers */,
 				65013B571D498D2800D06E79 /* BZRZipArchiveFactory.h in Headers */,
 				B97BF8A31F554A1E00178C68 /* BZRRequestStatusSignal.h in Headers */,
 				CDC75AA51F04DBEB00247591 /* BZRReceiptValidationStatusCache.h in Headers */,
@@ -2883,6 +2893,7 @@
 				B9237B111D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm in Sources */,
 				CDC762F81F08DCBC00247591 /* BZRReceiptValidationStatusCacheSpec.mm in Sources */,
 				6347C6E4201640C7002B111D /* BZRMultiAppSubscriptionClassifierSpec.mm in Sources */,
+				9F4D853020A9B0A800529017 /* BZRTweaksCategorySpec.mm in Sources */,
 				B9C9C85220177B5C0035432E /* BZRPurchaseHelperSpec.mm in Sources */,
 				B9A84FED1DE1C042001AA37C /* BZRLocaleBasedVariantSelectorSpec.mm in Sources */,
 				B97A87461D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm in Sources */,
@@ -3002,6 +3013,7 @@
 				6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */,
 				6502EFCE1D34D581000CD68B /* RACSignal+Bazaar.mm in Sources */,
 				B9ED1F4C1D53682C00932EE8 /* BZRContentFetcherParameters.mm in Sources */,
+				9F4D84F720A9B09200529017 /* BZRTweaksCategory.mm in Sources */,
 				CD81DFAD1E93BA940061C12D /* BZRKeychainStorageMigrator.mm in Sources */,
 				B964741C1FBC3CF20056510D /* BZRStoreKitMetadataFetcher.mm in Sources */,
 				B9A851941DE24768001AA37C /* BZRProductsWithVariantsProvider.mm in Sources */,
