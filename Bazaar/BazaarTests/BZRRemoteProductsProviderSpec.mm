@@ -6,6 +6,7 @@
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPResponse.h>
 #import <Fiber/RACSignal+Fiber.h>
+#import <FiberTestUtils/FBRHTTPTestUtils.h>
 #import <LTKit/LTProgress.h>
 
 #import "BZRTestUtils.h"
@@ -45,8 +46,7 @@ context(@"fetching JSON products list", ^{
   it(@"should send error when failed to deserialize JSON into BZRProduct", ^{
     NSArray *JSONArray = @[@{@"foo": @"bar"}, @{@"bar": @"baz"}];
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSONArray options:0 error:NULL];
-    FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
-    OCMStub([response content]).andReturn(JSONData);
+    auto response = FBRFakeHTTPResponse(@"http://foo.bar", 200, nil, JSONData);
     LTProgress<FBRHTTPResponse *> *progress = OCMClassMock([LTProgress class]);
     OCMStub([progress result]).andReturn(response);
     OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
@@ -63,7 +63,7 @@ context(@"fetching JSON products list", ^{
     BZRProduct *product = BZRProductWithIdentifier(@"foo");
     NSArray *JSONArray = [MTLJSONAdapter JSONArrayFromModels:@[product, product]];
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSONArray options:0 error:NULL];
-    FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
+    auto response = FBRFakeHTTPResponse(@"http://foo.bar", 200, nil, JSONData);
     OCMStub([response content]).andReturn(JSONData);
     LTProgress<FBRHTTPResponse *> *progress = OCMClassMock([LTProgress class]);
     OCMStub([progress result]).andReturn(response);
