@@ -54,6 +54,16 @@ it(@"should deserialize without streaming URL", ^{
   expect(noStreamingURLAssetInfo.streamURL).to.beNil();
 });
 
+it(@"should deserialize without size", ^{
+  auto noSizeURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                              [NSSet setWithObject:@"size"]];
+  PTNOceanVideoAssetInfo *noSizeURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noSizeURLDictionary error:nil];
+  expect(noSizeURLAssetInfo).notTo.beNil();
+  expect(noSizeURLAssetInfo.size).to.beNil();
+});
+
 SpecEnd
 
 SpecBegin(PTNOceanAssetDescriptor)
@@ -239,7 +249,7 @@ context(@"video", ^{
         @"videos": @[
           @{
             @"height": @8,
-            @"width": @9,
+            @"size": @1337,
             @"url" : @"https://bar.com/thumbnail.jpg"
           }
         ]

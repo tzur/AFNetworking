@@ -74,8 +74,7 @@ static NSString * const kUnmatchedKeysDescription =
 - (BOOL)validateDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error {
   static auto mandatoryProperties = @[
     @keypath(self, height),
-    @keypath(self, width),
-    @keypath(self, size),
+    @keypath(self, width)
   ];
 
   if (![[mandatoryProperties lt_set] isSubsetOfSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
