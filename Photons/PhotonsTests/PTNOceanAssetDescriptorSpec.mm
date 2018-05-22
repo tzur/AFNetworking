@@ -11,22 +11,47 @@
 
 SpecBegin(PTNOceanVideoAssetInfo)
 
-it(@"should deserialize", ^{
-  auto AVAssetInfo = @{
+__block NSDictionary<NSString *, id> *AVAssetInfoDictionary;
+
+beforeEach(^{
+  AVAssetInfoDictionary = @{
     @"height": @8,
     @"width": @9,
     @"size": @1337,
     @"download_url" : @"https://bar.com/full.mp4",
     @"streaming_url": @"bar://steam.foo"
   };
+});
+
+it(@"should deserialize", ^{
   PTNOceanVideoAssetInfo *assetInfo = [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
-                                                fromJSONDictionary:AVAssetInfo error:nil];
+                                                fromJSONDictionary:AVAssetInfoDictionary error:nil];
 
   expect(assetInfo.height).to.equal(@8);
   expect(assetInfo.width).to.equal(@9);
   expect(assetInfo.size).to.equal(@1337);
   expect(assetInfo.url.absoluteString).to.equal(@"https://bar.com/full.mp4");
   expect(assetInfo.streamURL.absoluteString).to.equal(@"bar://steam.foo");
+});
+
+it(@"should deserialize without download URL", ^{
+  auto noDownloadURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                                  [NSSet setWithObject:@"download_url"]];
+  PTNOceanVideoAssetInfo *noDownloadURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noDownloadURLDictionary error:nil];
+  expect(noDownloadURLAssetInfo).notTo.beNil();
+  expect(noDownloadURLAssetInfo.url).to.beNil();
+});
+
+it(@"should deserialize without streaming URL", ^{
+  auto noStreamingURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                                  [NSSet setWithObject:@"streaming_url"]];
+  PTNOceanVideoAssetInfo *noStreamingURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noStreamingURLDictionary error:nil];
+  expect(noStreamingURLAssetInfo).notTo.beNil();
+  expect(noStreamingURLAssetInfo.streamURL).to.beNil();
 });
 
 SpecEnd
@@ -215,7 +240,7 @@ context(@"video", ^{
           @{
             @"height": @8,
             @"width": @9,
-            @"size": @1337,
+            @"url" : @"https://bar.com/thumbnail.jpg"
           }
         ]
       };

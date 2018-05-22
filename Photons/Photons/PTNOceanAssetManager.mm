@@ -318,8 +318,15 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:descriptor]];
   }
-  auto videoAssetInfo = [self videoAssetInfoForDescriptor:assetDescriptor options:options];
-  AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:videoAssetInfo.streamURL];
+  auto _Nullable videoAssetInfo = [self streamVideoAssetInfoForDescriptor:assetDescriptor
+                                                                  options:options];
+  if (!videoAssetInfo) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                                  associatedDescriptor:descriptor
+                                           description:@"No streaming URLs found for descriptor"]];
+  }
+
+  AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:nn(videoAssetInfo.streamURL)];
   return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
 }
 
@@ -333,8 +340,9 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
   };
 }
 
-- (PTNOceanVideoAssetInfo *)videoAssetInfoForDescriptor:(PTNOceanAssetDescriptor *)descriptor
-                                                options:(PTNAVAssetFetchOptions *)options {
+- (nullable PTNOceanVideoAssetInfo *)
+    streamVideoAssetInfoForDescriptor:(PTNOceanAssetDescriptor *)descriptor
+                              options:(PTNAVAssetFetchOptions *)options {
   // This strategy is derived from PhotoKit's documentation for \c PHVideoRequestOptionsDeliveryMode
   // which states that fast returns 360p video, medium returns 720p and auto is like medium.
   static auto comparatorForDeliveryMode = @{
@@ -347,7 +355,9 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
 
   NSComparator comparator = comparatorForDeliveryMode[@(options.deliveryMode)];
 
-  return [[descriptor.videos sortedArrayUsingComparator:comparator] lastObject];
+  return [[[descriptor.videos lt_filter:^BOOL(PTNOceanVideoAssetInfo *assetInfo) {
+    return assetInfo.streamURL != nil;
+  }] sortedArrayUsingComparator:comparator] lastObject];
 }
 
 #pragma mark -
@@ -371,12 +381,20 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
                                   associatedDescriptor:descriptor]];
   }
 
-  auto largestVideo = [assetDescriptor.videos lt_max:^BOOL(PTNOceanVideoAssetInfo *a,
-                                                           PTNOceanVideoAssetInfo *b) {
-    return a.height * a.width < b.height * b.width;
-  }];
+  auto _Nullable largestVideo =
+      [[assetDescriptor.videos lt_filter:^BOOL(PTNOceanVideoAssetInfo *assetInfo) {
+        return assetInfo.url != nil;
+      }] lt_max:^BOOL(PTNOceanVideoAssetInfo *a, PTNOceanVideoAssetInfo *b) {
+        return a.height * a.width < b.height * b.width;
+      }];
 
-  return [[self.client downloadFileWithURL:largestVideo.url]
+  if (!largestVideo) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
+                                  associatedDescriptor:descriptor
+                                           description:@"No download URLs found for descriptor"]];
+  }
+
+  return [[self.client downloadFileWithURL:nn(largestVideo.url)]
           map:^PTNProgress<id<PTNAVDataAsset>> *(PTNProgress<LTPath *> *progress) {
             if (!progress.result) {
               return [PTNProgress progressWithProgress:progress.progress];

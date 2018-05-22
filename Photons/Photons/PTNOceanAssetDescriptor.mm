@@ -64,16 +64,29 @@ static NSString * const kUnmatchedKeysDescription =
 - (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
                                       error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
-    if (![[[self class] propertyKeys] isEqualToSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
-      if (error) {
-        *error = [NSError lt_errorWithCode:PTNErrorCodeDeserializationFailed
-                               description:kUnmatchedKeysDescription, dictionaryValue,
-                                           [self class]];
-      }
+    if (![self validateDictionary:dictionaryValue error:error]) {
       return nil;
     }
   }
   return self;
+}
+
+- (BOOL)validateDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error {
+  static auto mandatoryProperties = @[
+    @keypath(self, height),
+    @keypath(self, width),
+    @keypath(self, size),
+  ];
+
+  if (![[mandatoryProperties lt_set] isSubsetOfSet:[NSSet setWithArray:dictionaryValue.allKeys]]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:PTNErrorCodeDeserializationFailed
+                             description:kUnmatchedKeysDescription, dictionaryValue, [self class]];
+    }
+    return NO;
+  }
+
+  return YES;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {

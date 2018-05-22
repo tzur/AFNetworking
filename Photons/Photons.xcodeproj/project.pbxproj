@@ -148,6 +148,8 @@
 		8809F88F20989A8300236B6D /* PTNOceanClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8809F88E20989A8300236B6D /* PTNOceanClient.mm */; };
 		881D81E12099D304001EDEE3 /* PTNOceanClientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */; };
 		883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */; };
+		88462A1520BB58CC00975088 /* OceanFakeVideoAssetNoStreamingResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 884629E920BB58CB00975088 /* OceanFakeVideoAssetNoStreamingResponse.json */; };
+		88462A1620BB58CC00975088 /* OceanFakeVideoAssetNoDownloadResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 88462A1420BB58CB00975088 /* OceanFakeVideoAssetNoDownloadResponse.json */; };
 		885AA7322095EA8000B40FE5 /* PTNFileBackedAVAsset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */; };
 		885AA7342095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7332095EE9300B40FE5 /* PTNFileBackedAVAssetSpec.mm */; };
 		8861FDAF1E5A2B4600CA1436 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAE1E5A2B4600CA1436 /* Photos.framework */; };
@@ -165,6 +167,7 @@
 		88D581692018734600A403CF /* NSString+UTISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88D581682018734600A403CF /* NSString+UTISpec.mm */; };
 		88EE8DF81EACD68F00D3126A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CDF84B1EA79D3D0094A7F7 /* MobileCoreServices.framework */; };
 		88F8E5231EA950BB0057DE07 /* PTNImageDataAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F8E5221EA950BB0057DE07 /* PTNImageDataAssetSpec.mm */; };
+		88F9CD9320B40D4C007CDA64 /* OceanFakeVideoAssetPartialResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 88F9CD9220B40D4C007CDA64 /* OceanFakeVideoAssetPartialResponse.json */; };
 		8B10C8951F3EFAFE00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8921F3EFAEE00F76142 /* libLLReactiveMatchers.a */; };
 		8B16A8771BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */; };
 		8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.mm */; };
@@ -750,6 +753,8 @@
 		8809F88E20989A8300236B6D /* PTNOceanClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClient.mm; sourceTree = "<group>"; };
 		881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClientSpec.mm; sourceTree = "<group>"; };
 		883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetResponse.json; path = Resources/OceanFakeVideoAssetResponse.json; sourceTree = "<group>"; };
+		884629E920BB58CB00975088 /* OceanFakeVideoAssetNoStreamingResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetNoStreamingResponse.json; path = Resources/OceanFakeVideoAssetNoStreamingResponse.json; sourceTree = "<group>"; };
+		88462A1420BB58CB00975088 /* OceanFakeVideoAssetNoDownloadResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetNoDownloadResponse.json; path = Resources/OceanFakeVideoAssetNoDownloadResponse.json; sourceTree = "<group>"; };
 		885AA7042095AFB100B40FE5 /* PTNAVDataAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAVDataAsset.h; sourceTree = "<group>"; };
 		885AA7302095EA8000B40FE5 /* PTNFileBackedAVAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNFileBackedAVAsset.h; sourceTree = "<group>"; };
 		885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNFileBackedAVAsset.mm; sourceTree = "<group>"; };
@@ -772,6 +777,7 @@
 		88D5813D2018712900A403CF /* NSString+UTI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTI.m"; sourceTree = "<group>"; };
 		88D581682018734600A403CF /* NSString+UTISpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+UTISpec.mm"; sourceTree = "<group>"; };
 		88F8E5221EA950BB0057DE07 /* PTNImageDataAssetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageDataAssetSpec.mm; sourceTree = "<group>"; };
+		88F9CD9220B40D4C007CDA64 /* OceanFakeVideoAssetPartialResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetPartialResponse.json; path = Resources/OceanFakeVideoAssetPartialResponse.json; sourceTree = "<group>"; };
 		8B10C88C1F3EFAEE00F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B16A8131BCAB6E4006DAAA7 /* NSURL+FileSystemSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+FileSystemSpec.mm"; sourceTree = "<group>"; };
 		8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageResizerSpec.mm; sourceTree = "<group>"; };
@@ -1647,6 +1653,9 @@
 				2873CC311F54675C00677B2C /* OceanFakePhotoAssetResponse.json */,
 				2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */,
 				799E70B31FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json */,
+				88462A1420BB58CB00975088 /* OceanFakeVideoAssetNoDownloadResponse.json */,
+				884629E920BB58CB00975088 /* OceanFakeVideoAssetNoStreamingResponse.json */,
+				88F9CD9220B40D4C007CDA64 /* OceanFakeVideoAssetPartialResponse.json */,
 				883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */,
 				0DBC67E81EAF653C005EE862 /* OneSecondVideo16x16.mp4 */,
 				848D2D2E1C4E24E500491AB3 /* PTNImageAsset.jpg */,
@@ -2138,10 +2147,12 @@
 				0DBC67E91EAF653C005EE862 /* OneSecondVideo16x16.mp4 in Resources */,
 				8BCF586D1BCD25AB001EE2ED /* PTNImageMetadataRightMirrored.jpg in Resources */,
 				848D2D2F1C4E24E500491AB3 /* PTNImageAsset.jpg in Resources */,
+				88462A1520BB58CC00975088 /* OceanFakeVideoAssetNoStreamingResponse.json in Resources */,
 				8BCF586B1BCD25AB001EE2ED /* PTNImageMetadataLeftMirrored.jpg in Resources */,
 				8BCF58681BCD25AB001EE2ED /* PTNImageMetadataDownMirrored.jpg in Resources */,
 				8BCF586C1BCD25AB001EE2ED /* PTNImageMetadataRight.jpg in Resources */,
 				883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */,
+				88462A1620BB58CC00975088 /* OceanFakeVideoAssetNoDownloadResponse.json in Resources */,
 				2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */,
 				8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */,
 				799E70DD1FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json in Resources */,
@@ -2151,6 +2162,7 @@
 				2873CC321F54675C00677B2C /* OceanFakePhotoAssetResponse.json in Resources */,
 				8BCF586A1BCD25AB001EE2ED /* PTNImageMetadataLeft.jpg in Resources */,
 				8BCF58671BCD25AB001EE2ED /* PTNImageMetadataDown.jpg in Resources */,
+				88F9CD9320B40D4C007CDA64 /* OceanFakeVideoAssetPartialResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

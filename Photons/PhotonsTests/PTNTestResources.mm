@@ -44,4 +44,16 @@ NSURL *PTNOceanVideoAssetDescriptorJSONURL() {
   return PTNURLForResourceFileName(@"OceanFakeVideoAssetResponse.json");
 }
 
+NSURL *PTNOceanPartialVideoAssetDescriptorJSONURL() {
+  return PTNURLForResourceFileName(@"OceanFakeVideoAssetPartialResponse.json");
+}
+
+NSURL *PTNOceanNoDownloadVideoAssetDescriptorJSONURL(void) {
+  return PTNURLForResourceFileName(@"OceanFakeVideoAssetNoDownloadResponse.json");
+}
+
+NSURL *PTNOceanNoStreamingVideoAssetDescriptorJSONURL(void) {
+  return PTNURLForResourceFileName(@"OceanFakeVideoAssetNoStreamingResponse.json");
+}
+
 NS_ASSUME_NONNULL_END
