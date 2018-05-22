@@ -1,0 +1,16 @@
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Daniel Lahyani.
+
+/// Fiber.
+#import "Fiber-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+// Third party.
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <OCMock/OCMock.h>
+#ifdef __cplusplus
+}
+#endif
