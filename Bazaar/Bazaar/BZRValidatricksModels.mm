@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRValidatricksErrorInfo
 
+/// Error code reported by Validatricks in response to a redeem request in case the user does not
+/// have enough credit to complete the request.
+static NSString * const kNotEnoughCreditError = @"NotEnoughCredit";
+
 + (NSSet<NSString *> *)optionalPropertyKeys {
   static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
@@ -28,6 +32,32 @@ NS_ASSUME_NONNULL_BEGIN
     @instanceKeypath(BZRValidatricksErrorInfo, error): @"error",
     @instanceKeypath(BZRValidatricksErrorInfo, message): @"message"
   };
+}
+
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
+  // If this is an error stating the user does not have enough credit to complete the redeem request
+  // as it was made, parse the \c JSONDictionary as a \c BZRValidatricksNotEnoughCreditErrorInfo.
+  if ([JSONDictionary[@"error"] isEqualToString:kNotEnoughCreditError]) {
+    return [BZRValidatricksNotEnoughCreditErrorInfo class];
+  }
+
+  return self;
+}
+
+@end
+
+#pragma mark -
+#pragma mark BZRValidatricksNotEnoughCreditErrorInfo
+#pragma mark -
+
+@implementation BZRValidatricksNotEnoughCreditErrorInfo
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
+    @instanceKeypath(BZRValidatricksNotEnoughCreditErrorInfo, creditType): @"creditType",
+    @instanceKeypath(BZRValidatricksNotEnoughCreditErrorInfo, currentCredit): @"currentCredit",
+    @instanceKeypath(BZRValidatricksNotEnoughCreditErrorInfo, requiredCredit): @"requiredCredit"
+  }];
 }
 
 @end
