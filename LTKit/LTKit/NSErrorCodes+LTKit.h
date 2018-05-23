@@ -49,6 +49,7 @@
 // Intelligence -> 16.
 // Phoenix -> 17.
 // Antares -> 18.
+// Warehouse -> 19.
 
 /// Defines error codes for a given product ID. The first given parameter is the product ID or a
 /// constant representing it. Error codes follow. Example:
