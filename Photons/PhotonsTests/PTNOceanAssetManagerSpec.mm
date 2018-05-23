@@ -360,9 +360,12 @@ context(@"fetching images", ^{
         descriptor = PTNFakeOceanPhotoAssetDescriptor();
 
         resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
-        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(50, 20)]).andReturn(NO);
-        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(100, 60)]).andReturn(YES);
-        OCMStub([resizingStrategy inputSizeBoundedBySize:CGSizeMake(500, 200)]).andReturn(YES);
+        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(100, 60)])
+            .andReturn(CGSizeMake(100, 60));
+        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(50, 20)])
+            .andReturn(CGSizeMake(100, 60));
+        OCMStub([resizingStrategy sizeForInputSize:CGSizeMake(500, 200)])
+            .andReturn(CGSizeMake(100, 60));
 
         options = OCMClassMock([PTNImageFetchOptions class]);
       });

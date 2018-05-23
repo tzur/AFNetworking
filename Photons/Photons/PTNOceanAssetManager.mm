@@ -201,12 +201,12 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
   NSArray<PTNOceanImageAssetInfo *> *imagesOrderedBySize =
       [descriptor.images sortedArrayUsingComparator:
        ^NSComparisonResult(PTNOceanImageAssetInfo *lhs, PTNOceanImageAssetInfo *rhs) {
-        return [@(lhs.width * lhs.height) compare:@(rhs.width * rhs.height)];
+        return [@(rhs.width * rhs.height) compare:@(lhs.width * lhs.height)];
       }];
 
   auto imageIndex = [self imageIndexForImageInfos:imagesOrderedBySize
                                  resizingStrategy:resizingStrategy];
-  NSUInteger thumbnailIndex = 0;
+  auto thumbnailIndex = imagesOrderedBySize.count - 1;
 
   auto imageSignal = [self fetchImageWithURL:imagesOrderedBySize[imageIndex].url
                             resizingStrategy:resizingStrategy];
@@ -227,17 +227,24 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
   }
 }
 
-/// Returns the image info from \c images matching \c resizing strategy. \c images must be sorted
-/// ascending by pixel count.
 - (NSUInteger)imageIndexForImageInfos:(NSArray<PTNOceanImageAssetInfo *> *)images
                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  NSUInteger index = NSNotFound;
+  CGFloat minDistance = CGFLOAT_MAX;
+
   for (NSUInteger i = 0; i < images.count; ++i) {
     CGSize size = CGSizeMake(images[i].width, images[i].height);
-    if ([resizingStrategy inputSizeBoundedBySize:size]) {
-      return i;
+    CGSize outputSize = [resizingStrategy sizeForInputSize:size];
+    CGFloat distance = std::hypot(outputSize.width - size.width, outputSize.height - size.height);
+
+    // Using strict inequality will ensure that in scenarios where there are more than one
+    // size candidates, the one which has the biggest pixel count is preferred.
+    if (distance < minDistance) {
+      minDistance = distance;
+      index = i;
     }
   }
-  return images.count - 1;
+  return index;
 }
 
 - (RACSignal *)fetchImageWithURL:(NSURL *)url
