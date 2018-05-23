@@ -25,6 +25,8 @@
 		63F08B361FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F08B341FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.h */; };
 		63F08B371FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63F08B351FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.mm */; };
 		63F08B3B1FEAAD630060B597 /* BZRSubscriptionIntroductoryDiscount+StoreKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63F08B391FEAAD630060B597 /* BZRSubscriptionIntroductoryDiscount+StoreKit.mm */; };
+		63F864D920B2C5C100F4F807 /* BZRValidatricksModels.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63F864D720B2C5C100F4F807 /* BZRValidatricksModels.mm */; };
+		63F864DA20B2C5C100F4F807 /* BZRValidatricksModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F864D820B2C5C100F4F807 /* BZRValidatricksModels.h */; };
 		65013B571D498D2800D06E79 /* BZRZipArchiveFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 65013B551D498D2800D06E79 /* BZRZipArchiveFactory.h */; };
 		65013B581D498D2800D06E79 /* BZRZipArchiveFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65013B561D498D2800D06E79 /* BZRZipArchiveFactory.mm */; };
 		6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F341CE22279001F36FA /* libExpecta.a */; };
@@ -839,6 +841,8 @@
 		63F08B351FEAACD80060B597 /* BZRSubscriptionIntroductoryDiscount.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRSubscriptionIntroductoryDiscount.mm; sourceTree = "<group>"; };
 		63F08B381FEAAD630060B597 /* BZRSubscriptionIntroductoryDiscount+StoreKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRSubscriptionIntroductoryDiscount+StoreKit.h"; sourceTree = "<group>"; };
 		63F08B391FEAAD630060B597 /* BZRSubscriptionIntroductoryDiscount+StoreKit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRSubscriptionIntroductoryDiscount+StoreKit.mm"; sourceTree = "<group>"; };
+		63F864D720B2C5C100F4F807 /* BZRValidatricksModels.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRValidatricksModels.mm; sourceTree = "<group>"; };
+		63F864D820B2C5C100F4F807 /* BZRValidatricksModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRValidatricksModels.h; sourceTree = "<group>"; };
 		65013B261D49804F00D06E79 /* BZRZipArchiving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRZipArchiving.h; sourceTree = "<group>"; };
 		65013B551D498D2800D06E79 /* BZRZipArchiveFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRZipArchiveFactory.h; sourceTree = "<group>"; };
 		65013B561D498D2800D06E79 /* BZRZipArchiveFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRZipArchiveFactory.mm; sourceTree = "<group>"; };
@@ -1230,6 +1234,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6348669F20AC4548000ABE2F /* Validatricks */ = {
+			isa = PBXGroup;
+			children = (
+				63F864D820B2C5C100F4F807 /* BZRValidatricksModels.h */,
+				63F864D720B2C5C100F4F807 /* BZRValidatricksModels.mm */,
+			);
+			name = Validatricks;
+			sourceTree = "<group>";
+		};
 		63F08B271FEAA5DC0060B597 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -1433,6 +1446,7 @@
 				C477D0917F20DB72D45CF687 /* Tweaks */,
 				CDC7664C1F0A413400247591 /* User Information */,
 				65F03B691CFC32CE008B1847 /* Utils */,
+				63F8651020B3054800F4F807 /* Validatricks */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1870,6 +1884,7 @@
 				C477D4266602844D16BAF3D9 /* Tweaks */,
 				CDC7663F1F0A30A000247591 /* User Information */,
 				6599B4291CFA444200525BB7 /* Utils */,
+				6348669F20AC4548000ABE2F /* Validatricks */,
 			);
 			path = Bazaar;
 			sourceTree = "<group>";
@@ -2265,6 +2280,7 @@
 				B9256BFC1D7331CD00490815 /* BZRPaymentsPaymentQueue.h in Headers */,
 				B9A84FBD1DE1B018001AA37C /* BZRLocaleBasedVariantSelector.h in Headers */,
 				B93F67031DD8E0F8009E9D5D /* BZRProductsWithPriceInfoProvider.h in Headers */,
+				63F864DA20B2C5C100F4F807 /* BZRValidatricksModels.h in Headers */,
 				B9AB0C621E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h in Headers */,
 				B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */,
 				B90E7F1C1FCEA0A600781890 /* BZRReceiptDataCache.h in Headers */,
@@ -3059,6 +3075,7 @@
 				CD9843CA1ED17BD2007CBCBC /* BZRCompositeContentFetcher.mm in Sources */,
 				65F82DE41F93A913002A496C /* RACSignal+CloudKitRetry.mm in Sources */,
 				63F08B3B1FEAAD630060B597 /* BZRSubscriptionIntroductoryDiscount+StoreKit.mm in Sources */,
+				63F864D920B2C5C100F4F807 /* BZRValidatricksModels.mm in Sources */,
 				B999728E1DFD5CC5008CCD98 /* BZRProductsWithDiscountsProvider.mm in Sources */,
 				B918D5961FD1AE530030650D /* BZRAppStoreLocaleCache.mm in Sources */,
 				CDC75AA61F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm in Sources */,
