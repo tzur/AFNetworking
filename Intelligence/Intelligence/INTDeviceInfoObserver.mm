@@ -58,7 +58,7 @@ static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
       _storage = storage;
       _delegate = delegate;
       [self updateRunCount];
-      [self updateDeviceInfoIfNeededWithAppStoreCountry:nil];
+      [self updateDeviceInfoIfNeededWithAppStoreCountry:nil usageEventsDisabled:nil];
     }
   }
   return self;
@@ -73,10 +73,13 @@ static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
   [self.delegate appRunCountUpdated:runCount];
 }
 
-- (void)updateDeviceInfoIfNeededWithAppStoreCountry:(nullable NSString *)appStoreCountry {
+- (void)updateDeviceInfoIfNeededWithAppStoreCountry:(nullable NSString *)appStoreCountry
+                                usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled {
   auto _Nullable storedDeviceInfo = [self loadStoredDeviceInfo];
   appStoreCountry = appStoreCountry ?: storedDeviceInfo.appStoreCountry;
-  auto deviceInfo = [self.deviceInfoSource deviceInfoWithAppStoreCountry:appStoreCountry];
+  usageEventsDisabled = usageEventsDisabled ?: storedDeviceInfo.usageEventsDisabled ?: @NO;
+  auto deviceInfo = [self.deviceInfoSource deviceInfoWithAppStoreCountry:appStoreCountry
+                                                     usageEventsDisabled:usageEventsDisabled];
 
   if ([deviceInfo.identifierForVendor isEqual:[NSUUID int_zeroUUID]]) {
     deviceInfo = [deviceInfo
@@ -147,7 +150,7 @@ static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
 
 - (void)setAppStoreCountry:(NSString *)appStoreCountry {
   @synchronized (self) {
-    [self updateDeviceInfoIfNeededWithAppStoreCountry:appStoreCountry];
+    [self updateDeviceInfoIfNeededWithAppStoreCountry:appStoreCountry usageEventsDisabled:nil];
   }
 }
 
@@ -188,6 +191,13 @@ static NSString * const kINTSubscriptionInfoKey = @"SubscriptionInfo";
 
 - (nullable INTSubscriptionInfo *)loadStoredSubscriptionInfo {
   return [self loadArchivedObjectForKey:kINTSubscriptionInfoKey class:INTSubscriptionInfo.class];
+}
+
+- (void)setUsageEventsDisabled:(BOOL)usageEventsDisabled {
+  @synchronized (self) {
+    [self updateDeviceInfoIfNeededWithAppStoreCountry:nil
+                                  usageEventsDisabled:@(usageEventsDisabled)];
+  }
 }
 
 @end

@@ -131,7 +131,7 @@ context(@"device info context generator", ^{
          advertisingTrackingEnabled:YES deviceKind:@"foo" iosVersion:@"foo" appVersion:@"foo"
          appVersionShort:@"foo" timeZone:@"foo" country:nil preferredLanguage:nil
          currentAppLanguage:nil purchaseReceipt:nil appStoreCountry:nil inLowPowerMode:nil
-         firmwareID:nil];
+         firmwareID:nil usageEventsDisabled:nil];
 
     auto deviceInfoLoadedEvent =
         [[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo

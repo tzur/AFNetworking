@@ -16,9 +16,11 @@ NSUUID * const kINTFakeIdentifierForVendor =
 
 @implementation INTFakeDeviceInfoSource
 
-- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry {
+- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry
+                             usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled {
   auto dictionary = [self.deviceInfoTemplate int_mergeUpdates:@{
-    @instanceKeypath(INTDeviceInfo, appStoreCountry): appStoreCountry ?: [NSNull null]
+    @instanceKeypath(INTDeviceInfo, appStoreCountry): appStoreCountry ?: [NSNull null],
+    @instanceKeypath(INTDeviceInfo, usageEventsDisabled): usageEventsDisabled ?: [NSNull null]
   }];
 
   return [[INTDeviceInfo alloc] initWithDictionary:dictionary error:nil];

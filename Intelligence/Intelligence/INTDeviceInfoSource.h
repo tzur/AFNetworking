@@ -8,10 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Defines a source that provides \c INTDeviceInfo objects.
 @protocol INTDeviceInfoSource <NSObject>
 
-/// Returns a new \c INTDeviceInfo with \c appStoreCoutry.
+/// Returns a new \c INTDeviceInfo with \c appStoreCoutry and \c usageEventsDisabled.
 ///
 /// @see INTDeviceInfo for docs for the arguments.
-- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry;
+- (INTDeviceInfo *)deviceInfoWithAppStoreCountry:(nullable NSString *)appStoreCountry
+                             usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled;
 
 @end
 

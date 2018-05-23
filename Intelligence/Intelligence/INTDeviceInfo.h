@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                             appStoreCountry:(nullable NSString *)appStoreCountry
                              inLowPowerMode:(nullable NSNumber *)inLowPowerMode
                                  firmwareID:(nullable NSString *)firmwareID
+                        usageEventsDisabled:(nullable NSNumber *)usageEventsDisabled
     NS_DESIGNATED_INITIALIZER;
 
 /// Returns a new instance of \c INTDeviceInfo whith all properties as the receivers' and
@@ -105,6 +106,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// exists (old signing info) or fetching the signing info failed.
 /// @note property name does not resemble real meaning, to obscure from malicious sources.
 @property (readonly, nonatomic, nullable) NSString *firmwareID;
+
+/// \c @YES if usage events are disabled. \c nil if the information is unavailable or the
+/// instance is of an older version.
+@property (readonly, nonatomic, nullable) NSNumber *usageEventsDisabled;
 
 @end
 

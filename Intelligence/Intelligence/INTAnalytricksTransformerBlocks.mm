@@ -331,7 +331,8 @@ NSString * const kINTEnrichmentAppRunCountKey = @"app_run_count";
            preferredLanguage:deviceInfo.preferredLanguage
            currentAppLanguage:deviceInfo.currentAppLanguage purchaseReceipt:purchaseReceipt
            appStoreCountry:deviceInfo.appStoreCountry inLowPowerMode:deviceInfo.inLowPowerMode
-           firmwareID:deviceInfo.firmwareID].properties];
+           firmwareID:deviceInfo.firmwareID
+           usageEventsDisabled:deviceInfo.usageEventsDisabled].properties];
       })
       .build();
 }

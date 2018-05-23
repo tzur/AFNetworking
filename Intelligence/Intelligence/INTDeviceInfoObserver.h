@@ -75,6 +75,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c subscriptionInfo means that the subscription info is unavailable.
 - (void)setSubscriptionInfo:(nullable INTSubscriptionInfo *)subscriptionInfo;
 
+/// Sets \c usageEventsDisabled to the current \c INTDeviceInfo only if it is different from the
+/// current value. If \c usageEventsDisabled is changed, the \c delegate is notified of a new
+/// \c INTDeviceInfo.
+- (void)setUsageEventsDisabled:(BOOL)usageEventsDisabled;
+
 @end
 
 NS_ASSUME_NONNULL_END
