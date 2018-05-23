@@ -71,7 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<SKProductsResponse *> *)
     fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers;
 
-/// Purchases a single \c product from the store.
+/// Purchases \c quantity units of \c product. \c quantity must be a positive number, if \c 0 is
+/// passed an \c NSInvalidArgumentException is raised.
 ///
 /// Returns a signal that initiates a payment request upon subscription. It sends an instance of
 /// \c SKPaymentTransaction that was created for the payment request. That \c SKPaymentTransaction
@@ -90,27 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note If the purchase was cancelled, the signal will err with an error code
 /// \c BZRErrorCodeOperationCancelled.
-- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product;
-
-/// Purchases \c quantity units of a consumable \c product. \c quantity must be a positive number,
-/// if \c 0 is passed an \c NSInvalidArgumentException is raised.
-///
-/// Returns a signal that initiates a payment request upon subscription. It sends an instance of
-/// \c SKPaymentTransaction that was created for the payment request. That \c SKPaymentTransaction
-/// is sent whenever its state is updated. The signal completes when \c finishTransaction is called
-/// for the transaction and errs if the transaction reaches the \c SKPaymentTransactionStateFailed
-/// state.
-///
-/// @note Some products, in order to function properly require additional resources that are
-/// available from the AppStore. Once a payment transaction has reached the state
-/// \c SKPaymentTransactionStatePurchased or \c SKPaymentTransactionStateRestored its \c downloads
-/// property will hold an array of \c SKDownload objects that can be used to download these
-/// complementary resources.
-///
-/// @note When a transaction object is no longer needed one must call \c finishTransaction: on the
-/// store manager. This method should be invoked for completed, restored and failed transactions.
-- (RACSignal<SKPaymentTransaction *> *)purchaseConsumableProduct:(SKProduct *)product
-                                                        quantity:(NSUInteger)quantity;
+- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product
+                                              quantity:(NSUInteger)quantity;
 
 /// Downloads additional content for a completed \c transaction.
 ///

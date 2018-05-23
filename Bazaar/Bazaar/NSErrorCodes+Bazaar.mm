@@ -83,7 +83,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Restoring purchases operation has failed.
   BZRErrorCodeRestorePurchasesFailed,
   /// Service name was not found while trying to store/retrieve data from storage.
-  BZRErrorCodeServiceNameNotFound
+  BZRErrorCodeServiceNameNotFound,
+  /// Trying to purchase a product with an invalid quantity.
+  BZRErrorCodeInvalidQuantityForPurchasing
 );
 
 NS_ASSUME_NONNULL_END

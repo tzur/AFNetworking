@@ -52,6 +52,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// is against the user intention.
 - (RACSignal *)validateTransaction:(NSString *)transactionId;
 
+/// Makes a purchase of \c quantity units of the consumable product specified by
+/// \c productIdentifier. \c quantity should be at most \c 10. Events can be sent on an arbitrary
+/// thread.
+///
+/// Returns a signal that makes a purchase of the product and completes. The signal doesn't download
+/// the content of the product. To do so, \c fetchProductContent should be called. The signal errs
+/// if there was an error in the purchase.
+///
+/// @note If the given \c quantity is invalid the signal will err with an error code
+/// \c BZRErrorCodeInvalidQuantityForPurchasing.
+///
+/// @note If the purchase was cancelled, the signal will err with an error code
+/// \c BZRErrorCodeOperationCancelled.
+///
+/// @note If the purchase failed and the underlying error's code is
+/// \c BZRErrorCodeTransactionNotFoundInReceipt, it is possible to retry finalizing the purchase by
+/// calling \c -[BZRProductsManager validateTransaction:] with the transaction identifier taken from
+/// the property \c bzr_transactionIdentifier of the underlying error.
+- (RACSignal *)purchaseConsumableProduct:(NSString *)productIdentifier
+                                quantity:(NSUInteger)quantity;
+
 /// Provides access to the content of the given \c product. Events can be sent on an arbitrary
 /// thread.
 ///

@@ -187,15 +187,9 @@ context(@"purchasing products", ^{
   });
 
   it(@"should delegate purchase product call to purchase manager", ^{
-    [storeKitFacade purchaseProduct:product];
-
-    OCMVerify([purchaseManager purchaseProduct:product quantity:1]);
-  });
-
-  it(@"should delegate purchase consumable product call to purchase manager", ^{
     NSUInteger quantity = 1337;
 
-    [storeKitFacade purchaseConsumableProduct:product quantity:quantity];
+    [storeKitFacade purchaseProduct:product quantity:quantity];
 
     OCMVerify([purchaseManager purchaseProduct:product quantity:quantity]);
   });
