@@ -4,7 +4,7 @@
 #import "BZRRemoteContentFetcher.h"
 
 #import <Fiber/FBRHTTPClient.h>
-#import <Fiber/FBRHTTPResponse.h>
+#import <FiberTestUtils/FBRHTTPTestUtils.h>
 #import <LTKit/LTProgress.h>
 
 #import "BZRProduct.h"
@@ -96,8 +96,7 @@ context(@"fetching product", ^{
     });
 
     it(@"should send error when failed to extract the content", ^{
-      FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
-      OCMStub([response content]).andReturn([NSData data]);
+      auto response = FBRFakeHTTPResponse(URL.absoluteString, 200, nil, [NSData data]);
       OCMStub([HTTPClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:nil])
           .andReturn([RACSignal return:[[LTProgress alloc] initWithResult:response]]);
       OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY
@@ -111,8 +110,7 @@ context(@"fetching product", ^{
     });
 
     it(@"should send error when failed to delete the archive", ^{
-      FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
-      OCMStub([response content]).andReturn([NSData data]);
+      auto response = FBRFakeHTTPResponse(URL.absoluteString, 200, nil, [NSData data]);
       OCMStub([HTTPClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:nil])
           .andReturn([RACSignal return:[[LTProgress alloc] initWithResult:response]]);
       OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY
@@ -140,8 +138,7 @@ context(@"fetching product", ^{
 
   it(@"should send progress with bundle when finished to extract the content", ^{
     NSBundle *bundle = OCMClassMock([NSBundle class]);
-    FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
-    OCMStub([response content]).andReturn([NSData data]);
+    auto response = FBRFakeHTTPResponse(URL.absoluteString, 200, nil, [NSData data]);
     OCMStub([HTTPClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:nil])
         .andReturn([RACSignal return:[[LTProgress alloc] initWithResult:response]]);
     OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6381F1D120B44BA5006D7B57 /* FBRHTTPTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6381F1CF20B44BA5006D7B57 /* FBRHTTPTestUtils.mm */; };
+		6381F1DB20B44F79006D7B57 /* FiberTestUtils-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 6381F1D920B44F78006D7B57 /* FiberTestUtils-Prefix.pch */; };
 		6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794391D255E8700187A5D /* FBRHTTPResponse.mm */; };
 		650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */; };
 		65079A4A1D7D94690022CB11 /* FBRCertificatePinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65079A491D7D94690022CB11 /* FBRCertificatePinning.mm */; };
@@ -71,6 +73,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6381F13E20B445AF006D7B57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65A6940C1D05999B001DE328 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
+		6381F1C720B44B24006D7B57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65AE67481D0461350083D1CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65AE674F1D0461350083D1CE;
+			remoteInfo = Fiber;
+		};
 		659F3B621D2438160097F3D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */;
@@ -403,6 +419,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6381F1BE20B44B0D006D7B57 /* libFiberTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiberTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6381F1CF20B44BA5006D7B57 /* FBRHTTPTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPTestUtils.mm; sourceTree = "<group>"; };
+		6381F1D020B44BA5006D7B57 /* FBRHTTPTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPTestUtils.h; sourceTree = "<group>"; };
+		6381F1D920B44F78006D7B57 /* FiberTestUtils-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FiberTestUtils-Prefix.pch"; sourceTree = "<group>"; };
+		6381F1DA20B44F79006D7B57 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		650794381D255E8700187A5D /* FBRHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPResponse.h; sourceTree = "<group>"; };
 		650794391D255E8700187A5D /* FBRHTTPResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponse.mm; sourceTree = "<group>"; };
 		650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponseSpec.mm; sourceTree = "<group>"; };
@@ -483,6 +504,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6381F1BB20B44B0D006D7B57 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65AE674D1D0461350083D1CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -515,6 +543,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6381F1BF20B44B0D006D7B57 /* FiberTestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				6381F1D520B44C6E006D7B57 /* Supporting Files */,
+				6381F1D420B44C65006D7B57 /* Test Utils */,
+			);
+			path = FiberTestUtils;
+			sourceTree = "<group>";
+		};
+		6381F1D420B44C65006D7B57 /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6381F1D020B44BA5006D7B57 /* FBRHTTPTestUtils.h */,
+				6381F1CF20B44BA5006D7B57 /* FBRHTTPTestUtils.mm */,
+			);
+			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		6381F1D520B44C6E006D7B57 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6381F1D920B44F78006D7B57 /* FiberTestUtils-Prefix.pch */,
+				6381F1DA20B44F79006D7B57 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		65079A241D7D93DD0022CB11 /* Certificate Pinning */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,6 +643,7 @@
 			children = (
 				65A694161D05999B001DE328 /* libLTKit.a */,
 				65A694181D05999B001DE328 /* LTKitTests.xctest */,
+				6381F13F20B445AF006D7B57 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -632,6 +688,7 @@
 				65AE67521D0461350083D1CE /* Fiber */,
 				65C62B871D0474D5000FCE99 /* FiberTests */,
 				65C62B941D0476BB000FCE99 /* Libraries */,
+				6381F1BF20B44B0D006D7B57 /* FiberTestUtils */,
 				65AE67511D0461350083D1CE /* Products */,
 				8861FCB51E5A277300CA1436 /* Frameworks */,
 			);
@@ -642,6 +699,7 @@
 			children = (
 				65C62B861D0474D4000FCE99 /* FiberTests.xctest */,
 				65AE67501D0461350083D1CE /* libFiber.a */,
+				6381F1BE20B44B0D006D7B57 /* libFiberTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -919,6 +977,7 @@
 				65C53DB31D39B6E700B38E62 /* FBRHTTPSession.h in Headers */,
 				65A694441D083D4D001DE328 /* FBRHTTPClient.h in Headers */,
 				CD3DEDCB1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h in Headers */,
+				6381F1DB20B44F79006D7B57 /* FiberTestUtils-Prefix.pch in Headers */,
 				B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */,
 				65C53DB21D39B6E400B38E62 /* FBRHTTPRequest.h in Headers */,
 				65C53DB41D39B6EF00B38E62 /* FBRHTTPResponse.h in Headers */,
@@ -934,6 +993,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		6381F1BD20B44B0D006D7B57 /* FiberTestUtils */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6381F1C420B44B0D006D7B57 /* Build configuration list for PBXNativeTarget "FiberTestUtils" */;
+			buildPhases = (
+				6381F1BA20B44B0D006D7B57 /* Sources */,
+				6381F1BB20B44B0D006D7B57 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6381F1C820B44B24006D7B57 /* PBXTargetDependency */,
+			);
+			name = FiberTestUtils;
+			productName = FiberTestUtils;
+			productReference = 6381F1BE20B44B0D006D7B57 /* libFiberTestUtils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		65AE674F1D0461350083D1CE /* Fiber */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65AE67591D0461350083D1CE /* Build configuration list for PBXNativeTarget "Fiber" */;
@@ -981,6 +1057,9 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
+					6381F1BD20B44B0D006D7B57 = {
+						CreatedOnToolsVersion = 9.3;
+					};
 					65AE674F1D0461350083D1CE = {
 						CreatedOnToolsVersion = 7.3;
 					};
@@ -1042,11 +1121,19 @@
 			targets = (
 				65AE674F1D0461350083D1CE /* Fiber */,
 				65C62B851D0474D4000FCE99 /* FiberTests */,
+				6381F1BD20B44B0D006D7B57 /* FiberTestUtils */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6381F13F20B445AF006D7B57 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 6381F13E20B445AF006D7B57 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		65A693E41D0593D5001DE328 /* AFNetworking.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1361,6 +1448,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6381F1BA20B44B0D006D7B57 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6381F1D120B44BA5006D7B57 /* FBRHTTPTestUtils.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65AE674C1D0461350083D1CE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1409,6 +1504,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6381F1C820B44B24006D7B57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65AE674F1D0461350083D1CE /* Fiber */;
+			targetProxy = 6381F1C720B44B24006D7B57 /* PBXContainerItemProxy */;
+		};
 		659F3B631D2438160097F3D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "AFNetworking iOS";
@@ -1432,6 +1532,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		6381F1C520B44B0D006D7B57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65C62B741D046B22000FCE99 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6381F1C620B44B0D006D7B57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65C62B741D046B22000FCE99 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		65AE67571D0461350083D1CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B6D1D046B22000FCE99 /* Debug.xcconfig */;
@@ -1541,6 +1669,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6381F1C420B44B0D006D7B57 /* Build configuration list for PBXNativeTarget "FiberTestUtils" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6381F1C520B44B0D006D7B57 /* Debug */,
+				6381F1C620B44B0D006D7B57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		65AE674B1D0461350083D1CE /* Build configuration list for PBXProject "Fiber" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

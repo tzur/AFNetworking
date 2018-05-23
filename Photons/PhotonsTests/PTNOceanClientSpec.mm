@@ -5,6 +5,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <Fiber/FBRHTTPClient.h>
+#import <FiberTestUtils/FBRHTTPTestUtils.h>
 #import <LTKit/NSBundle+Path.h>
 #import <Mantle/Mantle.h>
 
@@ -35,9 +36,8 @@ static FBRHTTPRequestParameters *PTNFakeBaseRequestParameters() {
 }
 
 static FBRHTTPResponse *PTNFakeHTTPResponse(NSData *data, NSString * _Nullable mimeType = nil) {
-  NSHTTPURLResponse *metadata = OCMClassMock([NSHTTPURLResponse class]);
-  OCMStub([metadata MIMEType]).andReturn(mimeType);
-  return [[FBRHTTPResponse alloc] initWithMetadata:metadata content:data];
+  auto headers = mimeType ? @{@"Content-Type": mimeType} : nil;
+  return FBRFakeHTTPResponse(@"https://foo.bar", 200, headers, data);
 }
 
 SpecBegin(PTNOceanClient)

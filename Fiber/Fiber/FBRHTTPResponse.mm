@@ -4,6 +4,7 @@
 #import "FBRHTTPResponse.h"
 
 #import "FBRCompare.h"
+#import "NSErrorCodes+Fiber.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -46,6 +47,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
   return self;
+}
+
+@end
+
+@implementation FBRHTTPResponse (JSONDeserialization)
+
+- (nullable id)deserializeJSONContentWithError:(NSError * __autoreleasing *)error {
+  if (!self.content) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
+                             description:@"Cannot deserialize JSON object from nil value"];
+    }
+    return nil;
+  }
+
+  NSError *underlyingError;
+  id _Nullable JSONObject = [NSJSONSerialization JSONObjectWithData:self.content options:0
+                                                              error:&underlyingError];
+  if (!JSONObject || underlyingError) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
+                         underlyingError:underlyingError];
+    }
+    return nil;
+  }
+  return JSONObject;
 }
 
 @end

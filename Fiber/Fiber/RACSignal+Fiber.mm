@@ -30,24 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fbr_deserializeJSONResponse {
-  return [self tryMap:^id _Nullable(FBRHTTPResponse *response, NSError **error) {
-    NSData *data = response.content;
-    if (!data) {
-      if (error) {
-        *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
-                               description:@"Can not deserialize JSON object from nil value"];
-      }
-      return nil;
-    }
+  return [self tryMap:^id _Nullable(FBRHTTPResponse *response, NSError * __autoreleasing *error) {
+    LTAssert([response isKindOfClass:[FBRHTTPResponse class]], @"Expected a signal of "
+             "FBRHTTPResponse values, got: %@", [response class]);
 
-    NSError *underlyingError;
-    id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&underlyingError];
-    if (!object || underlyingError) {
-      *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
-                         underlyingError:underlyingError];
-      return nil;
-    }
-    return object;
+    return [response deserializeJSONContentWithError:error];
   }];
 }
 
