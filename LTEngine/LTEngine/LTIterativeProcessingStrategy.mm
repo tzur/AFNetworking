@@ -16,7 +16,7 @@
 @property (strong, nonatomic) LTTexture *input;
 
 /// Output textures to write to.
-@property (strong, nonatomic) NSArray *outputs;
+@property (strong, nonatomic) NSArray<LTTexture *> *outputs;
 
 /// Intermediate texture for processing more than a single iteration.
 @property (strong, nonatomic) LTTexture *intermediateTexture;
@@ -61,7 +61,7 @@
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithInput:(LTTexture *)input andOutputs:(NSArray *)outputs {
+- (instancetype)initWithInput:(LTTexture *)input andOutputs:(NSArray<LTTexture *> *)outputs {
   LTParameterAssert(input);
   LTParameterAssert(outputs);
 

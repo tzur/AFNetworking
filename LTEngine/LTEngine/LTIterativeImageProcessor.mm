@@ -19,7 +19,7 @@
 @property (readwrite, nonatomic) LTTexture *inputTexture;
 
 /// Output textures of the processor.
-@property (readwrite, nonatomic) NSArray *outputTextures;
+@property (readwrite, nonatomic) NSArray<LTTexture *> *outputTextures;
 
 @end
 
@@ -32,7 +32,7 @@
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
-                             outputs:(NSArray *)outputs {
+                             outputs:(NSArray<LTTexture *> *)outputs {
   return [self initWithVertexSource:vertexSource
                      fragmentSource:fragmentSource
                       sourceTexture:sourceTexture
@@ -44,7 +44,7 @@
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
                    auxiliaryTextures:(NSDictionary *)auxiliaryTextures
-                             outputs:(NSArray *)outputs {
+                             outputs:(NSArray<LTTexture *> *)outputs {
   LTParameterAssert([self outputTexturesAreSimilar:outputs],
                     @"Output textures doesn't have the same precision or number of channels");
 
@@ -76,7 +76,7 @@
   return strategy;
 }
 
-- (BOOL)outputTexturesAreSimilar:(NSArray *)outputs {
+- (BOOL)outputTexturesAreSimilar:(NSArray<LTTexture *> *)outputs {
   LTTexture *firstOutput = [outputs firstObject];
 
   for (NSUInteger i = 1; i < outputs.count; ++i) {

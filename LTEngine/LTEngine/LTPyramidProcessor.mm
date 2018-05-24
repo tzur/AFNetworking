@@ -10,7 +10,7 @@
 
 @implementation LTPyramidProcessor
 
-+ (NSArray *)levelsForInput:(LTTexture *)input {
++ (NSArray<LTTexture *> *)levelsForInput:(LTTexture *)input {
   NSUInteger levelCount = MAX(1, std::floor(std::log2(std::min(input.size))) - 1);
 
   NSMutableArray *levels = [NSMutableArray array];

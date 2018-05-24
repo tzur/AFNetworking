@@ -19,7 +19,7 @@
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
-                             outputs:(NSArray *)outputs {
+                             outputs:(NSArray<LTTexture *> *)outputs {
   return [self initWithVertexSource:vertexSource fragmentSource:fragmentSource
                       sourceTexture:sourceTexture
                   auxiliaryTextures:nil outputs:outputs];
@@ -29,7 +29,7 @@
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
                    auxiliaryTextures:(NSDictionary *)auxiliaryTextures
-                             outputs:(NSArray *)outputs {
+                             outputs:(NSArray<LTTexture *> *)outputs {
   if (self = [super initWithVertexSource:vertexSource fragmentSource:fragmentSource
                            sourceTexture:sourceTexture
                        auxiliaryTextures:auxiliaryTextures outputs:outputs]) {

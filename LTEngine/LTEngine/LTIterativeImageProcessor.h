@@ -11,7 +11,7 @@
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
-                             outputs:(NSArray *)outputs;
+                             outputs:(NSArray<LTTexture *> *)outputs;
 
 /// Designated initializer: initializes with vertex and fragment shader sources, a source texture,
 /// auxiliary textures to assist processing and an array of outputs.
@@ -19,7 +19,7 @@
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
                    auxiliaryTextures:(NSDictionary *)auxiliaryTextures
-                             outputs:(NSArray *)outputs;
+                             outputs:(NSArray<LTTexture *> *)outputs;
 
 /// Method to be called before each drawing iteration. Override this in subclasses in order to
 /// prepare the processor correctly before processing.
@@ -35,6 +35,6 @@
 @property (readonly, nonatomic) LTTexture *inputTexture;
 
 /// Output textures of the processor.
-@property (readonly, nonatomic) NSArray *outputTextures;
+@property (readonly, nonatomic) NSArray<LTTexture *> *outputTextures;
 
 @end

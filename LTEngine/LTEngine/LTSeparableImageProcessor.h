@@ -13,7 +13,7 @@
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
-                             outputs:(NSArray *)outputs;
+                             outputs:(NSArray<LTTexture *> *)outputs;
 
 /// Initializes a new separable filter processor with vertex and fragment shader sources, single
 /// source texture texture, auxiliary textures and a varying number of output textures.
@@ -26,7 +26,7 @@
                       fragmentSource:(NSString *)fragmentSource
                        sourceTexture:(LTTexture *)sourceTexture
                    auxiliaryTextures:(NSDictionary *)auxiliaryTextures
-                             outputs:(NSArray *)outputs;
+                             outputs:(NSArray<LTTexture *> *)outputs;
 
 /// Sets the desired number of iterations for each output. Each iteration includes both a horizontal
 /// and a vertical pass.
