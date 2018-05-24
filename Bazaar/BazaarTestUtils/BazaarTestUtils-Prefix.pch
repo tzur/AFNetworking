@@ -1,0 +1,16 @@
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Ben Yohay.
+
+/// Bazaar.
+#import "Bazaar-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+// Third party.
+#ifdef __cplusplus
+extern "C" {
+#endif
+#import <OCMock/OCMock.h>
+#ifdef __cplusplus
+}
+#endif
