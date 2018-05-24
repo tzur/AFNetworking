@@ -39,18 +39,18 @@ extern NSString * const kPTNOceanURLQueryItemIdentifierKey;
 + (NSString *)ptn_oceanScheme;
 
 /// Initializes an album URL with the given \c source, \c assetType and \c phrase. If \c phrase is
-/// \c nil, the returned URL will be associated with the album of the most popular assets.
+/// an empty string, the returned URL will be associated with the album of the most popular assets.
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
                              assetType:(PTNOceanAssetType *)assetType
-                                phrase:(nullable NSString *)phrase;
+                                phrase:(NSString *)phrase;
 
 /// Initializes an album URL with the given \c source, \c assetType \c phrase and \c page. If
-/// \c phrase is \c nil, the returned URL will be associated with the album of the most popular
-/// assets. Albums backed by URLs returned from this method are paginated. Use the given \c page to
-/// specify the page number.
+/// \c phrase is an empty string, the returned URL will be associated with the album of the most
+/// popular assets. Albums backed by URLs returned from this method are paginated. Use the given
+/// \c page to specify the page number.
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
-                             assetType:(PTNOceanAssetType *)assetType
-                                phrase:(nullable NSString *)phrase page:(NSUInteger)page;
+                             assetType:(PTNOceanAssetType *)assetType phrase:(NSString *)phrase
+                                  page:(NSUInteger)page;
 
 /// Initializes an asset URL with the given \c source, \c assetType and \c identifier.
 + (NSURL *)ptn_oceanAssetURLWithSource:(PTNOceanAssetSource *)source

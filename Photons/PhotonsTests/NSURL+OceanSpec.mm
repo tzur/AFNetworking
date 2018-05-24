@@ -43,21 +43,6 @@ it(@"should initialize a correct album URL", ^{
   expect(url.ptn_oceanAssetIdentifier).to.beNil();
 });
 
-it(@"should initialize a correct album URL with no phrase", ^{
-  NSURL *url = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay)
-                                        assetType:$(PTNOceanAssetTypeVideo)
-                                           phrase:nil page:1337];
-
-  expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
-  expect(url.host).to.equal(@"album");
-  expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
-  expect(url.ptn_oceanAssetType).to.equal($(PTNOceanAssetTypeVideo));
-  expect(url.ptn_oceanAssetSource).to.equal($(PTNOceanAssetSourcePixabay));
-  expect(url.ptn_oceanSearchPhrase).to.beNil();
-  expect(url.ptn_oceanPageNumber).to.equal(@1337);
-  expect(url.ptn_oceanAssetIdentifier).to.beNil();
-});
-
 it(@"should initialize a correct asset URL", ^{
   NSURL *url = [NSURL ptn_oceanAssetURLWithSource:$(PTNOceanAssetSourcePixabay)
                                         assetType:$(PTNOceanAssetTypePhoto)

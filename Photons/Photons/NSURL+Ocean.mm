@@ -37,29 +37,25 @@ NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
 }
 
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
-                             assetType:(PTNOceanAssetType *)assetType
-                                phrase:(nullable NSString *)phrase {
+                             assetType:(PTNOceanAssetType *)assetType phrase:(NSString *)phrase {
   return [NSURL ptn_oceanAlbumURLWithSource:source assetType:assetType phrase:phrase page:1];
 }
 
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
-                             assetType:(PTNOceanAssetType *)assetType
-                                phrase:(nullable NSString *)phrase page:(NSUInteger)page {
-  NSURLComponents *components = [[NSURLComponents alloc] init];
+                             assetType:(PTNOceanAssetType *)assetType phrase:(NSString *)phrase
+                                  page:(NSUInteger)page {
+  auto components = [[NSURLComponents alloc] init];
   components.scheme = [self ptn_oceanScheme];
   components.host = @"album";
 
-  NSMutableArray *queryItems =[@[
+  auto queryItems = @[
     [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemSourceKey value:source.name],
-    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemTypeKey value:assetType.name]
-  ] mutableCopy];
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemTypeKey value:assetType.name],
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPhraseKey value:phrase],
+    [NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPageKey
+                                value:[NSString stringWithFormat:@"%lu", (unsigned long)page]]
+  ];
 
-  if (phrase) {
-    [queryItems addObject:[NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPhraseKey
-                                                      value:phrase]];
-  }
-  [queryItems addObject:[NSURLQueryItem queryItemWithName:kPTNOceanURLQueryItemPageKey
-                         value:[NSString stringWithFormat:@"%lu", (unsigned long)page]]];
   components.queryItems = queryItems;
   return components.URL;
 }
@@ -67,7 +63,7 @@ NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
 + (NSURL *)ptn_oceanAssetURLWithSource:(PTNOceanAssetSource *)source
                              assetType:(PTNOceanAssetType *)assetType
                             identifier:(NSString *)identifier {
-  NSURLComponents *components = [[NSURLComponents alloc] init];
+  auto components = [[NSURLComponents alloc] init];
   components.scheme = [self ptn_oceanScheme];
   components.host = @"asset";
   components.queryItems = @[
