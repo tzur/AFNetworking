@@ -58,9 +58,6 @@
 [submodule "third_party/AppsFlyer"]
 	path = third_party/AppsFlyer
 	url = https://github.com/Lightricks/AppsFlyerFramework.git
-[submodule "third_party/fmdb"]
-	path = third_party/fmdb
-	url = https://github.com/Lightricks/fmdb.git
 [submodule "Pinky/Models"]
 	path = Pinky/Models
 	url = https://github.com/Lightricks/Pinky-Models.git
