@@ -486,7 +486,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (quantity > kMaxQuantity) {
     auto description = [NSString stringWithFormat:@"Cannot purchase more than %lu products in one "
-                        "transaction (requested quantity: %lu).", kMaxQuantity, quantity];
+                        "transaction (requested quantity: %lu).", (unsigned long)kMaxQuantity,
+                        (unsigned long)quantity];
     return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeInvalidQuantityForPurchasing
                                           description:@"%@", description]];
   }
