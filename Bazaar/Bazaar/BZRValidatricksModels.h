@@ -24,6 +24,25 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
+#pragma mark BZRValidatricksNotEnoughCreditErrorInfo
+#pragma mark -
+
+/// Model representing Validatricks server response is case of an error caused due to insufficient
+/// credit.
+@interface BZRValidatricksNotEnoughCreditErrorInfo : BZRValidatricksErrorInfo
+
+/// Type of the credit the request was made for.
+@property (readonly, nonatomic) NSString *creditType;
+
+/// Credit of \c creditType in the user's balance.
+@property (readonly, nonatomic) NSUInteger currentCredit;
+
+/// Total amount of credit required for the redeem request to succeed.
+@property (readonly, nonatomic) NSUInteger requiredCredit;
+
+@end
+
+#pragma mark -
 #pragma mark BZRConsumableItemDescriptor
 #pragma mark -
 
