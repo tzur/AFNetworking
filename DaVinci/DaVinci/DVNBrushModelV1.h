@@ -340,7 +340,7 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 @property (readonly, nonatomic) LTVector2 taperingFactors;
 
 /// Allowed range of the x- and y-coordinate of \c taperingFactors.
-@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedTaperingFactorRange;
+@property (class, readonly, nonatomic) lt::Interval<float> allowedTaperingFactorRange;
 
 #pragma mark -
 #pragma mark Flow

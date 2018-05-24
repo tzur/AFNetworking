@@ -425,10 +425,10 @@ DVNLeftOpenRangeClassProperty(CGFloat, allowedMinimumTaperingScaleFactor,
       *[[self class] allowedMinimumTaperingScaleFactorRange].clamp(minimumTaperingScaleFactor);
 }
 
-DVNClosedRangeClassProperty(CGFloat, allowedTaperingFactor, AllowedTaperingFactor, 0, 1);
+DVNClosedRangeClassProperty(float, allowedTaperingFactor, AllowedTaperingFactor, 0, 1);
 
 - (void)setTaperingFactors:(LTVector2)taperingFactors {
-  lt::Interval<CGFloat> range = [[self class] allowedTaperingFactorRange];
+  lt::Interval<float> range = [[self class] allowedTaperingFactorRange];
   _taperingFactors = std::clamp(taperingFactors, *range.min(), *range.max());
 }
 
