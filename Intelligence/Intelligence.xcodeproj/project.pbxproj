@@ -22,7 +22,6 @@
 		A117236A1ECC76620039177C /* INTDeviceInfoObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */; };
 		A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236C1ECC767C0039177C /* NSUUID+Zero.mm */; };
 		A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */; };
-		A12CCBFC20342F5600D97D7F /* RACSignal+BackgroundTask.mm in Sources */ = {isa = PBXBuildFile; fileRef = A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
 		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
@@ -34,10 +33,10 @@
 		A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
 		A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */; };
 		A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */; };
-		A14013A91FD01CBA00760DE5 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */; };
-		A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */; };
 		A140117B1FCEA2BD00760DE5 /* NSError+Intelligence.mm in Sources */ = {isa = PBXBuildFile; fileRef = A140117A1FCEA2BD00760DE5 /* NSError+Intelligence.mm */; };
 		A14013181FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A14013171FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm */; };
+		A14013A91FD01CBA00760DE5 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */; };
+		A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -76,9 +75,6 @@
 		A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */; };
 		A157B34E1ED6D212008B920D /* INTDeviceTokenChangedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */; };
 		A157B37E1ED6EFC3008B920D /* INTAnalytricksDeviceTokenChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */; };
-		A16326771FEFB60400A02640 /* INTRecordStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A16326521FEFB60300A02640 /* INTRecordStorage.mm */; };
-		A16326791FEFB68E00A02640 /* INTRecordStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */; };
-		A16326F71FEFB75100A02640 /* libFMDB-IOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A16326C21FEFB72100A02640 /* libFMDB-IOS.a */; };
 		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
 		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
 		A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */; };
@@ -101,7 +97,6 @@
 		A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */; };
 		A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */; };
 		A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */; };
-		A1CFC0D8203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		A1F24CA41EC07FC20050D534 /* Alooma.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA01EC07FC20050D534 /* Alooma.m */; settings = {COMPILER_FLAGS = "-Wno-unused-parameter -Wno-deprecated-declarations -Wno-assign-enum"; }; };
 		A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */; settings = {COMPILER_FLAGS = "-Wno-char-subscripts"; }; };
@@ -424,48 +419,6 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
-		A16326BB1FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
-			remoteInfo = fmdb;
-		};
-		A16326BD1FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EE4290EF12B42F870088BD94;
-			remoteInfo = FMDB;
-		};
-		A16326BF1FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BF5D041618416BB2008C5AA9;
-			remoteInfo = Tests;
-		};
-		A16326C11FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6290CBB5188FE836009790F8;
-			remoteInfo = "FMDB-IOS";
-		};
-		A16326C31FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83C73EFE1C326AB000FFC730;
-			remoteInfo = "FMDB iOS";
-		};
-		A16326C51FEFB72100A02640 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
-			remoteInfo = "FMDB MacOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -506,8 +459,6 @@
 		A117236C1ECC767C0039177C /* NSUUID+Zero.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSUUID+Zero.mm"; sourceTree = "<group>"; };
 		A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTDeviceInfoLoadedEvent.h; path = Intelligence/INTDeviceInfoLoadedEvent.h; sourceTree = SOURCE_ROOT; };
 		A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = INTDeviceInfoLoadedEvent.mm; path = Intelligence/INTDeviceInfoLoadedEvent.mm; sourceTree = SOURCE_ROOT; };
-		A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BackgroundTask.mm"; sourceTree = "<group>"; };
-		A12CCBFB20342F5600D97D7F /* RACSignal+BackgroundTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+BackgroundTask.h"; sourceTree = "<group>"; };
 		A12CCC0620342F9F00D97D7F /* INTJSONSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTJSONSender.h; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
@@ -517,11 +468,11 @@
 		A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTAnalytricksFakeConcrete.json; path = ConcreteEvents/INTAnalytricksFakeConcrete.json; sourceTree = "<group>"; };
 		A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTFakeInternalEvent.json; path = InternalEvents/INTFakeInternalEvent.json; sourceTree = "<group>"; };
 		A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventCodeGenerationSpec.mm; sourceTree = "<group>"; };
-		A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
-		A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		A14011791FCEA2BD00760DE5 /* NSError+Intelligence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Intelligence.h"; sourceTree = "<group>"; };
 		A140117A1FCEA2BD00760DE5 /* NSError+Intelligence.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Intelligence.mm"; sourceTree = "<group>"; };
+		A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		A14013171FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+IntelligenceSpec.mm"; sourceTree = "<group>"; };
+		A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -582,10 +533,6 @@
 		A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceInfoChanged.json; sourceTree = "<group>"; };
 		A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTDeviceTokenChangedEvent.json; sourceTree = "<group>"; };
 		A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceTokenChanged.json; sourceTree = "<group>"; };
-		A16326521FEFB60300A02640 /* INTRecordStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTRecordStorage.mm; sourceTree = "<group>"; };
-		A16326761FEFB60300A02640 /* INTRecordStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTRecordStorage.h; sourceTree = "<group>"; };
-		A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTRecordStorageSpec.mm; sourceTree = "<group>"; };
-		A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = ../third_party/fmdb/fmdb.xcodeproj; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
 		A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksPushNotificationOpened.json; sourceTree = "<group>"; };
@@ -611,7 +558,6 @@
 		A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectLoadedEvent.json; sourceTree = "<group>"; };
 		A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDisplayedEvent.json; sourceTree = "<group>"; };
 		A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "INTAnalytricksContext+MergeSpec.mm"; sourceTree = "<group>"; };
-		A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BackgroundTaskSpec.mm"; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A1DA6A641EB6022C0085011B /* INTTransformerBlockBuilderStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilderStructures.h; sourceTree = "<group>"; };
 		A1F24C9F1EC07FC20050D534 /* Alooma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alooma.h; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/Alooma.h"; sourceTree = "<group>"; };
@@ -655,7 +601,6 @@
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
-				A16326F71FEFB75100A02640 /* libFMDB-IOS.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */,
 				A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
@@ -883,7 +828,6 @@
 				A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
-				A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1107,16 +1051,12 @@
 			children = (
 				A1541B8A1EAF2C4300B4F064 /* INTAppLifecycleTimer.h */,
 				A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */,
-				A16326761FEFB60300A02640 /* INTRecordStorage.h */,
-				A16326521FEFB60300A02640 /* INTRecordStorage.mm */,
 				A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */,
 				A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */,
 				A17E0A4B1ED4350C007940A0 /* NSLocale+Country.h */,
 				A17E0A4C1ED4350C007940A0 /* NSLocale+Country.mm */,
 				A117236B1ECC767C0039177C /* NSUUID+Zero.h */,
 				A117236C1ECC767C0039177C /* NSUUID+Zero.mm */,
-				A12CCBFB20342F5600D97D7F /* RACSignal+BackgroundTask.h */,
-				A12CCBD120342F5600D97D7F /* RACSignal+BackgroundTask.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1125,23 +1065,8 @@
 			isa = PBXGroup;
 			children = (
 				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
-				A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */,
-				A1CFC0D7203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm */,
 			);
 			name = Utils;
-			sourceTree = "<group>";
-		};
-		A16326AB1FEFB72100A02640 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A16326BC1FEFB72100A02640 /* fmdb */,
-				A16326BE1FEFB72100A02640 /* libFMDB.a */,
-				A16326C01FEFB72100A02640 /* Tests.xctest */,
-				A16326C21FEFB72100A02640 /* libFMDB-IOS.a */,
-				A16326C41FEFB72100A02640 /* FMDB.framework */,
-				A16326C61FEFB72100A02640 /* FMDB.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		A172A9A81EAC111600A12B86 /* Event Logging */ = {
@@ -1305,10 +1230,6 @@
 				{
 					ProductGroup = A14172751E6EAEE7005DBEFF /* Products */;
 					ProjectRef = A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */;
-				},
-				{
-					ProductGroup = A16326AB1FEFB72100A02640 /* Products */;
-					ProjectRef = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
 				},
 				{
 					ProductGroup = A14013B71FD0350100760DE5 /* Products */;
@@ -1607,48 +1528,6 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A16326BC1FEFB72100A02640 /* fmdb */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = fmdb;
-			remoteRef = A16326BB1FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A16326BE1FEFB72100A02640 /* libFMDB.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFMDB.a;
-			remoteRef = A16326BD1FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A16326C01FEFB72100A02640 /* Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Tests.xctest;
-			remoteRef = A16326BF1FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A16326C21FEFB72100A02640 /* libFMDB-IOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libFMDB-IOS.a";
-			remoteRef = A16326C11FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A16326C41FEFB72100A02640 /* FMDB.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FMDB.framework;
-			remoteRef = A16326C31FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A16326C61FEFB72100A02640 /* FMDB.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FMDB.framework;
-			remoteRef = A16326C51FEFB72100A02640 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1713,7 +1592,6 @@
 				A149BC1E1EBE6AC200DA82B7 /* INTAnalytricksAppBackgrounded.json in Sources */,
 				A149BC1F1EBE6AC200DA82B7 /* INTAnalytricksAppForegrounded.json in Sources */,
 				A17E0B0C1ED45E90007940A0 /* INTAnalytricksProjectDeleted.json in Sources */,
-				A12CCBFC20342F5600D97D7F /* RACSignal+BackgroundTask.mm in Sources */,
 				A17E08F31ED1D9D0007940A0 /* INTMediaImportedEvent.json in Sources */,
 				A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */,
 				A149BC201EBE6AC200DA82B7 /* INTAnalytricksScreenVisited.json in Sources */,
@@ -1734,7 +1612,6 @@
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A140117B1FCEA2BD00760DE5 /* NSError+Intelligence.mm in Sources */,
-				A16326771FEFB60400A02640 /* INTRecordStorage.mm in Sources */,
 				A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */,
 				A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
@@ -1752,7 +1629,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A16326791FEFB68E00A02640 /* INTRecordStorageSpec.mm in Sources */,
 				A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */,
 				A117235B1ECC5C890039177C /* INTFakeDeviceInfoSource.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
@@ -1771,7 +1647,6 @@
 				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
 				A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */,
 				A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */,
-				A1CFC0D8203D5D25001E157F /* RACSignal+BackgroundTaskSpec.mm in Sources */,
 				A117235D1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 				A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */,
@@ -1809,7 +1684,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
-					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1828,7 +1702,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
-					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
