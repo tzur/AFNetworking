@@ -231,13 +231,22 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
 /// ascending by pixel count.
 - (NSUInteger)imageIndexForImageInfos:(NSArray<PTNOceanImageAssetInfo *> *)images
                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  NSUInteger index = NSNotFound;
+  CGFloat minDistance = CGFLOAT_MAX;
+
   for (NSUInteger i = 0; i < images.count; ++i) {
     CGSize size = CGSizeMake(images[i].width, images[i].height);
-    if ([resizingStrategy inputSizeBoundedBySize:size]) {
-      return i;
+    CGSize outputSize = [resizingStrategy sizeForInputSize:size];
+    CGFloat distance = std::hypot(outputSize.width - size.width, outputSize.height - size.height);
+
+    // Using non strict inequality will ensure that in scenarios where there are more than one
+    // size candidates, the one which has the biggest pixel count is preferred.
+    if (distance <= minDistance) {
+      minDistance = distance;
+      index = i;
     }
   }
-  return images.count - 1;
+  return index;
 }
 
 - (RACSignal *)fetchImageWithURL:(NSURL *)url
