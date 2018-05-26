@@ -16,7 +16,7 @@
 /// The textures will be created with the same precision and format of the input texture.
 ///
 /// For example, for input size (15, 13) the outputs will be [(8, 7), (4, 4)].
-+ (NSArray *)levelsForInput:(LTTexture *)input;
++ (NSArray<LTTexture *> *)levelsForInput:(LTTexture *)input;
 
 /// Initializes with an input and a set of outputs. It's recommended to use \c +levelsForInput: to
 /// generate the output textures before calling this initializer.

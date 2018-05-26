@@ -16,7 +16,7 @@ typedef void (^LTIterationStartedBlock)(NSUInteger iteration);
 /// Initializes with a single input texture and an array of output textures. Additional auxiliary
 /// input textures should be configured via the processor itself, and not in this strategy. Given
 /// input and outputs should not be \c nil.
-- (instancetype)initWithInput:(LTTexture *)input andOutputs:(NSArray *)outputs;
+- (instancetype)initWithInput:(LTTexture *)input andOutputs:(NSArray<LTTexture *> *)outputs;
 
 /// Number of iterations needed to produce each output, corresponding to their ordering in \c
 /// outputs. The size of the array must be similar to the number of outputs, where each value must
