@@ -7,8 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumDeclare(NSUInteger, BZRReceiptValidationError,
   /// The receipt data sent for validation is malformed.
   BZRReceiptValidationErrorMalformedReceiptData,
-  /// A remote server used for validation is not available.
-  BZRReceiptValidationErrorServerIsNotAvailable,
   /// The receipt is not authentic, i.e. not signed by Apple.
   BZRReceiptValidationErrorReceiptIsNotAuthentic,
   /// The bundle identifier specified in the receipt does not match the one expected.

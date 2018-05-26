@@ -146,7 +146,6 @@ static const NSUInteger kNumberOfRetries = 4;
   // The receipt is not saved to storage if it is \c nil or an error related to the receipt has
   // returned from validation.
   if (!receiptData || (receiptValidationStatus.error &&
-      ![receiptValidationStatus.error isEqual:$(BZRReceiptValidationErrorServerIsNotAvailable)] &&
       ![receiptValidationStatus.error isEqual:$(BZRReceiptValidationErrorUnknown)])) {
     return;
   }
