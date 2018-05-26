@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const kBZRApplicationBundleIDKey;
 
-@class BZRContentFetcherParameters;
+@class BZRContentFetcherParameters, BZRValidatricksErrorInfo;
 
 /// Adds methods and properties to conveniently create Bazaar errors.
 @interface NSError (Bazaar)
@@ -74,6 +74,15 @@ extern NSString * const kBZRApplicationBundleIDKey;
                       keychainStorageKey:(NSString *)keychainStorageKey
                     keychainStorageValue:(nullable id<NSSecureCoding>)keychainStorageValue;
 
+/// Creates and returns an instance of \c NSError with \c code set to
+/// \c BZRErrorCodeValidatricksRequestFailed. \c url is the failing request URL. \c errorInfo is
+/// the error information provided by the server, will be available via the property
+/// \c bzr_validatricksErrorInfo. \c underlyingError is the original HTTP client error, will be
+/// available via the property \c lt_underlyingError.
++ (instancetype)bzr_validatricksRequestErrorWithURL:(NSURL *)url
+                              validatricksErrorInfo:(BZRValidatricksErrorInfo *)errorInfo
+                                    underlyingError:(NSError *)underlyingError;
+
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
 
@@ -119,6 +128,9 @@ extern NSString * const kBZRApplicationBundleIDKey;
 
 /// Bundle identifier of the application whose validation failed.
 @property (readonly, nonatomic, nullable) NSString *bzr_applicationBundleID;
+
+/// Validatricks request error information as provided by the server.
+@property (readonly, nonatomic, nullable) BZRValidatricksErrorInfo *bzr_validatricksErrorInfo;
 
 @end
 

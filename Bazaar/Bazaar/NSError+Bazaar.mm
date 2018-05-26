@@ -25,6 +25,7 @@ NSString * const kBZRErrorKeychainStorageKeyKey = @"BZRKeychainStorageKey";
 NSString * const kBZRErrorKeychainStorageValueDescriptionKey =
     @"BZRKeychainStorageValueDescription";
 NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
+NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
 
 /// Category that adds method for getting a description of the transaction.
 @interface SKPaymentTransaction (Bazaar)
@@ -170,6 +171,16 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
   return [self lt_errorWithCode:code userInfo:userInfo];
 }
 
++ (instancetype)bzr_validatricksRequestErrorWithURL:(NSURL *)url
+                              validatricksErrorInfo:(BZRValidatricksErrorInfo *)errorInfo
+                                    underlyingError:(NSError *)underlyingError {
+  return [self lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed userInfo:@{
+    NSURLErrorKey: url,
+    kBZRValidatricksErrorInfoKey: errorInfo,
+    NSUnderlyingErrorKey: underlyingError
+  }];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
 }
@@ -228,6 +239,10 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
 
 - (nullable NSString *)bzr_applicationBundleID {
   return self.userInfo[kBZRApplicationBundleIDKey];
+}
+
+- (nullable BZRValidatricksErrorInfo *)bzr_validatricksErrorInfo {
+  return self.userInfo[kBZRValidatricksErrorInfoKey];
 }
 
 @end

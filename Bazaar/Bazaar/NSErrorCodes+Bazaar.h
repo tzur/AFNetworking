@@ -89,7 +89,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Service name was not found while trying to store/retrieve data from storage.
   BZRErrorCodeServiceNameNotFound,
   /// Trying to purchase a product with an invalid quantity.
-  BZRErrorCodeInvalidQuantityForPurchasing
+  BZRErrorCodeInvalidQuantityForPurchasing,
+  /// Request to Validatricks server has failed.
+  BZRErrorCodeValidatricksRequestFailed
 );
 
 NS_ASSUME_NONNULL_END
