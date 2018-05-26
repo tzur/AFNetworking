@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
       @"malformedData": $(BZRReceiptValidationErrorMalformedReceiptData),
       @"notAuthenticated": $(BZRReceiptValidationErrorReceiptIsNotAuthentic),
       @"unexpectedBundle": $(BZRReceiptValidationErrorBundleIDMismatch),
+      @"mismatchingDevice": $(BZRReceiptValidationErrorDeviceIDMismatch),
       @"testReceiptInProd": $(BZRReceiptValidationErrorEnvironmentMismatch),
       @"prodReceiptInTest": $(BZRReceiptValidationErrorEnvironmentMismatch),
       @"missingReceipt": $(BZRReceiptValidationErrorMissingReceipt)
