@@ -51,14 +51,28 @@ NS_ASSUME_NONNULL_BEGIN
     };
   });
 
-  return [MTLValueTransformer
-          transformerWithBlock:^BZRReceiptValidationError * _Nullable(NSString * _Nullable reason) {
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:
+          ^BZRReceiptValidationError * _Nullable(NSString * _Nullable reason) {
             if (!reason) {
               return nil;
             }
 
-            return validatricksFailureReasonToErrorCodeMap[reason] ?:
+            return validatricksFailureReasonToErrorCodeMap[lt::nn(reason)] ?:
                 $(BZRReceiptValidationErrorUnknown);
+          } reverseBlock:^NSString * _Nullable(BZRReceiptValidationError * _Nullable error) {
+            if (!error) {
+              return nil;
+            }
+
+            if (error.value == BZRReceiptValidationErrorUnknown) {
+              // This string is not one of Validatricks error codes but we deliberatly return it,
+              // this way transforming the string back to \c BZRReceiptValidationError will yield
+              // \c BZRReceiptValidationErrorUnknown.
+              return @"unknown";
+            }
+
+            return [[validatricksFailureReasonToErrorCodeMap allKeysForObject:lt::nn(error)]
+                    firstObject];
           }];
 }
 

@@ -96,6 +96,10 @@ context(@"validatricks receipt validation error transformer", ^{
     transformer = [NSValueTransformer bzr_validatricksErrorValueTransformer];
   });
 
+  it(@"should be a reversible transformer", ^{
+    expect([[transformer class] allowsReverseTransformation]).to.beTruthy();
+  });
+
   it(@"should provide receipt validation error for every registered validatricks error", ^{
     [kValidatricksErrors enumerateObjectsUsingBlock:^(NSString *errorName, NSUInteger, BOOL *) {
       BZRReceiptValidationError *error = [transformer transformedValue:errorName];
@@ -110,6 +114,18 @@ context(@"validatricks receipt validation error transformer", ^{
 
   it(@"should return a generic error if the received value is not registered", ^{
     expect([transformer transformedValue:@"foo"]).to.equal($(BZRReceiptValidationErrorUnknown));
+  });
+
+  it(@"should return nil if error is nil", ^{
+    expect([transformer reverseTransformedValue:nil]).to.beNil();
+  });
+
+  it(@"should return the right validatricks error string for every known error value", ^{
+    [BZRReceiptValidationError enumerateEnumUsingBlock:^(BZRReceiptValidationError *error) {
+      NSString * _Nullable validatricksErrorString = [transformer reverseTransformedValue:error];
+      expect(validatricksErrorString).toNot.beNil();
+      expect([transformer transformedValue:validatricksErrorString]).to.equal(error);
+    }];
   });
 });
 
