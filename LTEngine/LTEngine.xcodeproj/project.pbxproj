@@ -1297,11 +1297,42 @@
 		E412C8C71F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8C51F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png */; };
 		E412C8C91F653FF10070FCBC /* GuidedFilterAmphorasFlash.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8C81F653FF10070FCBC /* GuidedFilterAmphorasFlash.png */; };
 		E412CDE02056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm in Sources */ = {isa = PBXBuildFile; fileRef = E412CDDE2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm */; };
+		E42E08D420B4693E00BE4484 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
+		E42E08D520B4693E00BE4484 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA8C68718699D9A00E6F486 /* Accelerate.framework */; };
+		E42E08D620B4693E00BE4484 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
+		E42E08D720B4693E00BE4484 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC5E1E5A263000CA1436 /* CoreImage.framework */; };
+		E42E08D820B4693E00BE4484 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5818329538000845BA /* CoreMedia.framework */; };
+		E42E08D920B4693E00BE4484 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC2A1E5A261500CA1436 /* CoreText.framework */; };
+		E42E08DA20B4693E00BE4484 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
+		E42E08DB20B4693E00BE4484 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
+		E42E08DC20B4693E00BE4484 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
+		E42E08DD20B4693E00BE4484 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
+		E42E08DE20B4693E00BE4484 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; };
+		E42E08DF20B4693E00BE4484 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
+		E42E08E020B4693E00BE4484 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B51D464A12009E701C /* Objection-iOS.framework */; };
+		E42E08E120B4693E00BE4484 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA3E11A182A437300FDD95A /* OpenGLES.framework */; };
+		E42E08E220B4693E00BE4484 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */; };
+		E42E08E320B4693E00BE4484 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1818296DE500EA0C1A /* UIKit.framework */; };
+		E42E08E420B4693E00BE4484 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368FCE1CA6B794003E34CF /* libExpecta.a */; };
+		E42E08E520B4693E00BE4484 /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE418296B6100EA0C1A /* libLTEngine.a */; };
+		E42E08E620B4693E00BE4484 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368DE21CA6942A003E34CF /* libLTKit.a */; };
+		E42E08E720B4693E00BE4484 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A5F2E61FB97D7900F8C4D5 /* libLTKitTestUtils.a */; };
+		E42E08E820B4693E00BE4484 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368FE01CA6B79E003E34CF /* libOCMock.a */; };
+		E42E08E920B4693E00BE4484 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
+		E42E08EA20B4693E00BE4484 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B41D4649F9009E701C /* libSpecta.a */; };
+		E42E08EB20B4693E00BE4484 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68B1B1D82E99A0093910D /* libcompression.tbd */; };
+		E42E08EC20B4693E00BE4484 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */; };
+		E42E08ED20B4693E00BE4484 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B71D464A28009E701C /* opencv2.framework */; };
+		E42E09AD20B46A3F00BE4484 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5120B4237800FDFAC8 /* Metal.framework */; };
+		E42E09AE20B46A3F00BE4484 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5220B4237800FDFAC8 /* MetalKit.framework */; };
+		E42E09AF20B46A3F00BE4484 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */; };
 		E48419ED1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = E48419EB1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h */; };
 		E48419EE1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = E48419EC1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm */; };
 		E4841A221E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */; };
 		E4C0DE831F1E384100140840 /* LT3DLUT+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */; };
+		E4C5709320B46D4F00B99F37 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E4C7ECAD20A1753F00AF5BB9 /* Flower.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E4C7EC7920A1753F00AF5BB9 /* Flower.tiff */; };
+		E4CB725320B453170051E498 /* LTEngineDeviceTests-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4CB725220B453170051E498 /* LTEngineDeviceTests-Prefix.pch */; };
 		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
 		E4DE72D11FB1A2050097EF57 /* LTImageIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */; };
 		E4DE72D21FB1A2050097EF57 /* LTImageIOExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */; };
@@ -1741,6 +1772,20 @@
 			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
 			remoteInfo = LTEngineBundle;
 		};
+		E407F8DB20B4228900FDFAC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B3DEBDC18296B6100EA0C1A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		E407F8DD20B4228900FDFAC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
 		E4A5F2E51FB97D7900F8C4D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
@@ -1758,6 +1803,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				287E6F721D58DFDA008DA855 /* Mantle.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E407FB4820B4228900FDFAC8 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E4C5709320B46D4F00B99F37 /* Mantle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3091,6 +3147,10 @@
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
+		E407FB4F20B4228900FDFAC8 /* LTEngineDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTEngineDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E407FB5120B4237800FDFAC8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		E407FB5220B4237800FDFAC8 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
 		E40F7FD11F1F30FD007501C4 /* LT3DLUT+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LT3DLUT+Operations.h"; sourceTree = "<group>"; };
 		E40F7FD21F1F30FD007501C4 /* LT3DLUT+Operations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LT3DLUT+Operations.mm"; sourceTree = "<group>"; };
 		E412C88D1F6140F90070FCBC /* LTGuidedFilterBlurNormalize.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTGuidedFilterBlurNormalize.fsh; sourceTree = "<group>"; };
@@ -3129,6 +3189,8 @@
 		E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiverSpec.mm; sourceTree = "<group>"; };
 		E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LT3DLUT+OperationsSpec.mm"; sourceTree = "<group>"; };
 		E4C7EC7920A1753F00AF5BB9 /* Flower.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Flower.tiff; path = Resources/Flower.tiff; sourceTree = "<group>"; };
+		E4CB721E20B453170051E498 /* LTEngineDeviceTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "LTEngineDeviceTests-Info.plist"; path = "LTEngineDeviceTests/LTEngineDeviceTests-Info.plist"; sourceTree = "<group>"; };
+		E4CB725220B453170051E498 /* LTEngineDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LTEngineDeviceTests-Prefix.pch"; path = "LTEngineDeviceTests/LTEngineDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
 		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 		E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageIOExtensions.h; sourceTree = "<group>"; };
 		E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensions.mm; sourceTree = "<group>"; };
@@ -3159,6 +3221,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E42E08D420B4693E00BE4484 /* AVFoundation.framework in Frameworks */,
+				E42E08D520B4693E00BE4484 /* Accelerate.framework in Frameworks */,
+				E42E08D620B4693E00BE4484 /* CoreGraphics.framework in Frameworks */,
+				E42E08D720B4693E00BE4484 /* CoreImage.framework in Frameworks */,
+				E42E08D820B4693E00BE4484 /* CoreMedia.framework in Frameworks */,
+				E42E08D920B4693E00BE4484 /* CoreText.framework in Frameworks */,
+				E42E08DA20B4693E00BE4484 /* CoreVideo.framework in Frameworks */,
+				E42E08DB20B4693E00BE4484 /* Foundation.framework in Frameworks */,
+				E42E08DC20B4693E00BE4484 /* GLKit.framework in Frameworks */,
+				E42E08DD20B4693E00BE4484 /* ImageIO.framework in Frameworks */,
+				E42E08DE20B4693E00BE4484 /* Mantle.framework in Frameworks */,
+				E42E08DF20B4693E00BE4484 /* MobileCoreServices.framework in Frameworks */,
+				E42E08E020B4693E00BE4484 /* Objection-iOS.framework in Frameworks */,
+				E42E08E120B4693E00BE4484 /* OpenGLES.framework in Frameworks */,
+				E42E08E220B4693E00BE4484 /* QuartzCore.framework in Frameworks */,
+				E42E08E320B4693E00BE4484 /* UIKit.framework in Frameworks */,
+				E42E08E420B4693E00BE4484 /* libExpecta.a in Frameworks */,
+				E42E08E520B4693E00BE4484 /* libLTEngine.a in Frameworks */,
+				E42E08E620B4693E00BE4484 /* libLTKit.a in Frameworks */,
+				E42E08E720B4693E00BE4484 /* libLTKitTestUtils.a in Frameworks */,
+				E42E08E820B4693E00BE4484 /* libOCMock.a in Frameworks */,
+				E42E08E920B4693E00BE4484 /* libOpenEXR.a in Frameworks */,
+				E42E08EA20B4693E00BE4484 /* libSpecta.a in Frameworks */,
+				E42E08EB20B4693E00BE4484 /* libcompression.tbd in Frameworks */,
+				E42E08EC20B4693E00BE4484 /* libextobjc_iOS.a in Frameworks */,
+				E42E08ED20B4693E00BE4484 /* opencv2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E407FA1020B4228900FDFAC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
@@ -3170,6 +3265,9 @@
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
 				656155C41D464B6D009E701C /* Mantle.framework in Frameworks */,
+				E42E09AD20B46A3F00BE4484 /* Metal.framework in Frameworks */,
+				E42E09AE20B46A3F00BE4484 /* MetalKit.framework in Frameworks */,
+				E42E09AF20B46A3F00BE4484 /* MetalPerformanceShaders.framework in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
 				656155B61D464A12009E701C /* Objection-iOS.framework in Frameworks */,
 				8BA3E11B182A437300FDD95A /* OpenGLES.framework in Frameworks */,
@@ -4581,6 +4679,7 @@
 			children = (
 				8B3DEBE918296B6100EA0C1A /* LTEngine */,
 				8BCFBFF618CF0AF100E612DE /* LTEngineBundle */,
+				E4AFDDEE20B4211B00A431E2 /* LTEngineDeviceTests */,
 				8B3DEBFD18296B6100EA0C1A /* LTEngineTests */,
 				8B6B4F8D1BDFA40600662235 /* Configuration */,
 				8BB47145183B533500CA1681 /* Libraries */,
@@ -4593,6 +4692,7 @@
 			isa = PBXGroup;
 			children = (
 				8BCFBFF318CF0AF000E612DE /* LTEngine.bundle */,
+				E407FB4F20B4228900FDFAC8 /* LTEngineDeviceTests.xctest */,
 				8B3DEBF418296B6100EA0C1A /* LTEngineTests.xctest */,
 				8B3DEBE418296B6100EA0C1A /* libLTEngine.a */,
 			);
@@ -4615,6 +4715,9 @@
 				8B3DEC1218296D7600EA0C1A /* GLKit.framework */,
 				B427250F1F36F01D00AAE3F9 /* IOSurface.framework */,
 				8B4E493719E950C500B3F55D /* ImageIO.framework */,
+				E407FB5120B4237800FDFAC8 /* Metal.framework */,
+				E407FB5220B4237800FDFAC8 /* MetalKit.framework */,
+				E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */,
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				656155B51D464A12009E701C /* Objection-iOS.framework */,
 				8BA3E11A182A437300FDD95A /* OpenGLES.framework */,
@@ -5715,6 +5818,15 @@
 			name = ImageZero;
 			sourceTree = "<group>";
 		};
+		E407FB5920B4241D00FDFAC8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4CB721E20B453170051E498 /* LTEngineDeviceTests-Info.plist */,
+				E4CB725220B453170051E498 /* LTEngineDeviceTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E412C85A1F6140D00070FCBC /* Guided filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -5739,6 +5851,14 @@
 				E412C89D1F6141E10070FCBC /* LTGuidedFilterProcessorSpec.mm */,
 			);
 			name = "Guided filter";
+			sourceTree = "<group>";
+		};
+		E4AFDDEE20B4211B00A431E2 /* LTEngineDeviceTests */ = {
+			isa = PBXGroup;
+			children = (
+				E407FB5920B4241D00FDFAC8 /* Supporting Files */,
+			);
+			name = LTEngineDeviceTests;
 			sourceTree = "<group>";
 		};
 		E4F061C71E49B44100FDE0B0 /* OpenEXR */ = {
@@ -6044,6 +6164,7 @@
 				2520B1811D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h in Headers */,
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
 				5054C6E31CC68D7B00976EA1 /* LTDynamicDrawer.h in Headers */,
+				E4CB725320B453170051E498 /* LTEngineDeviceTests-Prefix.pch in Headers */,
 				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
 				28A0C7091AC0188D00FBC803 /* LTCircularMeshModel.h in Headers */,
 				500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */,
@@ -6140,6 +6261,26 @@
 			productReference = 8BCFBFF318CF0AF000E612DE /* LTEngine.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		E407F8D920B4228900FDFAC8 /* LTEngineDeviceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E407FB4C20B4228900FDFAC8 /* Build configuration list for PBXNativeTarget "LTEngineDeviceTests" */;
+			buildPhases = (
+				E407F8DE20B4228900FDFAC8 /* Sources */,
+				E407FA1020B4228900FDFAC8 /* Frameworks */,
+				E407FA2B20B4228900FDFAC8 /* Resources */,
+				E407FB4820B4228900FDFAC8 /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E407F8DA20B4228900FDFAC8 /* PBXTargetDependency */,
+				E407F8DC20B4228900FDFAC8 /* PBXTargetDependency */,
+			);
+			name = LTEngineDeviceTests;
+			productName = LTEngineDeviceTests;
+			productReference = E407FB4F20B4228900FDFAC8 /* LTEngineDeviceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -6150,6 +6291,9 @@
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					8B3DEBF318296B6100EA0C1A = {
+						DevelopmentTeam = KG6GWND6BG;
+					};
+					E407F8D920B4228900FDFAC8 = {
 						DevelopmentTeam = KG6GWND6BG;
 					};
 				};
@@ -6210,6 +6354,7 @@
 			targets = (
 				8B3DEBE318296B6100EA0C1A /* LTEngine */,
 				8BCFBFF218CF0AF000E612DE /* LTEngineBundle */,
+				E407F8D920B4228900FDFAC8 /* LTEngineDeviceTests */,
 				8B3DEBF318296B6100EA0C1A /* LTEngineTests */,
 			);
 		};
@@ -6888,6 +7033,13 @@
 				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
 				033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */,
 				03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E407FA2B20B4228900FDFAC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7585,6 +7737,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E407F8DE20B4228900FDFAC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -7602,6 +7761,16 @@
 			isa = PBXTargetDependency;
 			target = 8BCFBFF218CF0AF000E612DE /* LTEngineBundle */;
 			targetProxy = 8BCFC01D18CF0B6100E612DE /* PBXContainerItemProxy */;
+		};
+		E407F8DA20B4228900FDFAC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B3DEBE318296B6100EA0C1A /* LTEngine */;
+			targetProxy = E407F8DB20B4228900FDFAC8 /* PBXContainerItemProxy */;
+		};
+		E407F8DC20B4228900FDFAC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = E407F8DD20B4228900FDFAC8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -7809,6 +7978,74 @@
 			};
 			name = Release;
 		};
+		E407FB4D20B4228900FDFAC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LTEngineDeviceTests/LTEngineDeviceTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"LT_TEST_MODULE_CLASS=LTTestModule",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = "LTEngineDeviceTests/LTEngineDeviceTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		E407FB4E20B4228900FDFAC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LTEngineDeviceTests/LTEngineDeviceTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"LT_TEST_MODULE_CLASS=LTTestModule",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = "LTEngineDeviceTests/LTEngineDeviceTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -7844,6 +8081,15 @@
 			buildConfigurations = (
 				8BCFBFFD18CF0AF100E612DE /* Debug */,
 				8BCFBFFF18CF0AF100E612DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E407FB4C20B4228900FDFAC8 /* Build configuration list for PBXNativeTarget "LTEngineDeviceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E407FB4D20B4228900FDFAC8 /* Debug */,
+				E407FB4E20B4228900FDFAC8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
