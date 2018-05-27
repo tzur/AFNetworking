@@ -1265,6 +1265,9 @@
 		C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */; };
 		C7E0B0301E41E34600E88244 /* ImageZeroVersion1Test.iz.1 in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */; };
 		C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */; };
+		E403BE2520BA896B00E94F00 /* LTMPSAvailability.h in Headers */ = {isa = PBXBuildFile; fileRef = E403BDF020BA896A00E94F00 /* LTMPSAvailability.h */; };
+		E403BE2620BA896B00E94F00 /* LTMPSAvailability.mm in Sources */ = {isa = PBXBuildFile; fileRef = E403BE2420BA896B00E94F00 /* LTMPSAvailability.mm */; };
+		E403BE2A20BA89A600E94F00 /* LTMPSAvailabilitySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E403BE2920BA89A600E94F00 /* LTMPSAvailabilitySpec.mm */; };
 		E40F7FD31F1F30FD007501C4 /* LT3DLUT+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = E40F7FD11F1F30FD007501C4 /* LT3DLUT+Operations.h */; };
 		E40F7FD41F1F30FD007501C4 /* LT3DLUT+Operations.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F7FD21F1F30FD007501C4 /* LT3DLUT+Operations.mm */; };
 		E412C8971F6140F90070FCBC /* LTGuidedFilterCoefficientsProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = E412C88E1F6140F90070FCBC /* LTGuidedFilterCoefficientsProcessor.h */; };
@@ -3147,6 +3150,9 @@
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
+		E403BDF020BA896A00E94F00 /* LTMPSAvailability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMPSAvailability.h; sourceTree = "<group>"; };
+		E403BE2420BA896B00E94F00 /* LTMPSAvailability.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMPSAvailability.mm; sourceTree = "<group>"; };
+		E403BE2920BA89A600E94F00 /* LTMPSAvailabilitySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTMPSAvailabilitySpec.mm; path = LTEngineDeviceTests/LTMPSAvailabilitySpec.mm; sourceTree = "<group>"; };
 		E407FB4F20B4228900FDFAC8 /* LTEngineDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTEngineDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E407FB5120B4237800FDFAC8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		E407FB5220B4237800FDFAC8 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -4743,6 +4749,7 @@
 				8BFE439818759482008B699F /* Image Processing */,
 				8B9851721868A4B200D680D0 /* Images */,
 				8B7C6C7A1B5273E100B90DBE /* Math */,
+				E415CD5520BA887F00AFF7B9 /* Metal */,
 				8BC465B0189926560094F7BC /* Scheduling */,
 				8BA822091987885900FBE68E /* Serialization */,
 				28C2073B1AE67D98007214A5 /* Storage */,
@@ -5818,6 +5825,22 @@
 			name = ImageZero;
 			sourceTree = "<group>";
 		};
+		E403BE2720BA898900E94F00 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E403BE2820BA899200E94F00 /* Metal */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		E403BE2820BA899200E94F00 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				E403BE2920BA89A600E94F00 /* LTMPSAvailabilitySpec.mm */,
+			);
+			name = Metal;
+			sourceTree = "<group>";
+		};
 		E407FB5920B4241D00FDFAC8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -5853,10 +5876,20 @@
 			name = "Guided filter";
 			sourceTree = "<group>";
 		};
+		E415CD5520BA887F00AFF7B9 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				E403BDF020BA896A00E94F00 /* LTMPSAvailability.h */,
+				E403BE2420BA896B00E94F00 /* LTMPSAvailability.mm */,
+			);
+			name = Metal;
+			sourceTree = "<group>";
+		};
 		E4AFDDEE20B4211B00A431E2 /* LTEngineDeviceTests */ = {
 			isa = PBXGroup;
 			children = (
 				E407FB5920B4241D00FDFAC8 /* Supporting Files */,
+				E403BE2720BA898900E94F00 /* Tests */,
 			);
 			name = LTEngineDeviceTests;
 			sourceTree = "<group>";
@@ -6135,6 +6168,7 @@
 				50CF199619D16BB60010D52F /* LTQuad.h in Headers */,
 				8B8720251924A76300517F2E /* LTPolynomialInterpolant.h in Headers */,
 				8B8720261924A76300517F2E /* LTLinearInterpolant.h in Headers */,
+				E403BE2520BA896B00E94F00 /* LTMPSAvailability.h in Headers */,
 				50FEAFAC19DC0510009C6E22 /* LTCGPathExtensions.h in Headers */,
 				50FD866B1D05A8DB0005C318 /* LTDynamicQuadDrawer.h in Headers */,
 				25BBC5791CBCE92800C182B3 /* LTTriangle.h in Headers */,
@@ -7168,6 +7202,7 @@
 				8BEBF3EC18FA9CA5005A0DE9 /* LTMixer.fsh in Sources */,
 				8BEBF3ED18FA9CA5005A0DE9 /* LTMixer.vsh in Sources */,
 				8BAE3A9E18B4D5A000DA79E1 /* LTArithmetic.fsh in Sources */,
+				E403BE2620BA896B00E94F00 /* LTMPSAvailability.mm in Sources */,
 				03D516B318B3A6850026B56A /* LTProceduralVignetting.fsh in Sources */,
 				286A937D18D06DAA00F203DF /* LTEdgeAvoidingMultiTextureBrush.fsh in Sources */,
 				03CA15C41965492C0040DB07 /* LTEdgesMaskProcessor.mm in Sources */,
@@ -7741,6 +7776,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E403BE2A20BA89A600E94F00 /* LTMPSAvailabilitySpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

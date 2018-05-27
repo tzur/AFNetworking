@@ -43,6 +43,7 @@
 // LTEngine.
 #import "LTEasyBoxing+LTEngine.h"
 #import "LTGLCheck.h"
+#import "LTMPSAvailability.h"
 #import "LTRef+LTEngine.h"
 #import "LTShaderUnit.h"
 #import "LTTypedefs+LTEngine.h"
