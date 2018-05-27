@@ -670,7 +670,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<NSDictionary<NSString *, NSNumber *> *> *)getCreditPriceOfType:(NSString *)creditType
     consumableTypes:(NSSet<NSString *> *)consumableTypes {
   return [[self.validatricksClient
-      getPricesInCreditType:creditType forConsumableTypes:[consumableTypes allObjects]]
+      getPricesInCreditType:creditType forConsumableTypes:consumableTypes.allObjects]
       tryMap:^NSDictionary<NSString *, NSNumber *> *
           (BZRConsumableTypesPriceInfo *consumableTypesPriceInfo, NSError *__autoreleasing *error) {
         auto consumableTypesWithoutPrice = [consumableTypes mutableCopy];

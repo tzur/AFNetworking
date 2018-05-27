@@ -240,7 +240,7 @@ context(@"get user credit", ^{
 context(@"get consumables prices", ^{
   NSDictionary * const requestParameters = @{
     @"creditType": creditType,
-    @"consumableTypes": consumableTypes
+    @"consumableTypes": [consumableTypes componentsJoinedByString:@","]
   };
   BZRConsumableTypesPriceInfo * const successfulResult =
       [MTLJSONAdapter modelOfClass:BZRConsumableTypesPriceInfo.class fromJSONDictionary:@{
