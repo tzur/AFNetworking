@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */; };
+		192A2ACE20BABD370045422C /* NSError+Warehouse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 192A2AB120BABD360045422C /* NSError+Warehouse.mm */; };
+		192A2AD120BABD710045422C /* NSErrorCodes+Warehouse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */; };
 		1964BF5D20A31E9900FF28F5 /* libWarehouse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1533020A314E100F0F438 /* libWarehouse.a */; };
 		1964BFB220A3258100FF28F5 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1964BF9520A3244C00FF28F5 /* libOCMock.a */; };
 		1964BFB320A3259000FF28F5 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1964BFB020A3245C00FF28F5 /* libSpecta.a */; };
@@ -255,6 +257,10 @@
 /* Begin PBXFileReference section */
 		1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "WHSProjectSnapshot+Tests.mm"; sourceTree = "<group>"; };
 		1910C69420BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WHSProjectSnapshot+Tests.h"; sourceTree = "<group>"; };
+		192A2AB120BABD360045422C /* NSError+Warehouse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Warehouse.mm"; sourceTree = "<group>"; };
+		192A2ACD20BABD370045422C /* NSError+Warehouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Warehouse.h"; sourceTree = "<group>"; };
+		192A2ACF20BABD700045422C /* NSErrorCodes+Warehouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Warehouse.h"; sourceTree = "<group>"; };
+		192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Warehouse.mm"; sourceTree = "<group>"; };
 		1964BF5320A3179A00FF28F5 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		1964BF5820A31E9900FF28F5 /* WarehouseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WarehouseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1964BF5C20A31E9900FF28F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -496,6 +502,10 @@
 			isa = PBXGroup;
 			children = (
 				1964BF6320A3223800FF28F5 /* Supporting Files */,
+				192A2ACD20BABD370045422C /* NSError+Warehouse.h */,
+				192A2AB120BABD360045422C /* NSError+Warehouse.mm */,
+				192A2ACF20BABD700045422C /* NSErrorCodes+Warehouse.h */,
+				192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */,
 				198CE4AA20A32989000E70BF /* WHSProjectSnapshot.h */,
 				198CE4A920A32989000E70BF /* WHSProjectSnapshot.mm */,
 				19A6F12220AC58BB00AF8DB1 /* WHSProjectUpdateRequest.h */,
@@ -850,8 +860,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				192A2AD120BABD710045422C /* NSErrorCodes+Warehouse.mm in Sources */,
 				198CE4AB20A32989000E70BF /* WHSProjectSnapshot.mm in Sources */,
 				19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */,
+				192A2ACE20BABD370045422C /* NSError+Warehouse.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

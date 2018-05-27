@@ -24,19 +24,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given properties.
-- (instancetype)initWithIdentifier:(NSUUID *)identifier
-                  bundleIdentifier:(NSString *)bundleIdentifier creationDate:(NSDate *)creationDate
-                  modificationDate:(NSDate *)modificationDate size:(uint64_t)size
-                             steps:(nullable NSArray<NSUUID *> *)steps
-                        stepCursor:(NSUInteger)stepCursor
-                          userData:(nullable NSDictionary<NSString *, id> *)userData
-                         assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
+              creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
+                      size:(uint64_t)size stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDS
+                stepCursor:(NSUInteger)stepCursor
+                  userData:(nullable NSDictionary<NSString *, id> *)userData
+                 assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
-/// Identifier of the project.
-@property (readonly, nonatomic) NSUUID *identifier;
+/// ID of the project.
+@property (readonly, nonatomic) NSUUID *ID;
 
-/// Bundle identifier of the application that created the project.
-@property (readonly, nonatomic) NSString *bundleIdentifier;
+/// Bundle ID of the application that created the project.
+@property (readonly, nonatomic) NSString *bundleID;
 
 /// Date the project was written to storage at the first time.
 @property (readonly, nonatomic) NSDate *creationDate;
@@ -50,21 +49,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// project and in \c assetsURL of all of its steps.
 @property (readonly, nonatomic) uint64_t size;
 
-/// Array containing the identifiers of the steps of the project at this snapshot. The order of the
-/// identifiers in the array is the order of the steps in the project at this snapshot.
+/// Array containing the IDs of the steps of the project at this snapshot. The order of the IDs in
+/// the array is the order of the steps in the project at this snapshot.
 ///
-/// This property is \c nil only if it was fetched without the \c WHSFetchStepsArray flag in
-/// \c fetchOptions.
-@property (readonly, nonatomic, nullable) NSArray<NSUUID *> *steps;
+/// This property is \c nil only if it was fetched without the
+/// \c WHSProjectFetchOptionsFetchStepsIDs flag in \c fetchOptions.
+@property (readonly, nonatomic, nullable) NSArray<NSUUID *> *stepsIDs;
 
-/// Index after the current step in the \c steps array at this snapshot.
+/// Index after the current step in the \c stepsIDs array at this snapshot.
 @property (readonly, nonatomic) NSUInteger stepCursor;
 
 /// Dictionary of property list objects containing data that is application specific for this
 /// project snapshot. Can be different between snapshots of the same project.
 ///
-/// This property is \c nil only if it was fetched without the \c WHSFetchUserData flag in
-/// \c fetchOptions.
+/// This property is \c nil only if it was fetched without the
+/// \c WHSProjectFetchOptionsFetchUserData flag in \c fetchOptions.
 @property (readonly, nonatomic, nullable) NSDictionary<NSString *, id> *userData;
 
 /// Application-managed directory containing assets related to the project, the data in the
@@ -84,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if redo operation can be done on the project. The property refers to the first operation
 /// after the snapshot was fetched. If any operation was done on the project after this snapshot was
-/// fetched, this property is invalid. If \c steps is \c nil always returns \c NO.
+/// fetched, this property is invalid. If \c stepsIDs is \c nil always returns \c NO.
 @property (readonly, nonatomic) BOOL canRedo;
 
 @end
@@ -95,16 +94,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given properties.
-- (instancetype)initWithIdentifier:(NSUUID *)identifier
-                 projectIdentifier:(NSUUID *)projectIdentifier
-                          userData:(NSDictionary<NSString *, id> *)userData
-                         assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithID:(NSUUID *)ID projectID:(NSUUID *)projectID
+                  userData:(NSDictionary<NSString *, id> *)userData
+                 assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
-/// Identifier of this step.
-@property (readonly, nonatomic) NSUUID *identifier;
+/// ID of this step.
+@property (readonly, nonatomic) NSUUID *ID;
 
-/// Identifier of the project containing this step.
-@property (readonly, nonatomic) NSUUID *projectIdentifier;
+/// ID of the project containing this step.
+@property (readonly, nonatomic) NSUUID *projectID;
 
 /// Dictionary of property list objects containing data that is application specific for this step.
 @property (readonly, nonatomic) NSDictionary<NSString *, id> *userData;

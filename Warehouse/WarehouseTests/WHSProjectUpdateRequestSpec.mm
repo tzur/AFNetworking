@@ -8,13 +8,13 @@ SpecBegin(WHSProjectUpdateRequest)
 context(@"requestForUndo", ^{
   it(@"should return undo request if step cursor is non zero", ^{
     auto project = [WHSProjectSnapshot dummyProject];
-    auto request = [WHSProjectUpdateRequest requestForUndo:project];
+    auto request = nn([WHSProjectUpdateRequest requestForUndo:project]);
 
     expect(request.stepCursor).to.equal(project.stepCursor - 1);
-    expect(request.stepIDsToDelete).to.haveCountOf(0);
-    expect(request.stepsContentToAdd).to.haveCountOf(0);
+    expect(request.stepIDsToDelete).to.beEmpty();
+    expect(request.stepsContentToAdd).to.beEmpty();
     expect(request.userData).to.beNil();
-    expect(request.projectIdentifier).to.equal(project.identifier);
+    expect(request.projectID).to.equal(project.ID);
   });
 
   it(@"should return nil if step cursor is zero", ^{
@@ -27,13 +27,13 @@ context(@"requestForUndo", ^{
 context(@"requestForRedo", ^{
   it(@"should return redo request if there are steps after step cursor", ^{
     auto project = [WHSProjectSnapshot dummyProject];
-    auto request = [WHSProjectUpdateRequest requestForRedo:project];
+    auto request = nn([WHSProjectUpdateRequest requestForRedo:project]);
 
     expect(request.stepCursor).to.equal(project.stepCursor + 1);
-    expect(request.stepIDsToDelete).to.haveCountOf(0);
-    expect(request.stepsContentToAdd).to.haveCountOf(0);
+    expect(request.stepIDsToDelete).to.beEmpty();
+    expect(request.stepsContentToAdd).to.beEmpty();
     expect(request.userData).to.beNil();
-    expect(request.projectIdentifier).to.equal(project.identifier);
+    expect(request.projectID).to.equal(project.ID);
   });
 
   it(@"should return nil if there are no steps after step cursor", ^{
@@ -42,8 +42,8 @@ context(@"requestForRedo", ^{
     expect([WHSProjectUpdateRequest requestForRedo:project]).to.beNil();
   });
 
-  it(@"should return nil if steps are not available", ^{
-    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsArray];
+  it(@"should return nil if steps IDs are not available", ^{
+    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsIDs];
 
     expect([WHSProjectUpdateRequest requestForRedo:project]).to.beNil();
   });
@@ -60,28 +60,28 @@ context(@"requestForAddStep", ^{
 
   it(@"should return add request that with steps to delete if there are steps after cursor", ^{
     auto project = [WHSProjectSnapshot dummyProject];
-    auto request = [WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent];
+    auto request = nn([WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent]);
 
     expect(request.stepCursor).to.equal(project.stepCursor + 1);
-    expect(request.stepIDsToDelete).to.equal(project.stepsAfterCursor);
+    expect(request.stepIDsToDelete).to.equal(project.stepsIDsAfterCursor);
     expect(request.stepsContentToAdd).to.equal(@[stepContent]);
     expect(request.userData).to.beNil();
-    expect(request.projectIdentifier).to.equal(project.identifier);
+    expect(request.projectID).to.equal(project.ID);
   });
 
   it(@"should return add request with no steps to delete if there are no steps after cursor", ^{
     auto project = [WHSProjectSnapshot dummyProjectWithNoStepsAfterCursor];
-    auto request = [WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent];
+    auto request = nn([WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent]);
 
     expect(request.stepCursor).to.equal(project.stepCursor + 1);
-    expect(request.stepIDsToDelete).to.haveCountOf(0);
+    expect(request.stepIDsToDelete).to.beEmpty();
     expect(request.stepsContentToAdd).to.equal(@[stepContent]);
     expect(request.userData).to.beNil();
-    expect(request.projectIdentifier).to.equal(project.identifier);
+    expect(request.projectID).to.equal(project.ID);
   });
 
-  it(@"should return nil if steps are not available", ^{
-    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsArray];
+  it(@"should return nil if steps IDs are not available", ^{
+    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsIDs];
 
     expect([WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent]).to.beNil();
   });

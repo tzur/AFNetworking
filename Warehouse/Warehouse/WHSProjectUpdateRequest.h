@@ -33,17 +33,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c projectIdentifier.
-- (instancetype)initWithProjectIdentifier:(NSUUID *)projectIdentifier NS_DESIGNATED_INITIALIZER;
+/// Initializes with the given \c projectID.
+- (instancetype)initWithProjectID:(NSUUID *)projectID NS_DESIGNATED_INITIALIZER;
 
 /// Creates and returns a request to undo the current step of the project based on the given
-/// \c projectSnapshot. Returns \c nil if an undo operation is not possible on the given project
-/// according to the given \c projectSnapshot.
+/// \c projectSnapshot. Returns \c nil if an undo operation is not possible on the project according
+/// to the given \c projectSnapshot.
 + (nullable WHSProjectUpdateRequest *)requestForUndo:(WHSProjectSnapshot *)projectSnapshot;
 
 /// Creates and returns a request to redo the next step of the project based on the given
-/// \c projectSnapshot. Returns \c nil if an redo operation is not possible on the given project
-/// according to the given \c projectSnapshot
+/// \c projectSnapshot. Returns \c nil if an redo operation is not possible on the project according
+/// to the given \c projectSnapshot
 + (nullable WHSProjectUpdateRequest *)requestForRedo:(WHSProjectSnapshot *)projectSnapshot;
 
 /// Creates and returns a request to add a step to the project based on the given
@@ -51,19 +51,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// new step at the step cursor with the given \c stepContent as its content, and increment the step
 /// cursor by one.
 ///
-/// Returns \c nil if \c steps is \c nil in the given \c projectSnapshot.
+/// Returns \c nil if \c stepsIDs is \c nil in the given \c projectSnapshot.
 + (nullable WHSProjectUpdateRequest *)requestForAddStep:(WHSProjectSnapshot *)projectSnapshot
                                             stepContent:(WHSStepContent *)stepContent;
 
-/// Identifier of the project to update.
-@property (readonly, nonatomic) NSUUID *projectIdentifier;
+/// ID of the project to update.
+@property (readonly, nonatomic) NSUUID *projectID;
 
 /// Requested step cursor of the project after the update. If value is \c nil the step cursor
 /// will not change.
 @property (strong, nonatomic, nullable) NSNumber *stepCursor;
 
-/// Array containing the identifiers of the steps to delete, if a step identifier does not exist in
-/// the project, it is ignored.
+/// Array containing the IDs of the steps to delete, if a step ID does not exist in the project, it
+/// is ignored.
 @property (strong, nonatomic) NSArray<NSUUID *> *stepIDsToDelete;
 
 /// Array with the content of the steps to add. The order of the steps addition to the project is

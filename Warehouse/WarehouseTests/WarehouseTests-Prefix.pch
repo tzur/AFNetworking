@@ -15,6 +15,7 @@ extern "C" {
 }
 #endif
 
+#import <LTKitTestUtils/LTTestUtils.h>
 #import <LTKitTestUtils/NSBundle+Test.h>
 
 #import "WHSProjectSnapshot+Tests.h"

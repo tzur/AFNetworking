@@ -33,7 +33,7 @@ context(@"canRedo", ^{
   });
 
   it(@"should be NO if steps are not available", ^{
-    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsArray];
+    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsIDs];
 
     expect(project.canRedo).to.beFalsy();
   });
