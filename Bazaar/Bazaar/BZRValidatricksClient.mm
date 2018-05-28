@@ -107,7 +107,7 @@ static NSString * const kValidatricksConsumableItemsKey = @"consumableItems";
     forConsumableTypes:(NSArray<NSString *> *)consumableTypes {
   FBRHTTPRequestParameters *parameters = @{
     kValidatricksCreditTypeKey: creditType,
-    kValidatricksConsumableTypesKey: consumableTypes
+    kValidatricksConsumableTypesKey: [consumableTypes componentsJoinedByString:@","]
   };
   return [[[[self.HTTPClient
       GET:kValidatricksGetConsumableTypesPricesEndpoint withParameters:parameters headers:nil]
