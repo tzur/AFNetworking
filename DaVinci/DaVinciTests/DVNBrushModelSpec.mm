@@ -13,6 +13,8 @@ static NSDictionary * const kDictionary = @{
   @"version": @"1",
   @"scaleRange": @"[7, 9)",
   @"scale": @8,
+  @"randomInitialSeed": @YES,
+  @"initialSeed": @7
 };
 
 context(@"initialization", ^{
@@ -21,6 +23,8 @@ context(@"initialization", ^{
     expect(model.version).to.equal($(DVNBrushModelVersionV1));
     expect(model.scale).to.equal(1);
     expect(model.scaleRange == lt::Interval<CGFloat>::oc({0, CGFLOAT_MAX})).to.beTruthy();
+    expect(model.randomInitialSeed).to.beFalsy();
+    expect(model.initialSeed).to.equal(0);
   });
 
   context(@"deserialization", ^{
@@ -41,6 +45,8 @@ context(@"initialization", ^{
       expect(model.version).to.equal($(DVNBrushModelVersionV1));
       expect(model.scale).to.equal(8);
       expect(model.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
+      expect(model.randomInitialSeed).to.beTruthy();
+      expect(model.initialSeed).to.equal(7);
     });
   });
 
@@ -78,6 +84,21 @@ context(@"copy constructors", ^{
       DVNBrushModel *scaledModel = [model copyWithScale:1];
       expect(scaledModel.scale).to.equal(7);
       expect(scaledModel.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
+    });
+  });
+
+  context(@"random initial seed indication", ^{
+    it(@"should return a copy with given random initial seed indication", ^{
+      DVNBrushModel *modelCopy = [model copyWithRandomInitialSeed:!model.randomInitialSeed];
+      expect(modelCopy.randomInitialSeed).to.equal(!model.randomInitialSeed);
+    });
+  });
+
+  context(@"initial seed", ^{
+    it(@"should return a copy with initial seed", ^{
+      DVNBrushModel *modelCopy = [model copyWithInitialSeed:8];
+      expect(modelCopy.initialSeed).to.equal(8);
+      expect(modelCopy.initialSeed).toNot.equal(model.initialSeed);
     });
   });
 });

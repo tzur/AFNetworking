@@ -39,7 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
     mapping = @{
       @instanceKeypath(DVNBrushModel, version): @"version",
       @instanceKeypath(DVNBrushModel, scale): @"scale",
-      @instanceKeypath(DVNBrushModel, scaleRange): @"scaleRange"
+      @instanceKeypath(DVNBrushModel, scaleRange): @"scaleRange",
+      @instanceKeypath(DVNBrushModel, randomInitialSeed): @"randomInitialSeed",
+      @instanceKeypath(DVNBrushModel, initialSeed): @"initialSeed"
     };
   });
 
@@ -55,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Public API
+#pragma mark Public API - Scaling
 #pragma mark -
 
 - (instancetype)scaledBy:(CGFloat)scale {
@@ -68,12 +70,32 @@ NS_ASSUME_NONNULL_BEGIN
   return model;
 }
 
+#pragma mark -
+#pragma mark Public API - Copying
+#pragma mark -
+
 - (instancetype)copyWithScale:(CGFloat)scale {
   DVNBrushModel *model = [self copy];
   [model setValue:@(model.scaleRange.clamp(scale).value_or(model.scaleRange.inf()))
            forKey:@keypath(model, scale)];
   return model;
 }
+
+- (instancetype)copyWithRandomInitialSeed:(BOOL)randomInitialSeed {
+  DVNBrushModel *model = [self copy];
+  [model setValue:@(randomInitialSeed) forKey:@keypath(model, randomInitialSeed)];
+  return model;
+}
+
+- (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed {
+  DVNBrushModel *model = [self copy];
+  [model setValue:@(initialSeed) forKey:@keypath(model, initialSeed)];
+  return model;
+}
+
+#pragma mark -
+#pragma mark Public API - Texture Mapping
+#pragma mark -
 
 /// Must be overridden by subclasses.
 - (BOOL)isValidTextureMapping:(NSDictionary<NSString *, LTTexture *> *)textureMapping {
@@ -85,10 +107,18 @@ NS_ASSUME_NONNULL_BEGIN
   return @[];
 }
 
+#pragma mark -
+#pragma mark Public API - Version
+#pragma mark -
+
 LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping =
     [[LTBidirectionalMap alloc] initWithDictionary:@{
       $(DVNBrushModelVersionV1): @"1"
     }];
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
 
 DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
                               std::numeric_limits<CGFloat>::max());
@@ -96,6 +126,8 @@ DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
 - (void)setScaleRange:(lt::Interval<CGFloat>)scaleRange {
   _scaleRange = *scaleRange.clampedTo([[self class] allowedScaleRange]);
 }
+
+DVNClosedRangeClassProperty(NSUInteger, allowedInitialSeed, AllowedInitialSeed, 0, NSUIntegerMax);
 
 @end
 

@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <LTEngine/LTQuad.h>
 #import <LTKit/LTValueObject.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,6 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
                       renderTargetInfo:(DVNBrushRenderTargetInformation *)renderTargetInfo
                       conversionFactor:(CGFloat)conversionFactor;
+
+/// Returns a new instance with the given \c brushModel, \c renderTargetLocation,
+/// \c renderTargetHasSingleChannel, \c renderTargetIsNonPremultiplied and \c conversionFactor.
++ (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
+                  renderTargetLocation:(lt::Quad)renderTargetLocation
+          renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
+        renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied
+                      conversionFactor:(CGFloat)conversionFactor;
+
+/// Returns a copy of the receiver with the exception of the given \c brushModel.
+- (instancetype)copyWithBrushModel:(DVNBrushModel *)brushModel;
 
 /// Model determining the brush to be used for brush stroke rendering.
 @property (readonly, nonatomic) DVNBrushModel *brushModel;

@@ -7,8 +7,10 @@
 #import <LTEngine/LTFboPool.h>
 #import <LTEngine/LTParameterizedObjectType.h>
 #import <LTEngine/LTTexture.h>
+#import <LTKit/LTRandom.h>
 #import <LTKit/NSArray+Functional.h>
 
+#import "DVNBrushModel.h"
 #import "DVNBrushRenderConfigurationProvider.h"
 #import "DVNBrushRenderModel.h"
 #import "DVNBrushRenderTargetInformation.h"
@@ -101,7 +103,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   std::pair<DVNBrushRenderModel *, NSDictionary<NSString *, LTTexture *> *>brushStrokeData =
       [self.delegate brushStrokeData];
-  self.brushRenderModel = brushStrokeData.first;
+  DVNBrushRenderModel *brushRenderModel = brushStrokeData.first;
+  DVNBrushModel *brushModel = brushRenderModel.brushModel;
+
+  if (brushModel.randomInitialSeed) {
+    LTRandom *random = [[LTRandom alloc] init];
+    NSUInteger seed =
+        (NSUInteger)[random randomUnsignedIntegerBelow:std::numeric_limits<uint>::max()];
+    brushModel = [[brushModel copyWithInitialSeed:seed] copyWithRandomInitialSeed:NO];
+    brushRenderModel = [brushRenderModel copyWithBrushModel:brushModel];
+  }
+
+  self.brushRenderModel = brushRenderModel;
 
   DVNPipelineConfiguration *configuration =
       [self.provider configurationForModel:self.brushRenderModel
