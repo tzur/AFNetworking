@@ -62,7 +62,7 @@
 		84F467791D0806880060EFAA /* PTNTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F467781D0806880060EFAA /* PTNTestUtils.mm */; };
 		84F4677F1D08076C0060EFAA /* PTNFakeDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4677E1D08076C0060EFAA /* PTNFakeDescriptor.m */; };
 		84F4679E1D080B620060EFAA /* PTNDisposableRetainingSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */; };
-		84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */; };
+		84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.mm */; };
 		84F830DD1D11986E00A01882 /* PTUCellSizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */; };
 		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
@@ -537,7 +537,7 @@
 		84F4679C1D080B620060EFAA /* PTNDisposableRetainingSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNDisposableRetainingSignal.h; path = ../../Photons/PhotonsTests/PTNDisposableRetainingSignal.h; sourceTree = "<group>"; };
 		84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNDisposableRetainingSignal.m; path = ../../Photons/PhotonsTests/PTNDisposableRetainingSignal.m; sourceTree = "<group>"; };
 		84F467AE1D0839F20060EFAA /* PTNFakeAssetDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFakeAssetDescriptor.h; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.h; sourceTree = "<group>"; };
-		84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFakeAssetDescriptor.m; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.m; sourceTree = "<group>"; };
+		84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PTNFakeAssetDescriptor.mm; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.mm; sourceTree = "<group>"; };
 		84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCellSizingStrategySpec.mm; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -970,7 +970,7 @@
 				8463DA061D1009C300FF4935 /* PTNFakeAlbumDescriptor.h */,
 				8463DA071D1009C300FF4935 /* PTNFakeAlbumDescriptor.m */,
 				84F467AE1D0839F20060EFAA /* PTNFakeAssetDescriptor.h */,
-				84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */,
+				84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.mm */,
 				848D31521D0F0939006BC52F /* PTNFakeAssetManager.h */,
 				848D31531D0F0939006BC52F /* PTNFakeAssetManager.m */,
 				84F4677D1D08076C0060EFAA /* PTNFakeDescriptor.h */,
@@ -1555,7 +1555,7 @@
 				84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm in Sources */,
 				8482E0321D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm in Sources */,
 				84B63E831DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm in Sources */,
-				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
+				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.mm in Sources */,
 				848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */,
 				BE7B8C2D1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm in Sources */,
 				84765E321D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm in Sources */,

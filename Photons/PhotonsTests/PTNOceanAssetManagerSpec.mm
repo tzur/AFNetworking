@@ -81,6 +81,21 @@ PTNOceanAssetDescriptor *PTNFakeOceanVideoAssetDescriptor() {
                                   [PTNOceanAssetDescriptor class]);
 }
 
+PTNOceanAssetDescriptor *PTNFakeOceanPartialVideoAssetDescriptor() {
+  return PTNObjectFromJSONFileURL(PTNOceanPartialVideoAssetDescriptorJSONURL(),
+                                  [PTNOceanAssetDescriptor class]);
+}
+
+PTNOceanAssetDescriptor *PTNFakeOceanNoDownloadVideoAssetDescriptor() {
+  return PTNObjectFromJSONFileURL(PTNOceanNoDownloadVideoAssetDescriptorJSONURL(),
+                                  [PTNOceanAssetDescriptor class]);
+}
+
+PTNOceanAssetDescriptor *PTNFakeOceanNoStreamingVideoAssetDescriptor() {
+  return PTNObjectFromJSONFileURL(PTNOceanNoStreamingVideoAssetDescriptorJSONURL(),
+                                  [PTNOceanAssetDescriptor class]);
+}
+
 NSURL *PTNOceanSmallImageURL() {
   return [NSURL URLWithString:@"http://a"];
 }
@@ -620,12 +635,23 @@ context(@"fetching AV preview", ^{
         OCMStub([invalidDescriptor type]).andReturn($(PTNOceanAssetTypeVideo));
 
         RACSignal *fetch = [manager
-                            fetchImageWithDescriptor:invalidDescriptor
-                            resizingStrategy:[PTNResizingStrategy identity]
-                            options:[PTNImageFetchOptions options]];
+                            fetchAVPreviewWithDescriptor:invalidDescriptor
+                            options:OCMClassMock([PTNAVAssetFetchOptions class])];
 
         expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                          associatedDescriptor:invalidDescriptor]);
+      });
+
+      it(@"should err when there are no streaming URLs", ^{
+        auto noStreamingDescriptor = PTNFakeOceanNoStreamingVideoAssetDescriptor();
+        RACSignal *fetch = [manager
+                            fetchAVPreviewWithDescriptor:noStreamingDescriptor
+                            options:OCMClassMock([PTNAVAssetFetchOptions class])];
+
+        expect(fetch).to.matchError(^BOOL(NSError *error) {
+          return error.code == PTNErrorCodeAssetNotFound && error.lt_isLTDomain &&
+              [error.ptn_associatedDescriptor isEqual:noStreamingDescriptor];
+        });
       });
     });
 
@@ -690,6 +716,21 @@ context(@"fetching AV preview", ^{
           return [((AVURLAsset *)playerItem.asset).URL isEqual:PTNOceanCloseTo720pVideoStreamURL()];
         });
       });
+
+      it(@"should only use video assets with non-nil stream URLs", ^{
+        auto partialDescriptor = PTNFakeOceanPartialVideoAssetDescriptor();
+        auto options = [PTNAVAssetFetchOptions
+                        optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
+        RACSignal *values = [manager fetchAVPreviewWithDescriptor:partialDescriptor
+                                                          options:options];
+        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+          AVPlayerItem *playerItem = progress.result;
+          if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
+            return NO;
+          }
+          return [((AVURLAsset *)playerItem.asset).URL isEqual:PTNOceanCloseTo720pVideoStreamURL()];
+        });
+      });
     });
   });
 });
@@ -740,6 +781,16 @@ context(@"fetching AV data", ^{
         ]);
       });
 
+      it(@"should err when there are no download URLs", ^{
+        auto noDownloadDescriptor = PTNFakeOceanNoDownloadVideoAssetDescriptor();
+        RACSignal *fetch = [manager fetchAVDataWithDescriptor:noDownloadDescriptor];
+
+        expect(fetch).to.matchError(^BOOL(NSError *error) {
+          return error.code == PTNErrorCodeAssetNotFound && error.lt_isLTDomain &&
+              [error.ptn_associatedDescriptor isEqual:noDownloadDescriptor];
+        });
+      });
+
       it(@"should prefer video with highest pixel count", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadFileWithURL:PTNOcean1080pVideoDownloadURL()]).andReturn(subject);
@@ -748,6 +799,22 @@ context(@"fetching AV data", ^{
         auto expectedAsset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
 
         LLSignalTestRecorder *recorder = [[manager fetchAVDataWithDescriptor:descriptor]
+                                          testRecorder];
+        [subject sendNext:progress];
+
+        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+      });
+
+      it(@"should only use video assets with non-nil download URL", ^{
+        auto partialDescriptor = PTNFakeOceanPartialVideoAssetDescriptor();
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client downloadFileWithURL:PTNOceanCloseTo720pVideoDownloadURL()])
+            .andReturn(subject);
+        auto path = [LTPath temporaryPathWithExtension:@"tmp"];
+        auto progress = [PTNProgress progressWithResult:path];
+        auto expectedAsset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
+
+        LLSignalTestRecorder *recorder = [[manager fetchAVDataWithDescriptor:partialDescriptor]
                                           testRecorder];
         [subject sendNext:progress];
 

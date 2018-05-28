@@ -104,6 +104,12 @@ context(@"asset descriptor", ^{
     PHAsset *asset = PTNCreateAsset(nil);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
+
+  it(@"should have no artist", ^{
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+
+    expect(asset.artist).to.beNil();
+  });
 });
 
 context(@"album descriptor", ^{

@@ -89,6 +89,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self respondsToSelector:@selector(uniformTypeIdentifier)] && self.uniformTypeIdentifier;
 }
 
+- (nullable NSString *)artist {
+  return nil;
+}
+
 @end
 
 @implementation PHCollection (Photons)

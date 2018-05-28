@@ -33,4 +33,16 @@ NSURL *PTNOceanPhotoAssetDescriptorJSONURL(void);
 /// asset.
 NSURL *PTNOceanVideoAssetDescriptorJSONURL(void);
 
+/// Returns a file URL with path to a JSON file containing an Ocean asset descriptor for a video
+/// asset with some \c stream_url and \c download_url fields missing.
+NSURL *PTNOceanPartialVideoAssetDescriptorJSONURL(void);
+
+/// Returns a file URL with path to a JSON file containing an Ocean asset descriptor for a video
+/// asset without any \c download_url fields.
+NSURL *PTNOceanNoDownloadVideoAssetDescriptorJSONURL(void);
+
+/// Returns a file URL with path to a JSON file containing an Ocean asset descriptor for a video
+/// asset without any \c stream_url fields.
+NSURL *PTNOceanNoStreamingVideoAssetDescriptorJSONURL(void);
+
 NS_ASSUME_NONNULL_END

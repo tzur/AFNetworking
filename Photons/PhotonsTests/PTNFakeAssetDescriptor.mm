@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize filename = _filename;
 @synthesize duration = _duration;
 @synthesize assetDescriptorCapabilities = _assetDescriptorCapabilities;
+@synthesize artist = _artist;
 
 - (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
                     localizedTitle:(nullable NSString *)localizedTitle
@@ -24,11 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
                           filename:(nullable NSString *)filename
-       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
+       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities
+                            artist:(nullable NSString *)artist {
   return [self initWithIdentifier:ptn_identifier localizedTitle:localizedTitle
            descriptorCapabilities:descriptorCapabilities descriptorTraits:descriptorTraits
                      creationDate:creationDate modificationDate:modificationDate filename:filename
-                         duration:0 assetDescriptorCapabilities:assetDescriptorCapabilities];
+                         duration:0 assetDescriptorCapabilities:assetDescriptorCapabilities
+                           artist:artist];
 }
 
 - (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
@@ -39,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
                   modificationDate:(nullable NSDate *)modificationDate
                           filename:(nullable NSString *)filename
                           duration:(NSTimeInterval)duration
-       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
+       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities
+                            artist:(nullable NSString *)artist {
   if (self = [super init]) {
     _ptn_identifier = ptn_identifier;
     _localizedTitle = localizedTitle;
@@ -50,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     _filename = filename;
     _duration = duration;
     _assetDescriptorCapabilities = assetDescriptorCapabilities;
+    _artist = artist;
   }
   return self;
 }

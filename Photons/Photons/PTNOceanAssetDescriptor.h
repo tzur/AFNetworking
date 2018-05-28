@@ -32,14 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Width of the asset.
 @property (readonly, nonatomic) NSUInteger width;
 
-/// Size of the asset in bytes.
-@property (readonly, nonatomic) NSUInteger size;
+/// Size of the asset in bytes, if available.
+@property (readonly, nonatomic, nullable) NSNumber *size;
 
-/// URL for downloading the content of the asset.
-@property (readonly, nonatomic) NSURL *url;
+/// URL for downloading the content of the asset, if available.
+@property (readonly, nonatomic, nullable) NSURL *url;
 
-/// URL for streaming the content of the asset.
-@property (readonly, nonatomic) NSURL *streamURL;
+/// URL for streaming the content of the asset, if available.
+@property (readonly, nonatomic, nullable) NSURL *streamURL;
 
 @end
 

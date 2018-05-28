@@ -1,0 +1,41 @@
+{
+  "id": "foo",
+  "asset_type": "video",
+  "source_id": "pixabay",
+  "duration": 1234,
+  "all_sizes": [
+    {
+      "height": 20,
+      "width": 50,
+      "url" : "http://a"
+    },
+    {
+      "height": 60,
+      "width": 100,
+      "url" : "http://b"
+    },
+    {
+      "height": 200,
+      "width": 500,
+      "url" : "http://c"
+    }
+  ],
+  "videos": [
+    {
+      "height": 350,
+      "width": 630,
+      "size": 100
+    },
+    {
+      "height": 710,
+      "width": 1270,
+      "size": 200,
+      "download_url": "https://download/710_1270"
+    },
+    {
+      "height": 1080,
+      "width": 1920,
+      "size": 300
+    }
+  ]
+}

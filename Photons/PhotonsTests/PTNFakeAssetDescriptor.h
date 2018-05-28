@@ -22,7 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
                           filename:(nullable NSString *)filename
-       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities;
+       assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities
+                            artist:(nullable NSString *)artist;
 
 /// Initializes with \c ptn_identifier, \c localizedTitle, \c descriptorCapabilities,
 /// \c descriptorTraits, \c creationDate, \c modificationDate, \c filename, \c duration and \c
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
                           filename:(nullable NSString *)filename
                           duration:(NSTimeInterval)duration
        assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities
+                            artist:(nullable NSString *)artist
     NS_DESIGNATED_INITIALIZER;
 
 @end

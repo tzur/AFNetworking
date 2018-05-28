@@ -11,22 +11,57 @@
 
 SpecBegin(PTNOceanVideoAssetInfo)
 
-it(@"should deserialize", ^{
-  auto AVAssetInfo = @{
+__block NSDictionary<NSString *, id> *AVAssetInfoDictionary;
+
+beforeEach(^{
+  AVAssetInfoDictionary = @{
     @"height": @8,
     @"width": @9,
     @"size": @1337,
     @"download_url" : @"https://bar.com/full.mp4",
     @"streaming_url": @"bar://steam.foo"
   };
+});
+
+it(@"should deserialize", ^{
   PTNOceanVideoAssetInfo *assetInfo = [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
-                                                fromJSONDictionary:AVAssetInfo error:nil];
+                                                fromJSONDictionary:AVAssetInfoDictionary error:nil];
 
   expect(assetInfo.height).to.equal(@8);
   expect(assetInfo.width).to.equal(@9);
   expect(assetInfo.size).to.equal(@1337);
   expect(assetInfo.url.absoluteString).to.equal(@"https://bar.com/full.mp4");
   expect(assetInfo.streamURL.absoluteString).to.equal(@"bar://steam.foo");
+});
+
+it(@"should deserialize without download URL", ^{
+  auto noDownloadURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                                  [NSSet setWithObject:@"download_url"]];
+  PTNOceanVideoAssetInfo *noDownloadURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noDownloadURLDictionary error:nil];
+  expect(noDownloadURLAssetInfo).notTo.beNil();
+  expect(noDownloadURLAssetInfo.url).to.beNil();
+});
+
+it(@"should deserialize without streaming URL", ^{
+  auto noStreamingURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                                  [NSSet setWithObject:@"streaming_url"]];
+  PTNOceanVideoAssetInfo *noStreamingURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noStreamingURLDictionary error:nil];
+  expect(noStreamingURLAssetInfo).notTo.beNil();
+  expect(noStreamingURLAssetInfo.streamURL).to.beNil();
+});
+
+it(@"should deserialize without size", ^{
+  auto noSizeURLDictionary = [AVAssetInfoDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                              [NSSet setWithObject:@"size"]];
+  PTNOceanVideoAssetInfo *noSizeURLAssetInfo =
+      [MTLJSONAdapter modelOfClass:[PTNOceanVideoAssetInfo class]
+                fromJSONDictionary:noSizeURLDictionary error:nil];
+  expect(noSizeURLAssetInfo).notTo.beNil();
+  expect(noSizeURLAssetInfo.size).to.beNil();
 });
 
 SpecEnd
@@ -52,6 +87,7 @@ context(@"photos", ^{
       @"id": @"foo",
       @"asset_type": @"photo",
       @"source_id": @"pixabay",
+      @"artist": @"foo",
       @"all_sizes": @[
         @{
           @"height": @8,
@@ -111,6 +147,7 @@ context(@"photos", ^{
     expect(descriptor.modificationDate).to.beNil();
     expect(descriptor.filename).to.beNil();
     expect(descriptor.duration).to.equal(0);
+    expect(descriptor.artist).to.equal(@"foo");
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
@@ -121,6 +158,16 @@ context(@"photos", ^{
     expect(descriptor.descriptorTraits)
         .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
   });
+
+  it(@"should deserialize without artist", ^{
+    auto noArtistDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"artist"]];
+    PTNOceanAssetDescriptor *noArtistDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noArtistDictionary error:&parseError];
+    expect(noArtistDescriptor).notTo.beNil();
+    expect(noArtistDescriptor.artist).to.beNil();
+  });
 });
 
 context(@"video", ^{
@@ -129,6 +176,7 @@ context(@"video", ^{
       @"id": @"foo",
       @"asset_type": @"video",
       @"source_id": @"pixabay",
+      @"artist": @"foo",
       @"duration": @1337,
       @"all_sizes": @[
         @{
@@ -201,8 +249,8 @@ context(@"video", ^{
         @"videos": @[
           @{
             @"height": @8,
-            @"width": @9,
             @"size": @1337,
+            @"url" : @"https://bar.com/thumbnail.jpg"
           }
         ]
       };
@@ -247,6 +295,16 @@ context(@"video", ^{
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
     expect(descriptor.descriptorTraits)
         .to.equal([@[kPTNDescriptorTraitCloudBasedKey, kPTNDescriptorTraitAudiovisualKey] lt_set]);
+  });
+
+  it(@"should deserialize without artist", ^{
+    auto noArtistDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"artist"]];
+    PTNOceanAssetDescriptor *noArtistDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noArtistDictionary error:&parseError];
+    expect(noArtistDescriptor).notTo.beNil();
+    expect(noArtistDescriptor.artist).to.beNil();
   });
 });
 

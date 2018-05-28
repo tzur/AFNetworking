@@ -16,16 +16,43 @@ LTEnumImplement(NSUInteger, PTNOceanAssetType,
 /// Types of Ocean assets sources.
 LTEnumImplement(NSUInteger, PTNOceanAssetSource,
   /// Pixabay https://pixabay.com/.
-  PTNOceanAssetSourcePixabay
+  PTNOceanAssetSourcePixabay,
+  /// Getty Images https://www.gettyimages.com/.
+  PTNOceanAssetSourceGetty
 );
 
 @implementation PTNOceanAssetSource (Identifier)
 
+static LTBidirectionalMap *kPTNOceanAssetSourceIdentifiers =
+  [LTBidirectionalMap mapWithDictionary:@{
+    @"pixabay": $(PTNOceanAssetSourcePixabay),
+    @"getty": $(PTNOceanAssetSourceGetty)
+  }];
+
++ (nullable instancetype)sourceWithIdentifier:(NSString *)identifier {
+  return kPTNOceanAssetSourceIdentifiers[identifier];
+}
+
 - (NSString *)identifier {
-  switch (self.value) {
-    case PTNOceanAssetSourcePixabay:
-      return @"pixabay";
-  }
+  return [kPTNOceanAssetSourceIdentifiers keyForObject:self];
+}
+
+@end
+
+@implementation PTNOceanAssetType (Identifier)
+
+static LTBidirectionalMap *kPTNOceanAssetTypeIdentifiers =
+  [LTBidirectionalMap mapWithDictionary:@{
+    @"image": $(PTNOceanAssetTypePhoto),
+    @"video": $(PTNOceanAssetTypeVideo)
+  }];
+
++ (nullable instancetype)typeWithIdentifier:(NSString *)identifier {
+  return kPTNOceanAssetTypeIdentifiers[identifier];
+}
+
+- (NSString *)identifier {
+  return [kPTNOceanAssetTypeIdentifiers keyForObject:self];
 }
 
 @end

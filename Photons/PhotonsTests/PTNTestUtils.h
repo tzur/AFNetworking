@@ -26,7 +26,7 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
 /// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
 /// \c nil to support no traits, \c creationDate, \c modificationDate, \c filename, zero duration
-/// and \c assetCapabilities.
+/// \c assetCapabilities and \c artist.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
@@ -34,12 +34,13 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
                                                 NSString * _Nullable filename,
-                                                PTNAssetDescriptorCapabilities assetCapabilities);
+                                                PTNAssetDescriptorCapabilities assetCapabilities,
+                                                NSString * _Nullable artist = nil);
 
 /// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
-/// \c nil to support no traits, \c creationDate, \c modificationDate, \c filename, \c duration and
-/// \c assetCapabilities.
+/// \c nil to support no traits, \c creationDate, \c modificationDate, \c filename, \c duration,
+/// \c assetCapabilities and \c artist.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
@@ -48,7 +49,8 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSDate * _Nullable modificationDate,
                                                 NSString * _Nullable filename,
                                                 NSTimeInterval duration,
-                                                PTNAssetDescriptorCapabilities assetCapabilities);
+                                                PTNAssetDescriptorCapabilities assetCapabilities,
+                                                NSString * _Nullable artist = nil);
 
 /// Creates and returns a \c PTNAlbumDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.album, \c localizedTitle, \c capabilities, \c traits or
