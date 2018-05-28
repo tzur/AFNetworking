@@ -1336,6 +1336,9 @@
 		E4C5709320B46D4F00B99F37 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E4C7ECAD20A1753F00AF5BB9 /* Flower.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E4C7EC7920A1753F00AF5BB9 /* Flower.tiff */; };
 		E4CB725320B453170051E498 /* LTEngineDeviceTests-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4CB725220B453170051E498 /* LTEngineDeviceTests-Prefix.pch */; };
+		E4CE8D4120BAEBA4006C3BF7 /* LTMTLDefaults.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4CE8D0C20BAEBA3006C3BF7 /* LTMTLDefaults.mm */; };
+		E4CE8D4220BAEBA4006C3BF7 /* LTMTLDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = E4CE8D4020BAEBA4006C3BF7 /* LTMTLDefaults.h */; };
+		E4CE8D4520BAECF3006C3BF7 /* LTMTLDefaultsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4CE8D4320BAEC53006C3BF7 /* LTMTLDefaultsSpec.mm */; };
 		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
 		E4DE72D11FB1A2050097EF57 /* LTImageIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */; };
 		E4DE72D21FB1A2050097EF57 /* LTImageIOExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */; };
@@ -3197,6 +3200,9 @@
 		E4C7EC7920A1753F00AF5BB9 /* Flower.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Flower.tiff; path = Resources/Flower.tiff; sourceTree = "<group>"; };
 		E4CB721E20B453170051E498 /* LTEngineDeviceTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "LTEngineDeviceTests-Info.plist"; path = "LTEngineDeviceTests/LTEngineDeviceTests-Info.plist"; sourceTree = "<group>"; };
 		E4CB725220B453170051E498 /* LTEngineDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LTEngineDeviceTests-Prefix.pch"; path = "LTEngineDeviceTests/LTEngineDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
+		E4CE8D0C20BAEBA3006C3BF7 /* LTMTLDefaults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMTLDefaults.mm; sourceTree = "<group>"; };
+		E4CE8D4020BAEBA4006C3BF7 /* LTMTLDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMTLDefaults.h; sourceTree = "<group>"; };
+		E4CE8D4320BAEC53006C3BF7 /* LTMTLDefaultsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTMTLDefaultsSpec.mm; path = LTEngineDeviceTests/LTMTLDefaultsSpec.mm; sourceTree = "<group>"; };
 		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 		E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageIOExtensions.h; sourceTree = "<group>"; };
 		E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensions.mm; sourceTree = "<group>"; };
@@ -5837,6 +5843,7 @@
 			isa = PBXGroup;
 			children = (
 				E403BE2920BA89A600E94F00 /* LTMPSAvailabilitySpec.mm */,
+				E4CE8D4320BAEC53006C3BF7 /* LTMTLDefaultsSpec.mm */,
 			);
 			name = Metal;
 			sourceTree = "<group>";
@@ -5881,6 +5888,8 @@
 			children = (
 				E403BDF020BA896A00E94F00 /* LTMPSAvailability.h */,
 				E403BE2420BA896B00E94F00 /* LTMPSAvailability.mm */,
+				E4CE8D4020BAEBA4006C3BF7 /* LTMTLDefaults.h */,
+				E4CE8D0C20BAEBA3006C3BF7 /* LTMTLDefaults.mm */,
 			);
 			name = Metal;
 			sourceTree = "<group>";
@@ -6184,6 +6193,7 @@
 				28BBD7F519A20AA40062C803 /* NSValue+LTRect.h in Headers */,
 				85CDE5381CFED51C00229787 /* LTForegroundBackgroundDrawer.h in Headers */,
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
+				E4CE8D4220BAEBA4006C3BF7 /* LTMTLDefaults.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
 				25AF174A1AD50BE00055E664 /* LTVGLine.h in Headers */,
@@ -7457,6 +7467,7 @@
 				E412C8A31F61432C0070FCBC /* LTGuidedFilterShift.fsh in Sources */,
 				E412C8BC1F6145260070FCBC /* LTGuidedFilterCombine.fsh in Sources */,
 				E412C8BD1F6145470070FCBC /* LTGuidedFilterBlurNormalize.fsh in Sources */,
+				E4CE8D4120BAEBA4006C3BF7 /* LTMTLDefaults.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7776,6 +7787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4CE8D4520BAECF3006C3BF7 /* LTMTLDefaultsSpec.mm in Sources */,
 				E403BE2A20BA89A600E94F00 /* LTMPSAvailabilitySpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
