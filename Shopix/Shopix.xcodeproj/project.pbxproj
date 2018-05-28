@@ -41,6 +41,7 @@
 		9F53AC9620A85DCD0076D8EE /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F53AC9720A85DCD0076D8EE /* libFBTweak.a */; };
 		9FF05EEC20ADA22000A83DC2 /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05EED20ADA22000A83DC2 /* libMilkshake.a */; };
 		9FF05F1720ADA40000A83DC2 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05F1620ADA40000A83DC2 /* AdSupport.framework */; };
+		B93EFE0620BC158200C30545 /* SPXConsumableItemsModels.mm in Sources */ = {isa = PBXBuildFile; fileRef = B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */; };
 		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
 		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
@@ -346,6 +347,13 @@
 			remoteGlobalIDString = E917140919DF07D700921712;
 			remoteInfo = "libSpecta-iOS";
 		};
+		B9B699C920BC152500E22BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD553D861F4184D00048215C /* Bazaar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B94C46B920B9937500C8B65B;
+			remoteInfo = BazaarTestUtils;
+		};
 		CD553D8B1F4184D00048215C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD553D861F4184D00048215C /* Bazaar.xcodeproj */;
@@ -533,6 +541,8 @@
 		9F53AC9720A85DCD0076D8EE /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF05EED20ADA22000A83DC2 /* libMilkshake.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMilkshake.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF05F1620ADA40000A83DC2 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		B93EFE0420BC158200C30545 /* SPXConsumableItemsModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXConsumableItemsModels.h; sourceTree = "<group>"; };
+		B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXConsumableItemsModels.mm; sourceTree = "<group>"; };
 		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
 		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
@@ -820,6 +830,7 @@
 			isa = PBXGroup;
 			children = (
 				CDC83DEA1FD444AD00E9F41A /* Analytics */,
+				B9B699C520BC152500E22BDB /* Consumable Products */,
 				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				88FA8C711F66A5FE00D2E594 /* Promotions */,
@@ -1088,6 +1099,15 @@
 			name = "AppStore Product Screen";
 			sourceTree = "<group>";
 		};
+		B9B699C520BC152500E22BDB /* Consumable Products */ = {
+			isa = PBXGroup;
+			children = (
+				B93EFE0420BC158200C30545 /* SPXConsumableItemsModels.h */,
+				B93EFE0520BC158200C30545 /* SPXConsumableItemsModels.mm */,
+			);
+			name = "Consumable Products";
+			sourceTree = "<group>";
+		};
 		CD1FFDBE1FD5C556004D5DEB /* UI Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -1112,6 +1132,7 @@
 			children = (
 				CD553D8C1F4184D00048215C /* libBazaar.a */,
 				CD553D8E1F4184D00048215C /* BazaarTests.xctest */,
+				B9B699CA20BC152500E22BDB /* libBazaarTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1710,6 +1731,13 @@
 			remoteRef = 8B425F011CA6D218001C457E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B9B699CA20BC152500E22BDB /* libBazaarTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBazaarTestUtils.a;
+			remoteRef = B9B699C920BC152500E22BDB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CD553D8C1F4184D00048215C /* libBazaar.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1920,6 +1948,7 @@
 				CD2E00C5202701100038EC7F /* SPXSubscriptionDescriptor+PriceString.mm in Sources */,
 				CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */,
 				CDF5F9711FCDC4EB007D4AB0 /* SPXSubscriptionDescriptor.mm in Sources */,
+				B93EFE0620BC158200C30545 /* SPXConsumableItemsModels.mm in Sources */,
 				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
 				CDC83C161FD067E700E9F41A /* SPXSubscriptionViewController.mm in Sources */,
 				CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */,
