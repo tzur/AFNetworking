@@ -3,6 +3,7 @@
 
 #import "BZRStoreConfiguration.h"
 
+#import <Fiber/FBRHTTPClient.h>
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
@@ -36,6 +37,8 @@
 #import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
+#import "BZRValidatricksClient.h"
+#import "BZRValidatricksSessionConfigurationProvider.h"
 #import "BZRiCloudUserIDProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -102,6 +105,13 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
     _keychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
 
+    auto validatricksBaseURL = [NSURL URLWithString:@"https://api.lightricks.com/store/v1/"];
+    auto sessionConfigurationProvider = [[BZRValidatricksSessionConfigurationProvider alloc] init];
+    auto HTTPClient = [FBRHTTPClient
+        clientWithSessionConfiguration:[sessionConfigurationProvider HTTPSessionConfiguration]
+                               baseURL:validatricksBaseURL];
+    _validatricksClient = [[BZRValidatricksClient alloc] initWithHTTPClient:HTTPClient];
+
     auto relevantApplicationsBundleIDs = bundledApplicationsIDs ?
         [bundledApplicationsIDs setByAddingObject:applicationBundleID] :
         [NSSet setWithObject:applicationBundleID];
@@ -118,11 +128,11 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
          currentApplicationBundleID:applicationBundleID];
 
-    auto userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
+    _userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
          initWithValidationParametersProvider:self.validationParametersProvider
-         receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
+         receiptDataCache:receiptDataCache userIDProvider:self.userIDProvider];
 
     auto timeProvider = [[BZRTimeProvider alloc] init];
     BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =

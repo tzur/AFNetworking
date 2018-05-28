@@ -5,8 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct, BZRReceiptValidationStatus, LTProgress<ResultType : id<NSObject>>,
-    SKPaymentTransaction;
+@class BZRProduct, BZRReceiptValidationStatus, BZRRedeemConsumablesStatus, BZRUserCreditStatus,
+    LTProgress<ResultType : id<NSObject>>, SKPaymentTransaction;
 
 /// A unified interface for managing an products. The products manager provides methods for:
 ///
@@ -72,6 +72,43 @@ NS_ASSUME_NONNULL_BEGIN
 /// the property \c bzr_transactionIdentifier of the underlying error.
 - (RACSignal *)purchaseConsumableProduct:(NSString *)productIdentifier
                                 quantity:(NSUInteger)quantity;
+
+/// Returns the current user's credit and the identifiers of consumable items that were already
+/// consumed for the given \c creditType.
+///
+/// Returns a signal that fetches the credit and the identifiers of the consumable items that were
+/// already redeemed for credit type \c creditType. On success the signal sends the credit status.
+/// The signal errs if there was an error fetching the data, the error code will be
+/// \c BZRErrorCodeValidatricksRequestFailed. The signal also errs when the user identifier is not
+/// available, the error code will be \c BZRErrorCodeUserIdentifierNotAvailable.
+- (RACSignal<BZRUserCreditStatus *> *)getUserCreditStatus:(NSString *)creditType;
+
+/// Gets the prices of consumables of the specified \c consumableTypes in credit units of type
+/// \c creditType.
+///
+/// Returns a signal that sends the required credit for each of the consumable types specified in
+/// \c consumableTypes. The signal errs if there was an error fetching the data or if the price
+/// of any given element of \c consumableTypes couldn't be found for the given \c creditType.
+- (RACSignal<NSDictionary<NSString *, NSNumber *> *> *)getCreditPriceOfType:(NSString *)creditType
+    consumableTypes:(NSSet<NSString *> *)consumableTypes;
+
+/// Redeems all the consumable items specified by \c consumableItemsIDs with credit of type
+/// \c creditType.
+///
+/// Returns a signal that redeems the assets specified by \c consumableItemToType with credit of
+/// type \c creditType. On success the signal sends an object that specifies the credit that the
+/// user has left and the status of the consumable items that were requested to be redeemed. Then
+/// the signal completes. The signal errs if there was an error redeeming the consumable items or if
+/// the user doesn't have enough credit to redeem the consumable items. If the user doesn't have
+/// enough credit, no asset will be redeemed and the error will be populated with a property called
+/// \c bzr_validatricksErrorInfo with the credit information. The signal also errs when the user
+/// identifier is not available, the error code will be \c BZRErrorCodeUserIdentifierNotAvailable.
+///
+/// @note \c consumedItems in the returned redeem status may have \c redeemedCredit equal to \c 0 if
+/// the consumable item was already redeemed.
+- (RACSignal<BZRRedeemConsumablesStatus *> *)
+    redeemConsumableItems:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+    ofCreditType:(NSString *)creditType;
 
 /// Provides access to the content of the given \c product. Events can be sent on an arbitrary
 /// thread.
