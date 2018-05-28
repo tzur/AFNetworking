@@ -39,6 +39,8 @@
 		8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
 		8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */; };
 		9F53AC9620A85DCD0076D8EE /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F53AC9720A85DCD0076D8EE /* libFBTweak.a */; };
+		9FF05EEC20ADA22000A83DC2 /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05EED20ADA22000A83DC2 /* libMilkshake.a */; };
+		9FF05F1720ADA40000A83DC2 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF05F1620ADA40000A83DC2 /* AdSupport.framework */; };
 		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
 		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
@@ -529,6 +531,8 @@
 		8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKStoreProductViewController+Shopix.h"; sourceTree = "<group>"; };
 		8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+Shopix.mm"; sourceTree = "<group>"; };
 		9F53AC9720A85DCD0076D8EE /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FF05EED20ADA22000A83DC2 /* libMilkshake.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMilkshake.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FF05F1620ADA40000A83DC2 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
 		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
@@ -680,6 +684,7 @@
 			files = (
 				CD4572891F71731400713681 /* AFNetworking.framework in Frameworks */,
 				CDAC8C501FC4558000B197B3 /* AVFoundation.framework in Frameworks */,
+				9FF05F1720ADA40000A83DC2 /* AdSupport.framework in Frameworks */,
 				8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */,
 				65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */,
 				CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */,
@@ -702,6 +707,7 @@
 				CD4572811F7172E500713681 /* libFiber.a in Frameworks */,
 				CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */,
 				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
+				9FF05EEC20ADA22000A83DC2 /* libMilkshake.a in Frameworks */,
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */,
 				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
@@ -946,6 +952,7 @@
 			children = (
 				CD4572881F71731400713681 /* AFNetworking.framework */,
 				CDAC8C291FC4557A00B197B3 /* AVFoundation.framework */,
+				9FF05F1620ADA40000A83DC2 /* AdSupport.framework */,
 				8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */,
 				65F82EDD1F93C09F002A496C /* CloudKit.framework */,
 				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
@@ -962,6 +969,7 @@
 				CD4572861F71730200713681 /* ZipArchive.framework */,
 				9F53AC9720A85DCD0076D8EE /* libFBTweak.a */,
 				CD4572801F7172E500713681 /* libFiber.a */,
+				9FF05EED20ADA22000A83DC2 /* libMilkshake.a */,
 				CD4572841F7172F800713681 /* libUICKeyChainStore.a */,
 				CD574E6A1FAF661800E0BA97 /* libWireframes.a */,
 				CDB8A6581F53FE1800E14706 /* libcompression.tbd */,
