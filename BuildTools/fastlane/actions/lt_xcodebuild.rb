@@ -112,6 +112,9 @@ module Fastlane
           end
         end.compact.join(" ")
 
+        unless params[:treat_warnings_as_errors].nil?
+          flags << " TREAT_WARNINGS_AS_ERRORS=#{params[:treat_warnings_as_errors] ? 'YES' : 'NO'}"
+        end
         flags << " " << params[:other_flags] if params[:other_flags]
         flags << " " << ccache_flags if params[:ccache]
 
