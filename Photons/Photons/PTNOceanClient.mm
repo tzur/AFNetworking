@@ -19,6 +19,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Adding attributes related to remote server endpoint.
+@interface PTNOceanAssetType (RemoteAddress)
+
+/// Path of the endpoint URL associated for this type, returns \c nil if no endpoint path is
+/// associated with the type.
+- (nullable NSString *)endpointPath;
+
+@end
+
+@implementation PTNOceanAssetType (RemoteAddress)
+
+- (nullable NSString *)endpointPath {
+  switch (self.value) {
+    case PTNOceanAssetTypePhoto:
+      return @"image";
+    case PTNOceanAssetTypeVideo:
+      return @"video";
+  }
+  return nil;
+}
+
+@end
+
 @implementation PTNOceanSearchParameters
 
 - (instancetype)initWithType:(PTNOceanAssetType *)type source:(PTNOceanAssetSource *)source
@@ -63,21 +86,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// Ocean base endpoint.
 static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com";
 
-static NSString * _Nullable PTNAssetSearchEndpointFromType(PTNOceanAssetType *assetType) {
-  static NSDictionary *assetTypeToEndpointPath = @{
-    $(PTNOceanAssetTypePhoto): @"image",
-    $(PTNOceanAssetTypeVideo): @"video"
-  };
-
-  NSString * _Nullable endpointPath = assetTypeToEndpointPath[assetType];
+static NSString * _Nullable PTNEndpointPathForAssetSearch(PTNOceanSearchParameters *parameters) {
+  NSString * _Nullable endpointPath = parameters.type.endpointPath;
   if (!endpointPath) {
     return nil;
   }
   return [@[kBaseEndpoint, endpointPath, @"search"] componentsJoinedByString:@"/"];
 }
 
-static NSString *PTNAssetEndpointFromIdentifier(NSString *identifier) {
-  return [@[kBaseEndpoint, @"asset", identifier] componentsJoinedByString:@"/"];
+static NSString *PTNEndpointPathForAssetFetch(PTNOceanAssetFetchParameters *parameters) {
+  NSString * _Nullable endpointPath = parameters.type.endpointPath;
+  if (!endpointPath) {
+    return nil;
+  }
+
+  return [@[kBaseEndpoint, endpointPath,  @"asset", parameters.identifier]
+          componentsJoinedByString:@"/"];
 }
 
 static FBRHTTPRequestParameters *PTNOceanBaseRequestParameters() {
@@ -121,7 +145,7 @@ static FBRHTTPRequestParameters *
 
 - (RACSignal<PTNOceanAssetSearchResponse *> *)
     searchWithParameters:(PTNOceanSearchParameters *)parameters {
-  NSString * _Nullable endpoint = PTNAssetSearchEndpointFromType(parameters.type);
+  NSString * _Nullable endpoint = PTNEndpointPathForAssetSearch(parameters);
   if (!endpoint) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
         description:@"Invalid asset type %@ given", parameters.type]];
@@ -137,12 +161,7 @@ static FBRHTTPRequestParameters *
 
 - (RACSignal<PTNOceanAssetDescriptor *> *)
     fetchAssetDescriptorWithParameters:(PTNOceanAssetFetchParameters *)parameters {
-  if (![parameters.type isEqual:$(PTNOceanAssetTypePhoto)]) {
-    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType
-        description:@"Invalid asset type %@ given", parameters.type]];
-  }
-
-  NSString *endpoint = PTNAssetEndpointFromIdentifier(parameters.identifier);
+  NSString *endpoint = PTNEndpointPathForAssetFetch(parameters);
   auto requestParameters = PTNRequestParametersForAssetFetch(parameters);
 
   return [[[[self.client GET:endpoint withParameters:requestParameters headers:nil]
