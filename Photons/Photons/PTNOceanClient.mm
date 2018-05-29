@@ -12,6 +12,7 @@
 #import <Fiber/RACSignal+Fiber.h>
 #import <LTKit/LTUTICache.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <Milkshake/SHKTweakInline.h>
 
 #import "NSErrorCodes+Photons.h"
 #import "PTNImageAsset.h"
@@ -76,6 +77,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Ocean production base endpoint.
+static NSString * const kPTNBaseEndpointProduction = @"https://ocean.lightricks.com";
+
+/// Ocean staging base endpoint.
+static NSString * const kPTNBaseEndpointStaging = @"https://ocean-stg.lightricks.com";
+
+/// Ocean staging base endpoint bypassing any caching mechanism.
+static NSString * const kPTNBaseEndpointStagingNoCache =
+    @"https://ocean-stg-no-cache.lightricks.com";
+
 @interface PTNOceanClient ()
 
 /// HTTP Client for sending requests to Ocean's servers.
@@ -91,8 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNOceanClient
 
-/// Ocean base endpoint.
-static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com";
+NSString * PTNOceanBaseEndpoint() {
+  return SHKTweakValue(@"Photons", @"Ocean", @"Ocean server (requires restart)",
+      (id)kPTNBaseEndpointProduction, (@{
+    kPTNBaseEndpointProduction: @"Production",
+    kPTNBaseEndpointStaging : @"Staging",
+    kPTNBaseEndpointStagingNoCache : @"Staging without cache"
+  }));
+}
 
 /// HTTP header name to use for API key when communicating with Ocean server.
 static NSString * const kPTNOceanAPIKeyHeaderName = @"x-api-key";
@@ -155,9 +172,9 @@ static FBRHTTPRequestParameters *
        initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
        requestMarshalling:requestMarshalling
        securityPolicy:securityPolicy];
+  auto baseURL = [NSURL URLWithString:PTNOceanBaseEndpoint()];
   auto oceanClient = [FBRHTTPClient clientWithSessionConfiguration:sessionConfiguration
-                                                           baseURL:[NSURL
-                                                                    URLWithString:kBaseEndpoint]];
+                                                           baseURL:baseURL];
 
   return [self initWithOceanClient:oceanClient dataClient:[FBRHTTPClient client]
                sessionManager:sessionManager];
