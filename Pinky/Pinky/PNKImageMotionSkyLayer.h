@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// vector is assumed to reside in the XZ plane. In other words, it has a left-right and a depth
 /// component but not an up-down component.
 ///
-/// @param imageSize Size of the displacement map that will be created..
+/// @param imageSize Size of the displacement map that will be created.
 ///
 /// @param angle Angle (in degrees) between wind velocity and the X axis. \c 0 denotes rightward
 /// displacement. \c 90 denotes forward displacement (from the viewer to the horizon). \c 180

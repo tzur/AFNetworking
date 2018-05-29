@@ -58,14 +58,6 @@ sharedExamplesFor(kPNKImageMotionLayerExamples, ^(NSDictionary *data) {
       expect(imageSize.width).to.equal(imageWidth);
       expect(imageSize.height).to.equal(imageHeight);
     });
-
-    it(@"should return zero displacements for zero time", ^{
-      cv::Mat2hf displacements(imageHeight, imageWidth);
-      [layer displacements:&displacements forTime:0];
-
-      auto expectedDisplacements = cv::Mat2hf::zeros(imageHeight, imageWidth);
-      expect($(displacements)).to.equalMat($(expectedDisplacements));
-    });
   });
 });
 
