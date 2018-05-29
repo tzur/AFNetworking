@@ -193,6 +193,8 @@
 		E41D726A1FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */; };
 		E41D726C1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */; };
 		E41D726D1FFE90F700A2B26D /* PNKActivation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */; };
+		E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */; };
+		E425F78820BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */; };
 		E4281EBC1FC1B53B008F4BAD /* PNKConcatenation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */; };
 		E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */; };
 		E4281EE41FC1CF8F008F4BAD /* PNKConcatenation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */; };
@@ -631,6 +633,13 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		E425F77020BD4417006E3639 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E407FB4F20B4228900FDFAC8;
+			remoteInfo = LTEngineDeviceTests;
+		};
 		E4786D571FD5499E0057FE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
@@ -898,6 +907,9 @@
 		E41D72671FFE817A00A2B26D /* PNKActivationCustomInternalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivationCustomInternalLayer.h; sourceTree = "<group>"; };
 		E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKActivationCustomInternalLayer.metal; sourceTree = "<group>"; };
 		E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKActivationLayerSpec.mm; sourceTree = "<group>"; };
+		E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionGrassLayer.mm; sourceTree = "<group>"; };
+		E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionGrassLayer.h; sourceTree = "<group>"; };
+		E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionGrassLayerSpec.mm; sourceTree = "<group>"; };
 		E4281EBA1FC1B53B008F4BAD /* PNKConcatenation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKConcatenation.h; sourceTree = "<group>"; };
 		E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConcatenation.mm; sourceTree = "<group>"; };
 		E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKConcatenation.metal; sourceTree = "<group>"; };
@@ -1629,6 +1641,7 @@
 			children = (
 				8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */,
 				8BB106911EDD6FB800B27DC4 /* LTEngine.bundle */,
+				E425F77120BD4417006E3639 /* LTEngineDeviceTests.xctest */,
 				8BB106931EDD6FB800B27DC4 /* LTEngineTests.xctest */,
 			);
 			name = Products;
@@ -1921,6 +1934,8 @@
 		E480A460209856AD00423308 /* Image Motion */ = {
 			isa = PBXGroup;
 			children = (
+				E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */,
+				E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */,
 				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
 				E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */,
 				E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */,
@@ -1939,6 +1954,7 @@
 		E480A486209856DE00423308 /* Image Motion */ = {
 			isa = PBXGroup;
 			children = (
+				E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */,
 				E45E1BA820B3F56E00EC0B60 /* PNKImageMotionSkyLayerSpec.mm */,
 				E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */,
 				E4590B2920B442E100C7F7F3 /* PNKImageMotionWaterLayerSpec.mm */,
@@ -2410,6 +2426,13 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		E425F77120BD4417006E3639 /* LTEngineDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineDeviceTests.xctest;
+			remoteRef = E425F77020BD4417006E3639 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2591,6 +2614,7 @@
 				8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				E4590B2A20B442E100C7F7F3 /* PNKImageMotionWaterLayerSpec.mm in Sources */,
 				E43F3D99207B9CBA0017AE3A /* PNKTestComputeState.mm in Sources */,
+				E425F78820BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm in Sources */,
 				28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */,
 				068D90A41F1F5D000012F472 /* PNKArithmeticSpec.mm in Sources */,
 				E45E1B2320B3F39900EC0B60 /* PNKImageMotionLayerExamples.mm in Sources */,
@@ -2688,6 +2712,7 @@
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				E4D719F21FE2C9740047E620 /* PNKSoftMaxLayer.mm in Sources */,
 				285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */,
+				E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */,
 				2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */,
 				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				E4DA81261FFA2CD700BF8826 /* MPSImage+Size.mm in Sources */,

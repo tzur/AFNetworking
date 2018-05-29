@@ -5,9 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Class for calculating displacements of a water layer. These displacements simulate a wave-like
-/// movement. Тhe surface oscillations are along the Y axis (up-down).
-@interface PNKImageMotionWaterLayer : NSObject<PNKImageMotionLayer>
+/// Class for calculating displacements of a grass layer. These displacements simulate a wave-like
+/// movement along both X and Y axes.
+@interface PNKImageMotionGrassLayer : NSObject<PNKImageMotionLayer>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param imageSize Size of the displacement map that will be created.
 ///
-/// @param patchSize Size (in pixels) of a square patch of water surface. This patch will be tiled
-/// to cover the water surface. \c patchSize must be a power of \c 2.
+/// @param patchSize Size (in pixels) of a square patch of grass surface. This patch will be tiled
+/// to cover the grass surface. \c patchSize must be a power of \c 2.
 ///
-/// @param amplitude Waves amplitude.
+/// @param amplitude Amplitude of waves in the grass.
 - (instancetype)initWithImageSize:(cv::Size)imageSize patchSize:(NSUInteger)patchSize
                         amplitude:(CGFloat)amplitude NS_DESIGNATED_INITIALIZER;
 
