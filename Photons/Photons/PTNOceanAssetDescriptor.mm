@@ -112,6 +112,7 @@ static NSString * const kUnmatchedKeysDescription =
 
 @synthesize duration = _duration;
 @synthesize artist = _artist;
+@synthesize localizedTitle = _localizedTitle;
 
 #pragma mark -
 #pragma mark MTLJSONSerializing
@@ -196,7 +197,8 @@ static NSString * const kUnmatchedKeysDescription =
     @instanceKeypath(PTNOceanAssetDescriptor, artist): @"artist",
     @instanceKeypath(PTNOceanAssetDescriptor, type): @"asset_type",
     @instanceKeypath(PTNOceanAssetDescriptor, source): @"source_id",
-    @instanceKeypath(PTNOceanAssetDescriptor, identifier): @"id"
+    @instanceKeypath(PTNOceanAssetDescriptor, identifier): @"id",
+    @instanceKeypath(PTNOceanAssetDescriptor, localizedTitle): @"title"
   };
 }
 
@@ -247,10 +249,6 @@ static NSString * const kUnmatchedKeysDescription =
 - (NSURL *)ptn_identifier {
   return [NSURL ptn_oceanAssetURLWithSource:self.source assetType:self.type
                                  identifier:self.identifier];
-}
-
-- (nullable NSString *)localizedTitle {
-  return nil;
 }
 
 - (PTNDescriptorCapabilities)descriptorCapabilities {

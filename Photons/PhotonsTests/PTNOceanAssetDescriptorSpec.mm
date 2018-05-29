@@ -88,6 +88,7 @@ context(@"photos", ^{
       @"asset_type": @"photo",
       @"source_id": @"pixabay",
       @"artist": @"foo",
+      @"title": @"bar",
       @"all_sizes": @[
         @{
           @"height": @8,
@@ -148,12 +149,12 @@ context(@"photos", ^{
     expect(descriptor.filename).to.beNil();
     expect(descriptor.duration).to.equal(0);
     expect(descriptor.artist).to.equal(@"foo");
+    expect(descriptor.localizedTitle).to.equal(@"bar");
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
                                            assetType:descriptor.type
                                           identifier:descriptor.identifier]);
-    expect(descriptor.localizedTitle).to.beNil();
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
     expect(descriptor.descriptorTraits)
         .to.equal([NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
@@ -168,6 +169,16 @@ context(@"photos", ^{
     expect(noArtistDescriptor).notTo.beNil();
     expect(noArtistDescriptor.artist).to.beNil();
   });
+
+  it(@"should deserialize without title", ^{
+    auto noTitleDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"title"]];
+    PTNOceanAssetDescriptor *noTitleDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noTitleDictionary error:&parseError];
+    expect(noTitleDescriptor).notTo.beNil();
+    expect(noTitleDescriptor.localizedTitle).to.beNil();
+  });
 });
 
 context(@"video", ^{
@@ -177,6 +188,7 @@ context(@"video", ^{
       @"asset_type": @"video",
       @"source_id": @"pixabay",
       @"artist": @"foo",
+      @"title": @"bar",
       @"duration": @1337,
       @"all_sizes": @[
         @{
@@ -286,12 +298,13 @@ context(@"video", ^{
     expect(descriptor.modificationDate).to.beNil();
     expect(descriptor.filename).to.beNil();
     expect(descriptor.duration).to.equal(@1337);
+    expect(descriptor.artist).to.equal(@"foo");
+    expect(descriptor.localizedTitle).to.equal(@"bar");
     expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
     expect(descriptor.ptn_identifier)
         .to.equal([NSURL ptn_oceanAssetURLWithSource:descriptor.source
                                            assetType:descriptor.type
                                           identifier:descriptor.identifier]);
-    expect(descriptor.localizedTitle).to.beNil();
     expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
     expect(descriptor.descriptorTraits)
         .to.equal([@[kPTNDescriptorTraitCloudBasedKey, kPTNDescriptorTraitAudiovisualKey] lt_set]);
@@ -305,6 +318,16 @@ context(@"video", ^{
                   fromJSONDictionary:noArtistDictionary error:&parseError];
     expect(noArtistDescriptor).notTo.beNil();
     expect(noArtistDescriptor.artist).to.beNil();
+  });
+
+  it(@"should deserialize without title", ^{
+    auto noTitleDictionary = [descriptorDictionary mtl_dictionaryByRemovingEntriesWithKeys:
+                               [NSSet setWithObject:@"title"]];
+    PTNOceanAssetDescriptor *noTitleDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:noTitleDictionary error:&parseError];
+    expect(noTitleDescriptor).notTo.beNil();
+    expect(noTitleDescriptor.localizedTitle).to.beNil();
   });
 });
 
