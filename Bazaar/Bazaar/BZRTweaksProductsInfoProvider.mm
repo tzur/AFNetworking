@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#ifdef DEBUG
+
 @interface BZRTweaksProductsInfoProvider ()
 
 /// Underlying provider used to hold the original data from Bazaar.
@@ -77,5 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
+
+#endif
 
 NS_ASSUME_NONNULL_END
