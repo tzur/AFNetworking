@@ -24,7 +24,11 @@ LTErrorCodesDeclare(ShopixErrorCodeProductID,
   /// Caused when a serialization process failed.
   SPXErrorCodeSerializationFailed,
   /// Caused when data failed signature validation.
-  SPXErrorCodeSignatureValidationFailed
+  SPXErrorCodeSignatureValidationFailed,
+  /// Caused when failed to calculate order summary of consumable items.
+  SPXErrorCodeConsumablesOrderSummaryCalculationFailed,
+  /// Caused when failed to place order of consumable items.
+  SPXErrorCodeConsumablesPlacingOrderFailed
 );
 
 NS_ASSUME_NONNULL_END
