@@ -571,7 +571,7 @@ context(@"allowed ranges", ^{
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedMinimumTaperingScaleFactorRange] ==
            lt::Interval<CGFloat>::oc({0, 1})).to.beTruthy();
-    expect([DVNBrushModelV1 allowedTaperingFactorRange] == lt::Interval<CGFloat>({0, 1}))
+    expect([DVNBrushModelV1 allowedTaperingFactorRange] == lt::Interval<float>({0, 1}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedFlowRange] == lt::Interval<CGFloat>({0, 1})).to.beTruthy();
     expect([DVNBrushModelV1 allowedFlowExponentRange] == lt::Interval<CGFloat>::oc({0, 20}))
