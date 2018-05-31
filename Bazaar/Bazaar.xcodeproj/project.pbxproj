@@ -135,9 +135,12 @@
 		9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4FE02520976B5F00FC64E1 /* MessageUI.framework */; };
 		9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31A208F5FA800080BEA /* libFBTweak.a */; };
 		9F50B25520AB06BE00334641 /* BZRFakeProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */; };
+		9F5E3DBC20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E3DBB20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm */; };
 		9FA8961620AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */; };
 		9FA8961720AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA8961520AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h */; };
 		9FA8965020AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */; };
+		9FBB888B20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FBB888920D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.mm */; };
+		9FBB888C20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FBB888A20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h */; };
 		9FCBD31B208F5FD500080BEA /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6BFA202085F197002800F9 /* libMilkshake.a */; };
 		9FCBD31F208F615900080BEA /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31C208F608500080BEA /* AdSupport.framework */; };
 		9FE2896C2097055600D33E43 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D91BB31D39A482000D6A3B /* AFNetworking.framework */; };
@@ -148,8 +151,8 @@
 		9FF9CFFF20C01B010047F3DF /* BZRTweaksOverrideSubscriptionProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9CFFA20C01B010047F3DF /* BZRTweaksOverrideSubscriptionProvider.h */; };
 		9FF9D00020C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9CFFB20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.h */; };
 		9FF9D00120C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9CFFC20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm */; };
-		9FF9D00220C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.h */; };
-		9FF9D00320C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.mm */; };
+		9FF9D00220C01B010047F3DF /* BZRTweaksSubscriptionSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionSource.h */; };
+		9FF9D00320C01B010047F3DF /* BZRTweaksSubscriptionSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionSource.mm */; };
 		B9066B2B1E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9066B291E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.h */; };
 		B9066B2C1E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9066B2A1E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.mm */; };
 		B9066B5B1E08196F00E7FDD6 /* BZRMultiHostValidatricksClientProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9066B5A1E08196F00E7FDD6 /* BZRMultiHostValidatricksClientProviderSpec.mm */; };
@@ -986,10 +989,14 @@
 		9F4FE02520976B5F00FC64E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9F50B25320AB06BE00334641 /* BZRFakeProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeProductsInfoProvider.h; sourceTree = "<group>"; };
 		9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeProductsInfoProvider.mm; sourceTree = "<group>"; };
+		9F5E3DBA20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeTweakCollectionsProvider.h; sourceTree = "<group>"; };
+		9F5E3DBB20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeTweakCollectionsProvider.mm; sourceTree = "<group>"; };
 		9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
 		9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksProductsInfoProvider.mm; sourceTree = "<group>"; };
 		9FA8961520AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksProductsInfoProvider.h; sourceTree = "<group>"; };
 		9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksProductsInfoProviderSpec.mm; sourceTree = "<group>"; };
+		9FBB888920D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRReceiptModel+GenericSubscription.mm"; sourceTree = "<group>"; };
+		9FBB888A20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRReceiptModel+GenericSubscription.h"; sourceTree = "<group>"; };
 		9FCBD31A208F5FA800080BEA /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FCBD31C208F608500080BEA /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
@@ -999,8 +1006,8 @@
 		9FF9CFFA20C01B010047F3DF /* BZRTweaksOverrideSubscriptionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksOverrideSubscriptionProvider.h; sourceTree = "<group>"; };
 		9FF9CFFB20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksSubscriptionCollectionsProvider.h; sourceTree = "<group>"; };
 		9FF9CFFC20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksSubscriptionCollectionsProvider.mm; sourceTree = "<group>"; };
-		9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksSubscriptionDataSourceType.h; sourceTree = "<group>"; };
-		9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksSubscriptionDataSourceType.mm; sourceTree = "<group>"; };
+		9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksSubscriptionSource.h; sourceTree = "<group>"; };
+		9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksSubscriptionSource.mm; sourceTree = "<group>"; };
 		B9066B291E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRMultiHostValidatricksClientProvider.h; sourceTree = "<group>"; };
 		B9066B2A1E0811D600E7FDD6 /* BZRMultiHostValidatricksClientProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRMultiHostValidatricksClientProvider.mm; sourceTree = "<group>"; };
 		B9066B5A1E08196F00E7FDD6 /* BZRMultiHostValidatricksClientProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRMultiHostValidatricksClientProviderSpec.mm; sourceTree = "<group>"; };
@@ -1984,6 +1991,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9F5E3DF520C021BB00F80BCE /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				9F5E3DBA20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.h */,
+				9F5E3DBB20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm */,
+			);
+			name = Fakes;
+			sourceTree = "<group>";
+		};
 		9F6BFA1B2085F196002800F9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2200,6 +2216,7 @@
 		C477D0917F20DB72D45CF687 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
+				9F5E3DF520C021BB00F80BCE /* Fakes */,
 				9F4D852F20A9B0A800529017 /* BZRTweaksCategorySpec.mm */,
 				9FA8964F20AD99F1002BE8A9 /* BZRTweaksProductsInfoProviderSpec.mm */,
 				9FF9CFF820C01AF10047F3DF /* BZRTweaksSubscriptionCollectionsProviderSpec.mm */,
@@ -2210,6 +2227,8 @@
 		C477D4266602844D16BAF3D9 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
+				9FBB888A20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h */,
+				9FBB888920D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.mm */,
 				C477D259167704EA25DB082A /* BZRTweakCollectionsProvider.h */,
 				9F4D84F420A9B09200529017 /* BZRTweaksCategory.h */,
 				9F4D84F520A9B09200529017 /* BZRTweaksCategory.mm */,
@@ -2218,8 +2237,8 @@
 				9FA8961420AD99DA002BE8A9 /* BZRTweaksProductsInfoProvider.mm */,
 				9FF9CFFB20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.h */,
 				9FF9CFFC20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm */,
-				9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.h */,
-				9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.mm */,
+				9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionSource.h */,
+				9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionSource.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -2361,6 +2380,7 @@
 				B93F67031DD8E0F8009E9D5D /* BZRProductsWithPriceInfoProvider.h in Headers */,
 				63F864DA20B2C5C100F4F807 /* BZRValidatricksModels.h in Headers */,
 				B9AB0C621E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h in Headers */,
+				9FBB888C20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h in Headers */,
 				B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */,
 				B90E7F1C1FCEA0A600781890 /* BZRReceiptDataCache.h in Headers */,
 				B97E6C241D40F44800C02863 /* BZRProductContentFetcher.h in Headers */,
@@ -2375,7 +2395,7 @@
 				B9256C001D73320700490815 /* BZRTransactionRestorationManager.h in Headers */,
 				B9484B5A1D50A09900910066 /* BZRLocalContentFetcher.h in Headers */,
 				B9A851931DE24768001AA37C /* BZRProductsWithVariantsProvider.h in Headers */,
-				9FF9D00220C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.h in Headers */,
+				9FF9D00220C01B010047F3DF /* BZRTweaksSubscriptionSource.h in Headers */,
 				B9502A7C1D6DCDC500E633BE /* BZRCachedContentFetcher.h in Headers */,
 				B9A850E21DE214FD001AA37C /* NSString+Bazaar.h in Headers */,
 				B9FC5AED1FD403BA008A835B /* BZRAggregatedReceiptValidationStatusProvider.h in Headers */,
@@ -3088,6 +3108,7 @@
 				B9237B101D69D6270069B4F1 /* BZRFakePaymentTransaction.mm in Sources */,
 				B9A81B651D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm in Sources */,
 				65C74D041D5352D000D7518C /* BZRZipArchiveFactorySpec.mm in Sources */,
+				9F5E3DBC20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm in Sources */,
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
 				CDC77B1A1F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm in Sources */,
 				B9EF55451FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm in Sources */,
@@ -3107,8 +3128,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C6A2E51D7DAB4500F13649 /* ValidatricksServer.cer in Sources */,
-				9FF9D00320C01B010047F3DF /* BZRTweaksSubscriptionDataSourceType.mm in Sources */,
+				9FF9D00320C01B010047F3DF /* BZRTweaksSubscriptionSource.mm in Sources */,
 				63E500452064094700B5FBA0 /* ValidatricksHKServer.cer in Sources */,
+				9FBB888B20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.mm in Sources */,
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
 				9FF9D00120C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm in Sources */,
 				B9502A7D1D6DCDC500E633BE /* BZRCachedContentFetcher.mm in Sources */,
