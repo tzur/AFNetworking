@@ -6,11 +6,12 @@
 #import <FBTweak/FBTweakStore.h>
 #import <Milkshake/SHKTweakCategoryAdapter.h>
 
-#import "BZRSubscriptionCollectionsProvider.h"
 #import "BZRTweaksCategory.h"
+#import "BZRTweaksSubscriptionCollectionsProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// The use of this class is available only in debug mode.
 #ifdef DEBUG
 
 @interface BZRTweaksProductsInfoProvider ()
@@ -62,8 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupTweakCategory {
-  auto subscriptionCollectionsProvider = [[BZRSubscriptionCollectionsProvider alloc]
-      initWithProductInfoProvider:self.underlyingProvider];
+  auto subscriptionCollectionsProvider = [[BZRTweaksSubscriptionCollectionsProvider alloc]
+      initWithProductsInfoProvider:self.underlyingProvider];
   auto tweaksCategory =
       [[BZRTweaksCategory alloc] initWithCollectionsProviders:@[subscriptionCollectionsProvider]];
   auto adapter = [[SHKTweakCategoryAdapter alloc] initWithTweakCategory:tweaksCategory];
