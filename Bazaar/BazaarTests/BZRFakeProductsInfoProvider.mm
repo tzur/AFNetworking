@@ -39,6 +39,20 @@ NS_ASSUME_NONNULL_BEGIN
   self.appStoreLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
   self.productsJSONDictionary =  @{@"foo":@"bar"};
   self.valueToReturnFromIsMultiAppSubscription = YES;
+  self.subscriptionInfo =  [self.subscriptionInfo
+      modelByOverridingPropertyAtKeypath:@keypath(self.subscriptionInfo, pendingRenewalInfo)
+      withValue:[self createArbitraryPendingRenewalInfo]];
+}
+
+- (BZRSubscriptionPendingRenewalInfo *)createArbitraryPendingRenewalInfo {
+  return [[BZRSubscriptionPendingRenewalInfo alloc] initWithDictionary:@{
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, willAutoRenew): @(YES),
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expectedRenewalProductId): @"barf",
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isPendingPriceIncreaseConsent): @(YES),
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isInBillingRetryPeriod): @(YES),
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, expirationReason):
+        @(BZRSubscriptionExpirationReasonPriceChangeNotAgreed)
+  } error:nil];
 }
 
 @end

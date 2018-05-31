@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fillWithArbitraryData;
 
 /// Events sent on this subject are sent on the signal returned from \c contentBundleForProduct:.
-@property(readonly, nonatomic) RACSubject<NSBundle *> *contentBundleForProductSubject;
+@property (readonly, nonatomic) RACSubject<NSBundle *> *contentBundleForProductSubject;
 
 ///The value that will be returned when calling \c isMultiAppSubscription:. Defaults to \c NO.
-@property(readwrite, nonatomic) BOOL valueToReturnFromIsMultiAppSubscription;
+@property (readwrite, nonatomic) BOOL valueToReturnFromIsMultiAppSubscription;
 
 /// Redeclare \c BZRProductsInfoProvider properties as readwrite.
 @property (readwrite, nonatomic) NSSet<NSString *> *purchasedProducts;
