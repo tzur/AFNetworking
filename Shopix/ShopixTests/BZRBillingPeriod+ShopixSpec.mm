@@ -28,9 +28,9 @@ it(@"should parse the yearly billing period from product identifier", ^{
   expect(billingPeriod.unitCount).to.equal(1);
 });
 
-it(@"should take the last period component from the product identifier", ^{
+it(@"should parse the billing period from the last group in the product identifier", ^{
   auto billingPeriod =
-      [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:@"com.spx.1M.1Y.foo"];
+      [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:@"com.spx.1M_1Y.foo"];
 
   expect(billingPeriod.unit).to.equal($(BZRBillingPeriodUnitYears));
   expect(billingPeriod.unitCount).to.equal(1);

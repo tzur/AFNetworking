@@ -15,8 +15,9 @@ using namespace spx;
 }
 
 + (nullable NSDictionary *)spx_periodOfProductIdentifier:(NSString *)productIdentifier {
-  auto productIdentifierComponents = [productIdentifier componentsSeparatedByString:@"."];
-  for (NSString *component in [productIdentifierComponents reverseObjectEnumerator]) {
+  auto lastGroupInIdentifier = [productIdentifier componentsSeparatedByString:@"_"].lastObject;
+  auto lastGroupComponents = [lastGroupInIdentifier componentsSeparatedByString:@"."];
+  for (NSString *component in lastGroupComponents) {
     if ([component isEqualToString:@"Monthly"] || [component isEqualToString:@"1M"]) {
       return @{
         @"unit": $(BZRBillingPeriodUnitMonths),
