@@ -84,6 +84,10 @@ static NSString * const kNotEnoughCreditError = @"NotEnoughCredit";
   return self;
 }
 
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
 @end
 
 #pragma mark -
@@ -104,6 +108,10 @@ static NSString * const kNotEnoughCreditError = @"NotEnoughCredit";
 + (NSValueTransformer *)consumedItemsJSONTransformer {
   return [NSValueTransformer
           mtl_JSONArrayTransformerWithModelClass:BZRConsumableItemDescriptor.class];
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
 }
 
 @end

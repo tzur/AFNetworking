@@ -83,8 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// available, the error code will be \c BZRErrorCodeUserIdentifierNotAvailable.
 - (RACSignal<BZRUserCreditStatus *> *)getUserCreditStatus:(NSString *)creditType;
 
-/// Gets the prices of consumables of the specified \c consumableTypes in credit units of type
-/// \c creditType.
+/// Returns the cached user's credit and the identifiers of consumable items that were already
+/// consumed for the given \c creditType. Returns \c nil if not found in cache or if there was an
+/// error while reading from cache.
+- (nullable BZRUserCreditStatus *)getCachedUserCreditStatus:(NSString *)creditType;
+
+/// Gets the prices of the specified \c consumableTypes in credit units of type \c creditType.
 ///
 /// Returns a signal that sends the required credit for each of the consumable types specified in
 /// \c consumableTypes. The signal errs if there was an error fetching the data or if the price

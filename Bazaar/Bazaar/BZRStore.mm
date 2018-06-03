@@ -663,8 +663,22 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self.userIDProvider.userID) {
       return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
     }
-    return [self.validatricksClient getCreditOfType:creditType forUser:self.userIDProvider.userID];
+    return [[self.validatricksClient getCreditOfType:creditType forUser:self.userIDProvider.userID]
+        doNext:^(BZRUserCreditStatus *userCreditStatus) {
+          [self.keychainStorage setValue:userCreditStatus
+                                  forKey:[self userCreditCacheKeyForCreditType:creditType]
+                                   error:nil];
+        }];
   }];
+}
+
+- (NSString *)userCreditCacheKeyForCreditType:(NSString *)creditType {
+  return [NSString stringWithFormat:@"bzr.userCredit.%@", creditType];
+}
+
+- (nullable BZRUserCreditStatus *)getCachedUserCreditStatus:(NSString *)creditType {
+  auto userCreditCacheKey = [self userCreditCacheKeyForCreditType:creditType];
+  return (BZRUserCreditStatus *)[self.keychainStorage valueForKey:userCreditCacheKey error:nil];
 }
 
 - (RACSignal<NSDictionary<NSString *, NSNumber *> *> *)getCreditPriceOfType:(NSString *)creditType
