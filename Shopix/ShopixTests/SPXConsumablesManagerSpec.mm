@@ -18,6 +18,9 @@ __block id<BZRProductsManager> productsManager;
 __block SPXConsumablesManager *consumablesManager;
 __block id<SPXConsumablesManagerDelegate> consumablesManagerDelegate;
 __block NSString *creditType;
+__block SPXConsumableItemStatus *notOwnedImageItemStatus;
+__block SPXConsumableItemStatus *ownedImageItemStatus;
+__block SPXConsumableItemStatus *ownedVideoItemStatus;
 __block BZRUserCreditStatus *userCreditStatus;
 __block NSDictionary<NSString *, NSNumber *> *creditTypeToPrice;
 
@@ -29,7 +32,25 @@ beforeEach(^{
 
   creditType = @"typeOfCredit";
 
-  auto itemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+  notOwnedImageItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
+    @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
+    @instanceKeypath(SPXConsumableItemStatus, creditRequired): @13,
+    @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
+    @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO
+  } error:nil];
+  ownedImageItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
+    @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
+    @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
+    @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
+    @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
+  } error:nil];
+  ownedVideoItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
+    @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"bar",
+    @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
+    @instanceKeypath(SPXConsumableItemStatus, consumableType): @"videoFoo",
+    @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
+  } error:nil];
+  auto consumedItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
     @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
     @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
   } error:nil];
@@ -37,7 +58,7 @@ beforeEach(^{
     @instanceKeypath(BZRUserCreditStatus, requestId): @"baz",
     @instanceKeypath(BZRUserCreditStatus, creditType): creditType,
     @instanceKeypath(BZRUserCreditStatus, credit): @1337,
-    @instanceKeypath(BZRUserCreditStatus, consumedItems): @[itemDescriptor]
+    @instanceKeypath(BZRUserCreditStatus, consumedItems): @[consumedItemDescriptor]
   } error:nil];
   creditTypeToPrice = @{
     @"imageFoo": @13,
@@ -63,24 +84,12 @@ context(@"calculating order summary", ^{
                                   consumableTypes:consumableItemIDToType.allValues.lt_set])
         .andReturn([RACSignal return:creditTypeToPrice]);
 
-    auto fooItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
-      @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
-      @instanceKeypath(SPXConsumableItemStatus, creditRequired): @13,
-      @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO
-    } error:nil];
-    auto barItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
-      @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"bar",
-      @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
-      @instanceKeypath(SPXConsumableItemStatus, consumableType): @"videoFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
-    } error:nil];
     auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
       @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
       @instanceKeypath(SPXConsumablesOrderSummary, currentCredit): @1337,
       @instanceKeypath(SPXConsumablesOrderSummary, consumableItemsStatus): @{
-        @"foo": fooItemStatus,
-        @"bar": barItemStatus
+        @"foo": notOwnedImageItemStatus,
+        @"bar": ownedVideoItemStatus
       }
     } error:nil];
 
@@ -90,6 +99,83 @@ context(@"calculating order summary", ^{
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[expectedOrderSummary]);
+  });
+
+  it(@"should calculate order summary from cache if the user owns all the items", ^{
+    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageFoo"
+    } error:nil];
+    auto barItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
+    } error:nil];
+
+    userCreditStatus = [userCreditStatus
+                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
+                        withValue:@[fooItemDescriptor, barItemDescriptor]];
+
+    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
+
+    OCMReject([productsManager getUserCreditStatus:OCMOCK_ANY]);
+    OCMReject([productsManager getCreditPriceOfType:OCMOCK_ANY consumableTypes:OCMOCK_ANY]);
+
+    auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
+      @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
+      @instanceKeypath(SPXConsumablesOrderSummary, currentCredit): @1337,
+      @instanceKeypath(SPXConsumablesOrderSummary, consumableItemsStatus): @{
+        @"foo": ownedImageItemStatus,
+        @"bar": ownedVideoItemStatus
+      }
+    } error:nil];
+
+    auto recorder =
+        [[consumablesManager calculateOrderSummary:creditType
+                            consumableItemIDToType:consumableItemIDToType] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[expectedOrderSummary]);
+    OCMVerifyAll((id)productsManager);
+  });
+
+  it(@"should not calculate order summary from cache if one of the item's consumable type didn't "
+     "match its cached consumable type", ^{
+    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageBar"
+    } error:nil];
+    auto barItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
+    } error:nil];
+
+    userCreditStatus = [userCreditStatus
+                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
+                        withValue:@[fooItemDescriptor, barItemDescriptor]];
+
+    OCMExpect([productsManager getUserCreditStatus:creditType])
+        .andReturn([RACSignal return:userCreditStatus]);
+    OCMExpect([productsManager getCreditPriceOfType:creditType
+                                    consumableTypes:consumableItemIDToType.allValues.lt_set])
+        .andReturn([RACSignal return:creditTypeToPrice]);
+    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
+
+    auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
+      @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
+      @instanceKeypath(SPXConsumablesOrderSummary, currentCredit): @1337,
+      @instanceKeypath(SPXConsumablesOrderSummary, consumableItemsStatus): @{
+        @"foo": notOwnedImageItemStatus,
+        @"bar": ownedVideoItemStatus
+      }
+    } error:nil];
+
+    auto recorder =
+        [[consumablesManager calculateOrderSummary:creditType
+                            consumableItemIDToType:consumableItemIDToType] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[expectedOrderSummary]);
+    OCMVerifyAll((id)productsManager);
   });
 
   it(@"should send error without calling delegate if the operation is cancelled", ^{
