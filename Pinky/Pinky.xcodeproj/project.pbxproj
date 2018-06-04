@@ -168,6 +168,7 @@
 		C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4043C9720C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm */; };
 		E40F42AA2022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F42A92022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm */; };
 		E40F42AE2022F39700190666 /* supersky_bicycles.png in Resources */ = {isa = PBXBuildFile; fileRef = E40F42AC2022F39700190666 /* supersky_bicycles.png */; };
 		E40F42B02022F3BD00190666 /* PNKSuperSkySegmentationProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F42AF2022F3BD00190666 /* PNKSuperSkySegmentationProcessorSpec.mm */; };
@@ -193,6 +194,7 @@
 		E41D726A1FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */; };
 		E41D726C1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */; };
 		E41D726D1FFE90F700A2B26D /* PNKActivation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */; };
+		E41F5C1020BE803A00777B1A /* PNKImageMotionTreeLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41F5C0F20BE803A00777B1A /* PNKImageMotionTreeLayer.mm */; };
 		E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */; };
 		E425F78820BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */; };
 		E4281EBC1FC1B53B008F4BAD /* PNKConcatenation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */; };
@@ -261,6 +263,7 @@
 		E4877734202C6134009753EF /* pooling_stride_output_8x8x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E487772C202C6134009753EF /* pooling_stride_output_8x8x32.tensor */; };
 		E48AD8A92030479600F52328 /* pooling_max_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E48AD8862030479500F52328 /* pooling_max_input_15x16x32.tensor */; };
 		E48AD8AA2030479600F52328 /* pooling_max_output_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E48AD8A82030479600F52328 /* pooling_max_output_15x16x32.tensor */; };
+		E48E44D120BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E48E44D020BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm */; };
 		E48E480A2018C235002B6D55 /* batch_normalization_beta_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = E48E48062018C235002B6D55 /* batch_normalization_beta_32.weights */; };
 		E48E480B2018C235002B6D55 /* batch_normalization_gamma_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = E48E48072018C235002B6D55 /* batch_normalization_gamma_32.weights */; };
 		E48E480C2018C235002B6D55 /* batch_normalization_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E48E48082018C235002B6D55 /* batch_normalization_input_15x16x32.tensor */; };
@@ -876,6 +879,8 @@
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKLibraryLoader.h; sourceTree = "<group>"; };
 		C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoader.mm; sourceTree = "<group>"; };
+		E4043C9720C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionTreeTipMovement.mm; sourceTree = "<group>"; };
+		E4043C9820C03A7400D27D23 /* PNKImageMotionTreeTipMovement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionTreeTipMovement.h; sourceTree = "<group>"; };
 		E40F42872022F37E00190666 /* PNKSuperSkySegmentationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSuperSkySegmentationProcessor.h; sourceTree = "<group>"; };
 		E40F42A92022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSuperSkySegmentationProcessor.mm; sourceTree = "<group>"; };
 		E40F42AC2022F39700190666 /* supersky_bicycles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = supersky_bicycles.png; path = Resources/supersky_bicycles.png; sourceTree = "<group>"; };
@@ -907,6 +912,8 @@
 		E41D72671FFE817A00A2B26D /* PNKActivationCustomInternalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivationCustomInternalLayer.h; sourceTree = "<group>"; };
 		E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKActivationCustomInternalLayer.metal; sourceTree = "<group>"; };
 		E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKActivationLayerSpec.mm; sourceTree = "<group>"; };
+		E41F5BEC20BE803900777B1A /* PNKImageMotionTreeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionTreeLayer.h; sourceTree = "<group>"; };
+		E41F5C0F20BE803A00777B1A /* PNKImageMotionTreeLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionTreeLayer.mm; sourceTree = "<group>"; };
 		E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionGrassLayer.mm; sourceTree = "<group>"; };
 		E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionGrassLayer.h; sourceTree = "<group>"; };
 		E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionGrassLayerSpec.mm; sourceTree = "<group>"; };
@@ -996,6 +1003,8 @@
 		E487772C202C6134009753EF /* pooling_stride_output_8x8x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = pooling_stride_output_8x8x32.tensor; path = Resources/pooling_stride_output_8x8x32.tensor; sourceTree = "<group>"; };
 		E48AD8862030479500F52328 /* pooling_max_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = pooling_max_input_15x16x32.tensor; path = Resources/pooling_max_input_15x16x32.tensor; sourceTree = "<group>"; };
 		E48AD8A82030479600F52328 /* pooling_max_output_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = pooling_max_output_15x16x32.tensor; path = Resources/pooling_max_output_15x16x32.tensor; sourceTree = "<group>"; };
+		E48E44AD20BEA3FA003C2CB7 /* PNKImageMotionLayerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayerType.h; sourceTree = "<group>"; };
+		E48E44D020BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionTreeLayerSpec.mm; sourceTree = "<group>"; };
 		E48E48062018C235002B6D55 /* batch_normalization_beta_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_beta_32.weights; path = Resources/batch_normalization_beta_32.weights; sourceTree = "<group>"; };
 		E48E48072018C235002B6D55 /* batch_normalization_gamma_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_gamma_32.weights; path = Resources/batch_normalization_gamma_32.weights; sourceTree = "<group>"; };
 		E48E48082018C235002B6D55 /* batch_normalization_input_15x16x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = batch_normalization_input_15x16x32.tensor; path = Resources/batch_normalization_input_15x16x32.tensor; sourceTree = "<group>"; };
@@ -1937,12 +1946,17 @@
 				E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */,
 				E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */,
 				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
+				E48E44AD20BEA3FA003C2CB7 /* PNKImageMotionLayerType.h */,
 				E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */,
 				E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */,
 				E45E1BCB20B3F58600EC0B60 /* PNKImageMotionSkyLayer.h */,
 				E45E1BCC20B3F58600EC0B60 /* PNKImageMotionSkyLayer.mm */,
 				E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */,
 				E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */,
+				E41F5BEC20BE803900777B1A /* PNKImageMotionTreeLayer.h */,
+				E41F5C0F20BE803A00777B1A /* PNKImageMotionTreeLayer.mm */,
+				E4043C9820C03A7400D27D23 /* PNKImageMotionTreeTipMovement.h */,
+				E4043C9720C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm */,
 				E4590B2520B4367800C7F7F3 /* PNKImageMotionWaterLayer.h */,
 				E4590B2420B4367700C7F7F3 /* PNKImageMotionWaterLayer.mm */,
 				E4590B2620B4367800C7F7F3 /* PNKImageMotionWavePatch.h */,
@@ -1957,6 +1971,7 @@
 				E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */,
 				E45E1BA820B3F56E00EC0B60 /* PNKImageMotionSkyLayerSpec.mm */,
 				E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */,
+				E48E44D020BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm */,
 				E4590B2920B442E100C7F7F3 /* PNKImageMotionWaterLayerSpec.mm */,
 			);
 			name = "Image Motion";
@@ -2650,6 +2665,7 @@
 				285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */,
 				E49052E2201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm in Sources */,
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
+				E48E44D120BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm in Sources */,
 				2835A9621FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm in Sources */,
 				E4606D7A202341DF00CFBE3A /* PNKBinaryGatherSpec.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
@@ -2697,6 +2713,7 @@
 				0657A1111F29908F002AA730 /* PNKConvolutionLayer.mm in Sources */,
 				E41D72651FFE813F00A2B26D /* PNKActivationStandardInternalLayer.mm in Sources */,
 				E40F42AA2022F37E00190666 /* PNKSuperSkySegmentationProcessor.mm in Sources */,
+				E41F5C1020BE803A00777B1A /* PNKImageMotionTreeLayer.mm in Sources */,
 				2856896A200649B30053FDD8 /* PNKColorTransferProcessor.mm in Sources */,
 				E46A48471FE7DF3200EB0D33 /* PNKPixelBufferUtils.mm in Sources */,
 				E4590B2820B4367800C7F7F3 /* PNKImageMotionWaterLayer.mm in Sources */,
@@ -2713,6 +2730,7 @@
 				E4D719F21FE2C9740047E620 /* PNKSoftMaxLayer.mm in Sources */,
 				285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */,
 				E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */,
+				E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */,
 				2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */,
 				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				E4DA81261FFA2CD700BF8826 /* MPSImage+Size.mm in Sources */,
