@@ -20,8 +20,8 @@ ushort2 calculateReadCoordinates(uint2 gridIndex, const uint2 outputSize) {
 }
 
 kernel void reflectionPaddingSingle(texture2d<half, access::read> inputImage [[texture(0)]],
-                              texture2d<half, access::write> outputImage [[texture(1)]],
-                              uint2 gridIndex [[thread_position_in_grid]]) {
+                                    texture2d<half, access::write> outputImage [[texture(1)]],
+                                    uint2 gridIndex [[thread_position_in_grid]]) {
   const uint2 outputSize = uint2(outputImage.get_width(), outputImage.get_height());
   if (gridIndex.x >= outputSize.x || gridIndex.y >= outputSize.y) {
     return;
