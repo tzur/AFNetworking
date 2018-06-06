@@ -62,7 +62,8 @@ void LTCVPixelBufferImageForReading(CVPixelBufferRef pixelBuffer,
 ///
 /// @note this function is suitable only for non-planar pixel buffers.
 /// Use \c LTCVPixelBufferPlaneImageForWriting to write pixels of planar pixel buffers.
-void LTCVPixelBufferImageForWriting(CVPixelBufferRef pixelBuffer, LTCVPixelBufferWriteBlock block);
+void LTCVPixelBufferImageForWriting(CVPixelBufferRef pixelBuffer,
+                                    NS_NOESCAPE LTCVPixelBufferWriteBlock block);
 
 /// Executes the given \c block with a \c cv::Mat that wraps the pixels of a plane with index
 /// \c planeIndex in the given planar \c pixelBuffer. The latter is properly locked and unlocked,

@@ -113,7 +113,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 
 @implementation NSArray (TryMap)
 
-- (nullable NSArray *)spx_tryMap:(SPXArrayTryMapBlock)block {
+- (nullable NSArray *)spx_tryMap:(NS_NOESCAPE SPXArrayTryMapBlock)block {
   LTParameterAssert(block);
 
   NSMutableArray *mapped = [NSMutableArray arrayWithCapacity:self.count];

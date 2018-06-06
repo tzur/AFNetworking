@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSDictionary (Functional)
 
-- (NSDictionary *)lt_mapValues:(LTDictionaryMapBlock)block {
+- (NSDictionary *)lt_mapValues:(NS_NOESCAPE LTDictionaryMapBlock)block {
   LTParameterAssert(block);
 
   auto mapped = [NSMutableDictionary dictionaryWithCapacity:self.count];
