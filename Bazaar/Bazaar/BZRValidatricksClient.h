@@ -8,13 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRReceiptValidationParameters, BZRReceiptValidationStatus, FBRHTTPClient;
 
 /// Client providing convenience methods to make requests to Validatricks server over HTTP.
-@interface BZRValidatricksClient : NSObject
-
-/// Initializes the client with \c HTTPClient used to make the HTTP requests to the server.
-///
-/// @note Requests made by \c BZRValidatricksClient are to relative paths, so the given
-/// \c HTTPClient should be configured with a base server URL.
-- (instancetype)initWithHTTPClient:(FBRHTTPClient *)HTTPClient;
+@protocol BZRValidatricksClient <NSObject>
 
 /// Validate the authenticity and the integrity of the receipt provided in \c parameters and get
 /// its content.
@@ -70,7 +64,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// providing additional error information.
 - (RACSignal<BZRRedeemConsumablesStatus *> *)
     redeemConsumableItems:(NSArray<BZRConsumableItemDescriptor *> *)consumableItems
-    ofCreditType:(NSString *)creditType userId:(NSString *)userId;
+             ofCreditType:(NSString *)creditType userId:(NSString *)userId;
+@end
+
+/// Default implementation of the \c BZRValidatricksClient protocol.
+@interface BZRValidatricksClient : NSObject <BZRValidatricksClient>
+
+/// Initializes the client with \c HTTPClient used to make the HTTP requests to the server.
+///
+/// @note Requests made by \c BZRValidatricksClient are to relative paths, so the given
+/// \c HTTPClient should be configured with a base server URL.
+- (instancetype)initWithHTTPClient:(FBRHTTPClient *)HTTPClient;
 
 @end
 
