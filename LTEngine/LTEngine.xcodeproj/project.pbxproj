@@ -773,7 +773,6 @@
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A27EA37F78FEF9B801B5232 /* LTGLContext+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A27EDB2B50BEB752E17EEE0 /* LTGLContext+Internal.h */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
-		6A62051D1F4E28CD00EE503D /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B71018D0579000E728F5 /* TiledNoise.png */; };
 		6AB548C01C81F99700672127 /* CVPixelBuffer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */; };
 		6AB548C11C81F99700672127 /* CVPixelBuffer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */; };
 		6AB549061C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm */; };
@@ -1943,7 +1942,6 @@
 		03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveBrightnessCurve.png; path = Curves/PositiveBrightnessCurve.png; sourceTree = "<group>"; };
 		03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveContrastCurve.png; path = Curves/PositiveContrastCurve.png; sourceTree = "<group>"; };
 		03C7B6D618CF313500E728F5 /* MealAdjusted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealAdjusted.png; path = Resources/MealAdjusted.png; sourceTree = "<group>"; };
-		03C7B71018D0579000E728F5 /* TiledNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiledNoise.png; path = Noise/TiledNoise.png; sourceTree = "<group>"; };
 		03CA15C11965492C0040DB07 /* LTEdgesMaskProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEdgesMaskProcessor.h; sourceTree = "<group>"; };
 		03CA15C21965492C0040DB07 /* LTEdgesMaskProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEdgesMaskProcessor.mm; sourceTree = "<group>"; };
 		03CA15C71965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEdgesMaskProcessorSpec.mm; sourceTree = "<group>"; };
@@ -3573,14 +3571,6 @@
 				033DCD8619F2B57A004BF795 /* PositiveShadowsCurve.png */,
 			);
 			name = Curves;
-			sourceTree = "<group>";
-		};
-		03C7B70318D0577E00E728F5 /* Noise */ = {
-			isa = PBXGroup;
-			children = (
-				03C7B71018D0579000E728F5 /* TiledNoise.png */,
-			);
-			name = Noise;
 			sourceTree = "<group>";
 		};
 		254DD76D1BF9FA2600972C0A /* Factories */ = {
@@ -5715,7 +5705,6 @@
 			isa = PBXGroup;
 			children = (
 				03C7B6BA18CF123900E728F5 /* Curves */,
-				03C7B70318D0577E00E728F5 /* Noise */,
 				8BCFBFF718CF0AF100E612DE /* Supporting Files */,
 			);
 			path = LTEngineBundle;
@@ -6776,7 +6765,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A62051D1F4E28CD00EE503D /* TiledNoise.png in Resources */,
 				85E2B68F1C58C649006AD39C /* SolidRectsDrawerOutOfBoundsRects.png in Resources */,
 				85E2B6901C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png in Resources */,
 				85F599AC1CDF2166009A47B4 /* LTDisplacementMapDrawerResizedWithoutMask.png in Resources */,
