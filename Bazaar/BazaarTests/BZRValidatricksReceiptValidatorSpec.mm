@@ -153,7 +153,7 @@ context(@"receipt validation", ^{
       });
     });
 
-    it(@"should err if the json object is missing some required properies", ^{
+    it(@"should err if the json object is missing some required properties", ^{
       NSMutableDictionary *JSONObject = [JSONResponse mutableCopy];
       JSONObject[@"currentDateTime"] = nil;
 

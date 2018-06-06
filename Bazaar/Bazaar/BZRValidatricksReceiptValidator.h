@@ -10,10 +10,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Receipt validator that validates receipts using the Validatricks server.
 ///
 /// The validator sends receipt validation requests to the receipt validation endpoint of the
-/// Valdiatricks server using an \c FBRHTTPClient provided by an \c FBRHTTPClientProvider.
+/// Validatricks server using an \c FBRHTTPClient provided by an \c FBRHTTPClientProvider.
 @interface BZRValidatricksReceiptValidator : NSObject <BZRReceiptValidator>
 
-/// Enpoint of Validatricks receipt validator. The endpoint is a path appended to the server URL
+/// Endpoint of Validatricks receipt validator. The endpoint is a path appended to the server URL
 /// when validation requests are issued.
 + (NSString *)receiptValidationEndpoint;
 
