@@ -113,8 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
         [consumedItemsIDs containsObject:consumableItemID] ? @0 : requiredCredit,
     @instanceKeypath(SPXConsumableItemStatus, consumableType): consumableType,
     @instanceKeypath(SPXConsumableItemStatus, isOwned):
-        [consumedItemsIDs containsObject:consumableItemID] ? @YES : @NO,
-    @instanceKeypath(SPXConsumableItemStatus, creditWorth): requiredCredit
+        [consumedItemsIDs containsObject:consumableItemID] ? @YES : @NO
   } error:nil]);
 }
 
