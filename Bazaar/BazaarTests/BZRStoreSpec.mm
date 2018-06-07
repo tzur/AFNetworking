@@ -975,13 +975,18 @@ context(@"validating transaction", ^{
 });
 
 context(@"getting user credit status", ^{
-  it(@"should forward request to Validatricks client with correct parameters", ^{
-    auto userCreditStatus = lt::nn([[BZRUserCreditStatus alloc] initWithDictionary:@{
+  __block BZRUserCreditStatus *userCreditStatus;
+
+  beforeEach(^{
+    userCreditStatus = lt::nn([[BZRUserCreditStatus alloc] initWithDictionary:@{
       @instanceKeypath(BZRUserCreditStatus, requestId): @"request",
       @instanceKeypath(BZRUserCreditStatus, creditType): @"bar",
       @instanceKeypath(BZRUserCreditStatus, credit): @13,
       @instanceKeypath(BZRUserCreditStatus, consumedItems): @[]
     } error:nil]);
+  });
+
+  it(@"should forward request to Validatricks client with correct parameters", ^{
     OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
         .andReturn([RACSignal return:userCreditStatus]);
     OCMStub([userIDProvider userID]).andReturn(@"foo");
@@ -1026,6 +1031,29 @@ context(@"getting user credit status", ^{
     expect(signal).to.matchError(^BOOL(NSError *error) {
       return error.code == BZRErrorCodeUserIdentifierNotAvailable;
     });
+  });
+
+  it(@"should cache the user credit after successful fetching", ^{
+    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
+        .andReturn([RACSignal return:userCreditStatus]);
+    OCMStub([userIDProvider userID]).andReturn(@"foo");
+    OCMExpect([keychainStorage setValue:userCreditStatus forKey:@"bzr.userCredit.bar" error:nil]);
+
+    auto signal = [store getUserCreditStatus:@"bar"];
+
+    expect(signal).will.complete();
+    OCMVerifyAll((id)keychainStorage);
+  });
+
+  it(@"should get the cached user credit", ^{
+    OCMStub([keychainStorage valueForKey:@"bzr.userCredit.bar" error:nil])
+        .andReturn(userCreditStatus);
+
+    expect([store getCachedUserCreditStatus:@"bar"]).to.equal(userCreditStatus);
+  });
+
+  it(@"should return nil if the user credit was not found in cache", ^{
+    expect([store getCachedUserCreditStatus:@"bar"]).to.beNil();
   });
 });
 

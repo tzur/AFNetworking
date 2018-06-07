@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the user's balance. Hence when redeeming consumable items it is important to specify the correct
 /// \c consumableType, and when checking user's eligibility to some consumable item it is important
 /// to verify the consumable type and not only the item ID.
-@interface BZRConsumableItemDescriptor : BZRModel <MTLJSONSerializing>
+@interface BZRConsumableItemDescriptor : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// Initializes the receiver with the given \c consumableItemId and \c consumableType.
 - (instancetype)initWithConsumableItemId:(NSString *)consumableItemId
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Model representing Validatrics server response for a "get user credit" request.
-@interface BZRUserCreditStatus : BZRModel <MTLJSONSerializing>
+@interface BZRUserCreditStatus : BZRModel <MTLJSONSerializing, NSSecureCoding>
 
 /// Unique identifier of the request. Can be used later to collect logs related to that request.
 @property (readonly, nonatomic) NSString *requestId;
