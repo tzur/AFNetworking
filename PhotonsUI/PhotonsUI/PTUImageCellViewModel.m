@@ -123,21 +123,22 @@ NSString * const kPTUImageCellViewModelTraitGIFKey = @"GIF";
   return [RACSignal return:[self.timeFormatter timeStringForTimeInterval:descriptor.duration]];
 }
 
-- (NSSet *)traits {
+- (NSSet<NSString *> *)traits {
+  NSSet<NSString *> *descriptorTraits = self.descriptor.descriptorTraits;
   NSMutableSet *traits = [NSMutableSet set];
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitSessionKey]) {
+  if ([descriptorTraits containsObject:kPTNDescriptorTraitSessionKey]) {
     [traits addObject:kPTUImageCellViewModelTraitSessionKey];
   }
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitCloudBasedKey]) {
+  if ([descriptorTraits containsObject:kPTNDescriptorTraitCloudBasedKey]) {
     [traits addObject:kPTUImageCellViewModelTraitCloudBasedKey];
   }
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+  if ([descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
     [traits addObject:kPTUImageCellViewModelTraitVideoKey];
   }
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitRawKey]) {
+  if ([descriptorTraits containsObject:kPTNDescriptorTraitRawKey]) {
     [traits addObject:kPTUImageCellViewModelTraitRawKey];
   }
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitGIFKey]) {
+  if ([descriptorTraits containsObject:kPTNDescriptorTraitGIFKey]) {
     [traits addObject:kPTUImageCellViewModelTraitGIFKey];
   }
   return traits;
