@@ -10,7 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *consumableItemID;
 
 /// Credit required to obtain the consumable item. Should be \0 when the item is already owned.
-/// Credit required may be different from \c creditWorth, e.g. in case of special discounts.
 @property (readonly, nonatomic) NSUInteger creditRequired;
 
 /// The type of the consumable item.
@@ -18,9 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if the item is already owned, \c NO otherwise.
 @property (readonly, nonatomic) BOOL isOwned;
-
-/// Credit worth of the consumable item, regardless of if it is owned or not.
-@property (readonly, nonatomic) NSUInteger creditWorth;
 
 @end
 

@@ -67,15 +67,13 @@ context(@"calculating order summary", ^{
       @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
       @instanceKeypath(SPXConsumableItemStatus, creditRequired): @13,
       @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO,
-      @instanceKeypath(SPXConsumableItemStatus, creditWorth): @13
+      @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO
     } error:nil];
     auto barItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
       @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"bar",
       @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
       @instanceKeypath(SPXConsumableItemStatus, consumableType): @"videoFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES,
-      @instanceKeypath(SPXConsumableItemStatus, creditWorth): @37
+      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
     } error:nil];
     auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
       @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
@@ -197,15 +195,13 @@ context(@"placing order", ^{
       @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
       @instanceKeypath(SPXConsumableItemStatus, creditRequired): @13,
       @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO,
-      @instanceKeypath(SPXConsumableItemStatus, creditWorth): @13
+      @instanceKeypath(SPXConsumableItemStatus, isOwned): @NO
     } error:nil];
     barItemStatus = [[SPXConsumableItemStatus alloc] initWithDictionary:@{
       @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"bar",
       @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
       @instanceKeypath(SPXConsumableItemStatus, consumableType): @"videoFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES,
-      @instanceKeypath(SPXConsumableItemStatus, creditWorth): @37
+      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
     } error:nil];
 
     orderSummaryWithEnoughCredit = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
@@ -305,8 +301,7 @@ context(@"placing order", ^{
       @instanceKeypath(SPXConsumableItemStatus, consumableItemID): @"foo",
       @instanceKeypath(SPXConsumableItemStatus, creditRequired): @0,
       @instanceKeypath(SPXConsumableItemStatus, consumableType): @"imageFoo",
-      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES,
-      @instanceKeypath(SPXConsumableItemStatus, creditWorth): @13
+      @instanceKeypath(SPXConsumableItemStatus, isOwned): @YES
     } error:nil];
     auto orderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
       @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
