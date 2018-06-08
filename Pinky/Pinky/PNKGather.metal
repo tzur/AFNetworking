@@ -1,4 +1,4 @@
-/// Copyright (c) 2017 Lightricks. All rights reserved.
+// Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
 #include <metal_stdlib>

@@ -73,7 +73,7 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
-  [self verifyParametersWithInputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage];
+  [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
   MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
