@@ -14,12 +14,11 @@ it(@"should return the correct texture URLs", ^{
       .to.equal([NSURL URLWithString:@"com.lightricks.DaVinci://texture?id=source"]);
   expect([NSURL dvn_urlOfEdgeAvoidanceTexture])
       .to.equal([NSURL URLWithString:@"com.lightricks.DaVinci://texture?id=edgeAvoidance"]);
-  NSString *urlString = @"com.lightricks.DaVinci://texture?width=1&height=1&pixel_components=R&"
-                         "pixel_data_type=8Unorm&color=%23FF&premultiplied=1";
+  NSString *urlString =
+      @"com.lightricks.DaVinci://texture?id=1_x_1_white_single_channel_byte_texture";
   expect([NSURL dvn_urlOfOneByOneWhiteSingleChannelByteTexture])
       .to.equal([NSURL URLWithString:urlString]);
-  urlString = @"com.lightricks.DaVinci://texture?width=1&height=1&pixel_components=RGBA&"
-               "pixel_data_type=8Unorm&color=%23FF&premultiplied=0";
+  urlString = @"com.lightricks.DaVinci://texture?id=1_x_1_white_non_premultiplied_rgba_texture";
   expect([NSURL dvn_urlOfOneByOneWhiteNonPremultipliedRGBAByteTexture])
       .to.equal([NSURL URLWithString:urlString]);
 });

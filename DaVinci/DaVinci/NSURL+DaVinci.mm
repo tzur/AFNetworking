@@ -40,12 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     url = [[self dvn_textureURL] lt_URLByAppendingQueryItems:@[
-        [NSURLQueryItem queryItemWithName:@"width" value:@"1"],
-        [NSURLQueryItem queryItemWithName:@"height" value:@"1"],
-        [NSURLQueryItem queryItemWithName:@"pixel_components" value:@"R"],
-        [NSURLQueryItem queryItemWithName:@"pixel_data_type" value:@"8Unorm"],
-        [NSURLQueryItem queryItemWithName:@"color" value:@"#FF"],
-        [NSURLQueryItem queryItemWithName:@"premultiplied" value:@"1"]
+        [NSURLQueryItem queryItemWithName:@"id" value:@"1_x_1_white_single_channel_byte_texture"],
     ]];
   });
   return url;
@@ -56,12 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     url = [[self dvn_textureURL] lt_URLByAppendingQueryItems:@[
-        [NSURLQueryItem queryItemWithName:@"width" value:@"1"],
-        [NSURLQueryItem queryItemWithName:@"height" value:@"1"],
-        [NSURLQueryItem queryItemWithName:@"pixel_components" value:@"RGBA"],
-        [NSURLQueryItem queryItemWithName:@"pixel_data_type" value:@"8Unorm"],
-        [NSURLQueryItem queryItemWithName:@"color" value:@"#FF"],
-        [NSURLQueryItem queryItemWithName:@"premultiplied" value:@"0"]
+      [NSURLQueryItem queryItemWithName:@"id" value:@"1_x_1_white_non_premultiplied_rgba_texture"],
     ]];
   });
   return url;
