@@ -48,13 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<SPXConsumablesOrderSummary *> *)calculateOrderSummary:(NSString *)creditType
     consumableItemIDToType:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType {
-  auto userCreditSignal = [self.productsManager getUserCreditStatus:creditType];
-  auto creditTypeToPriceSignal =
-      [self.productsManager getCreditPriceOfType:creditType
-                                 consumableTypes:consumableItemIDToType.allValues.lt_set];
+  auto userCreditAndTypesPricesSignal =
+      [self userCreditAndTypesPricesSignal:creditType
+                    consumableItemIDToType:consumableItemIDToType];
 
-  return [[[RACSignal
-      combineLatest:@[userCreditSignal, creditTypeToPriceSignal]]
+  return [[userCreditAndTypesPricesSignal
       tryMap:^SPXConsumablesOrderSummary *(RACTuple *tuple, NSError * __autoreleasing *error) {
         RACTupleUnpack(BZRUserCreditStatus *userCredit,
                        NSDictionary *consumableTypeToPrice) = tuple;
@@ -70,11 +68,52 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
+- (RACSignal<RACTuple *> *)userCreditAndTypesPricesSignal:(NSString *)creditType
+    consumableItemIDToType:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType {
+  auto requestedTypes = consumableItemIDToType.allValues.lt_set;
+  auto consumableTypeToPrice = [self consumableTypesWithZeroPrices:requestedTypes];
+  auto _Nullable cachedUserCreditStatus =
+      [self.productsManager getCachedUserCreditStatus:creditType];
+
+  if (cachedUserCreditStatus &&
+      [self isAllItemsOwned:consumableItemIDToType userCreditStatus:cachedUserCreditStatus]) {
+    return [RACSignal combineLatest:@[
+      [RACSignal return:cachedUserCreditStatus],
+      [RACSignal return:consumableTypeToPrice]
+    ]];
+  }
+
+  return [RACSignal combineLatest:@[
+    [self.productsManager getUserCreditStatus:creditType],
+    [self.productsManager getCreditPriceOfType:creditType consumableTypes:requestedTypes]
+  ]];
+}
+
+- (NSDictionary<NSString *, NSNumber *> *)consumableTypesWithZeroPrices:
+    (NSSet<NSString *> *)consumableTypes {
+  auto consumableTypeToPrice = [NSMutableDictionary dictionaryWithCapacity:consumableTypes.count];
+  for (NSString *type in consumableTypes) {
+    consumableTypeToPrice[type] = @0;
+  }
+
+  return consumableTypeToPrice;
+}
+
+- (BOOL)isAllItemsOwned:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+       userCreditStatus:(BZRUserCreditStatus *)userCreditStatus {
+  auto requestedItemsIDs = consumableItemIDToType.allKeys.lt_set;
+  auto consumedItemsIDs = [self calculateConsumedItemsIDs:consumableItemIDToType
+                                               userCredit:userCreditStatus];
+
+  return [consumedItemsIDs.lt_set isEqualToSet:requestedItemsIDs];
+}
+
 - (nullable SPXConsumablesOrderSummary *)summaryFromUserCredit:(BZRUserCreditStatus *)userCredit
     consumableTypeToPrice:(NSDictionary<NSString *, NSNumber *> *)consumableTypeToPrice
     consumableItemIDToType:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
     error:(NSError * __autoreleasing *)error {
-  auto consumedItemsIDs = [self consumedItemsIDs:consumableItemIDToType userCredit:userCredit];
+  auto consumedItemsIDs = [self calculateConsumedItemsIDs:consumableItemIDToType
+                                               userCredit:userCredit];
 
   auto consumableItemsStatus = [consumableItemIDToType
       lt_mapValues:^SPXConsumableItemStatus *(NSString *consumableItemID,
@@ -91,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
   } error:error];
 }
 
-- (NSArray<NSString *> *)consumedItemsIDs:
+- (NSArray<NSString *> *)calculateConsumedItemsIDs:
     (NSDictionary<NSString *, NSString *> *)consumableItemIDToType
     userCredit:(BZRUserCreditStatus *)userCredit {
   return [[consumableItemIDToType
@@ -309,7 +348,7 @@ NS_ASSUME_NONNULL_BEGIN
       isKindOfClass:BZRValidatricksNotEnoughCreditErrorInfo.class]) {
       // If there was an error because the user doesn't have enough credit, it means that the
       // manager tried to redeem because according to the summary there is enough credit. Therefore
-      /// the order summary is outdated and there is a need to recalculate the order summary.
+      // the order summary is outdated and there is a need to recalculate the order summary.
       return nil;
     }
 
