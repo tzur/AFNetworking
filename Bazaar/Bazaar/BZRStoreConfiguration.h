@@ -132,10 +132,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Factory used to create \c BZRProductsVariantSelector.
 @property (strong, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
 
-/// Provider used to provide validation parameters sent to the receipt validator.
-@property (strong, nonatomic) id<BZRReceiptValidationParametersProvider>
-    validationParametersProvider;
-
 /// Provider used to provide products the user is allowed to use. By default it is initialized
 /// with the nethermost \c productsProvider, with \c self.validationStatusProvider and with
 /// \c self.acquiredViaSubscriptionProvider.

@@ -8,6 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fake \c BZRAppStoreLocaleProvider for testing.
 @interface BZRFakeAppStoreLocaleProvider : BZRAppStoreLocaleProvider
 
+/// Initializes with mock objects.
+- (instancetype)init;
+
 /// Mutable App Store locale. KVO-compliant.
 @property (strong, readwrite, atomic, nullable) NSLocale *appStoreLocale;
 

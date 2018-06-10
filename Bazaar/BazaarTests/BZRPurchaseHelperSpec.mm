@@ -16,8 +16,8 @@ __block SKPayment *payment;
 
 beforeEach(^{
   aggregatedReceiptProvider = OCMClassMock([BZRAggregatedReceiptValidationStatusProvider class]);
-  purchaseHelper = [[BZRPurchaseHelper alloc]
-                    initWithAggregatedReceiptProvider:aggregatedReceiptProvider];
+  purchaseHelper = [[BZRPurchaseHelper alloc] init];
+  purchaseHelper.aggregatedReceiptProvider = aggregatedReceiptProvider;
   payment = OCMClassMock([SKPayment class]);
 });
 

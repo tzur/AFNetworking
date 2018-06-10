@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationParametersProvider.h"
 
-#import "BZRAppStoreLocaleCache.h"
+#import "BZRAppStoreLocaleProvider.h"
 #import "BZRReceiptDataCache.h"
 #import "BZRReceiptValidationParameters.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRReceiptValidationParametersProvider ()
 
-/// Cache used to store and retrieve App Store locale of multiple applications.
-@property (readonly, nonatomic) BZRAppStoreLocaleCache *appStoreLocaleCache;
+/// Provider used to provide App Store locale of multiple applications.
+@property (readonly, nonatomic) BZRAppStoreLocaleProvider *appStoreLocaleProvider;
 
 /// Cache used to store and retrieve receipt data of multiple applications.
 @property (readonly, nonatomic) BZRReceiptDataCache *receiptDataCache;
@@ -25,30 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptValidationParametersProvider
 
-@synthesize appStoreLocale = _appStoreLocale;
-
-- (instancetype)initWithAppStoreLocaleCache:(BZRAppStoreLocaleCache *)appStoreLocaleCache
-                           receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-                 currentApplicationBundleID:(NSString *)currentApplicationBundleID {
+- (instancetype)initWithAppStoreLocaleProvider:(BZRAppStoreLocaleProvider *)appStoreLocaleProvider
+                              receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+                    currentApplicationBundleID:(NSString *)currentApplicationBundleID {
   if (self = [super init]) {
-    _appStoreLocaleCache = appStoreLocaleCache;
+    _appStoreLocaleProvider = appStoreLocaleProvider;
     _receiptDataCache = receiptDataCache;
     _currentApplicationBundleID = [currentApplicationBundleID copy];
-
-    [self loadAppStoreLocaleFromStorage];
   }
 
   return self;
-}
-
-- (void)loadAppStoreLocaleFromStorage {
-  NSLocale * _Nullable appStoreLocale =
-      [self.appStoreLocaleCache appStoreLocaleForBundleID:self.currentApplicationBundleID
-                                                    error:nil];
-
-  if (appStoreLocale) {
-      _appStoreLocale = appStoreLocale;
-  }
 }
 
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
@@ -59,12 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 
   if ([applicationBundleID isEqualToString:self.currentApplicationBundleID]) {
     receiptData = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
-    appStoreLocale = self.appStoreLocale;
+    appStoreLocale = self.appStoreLocaleProvider.appStoreLocale;
   } else {
     receiptData = [self.receiptDataCache receiptDataForApplicationBundleID:applicationBundleID
                                                                      error:nil];
-    appStoreLocale = [self.appStoreLocaleCache appStoreLocaleForBundleID:applicationBundleID
-                                                                   error:nil];
+    appStoreLocale = [self.appStoreLocaleProvider appStoreLocaleForBundleID:applicationBundleID
+                                                                      error:nil];
   }
 
   if (!receiptData && !userID) {
@@ -75,29 +61,6 @@ NS_ASSUME_NONNULL_BEGIN
           initWithCurrentApplicationBundleID:self.currentApplicationBundleID
           applicationBundleID:applicationBundleID receiptData:receiptData deviceID:deviceID
           appStoreLocale:appStoreLocale userID:userID];
-}
-
-- (nullable NSLocale *)appStoreLocale {
-  @synchronized(self) {
-    return _appStoreLocale;
-  }
-}
-
-- (void)setAppStoreLocale:(nullable NSLocale *)appStoreLocale {
-  @synchronized(self) {
-    if (appStoreLocale == _appStoreLocale || [appStoreLocale isEqual:_appStoreLocale]) {
-      return;
-    }
-
-    _appStoreLocale = appStoreLocale;
-    [self storeAppStoreLocaleToStorage:appStoreLocale];
-  }
-}
-
-- (void)storeAppStoreLocaleToStorage:(nullable NSLocale *)appStoreLocale {
-  [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
-                                       bundleID:self.currentApplicationBundleID
-                                          error:nil];
 }
 
 @end

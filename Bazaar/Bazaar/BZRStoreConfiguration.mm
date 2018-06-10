@@ -100,10 +100,11 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
-    _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     _contentFetcher = [[BZRCachedContentFetcher alloc] init];
-
     _keychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
+    _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
+    _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
+    _userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
 
     auto validatricksBaseURL = [NSURL URLWithString:@"https://api.lightricks.com/store/v1/"];
     auto sessionConfigurationProvider = [[BZRValidatricksSessionConfigurationProvider alloc] init];
@@ -115,42 +116,59 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     auto relevantApplicationsBundleIDs = bundledApplicationsIDs ?
         [bundledApplicationsIDs setByAddingObject:applicationBundleID] :
         [NSSet setWithObject:applicationBundleID];
+    auto purchaseHelper = [[BZRPurchaseHelper alloc] init];
+    auto timeProvider = [[BZRTimeProvider alloc] init];
+
     BZRKeychainStorageRoute *keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
                                                 serviceNames:relevantApplicationsBundleIDs];
+    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
+                                                            purchaseHelper:purchaseHelper];
+    _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
+    _acquiredViaSubscriptionProvider =
+        [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
+
+    _storeKitMetadataUnderlyingFetcher =
+        [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     BZRReceiptDataCache *receiptDataCache =
         [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
-
+    BZRReceiptValidationStatusCache *receiptValidationStatusCache =
+        [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
     BZRAppStoreLocaleCache *appStoreLocaleCache =
         [[BZRAppStoreLocaleCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
-    _validationParametersProvider =
-        [[BZRReceiptValidationParametersProvider alloc]
-         initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
-         currentApplicationBundleID:applicationBundleID];
 
-    _userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
+    _storeKitMetadataFetcher =
+        [[BZRStoreKitCachedMetadataFetcher alloc]
+         initWithUnderlyingFetcher:self.storeKitMetadataUnderlyingFetcher];
+    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
+                                                 decryptionKey:productListDecryptionKey];
+
+    _appStoreLocaleProvider = [[BZRAppStoreLocaleProvider alloc]
+                               initWithCache:appStoreLocaleCache
+                               productsProvider:self.netherProductsProvider
+                               metadataFetcher:self.storeKitMetadataUnderlyingFetcher
+                               currentApplicationBundleID:applicationBundleID];
+
+    auto validationParametersProvider =
+        [[BZRReceiptValidationParametersProvider alloc]
+         initWithAppStoreLocaleProvider:self.appStoreLocaleProvider
+         receiptDataCache:receiptDataCache currentApplicationBundleID:applicationBundleID];
+
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
-         initWithValidationParametersProvider:self.validationParametersProvider
+         initWithValidationParametersProvider:validationParametersProvider
          receiptDataCache:receiptDataCache userIDProvider:self.userIDProvider];
 
-    auto timeProvider = [[BZRTimeProvider alloc] init];
     BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
         [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
          underlyingProvider:validatorProvider];
 
-    BZRReceiptValidationStatusCache *receiptValidationStatusCache =
-        [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
-
     auto cachedReceiptValidationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
                                                      underlyingProvider:modifiedExpiryProvider];
-    _acquiredViaSubscriptionProvider =
-        [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
-    _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cachedReceiptValidationStatusProvider
@@ -163,28 +181,12 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          initWithReceiptValidationStatusCache:receiptValidationStatusCache
          timeProvider:timeProvider bundledApplicationsIDs:relevantApplicationsBundleIDs
          aggregatedValidationStatusProvider:self.validationStatusProvider];
-
-    auto purchaseHelper =
-        [[BZRPurchaseHelper alloc] initWithAggregatedReceiptProvider:self.validationStatusProvider];
-    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
-                                                            purchaseHelper:purchaseHelper];
-    _storeKitMetadataUnderlyingFetcher =
-        [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
-    _storeKitMetadataFetcher =
-        [[BZRStoreKitCachedMetadataFetcher alloc]
-         initWithUnderlyingFetcher:self.storeKitMetadataUnderlyingFetcher];
-    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
-                                                 decryptionKey:productListDecryptionKey];
-    _appStoreLocaleProvider = [[BZRAppStoreLocaleProvider alloc]
-                               initWithProductsProvider:self.netherProductsProvider
-                               metadataFetcher:self.storeKitMetadataUnderlyingFetcher];
-
-    _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
-
     _allowedProductsProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider
          validationStatusProvider:self.validationStatusProvider
          acquiredViaSubscriptionProvider:self.acquiredViaSubscriptionProvider];
+
+    purchaseHelper.aggregatedReceiptProvider = self.validationStatusProvider;
   }
   return self;
 }

@@ -3,6 +3,7 @@
 
 #import "BZRFakeAppStoreLocaleProvider.h"
 
+#import "BZRAppStoreLocaleCache.h"
 #import "BZRProductsProvider.h"
 #import "BZRStoreKitMetadataFetcher.h"
 
@@ -13,8 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize appStoreLocale = _appStoreLocale;
 
 - (instancetype)init {
-  return [super initWithProductsProvider:OCMProtocolMock(@protocol(BZRProductsProvider))
-                         metadataFetcher:OCMClassMock(BZRStoreKitMetadataFetcher.class)];
+  return [super initWithCache:OCMClassMock([BZRAppStoreLocaleCache class])
+          productsProvider:OCMProtocolMock(@protocol(BZRProductsProvider))
+          metadataFetcher:OCMClassMock([BZRStoreKitMetadataFetcher class])
+          currentApplicationBundleID:@"foo"];
 }
 
 @end
