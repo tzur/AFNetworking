@@ -45,6 +45,18 @@ NS_ASSUME_NONNULL_BEGIN
   return applicationSupportDirectory;
 }
 
++ (NSString *)lt_libraryDirectory {
+  static NSString *libraryDirectory;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    libraryDirectory = [paths firstObject];
+  });
+
+  return libraryDirectory;
+}
+
 - (BOOL)lt_fileExistsAtPath:(NSString *)path {
   BOOL isDirectory;
   return [self fileExistsAtPath:path isDirectory:&isDirectory] && !isDirectory;

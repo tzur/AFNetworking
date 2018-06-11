@@ -86,6 +86,8 @@ static NSString * const kPathScheme = @"com.lightricks.path";
       return [NSFileManager lt_applicationSupportDirectory];
     case LTPathBaseDirectoryCaches:
       return [NSFileManager lt_cachesDirectory];
+    case LTPathBaseDirectoryLibrary:
+      return [NSFileManager lt_libraryDirectory];
   }
 }
 
@@ -131,6 +133,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
       @(LTPathBaseDirectoryMainBundle): @"mainbundle",
       @(LTPathBaseDirectoryCaches): @"caches",
       @(LTPathBaseDirectoryApplicationSupport): @"applicationsupport",
+      @(LTPathBaseDirectoryLibrary): @"library"
     }];
   });
 

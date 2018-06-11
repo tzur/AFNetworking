@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Path to the application support directory of the app.
 + (NSString *)lt_applicationSupportDirectory;
 
+/// Path to the library directory of the app.
++ (NSString *)lt_libraryDirectory;
+
 /// Returns \c YES if a file exists at the given \c path.
 - (BOOL)lt_fileExistsAtPath:(NSString *)path;
 

@@ -16,7 +16,9 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
   /// Base directory is the discardable caches directory path.
   LTPathBaseDirectoryCaches,
   /// Base directory is the application support directory path.
-  LTPathBaseDirectoryApplicationSupport
+  LTPathBaseDirectoryApplicationSupport,
+  /// Base directory is the library directory path.
+  LTPathBaseDirectoryLibrary
 };
 
 /// Represents a path split to a base path and a relative path to that base path. This class is
