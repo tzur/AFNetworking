@@ -77,7 +77,7 @@ __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRStoreKitCachedMetadataFetcher *storeKitMetadataFetcher;
 __block BZRFakeAppStoreLocaleProvider *appStoreLocaleProvider;
 __block BZRKeychainStorage *keychainStorage;
-__block BZRValidatricksClient *validatricksClient;
+__block id<BZRValidatricksClient> validatricksClient;
 __block id<BZRUserIDProvider> userIDProvider;
 
 __block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
@@ -110,7 +110,7 @@ beforeEach(^{
   storeKitMetadataFetcher = OCMClassMock([BZRStoreKitCachedMetadataFetcher class]);
   appStoreLocaleProvider = [[BZRFakeAppStoreLocaleProvider alloc] init];
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
-  validatricksClient = OCMClassMock([BZRValidatricksClient class]);
+  validatricksClient = OCMProtocolMock(@protocol(BZRValidatricksClient));
   userIDProvider = OCMProtocolMock(@protocol(BZRUserIDProvider));
   multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
   bundle = OCMClassMock([NSBundle class]);

@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// Client used to make HTTP requests to Validatricks.
-@property (readonly, nonatomic) BZRValidatricksClient *validatricksClient;
+@property (readonly, nonatomic) id<BZRValidatricksClient> validatricksClient;
 
 /// Provider used to provide a unique identifier of the user.
 @property (readonly, nonatomic) id<BZRUserIDProvider> userIDProvider;

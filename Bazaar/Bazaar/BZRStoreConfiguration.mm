@@ -39,7 +39,7 @@
 #import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
-#import "BZRValidatricksClient.h"
+#import "BZRValidatricksRobustClient.h"
 #import "BZRValidatricksSessionConfigurationProvider.h"
 #import "BZRiCloudUserIDProvider.h"
 
@@ -111,15 +111,9 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     _keychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
-
     _userIDProvider = useiCloudUserID ? [[BZRiCloudUserIDProvider alloc] init] :
         [[BZRDeviceUserIDProvider alloc] init];
-    auto validatricksBaseURL = [NSURL URLWithString:@"https://api.lightricks.com/store/v1/"];
-    auto sessionConfigurationProvider = [[BZRValidatricksSessionConfigurationProvider alloc] init];
-    auto HTTPClient = [FBRHTTPClient
-        clientWithSessionConfiguration:[sessionConfigurationProvider HTTPSessionConfiguration]
-                               baseURL:validatricksBaseURL];
-    _validatricksClient = [[BZRValidatricksClient alloc] initWithHTTPClient:HTTPClient];
+    _validatricksClient = [[BZRValidatricksRobustClient alloc] init];
 
     auto relevantApplicationsBundleIDs = bundledApplicationsIDs ?
         [bundledApplicationsIDs setByAddingObject:applicationBundleID] :
@@ -127,7 +121,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     auto purchaseHelper = [[BZRPurchaseHelper alloc] init];
     auto timeProvider = [[BZRTimeProvider alloc] init];
 
-    BZRKeychainStorageRoute *keychainStorageRoute =
+    auto keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
                                                 serviceNames:relevantApplicationsBundleIDs];
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
@@ -138,11 +132,11 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
     _storeKitMetadataUnderlyingFetcher =
         [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
-    BZRReceiptDataCache *receiptDataCache =
+    auto receiptDataCache =
         [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
-    BZRReceiptValidationStatusCache *receiptValidationStatusCache =
+    auto receiptValidationStatusCache =
         [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
-    BZRAppStoreLocaleCache *appStoreLocaleCache =
+    auto appStoreLocaleCache =
         [[BZRAppStoreLocaleCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
 
     _storeKitMetadataFetcher =
@@ -162,12 +156,14 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          initWithAppStoreLocaleProvider:self.appStoreLocaleProvider
          receiptDataCache:receiptDataCache currentApplicationBundleID:applicationBundleID];
 
-    BZRValidatedReceiptValidationStatusProvider *validatorProvider =
+    auto validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
-         initWithValidationParametersProvider:validationParametersProvider
-         receiptDataCache:receiptDataCache userIDProvider:self.userIDProvider];
+         initWithValidatricksClient:self.validatricksClient
+         validationParametersProvider:validationParametersProvider
+         receiptDataCache:receiptDataCache
+         userIDProvider:self.userIDProvider];
 
-    BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
+    auto modifiedExpiryProvider =
         [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
          underlyingProvider:validatorProvider];
