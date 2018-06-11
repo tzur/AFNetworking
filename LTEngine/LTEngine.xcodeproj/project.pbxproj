@@ -7089,7 +7089,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nARCH_ARRAY=($ARCHS)\nrsync -t \"$DERIVED_FILE_DIR\"/\"${ARCH_ARRAY[0]}\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
