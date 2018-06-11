@@ -7,13 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRBillingPeriod (StoreKit)
 
-static NSDictionary * const kSKProductPeriodUnitToBZRBillingPeriodUnit = @{
-  @(SKProductPeriodUnitDay): $(BZRBillingPeriodUnitDays),
-  @(SKProductPeriodUnitWeek): $(BZRBillingPeriodUnitWeeks),
-  @(SKProductPeriodUnitMonth): $(BZRBillingPeriodUnitMonths),
-  @(SKProductPeriodUnitYear): $(BZRBillingPeriodUnitYears)
-};
-
 + (nullable instancetype)billingPeriodForSKProduct:(SKProduct *)product {
   if (@available(iOS 11.2, *)) {
     return product.subscriptionPeriod ?
@@ -25,6 +18,13 @@ static NSDictionary * const kSKProductPeriodUnitToBZRBillingPeriodUnit = @{
 
 + (instancetype)billingPeriodForSKProductSubscriptionPeriod:
    (SKProductSubscriptionPeriod *)subscriptionPeriod {
+  static NSDictionary * const kSKProductPeriodUnitToBZRBillingPeriodUnit = @{
+    @(SKProductPeriodUnitDay): $(BZRBillingPeriodUnitDays),
+    @(SKProductPeriodUnitWeek): $(BZRBillingPeriodUnitWeeks),
+    @(SKProductPeriodUnitMonth): $(BZRBillingPeriodUnitMonths),
+    @(SKProductPeriodUnitYear): $(BZRBillingPeriodUnitYears)
+  };
+
   return lt::nn([[self alloc] initWithDictionary:@{
     @instanceKeypath(BZRBillingPeriod, unit):
         kSKProductPeriodUnitToBZRBillingPeriodUnit[@(subscriptionPeriod.unit)],
