@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
   }
 }
 
-- (void)lt_iPhone:(LTVoidBlock)block {
+- (void)lt_iPhone:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   if (self.lt_isPhoneIdiom) {
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
   }
 }
 
-- (void)lt_iPhone:(LTVoidBlock)iPhoneBlock iPad:(LTVoidBlock)iPadBlock {
+- (void)lt_iPhone:(NS_NOESCAPE LTVoidBlock)iPhoneBlock iPad:(NS_NOESCAPE LTVoidBlock)iPadBlock {
   LTParameterAssert(iPhoneBlock);
   LTParameterAssert(iPadBlock);
 

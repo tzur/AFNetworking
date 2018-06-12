@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSArray (Functional)
 
-- (NSArray *)lt_map:(LTArrayMapBlock)block {
+- (NSArray *)lt_map:(NS_NOESCAPE LTArrayMapBlock)block {
   LTParameterAssert(block);
 
   NSMutableArray *mapped = [NSMutableArray arrayWithCapacity:self.count];
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
   return mapped;
 }
 
-- (NSArray *)lt_compactMap:(LTArrayCompactMapBlock)block {
+- (NSArray *)lt_compactMap:(NS_NOESCAPE LTArrayCompactMapBlock)block {
   LTParameterAssert(block);
 
   NSMutableArray *mapped = [NSMutableArray array];
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
   return index != NSNotFound ? [self objectAtIndex:index] : nil;
 }
 
-- (id _Nullable)lt_max:(LTArrayCompareBlock)areInIncreasingOrder {
+- (id _Nullable)lt_max:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder {
   if (self.count == 0) {
     return nil;
   }
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
   return result;
 }
 
-- (id _Nullable)lt_min:(LTArrayCompareBlock)areInIncreasingOrder {
+- (id _Nullable)lt_min:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder {
   if (self.count == 0) {
     return nil;
   }

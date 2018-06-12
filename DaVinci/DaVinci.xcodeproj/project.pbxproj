@@ -487,6 +487,13 @@
 			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
 			remoteInfo = TestHost;
 		};
+		8855587C20CF985C008AB06C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2501549B1D1AEAF000420FA9 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E407FB4F20B4228900FDFAC8;
+			remoteInfo = LTEngineDeviceTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -841,6 +848,7 @@
 			children = (
 				250154AC1D1AEAF100420FA9 /* libLTEngine.a */,
 				250154AE1D1AEAF100420FA9 /* LTEngine.bundle */,
+				8855587D20CF985C008AB06C /* LTEngineDeviceTests.xctest */,
 				250154B01D1AEAF100420FA9 /* LTEngineTests.xctest */,
 			);
 			name = Products;
@@ -1982,6 +1990,13 @@
 			remoteRef = 65BAF1B11D47FE42009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8855587D20CF985C008AB06C /* LTEngineDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineDeviceTests.xctest;
+			remoteRef = 8855587C20CF985C008AB06C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2047,7 +2062,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include";
+			shellScript = "ARCH_ARRAY=($ARCHS)\nrsync -t \"$DERIVED_FILE_DIR\"/\"${ARCH_ARRAY[0]}\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

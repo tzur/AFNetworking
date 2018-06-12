@@ -11,7 +11,7 @@ constant ushort kHistogramBins [[function_constant(0)]];
 constant uint kInputSize [[function_constant(1)]];
 
 /// Atomically increase the given \c bin at the given \c sharedWarpHistogram.
-inline device void increaseBin(threadgroup atomic_uint *sharedWarpHistogram, uint bin) {
+inline void increaseBin(threadgroup atomic_uint *sharedWarpHistogram, uint bin) {
   atomic_fetch_add_explicit(sharedWarpHistogram + bin, 1, memory_order_relaxed);
 }
 

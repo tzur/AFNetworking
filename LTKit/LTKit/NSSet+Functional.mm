@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSSet (Functional)
 
-- (NSSet *)lt_map:(LTSetMapBlock)block {
+- (NSSet *)lt_map:(NS_NOESCAPE LTSetMapBlock)block {
   LTParameterAssert(block);
 
   auto mapped = [NSMutableSet setWithCapacity:self.count];
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
   return mapped;
 }
 
-- (instancetype)lt_filter:(LTSetFilterBlock)block {
+- (instancetype)lt_filter:(NS_NOESCAPE LTSetFilterBlock)block {
   LTParameterAssert(block);
 
   return [self objectsPassingTest:^BOOL(id obj, BOOL *) {

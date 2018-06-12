@@ -23,7 +23,7 @@
 
 - (void)bind {}
 - (void)unbind {}
-- (void)bindAndExecute:(LTVoidBlock __unused)block {}
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock __unused)block {}
 
 - (void)dispose {
   LTAssert(self.context == [LTGLContext currentContext]);

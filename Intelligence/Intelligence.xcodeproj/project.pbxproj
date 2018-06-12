@@ -121,7 +121,7 @@
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.mm",
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.h",
 			);
-			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
+			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"\n";
 		};
 		A132A37F1EBCD442001F70A6 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -134,7 +134,7 @@
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.h",
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.mm",
 			);
-			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
+			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"\n";
 		};
 /* End PBXBuildRule section */
 
@@ -1558,7 +1558,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/INTAnalytricks*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/INT*Event.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nARCH_ARRAY=($ARCHS)\n\nrsync -t \"$DERIVED_FILE_DIR\"/\"${ARCH_ARRAY[0]}\"/INTAnalytricks*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nrsync -t \"$DERIVED_FILE_DIR\"/\"${ARCH_ARRAY[0]}\"/INT*Event.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
