@@ -364,6 +364,13 @@ context(@"common directories", ^{
     expect(path).to.endWith(@"Application Support");
   });
 
+  it(@"should return the library directory", ^{
+    NSString *path = [NSFileManager lt_libraryDirectory];
+    expect(path).to.equal(NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
+                                                              NSUserDomainMask, YES).firstObject);
+    expect(path).to.endWith(@"Library");
+  });
+
   it(@"should return YES if file exists at path", ^{
     [fileManager createDirectoryAtPath:LTTemporaryPath() withIntermediateDirectories:YES
                             attributes:nil error:nil];

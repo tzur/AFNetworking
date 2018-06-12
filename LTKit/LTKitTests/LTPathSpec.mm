@@ -174,6 +174,34 @@ context(@"application support base path", ^{
   });
 });
 
+context(@"library base path", ^{
+  __block LTPath *path;
+
+  beforeEach(^{
+    path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryLibrary andRelativePath:kPath];
+  });
+
+  it(@"should initialize with library base path", ^{
+    expect(path.baseDirectory).to.equal(LTPathBaseDirectoryLibrary);
+    expect(path.relativePath).to.equal(kPath);
+
+    NSString *expectedPath =
+        [[NSFileManager lt_libraryDirectory] stringByAppendingPathComponent:kPath];
+    expect(path.path).to.equal(expectedPath);
+    expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should serialize and deserialize", ^{
+    expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
+  });
+});
+
 context(@"no relative path", ^{
   __block LTPath *path;
 

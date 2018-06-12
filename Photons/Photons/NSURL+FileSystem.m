@@ -48,9 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
       @(LTPathBaseDirectoryMainBundle): @"mainbundle",
       @(LTPathBaseDirectoryCaches): @"caches",
       @(LTPathBaseDirectoryApplicationSupport): @"applicationsupport",
+      @(LTPathBaseDirectoryLibrary): @"library"
     }];
   });
-  
+
   return map;
 }
 
