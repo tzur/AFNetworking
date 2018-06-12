@@ -24,10 +24,6 @@
 		A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
-		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
-		A132A3621EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */; };
-		A132A3661EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
-		A132A36E1EBCCDF3001F70A6 /* INTFakeInternalEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */; };
 		A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
 		A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */; };
 		A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
@@ -57,7 +53,6 @@
 		A149BC1E1EBE6AC200DA82B7 /* INTAnalytricksAppBackgrounded.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC041EBE6A9E00DA82B7 /* INTAnalytricksAppBackgrounded.json */; };
 		A149BC1F1EBE6AC200DA82B7 /* INTAnalytricksAppForegrounded.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC051EBE6A9E00DA82B7 /* INTAnalytricksAppForegrounded.json */; };
 		A149BC201EBE6AC200DA82B7 /* INTAnalytricksScreenVisited.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC061EBE6A9E00DA82B7 /* INTAnalytricksScreenVisited.json */; };
-		A149BC271EBE6AFE00DA82B7 /* INTScreenDismissedEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = A149BC261EBE6AFE00DA82B7 /* INTScreenDismissedEvent.json */; };
 		A149BC281EBE6B2C00DA82B7 /* INTAppBecameActiveEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC221EBE6AE300DA82B7 /* INTAppBecameActiveEvent.json */; };
 		A149BC291EBE6B2C00DA82B7 /* INTAppBackgroundedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC211EBE6AE300DA82B7 /* INTAppBackgroundedEvent.json */; };
 		A149BC2A1EBE6B2C00DA82B7 /* INTDeepLinkOpenedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC231EBE6AE300DA82B7 /* INTDeepLinkOpenedEvent.json */; };
@@ -1535,11 +1530,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A132A36E1EBCCDF3001F70A6 /* INTFakeInternalEvent.json in Resources */,
-				A132A3661EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json in Resources */,
-				A149BC271EBE6AFE00DA82B7 /* INTScreenDismissedEvent.json in Resources */,
-				A132A3621EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json in Resources */,
-				A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
