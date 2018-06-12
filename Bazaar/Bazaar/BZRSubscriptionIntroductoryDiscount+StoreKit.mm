@@ -9,12 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRSubscriptionIntroductoryDiscount (StoreKit)
 
-static NSDictionary * const kSKProductDiscountPaymentModeToBZRIntroductoryDiscountType = @{
-  @(SKProductDiscountPaymentModePayAsYouGo): $(BZRIntroductoryDiscountTypePayAsYouGo),
-  @(SKProductDiscountPaymentModePayUpFront): $(BZRIntroductoryDiscountTypePayUpFront),
-  @(SKProductDiscountPaymentModeFreeTrial): $(BZRIntroductoryDiscountTypeFreeTrial)
-};
-
 + (nullable instancetype)introductoryDiscountForSKProduct:(SKProduct *)product {
   if (@available(iOS 11.2, *)) {
     return product.introductoryPrice ?
@@ -25,6 +19,12 @@ static NSDictionary * const kSKProductDiscountPaymentModeToBZRIntroductoryDiscou
 }
 
 + (instancetype)introductoryDiscountWithSKProductDiscount:(SKProductDiscount *)discount {
+  static NSDictionary * const kSKProductDiscountPaymentModeToBZRIntroductoryDiscountType = @{
+    @(SKProductDiscountPaymentModePayAsYouGo): $(BZRIntroductoryDiscountTypePayAsYouGo),
+    @(SKProductDiscountPaymentModePayUpFront): $(BZRIntroductoryDiscountTypePayUpFront),
+    @(SKProductDiscountPaymentModeFreeTrial): $(BZRIntroductoryDiscountTypeFreeTrial)
+  };
+
   return [[BZRSubscriptionIntroductoryDiscount alloc] initWithDictionary:@{
     @instanceKeypath(BZRSubscriptionIntroductoryDiscount, discountType):
         kSKProductDiscountPaymentModeToBZRIntroductoryDiscountType[@(discount.paymentMode)],
