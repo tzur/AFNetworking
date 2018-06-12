@@ -3,6 +3,7 @@
 
 #import "BZRValidatricksRobustClient.h"
 
+#import "BZREvent.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRReceiptValidationStatus.h"
 
@@ -181,6 +182,45 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
 
       OCMVerifyAll((id)failingTwiceClient);
       OCMVerifyAll((id)failingThenSucceedingClient);
+    });
+  });
+
+  context(@"event emitting", ^{
+    it(@"should forward the events sent by underlying clients",^{
+      auto succeedingClientEventsSubject = [[RACSubject alloc] init];
+      OCMStub(succeedingClient.eventsSignal).andReturn(succeedingClientEventsSubject);
+
+      auto clients = @[succeedingClient];
+      auto robustClient =
+          [[BZRValidatricksRobustClient alloc] initWithClients:clients delayedRetries:0
+                                           initialBackoffDelay:0 immediateRetries:0];
+
+      auto eventRecorder = [robustClient.eventsSignal testRecorder];
+      [robustClientCall(robustClient) subscribeNext:^(id) {}];
+      auto successEvent =
+          [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:@{@"foo":@"bar"}];
+      [succeedingClientEventsSubject sendNext:successEvent];
+
+      expect(eventRecorder).will.sendValues(@[successEvent]);
+    });
+
+    it(@"should report failures of underlying clients",^{
+      auto failingClientEventsSubject = [[RACSubject alloc] init];
+      OCMStub(failingClient.eventsSignal).andReturn(failingClientEventsSubject);
+
+      auto clients = @[failingClient];
+      auto robustClient =
+          [[BZRValidatricksRobustClient alloc] initWithClients:clients delayedRetries:0
+                                           initialBackoffDelay:0 immediateRetries:1];
+
+      auto eventRecorder = [robustClient.eventsSignal testRecorder];
+      [robustClientCall(robustClient) subscribeNext:^(id) {}];
+
+      expect(eventRecorder).will.sendValuesWithCount(1);
+      expect(eventRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+        return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+            event.eventError == error;
+      });
     });
   });
 });

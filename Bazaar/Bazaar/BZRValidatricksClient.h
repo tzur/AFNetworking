@@ -1,14 +1,21 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
+#import "BZREventEmitter.h"
 #import "BZRValidatricksModels.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Key in the event info dictionary mapping to Validatricks response type.
+extern NSString * const kBZREventValidatricksResponseTypeKey;
+
+/// Key in the event info dictionary mapping to the Validatricks response.
+extern NSString * const kBZREventValidatricksResponseKey;
+
 @class BZRReceiptValidationParameters, BZRReceiptValidationStatus, FBRHTTPClient;
 
 /// Client providing convenience methods to make requests to Validatricks server over HTTP.
-@protocol BZRValidatricksClient <NSObject>
+@protocol BZRValidatricksClient <BZREventEmitter>
 
 /// Validate the authenticity and the integrity of the receipt provided in \c parameters and get
 /// its content.

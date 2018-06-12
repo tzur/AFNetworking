@@ -6,7 +6,9 @@
 #import <Fiber/FBRHTTPClient.h>
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZREvent.h"
 #import "BZRValidatricksSessionConfigurationProvider.h"
+#import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
 
 /// Latest version of Validatricks receipt validator.
@@ -35,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Index of the \c currentUnderlyingClient in the \c underlyingClients array.
 @property (readwrite, nonatomic) NSNumber *currentClientIndex;
+
+/// The other end of \c eventsSignal;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 @end
 
@@ -102,8 +107,19 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
     _initialBackoffDelay = initialBackoffDelay;
     _immediateRetries = immediateRetries;
     _currentClientIndex = @0;
+    _eventsSubject = [[RACSubject alloc] init];
   }
   return self;
+}
+
+- (RACSignal<BZREvent *> *)eventsSignal {
+  auto underlyingEventSignals = [self.underlyingClients
+      lt_map:^RACSignal<BZREvent *> *(id<BZRValidatricksClient> client) {
+        return client.eventsSignal;
+      }];
+  return [[RACSignal
+      merge:[underlyingEventSignals arrayByAddingObject:self.eventsSubject]]
+      takeUntil:self.rac_willDeallocSignal];
 }
 
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt:
@@ -151,8 +167,9 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
           return clientCallBlock(self.currentClient);
         }
       }]
-      doError:^(NSError *) {
+      doError:^(NSError *error) {
         @strongify(self);
+        [self sendInternalClientErrorEvent:error];
         /// We wish to prevent two threads that both failed in the same time, from modifying the
         /// current client twice, so before replacing the current client, we first check that the
         /// client was not changed already.
@@ -181,6 +198,12 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
 - (void)advanceToNextClient {
   self.currentClientIndex =
       @((self.currentClientIndex.unsignedIntegerValue + 1) % self.underlyingClients.count);
+}
+
+- (void)sendInternalClientErrorEvent:(NSError *)error {
+  auto errorEvent =
+      [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
+  [self.eventsSubject sendNext:errorEvent];
 }
 
 @end
