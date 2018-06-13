@@ -106,7 +106,8 @@ static NSString *PTNEndpointPathForAssetFetch(PTNOceanAssetFetchParameters *para
 
 static FBRHTTPRequestParameters *PTNOceanBaseRequestParameters() {
   return @{
-    @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString
+    @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString,
+    @"bundle": [NSBundle mainBundle].bundleIdentifier ?: @"Unknown"
   };
 }
 
