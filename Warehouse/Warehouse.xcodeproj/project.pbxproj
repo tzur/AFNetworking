@@ -22,6 +22,8 @@
 		199B54D820A49B6D009DABCC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 199B54D720A49B6D009DABCC /* UIKit.framework */; };
 		199B54DA20A49C3C009DABCC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 199B54D920A49C3C009DABCC /* CoreGraphics.framework */; };
 		199B54DC20A49EE7009DABCC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 199B54DB20A49EE7009DABCC /* QuartzCore.framework */; };
+		19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F10620AC58BA00AF8DB1 /* WHSProjectUpdateRequest.mm */; };
+		19A6F12520AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */; };
 		19B6592420A4BBED005B37AD /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198CE4FE20A32A31000E70BF /* libLTKitTestUtils.a */; };
 /* End PBXBuildFile section */
 
@@ -277,6 +279,9 @@
 		199B54D720A49B6D009DABCC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		199B54D920A49C3C009DABCC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		199B54DB20A49EE7009DABCC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		19A6F10620AC58BA00AF8DB1 /* WHSProjectUpdateRequest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectUpdateRequest.mm; sourceTree = "<group>"; };
+		19A6F12220AC58BB00AF8DB1 /* WHSProjectUpdateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHSProjectUpdateRequest.h; sourceTree = "<group>"; };
+		19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectUpdateRequestSpec.mm; sourceTree = "<group>"; };
 		19E1533020A314E100F0F438 /* libWarehouse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWarehouse.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E1535E20A3170200F0F438 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		19E1535F20A3170200F0F438 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -326,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */,
+				19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -492,6 +498,8 @@
 				1964BF6320A3223800FF28F5 /* Supporting Files */,
 				198CE4AA20A32989000E70BF /* WHSProjectSnapshot.h */,
 				198CE4A920A32989000E70BF /* WHSProjectSnapshot.mm */,
+				19A6F12220AC58BB00AF8DB1 /* WHSProjectUpdateRequest.h */,
+				19A6F10620AC58BA00AF8DB1 /* WHSProjectUpdateRequest.mm */,
 			);
 			path = Warehouse;
 			sourceTree = "<group>";
@@ -833,6 +841,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */,
+				19A6F12520AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm in Sources */,
 				198CE4A820A327DA000E70BF /* WHSProjectSnapshotSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -842,6 +851,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				198CE4AB20A32989000E70BF /* WHSProjectSnapshot.mm in Sources */,
+				19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

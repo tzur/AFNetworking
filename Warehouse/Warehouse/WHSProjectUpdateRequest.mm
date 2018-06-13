@@ -1,0 +1,81 @@
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Dekel Avrahami.
+
+#import "WHSProjectUpdateRequest.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@implementation WHSStepContent
+
+- (instancetype)init {
+  if (self = [super init]) {
+    _userData = @{};
+  }
+  return self;
+}
+
++ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData {
+  auto stepContent = [[WHSStepContent alloc] init];
+  stepContent.userData = userData;
+  return stepContent;
+}
+
++ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData
+                        assetsSourceURL:(nullable NSURL *)assetsSourceURL {
+  auto stepContent = [WHSStepContent stepContentWithUserData:userData];
+  stepContent.assetsSourceURL = assetsSourceURL;
+  return stepContent;
+}
+
+@end
+
+@implementation WHSProjectUpdateRequest
+
+- (instancetype)initWithProjectIdentifier:(NSUUID *)projectIdentifier {
+  if (self = [super init]) {
+    _projectIdentifier = projectIdentifier;
+    _stepIDsToDelete = @[];
+    _stepsContentToAdd = @[];
+  }
+  return self;
+}
+
++ (nullable WHSProjectUpdateRequest *)requestForUndo:(WHSProjectSnapshot *)projectSnapshot {
+  if (![projectSnapshot canUndo]) {
+    return nil;
+  }
+  auto request = [[WHSProjectUpdateRequest alloc]
+                  initWithProjectIdentifier:projectSnapshot.identifier];
+  request.stepCursor = @(projectSnapshot.stepCursor - 1);
+  return request;
+}
+
++ (nullable WHSProjectUpdateRequest *)requestForRedo:(WHSProjectSnapshot *)projectSnapshot {
+  if (!projectSnapshot.steps || ![projectSnapshot canRedo]) {
+    return nil;
+  }
+  auto request = [[WHSProjectUpdateRequest alloc]
+                  initWithProjectIdentifier:projectSnapshot.identifier];
+  request.stepCursor = @(projectSnapshot.stepCursor + 1);
+  return request;
+}
+
++ (nullable WHSProjectUpdateRequest *)requestForAddStep:(WHSProjectSnapshot *)projectSnapshot
+                                            stepContent:(WHSStepContent *)stepContent {
+  if (!projectSnapshot.steps) {
+    return nil;
+  }
+  auto request = [[WHSProjectUpdateRequest alloc]
+                  initWithProjectIdentifier:projectSnapshot.identifier];
+  request.stepsContentToAdd = @[stepContent];
+  auto currentStepCursor = projectSnapshot.stepCursor;
+  request.stepCursor = @(currentStepCursor + 1);
+  auto currentStepsCount = projectSnapshot.steps.count;
+  auto rangeToDelete = NSMakeRange(currentStepCursor, currentStepsCount - currentStepCursor);
+  request.stepIDsToDelete = nn([projectSnapshot.steps subarrayWithRange:rangeToDelete]);
+  return request;
+}
+
+@end
+
+NS_ASSUME_NONNULL_END
