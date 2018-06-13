@@ -95,18 +95,16 @@ context(@"asset search", ^{
 
   it(@"should return search result", ^{
     auto parameters = [[PTNOceanSearchParameters alloc] initWithType:$(PTNOceanAssetTypeVideo)
-                                                          source:$(PTNOceanAssetSourcePixabay)
-                                                          phrase:@"foo" page:3];
+                                                              source:$(PTNOceanAssetSourcePixabay)
+                                                              phrase:@"foo" page:3];
     RACSubject *subject = [RACSubject subject];
     OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     LLSignalTestRecorder *recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    NSString *path = [NSBundle lt_pathForResource:@"OceanFakeSearchResponse.json"
-                                        nearClass:[self class]];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data options:0
-                                                              error:nil];
+    auto responseURL = PTNOceanSearchResponseJSONURL();
+    auto data = [NSData dataWithContentsOfURL:responseURL];
+    NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     PTNOceanAssetSearchResponse *expectedDescriptor =
         [MTLJSONAdapter modelOfClass:[PTNOceanAssetSearchResponse class] fromJSONDictionary:results
                                error:nil];
@@ -120,8 +118,8 @@ context(@"asset search", ^{
 
   it(@"should err when http client errs", ^{
     auto parameters = [[PTNOceanSearchParameters alloc] initWithType:$(PTNOceanAssetTypeVideo)
-                                                          source:$(PTNOceanAssetSourcePixabay)
-                                                          phrase:@"foo" page:3];
+                                                              source:$(PTNOceanAssetSourcePixabay)
+                                                              phrase:@"foo" page:3];
     RACSubject *request = [RACSubject subject];
     OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(request);
@@ -136,19 +134,15 @@ context(@"asset search", ^{
 });
 
 context(@"asset descriptor fetch", ^{
-  __block PTNOceanAssetFetchParameters *parameters;
-
-  beforeEach(^{
-    parameters = [[PTNOceanAssetFetchParameters alloc] initWithType:$(PTNOceanAssetTypePhoto)
-                                                             source:$(PTNOceanAssetSourcePixabay)
-                                                         identifier:@"bar"];
-  });
-
-  it(@"should use correct request arguments", ^{
+  it(@"should use image search endpoint when searching for images", ^{
+    auto parameters = [[PTNOceanAssetFetchParameters alloc]
+                       initWithType:$(PTNOceanAssetTypePhoto)
+                       source:$(PTNOceanAssetSourcePixabay)
+                       identifier:@"bar"];
     auto expectedParameters = [@{
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
-    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/asset/bar"
+    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/image/asset/bar"
                withParameters:expectedParameters headers:nil]);
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
@@ -156,17 +150,35 @@ context(@"asset descriptor fetch", ^{
     OCMVerifyAll((id)httpClient);
   });
 
-  it(@"should fetch asset descriptor", ^{
-    NSString *path = [NSBundle lt_pathForResource:@"OceanFakePhotoAssetResponse.json"
-                                        nearClass:[self class]];
-    NSData *data = [NSData dataWithContentsOfFile:path];
+    it(@"should use video search endpoint when searching for videos", ^{
+    auto parameters = [[PTNOceanAssetFetchParameters alloc]
+                       initWithType:$(PTNOceanAssetTypeVideo)
+                       source:$(PTNOceanAssetSourcePixabay)
+                       identifier:@"bar"];
+    auto expectedParameters = [@{
+      @"source_id": @"pixabay"
+    } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
+    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/video/asset/bar"
+               withParameters:expectedParameters headers:nil]);
+
+    auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
+
+    OCMVerifyAll((id)httpClient);
+  });
+
+  it(@"should fetch image asset descriptor", ^{
+    auto parameters = [[PTNOceanAssetFetchParameters alloc]
+                       initWithType:$(PTNOceanAssetTypePhoto)
+                       source:$(PTNOceanAssetSourcePixabay)
+                       identifier:@"bar"];
+
+    auto responseURL = PTNOceanPhotoAssetDescriptorJSONURL();
+    auto *data = [NSData dataWithContentsOfURL:responseURL];
     NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
                                                                      error:nil];
-    PTNOceanAssetDescriptor *expectedDescriptor = [MTLJSONAdapter
-                                                   modelOfClass:[PTNOceanAssetDescriptor class]
-                                                   fromJSONDictionary:jsonDictionary
-                                                   error:nil];
-    LTAssert(expectedDescriptor);
+    PTNOceanAssetSearchResponse *expectedDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:jsonDictionary error:nil];
 
     RACSubject *subject = [RACSubject subject];
     OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
@@ -180,15 +192,30 @@ context(@"asset descriptor fetch", ^{
     expect(recorder).to.complete();
   });
 
-  it(@"should err when using an video asset", ^{
-    auto videoParameters = [[PTNOceanAssetFetchParameters alloc]
-                            initWithType:$(PTNOceanAssetTypeVideo)
-                            source:$(PTNOceanAssetSourcePixabay)
-                            identifier:@"bar"];
+  it(@"should fetch video asset descriptor", ^{
+    auto parameters = [[PTNOceanAssetFetchParameters alloc]
+                       initWithType:$(PTNOceanAssetTypeVideo)
+                       source:$(PTNOceanAssetSourcePixabay)
+                       identifier:@"bar"];
 
-    auto recorder = [[client fetchAssetDescriptorWithParameters:videoParameters] testRecorder];
-    expect(recorder.error.code).to.equal(PTNErrorCodeInvalidAssetType);
-    expect(recorder.error.lt_isLTDomain).to.beTruthy();
+    auto responseURL = PTNOceanVideoAssetDescriptorJSONURL();
+    auto *data = [NSData dataWithContentsOfURL:responseURL];
+    NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
+                                                                     error:nil];
+    PTNOceanAssetSearchResponse *expectedDescriptor =
+        [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                  fromJSONDictionary:jsonDictionary error:nil];
+
+    RACSubject *subject = [RACSubject subject];
+    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+        .andReturn(subject);
+    LLSignalTestRecorder *recorder = [[client fetchAssetDescriptorWithParameters:parameters]
+                                      testRecorder];
+    [subject sendNext:[[LTProgress alloc] initWithResult:PTNFakeHTTPResponse(data)]];
+    [subject sendCompleted];
+
+    expect(recorder).to.sendValues(@[expectedDescriptor]);
+    expect(recorder).to.complete();
   });
 });
 
