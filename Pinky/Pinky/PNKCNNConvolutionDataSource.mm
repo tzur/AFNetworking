@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation PNKCNNConvolutionDataSource {
-  cv::Mat1f _weights;
+  cv::Mat _weights;
   cv::Mat1f _biasTerms;
 }
 
@@ -125,7 +125,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (MPSDataType)dataType {
-  return MPSDataTypeFloat32;
+  switch (_weights.depth()) {
+    case CV_16F:
+      return MPSDataTypeFloat16;
+    case CV_32F:
+      return MPSDataTypeFloat32;
+    default:
+      LTAssert(NO, @"Weights matrix depth (%d) is not supported", _weights.depth());
+  }
 }
 
 - (void * __nonnull)weights {

@@ -19,7 +19,6 @@
 #import "PNKNeuralNetworkOperationsModel.h"
 #import "PNKNeuralNode.h"
 #import "PNKPoolingLayer.h"
-#import "PNKProtobufHelpers.h"
 #import "PNKProtobufMacros.h"
 #import "PNKReflectionPadding.h"
 #import "PNKSoftMaxLayer.h"
@@ -517,17 +516,12 @@ struct GraphTraversalData {
   auto parameters = layer->custom().parameters();
   auto weights = layer->custom().weights();
 
-  pnk::ActivationKernelModel activationKernelModel = (kit.size() == 2 && kit[1]->has_activation()) ?
+  auto activationKernelModel = (kit.size() == 2 && kit[1]->has_activation()) ?
       pnk::createActivationKernelModel(kit[1]->activation()) :
       pnk::ActivationKernelModel{.activationType = pnk::ActivationTypeIdentity};
-  pnk::NormalizationKernelModel normalizationKernelModel = {
-    .inputFeatureChannels = (NSUInteger)parameters["channels"].intvalue(),
-    .computeMeanVar = YES,
-    .instanceNormalization = YES,
-    .epsilon = (float)parameters["epsilon"].doublevalue(),
-    .scale = pnk::createMat(weights[0].floatvalue()),
-    .shift = pnk::createMat(weights[1].floatvalue())
-  };
+
+  auto normalizationKernelModel =
+      pnk::createConditionalInstanceNormalizationKernelModel(kit[0]->custom());
 
   return [[PNKConditionalInstanceNormLayer alloc] initWithDevice:device
                                               normalizationModel:normalizationKernelModel

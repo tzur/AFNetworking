@@ -312,9 +312,7 @@
 		F92465BB1F42C28200ECB4DA /* sst_lilien.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */; };
 		F990284C1F6FF17400883DF8 /* illegal.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F990284B1F6FF17400883DF8 /* illegal.nnmodel */; };
 		F994A70D1F61257F0072D338 /* metadata.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F994A70C1F61251A0072D338 /* metadata.nnmodel */; };
-		F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */; };
 		F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */; };
-		F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */; };
 		F9D7DB051F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */; };
 		F9D7DC331F45B14E0095DCE5 /* conv_no_bias.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */; };
 		F9D7DC341F45B14E0095DCE5 /* deconv.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */; };
@@ -1070,11 +1068,8 @@
 		F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sst_lilien.nnmodel; path = Resources/sst_lilien.nnmodel; sourceTree = "<group>"; };
 		F990284B1F6FF17400883DF8 /* illegal.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegal.nnmodel; path = Resources/illegal.nnmodel; sourceTree = "<group>"; };
 		F994A70C1F61251A0072D338 /* metadata.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = metadata.nnmodel; path = Resources/metadata.nnmodel; sourceTree = "<group>"; };
-		F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpersSpec.mm; sourceTree = "<group>"; };
 		F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKCoreMLLayerParser.h; sourceTree = "<group>"; };
 		F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKCoreMLLayerParser.mm; sourceTree = "<group>"; };
-		F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKProtobufHelpers.h; sourceTree = "<group>"; };
-		F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpers.mm; sourceTree = "<group>"; };
 		F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_rgb_bias_preprocessing.nnmodel; path = Resources/conv_rgb_bias_preprocessing.nnmodel; sourceTree = "<group>"; };
 		F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_no_bias.nnmodel; path = Resources/conv_no_bias.nnmodel; sourceTree = "<group>"; };
 		F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = deconv.nnmodel; path = Resources/deconv.nnmodel; sourceTree = "<group>"; };
@@ -1182,8 +1177,6 @@
 				06172B9D1F03E4F800379124 /* Models */,
 				F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */,
 				F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */,
-				F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */,
-				F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */,
 			);
 			name = Serialization;
 			sourceTree = "<group>";
@@ -2023,7 +2016,6 @@
 		F92465B61F42C21600ECB4DA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2758,7 +2750,6 @@
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
-				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2769,7 +2760,6 @@
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
-				F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,

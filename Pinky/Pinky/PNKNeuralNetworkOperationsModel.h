@@ -76,8 +76,9 @@ struct ConvolutionKernelModel {
   /// Matrix of weights for the convolution kernel. If \c isDeconvolution is \c NO, the shape of the
   /// matrix is <tt>[outputFeatureChannels, kernelHeight, kernelWidth, inputFeatureChannels]</tt>.
   /// If \c isDeconvolution is \c YES, the shape of the matrix is
-  /// <tt>[inputFeatureChannels, outputFeatureChannels, kernelHeight, kernelWidth]</tt>.
-  cv::Mat1f kernelWeights;
+  /// <tt>[inputFeatureChannels, outputFeatureChannels, kernelHeight, kernelWidth]</tt>. The matrix
+  /// must have a single channel of either float or half-float depth.
+  cv::Mat kernelWeights;
   /// Matrix of weights for the bias added after convolution. Must be of size
   /// \c outputFeatureChannels.
   cv::Mat1f biasWeights;
@@ -102,24 +103,6 @@ struct PoolingKernelModel {
   BOOL averagePoolExcludePadding;
   /// If \c YES then pooling is performed on the entire input and kernel size is disregarded.
   BOOL globalPooling;
-};
-
-/// Parameters defining the behaviour of a fully connected (affine) layer in a neural network.
-struct AffineKernelModel {
-  /// Number of feature channels in the input image. The input image is expected to be a vector of
-  /// size \c inputFeatureChannels or a tensor of size <tt>[inputFeatureChannels, 1, 1]</tt>.
-  NSUInteger inputFeatureChannels;
-  /// Number of feature channels in the output image. The output image will be a vector of size
-  /// \c outputFeatureChannels or a tensor of size <tt>[outputFeatureChannels, 1, 1]</tt>.
-  NSUInteger outputFeatureChannels;
-  /// \c YES iff the kernel applies a bias after convolution. The default value is \c NO.
-  BOOL hasBias;
-  /// Matrix of weights for the convolution kernel. The shape of the matrix is
-  /// <tt>[outputFeatureChannels, inputFeatureChannels]</tt>.
-  cv::Mat1f kernelWeights;
-  /// Matrix of weights for the bias added after convolution. Must be of size
-  /// \c outputFeatureChannels.
-  cv::Mat1f biasWeights;
 };
 
 /// Parameters defining the behaviour of an activation layer in a neural network.

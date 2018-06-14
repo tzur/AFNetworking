@@ -3,6 +3,8 @@
 
 #import "MPSCNNConvolution+Factory.h"
 
+#import <LTEngine/LTOpenCVExtensions.h>
+
 #import "MPSCNNNeuron+Factory.h"
 #import "PNKCNNConvolutionDataSource.h"
 #import "PNKNeuralNetworkOperationsModel.h"
@@ -37,7 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
                        activationModel:activationModel];
     return [[MPSCNNConvolution alloc] initWithDevice:device weights:dataSource];
   } else {
-    cv::Mat kernelWeightsMat = convolutionModel.kernelWeights;
+    cv::Mat1f kernelWeightsMat;
+    if (convolutionModel.kernelWeights.depth() == CV_32F) {
+      kernelWeightsMat = convolutionModel.kernelWeights;
+    } else {
+      LTConvertMat(convolutionModel.kernelWeights, &kernelWeightsMat, CV_32F);
+    }
+
     auto neuronActivation = [MPSCNNNeuron pnk_cnnNeuronWithDevice:device
                                                   activationModel:activationModel];
     auto descriptor = [MPSCNNConvolutionDescriptor
@@ -48,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
                        neuronFilter:neuronActivation];
     if (convolutionModel.groups > 1) {
       descriptor.groups = convolutionModel.groups / 4;
-      kernelWeightsMat = [self blockDiagonalWeightsFromWeights:convolutionModel.kernelWeights
+      kernelWeightsMat = [self blockDiagonalWeightsFromWeights:kernelWeightsMat
                                                       channels:convolutionModel.inputFeatureChannels
                                                    kernelWidth:convolutionModel.kernelWidth
                                                   kernelHeight:convolutionModel.kernelHeight];
@@ -145,9 +153,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///                 0   0   a66 0       0   0   a66 0
 ///                 0   0   0   a77     0   0   0   a77
 ///
-+ (cv::Mat)blockDiagonalWeightsFromWeights:(const cv::Mat &)weights channels:(NSUInteger)channels
-                               kernelWidth:(NSUInteger)kernelWidth
-                              kernelHeight:(NSUInteger)kernelHeight {
++ (cv::Mat1f)blockDiagonalWeightsFromWeights:(const cv::Mat1f &)weights
+                                    channels:(NSUInteger)channels
+                                 kernelWidth:(NSUInteger)kernelWidth
+                                kernelHeight:(NSUInteger)kernelHeight {
   cv::Mat1f weightsAsOneRow = weights.reshape(1, 1);
   cv::Mat1f blockDiagonalWeights =
       cv::Mat1f::zeros(1, (int)(channels * kernelHeight * kernelWidth * 4));
