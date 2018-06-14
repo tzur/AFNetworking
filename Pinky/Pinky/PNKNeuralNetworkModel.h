@@ -27,9 +27,6 @@ struct NeuralNetworkModel {
   /// Models of pooling kernels in the network, mapped by name.
   std::unordered_map<std::string, PoolingKernelModel> poolingKernels;
 
-  /// Models of affine (fully connected) kernels in the network, mapped by name.
-  std::unordered_map<std::string, AffineKernelModel> affineKernels;
-
   /// Models of activation kernels in the network, mapped by name.
   std::unordered_map<std::string, ActivationKernelModel> activationKernels;
 

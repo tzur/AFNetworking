@@ -10,6 +10,7 @@ namespace CoreML {
     class ActivationParams;
     class BatchnormLayerParams;
     class ConvolutionLayerParams;
+    class CustomLayerParams;
     class InnerProductLayerParams;
     class NeuralNetworkImageScaler;
     class PoolingLayerParams;
@@ -19,7 +20,6 @@ namespace CoreML {
 namespace pnk {
 
 struct ActivationKernelModel;
-struct AffineKernelModel;
 struct ConvolutionKernelModel;
 struct ImageScaleBiasModel;
 struct NormalizationKernelModel;
@@ -41,13 +41,14 @@ PoolingKernelModel createPoolingKernelModel
 ActivationKernelModel createActivationKernelModel
     (const CoreML::Specification::ActivationParams &activationParams);
 
-/// Returns an \c AffineKernelModel with the values of the given \c innerproductParams.
-AffineKernelModel createAffineKernelModel
-    (const CoreML::Specification::InnerProductLayerParams &innerproductParams);
-
 /// Returns a \c NormalizationKernelModel with the values of the given \c batchnormParams.
 NormalizationKernelModel createNormalizationKernelModel
     (const CoreML::Specification::BatchnormLayerParams &batchnormParams);
+
+/// Returns a \c NormalizationKernelModel with the values of the given \c customLayerParams
+/// representing a conditional instance normalization layer.
+NormalizationKernelModel createConditionalInstanceNormalizationKernelModel
+    (const CoreML::Specification::CustomLayerParams &customLayerParams);
 
 } // namespace pnk
 
