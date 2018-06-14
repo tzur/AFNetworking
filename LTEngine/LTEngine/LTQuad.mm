@@ -150,8 +150,10 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
 
 - (void)updateWithQuad:(const lt::Quad &)quad {
   LTQuadCorners corners({{quad.v0(), quad.v1(), quad.v2(), quad.v3()}});
-  LTParameterAssert([[self class] validityOfCorners:corners] == LTQuadCornersValidityValid,
-                    @"Invalid corners provided.");
+  auto cornersValidity = [[self class] validityOfCorners:corners];
+  LTParameterAssert(cornersValidity == LTQuadCornersValidityValid, @"Received invalid quad %@. "
+                    "Validity state: %lu", NSStringFromLTQuad(quad),
+                    (unsigned long)cornersValidity);
   _quad = quad;
 }
 
