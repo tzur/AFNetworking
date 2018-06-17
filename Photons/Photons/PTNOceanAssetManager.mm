@@ -42,6 +42,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used for initial time reference for the maximum ages of the cached objects.
 @property (readonly, nonatomic) PTNDateProvider *dateProvider;
 
+/// Preferred image data size on image data fetch.
+@property (readonly, nonatomic) NSUInteger preferredImageDataPixelCount;
+
+/// Preferred video data size on image data fetch.
+@property (readonly, nonatomic) NSUInteger preferredVideoDataPixelCount;
+
 @end
 
 @implementation PTNOceanAssetManager
@@ -51,15 +57,28 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)init {
+  return [self initWithPreferredImageDataPixelCount:NSUIntegerMax
+                       preferredVideoDataPixelCount:NSUIntegerMax];
+}
+
+- (instancetype)initWithPreferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
+                        preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
   return [self initWithClient:[[PTNOceanClient alloc] init]
-                 dateProvider:[[PTNDateProvider alloc] init]];
+                 dateProvider:[[PTNDateProvider alloc] init]
+ preferredImageDataPixelCount:preferredImageDataPixelCount
+ preferredVideoDataPixelCount:preferredVideoDataPixelCount];
 }
 
 - (instancetype)initWithClient:(PTNOceanClient *)client
-                  dateProvider:(PTNDateProvider *)dateProvider {
+                  dateProvider:(PTNDateProvider *)dateProvider
+  preferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
+  preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
+
   if (self = [super init]) {
     _dateProvider = dateProvider;
     _client = client;
+    _preferredImageDataPixelCount = preferredImageDataPixelCount;
+    _preferredVideoDataPixelCount = preferredVideoDataPixelCount;
   }
   return self;
 }
@@ -290,11 +309,25 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
 #pragma mark -
 
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
-  return [self fetchImageWithDescriptor:descriptor resizingStrategy:[PTNResizingStrategy identity]
-                                options:[PTNImageFetchOptions
-                                         optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
-                                         resizeMode:PTNImageResizeModeExact
-                                         includeMetadata:YES]];
+  if (![descriptor isKindOfClass:[PTNOceanAssetDescriptor class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+  auto assetDescriptor = (PTNOceanAssetDescriptor *)descriptor;
+
+  if (!assetDescriptor.images.count) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
+  auto _Nullable preferredImage = [assetDescriptor.images
+      lt_min:^BOOL(PTNOceanVideoAssetInfo *a, PTNOceanVideoAssetInfo *b) {
+        return ABS(self.preferredImageDataPixelCount - (a.height * a.width)) <
+               ABS(self.preferredImageDataPixelCount - (b.height * b.width));
+      }];
+
+  return [self fetchImageWithURL:preferredImage.url
+                resizingStrategy:[PTNResizingStrategy identity]];
 }
 
 #pragma mark -
@@ -381,20 +414,21 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
                                   associatedDescriptor:descriptor]];
   }
 
-  auto _Nullable largestVideo =
+  auto _Nullable preferredVideo =
       [[assetDescriptor.videos lt_filter:^BOOL(PTNOceanVideoAssetInfo *assetInfo) {
         return assetInfo.url != nil;
-      }] lt_max:^BOOL(PTNOceanVideoAssetInfo *a, PTNOceanVideoAssetInfo *b) {
-        return a.height * a.width < b.height * b.width;
+      }] lt_min:^BOOL(PTNOceanVideoAssetInfo *a, PTNOceanVideoAssetInfo *b) {
+        return ABS(self.preferredVideoDataPixelCount - (a.height * a.width)) <
+               ABS(self.preferredVideoDataPixelCount - (b.height * b.width));
       }];
 
-  if (!largestVideo) {
+  if (!preferredVideo) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeAssetNotFound
                                   associatedDescriptor:descriptor
                                            description:@"No download URLs found for descriptor"]];
   }
 
-  return [[self.client downloadFileWithURL:nn(largestVideo.url)]
+  return [[self.client downloadFileWithURL:nn(preferredVideo.url)]
           map:^PTNProgress<id<PTNAVDataAsset>> *(PTNProgress<LTPath *> *progress) {
             if (!progress.result) {
               return [PTNProgress progressWithProgress:progress.progress];

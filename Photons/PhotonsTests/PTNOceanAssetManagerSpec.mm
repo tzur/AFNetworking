@@ -148,7 +148,8 @@ beforeEach(^{
   dateProvider = OCMClassMock([PTNDateProvider class]);
   date = [NSDate date];
   OCMStub([dateProvider date]).andReturn(date);
-  manager = [[PTNOceanAssetManager alloc] initWithClient:client dateProvider:dateProvider];
+  manager = [[PTNOceanAssetManager alloc] initWithClient:client dateProvider:dateProvider
+             preferredImageDataPixelCount:(30 * 50) preferredVideoDataPixelCount:(720 * 1280)];
 });
 
 context(@"fetching albums", ^{
@@ -579,9 +580,9 @@ context(@"fetching image data", ^{
         ]);
       });
 
-      it(@"should prefer image with highest pixel count", ^{
+      it(@"should prefer image with pixel count closest to the preferred image pixel count", ^{
         RACSubject *subject = [RACSubject subject];
-        OCMStub([client downloadDataWithURL:PTNOceanLargeImageURL()]).andReturn(subject);
+        OCMStub([client downloadDataWithURL:PTNOceanSmallImageURL()]).andReturn(subject);
         NSData *data = [NSData data];
         auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
 
@@ -791,9 +792,10 @@ context(@"fetching AV data", ^{
         });
       });
 
-      it(@"should prefer video with highest pixel count", ^{
+      it(@"should prefer video with pixel count closest to the preferred video pixel count", ^{
         RACSubject *subject = [RACSubject subject];
-        OCMStub([client downloadFileWithURL:PTNOcean1080pVideoDownloadURL()]).andReturn(subject);
+        OCMStub([client downloadFileWithURL:PTNOceanCloseTo720pVideoDownloadURL()])
+            .andReturn(subject);
         auto path = [LTPath temporaryPathWithExtension:@"tmp"];
         auto progress = [PTNProgress progressWithResult:path];
         auto expectedAsset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
@@ -870,7 +872,9 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
                       initWithClient:OCMClassMock([PTNOceanClient class])
-                      dateProvider:dateProvider];
+                      dateProvider:dateProvider
+                      preferredImageDataPixelCount:NSUIntegerMax
+                      preferredVideoDataPixelCount:NSUIntegerMax];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       auto disposable = [[manager fetchDescriptorWithURL:url] subscribeNext:^(id) {}];
@@ -886,7 +890,9 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
                       initWithClient:OCMClassMock([PTNOceanClient class])
-                      dateProvider:dateProvider];
+                      dateProvider:dateProvider
+                      preferredImageDataPixelCount:NSUIntegerMax
+                      preferredVideoDataPixelCount:NSUIntegerMax];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       fetchSignal = [manager fetchDescriptorWithURL:url];
