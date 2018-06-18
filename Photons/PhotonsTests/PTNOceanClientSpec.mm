@@ -31,7 +31,8 @@ typedef void (^AFNetworkDownloadCompletionBlock)(NSURLResponse *response,
 
 static FBRHTTPRequestParameters *PTNFakeBaseRequestParameters() {
   return @{
-    @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString
+    @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString,
+    @"bundle": [NSBundle mainBundle].bundleIdentifier
   };
 }
 
