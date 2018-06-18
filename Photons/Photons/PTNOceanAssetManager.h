@@ -17,12 +17,25 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNOceanAssetManager : NSObject <PTNCacheAwareAssetManager>
 
 /// Initializes with the default \c FBRHTTPClient and \c PTNDateProvider.
+/// \c preferredImageDataPixelCount and \c preferredImageDataPixelCount are set to NSUIntegerMax.
 - (instancetype)init;
+
+/// Initializes with the default \c FBRHTTPClient and \c PTNDateProvider.
+/// \c preferredImageDataPixelCount and \c preferredImageDataPixelCount are the preferred sizes for
+/// image data and video data respectively. When fetching the data of a descriptor, the asset with
+/// the closest pixel count to these values is fetched.
+- (instancetype)initWithPreferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
+                        preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount;
 
 /// Initializes with the given \c client and \c dateProvider. The given \c dateProvider is used for
 /// providing initial time reference for the maximum ages of the cached objects.
+/// \c preferredImageDataPixelCount and \c preferredImageDataPixelCount are the preferred sizes for
+/// image data and video data respectively. When fetching the data of a descriptor, the asset with
+/// the closest pixel count to these values is fetched.
 - (instancetype)initWithClient:(PTNOceanClient *)client
-                  dateProvider:(PTNDateProvider *)dateProvider NS_DESIGNATED_INITIALIZER;
+                  dateProvider:(PTNDateProvider *)dateProvider
+  preferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
+  preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount NS_DESIGNATED_INITIALIZER;
 
 @end
 
