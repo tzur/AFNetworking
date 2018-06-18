@@ -71,7 +71,8 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
   return [[DVNScatteredGeometryProviderModel alloc]
           initWithGeometryProviderModel:providerModel randomState:[self randomStateFromModel:model]
           count:count distance:distance angle:angle scale:scaleJitter
-          lengthOfStartTapering:model.taperingLengths.x lengthOfEndTapering:model.taperingLengths.y
+          lengthOfStartTapering:model.taperingLengths.x * scaleInSplineCoordinates
+          lengthOfEndTapering:model.taperingLengths.y * scaleInSplineCoordinates
           startTaperingFactor:model.taperingFactors.x endTaperingFactor:model.taperingFactors.y
           minimumTaperingScaleFactor:model.minimumTaperingScaleFactor];
 }
