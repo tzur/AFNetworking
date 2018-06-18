@@ -1339,6 +1339,7 @@
 		E4CE8D4220BAEBA4006C3BF7 /* LTMTLDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = E4CE8D4020BAEBA4006C3BF7 /* LTMTLDefaults.h */; };
 		E4CE8D4520BAECF3006C3BF7 /* LTMTLDefaultsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4CE8D4320BAEC53006C3BF7 /* LTMTLDefaultsSpec.mm */; };
 		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
+		E4D1BBFC20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D1BBFA20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm */; };
 		E4DE72D11FB1A2050097EF57 /* LTImageIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */; };
 		E4DE72D21FB1A2050097EF57 /* LTImageIOExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */; };
 		E4DE73061FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE73051FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm */; };
@@ -3202,6 +3203,8 @@
 		E4CE8D4020BAEBA4006C3BF7 /* LTMTLDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMTLDefaults.h; sourceTree = "<group>"; };
 		E4CE8D4320BAEC53006C3BF7 /* LTMTLDefaultsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTMTLDefaultsSpec.mm; path = LTEngineDeviceTests/LTMTLDefaultsSpec.mm; sourceTree = "<group>"; };
 		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
+		E4D1BBFA20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToMatNormalizedHamming.mm"; sourceTree = "<group>"; };
+		E4D1BBFB20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToMatNormalizedHamming.h"; sourceTree = "<group>"; };
 		E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageIOExtensions.h; sourceTree = "<group>"; };
 		E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensions.mm; sourceTree = "<group>"; };
 		E4DE73051FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensionsSpec.mm; sourceTree = "<group>"; };
@@ -5630,6 +5633,8 @@
 				283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				8BAE3A4518B2441B00DA79E1 /* EXPMatchers+beCloseToMat.h */,
 				8BAE3A4618B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm */,
+				E4D1BBFB20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.h */,
+				E4D1BBFA20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm */,
 				E412CDDF2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.h */,
 				E412CDDE2056858D00147D06 /* EXPMatchers+beCloseToMatPSNR.mm */,
 				8BAE3A4B18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.h */,
@@ -7714,6 +7719,7 @@
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				500CAA091D26B18F009CF19F /* LTGridDrawingManagerSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
+				E4D1BBFC20CE9FEA00377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm in Sources */,
 				064F3FA81CF5E4FD00E6D358 /* LTMeanShaderGeneratorSpec.mm in Sources */,
 				28FC0E7B1D2AAEAD00237FF8 /* LTContentTouchEventAndPredicateSpec.mm in Sources */,
 				8BBE89331834C8A5006C58AA /* LTTextureSpec.mm in Sources */,
