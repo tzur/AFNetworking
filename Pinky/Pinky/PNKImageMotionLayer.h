@@ -19,4 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Protocol to be implemented by layers that require the segmentation map to be known when
+/// calculating the displacement field.
+@protocol PNKImageMotionSegmentationAwareLayer <NSObject>
+
+/// Segmentation map.
+@property (nonatomic) cv::Mat1b segmentation;
+
+@end
+
 NS_ASSUME_NONNULL_END

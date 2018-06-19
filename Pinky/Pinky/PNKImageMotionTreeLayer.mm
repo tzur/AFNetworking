@@ -28,17 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @synthesize imageSize = _imageSize;
+@synthesize segmentation = _segmentation;
 
-- (instancetype)initWithSegmentation:(const cv::Mat &)segmentation
-                     numberOfSamples:(NSUInteger)numberOfSamples
-                           amplitude:(CGFloat)amplitude {
+- (instancetype)initWithImageSize:(cv::Size)imageSize numberOfSamples:(NSUInteger)numberOfSamples
+                        amplitude:(CGFloat)amplitude {
   float integralPart;
   LTParameterAssert(std::modf(std::log2(numberOfSamples), &integralPart) < 1.e-7,
                     @"numberOfSamples should be a power of 2, got: %lu",
                     (unsigned long)numberOfSamples);
   if (self = [super init]) {
-    [self setupTreeConnectedComponentsWithSegmentation:segmentation];
-    _imageSize = segmentation.size();
+    _imageSize = imageSize;
     _amplitude = amplitude;
 
     auto treeTipMovement = [[PNKImageMotionTreeTipMovement alloc]
@@ -46,6 +45,14 @@ NS_ASSUME_NONNULL_BEGIN
     _treeTipDisplacements = treeTipMovement.treeTipDisplacements;
   }
   return self;
+}
+
+- (void)setSegmentation:(cv::Mat1b)segmentation {
+  LTParameterAssert(segmentation.size() == self.imageSize, @"Expected segmentation of size "
+                    "(%d, %d), got (%d, %d)", self.imageSize.width, self.imageSize.height,
+                    segmentation.cols, segmentation.rows);
+  _segmentation = segmentation;
+  [self setupTreeConnectedComponentsWithSegmentation:segmentation];
 }
 
 - (void)setupTreeConnectedComponentsWithSegmentation:(const cv::Mat &)segmentation {
@@ -63,6 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)displacements:(cv::Mat *)displacements forTime:(NSTimeInterval)time {
+  LTAssert(!_segmentation.empty(), @"An attempt to calculate tree layer displacements without "
+           "setting segmentation map.");
   PNKImageMotionValidateDisplacementsMatrix(*displacements, self.imageSize);
 
   *displacements = 0;
