@@ -200,6 +200,7 @@
 		E4281EBC1FC1B53B008F4BAD /* PNKConcatenation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */; };
 		E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */; };
 		E4281EE41FC1CF8F008F4BAD /* PNKConcatenation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */; };
+		E42969C320CD0AC300D22382 /* PNKImageMotionLayerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = E429699F20CD0AC200D22382 /* PNKImageMotionLayerFactory.mm */; };
 		E42D67A71FD84CF60020F4D8 /* PNKConvolutionTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E42D67A61FD84CF60020F4D8 /* PNKConvolutionTestUtils.mm */; };
 		E42F87CF205907BA000A18AE /* echo.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E42F87CE205907BA000A18AE /* echo.nnmodel */; };
 		E434AF0220231E9100B47C65 /* supersky_grayscale_bicycles.png in Resources */ = {isa = PBXBuildFile; fileRef = E434AEE020231E9100B47C65 /* supersky_grayscale_bicycles.png */; };
@@ -928,6 +929,8 @@
 		E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConcatenation.mm; sourceTree = "<group>"; };
 		E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKConcatenation.metal; sourceTree = "<group>"; };
 		E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConcatenationSpec.mm; sourceTree = "<group>"; };
+		E429699F20CD0AC200D22382 /* PNKImageMotionLayerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionLayerFactory.mm; sourceTree = "<group>"; };
+		E42969C220CD0AC300D22382 /* PNKImageMotionLayerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayerFactory.h; sourceTree = "<group>"; };
 		E42AB4FD2017730D00FCAC90 /* PNKPaddingSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKPaddingSize.h; sourceTree = "<group>"; };
 		E42D67A51FD84CF60020F4D8 /* PNKConvolutionTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKConvolutionTestUtils.h; sourceTree = "<group>"; };
 		E42D67A61FD84CF60020F4D8 /* PNKConvolutionTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionTestUtils.mm; sourceTree = "<group>"; };
@@ -1969,6 +1972,8 @@
 				E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */,
 				E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */,
 				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
+				E42969C220CD0AC300D22382 /* PNKImageMotionLayerFactory.h */,
+				E429699F20CD0AC200D22382 /* PNKImageMotionLayerFactory.mm */,
 				E48E44AD20BEA3FA003C2CB7 /* PNKImageMotionLayerType.h */,
 				E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */,
 				E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */,
@@ -2776,6 +2781,7 @@
 				06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
+				E42969C320CD0AC300D22382 /* PNKImageMotionLayerFactory.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
 			);
