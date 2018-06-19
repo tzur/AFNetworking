@@ -9,7 +9,7 @@
 #import <Milkshake/FBMutableTweak+RACSignalSupport.h>
 
 #import "BZRProductsInfoProvider.h"
-#import "BZRReceiptModel.h"
+#import "BZRReceiptModel+GenericSubscription.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,9 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 static const NSInteger kKeypathIndex = 0;
 static const NSInteger kNameIndex = 1;
-
-/// Prefix for identifiers of \c FBtweaks in Bazaar.
-static NSString * const kTweakIdentifierPrefix = @"com.lightricks.bazaar";
 
 /// Array of keypath sand their respective display strings used to create the subscription
 /// info tweaks.
@@ -109,7 +106,7 @@ static auto const kTweaksKeypathsAndNames = @[
 }
 
 - (NSString *)bzr_editTweakIdentifierPrefix {
-  return [NSString stringWithFormat:@"%@.subscriptionEdit", kTweakIdentifierPrefix];
+  return [NSString stringWithFormat:@"%@.subscriptionEdit", kBZRTweakIdentifierPrefix];
 }
 
 - (nullable NSString *)bzr_subscriptionInfoKeypath {
@@ -132,8 +129,8 @@ static auto const kTweaksKeypathsAndNames = @[
 /// Underlying provider used to provide the original subscription info.
 @property (readonly, nonatomic) id<BZRProductsInfoProvider> productInfoProvider;
 
-/// Tweak used to choose the subscription data source.
-@property (readonly, nonatomic) FBPersistentTweak *chooseDataSourceTweak;
+/// Tweak used to choose the subscription source.
+@property (readonly, nonatomic) FBPersistentTweak *chooseSubscriptionSourceTweak;
 
 /// List of overriding subscription tweaks. The tweaks values will persist between runs of the
 /// application.
@@ -147,43 +144,48 @@ static auto const kTweaksKeypathsAndNames = @[
 @implementation BZRTweaksSubscriptionCollectionsProvider
 
 @synthesize collections = _collections;
-@synthesize subscriptionDataSource = _subscriptionDataSource;
+@synthesize subscriptionSourceSignal = _subscriptionSourceSignal;
 
 - (instancetype)initWithProductsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider {
   if (self = [super init]) {
     _productInfoProvider = productsInfoProvider;
-    _overridingSubscription = self.productInfoProvider.subscriptionInfo;
-    _chooseDataSourceTweak = [self createChooseDataSourceTweak];
-    _subscriptionDataSource = [self subscriptionDataSourceSignal];
+    _chooseSubscriptionSourceTweak = [self createChooseSubscriptionSourceTweak];
+    _subscriptionSourceSignal = [self createSubscriptionSourceSignal];
     _overrideSubscriptionInfoTweaks = [self createOverrideSubscriptionInfoTweaks];
+    _overridingSubscription =
+        [BZRReceiptSubscriptionInfo genericActiveSubscriptionWithPendingRenewalInfo];
+    [self bindOverridingSubscriptionToTweaks];
     [self setupCollections];
   }
   return self;
 }
 
-- (FBPersistentTweak *)createChooseDataSourceTweak {
-  auto identifier = [self dataSourceTweakIdentifierForTweakName:@"dataSourceChoose"];
-  auto chooseDataSourceTweak =
+- (FBPersistentTweak *)createChooseSubscriptionSourceTweak {
+  auto identifier =
+      [self subscriptionSourceTweakIdentifierForTweakName:@"subscriptionSourceChoose"];
+  auto chooseSubscriptionSourceTweak =
       [[FBPersistentTweak alloc] initWithIdentifier:identifier
-                                               name:@"Choose subscription data source"
-                                       defaultValue:@(BZRTweaksSubscriptionDataSourceTypeOnDevice)];
-  chooseDataSourceTweak.possibleValues = @{
-    @(BZRTweaksSubscriptionDataSourceTypeOnDevice): @"From device",
-    @(BZRTweaksSubscriptionDataSourceTypeGenericValid): @"Generic valid subscription",
-    @(BZRTweaksSubscriptionDataSourceTypeNoSubscription): @"No subscription",
-    @(BZRTweaksSubscriptionDataSourceTypeCustomizedSubscription): @"Customized from on device"
+                                               name:@"Choose subscription source"
+                                       defaultValue:@(BZRTweaksSubscriptionSourceOnDevice)];
+  chooseSubscriptionSourceTweak.possibleValues = @{
+    @(BZRTweaksSubscriptionSourceOnDevice): @"From device",
+    @(BZRTweaksSubscriptionSourceGenericActive): @"Generic valid subscription",
+    @(BZRTweaksSubscriptionSourceNoSubscription): @"No subscription",
+    @(BZRTweaksSubscriptionSourceCustomizedSubscription): @"Customizable subscription"
   };
-  return chooseDataSourceTweak;
+  return chooseSubscriptionSourceTweak;
 }
 
-- (NSString *)dataSourceTweakIdentifierForTweakName:(NSString *)tweakName {
-  return [NSString stringWithFormat:@"%@.dataSource.%@", kTweakIdentifierPrefix, tweakName];
+- (NSString *)subscriptionSourceTweakIdentifierForTweakName:(NSString *)tweakName {
+  return [NSString stringWithFormat:@"%@.subscriptionSource.%@",
+          kBZRTweakIdentifierPrefix, tweakName];
 }
 
-- (RACSignal<BZRTweaksSubscriptionDataSourceType *> *)subscriptionDataSourceSignal {
-  id initialValue = [self shouldUseDefaultValueForTweak:self.chooseDataSourceTweak] ?
-      self.chooseDataSourceTweak.defaultValue : self.chooseDataSourceTweak.currentValue;
-  return [[[self.chooseDataSourceTweak shk_valueChanged]
+- (RACSignal<BZRTweaksSubscriptionSource *> *)createSubscriptionSourceSignal {
+  id initialValue = [self shouldUseDefaultValueForTweak:self.chooseSubscriptionSourceTweak] ?
+      self.chooseSubscriptionSourceTweak.defaultValue :
+      self.chooseSubscriptionSourceTweak.currentValue;
+  return [[[self.chooseSubscriptionSourceTweak shk_valueChanged]
       ignore:nil]
       startWith:initialValue];
 }
@@ -193,11 +195,16 @@ static auto const kTweaksKeypathsAndNames = @[
 }
 
 - (NSArray<FBPersistentTweak *> *)createOverrideSubscriptionInfoTweaks {
+  auto genericActiveSubscription =
+      [BZRReceiptSubscriptionInfo genericActiveSubscriptionWithPendingRenewalInfo];
   return [kTweaksKeypathsAndNames
       lt_map:^FBPersistentTweak *(NSArray *kepyathAndName) {
         auto tweak = [self createMutableTweakForKeypath:kepyathAndName[kKeypathIndex]
                                                withText:kepyathAndName[kNameIndex]];
-        [self registerOverridingSubscriptionForChangesByTweak:tweak];
+        if (tweak.currentValue == nil) {
+          tweak.currentValue =
+              [genericActiveSubscription valueForKeyPath:kepyathAndName[kKeypathIndex]];
+        }
         return tweak;
       }];
 }
@@ -219,6 +226,12 @@ static auto const kTweaksKeypathsAndNames = @[
                                      forKeys:enumNamesToValues.allValues];
 }
 
+- (void)bindOverridingSubscriptionToTweaks {
+  for (FBPersistentTweak *tweak in self.overrideSubscriptionInfoTweaks) {
+    [self registerOverridingSubscriptionForChangesByTweak:tweak];
+  }
+}
+
 - (void)registerOverridingSubscriptionForChangesByTweak:(FBPersistentTweak *)tweak {
   @weakify(self)
   [[[tweak shk_valueChanged]
@@ -234,7 +247,7 @@ static auto const kTweaksKeypathsAndNames = @[
 - (void)setupCollections {
   RAC(self, collections) = [[RACSignal
       combineLatest:@[
-        [self createDataSourceControlCollectionSignal],
+        [self createSubscriptionSourceControlCollectionSignal],
         [self createSubscriptionDetailsCollectionSignal]
       ]]
       map:^NSArray<FBTweakCollection *> *(RACTuple *tupleOfCollections) {
@@ -242,46 +255,46 @@ static auto const kTweaksKeypathsAndNames = @[
       }];
 }
 
-- (RACSignal<FBTweakCollection *> *)createDataSourceControlCollectionSignal {
+- (RACSignal<FBTweakCollection *> *)createSubscriptionSourceControlCollectionSignal {
   auto reloadDataFromDeviceTweak = [self createReloadDataFromDeviceTweak];
-  return [self.subscriptionDataSource
-      map:^FBTweakCollection *(BZRTweaksSubscriptionDataSourceType *source) {
+  return [self.subscriptionSourceSignal
+      map:^FBTweakCollection *(BZRTweaksSubscriptionSource *source) {
         auto tweaks = [self shouldAddReloadTweak:source] ?
-            @[self.chooseDataSourceTweak, reloadDataFromDeviceTweak] :
-            @[self.chooseDataSourceTweak];
+            @[self.chooseSubscriptionSourceTweak, reloadDataFromDeviceTweak] :
+            @[self.chooseSubscriptionSourceTweak];
         return [[FBTweakCollection alloc] initWithName:@"" tweaks:tweaks];
       }];
 }
 
 - (FBActionTweak *)createReloadDataFromDeviceTweak {
   return [[FBActionTweak alloc]
-      initWithIdentifier:[self dataSourceTweakIdentifierForTweakName:@"reloadData"]
+      initWithIdentifier:[self subscriptionSourceTweakIdentifierForTweakName:@"reloadData"]
                     name:@"Reload subscription data from device"
                    block:^{
-                     [self reloadPersistentTweaksDataFromOnDeviceSubscription];
+                     [self reloadPersistentTweaksDataFromSubscription:
+                      self.productInfoProvider.subscriptionInfo];
                    }];
 }
 
-- (void)reloadPersistentTweaksDataFromOnDeviceSubscription {
+- (void)reloadPersistentTweaksDataFromSubscription:(BZRReceiptSubscriptionInfo *)subscription {
   auto newPersistentTweaks = [self createOverrideSubscriptionInfoTweaks];
   for (FBPersistentTweak *tweak in newPersistentTweaks) {
-    tweak.currentValue = [self.productInfoProvider.subscriptionInfo
-                          valueForKeyPath:tweak.bzr_subscriptionInfoKeypath];
+    tweak.currentValue = [subscription valueForKeyPath:tweak.bzr_subscriptionInfoKeypath];
   }
   self.overrideSubscriptionInfoTweaks = newPersistentTweaks;
 }
 
-- (BOOL)shouldAddReloadTweak:(BZRTweaksSubscriptionDataSourceType *)dataSource {
-  return [dataSource isEqual:@(BZRTweaksSubscriptionDataSourceTypeCustomizedSubscription)];
+- (BOOL)shouldAddReloadTweak:(BZRTweaksSubscriptionSource *)subscriptionSource {
+  return [subscriptionSource isEqual:@(BZRTweaksSubscriptionSourceCustomizedSubscription)];
 }
 
 - (RACSignal<FBTweakCollection *> *)createSubscriptionDetailsCollectionSignal {
   return  [RACSignal
-      switch:self.subscriptionDataSource
+      switch:self.subscriptionSourceSignal
        cases:@{
-         @(BZRTweaksSubscriptionDataSourceTypeOnDevice):
+         @(BZRTweaksSubscriptionSourceOnDevice):
              [self createOnDeviceSubscriptionInfoCollectionSignal],
-         @(BZRTweaksSubscriptionDataSourceTypeCustomizedSubscription):
+         @(BZRTweaksSubscriptionSourceCustomizedSubscription):
              [self createOverridingSubscriptionCollectionSignal]
        }
      default:[RACSignal return:[[FBTweakCollection alloc] initWithName:@"" tweaks:@[]]]
@@ -323,7 +336,7 @@ static auto const kTweaksKeypathsAndNames = @[
 }
 
 - (NSString *)subscriptionInfoTweakIdentifierForKeypath:(NSString *)keypath {
-  return [NSString stringWithFormat:@"%@.subscriptionInfo.%@", kTweakIdentifierPrefix, keypath];
+  return [NSString stringWithFormat:@"%@.subscriptionInfo.%@", kBZRTweakIdentifierPrefix, keypath];
 }
 
 - (RACSignal<FBTweakCollection *> *)createOverridingSubscriptionCollectionSignal {

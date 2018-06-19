@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.acquiredViaSubscriptionProducts = [NSSet setWithArray:@[@"foo", @"baz"]];
   self.acquiredProducts = [NSSet setWithArray:@[@"baz", @"bar"]];
   self.allowedProducts = [NSSet setWithArray:@[@"fo",@"baz"]] ;
-  self.downloadedContentProducts = [NSSet setWithArray:@[@"bza",@"baz"]] ;
+  self.downloadedContentProducts = [NSSet setWithArray:@[@"bza",@"baz"]];
   self.subscriptionInfo =
       BZRReceiptValidationStatusWithSubscriptionIdentifier(@"foo.bar").receipt.subscription;
   self.receiptValidationStatus =
@@ -39,9 +39,14 @@ NS_ASSUME_NONNULL_BEGIN
   self.appStoreLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
   self.productsJSONDictionary =  @{@"foo":@"bar"};
   self.valueToReturnFromIsMultiAppSubscription = YES;
-  self.subscriptionInfo =  [self.subscriptionInfo
-      modelByOverridingPropertyAtKeypath:@keypath(self.subscriptionInfo, pendingRenewalInfo)
-      withValue:[self createArbitraryPendingRenewalInfo]];
+  self.subscriptionInfo =
+      [self.subscriptionInfo
+       modelByOverridingPropertyAtKeypath:@keypath(self.subscriptionInfo, pendingRenewalInfo)
+       withValue:[self createArbitraryPendingRenewalInfo]];
+  self.receiptValidationStatus = [self.receiptValidationStatus
+                                  modelByOverridingPropertyAtKeypath:
+                                  @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
+                                  withValue:self.subscriptionInfo];
 }
 
 - (BZRSubscriptionPendingRenewalInfo *)createArbitraryPendingRenewalInfo {

@@ -4,20 +4,30 @@
 #import "BZRTweakCollectionsProvider.h"
 #import "BZRTweaksOverrideSubscriptionProvider.h"
 
-@class BZRReceiptSubscriptionInfo, FBTweakCollection;
-
 @protocol BZRProductsInfoProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A provider for subscription info.
-/// Always has a collection with a tweak that allows changing the subscription source, changing the
-/// value of this tweak will result in a signal sent by the \c subscriptionDataSource.
-/// If \c subscriptionDataSource is set to \c kOverrideSourceCustomizedSubscription, the
-/// previously mentioned tweak collection will also contain a reload button. A second
-/// collection, containing tweaks that can customize a subscription, will also be sent.
-/// Modifications in the customization tweaks will result in changes to \c overridingSubscription.
-@interface BZRTweaksSubscriptionCollectionsProvider : NSObject<BZRTweakCollectionsProvider,
+/// Prefix for identifiers of \c FBTweaks in Bazaar.
+static NSString * const kBZRTweakIdentifierPrefix = @"com.lightricks.bazaar";
+
+/// A provider for subscription info tweaks and overriding subscription info.
+/// This object provides an array of tweak collections. The first collection contains
+/// a tweak that allows picking a subscription info source. Whenever the value of
+/// the selected source (through that tweak) changes, the selected source will be sent on
+/// \c subscriptionSourceSignal.
+/// Possible scenarios for different values of \c subscriptionSourceSignal:
+/// \c BZRTweaksSubscriptionSourceCustomizedSubscription:
+///     The previously mentioned tweak collection will also contain a reload button, and the
+///     array of collections will contain an additional collection, containing tweaks that can
+///     customize the subscription info. Changes in the customization tweaks will result in
+///     changes to \c overridingSubscription.
+/// \c BZRTweaksSubscriptionSourceOnDevice:
+///     The array of collections will contain an additional collection, containing tweaks that show
+///     the details of the current subscription on the device.
+/// Other values:
+///     The array of collections will hold only the first collection.
+@interface BZRTweaksSubscriptionCollectionsProvider : NSObject <BZRTweakCollectionsProvider,
     BZRTweaksOverrideSubscriptionProvider>
 
 - (instancetype)init NS_UNAVAILABLE;

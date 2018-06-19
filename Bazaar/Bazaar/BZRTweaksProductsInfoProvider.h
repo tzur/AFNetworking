@@ -3,6 +3,8 @@
 
 #import "BZRProductsInfoProvider.h"
 
+@protocol BZRTweakCollectionsProvider, BZRTweaksOverrideSubscriptionProvider;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// The use of this class is available only in debug mode.
@@ -13,11 +15,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// properties in runtime.
 @interface BZRTweaksProductsInfoProvider : NSObject <BZRProductsInfoProvider>
 
-- (instancetype)init NS_UNAVAILABLE;
+/// Initializes with an underlying \c productInfoProvider used to read the original subscription
+/// info from the device, a \c subscriptionCollectionsProvider which is used to display
+/// tweaks, an \c overrideSubscriptionProvider which provides an overriding subscription and a
+/// signal specifying which subscription should be used, and a generic subscription to be used
+/// when the subscription source is \c BZRTweaksSubscriptionSourceGenericActive.
+- (instancetype)initWithProductInfoProvider:(id<BZRProductsInfoProvider>)underlyingProvider
+    subscriptionCollectionsProvider:(id<BZRTweakCollectionsProvider>)subscriptionCollectionsProvider
+    overrideSubscriptionProvider:
+    (id<BZRTweaksOverrideSubscriptionProvider>)overrideSubscriptionProvider
+    genericActiveSubscription:(BZRReceiptSubscriptionInfo *)genericActiveSubscription
+    NS_DESIGNATED_INITIALIZER;
 
-/// Initializes with an \c underlyingProvider used to read the original subscription info from the
-/// device.
-- (instancetype)initWithUnderlyingProvider:(id<BZRProductsInfoProvider>)underlyingProvider;
+/// Initializes with an underlying \c productInfoProvider, used to read the original subscription
+/// info from the device and to create a \c BZRTweaksSubscriptionCollectionsProvider which is used
+/// as both the \c subscriptionCollectionsProvider and the \c overrideSubscriptionProvider.
+/// The generic active subscription is created by a category on BZRReceiptSubscriptionInfo.
+- (instancetype)initWithProvider:(id<BZRProductsInfoProvider>)underlyingProvider;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 
