@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRTweaksOverrideSubscriptionProvider <NSObject>
 
 /// The subscription created by the custom subscription tweaks, KVO compliant.
-@property (readonly, nonatomic, nullable) BZRReceiptSubscriptionInfo *overridingSubscription;
+@property (readonly, nonatomic) BZRReceiptSubscriptionInfo *overridingSubscription;
 
 /// Signal that sends a value whenever the subscription source tweak is modified.
 @property (readonly, nonatomic) RACSignal<BZRTweaksSubscriptionSource *> *subscriptionSourceSignal;
