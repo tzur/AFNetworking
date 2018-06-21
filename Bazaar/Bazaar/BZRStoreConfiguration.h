@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// defined in the application's main bundle plist, if it is not defined an
 /// \c NSInternalInconsistencyException is raised.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey;
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+                                 useiCloudUserID:(BOOL)useiCloudUserID;
 
 /// Initializes the configuration with a multi-app mode.
 ///
@@ -47,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                         productListDecryptionKey:(nullable NSString *)productListDecryptionKey
                           bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker;
+                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker
+                                 useiCloudUserID:(BOOL)useiCloudUserID;
 
 /// Initializes the in-app store configuration with default parameters.
 ///
@@ -65,6 +67,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c applicationUserID is an optional unique identifier for the user's account, used for making
 /// purchases and restoring transactions.
+///
+/// \c useiCloudUserID is a flag indicating whether Bazaar should fetch the unique identifier of
+/// the user from iCloud. Passing \c YES in this flag without the appropriate entitlements will
+/// result in an exception being raised.
 ///
 /// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.
@@ -99,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
     bundledApplicationsIDs:(nullable NSSet<NSString *> *)bundledApplicationsIDs
     multiAppSubscriptionClassifier:
     (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier
-    NS_DESIGNATED_INITIALIZER;
+    useiCloudUserID:(BOOL)useiCloudUserID NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to provide the list of products.
 @property (strong, nonatomic) id<BZRProductsProvider> productsProvider;

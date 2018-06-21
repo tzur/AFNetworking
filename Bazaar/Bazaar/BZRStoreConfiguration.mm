@@ -14,6 +14,8 @@
 #import "BZRCachedContentFetcher.h"
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZRCloudKitAccountInfoProvider.h"
+#import "BZRDeviceUserIDProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRKeychainStorageRoute.h"
 #import "BZRLocalProductsProvider.h"
@@ -60,20 +62,23 @@ NS_ASSUME_NONNULL_BEGIN
 static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey {
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+                                 useiCloudUserID:(BOOL)useiCloudUserID {
   return [self initWithProductsListJSONFilePath:productsListJSONFilePath
                        productListDecryptionKey:productListDecryptionKey
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
                             applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]
-                         bundledApplicationsIDs:nil multiAppSubscriptionClassifier:nil];
+                         bundledApplicationsIDs:nil multiAppSubscriptionClassifier:nil
+                                useiCloudUserID:useiCloudUserID];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                         productListDecryptionKey:(nullable NSString *)productListDecryptionKey
                           bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker {
+                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker
+                                 useiCloudUserID:(BOOL)useiCloudUserID {
   auto applicationBundleID = [[NSBundle mainBundle] bundleIdentifier];
   auto multiAppSubscriptionClassifier =
       [[BZRMultiAppSubscriptionClassifier alloc]
@@ -86,7 +91,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
                               applicationUserID:nil
                             applicationBundleID:applicationBundleID
                          bundledApplicationsIDs:bundledApplicationsIDs
-                 multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
+                 multiAppSubscriptionClassifier:multiAppSubscriptionClassifier
+                                useiCloudUserID:useiCloudUserID];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
@@ -97,15 +103,17 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     applicationBundleID:(NSString *)applicationBundleID
     bundledApplicationsIDs:(nullable NSSet<NSString *> *)bundledApplicationsIDs
     multiAppSubscriptionClassifier:
-    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier {
+    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier
+    useiCloudUserID:(BOOL)useiCloudUserID {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
     _contentFetcher = [[BZRCachedContentFetcher alloc] init];
     _keychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
-    _userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
 
+    _userIDProvider = useiCloudUserID ? [[BZRiCloudUserIDProvider alloc] init] :
+        [[BZRDeviceUserIDProvider alloc] init];
     auto validatricksBaseURL = [NSURL URLWithString:@"https://api.lightricks.com/store/v1/"];
     auto sessionConfigurationProvider = [[BZRValidatricksSessionConfigurationProvider alloc] init];
     auto HTTPClient = [FBRHTTPClient
