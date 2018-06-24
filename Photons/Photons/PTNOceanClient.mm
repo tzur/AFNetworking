@@ -6,14 +6,19 @@
 #import <AFNetworking/AFNetworking.h>
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPResponse.h>
+#import <Fiber/FBRHTTPSessionConfiguration.h>
+#import <Fiber/FBRHTTPSessionRequestMarshalling.h>
+#import <Fiber/FBRHTTPSessionSecurityPolicy.h>
 #import <Fiber/RACSignal+Fiber.h>
 #import <LTKit/LTUTICache.h>
+#import <LTKit/NSArray+NSSet.h>
 
 #import "NSErrorCodes+Photons.h"
 #import "PTNImageAsset.h"
 #import "PTNOceanAssetDescriptor.h"
 #import "PTNOceanAssetSearchResponse.h"
 #import "PTNOceanEnums.h"
+#import "PTNOceanServerCert.h"
 #import "RACSignal+Mantle.h"
 #import "RACSignal+Photons.h"
 
@@ -73,8 +78,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNOceanClient ()
 
-/// HTTP Client for sending GET requests to the server.
-@property (readonly, nonatomic) FBRHTTPClient *client;
+/// HTTP Client for sending requests to Ocean's servers.
+@property (readonly, nonatomic) FBRHTTPClient *oceanClient;
+
+/// HTTP Client for sending GET request to download data to memory.
+@property (readonly, nonatomic) FBRHTTPClient *dataClient;
 
 /// Session manager used for downloading files to disk from Ocean.
 @property (readonly, nonatomic) AFHTTPSessionManager *sessionManager;
@@ -91,7 +99,7 @@ static NSString * _Nullable PTNEndpointPathForAssetSearch(PTNOceanSearchParamete
   if (!endpointPath) {
     return nil;
   }
-  return [@[kBaseEndpoint, endpointPath, @"search"] componentsJoinedByString:@"/"];
+  return [@[endpointPath, @"search"] componentsJoinedByString:@"/"];
 }
 
 static NSString *PTNEndpointPathForAssetFetch(PTNOceanAssetFetchParameters *parameters) {
@@ -100,8 +108,7 @@ static NSString *PTNEndpointPathForAssetFetch(PTNOceanAssetFetchParameters *para
     return nil;
   }
 
-  return [@[kBaseEndpoint, endpointPath,  @"asset", parameters.identifier]
-          componentsJoinedByString:@"/"];
+  return [@[endpointPath,  @"asset", parameters.identifier] componentsJoinedByString:@"/"];
 }
 
 static FBRHTTPRequestParameters *PTNOceanBaseRequestParameters() {
@@ -132,13 +139,31 @@ static FBRHTTPRequestParameters *
       backgroundSessionConfigurationWithIdentifier:@"com.lightricks.photons.ocean"];
   auto sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
 
-  return [self initWithClient:[FBRHTTPClient client] sessionManager:sessionManager];
+  auto parametersEncoding = $(FBRHTTPRequestParametersEncodingURLQuery);
+  auto requestMarshalling = [[FBRHTTPSessionRequestMarshalling alloc]
+                             initWithParametersEncoding:parametersEncoding
+                             headers:nil];
+  auto securityPolicy = [FBRHTTPSessionSecurityPolicy
+      securityPolicyWithPinnedPublicKeysFromCertificates:@[PTNOceanServerCertificateData()].lt_set];
+  auto sessionConfiguration =
+      [[FBRHTTPSessionConfiguration alloc]
+       initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+       requestMarshalling:requestMarshalling
+       securityPolicy:securityPolicy];
+  auto oceanClient = [FBRHTTPClient clientWithSessionConfiguration:sessionConfiguration
+                                                           baseURL:[NSURL
+                                                                    URLWithString:kBaseEndpoint]];
+
+  return [self initWithOceanClient:oceanClient dataClient:[FBRHTTPClient client]
+                    sessionManager:sessionManager];
 }
 
-- (instancetype)initWithClient:(FBRHTTPClient *)client
-                sessionManager:(AFHTTPSessionManager *)sessionManager {
+- (instancetype)initWithOceanClient:(FBRHTTPClient *)oceanClient
+                         dataClient:(FBRHTTPClient *)dataClient
+                     sessionManager:(AFHTTPSessionManager *)sessionManager {
   if (self = [super init]) {
-    _client = client;
+    _oceanClient = oceanClient;
+    _dataClient = dataClient;
     _sessionManager = sessionManager;
   }
   return self;
@@ -154,7 +179,7 @@ static FBRHTTPRequestParameters *
 
   auto requestParameters = PTNRequestParametersForAssetSearch(parameters);
 
-  return [[[[self.client GET:endpoint withParameters:requestParameters headers:nil]
+  return [[[[self.oceanClient GET:endpoint withParameters:requestParameters headers:nil]
       fbr_deserializeJSON]
       ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
       ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeRemoteFetchFailed]];
@@ -165,7 +190,7 @@ static FBRHTTPRequestParameters *
   NSString *endpoint = PTNEndpointPathForAssetFetch(parameters);
   auto requestParameters = PTNRequestParametersForAssetFetch(parameters);
 
-  return [[[[self.client GET:endpoint withParameters:requestParameters headers:nil]
+  return [[[[self.oceanClient GET:endpoint withParameters:requestParameters headers:nil]
       fbr_deserializeJSON]
       ptn_parseDictionaryWithClass:[PTNOceanAssetDescriptor class]]
       ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeRemoteFetchFailed]];
@@ -173,7 +198,7 @@ static FBRHTTPRequestParameters *
 
 - (RACSignal<PTNProgress<RACTwoTuple<NSData *, NSString *> *> *> *)
     downloadDataWithURL:(NSURL *)url {
-  return [[[self.client GET:url.absoluteString withParameters:nil headers:nil]
+  return [[[self.dataClient GET:url.absoluteString withParameters:nil headers:nil]
       map:^PTNProgress<id<PTNImageAsset>> *(LTProgress<FBRHTTPResponse *> *progress) {
         if (!progress.result) {
           return [[PTNProgress alloc] initWithProgress:@(progress.progress)];
