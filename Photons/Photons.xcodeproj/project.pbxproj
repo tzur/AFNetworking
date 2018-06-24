@@ -148,6 +148,7 @@
 		8809F88F20989A8300236B6D /* PTNOceanClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8809F88E20989A8300236B6D /* PTNOceanClient.mm */; };
 		881D81E12099D304001EDEE3 /* PTNOceanClientSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */; };
 		883119CE207F586B00E19037 /* OceanFakeVideoAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */; };
+		884617D920DF76440092A501 /* OceanServer.cer in Sources */ = {isa = PBXBuildFile; fileRef = 884617D820DF75B80092A501 /* OceanServer.cer */; };
 		88462A1520BB58CC00975088 /* OceanFakeVideoAssetNoStreamingResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 884629E920BB58CB00975088 /* OceanFakeVideoAssetNoStreamingResponse.json */; };
 		88462A1620BB58CC00975088 /* OceanFakeVideoAssetNoDownloadResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 88462A1420BB58CB00975088 /* OceanFakeVideoAssetNoDownloadResponse.json */; };
 		885AA7322095EA8000B40FE5 /* PTNFileBackedAVAsset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885AA7312095EA8000B40FE5 /* PTNFileBackedAVAsset.mm */; };
@@ -223,6 +224,21 @@
 		C7E5B44E1CE9CE5F00A8ADE7 /* PTNPhotoKitAuthorizationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA5D1C5A389B00014DD1 /* PTNPhotoKitAuthorizationManager.mm */; };
 		C7E5B4681CE9CEF700A8ADE7 /* PTNPhotoKitAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F4061C69D5520007B0A5 /* PTNPhotoKitAuthorizer.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		8846195C20DFA7950092A501 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.cer";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/PTN${INPUT_FILE_BASE}Cert.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/PTN${INPUT_FILE_BASE}Cert.mm",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptCertficate.py\" $CERTIFICATE_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" PTN \"$DERIVED_FILE_DIR/$arch\"\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		19D95D1D1FBB1C2500357EB9 /* PBXContainerItemProxy */ = {
@@ -809,6 +825,7 @@
 		8809F88E20989A8300236B6D /* PTNOceanClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClient.mm; sourceTree = "<group>"; };
 		881D81E02099D304001EDEE3 /* PTNOceanClientSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanClientSpec.mm; sourceTree = "<group>"; };
 		883119CD207F586B00E19037 /* OceanFakeVideoAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetResponse.json; path = Resources/OceanFakeVideoAssetResponse.json; sourceTree = "<group>"; };
+		884617D820DF75B80092A501 /* OceanServer.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = OceanServer.cer; sourceTree = "<group>"; };
 		884629E920BB58CB00975088 /* OceanFakeVideoAssetNoStreamingResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetNoStreamingResponse.json; path = Resources/OceanFakeVideoAssetNoStreamingResponse.json; sourceTree = "<group>"; };
 		88462A1420BB58CB00975088 /* OceanFakeVideoAssetNoDownloadResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeVideoAssetNoDownloadResponse.json; path = Resources/OceanFakeVideoAssetNoDownloadResponse.json; sourceTree = "<group>"; };
 		885AA7042095AFB100B40FE5 /* PTNAVDataAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNAVDataAsset.h; sourceTree = "<group>"; };
@@ -1021,6 +1038,7 @@
 				2873C9EC1F54655200677B2C /* NSURL+Ocean.mm */,
 				2873CA401F54659500677B2C /* NSValueTransformer+Photons.h */,
 				2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */,
+				884617D820DF75B80092A501 /* OceanServer.cer */,
 				2873CA951F5465D500677B2C /* PTNOceanAlbumDescriptor.h */,
 				2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */,
 				2873CB321F54664400677B2C /* PTNOceanAssetDescriptor.h */,
@@ -1794,6 +1812,7 @@
 				84E55C141C8EC72E00D91339 /* CopyFiles */,
 			);
 			buildRules = (
+				8846195C20DFA7950092A501 /* PBXBuildRule */,
 			);
 			dependencies = (
 				88C8AF2020D1489100319553 /* PBXTargetDependency */,
@@ -2299,6 +2318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				884617D920DF76440092A501 /* OceanServer.cer in Sources */,
 				C7E5B4681CE9CEF700A8ADE7 /* PTNPhotoKitAuthorizer.m in Sources */,
 				C7E5B44E1CE9CE5F00A8ADE7 /* PTNPhotoKitAuthorizationManager.mm in Sources */,
 				84E55C201C8EC82C00D91339 /* NSErrorCodes+Photons.m in Sources */,
@@ -2509,6 +2529,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B1889CB1BF1E54B00E9BD67 /* StaticLibrary.xcconfig */;
 			buildSettings = {
+				CERTIFICATE_ENCRYPTION_KEY = "keyPathsForValuesAffectingValueForKey:";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2521,6 +2542,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B1889CB1BF1E54B00E9BD67 /* StaticLibrary.xcconfig */;
 			buildSettings = {
+				CERTIFICATE_ENCRYPTION_KEY = "keyPathsForValuesAffectingValueForKey:";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "Photons/Photons-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
