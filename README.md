@@ -10,6 +10,7 @@
 | CameraUI      | Camera view layer                  |
 | DaVinci       | Brushes infrastructure             |
 | Fiber         | Networking framework               |
+| HelpUI        | UI for help screens                |
 | Intelligence  | Analytics library                  |
 | LTEngine      | Image processing and rendering     |
 | LTKit         | Basic stuff everyone needs         |
@@ -20,6 +21,7 @@
 | Pinky         | Metal processing including DNNs    |
 | Shopix        | High-level store layer             |
 | TinCan        | Inter-app communication            |
+| Warehouse     | Persistent storage for projects    |
 | Wireframes    | UI building blocks                 |
 
 ## Installation instructions
