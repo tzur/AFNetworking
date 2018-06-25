@@ -101,83 +101,6 @@ context(@"calculating order summary", ^{
     expect(recorder).to.sendValues(@[expectedOrderSummary]);
   });
 
-  it(@"should calculate order summary from cache if the user owns all the items", ^{
-    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageFoo"
-    } error:nil];
-    auto barItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
-    } error:nil];
-
-    userCreditStatus = [userCreditStatus
-                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
-                        withValue:@[fooItemDescriptor, barItemDescriptor]];
-
-    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
-
-    OCMReject([productsManager getUserCreditStatus:OCMOCK_ANY]);
-    OCMReject([productsManager getCreditPriceOfType:OCMOCK_ANY consumableTypes:OCMOCK_ANY]);
-
-    auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
-      @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
-      @instanceKeypath(SPXConsumablesOrderSummary, currentCredit): @1337,
-      @instanceKeypath(SPXConsumablesOrderSummary, consumableItemsStatus): @{
-        @"foo": ownedImageItemStatus,
-        @"bar": ownedVideoItemStatus
-      }
-    } error:nil];
-
-    auto recorder =
-        [[consumablesManager calculateOrderSummary:creditType
-                            consumableItemIDToType:consumableItemIDToType] testRecorder];
-
-    expect(recorder).to.complete();
-    expect(recorder).to.sendValues(@[expectedOrderSummary]);
-    OCMVerifyAll((id)productsManager);
-  });
-
-  it(@"should not calculate order summary from cache if one of the item's consumable type didn't "
-     "match its cached consumable type", ^{
-    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageBar"
-    } error:nil];
-    auto barItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
-      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
-    } error:nil];
-
-    userCreditStatus = [userCreditStatus
-                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
-                        withValue:@[fooItemDescriptor, barItemDescriptor]];
-
-    OCMExpect([productsManager getUserCreditStatus:creditType])
-        .andReturn([RACSignal return:userCreditStatus]);
-    OCMExpect([productsManager getCreditPriceOfType:creditType
-                                    consumableTypes:consumableItemIDToType.allValues.lt_set])
-        .andReturn([RACSignal return:creditTypeToPrice]);
-    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
-
-    auto expectedOrderSummary = [[SPXConsumablesOrderSummary alloc] initWithDictionary:@{
-      @instanceKeypath(SPXConsumablesOrderSummary, creditType): creditType,
-      @instanceKeypath(SPXConsumablesOrderSummary, currentCredit): @1337,
-      @instanceKeypath(SPXConsumablesOrderSummary, consumableItemsStatus): @{
-        @"foo": notOwnedImageItemStatus,
-        @"bar": ownedVideoItemStatus
-      }
-    } error:nil];
-
-    auto recorder =
-        [[consumablesManager calculateOrderSummary:creditType
-                            consumableItemIDToType:consumableItemIDToType] testRecorder];
-
-    expect(recorder).to.complete();
-    expect(recorder).to.sendValues(@[expectedOrderSummary]);
-    OCMVerifyAll((id)productsManager);
-  });
-
   it(@"should send error without calling delegate if the operation is cancelled", ^{
     OCMReject([consumablesManagerDelegate presentAlertWithError:OCMOCK_ANY
                                                  tryAgainAction:OCMOCK_ANY
@@ -636,6 +559,78 @@ context(@"placing order", ^{
         OCMVerifyAll((id)productsManager);
       });
     });
+  });
+});
+
+context(@"checking that the user owns consumed items", ^{
+  it(@"should return YES if the user owns all the items", ^{
+    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageFoo"
+    } error:nil];
+    auto barItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"videoFoo"
+    } error:nil];
+
+    userCreditStatus = [userCreditStatus
+                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
+                        withValue:@[fooItemDescriptor, barItemDescriptor]];
+
+    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
+
+    auto consumableItemIDToType = @{
+      @"foo": @"imageFoo",
+      @"bar": @"videoFoo"
+    };
+
+    auto isOwned =
+        [consumablesManager userOwnsAllItems:consumableItemIDToType withCreditType:creditType];
+
+    expect(isOwned).to.beTruthy();
+  });
+
+  it(@"should return NO if the user doesn't own all the items", ^{
+    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"imageFoo"
+    } error:nil];
+
+    userCreditStatus = [userCreditStatus
+                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
+                        withValue:@[fooItemDescriptor]];
+
+    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
+
+    auto consumableItemIDToType = @{
+      @"foo": @"imageFoo",
+      @"bar": @"videoFoo"
+    };
+
+    auto isOwned =
+        [consumablesManager userOwnsAllItems:consumableItemIDToType withCreditType:creditType];
+
+    expect(isOwned).to.beFalsy();
+  });
+
+  it(@"should return NO if the user owns an item with a different consumable type", ^{
+    auto fooItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+      @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"otherImageFoo"
+    } error:nil];
+
+    userCreditStatus = [userCreditStatus
+                        modelByOverridingProperty:@keypath(userCreditStatus, consumedItems)
+                        withValue:@[fooItemDescriptor]];
+
+    OCMStub([productsManager getCachedUserCreditStatus:creditType]).andReturn(userCreditStatus);
+
+    auto consumableItemIDToType = @{@"foo": @"imageFoo"};
+
+    auto isOwned =
+        [consumablesManager userOwnsAllItems:consumableItemIDToType withCreditType:creditType];
+
+    expect(isOwned).to.beFalsy();
   });
 });
 

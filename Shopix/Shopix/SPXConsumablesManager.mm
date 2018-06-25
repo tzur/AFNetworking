@@ -46,6 +46,22 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Calculate order summary
 #pragma mark -
 
+- (BOOL)userOwnsAllItems:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+          withCreditType:(NSString *)creditType {
+  auto _Nullable userCreditStatus = [self.productsManager getCachedUserCreditStatus:creditType];
+  return userCreditStatus ?
+      [self isAllItemsOwned:consumableItemIDToType userCreditStatus:userCreditStatus] : NO;
+}
+
+- (BOOL)isAllItemsOwned:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+       userCreditStatus:(BZRUserCreditStatus *)userCreditStatus {
+  auto requestedItemsIDs = consumableItemIDToType.allKeys.lt_set;
+  auto consumedItemsIDs = [self calculateConsumedItemsIDs:consumableItemIDToType
+                                               userCredit:userCreditStatus];
+
+  return [consumedItemsIDs.lt_set isEqualToSet:requestedItemsIDs];
+}
+
 - (RACSignal<SPXConsumablesOrderSummary *> *)calculateOrderSummary:(NSString *)creditType
     consumableItemIDToType:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType {
   auto userCreditAndTypesPricesSignal =
@@ -71,41 +87,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<RACTuple *> *)userCreditAndTypesPricesSignal:(NSString *)creditType
     consumableItemIDToType:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType {
   auto requestedTypes = consumableItemIDToType.allValues.lt_set;
-  auto consumableTypeToPrice = [self consumableTypesWithZeroPrices:requestedTypes];
-  auto _Nullable cachedUserCreditStatus =
-      [self.productsManager getCachedUserCreditStatus:creditType];
-
-  if (cachedUserCreditStatus &&
-      [self isAllItemsOwned:consumableItemIDToType userCreditStatus:cachedUserCreditStatus]) {
-    return [RACSignal combineLatest:@[
-      [RACSignal return:cachedUserCreditStatus],
-      [RACSignal return:consumableTypeToPrice]
-    ]];
-  }
-
   return [RACSignal combineLatest:@[
     [self.productsManager getUserCreditStatus:creditType],
     [self.productsManager getCreditPriceOfType:creditType consumableTypes:requestedTypes]
   ]];
-}
-
-- (NSDictionary<NSString *, NSNumber *> *)consumableTypesWithZeroPrices:
-    (NSSet<NSString *> *)consumableTypes {
-  auto consumableTypeToPrice = [NSMutableDictionary dictionaryWithCapacity:consumableTypes.count];
-  for (NSString *type in consumableTypes) {
-    consumableTypeToPrice[type] = @0;
-  }
-
-  return consumableTypeToPrice;
-}
-
-- (BOOL)isAllItemsOwned:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
-       userCreditStatus:(BZRUserCreditStatus *)userCreditStatus {
-  auto requestedItemsIDs = consumableItemIDToType.allKeys.lt_set;
-  auto consumedItemsIDs = [self calculateConsumedItemsIDs:consumableItemIDToType
-                                               userCredit:userCreditStatus];
-
-  return [consumedItemsIDs.lt_set isEqualToSet:requestedItemsIDs];
 }
 
 - (nullable SPXConsumablesOrderSummary *)summaryFromUserCredit:(BZRUserCreditStatus *)userCredit
