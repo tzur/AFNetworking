@@ -3,8 +3,6 @@
 
 #import "LTGuidedFilterCoefficientsProcessor.h"
 
-#import <Accelerate/Accelerate.h>
-
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTOneShotImageProcessor.h"
 #import "LTShaderStorage+LTGuidedFilterBlurNormalizeFsh.h"
@@ -322,35 +320,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)boxFilterWithInput:(LTTexture *)input output:(LTTexture *)output
                 kernelSize:(CGSize)kernelSize {
-  CGSize roundedKernelSize = std::round(kernelSize);
-
-  // Speed optimization for 8-bit case: Accelerate framework performance is better than
-  // Core Image for 8Unorm textures.
-  if ((input.dataType == LTGLPixelDataType8Unorm)) {
-    [input mappedImageForReading:^(const cv::Mat &inputMat, BOOL) {
-      [output mappedImageForWriting:^(cv::Mat *outputMat, BOOL) {
-        vImage_Buffer inBuffer = [self imageBufferForMat:inputMat];
-        vImage_Buffer outBuffer = [self imageBufferForMat:*outputMat];
-        vImage_Error status = kvImageInvalidImageFormat;
-        if (input.components == LTGLPixelComponentsRGBA) {
-          status = vImageBoxConvolve_ARGB8888(&inBuffer, &outBuffer, NULL, 0, 0,
-                                              roundedKernelSize.height,
-                                              roundedKernelSize.width,
-                                              NULL, kvImageEdgeExtend);
-        } else if (input.components == LTGLPixelComponentsR) {
-          status = vImageBoxConvolve_Planar8(&inBuffer, &outBuffer, NULL, 0, 0,
-                                             roundedKernelSize.height,
-                                             roundedKernelSize.width,
-                                             NULL, kvImageEdgeExtend);
-        }
-        LTAssert(status == kvImageNoError, @"vImageBoxConvolve failed with status %ld",
-                 status);
-      }];
-    }];
-  } else {
-    [self nonNormalizedBoxFilterWithInput:input output:output kernelSize:roundedKernelSize];
-    [self normalizeTexture:output];
-  }
+  [self nonNormalizedBoxFilterWithInput:input output:output kernelSize:kernelSize];
+  [self normalizeTexture:output];
 }
 
 - (void)nonNormalizedBoxFilterWithInput:(LTTexture *)input output:(LTTexture *)output
@@ -358,14 +329,13 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(kernelSize.width == kernelSize.height,
                     @"Prodided kernelSize(%@) dimensions are not equal",
                     NSStringFromCGSize(kernelSize));
-  CGFloat inputRadius = std::floor(kernelSize.width);
+  CGFloat inputRadius = kernelSize.width;
   [input mappedCIImage:^(CIImage *image) {
     [output drawWithCoreImage:^CIImage *{
-      CIFilter *filter = [CIFilter filterWithName:@"CIBoxBlur"];
-      [filter setValue:image forKey:kCIInputImageKey];
-      [filter setValue:@(inputRadius) forKey:@"inputRadius"];
-      CIImage *result = [filter valueForKey:kCIOutputImageKey];
-      return result;
+      auto filterParameters = @{kCIInputRadiusKey: @(inputRadius)};
+      return [[image
+          imageByApplyingFilter:@"CIBoxBlur" withInputParameters:filterParameters]
+          imageByCroppingToRect:image.extent];
     }];
   }];
 }
@@ -388,15 +358,6 @@ NS_ASSUME_NONNULL_BEGIN
       @(texture.dataType == LTGLPixelDataType8Unorm);
 
   [processor process];
-}
-
-- (vImage_Buffer)imageBufferForMat:(const cv::Mat &)mat {
-  return {
-    .data = mat.data,
-    .width = static_cast<vImagePixelCount>(mat.cols),
-    .height = static_cast<vImagePixelCount>(mat.rows),
-    .rowBytes = mat.step[0]
-  };
 }
 
 #pragma mark -
