@@ -242,7 +242,7 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)"},
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(3, 2)"},
                                 kSize);
 
     [painter paint];
@@ -255,7 +255,7 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)",
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(3, 2)",
                                   @instanceKeypath(DVNBrushModelV1,
                                                    minimumTaperingScaleFactor): @0.5},
                                 kSize);
@@ -270,7 +270,7 @@ context(@"version 1", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
-                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(15, 10)",
+                                  @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(3, 2)",
                                   @instanceKeypath(DVNBrushModelV1, taperingFactors):
                                       @"(0, 0.5)"},
                                 kSize);
