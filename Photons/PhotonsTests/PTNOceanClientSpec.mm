@@ -43,14 +43,18 @@ static FBRHTTPResponse *PTNFakeHTTPResponse(NSData *data, NSString * _Nullable m
 
 SpecBegin(PTNOceanClient)
 
-__block FBRHTTPClient *httpClient;
+__block FBRHTTPClient *oceanClient;
+__block FBRHTTPClient *dataClient;
 __block AFHTTPSessionManager *sessionManager;
 __block PTNOceanClient *client;
 
 beforeEach(^{
-  httpClient = OCMClassMock([FBRHTTPClient class]);
+  oceanClient = OCMClassMock([FBRHTTPClient class]);
+  dataClient = OCMClassMock([FBRHTTPClient class]);
   sessionManager = OCMClassMock([AFHTTPSessionManager class]);
-  client = [[PTNOceanClient alloc] initWithClient:httpClient sessionManager:sessionManager];
+
+  client = [[PTNOceanClient alloc] initWithOceanClient:oceanClient dataClient:dataClient
+                                        sessionManager:sessionManager];
 });
 
 context(@"asset search", ^{
@@ -58,24 +62,24 @@ context(@"asset search", ^{
     auto parameters = [[PTNOceanSearchParameters alloc] initWithType:$(PTNOceanAssetTypePhoto)
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
-    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/image/search"
+    OCMExpect([oceanClient GET:@"image/search"
                withParameters:OCMOCK_ANY headers:nil]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)httpClient);
+    OCMVerifyAll((id)oceanClient);
   });
 
   it(@"should use image search endpoint when searching for videos", ^{
     auto parameters = [[PTNOceanSearchParameters alloc] initWithType:$(PTNOceanAssetTypeVideo)
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
-    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/video/search"
+    OCMExpect([oceanClient GET:@"video/search"
                withParameters:OCMOCK_ANY headers:nil]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)httpClient);
+    OCMVerifyAll((id)oceanClient);
   });
 
   it(@"should use parameters from request URL when issuing album search request", ^{
@@ -87,11 +91,11 @@ context(@"asset search", ^{
       @"page": @"3",
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
-    OCMExpect([httpClient GET:OCMOCK_ANY withParameters:expectedParameters headers:nil]);
+    OCMExpect([oceanClient GET:OCMOCK_ANY withParameters:expectedParameters headers:nil]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)httpClient);
+    OCMVerifyAll((id)oceanClient);
   });
 
   it(@"should return search result", ^{
@@ -99,7 +103,7 @@ context(@"asset search", ^{
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
     RACSubject *subject = [RACSubject subject];
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([oceanClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     LLSignalTestRecorder *recorder = [[client searchWithParameters:parameters] testRecorder];
 
@@ -122,7 +126,7 @@ context(@"asset search", ^{
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
     RACSubject *request = [RACSubject subject];
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([oceanClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(request);
     LLSignalTestRecorder *recorder = [[client searchWithParameters:parameters] testRecorder];
 
@@ -143,12 +147,12 @@ context(@"asset descriptor fetch", ^{
     auto expectedParameters = [@{
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
-    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/image/asset/bar"
+    OCMExpect([oceanClient GET:@"image/asset/bar"
                withParameters:expectedParameters headers:nil]);
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)httpClient);
+    OCMVerifyAll((id)oceanClient);
   });
 
     it(@"should use video search endpoint when searching for videos", ^{
@@ -159,12 +163,12 @@ context(@"asset descriptor fetch", ^{
     auto expectedParameters = [@{
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
-    OCMExpect([httpClient GET:@"https://ocean.lightricks.com/video/asset/bar"
+    OCMExpect([oceanClient GET:@"video/asset/bar"
                withParameters:expectedParameters headers:nil]);
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)httpClient);
+    OCMVerifyAll((id)oceanClient);
   });
 
   it(@"should fetch image asset descriptor", ^{
@@ -182,7 +186,7 @@ context(@"asset descriptor fetch", ^{
                   fromJSONDictionary:jsonDictionary error:nil];
 
     RACSubject *subject = [RACSubject subject];
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([oceanClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     LLSignalTestRecorder *recorder = [[client fetchAssetDescriptorWithParameters:parameters]
                                       testRecorder];
@@ -208,7 +212,7 @@ context(@"asset descriptor fetch", ^{
                   fromJSONDictionary:jsonDictionary error:nil];
 
     RACSubject *subject = [RACSubject subject];
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([oceanClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     LLSignalTestRecorder *recorder = [[client fetchAssetDescriptorWithParameters:parameters]
                                       testRecorder];
@@ -232,7 +236,7 @@ context(@"data download", ^{
   });
 
   it(@"should send progress", ^{
-    OCMStub([httpClient GET:urlString withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([dataClient GET:urlString withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
 
     LLSignalTestRecorder *recorder = [[client downloadDataWithURL:url] testRecorder];
@@ -247,7 +251,7 @@ context(@"data download", ^{
   });
 
   it(@"should send the data downloaded", ^{
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([dataClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     NSData *data = [NSData data];
 
@@ -261,7 +265,7 @@ context(@"data download", ^{
   });
 
   it(@"should send the data downloaded and convert mime type to UTI", ^{
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([dataClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     NSData *data = [NSData data];
 
@@ -275,7 +279,7 @@ context(@"data download", ^{
   });
 
   it(@"should err when underlying client errs", ^{
-    OCMStub([httpClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+    OCMStub([dataClient GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn(subject);
     auto underlyingError = [NSError lt_errorWithCode:1337];
 

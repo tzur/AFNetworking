@@ -72,11 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// with background \c NSURLSessionConfiguration.
 - (instancetype)init;
 
-/// Initializes with \c client used to fetch relatively small amount of data from the server like
-/// searching, descriptor fetch and fetching to \c NSData. Downloading files is done with
-/// \c sessionManager, in order to enable downloading file in when the app is not in foreground.
-- (instancetype)initWithClient:(FBRHTTPClient *)client
-                sessionManager:(AFHTTPSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
+/// Initializes with \c oceanClient to handle data exchange with Ocean's server. \c dataClient to
+/// fetch relatively small amount of data like image assets to \c NSData. Downloading files is done
+/// with \c sessionManager, in order to enable downloading file in when the app is not in
+/// foreground.
+- (instancetype)initWithOceanClient:(FBRHTTPClient *)oceanClient
+                         dataClient:(FBRHTTPClient *)dataClient
+    sessionManager:(AFHTTPSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 /// Searches for assets using the given \c parameters. The returned result represents a single page
 /// of the search result.
