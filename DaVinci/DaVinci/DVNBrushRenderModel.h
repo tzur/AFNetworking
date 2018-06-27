@@ -21,11 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
                       conversionFactor:(CGFloat)conversionFactor;
 
 /// Returns a new instance with the given \c brushModel, \c renderTargetLocation,
-/// \c renderTargetHasSingleChannel, \c renderTargetIsNonPremultiplied and \c conversionFactor.
+/// \c renderTargetHasSingleChannel, \c renderTargetIsNonPremultiplied,
+/// \c renderTargetHasBytePrecision and \c conversionFactor.
 + (instancetype)instanceWithBrushModel:(DVNBrushModel *)brushModel
                   renderTargetLocation:(lt::Quad)renderTargetLocation
           renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
         renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied
+          renderTargetHasBytePrecision:(BOOL)renderTargetHasBytePrecision
                       conversionFactor:(CGFloat)conversionFactor;
 
 /// Returns a copy of the receiver with the exception of the given \c brushModel.

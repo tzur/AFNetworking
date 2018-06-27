@@ -42,12 +42,14 @@ NS_ASSUME_NONNULL_BEGIN
                   renderTargetLocation:(lt::Quad)location
           renderTargetHasSingleChannel:(BOOL)hasSingleChannel
         renderTargetIsNonPremultiplied:(BOOL)isNonPremultiplied
+          renderTargetHasBytePrecision:(BOOL)hasBytePrecision
                       conversionFactor:(CGFloat)conversionFactor {
   return [[self alloc] initWithBrushModel:brushModel
                          renderTargetInfo:[DVNBrushRenderTargetInformation
                                            instanceWithRenderTargetLocation:location
                                            renderTargetHasSingleChannel:hasSingleChannel
-                                           renderTargetIsNonPremultiplied:isNonPremultiplied]
+                                           renderTargetIsNonPremultiplied:isNonPremultiplied
+                                           renderTargetHasBytePrecision:hasBytePrecision]
                          conversionFactor:conversionFactor];
 }
 
