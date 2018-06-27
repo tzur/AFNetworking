@@ -3,6 +3,8 @@
 
 #extension GL_EXT_shader_framebuffer_fetch : require
 
+#define BYTE_STEP_SIZE (1.0 / 256.0)
+
 /// Single-channel or RGBA texture, in premultiplied format, mapped onto the brush tip quad.
 uniform highp sampler2D sourceTexture;
 
@@ -46,6 +48,9 @@ uniform bool renderTargetHasSingleChannel;
 
 /// \c YES if the render target is in non-premultiplied format.
 uniform bool renderTargetIsNonPremultiplied;
+
+/// \c YES if the render target has byte precision.
+uniform bool renderTargetHasBytePrecision;
 
 /// Blend mode to be used for blending.
 uniform int blendMode;
@@ -265,9 +270,18 @@ void main() {
       mix(premultipliedDst, premultipliedBlendedColor,
           mask * edgeAvoidanceFactor(length(premultipliedSrc)));
 
+  // Write result to render target.
   if (renderTargetHasSingleChannel || !renderTargetIsNonPremultiplied) {
     gl_FragColor = premultipliedBlendedAndMaskedColor;
   } else {
-    gl_FragColor = nonPremultipliedColor(premultipliedBlendedAndMaskedColor);
+    highp vec4 result = nonPremultipliedColor(premultipliedBlendedAndMaskedColor);
+    if (renderTargetHasBytePrecision) {
+      // Avoid banding artifacts in semi-transparent areas due to numerical issues originating from
+      // the non-premultiplication of the result.
+      gl_FragColor = mix(result, gl_LastFragData[0],
+                         step(distance(result, gl_LastFragData[0]), BYTE_STEP_SIZE));
+    } else {
+      gl_FragColor = result;
+    }
   }
 }
