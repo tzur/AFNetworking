@@ -972,6 +972,7 @@ context(@"validating transaction", ^{
 
 context(@"getting user credit status", ^{
   __block BZRUserCreditStatus *userCreditStatus;
+  __block BZRReceiptValidationStatus *receiptValidationStatus;
 
   beforeEach(^{
     userCreditStatus = lt::nn([[BZRUserCreditStatus alloc] initWithDictionary:@{
@@ -980,68 +981,113 @@ context(@"getting user credit status", ^{
       @instanceKeypath(BZRUserCreditStatus, credit): @13,
       @instanceKeypath(BZRUserCreditStatus, consumedItems): @[]
     } error:nil]);
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
   });
 
-  it(@"should forward request to Validatricks client with correct parameters", ^{
-    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
-        .andReturn([RACSignal return:userCreditStatus]);
-    OCMStub([userIDProvider userID]).andReturn(@"foo");
+  context(@"receipt validation status exists", ^{
+    beforeEach(^{
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+    });
 
-    auto recorder = [[store getUserCreditStatus:@"bar"] testRecorder];
+    it(@"should forward request to Validatricks client with correct parameters", ^{
+      OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"
+          environment:receiptValidationStatus.receipt.environment])
+          .andReturn([RACSignal return:userCreditStatus]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
 
-    expect(recorder).to.complete();
-    expect(recorder).to.sendValues(@[userCreditStatus]);
-  });
+      auto recorder = [[store getUserCreditStatus:@"bar"] testRecorder];
 
-  it(@"should not access user ID before subscription to the signal", ^{
-    OCMStub([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY])
-        .andReturn([RACSignal empty]);
+      expect(recorder).to.complete();
+      expect(recorder).to.sendValues(@[userCreditStatus]);
+    });
 
-    auto signal = [store getUserCreditStatus:@"bar"];
+    it(@"should not access user ID before subscription to the signal", ^{
+      OCMStub([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY
+          environment:OCMOCK_ANY])
+          .andReturn([RACSignal empty]);
 
-    OCMExpect([userIDProvider userID]).andReturn(@"foo");
-    expect(signal).to.complete();
+      auto signal = [store getUserCreditStatus:@"bar"];
 
-    OCMExpect([userIDProvider userID]).andReturn(@"bar");
-    expect(signal).to.complete();
+      OCMExpect([userIDProvider userID]).andReturn(@"foo");
+      expect(signal).to.complete();
 
-    OCMVerifyAll((id)userIDProvider);
-  });
+      OCMExpect([userIDProvider userID]).andReturn(@"bar");
+      expect(signal).to.complete();
 
-  it(@"should send error sent by Validatricks client", ^{
-    auto error = [NSError lt_errorWithCode:1337];
-    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
-        .andReturn([RACSignal error:error]);
-    OCMStub([userIDProvider userID]).andReturn(@"foo");
+      OCMVerifyAll((id)userIDProvider);
+    });
 
-    auto signal = [store getUserCreditStatus:@"bar"];
+    it(@"should send error sent by Validatricks client", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo" environment:OCMOCK_ANY])
+          .andReturn([RACSignal error:error]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
 
-    expect(signal).to.sendError(error);
-  });
+      auto signal = [store getUserCreditStatus:@"bar"];
 
-  it(@"should send error if user ID is nil", ^{
-    OCMReject([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY]);
+      expect(signal).to.sendError(error);
+    });
 
-    auto signal = [store getUserCreditStatus:@"bar"];
+    it(@"should send error if user ID is nil", ^{
+      OCMReject([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY
+                                        environment:OCMOCK_ANY]);
 
-    expect(signal).to.matchError(^BOOL(NSError *error) {
-      return error.code == BZRErrorCodeUserIdentifierNotAvailable;
+      auto signal = [store getUserCreditStatus:@"bar"];
+
+      expect(signal).to.matchError(^BOOL(NSError *error) {
+        return error.code == BZRErrorCodeUserIdentifierNotAvailable;
+      });
+    });
+
+    it(@"should cache the user credit after successful fetching", ^{
+      OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo" environment:OCMOCK_ANY])
+          .andReturn([RACSignal return:userCreditStatus]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
+      OCMExpect([keychainStorage setValue:userCreditStatus forKey:@"bzr.userCredit.bar" error:nil]);
+
+      auto signal = [store getUserCreditStatus:@"bar"];
+
+      expect(signal).will.complete();
+      OCMVerifyAll((id)keychainStorage);
     });
   });
 
-  it(@"should cache the user credit after successful fetching", ^{
-    OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo"])
-        .andReturn([RACSignal return:userCreditStatus]);
-    OCMStub([userIDProvider userID]).andReturn(@"foo");
-    OCMExpect([keychainStorage setValue:userCreditStatus forKey:@"bzr.userCredit.bar" error:nil]);
+  context(@"receipt validation status doesn't exist", ^{
+    beforeEach(^{
+      OCMStub([validatricksClient getCreditOfType:@"bar" forUser:@"foo" environment:OCMOCK_ANY])
+          .andReturn([RACSignal return:userCreditStatus]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
+    });
 
-    auto signal = [store getUserCreditStatus:@"bar"];
+    it(@"should validate receipt if receipt validation status doesn't exist", ^{
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
 
-    expect(signal).will.complete();
-    OCMVerifyAll((id)keychainStorage);
+      expect([store getUserCreditStatus:@"bar"]).will.complete();
+
+      OCMVerifyAll((id)receiptValidationStatusProvider);
+    });
+
+    it(@"should send error if receipt validation failed", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal error:error]);
+
+      expect([store getUserCreditStatus:@"bar"]).will.sendError(error);
+    });
   });
+});
 
+context(@"cached user credit", ^{
   it(@"should get the cached user credit", ^{
+    auto userCreditStatus = lt::nn([[BZRUserCreditStatus alloc] initWithDictionary:@{
+      @instanceKeypath(BZRUserCreditStatus, requestId): @"request",
+      @instanceKeypath(BZRUserCreditStatus, creditType): @"bar",
+      @instanceKeypath(BZRUserCreditStatus, credit): @13,
+      @instanceKeypath(BZRUserCreditStatus, consumedItems): @[]
+    } error:nil]);
+
     OCMStub([keychainStorage valueForKey:@"bzr.userCredit.bar" error:nil])
         .andReturn(userCreditStatus);
 
@@ -1113,89 +1159,125 @@ context(@"getting credit price for consumable types", ^{
 });
 
 context(@"redeeming consumable items", ^{
-  it(@"should call Validatricks redeem request with correct parameters", ^{
-    auto consumableItemIDToType = @{
+  __block BZRReceiptValidationStatus *receiptValidationStatus;
+  __block NSDictionary<NSString *, NSString *> *consumableItemIDToType;
+
+  beforeEach(^{
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+    consumableItemIDToType = @{
       @"foo": @"fooType",
       @"bar": @"barType"
     };
-
-    auto creditType = @"baz";
-    OCMStub([userIDProvider userID]).andReturn(@"foo");
-
-    auto itemsToRedeem = @[
-      lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-        @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
-        @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"fooType",
-      } error:nil]),
-      lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
-        @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
-        @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"barType",
-      } error:nil])
-    ];
-    auto redeemStatus = lt::nn([[BZRRedeemConsumablesStatus alloc] initWithDictionary:@{
-      @instanceKeypath(BZRRedeemConsumablesStatus, requestId): @"requestId",
-      @instanceKeypath(BZRRedeemConsumablesStatus, creditType): creditType,
-      @instanceKeypath(BZRRedeemConsumablesStatus, currentCredit): @13,
-      @instanceKeypath(BZRRedeemConsumablesStatus, consumedItems): @[]
-    } error:nil]);
-    OCMStub([validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
-                                               userId:@"foo"])
-        .andReturn([RACSignal return:redeemStatus]);
-
-    auto recorder =
-        [[store redeemConsumableItems:consumableItemIDToType ofCreditType:creditType] testRecorder];
-
-    expect(recorder).will.complete();
-    expect(recorder).will.sendValues(@[redeemStatus]);
   });
 
-  it(@"should not access user ID before subscription to the signal", ^{
-    OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
-                                               userId:OCMOCK_ANY])
-        .andReturn([RACSignal empty]);
+  context(@"receipt validation status exists", ^{
+    beforeEach(^{
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+      });
 
-    auto consumableItemIDToType = @{
-      @"foo": @"fooType",
-      @"bar": @"barType"
-    };
-    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"foo"];
+    it(@"should call Validatricks redeem request with correct parameters", ^{
+      auto creditType = @"baz";
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
 
-    OCMExpect([userIDProvider userID]).andReturn(@"foo");
-    expect(signal).to.complete();
+      auto itemsToRedeem = @[
+        lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"foo",
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"fooType",
+        } error:nil]),
+        lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableItemId): @"bar",
+          @instanceKeypath(BZRConsumableItemDescriptor, consumableType): @"barType",
+        } error:nil])
+      ];
+      auto redeemStatus = lt::nn([[BZRRedeemConsumablesStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRRedeemConsumablesStatus, requestId): @"requestId",
+        @instanceKeypath(BZRRedeemConsumablesStatus, creditType): creditType,
+        @instanceKeypath(BZRRedeemConsumablesStatus, currentCredit): @13,
+        @instanceKeypath(BZRRedeemConsumablesStatus, consumedItems): @[]
+      } error:nil]);
+      OCMStub([validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
+          userId:@"foo" environment:receiptValidationStatus.receipt.environment])
+          .andReturn([RACSignal return:redeemStatus]);
 
-    OCMExpect([userIDProvider userID]).andReturn(@"bar");
-    expect(signal).to.complete();
+      auto recorder = [[store redeemConsumableItems:consumableItemIDToType
+                                       ofCreditType:creditType] testRecorder];
 
-    OCMVerifyAll((id)userIDProvider);
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValues(@[redeemStatus]);
+    });
+
+    it(@"should not access user ID before subscription to the signal", ^{
+      OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                                 userId:OCMOCK_ANY environment:OCMOCK_ANY])
+          .andReturn([RACSignal empty]);
+
+      auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"foo"];
+
+      OCMExpect([userIDProvider userID]).andReturn(@"foo");
+      expect(signal).to.complete();
+
+      OCMExpect([userIDProvider userID]).andReturn(@"bar");
+      expect(signal).to.complete();
+
+      OCMVerifyAll((id)userIDProvider);
+    });
+
+    it(@"should send error sent by Validatricks client", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                                 userId:OCMOCK_ANY environment:OCMOCK_ANY])
+          .andReturn([RACSignal error:error]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
+
+      auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+
+      expect(signal).to.sendError(error);
+    });
+
+    it(@"should send error if user ID is nil", ^{
+      OCMReject([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                                   userId:OCMOCK_ANY environment:OCMOCK_ANY]);
+
+      auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+
+      expect(signal).to.matchError(^BOOL(NSError *error) {
+        return error.code == BZRErrorCodeUserIdentifierNotAvailable;
+      });
+    });
   });
 
-  it(@"should send error sent by Validatricks client", ^{
-    auto error = [NSError lt_errorWithCode:1337];
-    OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
-                                               userId:OCMOCK_ANY])
-        .andReturn([RACSignal error:error]);
-    OCMStub([userIDProvider userID]).andReturn(@"foo");
+  context(@"receipt validation status doesn't exist", ^{
+    beforeEach(^{
+      auto redeemStatus = lt::nn([[BZRRedeemConsumablesStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRRedeemConsumablesStatus, requestId): @"requestId",
+        @instanceKeypath(BZRRedeemConsumablesStatus, creditType): @"bar",
+        @instanceKeypath(BZRRedeemConsumablesStatus, currentCredit): @13,
+        @instanceKeypath(BZRRedeemConsumablesStatus, consumedItems): @[]
+      } error:nil]);
+      OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+                                                 userId:OCMOCK_ANY environment:OCMOCK_ANY])
+          .andReturn([RACSignal return:redeemStatus]);
+      OCMStub([userIDProvider userID]).andReturn(@"foo");
+    });
 
-    auto consumableItemIDToType = @{
-      @"foo": @"fooType",
-      @"bar": @"barType"
-    };
-    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+    it(@"should validate receipt if receipt validation status doesn't exist", ^{
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
 
-    expect(signal).to.sendError(error);
-  });
+      expect([store redeemConsumableItems:consumableItemIDToType ofCreditType:@"bar"])
+          .will.complete();
 
-  it(@"should send error if user ID is nil", ^{
-    OCMReject([validatricksClient getCreditOfType:OCMOCK_ANY forUser:OCMOCK_ANY]);
+      OCMVerifyAll((id)receiptValidationStatusProvider);
+    });
 
-    auto consumableItemIDToType = @{
-      @"foo": @"fooType",
-      @"bar": @"barType"
-    };
-    auto signal = [store redeemConsumableItems:consumableItemIDToType ofCreditType:@"baz"];
+    it(@"should send error if receipt validation failed", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal error:error]);
 
-    expect(signal).to.matchError(^BOOL(NSError *error) {
-      return error.code == BZRErrorCodeUserIdentifierNotAvailable;
+      expect([store redeemConsumableItems:consumableItemIDToType ofCreditType:@"bar"])
+          .will.sendError(error);
     });
   });
 });

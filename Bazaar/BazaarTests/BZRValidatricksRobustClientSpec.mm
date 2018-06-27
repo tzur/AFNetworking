@@ -4,6 +4,7 @@
 #import "BZRValidatricksRobustClient.h"
 
 #import "BZREvent.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRReceiptValidationStatus.h"
 
@@ -265,10 +266,12 @@ context(@"get user credit", ^{
         }]
       } error:nil];
   auto robustClientCall = ^RACSignal *(BZRValidatricksRobustClient *robustClient) {
-    return [robustClient getCreditOfType:kCreditType forUser:kUserId];
+    return [robustClient getCreditOfType:kCreditType forUser:kUserId
+                             environment:$(BZRReceiptEnvironmentProduction)];
   };
   auto clientCall = ^RACSignal *(id<BZRValidatricksClient> client) {
-    return [client getCreditOfType:kCreditType forUser:kUserId];
+    return [client getCreditOfType:kCreditType forUser:kUserId
+                       environment:$(BZRReceiptEnvironmentProduction)];
   };
 
   itShouldBehaveLike(kRobustClientSharedExamplesName, @{
@@ -321,11 +324,11 @@ context(@"redeem consumables", ^{
       } error:nil];
   auto robustClientCall = ^RACSignal *(BZRValidatricksRobustClient *robustClient) {
     return [robustClient redeemConsumableItems:@[consumableItem] ofCreditType:kCreditType
-                                        userId:kUserId];
+                                        userId:kUserId environment:$(BZRReceiptEnvironmentSandbox)];
   };
   auto innerClientCall = ^RACSignal *(id<BZRValidatricksClient> client) {
     return [client redeemConsumableItems:@[consumableItem] ofCreditType:kCreditType
-                                  userId:kUserId];
+                                  userId:kUserId environment:$(BZRReceiptEnvironmentSandbox)];
   };
 
   itShouldBehaveLike(kRobustClientSharedExamplesName, @{

@@ -6,13 +6,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BZRReceiptEnvironment, BZRReceiptValidationParameters, BZRReceiptValidationStatus,
+    FBRHTTPClient;
+
 /// Key in the event info dictionary mapping to Validatricks response type.
 extern NSString * const kBZREventValidatricksResponseTypeKey;
 
 /// Key in the event info dictionary mapping to the Validatricks response.
 extern NSString * const kBZREventValidatricksResponseKey;
-
-@class BZRReceiptValidationParameters, BZRReceiptValidationStatus, FBRHTTPClient;
 
 /// Client providing convenience methods to make requests to Validatricks server over HTTP.
 @protocol BZRValidatricksClient <BZREventEmitter>
@@ -38,7 +39,8 @@ extern NSString * const kBZREventValidatricksResponseKey;
 /// returned an HTTP error response corresponding to \c BZRValidatricksErrorInfo format the error
 /// information will be provided under the error's \c bzr_validatricksErrorInfo property.
 - (RACSignal<BZRUserCreditStatus *> *)getCreditOfType:(NSString *)creditType
-                                              forUser:(NSString *)userId;
+                                              forUser:(NSString *)userId
+                                          environment:(BZRReceiptEnvironment *)environment;
 
 /// Get the prices of consumables of the specified \c consumableTypes in credit units of type
 /// \c creditType.
@@ -71,7 +73,9 @@ extern NSString * const kBZREventValidatricksResponseKey;
 /// providing additional error information.
 - (RACSignal<BZRRedeemConsumablesStatus *> *)
     redeemConsumableItems:(NSArray<BZRConsumableItemDescriptor *> *)consumableItems
-             ofCreditType:(NSString *)creditType userId:(NSString *)userId;
+             ofCreditType:(NSString *)creditType userId:(NSString *)userId
+              environment:(BZRReceiptEnvironment *)environment;
+
 @end
 
 /// Default implementation of the \c BZRValidatricksClient protocol.

@@ -7,6 +7,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRValidatricksSessionConfigurationProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
@@ -131,9 +132,10 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
 }
 
 - (RACSignal<BZRUserCreditStatus *> *)getCreditOfType:(NSString *)creditType
-                                              forUser:(NSString *)userId {
+                                              forUser:(NSString *)userId
+                                          environment:(BZRReceiptEnvironment *)environment {
   auto getCreditBlock = ^RACSignal *(id<BZRValidatricksClient> innerClient) {
-    return [innerClient getCreditOfType:creditType forUser:userId];
+    return [innerClient getCreditOfType:creditType forUser:userId environment:environment];
   };
   return [self performClientCallWithRetries:getCreditBlock];
 }
@@ -148,10 +150,11 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
 
 - (RACSignal<BZRRedeemConsumablesStatus *> *)
     redeemConsumableItems:(NSArray<BZRConsumableItemDescriptor *> *)consumableItems
-             ofCreditType:(NSString *)creditType userId:(NSString *)userId {
+    ofCreditType:(NSString *)creditType userId:(NSString *)userId
+    environment:(BZRReceiptEnvironment *)environment {
   auto redeemBlock = ^RACSignal *(id<BZRValidatricksClient> innerClient) {
     return [innerClient redeemConsumableItems:consumableItems ofCreditType:creditType
-                                       userId:userId];
+                                       userId:userId environment:environment];
   };
   return [self performClientCallWithRetries:redeemBlock];
 }
