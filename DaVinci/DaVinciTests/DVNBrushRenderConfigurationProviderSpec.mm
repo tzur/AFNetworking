@@ -62,7 +62,8 @@ context(@"creation", ^{
           [DVNBrushRenderTargetInformation
            instanceWithRenderTargetLocation:lt::Quad::canonicalSquare()
            renderTargetHasSingleChannel:NO
-           renderTargetIsNonPremultiplied:NO];
+           renderTargetIsNonPremultiplied:NO
+           renderTargetHasBytePrecision:YES];
       DVNBrushRenderModel *model = [DVNBrushRenderModel instanceWithBrushModel:brushModel
                                                               renderTargetInfo:info
                                                               conversionFactor:0.7];

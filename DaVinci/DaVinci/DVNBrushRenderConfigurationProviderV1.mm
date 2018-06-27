@@ -196,6 +196,7 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
         $([self modelviewMatrixWithRenderTargetLocation:info.renderTargetLocation]),
     [DVNBrushV1Fsh renderTargetHasSingleChannel]: @(info.renderTargetHasSingleChannel),
     [DVNBrushV1Fsh renderTargetIsNonPremultiplied]: @(info.renderTargetIsNonPremultiplied),
+    [DVNBrushV1Fsh renderTargetHasBytePrecision]: @(info.renderTargetHasBytePrecision),
     [DVNBrushV1Vsh edgeAvoidanceSamplingOffset]:
         $(LTVector2(model.conversionFactor * brushModel.edgeAvoidanceSamplingOffset)),
     [DVNBrushV1Vsh colorTextureIsNonPremultiplied]: @(brushModel.sourceImageIsNonPremultiplied),
