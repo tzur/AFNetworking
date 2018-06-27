@@ -135,6 +135,7 @@
 		8B2405891B860D620079B724 /* NSLocale+Language.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405871B860D620079B724 /* NSLocale+Language.mm */; };
 		8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */; };
 		8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840281CBE393000B745AE /* LTStructBoxingSpec.mm */; };
+		8B2EDE4720E4BE11003A40F4 /* NSErrorCodes+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2EDE4620E4BE11003A40F4 /* NSErrorCodes+LTKitSpec.mm */; };
 		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
 		8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
 		8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
@@ -628,6 +629,7 @@
 		8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+LTKit.h"; sourceTree = "<group>"; };
 		8B28400F1CBE36C100B745AE /* LTStructBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTStructBoxing.h; sourceTree = "<group>"; };
 		8B2840281CBE393000B745AE /* LTStructBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTStructBoxingSpec.mm; sourceTree = "<group>"; };
+		8B2EDE4620E4BE11003A40F4 /* NSErrorCodes+LTKitSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKitSpec.mm"; sourceTree = "<group>"; };
 		8B3C0A5118329505000845BA /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8B3C0A531832950F000845BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -958,8 +960,8 @@
 			children = (
 				8B0B99681CA6BAA300ED2334 /* libextobjc_OSX.a */,
 				8B0B996A1CA6BAA300ED2334 /* libextobjc_iOS.a */,
-				8B0B996C1CA6BAA300ED2334 /* Logic Tests.octest */,
-				8B0B996E1CA6BAA300ED2334 /* iOS Tests.octest */,
+				8B0B996C1CA6BAA300ED2334 /* Logic Tests.xctest */,
+				8B0B996E1CA6BAA300ED2334 /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1312,6 +1314,7 @@
 				885744F01FD20F9F0092E463 /* LTUTICacheSpec.mm */,
 				8482E2DD1D22810D0084D565 /* LTValueObjectSpec.mm */,
 				8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */,
+				8B2EDE4620E4BE11003A40F4 /* NSErrorCodes+LTKitSpec.mm */,
 				8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */,
 				8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */,
 				8B9FE5881BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm */,
@@ -1788,17 +1791,17 @@
 			remoteRef = 8B0B99691CA6BAA300ED2334 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B0B996C1CA6BAA300ED2334 /* Logic Tests.octest */ = {
+		8B0B996C1CA6BAA300ED2334 /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 8B0B996B1CA6BAA300ED2334 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B0B996E1CA6BAA300ED2334 /* iOS Tests.octest */ = {
+		8B0B996E1CA6BAA300ED2334 /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 8B0B996D1CA6BAA300ED2334 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1955,6 +1958,7 @@
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
+				8B2EDE4720E4BE11003A40F4 /* NSErrorCodes+LTKitSpec.mm in Sources */,
 				8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */,
 				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				881335B91FEA4D1E00E83C1D /* NSData+HashingSpec.mm in Sources */,
