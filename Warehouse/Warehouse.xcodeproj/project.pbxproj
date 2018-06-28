@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */; };
+		1910C74620BBEC8A00C13FC5 /* NSError+WHSProjectStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C74420BBEC8900C13FC5 /* NSError+WHSProjectStorage.mm */; };
+		1910C74720BBEC8A00C13FC5 /* WHSProjectStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C74520BBEC8A00C13FC5 /* WHSProjectStorage.mm */; };
+		1910C74A20BBED4C00C13FC5 /* WHSProjectStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C74820BBED4C00C13FC5 /* WHSProjectStorageSpec.mm */; };
+		1910C74B20BBED4C00C13FC5 /* NSError+WarehouseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1910C74920BBED4C00C13FC5 /* NSError+WarehouseSpec.mm */; };
 		192A2ACE20BABD370045422C /* NSError+Warehouse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 192A2AB120BABD360045422C /* NSError+Warehouse.mm */; };
 		192A2AD120BABD710045422C /* NSErrorCodes+Warehouse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */; };
 		1964BF5D20A31E9900FF28F5 /* libWarehouse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E1533020A314E100F0F438 /* libWarehouse.a */; };
@@ -257,6 +261,12 @@
 /* Begin PBXFileReference section */
 		1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "WHSProjectSnapshot+Tests.mm"; sourceTree = "<group>"; };
 		1910C69420BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WHSProjectSnapshot+Tests.h"; sourceTree = "<group>"; };
+		1910C72720BBEC8900C13FC5 /* NSError+WHSProjectStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+WHSProjectStorage.h"; sourceTree = "<group>"; };
+		1910C74320BBEC8900C13FC5 /* WHSProjectStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHSProjectStorage.h; sourceTree = "<group>"; };
+		1910C74420BBEC8900C13FC5 /* NSError+WHSProjectStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+WHSProjectStorage.mm"; sourceTree = "<group>"; };
+		1910C74520BBEC8A00C13FC5 /* WHSProjectStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectStorage.mm; sourceTree = "<group>"; };
+		1910C74820BBED4C00C13FC5 /* WHSProjectStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectStorageSpec.mm; sourceTree = "<group>"; };
+		1910C74920BBED4C00C13FC5 /* NSError+WarehouseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+WarehouseSpec.mm"; sourceTree = "<group>"; };
 		192A2AB120BABD360045422C /* NSError+Warehouse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Warehouse.mm"; sourceTree = "<group>"; };
 		192A2ACD20BABD370045422C /* NSError+Warehouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Warehouse.h"; sourceTree = "<group>"; };
 		192A2ACF20BABD700045422C /* NSErrorCodes+Warehouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Warehouse.h"; sourceTree = "<group>"; };
@@ -336,7 +346,9 @@
 		192A2BAD20BAE0740045422C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1910C74920BBED4C00C13FC5 /* NSError+WarehouseSpec.mm */,
 				198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */,
+				1910C74820BBED4C00C13FC5 /* WHSProjectStorageSpec.mm */,
 				19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */,
 			);
 			name = Tests;
@@ -502,12 +514,16 @@
 			isa = PBXGroup;
 			children = (
 				1964BF6320A3223800FF28F5 /* Supporting Files */,
+				1910C72720BBEC8900C13FC5 /* NSError+WHSProjectStorage.h */,
+				1910C74420BBEC8900C13FC5 /* NSError+WHSProjectStorage.mm */,
 				192A2ACD20BABD370045422C /* NSError+Warehouse.h */,
 				192A2AB120BABD360045422C /* NSError+Warehouse.mm */,
 				192A2ACF20BABD700045422C /* NSErrorCodes+Warehouse.h */,
 				192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */,
 				198CE4AA20A32989000E70BF /* WHSProjectSnapshot.h */,
 				198CE4A920A32989000E70BF /* WHSProjectSnapshot.mm */,
+				1910C74320BBEC8900C13FC5 /* WHSProjectStorage.h */,
+				1910C74520BBEC8A00C13FC5 /* WHSProjectStorage.mm */,
 				19A6F12220AC58BB00AF8DB1 /* WHSProjectUpdateRequest.h */,
 				19A6F10620AC58BA00AF8DB1 /* WHSProjectUpdateRequest.mm */,
 			);
@@ -851,6 +867,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */,
+				1910C74A20BBED4C00C13FC5 /* WHSProjectStorageSpec.mm in Sources */,
+				1910C74B20BBED4C00C13FC5 /* NSError+WarehouseSpec.mm in Sources */,
 				19A6F12520AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm in Sources */,
 				198CE4A820A327DA000E70BF /* WHSProjectSnapshotSpec.mm in Sources */,
 			);
@@ -860,9 +878,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1910C74720BBEC8A00C13FC5 /* WHSProjectStorage.mm in Sources */,
 				192A2AD120BABD710045422C /* NSErrorCodes+Warehouse.mm in Sources */,
 				198CE4AB20A32989000E70BF /* WHSProjectSnapshot.mm in Sources */,
 				19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */,
+				1910C74620BBEC8A00C13FC5 /* NSError+WHSProjectStorage.mm in Sources */,
 				192A2ACE20BABD370045422C /* NSError+Warehouse.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
