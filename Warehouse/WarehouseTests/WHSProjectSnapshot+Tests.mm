@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static const auto kWHSSteps = @[
+static const auto kWHSStepsIDs = @[
   nn([[NSUUID alloc] initWithUUIDString:@"C5DC25F9-8EA3-41CC-9BF6-C098F0BE28F2"]),
   nn([[NSUUID alloc] initWithUUIDString:@"DCC53438-B81E-4FB9-8640-DC5769557CCE"]),
   nn([[NSUUID alloc] initWithUUIDString:@"C4BD3739-242A-47E8-B9BA-13CF9EF91249"]),
@@ -16,38 +16,37 @@ static const auto kWHSSteps = @[
 @implementation WHSProjectSnapshot (TestUtils)
 
 + (instancetype)dummyProject {
-  return [WHSProjectSnapshot dummyProjectWithSteps:kWHSSteps stepCursor:kWHSSteps.count - 1];
+  return [WHSProjectSnapshot dummyProjectWithStepsIDs:kWHSStepsIDs
+                                           stepCursor:kWHSStepsIDs.count - 1];
 }
 
-+ (instancetype)dummyProjectWithNilStepsArray {
-  return [WHSProjectSnapshot dummyProjectWithSteps:nil stepCursor:kWHSSteps.count - 1];
++ (instancetype)dummyProjectWithNilStepsIDs {
+  return [WHSProjectSnapshot dummyProjectWithStepsIDs:nil stepCursor:kWHSStepsIDs.count - 1];
 }
 
 + (instancetype)dummyProjectWithNoStepsAfterCursor {
-  return [WHSProjectSnapshot dummyProjectWithSteps:kWHSSteps stepCursor:kWHSSteps.count];
+  return [WHSProjectSnapshot dummyProjectWithStepsIDs:kWHSStepsIDs stepCursor:kWHSStepsIDs.count];
 }
 
 + (instancetype)dummyProjectWithZeroStepCursor {
-  return [WHSProjectSnapshot dummyProjectWithSteps:kWHSSteps stepCursor:0];
+  return [WHSProjectSnapshot dummyProjectWithStepsIDs:kWHSStepsIDs stepCursor:0];
 }
 
-+ (instancetype)dummyProjectWithSteps:(nullable NSArray<NSUUID *> *)steps
-                           stepCursor:(NSUInteger)stepCursor {
-  auto projectIdentifier = [[NSUUID alloc]
-                            initWithUUIDString:@"8352CC13-CF1D-4DA7-BDBE-B805E79C2207"];
-  return [[WHSProjectSnapshot alloc] initWithIdentifier:projectIdentifier
-                                       bundleIdentifier:@"dummyBundle" creationDate:[NSDate date]
-                                       modificationDate:[NSDate date] size:0 steps:steps
-                                             stepCursor:stepCursor userData:nil
-                                              assetsURL:[NSBundle mainBundle].bundleURL];
++ (instancetype)dummyProjectWithStepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs
+                              stepCursor:(NSUInteger)stepCursor {
+  auto projectID = [[NSUUID alloc] initWithUUIDString:@"8352CC13-CF1D-4DA7-BDBE-B805E79C2207"];
+  return [[WHSProjectSnapshot alloc] initWithID:projectID bundleID:@"dummyBundle"
+                                   creationDate:[NSDate date] modificationDate:[NSDate date] size:0
+                                       stepsIDs:stepsIDs stepCursor:stepCursor userData:nil
+                                      assetsURL:[NSBundle mainBundle].bundleURL];
 }
 
-- (nullable NSArray<NSUUID *> *)stepsAfterCursor {
-  if (!self.steps) {
+- (nullable NSArray<NSUUID *> *)stepsIDsAfterCursor {
+  if (!self.stepsIDs) {
     return nil;
   }
-  auto rangeAfterCursor = NSMakeRange(self.stepCursor, self.steps.count - self.stepCursor);
-  return [nn(self.steps) subarrayWithRange:rangeAfterCursor];
+  auto rangeAfterCursor = NSMakeRange(self.stepCursor, self.stepsIDs.count - self.stepCursor);
+  return [nn(self.stepsIDs) subarrayWithRange:rangeAfterCursor];
 }
 
 @end

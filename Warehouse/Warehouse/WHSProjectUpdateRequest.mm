@@ -31,9 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WHSProjectUpdateRequest
 
-- (instancetype)initWithProjectIdentifier:(NSUUID *)projectIdentifier {
+- (instancetype)initWithProjectID:(NSUUID *)projectID {
   if (self = [super init]) {
-    _projectIdentifier = projectIdentifier;
+    _projectID = projectID;
     _stepIDsToDelete = @[];
     _stepsContentToAdd = @[];
   }
@@ -44,35 +44,32 @@ NS_ASSUME_NONNULL_BEGIN
   if (![projectSnapshot canUndo]) {
     return nil;
   }
-  auto request = [[WHSProjectUpdateRequest alloc]
-                  initWithProjectIdentifier:projectSnapshot.identifier];
+  auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectSnapshot.ID];
   request.stepCursor = @(projectSnapshot.stepCursor - 1);
   return request;
 }
 
 + (nullable WHSProjectUpdateRequest *)requestForRedo:(WHSProjectSnapshot *)projectSnapshot {
-  if (!projectSnapshot.steps || ![projectSnapshot canRedo]) {
+  if (!projectSnapshot.stepsIDs || ![projectSnapshot canRedo]) {
     return nil;
   }
-  auto request = [[WHSProjectUpdateRequest alloc]
-                  initWithProjectIdentifier:projectSnapshot.identifier];
+  auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectSnapshot.ID];
   request.stepCursor = @(projectSnapshot.stepCursor + 1);
   return request;
 }
 
 + (nullable WHSProjectUpdateRequest *)requestForAddStep:(WHSProjectSnapshot *)projectSnapshot
                                             stepContent:(WHSStepContent *)stepContent {
-  if (!projectSnapshot.steps) {
+  if (!projectSnapshot.stepsIDs) {
     return nil;
   }
-  auto request = [[WHSProjectUpdateRequest alloc]
-                  initWithProjectIdentifier:projectSnapshot.identifier];
+  auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectSnapshot.ID];
   request.stepsContentToAdd = @[stepContent];
   auto currentStepCursor = projectSnapshot.stepCursor;
   request.stepCursor = @(currentStepCursor + 1);
-  auto currentStepsCount = projectSnapshot.steps.count;
+  auto currentStepsCount = projectSnapshot.stepsIDs.count;
   auto rangeToDelete = NSMakeRange(currentStepCursor, currentStepsCount - currentStepCursor);
-  request.stepIDsToDelete = nn([projectSnapshot.steps subarrayWithRange:rangeToDelete]);
+  request.stepIDsToDelete = nn([projectSnapshot.stepsIDs subarrayWithRange:rangeToDelete]);
   return request;
 }
 
