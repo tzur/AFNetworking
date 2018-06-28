@@ -39,6 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProductsManager:(id<BZRProductsManager>)productsManager
     NS_DESIGNATED_INITIALIZER;
 
+/// Returns \c YES if the user owns all items specified by \c consumableItemIDToType of type
+/// \c creditType.
+- (BOOL)userOwnsAllItems:(NSDictionary<NSString *, NSString *> *)consumableItemIDToType
+          withCreditType:(NSString *)creditType;
+
 /// Returns the order summary used to consume the items specified by \c consumableItemIDToType.
 ///
 /// Returns a signal that fetches the credit that user has and the required credit for each
