@@ -8,11 +8,20 @@
 #import <Fiber/NSErrorCodes+Fiber.h>
 #import <FiberTestUtils/FBRHTTPTestUtils.h>
 
+#import "BZREvent.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRValidatricksModels.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
+
+/// Exposes methods for testing.
+@interface BZRValidatricksClient (ForTesting)
+
+/// Make public for testing.
+- (NSString *)responseTypeStringForValidatricksResponse:(BZRModel *)validatricksResponse;
+
+@end
 
 SpecBegin(BZRValidatricksClient)
 
@@ -173,14 +182,35 @@ sharedExamplesFor(kValidatricksRequestSharedExamplesName, ^(NSDictionary *data) 
 
   it(@"should deliver the correct result from the response", ^{
     auto response = FBRFakeHTTPJSONResponse(requestURL, successfulResult, 200);
-    auto progess = [[LTProgress alloc] initWithResult:response];
+    auto progress = [[LTProgress alloc] initWithResult:response];
 
     auto requestRecorder = [sendRequestBlock(client) testRecorder];
-    [requestSubject sendNext:progess];
+    [requestSubject sendNext:progress];
     [requestSubject sendCompleted];
 
     expect(requestRecorder).will.complete();
     expect(requestRecorder).to.sendValues(@[successfulResult]);
+  });
+
+  it(@"should send successful response on the event signal", ^{
+    auto response = FBRFakeHTTPJSONResponse(requestURL, successfulResult, 200);
+    auto progress = [[LTProgress alloc] initWithResult:response];
+
+    auto eventRecorder = [client.eventsSignal testRecorder];
+
+    [sendRequestBlock(client) subscribeNext:^(id) {}];
+    [requestSubject sendNext:progress];
+    [requestSubject sendCompleted];
+
+    auto responseTypeString = [client responseTypeStringForValidatricksResponse:successfulResult];
+    const auto eventInfo = @{
+      kBZREventValidatricksResponseTypeKey: responseTypeString,
+      kBZREventValidatricksResponseKey: successfulResult
+    };
+    auto responseEvent =
+        [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:eventInfo];
+
+    expect(eventRecorder).will.sendValues(@[responseEvent]);
   });
 });
 
