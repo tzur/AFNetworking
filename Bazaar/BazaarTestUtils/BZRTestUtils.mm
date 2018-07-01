@@ -13,6 +13,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+BZRProduct *BZRProductWithIdentifierAndType(NSString *identifier, BZRProductType *productType) {
+  return [[BZRProduct alloc] initWithDictionary:@{
+    @instanceKeypath(BZRProduct, identifier): identifier,
+    @instanceKeypath(BZRProduct, productType): productType,
+    @instanceKeypath(BZRProduct, isSubscribersOnly): @NO
+  } error:nil];
+}
+
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier) {
   return BZRProductWithIdentifierAndParameters(identifier,
                                                OCMClassMock([BZRContentFetcherParameters class]));

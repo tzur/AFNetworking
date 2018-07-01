@@ -3,8 +3,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRContentFetcherParameters, BZRProduct, BZRReceiptInAppPurchaseInfo,
+@class BZRContentFetcherParameters, BZRProduct, BZRProductType, BZRReceiptInAppPurchaseInfo,
     BZRReceiptSubscriptionInfo, BZRReceiptTransactionInfo, BZRReceiptValidationStatus;
+
+/// Returns a \c BZRProduct of type \c productType with identifier set to \c identifier
+/// without content.
+BZRProduct *BZRProductWithIdentifierAndType(NSString *identifier, BZRProductType *productType);
 
 /// Returns a \c BZRProduct with identifier set to \c identifier with content.
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier);

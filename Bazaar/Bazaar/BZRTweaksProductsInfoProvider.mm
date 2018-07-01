@@ -6,6 +6,7 @@
 #import <FBTweak/FBTweakStore.h>
 #import <Milkshake/SHKTweakCategoryAdapter.h>
 
+#import "BZRProduct.h"
 #import "BZRReceiptModel+GenericSubscription.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTweaksCategory.h"
@@ -81,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
   RAC(self, acquiredViaSubscriptionProducts) =
       RACObserve(self, originalProductInfoProvider.acquiredViaSubscriptionProducts);
   RAC(self, acquiredProducts) = RACObserve(self, originalProductInfoProvider.acquiredProducts);
-  RAC(self, allowedProducts) = RACObserve(self, originalProductInfoProvider.allowedProducts);
+  RAC(self, allowedProducts) = [self allowedProductsSignal];
   RAC(self, downloadedContentProducts) =
       RACObserve(self, originalProductInfoProvider.downloadedContentProducts);
   RAC(self, appStoreLocale) = RACObserve(self, originalProductInfoProvider.appStoreLocale);
@@ -89,6 +90,43 @@ NS_ASSUME_NONNULL_BEGIN
       RACObserve(self, originalProductInfoProvider.productsJSONDictionary);
   RAC(self, subscriptionInfo) = [self subscriptionInfoSignal];
   RAC(self, receiptValidationStatus) = [self receiptValidationStatusSignal];
+}
+
+- (RACSignal<NSSet<NSString *> *> *)allowedProductsSignal {
+  auto originalAllowedProducts = RACObserve(self.originalProductInfoProvider, allowedProducts);
+  auto tweaksAllowedProducts = [RACSignal
+      switch:self.overrideSubscriptionProvider.subscriptionSourceSignal
+       cases:@{
+         @(BZRTweaksSubscriptionSourceCustomizedSubscription):
+             [self allowedProductsForCustomizedSubscription],
+         @(BZRTweaksSubscriptionSourceGenericActive): [self nonConsumableProductsIdentifiers],
+         @(BZRTweaksSubscriptionSourceNoSubscription): [RACSignal return:[NSSet set]],
+       } default:originalAllowedProducts];
+  return [originalAllowedProducts takeUntilReplacement:tweaksAllowedProducts];
+}
+
+- (RACSignal<NSSet<NSString *> *> *)allowedProductsForCustomizedSubscription {
+  auto overridingSubscriptionExpiry =
+      RACObserve(self.overrideSubscriptionProvider, overridingSubscription.isExpired);
+  return [RACSignal if:overridingSubscriptionExpiry
+                  then:[RACSignal return:[NSSet set]]
+                  else:[self nonConsumableProductsIdentifiers]];
+}
+
+- (RACSignal<NSSet<NSString *> *> *)nonConsumableProductsIdentifiers {
+  auto productsJSONSignal = RACObserve(self.originalProductInfoProvider, productsJSONDictionary);
+  return [productsJSONSignal
+      map:^NSSet<NSString *> *(NSDictionary<NSString *, BZRProduct *> *productsDictionary) {
+        return [self nonConsumableProductsIdentifiersFromDictionary:productsDictionary];
+      }];
+}
+
+- (NSSet<NSString *> *)nonConsumableProductsIdentifiersFromDictionary:
+    (NSDictionary<NSString *, BZRProduct *> *)productsDictionary {
+  return [productsDictionary
+      keysOfEntriesPassingTest:^BOOL(NSString *, BZRProduct *product, BOOL *) {
+        return [product.productType isEqual:$(BZRProductTypeNonConsumable)];
+      }];
 }
 
 - (RACSignal<BZRReceiptSubscriptionInfo *> *)subscriptionInfoSignal {

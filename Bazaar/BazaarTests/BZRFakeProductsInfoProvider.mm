@@ -3,6 +3,7 @@
 
 #import "BZRFakeProductsInfoProvider.h"
 
+#import "BZRProduct.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTestUtils.h"
@@ -37,7 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
   self.receiptValidationStatus =
       BZRReceiptValidationStatusWithSubscriptionIdentifier(@"foo.bar");
   self.appStoreLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
-  self.productsJSONDictionary =  @{@"foo":@"bar"};
+  self.productsJSONDictionary =
+      @{@"foo": BZRProductWithIdentifierAndType(@"foo", $(BZRProductTypeNonConsumable))};
   self.valueToReturnFromIsMultiAppSubscription = YES;
   self.subscriptionInfo =
       [self.subscriptionInfo

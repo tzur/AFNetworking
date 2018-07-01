@@ -5,6 +5,7 @@
 
 #import "BZRFakeProductsInfoProvider.h"
 #import "BZRFakeTweakCollectionsProvider.h"
+#import "BZRProduct.h"
 #import "BZRReceiptModel+GenericSubscription.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTestUtils.h"
@@ -64,85 +65,175 @@ beforeEach(^{
                                genericActiveSubscription:genericActiveSubscription];
 });
 
-it(@"should proxy properties to the underlying products info provider", ^{
-  expect(tweaksProductInfoProvider.purchasedProducts)
-      .to.equal(productsInfoProvider.purchasedProducts);
-  expect(tweaksProductInfoProvider.acquiredViaSubscriptionProducts)
-      .to.equal(productsInfoProvider.acquiredViaSubscriptionProducts);
-  expect(tweaksProductInfoProvider.acquiredProducts)
-      .to.equal(productsInfoProvider.acquiredProducts);
-  expect(tweaksProductInfoProvider.allowedProducts)
-      .to.equal(productsInfoProvider.allowedProducts);
-  expect(tweaksProductInfoProvider.downloadedContentProducts)
-      .to.equal(productsInfoProvider.downloadedContentProducts);
-  expect(tweaksProductInfoProvider.receiptValidationStatus)
-      .to.equal(productsInfoProvider.receiptValidationStatus);
-  expect(tweaksProductInfoProvider.appStoreLocale)
-      .to.equal(productsInfoProvider.appStoreLocale);
-  expect(tweaksProductInfoProvider.productsJSONDictionary)
-      .to.equal(productsInfoProvider.productsJSONDictionary);
-  expect(tweaksProductInfoProvider.productsJSONDictionary)
-      .to.equal(productsInfoProvider.productsJSONDictionary);
-});
+context(@"un-tweaked properties and methods", ^{
+  it(@"should proxy properties to the underlying products info provider", ^{
+    expect(tweaksProductInfoProvider.purchasedProducts)
+        .to.equal(productsInfoProvider.purchasedProducts);
+    expect(tweaksProductInfoProvider.acquiredViaSubscriptionProducts)
+        .to.equal(productsInfoProvider.acquiredViaSubscriptionProducts);
+    expect(tweaksProductInfoProvider.acquiredProducts)
+        .to.equal(productsInfoProvider.acquiredProducts);
+    expect(tweaksProductInfoProvider.allowedProducts)
+        .to.equal(productsInfoProvider.allowedProducts);
+    expect(tweaksProductInfoProvider.downloadedContentProducts)
+        .to.equal(productsInfoProvider.downloadedContentProducts);
+    expect(tweaksProductInfoProvider.receiptValidationStatus)
+        .to.equal(productsInfoProvider.receiptValidationStatus);
+    expect(tweaksProductInfoProvider.appStoreLocale)
+        .to.equal(productsInfoProvider.appStoreLocale);
+    expect(tweaksProductInfoProvider.productsJSONDictionary)
+        .to.equal(productsInfoProvider.productsJSONDictionary);
+    expect(tweaksProductInfoProvider.productsJSONDictionary)
+        .to.equal(productsInfoProvider.productsJSONDictionary);
+  });
 
-it(@"should proxy the isMultiAppSubscription method",^{
+  it(@"should proxy the isMultiAppSubscription method", ^{
     expect([tweaksProductInfoProvider isMultiAppSubscription:@""])
         .to.equal([productsInfoProvider isMultiAppSubscription:@""]);
+  });
+
+  it(@"should proxy the contentBundleForProduct method", ^{
+    auto bundleRecorder = [[tweaksProductInfoProvider contentBundleForProduct:@""] testRecorder];
+
+    [productsInfoProvider.contentBundleForProductSubject sendNext:[NSBundle mainBundle]];
+    expect(bundleRecorder).to.sendValues(@[[NSBundle mainBundle]]);
+  });
 });
 
-it(@"should proxy the contentBundleForProduct method", ^{
-  auto bundleRecorder = [[tweaksProductInfoProvider contentBundleForProduct:@""] testRecorder];
+context(@"subscription tweaking", ^{
+  it(@"should send the on-device subscription before the subscriptionSourceSignal sends events", ^{
+    expect(tweaksProductInfoProvider.subscriptionInfo)
+        .to.equal(productsInfoProvider.subscriptionInfo);
+    expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
+        .to.equal(productsInfoProvider.subscriptionInfo);
+  });
 
-  [productsInfoProvider.contentBundleForProductSubject sendNext:[NSBundle mainBundle]];
-  expect(bundleRecorder).to.sendValues(@[[NSBundle mainBundle]]);
+  it(@"should send the on-device subscription when the subscriptionSourceSignal sends "
+     "'OnDevice'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceOnDevice)];
+
+    expect(tweaksProductInfoProvider.subscriptionInfo)
+        .to.equal(productsInfoProvider.subscriptionInfo);
+    expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
+        .to.equal(productsInfoProvider.subscriptionInfo);
+  });
+
+  it(@"should send nil subscription when the subscriptionSourceSignal sends 'NoSubscription'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceNoSubscription)];
+
+    expect(tweaksProductInfoProvider.subscriptionInfo).to.beNil();
+    expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription).to.beNil();
+  });
+
+  it(@"should send customized subscription when the subscriptionSourceSignal sends"
+     "'CustomizedSubscription'", ^{
+    auto overridingSubscriptionInfo =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(@"fig.bar").receipt.subscription;
+    subscriptionCollectionSignalsProvider.overridingSubscription = overridingSubscriptionInfo;
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceCustomizedSubscription)];
+
+    expect(tweaksProductInfoProvider.subscriptionInfo).to.equal(overridingSubscriptionInfo);
+    expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
+        .equal(overridingSubscriptionInfo);
+  });
+
+  it(@"should send the generic subscription when the subscriptionSourceSignal sends "
+     "'GenericActive'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceGenericActive)];
+
+    expect(tweaksProductInfoProvider.subscriptionInfo).to.equal(genericActiveSubscription);
+    expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
+        .equal(genericActiveSubscription);
+  });
 });
 
-it(@"should send the on-device subscription before the subscriptionSourceSignal sends events",^{
-  expect(tweaksProductInfoProvider.subscriptionInfo)
-      .to.equal(productsInfoProvider.subscriptionInfo);
-  expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
-      .to.equal(productsInfoProvider.subscriptionInfo);
-});
+context(@"allowed products tweaking", ^{
+  __block NSSet<NSString *> *allNonConsumableProductsIdentifiers;
 
-it(@"should send the on-device subscription when the subscriptionSourceSignal sends 'OnDevice'", ^{
-  [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
-   sendNext:(id)@(BZRTweaksSubscriptionSourceOnDevice)];
+  beforeEach(^{
+    auto firstNonConsumableProduct =
+        BZRProductWithIdentifierAndType(@"firstNonConsumableProduct",
+                                        $(BZRProductTypeNonConsumable));
+    auto secondNonConsumableProduct =
+        BZRProductWithIdentifierAndType(@"secondNonConsumableProduct",
+                                        $(BZRProductTypeNonConsumable));
 
-  expect(tweaksProductInfoProvider.subscriptionInfo)
-      .to.equal(productsInfoProvider.subscriptionInfo);
-  expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
-      .to.equal(productsInfoProvider.subscriptionInfo);
-});
+    auto consumableProduct =
+        BZRProductWithIdentifierAndType(@"consumableProduct",
+                                        $(BZRProductTypeConsumable));
+    auto renewableSubscriptionProduct =
+        BZRProductWithIdentifierAndType(@"renewableSubscriptionProduct",
+                                        $(BZRProductTypeRenewableSubscription));
+    auto nonRenewableSubscriptionProduct =
+        BZRProductWithIdentifierAndType(@"nonRenewableSubscriptionProduct",
+                                        $(BZRProductTypeNonRenewingSubscription));
 
-it(@"should send nil subscription when the subscriptionSourceSignal sends 'NoSubscription'", ^{
-  [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
-   sendNext:(id)@(BZRTweaksSubscriptionSourceNoSubscription)];
+    allNonConsumableProductsIdentifiers = @[
+      firstNonConsumableProduct.identifier,
+      secondNonConsumableProduct.identifier
+    ].lt_set;
 
-  expect(tweaksProductInfoProvider.subscriptionInfo).to.beNil();
-  expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription).to.beNil();
-});
+    productsInfoProvider.allowedProducts = @[firstNonConsumableProduct.identifier].lt_set;
 
-it(@"should send customized subscription when the subscriptionSourceSignal sends"
-   "'CustomizedSubscription'", ^{
-  [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
-   sendNext:(id)@(BZRTweaksSubscriptionSourceCustomizedSubscription)];
+    productsInfoProvider.productsJSONDictionary = @{
+      firstNonConsumableProduct.identifier: firstNonConsumableProduct,
+      secondNonConsumableProduct.identifier: secondNonConsumableProduct,
+      consumableProduct.identifier: consumableProduct,
+      renewableSubscriptionProduct.identifier: renewableSubscriptionProduct,
+      nonRenewableSubscriptionProduct.identifier: nonRenewableSubscriptionProduct
+    };
+  });
 
-  auto overridingSubscriptionInfo =
-      BZRReceiptValidationStatusWithSubscriptionIdentifier(@"fig.bar").receipt.subscription;
-  subscriptionCollectionSignalsProvider.overridingSubscription = overridingSubscriptionInfo;
-  expect(tweaksProductInfoProvider.subscriptionInfo).to.equal(overridingSubscriptionInfo);
-  expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
-      .equal(overridingSubscriptionInfo);
-});
+  it(@"should be empty when the subscriptionSourceSignal sends 'NoSubscription'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceNoSubscription)];
+    expect(tweaksProductInfoProvider.allowedProducts).to.beEmpty();
+  });
 
-it(@"should send the generic subscription when the subscriptionSourceSignal sends "
-   "'GenericActive'", ^{
-  [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
-   sendNext:(id)@(BZRTweaksSubscriptionSourceGenericActive)];
+  it(@"should be the same as the on-device allowedProducts before the subscriptionSourceSignal "
+     "sends events'", ^{
+    expect(tweaksProductInfoProvider.allowedProducts)
+        .to.equal(productsInfoProvider.allowedProducts);
+  });
 
-  expect(tweaksProductInfoProvider.subscriptionInfo).to.equal(genericActiveSubscription);
-  expect(tweaksProductInfoProvider.receiptValidationStatus.receipt.subscription)
-      .equal(genericActiveSubscription);
+  it(@"should be the same as the on-device allowedProducts when the subscriptionSourceSignal sends"
+     "'OnDevice'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceOnDevice)];
+    expect(tweaksProductInfoProvider.allowedProducts)
+        .to.equal(productsInfoProvider.allowedProducts);
+  });
+
+  it(@"should contain all the non-consumable products when the subscriptionSourceSignal sends"
+     "'CustomizedSubscription' and the overriding subscription is not expired", ^{
+    subscriptionCollectionSignalsProvider.overridingSubscription =
+        BZRReceiptValidationStatusWithExpiry(NO).receipt.subscription;
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceCustomizedSubscription)];
+
+    expect(tweaksProductInfoProvider.allowedProducts).to.equal(allNonConsumableProductsIdentifiers);
+   });
+
+  it(@"should be empty when the subscriptionSourceSignal sends 'CustomizedSubscription' and the "
+     "overriding subscription is expired", ^{
+    subscriptionCollectionSignalsProvider.overridingSubscription =
+        BZRReceiptValidationStatusWithExpiry(YES).receipt.subscription;
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceCustomizedSubscription)];
+
+    expect(tweaksProductInfoProvider.allowedProducts).to.equal([NSSet set]);
+   });
+
+  it(@"should contain all the non-consumable products when the subscriptionSourceSignal"
+     "sends GenericActive'", ^{
+    [subscriptionCollectionSignalsProvider.subscriptionSourceSubject
+     sendNext:(id)@(BZRTweaksSubscriptionSourceGenericActive)];
+    expect(tweaksProductInfoProvider.allowedProducts).to.equal(allNonConsumableProductsIdentifiers);
+  });
 });
 
 SpecEnd
