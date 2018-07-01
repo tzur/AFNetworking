@@ -289,6 +289,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     [self assignErrorDeletingProject:projectID to:error];
     return NO;
   }
+  @onExit {
+    [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
+  };
   // Uses \c NSFileManager method that atomically replaces directory content to delete the project
   // content (by replacing with an empty directory). This is done in order to avoid partially
   // deleted project in case of unexpected termination.
@@ -385,6 +388,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   if (!tempURL) {
     return NO;
   }
+  @onExit {
+    [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
+  };
   auto dataSource = tempURL.whs_dataURL;
   auto dataSourceCreated = [self.fileManager createDirectoryAtURL:dataSource
                                       withIntermediateDirectories:YES attributes:nil error:error];
@@ -412,7 +418,6 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   auto dataWritten = [self.fileManager replaceItemAtURL:dataDestination withItemAtURL:dataSource
                                          backupItemName:nil options:0 resultingItemURL:nil
                                                   error:error];
-  [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
   return dataWritten;
 }
 
@@ -522,14 +527,21 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
       return nil;
     }
     auto _Nullable stepAssetsSourceURL = stepsContent[i].assetsSourceURL;
+    NSURL * _Nullable emptyURL;
     if (!stepAssetsSourceURL) {
-      stepAssetsSourceURL = [self createTempURLWithError:error];
-      if (!stepAssetsSourceURL) {
+      emptyURL = [self createTempURLWithError:error];
+      if (!emptyURL) {
         [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
         return nil;
       }
     }
-    if (![self copyAssetsOfProject:projectID step:stepID from:nn(stepAssetsSourceURL) error:error])
+    @onExit {
+      if (emptyURL) {
+        [self.fileManager removeItemAtURL:nn(emptyURL) error:nil];
+      }
+    };
+    if (![self copyAssetsOfProject:projectID step:stepID from:nn(stepAssetsSourceURL ?: emptyURL)
+                             error:error])
     {
       [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
       return nil;
@@ -586,19 +598,20 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     [self assignErrorDuplicatingProject:projectID to:error];
     return nil;
   }
+  @onExit {
+    [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
+  };
   auto tempProjectURL = [tempURL URLByAppendingPathComponent:duplicatedID.UUIDString];
   auto contentCopied = [self.fileManager copyItemAtURL:[self URLOfProject:projectID]
                                                  toURL:tempProjectURL error:error];
   if (!contentCopied) {
     [self assignErrorDuplicatingProject:projectID to:error];
-    [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
     return nil;
   }
 
   auto duplicated = [self.fileManager replaceItemAtURL:[self URLOfProject:duplicatedID]
                                          withItemAtURL:tempProjectURL backupItemName:nil options:0
                                       resultingItemURL:nil error:error];
-  [self.fileManager removeItemAtURL:nn(tempURL) error:nil];
   if (!duplicated) {
     [self assignErrorDuplicatingProject:projectID to:error];
     return nil;
