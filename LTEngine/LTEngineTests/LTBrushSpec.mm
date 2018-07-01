@@ -420,7 +420,7 @@ context(@"drawing", ^{
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
     cv::Mat1b expectedSingle(expected.rows, expected.cols, (uchar)0);
     newTexture.copyTo(expectedSingle(LTCVRectWithCGRect(targetRect)));
-    cv::cvtColor(expectedSingle, expected, CV_GRAY2RGBA);
+    cv::cvtColor(expectedSingle, expected, cv::COLOR_GRAY2RGBA);
     expect($(output.image)).to.equalMat($(expected));
   });
 

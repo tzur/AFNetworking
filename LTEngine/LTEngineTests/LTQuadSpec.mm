@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTGLKitExtensions.h>
 #import <LTKit/LTRandom.h>
+#import <opencv2/calib3d.hpp>
 
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"

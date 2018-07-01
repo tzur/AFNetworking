@@ -592,7 +592,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         auto pixelBuffer = LTCVPixelBufferCreate(expected.cols, expected.rows,
                                                  kCVPixelFormatType_32BGRA);
         LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
-          cv::cvtColor(expected, *image, CV_RGBA2BGRA);
+          cv::cvtColor(expected, *image, cv::COLOR_RGBA2BGRA);
         });
 
         CIImage *expectedCIImage = [CIImage imageWithCVPixelBuffer:pixelBuffer.get() options:@{

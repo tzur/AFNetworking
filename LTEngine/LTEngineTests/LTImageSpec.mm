@@ -3,6 +3,8 @@
 
 #import "LTImage.h"
 
+#import <opencv2/imgcodecs.hpp>
+
 #import "LTOpenCVExtensions.h"
 
 static cv::Mat4b LTLoadRGBAImage(NSString *name) {

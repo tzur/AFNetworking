@@ -40,7 +40,7 @@ static cv::Mat LTModifiedLaplacianOpenCV(const cv::Mat &input) {
 
   cv::Mat rgbResult = cv::abs(Lx) + cv::abs(Ly);
   cv::Mat1f finalResult;
-  cv::cvtColor(rgbResult, finalResult, CV_RGBA2GRAY);
+  cv::cvtColor(rgbResult, finalResult, cv::COLOR_RGBA2GRAY);
 
   return finalResult;
 }

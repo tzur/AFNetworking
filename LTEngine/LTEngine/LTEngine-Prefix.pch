@@ -27,11 +27,11 @@
 #pragma clang diagnostic pop
 
 #ifdef __cplusplus
-  #pragma clang diagnostic push
-  // Ignore no newline at EOF in persistance.hpp.
-  #pragma clang diagnostic ignored "-Wnewline-eof"
-  #import <opencv2/opencv.hpp>
-  #pragma clang diagnostic pop
+  // The following definition prevents compilation errors when certain opencv modules are imported.
+  // It also removes the old C interface of opencv.
+  #define DISABLE_OPENCV_24_COMPATIBILITY
+  #import <opencv2/core.hpp>
+  #import <opencv2/imgproc.hpp>
 #endif
 
 // LTKit.
