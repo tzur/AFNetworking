@@ -4,6 +4,7 @@
 #import "LTImageIOExtensions.h"
 
 #import <LTKit/NSBundle+Path.h>
+#import <opencv2/imgcodecs.hpp>
 
 #import "LTImage.h"
 
@@ -62,7 +63,7 @@ __block NSDictionary *metadata;
 
 beforeEach(^{
   imageRGBA = cv::Mat4b(5, 5, cv::Vec4b(192, 128, 64, 255));
-  cv::cvtColor(imageRGBA, imageBGR, CV_RGBA2BGR);
+  cv::cvtColor(imageRGBA, imageBGR, cv::COLOR_RGBA2BGR);
   metadata = @{
     (__bridge NSString *)kCGImagePropertyExifDictionary: @{
       (__bridge NSString *)kCGImagePropertyExifUserComment: kUserComment,

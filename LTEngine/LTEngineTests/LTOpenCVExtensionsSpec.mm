@@ -578,7 +578,7 @@ context(@"generate mat", ^{
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
     LTConvertFromHalfFloat(mat, &convertedGray);
-    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+    cv::cvtColor(convertedGray, convertedRGB, cv::COLOR_GRAY2RGBA);
 
     cv::Mat expected = LTLoadMat([self class], @"GaussianSquare.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
@@ -594,7 +594,7 @@ context(@"generate mat", ^{
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
     LTConvertFromHalfFloat(mat, &convertedGray);
-    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+    cv::cvtColor(convertedGray, convertedRGB, cv::COLOR_GRAY2RGBA);
 
     cv::Mat expected = LTLoadMat([self class], @"GaussianAnisotropic.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
@@ -610,11 +610,11 @@ context(@"generate mat", ^{
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
     LTConvertFromHalfFloat(mat, &convertedGray);
-    cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
+    cv::cvtColor(convertedGray, convertedRGB, cv::COLOR_GRAY2RGBA);
 
     cv::Mat4b expected = LTLoadMat([self class], @"GaussianSquare.png");
     cv::Mat1b expectedGray(expected.size());
-    cv::cvtColor(expected, expectedGray, CV_RGBA2GRAY);
+    cv::cvtColor(expected, expectedGray, cv::COLOR_RGBA2GRAY);
     float factor = *std::max_element(expectedGray.begin(), expectedGray.end()) / 255.0;
     std::transform(expected.begin(), expected.end(), expected.begin(),
                    [factor](const cv::Vec4b &pixel) {

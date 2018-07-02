@@ -71,7 +71,7 @@ LTVector3 LTVector3::rgbToHsv() const {
 LTVector3 LTVector3::hsvToRgb() const {
   cv::Mat3f hsvMat(1, 1, cv::Vec3f(x * 360, y, z));
   cv::Mat3f rgbMat(1, 1);
-  cv::cvtColor(hsvMat, rgbMat, CV_HSV2RGB);
+  cv::cvtColor(hsvMat, rgbMat, cv::COLOR_HSV2RGB);
   return LTVector3(rgbMat(0, 0)[0], rgbMat(0, 0)[1], rgbMat(0, 0)[2]);
 }
 

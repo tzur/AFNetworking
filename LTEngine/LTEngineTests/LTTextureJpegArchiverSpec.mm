@@ -6,6 +6,7 @@
 #import <LTKit/LTImageLoader.h>
 #import <LTKit/NSError+LTKit.h>
 #import <LTKit/NSFileManager+LTKit.h>
+#import <opencv2/imgcodecs.hpp>
 
 #import "LTImage.h"
 #import "LTTexture+Factory.h"
@@ -128,7 +129,7 @@ context(@"unarchiving", ^{
     mat.rowRange(16, 32).setTo(cv::Vec4b(0, 255, 0, 255));
 
     cv::Mat bgr;
-    cv::cvtColor(mat, bgr, CV_RGBA2BGRA);
+    cv::cvtColor(mat, bgr, cv::COLOR_RGBA2BGRA);
     cv::imwrite([LTTemporaryPath(@"archive.jpg") cStringUsingEncoding:NSUTF8StringEncoding], bgr);
   });
 
@@ -143,7 +144,7 @@ context(@"unarchiving", ^{
 
   it(@"should unarchive single channel texture", ^{
     cv::Mat1b gray;
-    cv::cvtColor(mat, gray, CV_RGBA2GRAY);
+    cv::cvtColor(mat, gray, cv::COLOR_RGBA2GRAY);
     cv::imwrite([LTTemporaryPath(@"archive.jpg") cStringUsingEncoding:NSUTF8StringEncoding], gray);
 
     texture = [LTTexture byteRedTextureWithSize:CGSizeMake(mat.cols, mat.rows)];

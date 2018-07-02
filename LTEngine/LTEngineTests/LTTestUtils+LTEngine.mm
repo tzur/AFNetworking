@@ -9,6 +9,7 @@
 #import <LTKit/UIDevice+Hardware.h>
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
+#import <opencv2/imgcodecs.hpp>
 
 using half_float::half;
 
@@ -572,13 +573,13 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
     } break;
     case CV_8UC3: {
       cv::Mat bgrMat;
-      cv::cvtColor(mat, bgrMat, CV_RGB2BGR);
+      cv::cvtColor(mat, bgrMat, cv::COLOR_RGB2BGR);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     case CV_8UC4:
     case CV_16UC4: {
       cv::Mat bgrMat;
-      cv::cvtColor(mat, bgrMat, CV_RGBA2BGRA);
+      cv::cvtColor(mat, bgrMat, cv::COLOR_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     case CV_16F: {
@@ -611,7 +612,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::Mat converted;
       mat.convertTo(converted, CV_8UC3, 255.0);
       cv::Mat bgrMat;
-      cv::cvtColor(converted, bgrMat, CV_RGB2BGRA);
+      cv::cvtColor(converted, bgrMat, cv::COLOR_RGB2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     case CV_16FC4:
@@ -620,7 +621,7 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::Mat converted;
       mat.convertTo(converted, CV_8UC4, 255.0);
       cv::Mat bgrMat;
-      cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
+      cv::cvtColor(converted, bgrMat, cv::COLOR_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     default:

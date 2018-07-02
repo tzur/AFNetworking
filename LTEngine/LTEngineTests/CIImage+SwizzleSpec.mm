@@ -40,7 +40,7 @@ context(@"swizzle", ^{
     expect($(output)).to.equalMat($(input));
 
     cv::Mat4b expected;
-    cv::cvtColor(input, expected, CV_RGBA2BGRA);
+    cv::cvtColor(input, expected, cv::COLOR_RGBA2BGRA);
 
     CIImage *swizzledImage = inputImage.lt_swizzledImage;
 
