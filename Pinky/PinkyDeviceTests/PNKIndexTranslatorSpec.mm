@@ -94,7 +94,7 @@ context(@"translation", ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
     cv::Mat rgbaImage = LTLoadMatFromBundle(bundle, @"Lena128.png");
     cv::Mat1b inputImage;
-    cv::cvtColor(rgbaImage, inputImage, CV_RGBA2GRAY);
+    cv::cvtColor(rgbaImage, inputImage, cv::COLOR_RGBA2GRAY);
     cv::Mat1b expectedOutputImage = 255 - inputImage;
 
     return @{

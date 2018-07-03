@@ -55,7 +55,7 @@ context(@"segment", ^{
     auto inputBuffer = LTCVPixelBufferCreate(rgbaMat.cols, rgbaMat.rows,
                                              kCVPixelFormatType_OneComponent8);
     LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat * _Nonnull image) {
-      cv::cvtColor(rgbaMat, *image, CV_RGBA2GRAY);
+      cv::cvtColor(rgbaMat, *image, cv::COLOR_RGBA2GRAY);
     });
 
     auto outputSize = [processor outputSizeWithInputSize:CGSizeMake(rgbaMat.cols, rgbaMat.rows)];
