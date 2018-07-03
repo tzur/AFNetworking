@@ -238,11 +238,11 @@ context(@"correctness", ^{
     expect(commandBuffer.error).to.beNil();
 
     auto result = PNKMatFromRGBBuffer(buffers.input);
-    cv::cvtColor(inputMat, inputMat, CV_RGB2BGR);
+    cv::cvtColor(inputMat, inputMat, cv::COLOR_RGB2BGR);
     auto expected = PNKTestHistogramSpecification(inputMat, buffers.inputCDFs,
                                                   buffers.referenceInverseCDFs,
                                                   {0, 0, 0}, {1, 1, 1});
-    cv::cvtColor(expected, expected, CV_RGB2BGR);
+    cv::cvtColor(expected, expected, cv::COLOR_RGB2BGR);
     expect($(result)).to.beCloseToMatWithin($(expected), 1e-4);
   });
 

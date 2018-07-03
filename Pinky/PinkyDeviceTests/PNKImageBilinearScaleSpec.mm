@@ -86,7 +86,7 @@ context(@"resize", ^{
   it(@"should resize image and transform Y to RGBA correctly", ^{
     auto inputMatRGBA = LTLoadMat([self class], @"ResizeInput.png");
     cv::Mat inputMat;
-    cv::cvtColor(inputMatRGBA, inputMat, CV_RGBA2GRAY);
+    cv::cvtColor(inputMatRGBA, inputMat, cv::COLOR_RGBA2GRAY);
 
     auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
@@ -107,7 +107,7 @@ context(@"resize", ^{
     cv::resize(inputMat, resizedInputMat, cv::Size(0, 0), 0.5, 0.5);
 
     cv::Mat expectedMat;
-    cv::cvtColor(resizedInputMat, expectedMat, CV_GRAY2RGBA);
+    cv::cvtColor(resizedInputMat, expectedMat, cv::COLOR_GRAY2RGBA);
 
     expect($(outputMat)).to.beCloseToMat($(expectedMat));
   });
@@ -133,7 +133,7 @@ context(@"resize", ^{
     cv::resize(inputMat, resizedInputMat, cv::Size(0, 0), 1.5, 1.5);
 
     cv::Mat expectedMat;
-    cv::cvtColor(resizedInputMat, expectedMat, CV_RGBA2GRAY);
+    cv::cvtColor(resizedInputMat, expectedMat, cv::COLOR_RGBA2GRAY);
 
     expect($(outputMat)).to.beCloseToMat($(expectedMat));
   });
