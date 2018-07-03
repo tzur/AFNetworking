@@ -9,6 +9,7 @@
 #import <FiberTestUtils/FBRHTTPTestUtils.h>
 
 #import "BZREvent.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRValidatricksModels.h"
@@ -243,7 +244,8 @@ context(@"validate receipt", ^{
 context(@"get user credit", ^{
   NSDictionary * const requestParameters = @{
     @"userId": userId,
-    @"creditType": creditType
+    @"creditType": creditType,
+    @"environment": @"production"
   };
   BZRUserCreditStatus * const successfulResult =
       [MTLJSONAdapter modelOfClass:BZRUserCreditStatus.class fromJSONDictionary:@{
@@ -262,7 +264,8 @@ context(@"get user credit", ^{
     kRequestParametersKey: requestParameters,
     kSuccessfulResultKey: successfulResult,
     kSendRequestBlockKey: ^RACSignal *(BZRValidatricksClient *client) {
-      return [client getCreditOfType:creditType forUser:userId];
+      return [client getCreditOfType:creditType forUser:userId
+                         environment:$(BZRReceiptEnvironmentProduction)];
     }
   });
 });
@@ -300,7 +303,8 @@ context(@"redeem consumables", ^{
     @"consumableItems": @[@{
       @"consumableItemId": consumableItems[0],
       @"consumableType": consumableTypes[0]
-    }]
+    }],
+    @"environment": @"sandbox"
   };
   BZRConsumableItemDescriptor * const consumableItem =
       lt::nn([[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
@@ -325,7 +329,8 @@ context(@"redeem consumables", ^{
     kRequestParametersKey: requestParameters,
     kSuccessfulResultKey: successfulResult,
     kSendRequestBlockKey: ^RACSignal *(BZRValidatricksClient *client) {
-      return [client redeemConsumableItems:@[consumableItem] ofCreditType:creditType userId:userId];
+      return [client redeemConsumableItems:@[consumableItem] ofCreditType:creditType userId:userId
+                               environment:$(BZRReceiptEnvironmentSandbox)];
     }
   });
 });

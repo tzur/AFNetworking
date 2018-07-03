@@ -640,18 +640,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRUserCreditStatus *> *)getUserCreditStatus:(NSString *)creditType {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
-    @strongify(self);
-    if (!self.userIDProvider.userID) {
-      return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
-    }
-    return [[self.validatricksClient getCreditOfType:creditType forUser:self.userIDProvider.userID]
-        doNext:^(BZRUserCreditStatus *userCreditStatus) {
-          [self.keychainStorage setValue:userCreditStatus
-                                  forKey:[self userCreditCacheKeyForCreditType:creditType]
-                                   error:nil];
-        }];
-  }];
+  return [[[RACSignal
+      defer:^{
+        @strongify(self);
+        return self.receiptValidationStatus ? [RACSignal return:self.receiptValidationStatus] :
+            [self validateReceipt];
+      }]
+      flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
+        @strongify(self);
+        if (!self.userIDProvider.userID) {
+          return [RACSignal error:
+                  [NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
+        }
+        return [self.validatricksClient getCreditOfType:creditType
+                forUser:self.userIDProvider.userID
+                environment:lt::nn(receiptValidationStatus.receipt).environment];
+      }]
+      doNext:^(BZRUserCreditStatus *userCreditStatus) {
+        [self.keychainStorage setValue:userCreditStatus
+                                forKey:[self userCreditCacheKeyForCreditType:creditType]
+                                 error:nil];
+      }];
 }
 
 - (NSString *)userCreditCacheKeyForCreditType:(NSString *)creditType {
@@ -700,15 +709,23 @@ NS_ASSUME_NONNULL_BEGIN
       allValues];
 
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
-    @strongify(self);
-    if (!self.userIDProvider.userID) {
-      return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
-    }
+  return [[RACSignal
+      defer:^{
+        @strongify(self);
+        return self.receiptValidationStatus ? [RACSignal return:self.receiptValidationStatus] :
+            [self validateReceipt];
+      }]
+      flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
+        @strongify(self);
+        if (!self.userIDProvider.userID) {
+          return [RACSignal error:
+                  [NSError lt_errorWithCode:BZRErrorCodeUserIdentifierNotAvailable]];
+        }
 
-    return [self.validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
-                                                   userId:self.userIDProvider.userID];
-  }];
+        return [self.validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
+                userId:self.userIDProvider.userID
+                environment:lt::nn(receiptValidationStatus.receipt).environment];
+      }];
 }
 
 - (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(NSString *)productIdentifier {

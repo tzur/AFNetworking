@@ -9,10 +9,12 @@
 #import <Fiber/RACSignal+Fiber.h>
 
 #import "BZREvent.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRReceiptValidationStatus.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "NSValueTransformer+Bazaar.h"
 #import "RACSignal+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -65,6 +67,9 @@ static NSString * const kValidatricksConsumableTypesKey = @"consumableTypes";
 /// Consumable items parameter names for Validatricks endpoints.
 static NSString * const kValidatricksConsumableItemsKey = @"consumableItems";
 
+/// Environment parameter names for Validatricks endpoints.
+static NSString * const kValidatricksEnvironmentKey = @"environment";
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -102,11 +107,17 @@ static NSString * const kValidatricksConsumableItemsKey = @"consumableItems";
 }
 
 - (RACSignal<BZRUserCreditStatus *> *)getCreditOfType:(NSString *)creditType
-                                              forUser:(NSString *)userId {
+                                              forUser:(NSString *)userId
+                                          environment:(BZRReceiptEnvironment *)environment {
+  NSString *environmentParameter =
+      lt::nn([[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+              reverseTransformedValue:environment]);
   FBRHTTPRequestParameters *parameters = @{
     kValidatricksCreditTypeKey: creditType,
-    kValidatricksUserIdKey: userId
+    kValidatricksUserIdKey: userId,
+    kValidatricksEnvironmentKey: environmentParameter
   };
+
   return [[[[[self.HTTPClient
       GET:kValidatricksGetUserCreditEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
@@ -141,12 +152,18 @@ static NSString * const kValidatricksConsumableItemsKey = @"consumableItems";
 
 - (RACSignal<BZRRedeemConsumablesStatus *> *)
     redeemConsumableItems:(NSArray<BZRConsumableItemDescriptor *> *)items
-    ofCreditType:(NSString *)creditType userId:(NSString *)userId {
+    ofCreditType:(NSString *)creditType userId:(NSString *)userId
+    environment:(BZRReceiptEnvironment *)environment {
+  NSString *environmentParameter =
+      lt::nn([[NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer]
+              reverseTransformedValue:environment]);
   FBRHTTPRequestParameters *parameters = @{
     kValidatricksConsumableItemsKey: [MTLJSONAdapter JSONArrayFromModels:items],
     kValidatricksCreditTypeKey: creditType,
-    kValidatricksUserIdKey: userId
+    kValidatricksUserIdKey: userId,
+    kValidatricksEnvironmentKey: environmentParameter
   };
+
   return [[[[[self.HTTPClient
       POST:kValidatricksRedeemConsumablesEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
