@@ -6,10 +6,11 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
     BZRAllowedProductsProvider, BZRAppStoreLocaleProvider, BZRKeychainStorage,
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager,
-    BZRStoreKitCachedMetadataFetcher, BZRStoreKitFacade, BZRValidatricksClient, LTPath;
+    BZRStoreKitCachedMetadataFetcher, BZRStoreKitFacade, LTPath;
 
 @protocol BZRMultiAppSubscriptionClassifier, BZRProductsProvider, BZRProductContentFetcher,
-    BZRProductsVariantSelectorFactory, BZRReceiptValidationParametersProvider, BZRUserIDProvider;
+    BZRProductsVariantSelectorFactory, BZRReceiptValidationParametersProvider, BZRUserIDProvider,
+    BZRValidatricksClient;
 
 /// Object used to provide configuration objects for \c BZRStore.
 @interface BZRStoreConfiguration : NSObject
@@ -150,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// Client used to make HTTP requests to Validatricks.
-@property (strong, nonatomic) BZRValidatricksClient *validatricksClient;
+@property (strong, nonatomic) id<BZRValidatricksClient> validatricksClient;
 
 /// Provider used to provide a unique identifier of the user.
 @property (strong, nonatomic) id<BZRUserIDProvider> userIDProvider;

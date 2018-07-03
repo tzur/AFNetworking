@@ -5,7 +5,7 @@
 
 @class BZRReceiptDataCache;
 
-@protocol BZRReceiptValidationParametersProvider, BZRReceiptValidator, BZRUserIDProvider;
+@protocol BZRReceiptValidationParametersProvider, BZRValidatricksClient, BZRUserIDProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,21 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c validationParametersProvider, \c receiptDataCache
-/// and \c currentApplicationBundleID. \c receiptValidator is set to
-/// \c [[BZRValidatricksReceiptValidator alloc] init] wrapped by a \c BZRRetryReceiptValidator.
-- (instancetype)initWithValidationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
-    validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-    userIDProvider:(id<BZRUserIDProvider>)userIDProvider;
-
-/// Initializes \c receiptValidator is used to validate the receipt and return the latest
+/// Initializes with \c validatricksClient is used to validate the receipt and return the latest
 /// \c BZRReceiptValidationStatus. \c validationParametersProvider is used to provide validation
-/// parameters to \c receiptValidator to validate the receipt. \c receiptDataCache is used to store
-/// the receipt validation status when validation is requested. \c userIDProvider is used to get a
-/// unique identifier of the user to send to validation.
-- (instancetype)initWithReceiptValidator:(id<BZRReceiptValidator>)receiptValidator
+/// parameters to \c validatricksClient to validate the receipt. \c receiptDataCache is used to
+/// store the receipt validation status when validation is requested. \c userIDProvider is used to
+/// get a unique identifier of the user to send to validation.
+- (instancetype)initWithValidatricksClient:(id<BZRValidatricksClient>)validatricksClient
     validationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
-    validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+    validationParametersProvider
+    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
     userIDProvider:(id<BZRUserIDProvider>)userIDProvider
     NS_DESIGNATED_INITIALIZER;
 

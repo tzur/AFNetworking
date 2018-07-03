@@ -8,10 +8,8 @@
 #import "BZRReceiptValidationParameters.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
-#import "BZRReceiptValidator.h"
-#import "BZRRetryReceiptValidator.h"
 #import "BZRUserIDProvider.h"
-#import "BZRValidatricksReceiptValidator.h"
+#import "BZRValidatricksClient.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -19,10 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRValidatedReceiptValidationStatusProvider ()
 
-/// Validator used to validate the receipt and receive \c receiptValidationStatus.
-@property (readonly, nonatomic) id<BZRReceiptValidator> receiptValidator;
+/// Client used to communicate with validatricks.
+@property (readonly, nonatomic) id<BZRValidatricksClient> validatricksClient;
 
-/// Provider that provides parameters to the \c receiptValidator.
+/// Provider that provides parameters to the \c validatricksClient.
 @property (readonly, nonatomic) id<BZRReceiptValidationParametersProvider>
     validationParametersProvider;
 
@@ -34,37 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Delay of the second try to fetch the receipt validation status after the first try has failed.
-static const NSTimeInterval kInitialRetryDelay = 0.5;
-
-/// Number of times to retry receipt validation status fetching.
-static const NSUInteger kNumberOfRetries = 4;
-
 @implementation BZRValidatedReceiptValidationStatusProvider
 
-- (instancetype)initWithValidationParametersProvider:
-    (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
+- (instancetype)initWithValidatricksClient:(id<BZRValidatricksClient>)validatricksClient
+    validationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
+    validationParametersProvider
     receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
     userIDProvider:(id<BZRUserIDProvider>)userIDProvider {
-  BZRValidatricksReceiptValidator *receiptValidator =
-      [[BZRValidatricksReceiptValidator alloc] init];
-  BZRRetryReceiptValidator *retryValidator =
-      [[BZRRetryReceiptValidator alloc] initWithUnderlyingValidator:receiptValidator
-                                                  initialRetryDelay:kInitialRetryDelay
-                                                    numberOfRetries:kNumberOfRetries];
-  return [self initWithReceiptValidator:retryValidator
-           validationParametersProvider:validationParametersProvider
-                       receiptDataCache:receiptDataCache
-                         userIDProvider:userIDProvider];
-}
 
-- (instancetype)initWithReceiptValidator:(id<BZRReceiptValidator>)receiptValidator
-    validationParametersProvider:
-    (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
-    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-    userIDProvider:(id<BZRUserIDProvider>)userIDProvider {
   if (self = [super init]) {
-    _receiptValidator = receiptValidator;
+    _validatricksClient = validatricksClient;
     _receiptDataCache = receiptDataCache;
     _validationParametersProvider = validationParametersProvider;
     _userIDProvider = userIDProvider;
@@ -115,9 +92,9 @@ static const NSUInteger kNumberOfRetries = 4;
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceiptWithApplicationBundleID:
     (NSString *)applicationBundleID receiptValidationParameters:
     (BZRReceiptValidationParameters *)receiptValidationParameters {
-  return [[[[self.receiptValidator validateReceiptWithParameters:receiptValidationParameters]
+  return [[[[self.validatricksClient validateReceipt:receiptValidationParameters]
       catch:^RACSignal *(NSError *error) {
-        NSError *receiptValidationError =
+        auto receiptValidationError =
             [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
         return [RACSignal error:receiptValidationError];
       }]
@@ -155,7 +132,7 @@ static const NSUInteger kNumberOfRetries = 4;
 }
 
 - (RACSignal<BZREvent *> *)eventsSignal {
-  return self.receiptValidator.eventsSignal;
+  return self.validatricksClient.eventsSignal;
 }
 
 @end
