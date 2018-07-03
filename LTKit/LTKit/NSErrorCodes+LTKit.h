@@ -63,7 +63,22 @@
 /// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
 /// with a similar name twice.
 #define LTErrorCodesDeclare(PRODUCT_ID, ...) \
-  _LTErrorCodesDeclare(PRODUCT_ID, __VA_ARGS__)
+  _LTErrorCodesDeclare(PRODUCT_ID, 0, __VA_ARGS__)
+
+/// Defines error codes for a given product ID and a subsystem ID. The first given parameter is the
+/// product ID or a constant representing it. The second parameter is the subsystem ID, defined in
+/// the product's scope. Error codes follow. Example:
+/// @code
+/// LTErrorCodesWithSubsystemDeclare(LTKitErrorCodeProductID, LTKitIOSubsystem,
+///                                  LTErrorCodeFoo,
+///                                  LTErrorCodeBar,
+///                                  LTErrorCodeBaz);
+/// @endcode
+///
+/// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
+/// with a similar name twice.
+#define LTErrorCodesWithSubsystemDeclare(PRODUCT_ID, SUBSYSTEM_ID, ...) \
+  _LTErrorCodesDeclare(PRODUCT_ID, SUBSYSTEM_ID, __VA_ARGS__)
 
 /// Implements and registers the error codes for a given product ID. The first given parameter is
 /// the product ID or a constant representing it. Error codes follow. Example:
@@ -77,12 +92,29 @@
 /// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
 /// with a similar name twice.
 #define LTErrorCodesImplement(PRODUCT_ID, ...) \
-  _LTErrorCodesImplement(PRODUCT_ID, __VA_ARGS__)
+  _LTErrorCodesImplement(PRODUCT_ID, 0, __VA_ARGS__)
+
+/// Implements and registers the error codes for a given product ID and a subsystem ID. The first
+/// given parameter is the product ID or a constant representing it. The second parameter is the
+/// subsystem ID, defined in the product's scope. Error codes follow. Example:
+/// @code
+/// LTErrorCodesWithSubsystemImplement(LTKitErrorCodeProductID, LTKitIOSubsystem,
+///                                    LTErrorCodeFoo,
+///                                    LTErrorCodeBar,
+///                                    LTErrorCodeBaz);
+/// @endcode
+///
+/// Error codes are defined globally, even if their scope is limited. Avoid defining an error code
+/// with a similar name twice.
+#define LTErrorCodesWithSubsystemImplement(PRODUCT_ID, SUBSYSTEM_ID, ...) \
+  _LTErrorCodesImplement(PRODUCT_ID, SUBSYSTEM_ID, __VA_ARGS__)
 
 /// Basic constants for Lightricks' error domain.
 NS_ENUM(NSInteger) {
-  /// Offset for base of error codes, leaving 8 bits for product identifier.
-  LTErrorCodeBaseOffset = 24,
+  /// Offset for subsystem ID in each error code.
+  LTErrorCodeOffsetSubsystemID = 16,
+  /// Offset for product ID in each error code.
+  LTErrorCodeOffsetProductID = 24
 };
 
 /// Product ID.
