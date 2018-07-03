@@ -87,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
     case UIDeviceKindIPadMini4G:
       return @"iPad mini 4";
     case UIDeviceKindIPad5G:
+    case UIDeviceKindIPad6G:
       return @"iPad";
     case UIDeviceKindIPadPro10_5:
     case UIDeviceKindIPadPro2G12_9:

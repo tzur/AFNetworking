@@ -156,6 +156,8 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     @"iPad7,2": @(UIDeviceKindIPadPro2G12_9),
     @"iPad7,3": @(UIDeviceKindIPadPro10_5),
     @"iPad7,4": @(UIDeviceKindIPadPro10_5),
+    @"iPad7,5": @(UIDeviceKindIPad6G),
+    @"iPad7,6": @(UIDeviceKindIPad6G),
 
     // iPad mini.
     @"iPad2,5": @(UIDeviceKindIPadMini1G), // iPad mini WiFi.
@@ -253,6 +255,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     @(UIDeviceKindIPad3G): @"UIDeviceKindIPad3G",
     @(UIDeviceKindIPad4G): @"UIDeviceKindIPad4G",
     @(UIDeviceKindIPad5G): @"UIDeviceKindIPad5G",
+    @(UIDeviceKindIPad6G): @"UIDeviceKindIPad6G",
     @(UIDeviceKindIPadAir1G): @"UIDeviceKindIPadAir1G",
     @(UIDeviceKindIPadAir2G): @"UIDeviceKindIPadAir2G",
     @(UIDeviceKindIPadPro9_7): @"UIDeviceKindIPadPro9_7",
@@ -340,11 +343,14 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
 
     case UIDeviceKindIPad3G:
     case UIDeviceKindIPad4G:
+    case UIDeviceKindIPad5G:
+    case UIDeviceKindIPad6G:
     case UIDeviceKindIPadAir1G:
     case UIDeviceKindIPadAir2G:
     case UIDeviceKindIPadPro9_7:
     case UIDeviceKindIPadPro10_5:
     case UIDeviceKindIPadPro12_9:
+    case UIDeviceKindIPadPro2G12_9:
     case UIDeviceKindUnknownIPad:
     case UIDeviceKindSimulatorIPad:
       return UIDeviceScreenTypeIPadRetina;

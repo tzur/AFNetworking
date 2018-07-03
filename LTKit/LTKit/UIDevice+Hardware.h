@@ -48,6 +48,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindIPad3G,
   UIDeviceKindIPad4G,
   UIDeviceKindIPad5G,
+  UIDeviceKindIPad6G,
   UIDeviceKindIPadAir1G,
   UIDeviceKindIPadAir2G,
   UIDeviceKindIPadPro9_7,
