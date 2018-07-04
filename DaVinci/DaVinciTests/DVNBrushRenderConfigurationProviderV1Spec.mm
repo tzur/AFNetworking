@@ -30,7 +30,8 @@ DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDiction
   DVNBrushRenderTargetInformation *info =
       [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
                                            renderTargetHasSingleChannel:NO
-                                         renderTargetIsNonPremultiplied:NO];
+                                         renderTargetIsNonPremultiplied:NO
+                                           renderTargetHasBytePrecision:YES];
   return [DVNBrushRenderModel instanceWithBrushModel:brushModel renderTargetInfo:info
                                     conversionFactor:1];
 }

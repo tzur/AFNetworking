@@ -9,13 +9,13 @@ uniform highp mat4 modelview;
 
 /// Texture sampled at the center of the rendered quad, if \c sampleUniformColorFromColorTexture is
 /// \c YES. Assumed to be non-premultiplied if \c colorTextureIsNonPremultiplied is \c YES.
-uniform mediump sampler2D colorTexture;
+uniform highp sampler2D colorTexture;
 uniform bool colorTextureIsNonPremultiplied;
 uniform bool sampleUniformColorFromColorTexture;
 
 /// RGB or RGBA texture, in non-premultiplied or premultiplied format, used for computing the edges
 /// potentially restricting the rendering.
-uniform mediump sampler2D edgeAvoidanceGuideTexture;
+uniform highp sampler2D edgeAvoidanceGuideTexture;
 
 /// Additive offset, in object space coordinates, used to compute the locations at which the
 /// \c edgeAvoidanceGuideTexture is sampled.
@@ -43,7 +43,7 @@ varying highp vec3 vSampledColor4;
 /// RGBA color, in premultiplied format, forwarded to the fragment shader.
 varying highp vec4 vPremultipliedColor;
 
-mediump vec4 premultipliedColor(in mediump vec4 nonPremultipliedColor) {
+highp vec4 premultipliedColor(in highp vec4 nonPremultipliedColor) {
   return vec4(nonPremultipliedColor.rgb * nonPremultipliedColor.a, nonPremultipliedColor.a);
 }
 

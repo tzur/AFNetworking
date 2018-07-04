@@ -3,8 +3,10 @@
 
 #extension GL_EXT_shader_framebuffer_fetch : require
 
+#define BYTE_STEP_SIZE (1.0 / 256.0)
+
 /// Single-channel or RGBA texture, in premultiplied format, mapped onto the brush tip quad.
-uniform mediump sampler2D sourceTexture;
+uniform highp sampler2D sourceTexture;
 
 /// \c YES if the \c sourceTexture is in non-premultiplied format.
 uniform bool sourceTextureIsNonPremultiplied;
@@ -25,14 +27,14 @@ const int kSourceTextureSampleModeVertexPosition = 1;
 const int kSourceTextureSampleModeQuadCenter = 2;
 
 /// Single-channel texture used as mask of the brush tip quad.
-uniform mediump sampler2D maskTexture;
+uniform highp sampler2D maskTexture;
 
 /// Edge avoidance factor. Must be in range <tt>[0, 1]</tt>.
 uniform highp float edgeAvoidance;
 
 /// Single-channel or RGBA texture, in non-premultiplied or premultiplied format, used for computing
 /// the edges potentially restricting the rendering.
-uniform mediump sampler2D edgeAvoidanceGuideTexture;
+uniform highp sampler2D edgeAvoidanceGuideTexture;
 
 /// Flow used per rendered quad. Must be in range <tt>[0, 1]</tt>.
 uniform highp float flow;
@@ -46,6 +48,9 @@ uniform bool renderTargetHasSingleChannel;
 
 /// \c YES if the render target is in non-premultiplied format.
 uniform bool renderTargetIsNonPremultiplied;
+
+/// \c YES if the render target has byte precision.
+uniform bool renderTargetHasBytePrecision;
 
 /// Blend mode to be used for blending.
 uniform int blendMode;
@@ -93,17 +98,17 @@ highp vec4 multiply(highp vec4 src, highp vec4 dst) {
 }
 
 highp vec4 hardLight(highp vec4 src, highp vec4 dst) {
-  mediump vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
-  mediump vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - src.a * dst.a - 2.0 *
+  highp vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  highp vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - src.a * dst.a - 2.0 *
       src.rgb * dst.rgb;
   return vec4(mix(below, above, step(0.5 * src.a, src.rgb)), src.a + dst.a - src.a * dst.a);
 }
 
 highp vec4 softLight(highp vec4 src, highp vec4 dst) {
-  mediump float safeA = dst.a + step(dst.a, 0.0);
-  mediump vec3 below = 2.0 * src.rgb * dst.rgb + dst.rgb * (dst.rgb / safeA) *
+  highp float safeA = dst.a + step(dst.a, 0.0);
+  highp vec3 below = 2.0 * src.rgb * dst.rgb + dst.rgb * (dst.rgb / safeA) *
       (src.a - 2.0 * src.rgb) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
-  mediump vec3 above = 2.0 * dst.rgb * (src.a - src.rgb) + sqrt(dst.rgb * dst.a) *
+  highp vec3 above = 2.0 * dst.rgb * (src.a - src.rgb) + sqrt(dst.rgb * dst.a) *
       (2.0 * src.rgb - src.a) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
   return vec4(mix(below, above, step(0.5 * src.a, src.rgb)), src.a + dst.a - src.a * dst.a);
 }
@@ -120,18 +125,18 @@ highp vec4 screen(highp vec4 src, highp vec4 dst) {
 }
 
 highp vec4 colorBurn(highp vec4 src, highp vec4 dst) {
-  mediump float safeA = dst.a + step(dst.a, 0.0);
-  mediump vec3 stepRGB = step(src.rgb, vec3(0.0));
-  mediump vec3 safeRGB = src.rgb + stepRGB;
-  mediump vec3 zero = src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
-  mediump vec3 nonzero = src.a * dst.a * (vec3(1.0) - min(vec3(1.0), (1.0 - dst.rgb / safeA) *
+  highp float safeA = dst.a + step(dst.a, 0.0);
+  highp vec3 stepRGB = step(src.rgb, vec3(0.0));
+  highp vec3 safeRGB = src.rgb + stepRGB;
+  highp vec3 zero = src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  highp vec3 nonzero = src.a * dst.a * (vec3(1.0) - min(vec3(1.0), (1.0 - dst.rgb / safeA) *
       src.a / safeRGB)) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
   return vec4(mix(zero, nonzero, 1.0 - stepRGB), src.a + dst.a - src.a * dst.a);
 }
 
 highp vec4 overlay(highp vec4 src, highp vec4 dst) {
-  mediump vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
-  mediump vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - 2.0 * dst.rgb * src.rgb -
+  highp vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  highp vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - 2.0 * dst.rgb * src.rgb -
       dst.a * src.a;
   return vec4(mix(below, above, step(0.5 * dst.a, dst.rgb)), src.a + dst.a - src.a * dst.a);
 }
@@ -148,7 +153,7 @@ highp vec4 subtract(highp vec4 src, highp vec4 dst) {
   return clamp(dst - src, vec4(0.0), vec4(1.0));
 }
 
-highp vec4 blendOfPremultipliedColors(mediump vec4 src, highp vec4 dst, int mode) {
+highp vec4 blendOfPremultipliedColors(highp vec4 src, highp vec4 dst, int mode) {
   highp vec4 premultipliedOutputColor = dst;
 
   if (blendMode == kBlendModeNormal) {
@@ -211,11 +216,11 @@ highp float edgeAvoidanceFactor(in highp float spatialFactor) {
   return exp(-rgbDist / max(spatialFactor * strength * 2.0, strength));
 }
 
-mediump vec4 premultipliedColor(in mediump vec4 nonPremultipliedColor) {
+highp vec4 premultipliedColor(in highp vec4 nonPremultipliedColor) {
   return vec4(nonPremultipliedColor.rgb * nonPremultipliedColor.a, nonPremultipliedColor.a);
 }
 
-mediump vec4 nonPremultipliedColor(in mediump vec4 premultipliedColor) {
+highp vec4 nonPremultipliedColor(in highp vec4 premultipliedColor) {
   highp float safeA = premultipliedColor.a + step(premultipliedColor.a, 0.0);
   return vec4(premultipliedColor.rgb / safeA, premultipliedColor.a);
 }
@@ -245,7 +250,7 @@ void main() {
     premultipliedContent *= sourceColor;
   }
 
-  mediump float mask = texture2D(maskTexture, vTexcoord.xy / vTexcoord.z).r * flow;
+  highp float mask = texture2D(maskTexture, vTexcoord.xy / vTexcoord.z).r * flow;
 
   // Perform the blending of the content with the render target content.
   highp vec4 premultipliedDst;
@@ -265,9 +270,18 @@ void main() {
       mix(premultipliedDst, premultipliedBlendedColor,
           mask * edgeAvoidanceFactor(length(premultipliedSrc)));
 
+  // Write result to render target.
   if (renderTargetHasSingleChannel || !renderTargetIsNonPremultiplied) {
     gl_FragColor = premultipliedBlendedAndMaskedColor;
   } else {
-    gl_FragColor = nonPremultipliedColor(premultipliedBlendedAndMaskedColor);
+    highp vec4 result = nonPremultipliedColor(premultipliedBlendedAndMaskedColor);
+    if (renderTargetHasBytePrecision) {
+      // Avoid banding artifacts in semi-transparent areas due to numerical issues originating from
+      // the non-premultiplication of the result.
+      gl_FragColor = mix(result, gl_LastFragData[0],
+                         step(distance(result, gl_LastFragData[0]), BYTE_STEP_SIZE));
+    } else {
+      gl_FragColor = result;
+    }
   }
 }

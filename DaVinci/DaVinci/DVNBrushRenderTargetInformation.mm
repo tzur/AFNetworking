@@ -13,21 +13,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithRenderTargetLocation:(lt::Quad)renderTargetLocation
                 renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
-              renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied {
+              renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied
+                renderTargetHasBytePrecision:(BOOL)renderTargetHasBytePrecision {
   if (self = [super init]) {
     _renderTargetLocation = renderTargetLocation;
     _renderTargetHasSingleChannel = renderTargetHasSingleChannel;
     _renderTargetIsNonPremultiplied = renderTargetIsNonPremultiplied;
+    _renderTargetHasBytePrecision = renderTargetHasBytePrecision;
   }
   return self;
 }
 
 + (instancetype)instanceWithRenderTargetLocation:(lt::Quad)renderTargetLocation
                     renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
-                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied {
+                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied
+                    renderTargetHasBytePrecision:(BOOL)renderTargetHasBytePrecision {
   return [[self alloc] initWithRenderTargetLocation:renderTargetLocation
                        renderTargetHasSingleChannel:renderTargetHasSingleChannel
-                     renderTargetIsNonPremultiplied:renderTargetIsNonPremultiplied];
+                     renderTargetIsNonPremultiplied:renderTargetIsNonPremultiplied
+                       renderTargetHasBytePrecision:renderTargetHasBytePrecision];
 }
 
 #pragma mark -
@@ -36,10 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, render target location: %@, render target has "
-          "single channel: %@, render target is non-premultiplied: %@>", self.class, self,
+          "single channel: %@, render target is non-premultiplied: %@, render target has byte "
+          "precision: %@>", self.class, self,
           NSStringFromLTQuad(self.renderTargetLocation),
           [@(self.renderTargetHasSingleChannel) stringValue],
-          [@(self.renderTargetIsNonPremultiplied) stringValue]];
+          [@(self.renderTargetIsNonPremultiplied) stringValue],
+          [@(self.renderTargetHasBytePrecision) stringValue]];
 }
 
 - (BOOL)isEqual:(DVNBrushRenderTargetInformation *)information {
@@ -53,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self.renderTargetLocation == information.renderTargetLocation &&
       self.renderTargetHasSingleChannel == information.renderTargetHasSingleChannel &&
-      self.renderTargetIsNonPremultiplied == information.renderTargetIsNonPremultiplied;
+      self.renderTargetIsNonPremultiplied == information.renderTargetIsNonPremultiplied &&
+      self.renderTargetHasBytePrecision == information.renderTargetHasBytePrecision;
 }
 
 - (NSUInteger)hash {
@@ -61,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
   lt::hash_combine(seed, std::hash<lt::Quad>()(self.renderTargetLocation));
   lt::hash_combine(seed, self.renderTargetHasSingleChannel);
   lt::hash_combine(seed, self.renderTargetIsNonPremultiplied);
+  lt::hash_combine(seed, self.renderTargetHasBytePrecision);
   return seed;
 }
 

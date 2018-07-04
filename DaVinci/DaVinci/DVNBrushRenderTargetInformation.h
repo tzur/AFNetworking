@@ -14,11 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Returns a new instance with the given \c renderTargetLocation, \c renderTargetHasSingleChannel
-/// indication, and \c renderTargetIsNonPremultiplied indication.
+/// Returns a new instance with the given \c renderTargetLocation, \c renderTargetHasSingleChannel,
+/// \c renderTargetIsNonPremultiplied, and \c renderTargetHasBytePrecision indications.
 + (instancetype)instanceWithRenderTargetLocation:(lt::Quad)renderTargetLocation
                     renderTargetHasSingleChannel:(BOOL)renderTargetHasSingleChannel
-                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied;
+                  renderTargetIsNonPremultiplied:(BOOL)renderTargetIsNonPremultiplied
+                    renderTargetHasBytePrecision:(BOOL)renderTargetHasBytePrecision;
 
 /// Location, in units of the spline coordinate system, of the corners of the render target onto
 /// which the brush stroke geometry is to be projected.
@@ -29,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Indication whether the render target is non-premultiplied.
 @property (readonly, nonatomic) BOOL renderTargetIsNonPremultiplied;
+
+/// Indication whether the render target has byte precision.
+@property (readonly, nonatomic) BOOL renderTargetHasBytePrecision;
 
 @end
 

@@ -98,7 +98,8 @@ beforeEach(^{
   DVNBrushRenderTargetInformation *renderTargetInfo =
       [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
                                            renderTargetHasSingleChannel:NO
-                                         renderTargetIsNonPremultiplied:NO];
+                                         renderTargetIsNonPremultiplied:NO
+                                           renderTargetHasBytePrecision:YES];
 
   delegate = [[DVNTestBrushStrokePainterDelegate alloc] init];
   delegate.brushRenderModel = [DVNBrushRenderModel instanceWithBrushModel:brushModel

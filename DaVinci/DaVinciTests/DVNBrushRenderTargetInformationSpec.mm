@@ -11,10 +11,12 @@ context(@"factory methods", ^{
     DVNBrushRenderTargetInformation *information =
         [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:quad
                                              renderTargetHasSingleChannel:YES
-                                           renderTargetIsNonPremultiplied:YES];
+                                           renderTargetIsNonPremultiplied:YES
+                                             renderTargetHasBytePrecision:YES];
     expect(information.renderTargetLocation == quad).to.beTruthy();
     expect(information.renderTargetHasSingleChannel).to.beTruthy();
     expect(information.renderTargetIsNonPremultiplied).to.beTruthy();
+    expect(information.renderTargetHasBytePrecision).to.beTruthy();
   });
 });
 

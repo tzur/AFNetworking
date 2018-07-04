@@ -29,10 +29,12 @@ context(@"factory methods", ^{
     DVNBrushRenderTargetInformation *renderTargetInfo =
       [DVNBrushRenderTargetInformation instanceWithRenderTargetLocation:lt::Quad::canonicalSquare()
                                            renderTargetHasSingleChannel:YES
-                                         renderTargetIsNonPremultiplied:NO];
+                                         renderTargetIsNonPremultiplied:NO
+                                           renderTargetHasBytePrecision:YES];
     auto model = [DVNBrushRenderModel instanceWithBrushModel:brushModel
                                         renderTargetLocation:lt::Quad::canonicalSquare()
                                 renderTargetHasSingleChannel:YES renderTargetIsNonPremultiplied:NO
+                                renderTargetHasBytePrecision:YES
                                             conversionFactor:0.7];
     expect(model.brushModel).to.equal(brushModel);
     expect(model.renderTargetInfo).to.equal(renderTargetInfo);
