@@ -3,8 +3,6 @@
 
 #import "UIView+MASSafeArea.h"
 
-#import <Masonry/Masonry.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (MASSafeArea)

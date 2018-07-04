@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1901D0AF20F48D64007BD995 /* WFFloatViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1901D0AE20F48D64007BD995 /* WFFloatViewSpec.mm */; };
 		195B3A6A1FFE79B700F8DAB4 /* WFSlideViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */; };
 		195B3A6E1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 195B3A6C1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm */; };
 		1984C7421FE675D900873DA0 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1909714E1FBD773C00AD5B91 /* libLTKitTestUtils.a */; };
 		198FE006201DE79800F85E75 /* WFSlideshowView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FE004201DE79800F85E75 /* WFSlideshowView.mm */; };
 		198FE008201DE7AF00F85E75 /* WFSlideshowViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 198FE007201DE7AF00F85E75 /* WFSlideshowViewSpec.mm */; };
+		19B6C19920ECDD9700AEE225 /* WFFloatView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19B6C19720ECDD9700AEE225 /* WFFloatView.mm */; };
 		19C43D101FFA1C70007BB06E /* WFSlideView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19C43D0E1FFA1C70007BB06E /* WFSlideView.mm */; };
 		284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */; };
 		28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
@@ -402,12 +404,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1901D0AE20F48D64007BD995 /* WFFloatViewSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WFFloatViewSpec.mm; sourceTree = "<group>"; };
 		195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideViewSpec.mm; sourceTree = "<group>"; };
 		195B3A6C1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaKeyWindowViewHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.mm; sourceTree = "<group>"; };
 		195B3A6D1FFE7D3B00F8DAB4 /* LTSpectaKeyWindowViewHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaKeyWindowViewHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaKeyWindowViewHook.h; sourceTree = "<group>"; };
 		198FE004201DE79800F85E75 /* WFSlideshowView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideshowView.mm; sourceTree = "<group>"; };
 		198FE005201DE79800F85E75 /* WFSlideshowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFSlideshowView.h; sourceTree = "<group>"; };
 		198FE007201DE7AF00F85E75 /* WFSlideshowViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideshowViewSpec.mm; sourceTree = "<group>"; };
+		19B6C19720ECDD9700AEE225 /* WFFloatView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WFFloatView.mm; sourceTree = "<group>"; };
+		19B6C19820ECDD9700AEE225 /* WFFloatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WFFloatView.h; sourceTree = "<group>"; };
 		19C43D0D1FFA1C70007BB06E /* WFSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFSlideView.h; sourceTree = "<group>"; };
 		19C43D0E1FFA1C70007BB06E /* WFSlideView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFSlideView.mm; sourceTree = "<group>"; };
 		284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+RetrievalSpec.mm"; sourceTree = "<group>"; };
@@ -930,6 +935,8 @@
 		8B283FE61CBE33A500B745AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				19B6C19820ECDD9700AEE225 /* WFFloatView.h */,
+				19B6C19720ECDD9700AEE225 /* WFFloatView.mm */,
 				8BB234A71CDCB45B00057F11 /* WFGradientView.h */,
 				8BB234A81CDCB45B00057F11 /* WFGradientView.m */,
 				19C43D0D1FFA1C70007BB06E /* WFSlideView.h */,
@@ -947,6 +954,7 @@
 		8B2840001CBE33CA00B745AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1901D0AE20F48D64007BD995 /* WFFloatViewSpec.mm */,
 				8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */,
 				195B3A441FFE79B600F8DAB4 /* WFSlideViewSpec.mm */,
 				198FE007201DE7AF00F85E75 /* WFSlideshowViewSpec.mm */,
@@ -1409,6 +1417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C99B8BB41D6F6DAD00897FF1 /* UIFont+Size.mm in Sources */,
+				19B6C19920ECDD9700AEE225 /* WFFloatView.mm in Sources */,
 				6AAED9F51CC62AAD00B3C62F /* WFPaintCodeImageProvider.mm in Sources */,
 				6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */,
 				8BE97B311D47463A001ED33A /* CATransaction+Animations.m in Sources */,
@@ -1455,6 +1464,7 @@
 				8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */,
 				6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */,
 				8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */,
+				1901D0AF20F48D64007BD995 /* WFFloatViewSpec.mm in Sources */,
 				6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */,
 				B45B9D892003A99500BB6FE7 /* WFVolumeButtonEventsSpec.mm in Sources */,
 				6AB518DC1CCA3D7700540CC6 /* NSURL+WFImageProviderSpec.mm in Sources */,

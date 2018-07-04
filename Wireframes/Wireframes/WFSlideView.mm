@@ -4,7 +4,6 @@
 #import "WFSlideView.h"
 
 #import <LTKit/UIColor+Utilities.h>
-#import <Masonry/Masonry.h>
 
 #import "CALayer+Enumeration.h"
 #import "WFGradientView.h"
