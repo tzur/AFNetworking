@@ -84,9 +84,9 @@ static void swizzleSubscribeIfNeeded(RACSignal *signal) {
                 if(previousSubscriber != currentSubscriber) {
                     setReferencedSubscriber(signal, currentSubscriber);
                     
-                    @weakify(signal)
+                    @rac_weakify(signal)
                     [subscriber didSubscribeWithDisposable:[RACCompoundDisposable disposableWithBlock:^{
-                        @strongify(signal)
+                        @rac_strongify(signal)
                         if(signal) {
                             setReferencedSubscriber(signal, NULL);
                         }
