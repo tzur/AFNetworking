@@ -3,32 +3,23 @@
 
 #import "LTGPUStruct.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark -
 #pragma mark LTGPUStructField
 #pragma mark -
-
-@interface LTGPUStructField ()
-
-@property (readwrite, nonatomic) NSString *name;
-@property (readwrite, nonatomic) NSString *type;
-@property (readwrite, nonatomic) size_t size;
-@property (readwrite, nonatomic) size_t offset;
-@property (readwrite, nonatomic) GLenum componentType;
-@property (readwrite, nonatomic) GLint componentCount;
-
-@end
 
 @implementation LTGPUStructField
 
 - (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
          andOffset:(size_t)offset {
   if (self = [super init]) {
-    self.name = name;
-    self.type = type;
-    self.size = size;
-    self.offset = offset;
-    self.componentType = [[self class] componentTypeForFieldType:self.type];
-    self.componentCount = [[self class] componentCountForFieldType:self.type size:self.size];
+    _name = name;
+    _type = type;
+    _size = size;
+    _offset = offset;
+    _componentType = [[self class] componentTypeForFieldType:self.type];
+    _componentCount = [[self class] componentCountForFieldType:self.type size:self.size];
   }
   return self;
 }
@@ -99,31 +90,25 @@
 #pragma mark LTGPUStruct
 #pragma mark -
 
-@interface LTGPUStruct ()
-
-@property (readwrite, nonatomic) NSString *name;
-@property (readwrite, nonatomic) size_t size;
-@property (readwrite, nonatomic) NSDictionary *fields;
-
-@end
-
 @implementation LTGPUStruct
 
-- (instancetype)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields {
+- (instancetype)initWithName:(NSString *)name size:(size_t)size
+                   andFields:(NSArray<LTGPUStructField *> *)fields {
   if (self = [super init]) {
     if (size % 4 != 0) {
       LogWarning(@"For best performance, struct size must be a multiple of 4 bytes");
     }
 
-    self.name = name;
-    self.size = size;
+    _name = name;
+    _size = size;
 
     // Create field.name -> field mapping.
-    NSMutableDictionary *fieldsDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *, LTGPUStructField *> *fieldsDict =
+        [NSMutableDictionary dictionary];
     for (LTGPUStructField *field in fields) {
       fieldsDict[field.name] = field;
     }
-    self.fields = fieldsDict;
+    _fields = fieldsDict;
   }
   return self;
 }
@@ -154,7 +139,7 @@
 @interface LTGPUStructRegistry ()
 
 /// Maps between struct name (\c NSString) to its corresponding \c LTGPUStruct object.
-@property (strong, nonatomic) NSMutableDictionary *structs;
+@property (strong, nonatomic) NSMutableDictionary<NSString *, LTGPUStruct *> *structs;
 
 @end
 
@@ -202,3 +187,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
