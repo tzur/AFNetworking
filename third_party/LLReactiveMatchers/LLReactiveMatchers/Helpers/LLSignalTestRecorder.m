@@ -82,10 +82,10 @@
 
     self.originalSignal = signal;
 
-    @weakify(self);
+    @rac_weakify(self);
     RACSignal *locallyRecordingSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         return [signal subscribeNext:^(id x) {
-            @strongify(self);
+            @rac_strongify(self);
             if (!self) {
                 return;
             }
@@ -96,7 +96,7 @@
 
             [subscriber sendNext:x];
         } error:^(NSError *error) {
-            @strongify(self);
+            @rac_strongify(self);
             if (!self) {
                 return;
             }
@@ -107,7 +107,7 @@
 
             [subscriber sendError:error];
         } completed:^{
-            @strongify(self);
+            @rac_strongify(self);
             if (!self) {
                 return;
             }

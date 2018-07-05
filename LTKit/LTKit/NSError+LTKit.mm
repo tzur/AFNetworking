@@ -26,7 +26,7 @@ NSString *LTSystemErrorMessageForError(int error) {
   while (strerror_r(error, message.data(), message.size()) == ERANGE) {
     message.resize(message.size() * 2);
   }
-  return @(message.data());
+  return nn(@(message.data()));
 }
 
 @implementation NSError (LTKit)

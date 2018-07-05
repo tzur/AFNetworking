@@ -97,7 +97,7 @@ static LTMachHeaderInfo LTGetExecutableMachHeaderInfo() {
   // loader doesn't load or strip the LINKEDIT information. Therefore, it seems that the only way to
   // access this data is to read the image from disk. Note that this increases the attack surface of
   // malicious code.
-  auto _Nullable file = [[LTMMInputFile alloc] initWithPath:@(dlinfo.dli_fname) error:nil];
+  auto _Nullable file = [[LTMMInputFile alloc] initWithPath:nn(@(dlinfo.dli_fname)) error:nil];
   if (!file || file.size < sizeof(uint32_t) || !LTIsMachHeader(*(uint32_t *)file.data)) {
     return {.file = nil, .header = nullptr, .is64Bit = false};
   }
