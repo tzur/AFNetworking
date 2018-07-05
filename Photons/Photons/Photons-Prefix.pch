@@ -7,14 +7,5 @@
 
   #import <ReactiveObjC/ReactiveObjC.h>
 
-  #import <LTKit/LTAssert.h>
-  #import <LTKit/LTEnum.h>
-  #import <LTKit/LTLogger.h>
-  #import <LTKit/LTNullability.h>
-  #import <LTKit/LTTypedefs.h>
-  #import <LTKit/NSError+LTKit.h>
-#endif
-
-#ifdef __cplusplus
-  using lt::nn;
+  #import <LTKit/LTKit-Prefix.pch>
 #endif
