@@ -12,6 +12,12 @@ LTGPUStructMake(MyMediumStruct,
                 LTVector3, intensity,
                 LTVector4, color);
 
+LTGPUStructMake(MyByteStruct,
+                GLbyte, value);
+
+LTGPUStructMake(MyUnsignedByteStruct,
+                GLubyte, value);
+
 LTGPUStructMake(MyShortStruct,
                 GLshort, index);
 
@@ -40,6 +46,50 @@ context(@"struct registration", ^{
     expect(value.type).to.equal(@"float");
     expect(value.size).to.equal(sizeof(float));
     expect(value.componentType).to.equal(GL_FLOAT);
+    expect(value.componentCount).to.equal(1);
+  });
+
+  it(@"should register byte struct", ^{
+    NSString *structName = @"MyByteStruct";
+
+    LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance]
+                              structForName:structName];
+
+    expect(gpuStruct).toNot.beNil();
+    expect(gpuStruct.name).to.equal(structName);
+    expect(gpuStruct.size).to.equal(sizeof(MyByteStruct));
+
+    expect(gpuStruct.fields).toNot.beNil();
+    expect(gpuStruct.fields.count).to.equal(1);
+
+    LTGPUStructField *value = gpuStruct.fields[@"value"];
+    expect(value.name).to.equal(@"value");
+    expect(value.offset).to.equal(0);
+    expect(value.type).to.equal(@"GLbyte");
+    expect(value.size).to.equal(sizeof(GLbyte));
+    expect(value.componentType).to.equal(GL_BYTE);
+    expect(value.componentCount).to.equal(1);
+  });
+
+  it(@"should register byte struct", ^{
+    NSString *structName = @"MyUnsignedByteStruct";
+
+    LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance]
+                              structForName:structName];
+
+    expect(gpuStruct).toNot.beNil();
+    expect(gpuStruct.name).to.equal(structName);
+    expect(gpuStruct.size).to.equal(sizeof(MyUnsignedByteStruct));
+
+    expect(gpuStruct.fields).toNot.beNil();
+    expect(gpuStruct.fields.count).to.equal(1);
+
+    LTGPUStructField *value = gpuStruct.fields[@"value"];
+    expect(value.name).to.equal(@"value");
+    expect(value.offset).to.equal(0);
+    expect(value.type).to.equal(@"GLubyte");
+    expect(value.size).to.equal(sizeof(GLubyte));
+    expect(value.componentType).to.equal(GL_UNSIGNED_BYTE);
     expect(value.componentCount).to.equal(1);
   });
 

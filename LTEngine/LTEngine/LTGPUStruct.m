@@ -59,8 +59,12 @@
       [type isEqualToString:@"LTVector3"] ||
       [type isEqualToString:@"LTVector4"]) {
     return GL_FLOAT;
+  } else if ([type isEqualToString:@"GLbyte"]) {
+    return GL_BYTE;
   } else if ([type isEqualToString:@"GLshort"]) {
     return GL_SHORT;
+  } else if ([type isEqualToString:@"GLubyte"]) {
+    return GL_UNSIGNED_BYTE;
   } else if ([type isEqualToString:@"GLushort"]) {
     return GL_UNSIGNED_SHORT;
   }
@@ -72,10 +76,14 @@
 
 + (GLint)componentCountForFieldType:(NSString *)type size:(size_t)size {
   switch ([[self class] componentTypeForFieldType:type]) {
+    case GL_BYTE:
+      return (GLint)(size / sizeof(GLbyte));
     case GL_FLOAT:
       return (GLint)(size / sizeof(GLfloat));
     case GL_SHORT:
       return (GLint)(size / sizeof(GLshort));
+    case GL_UNSIGNED_BYTE:
+      return (GLint)(size / sizeof(GLubyte));
     case GL_UNSIGNED_SHORT:
       return (GLint)(size / sizeof(GLushort));
   }
