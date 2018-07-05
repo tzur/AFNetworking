@@ -1,16 +1,19 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNAttributeProvider.h"
-
 #import <LTEngine/LTGPUStruct.h>
+
+#import "DVNAttributeProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Value class representing the format of attribute data returned by \c id<DVNAttributeProvider>
 /// constructed from \c DVNJitteredColorAttributeProviderModel objects. Represents the jittered
 /// color of a processed quad.
-LTGPUStructDeclare(DVNJitteredColorAttributeProviderStruct, LTVector3, color);
+LTGPUStructDeclare(DVNJitteredColorAttributeProviderStruct,
+                   GLubyte, colorRed,
+                   GLubyte, colorGreen,
+                   GLubyte, colorBlue);
 
 @class LTRandomState;
 

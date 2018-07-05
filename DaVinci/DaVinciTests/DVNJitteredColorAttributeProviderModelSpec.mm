@@ -130,7 +130,11 @@ itShouldBehaveLike(kDVNAttributeProviderExamples, ^{
                                                                             mapping:mapping];
   LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance]
                             structForName:@"DVNJitteredColorAttributeProviderStruct"];
-  std::vector<DVNJitteredColorAttributeProviderStruct> values(6, {baseColor});
+  std::vector<DVNJitteredColorAttributeProviderStruct> values(6, {
+    .colorRed = (GLubyte)(baseColor.r() * 255),
+    .colorGreen = (GLubyte)(baseColor.g() * 255),
+    .colorBlue = (GLubyte)(baseColor.b() * 255)
+  });
   NSData *data = [NSData dataWithBytes:values.data() length:values.size() * sizeof(values[0])];
   DVNJitteredColorAttributeProviderModel *model = [[DVNJitteredColorAttributeProviderModel alloc]
                                                    initWithBaseColor:baseColor brightnessJitter:0

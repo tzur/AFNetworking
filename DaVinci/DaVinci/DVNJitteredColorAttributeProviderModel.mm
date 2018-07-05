@@ -40,18 +40,26 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark DVNAttributeProvider
 #pragma mark -
 
+static DVNJitteredColorAttributeProviderStruct DVNColorStructFromVector(LTVector3 vector) {
+  return DVNJitteredColorAttributeProviderStruct({
+    .colorRed = (GLubyte)(vector.r() * 255),
+    .colorGreen = (GLubyte)(vector.g() * 255),
+    .colorBlue = (GLubyte)(vector.b() * 255)
+  });
+}
+
 - (LTAttributeData *)attributeDataFromGeometryValues:(dvn::GeometryValues)geometryValues {
   std::vector<DVNJitteredColorAttributeProviderStruct> attributes;
   std::vector<lt::Quad>::size_type size = geometryValues.quads().size();
   attributes.reserve(size);
   BOOL hasJitter = self.model.brightnessJitter != 0 || self.model.hueJitter != 0 ||
       self.model.saturationJitter != 0;
-  
+
   for (NSUInteger i = 0; i < size; ++i) {
-    DVNJitteredColorAttributeProviderStruct values({
-      .color = hasJitter ?
-          [self jitteredColorFromVector:self.model.baseColor] : self.model.baseColor
-    });
+    DVNJitteredColorAttributeProviderStruct values =
+        DVNColorStructFromVector(hasJitter ?
+                                 [self jitteredColorFromVector:self.model.baseColor] :
+                                 self.model.baseColor);
     attributes.insert(attributes.end(), 6, {values});
   }
   NSData *data = [NSData dataWithBytes:attributes.data()
@@ -83,7 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-LTGPUStructImplement(DVNJitteredColorAttributeProviderStruct, LTVector3, color);
+LTGPUStructImplementNormalized(DVNJitteredColorAttributeProviderStruct,
+                               GLubyte, colorRed, YES,
+                               GLubyte, colorGreen, YES,
+                               GLubyte, colorBlue, YES);
 
 @implementation DVNJitteredColorAttributeProviderModel
 
@@ -99,7 +110,7 @@ LTGPUStructImplement(DVNJitteredColorAttributeProviderStruct, LTVector3, color);
   LTParameterAssert(hueJitter >= 0 && hueJitter <= 1, @"Hue jitter must be in [0, 1] range");
   LTParameterAssert(saturationJitter >= 0 && saturationJitter <= 1,
                     @"Saturation jitter must be in [0, 1] range");
-  
+
   if (self = [super init]) {
     _randomState = randomState;
     _baseColor = baseColor;
@@ -156,7 +167,7 @@ LTGPUStructImplement(DVNJitteredColorAttributeProviderStruct, LTVector3, color);
 
 - (LTAttributeData *)sampleAttributeData {
   static LTAttributeData *sampleAttributeData;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     LTGPUStruct *transformStruct = [[LTGPUStructRegistry sharedInstance]
