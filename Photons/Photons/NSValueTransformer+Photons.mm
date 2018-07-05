@@ -23,7 +23,10 @@ NSString * const kPTNURLValueTransformer = @"PTNURLValueTransformer";
 
 + (instancetype)ptn_URLValueTransformer {
   return [MTLValueTransformer
-          reversibleTransformerWithForwardBlock:^NSURL * _Nullable(NSString *URLString) {
+          reversibleTransformerWithForwardBlock:^NSURL * _Nullable(NSString * _Nullable URLString) {
+    if (!URLString) {
+      return nil;
+    }
     if (![URLString isKindOfClass:[NSString class]]) {
       LogError(@"Expected NSString, got: %@", NSStringFromClass([URLString class]));
       return nil;
@@ -31,8 +34,9 @@ NSString * const kPTNURLValueTransformer = @"PTNURLValueTransformer";
     NSString *escapedUrl = [URLString stringByAddingPercentEncodingWithAllowedCharacters:
                             [NSCharacterSet URLQueryAllowedCharacterSet]];
     return [NSURL URLWithString:escapedUrl];
-  } reverseBlock:^NSString * _Nullable(NSURL *url) {
-    LTParameterAssert([url isKindOfClass:[NSURL class]], @"Expected NSURL, got: %@", [url class]);
+  } reverseBlock:^NSString * _Nullable(NSURL * _Nullable url) {
+    LTParameterAssert(!url || [url isKindOfClass:[NSURL class]], @"Expected NSURL, got: %@",
+                      [url class]);
     return url.absoluteString;
   }];
 }
