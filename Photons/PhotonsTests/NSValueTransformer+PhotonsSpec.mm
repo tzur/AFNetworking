@@ -35,6 +35,11 @@ it(@"should reverse transform string URLs", ^{
   expect([transformer reverseTransformedValue:url]).to.equal(kURLString);
 });
 
+it(@"should transform nil to nil", ^{
+  expect([transformer transformedValue:nil]).to.beNil();
+  expect([transformer reverseTransformedValue:nil]).to.beNil();
+});
+
 it(@"should return nil for invalid forward transform attempts", ^{
   expect([transformer transformedValue:[[NSObject alloc] init]]).to.beNil();
 });
