@@ -1,0 +1,29 @@
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Gershon Hochman.
+
+#ifdef __clang_analyzer__
+  // The following statement causes the static analyzer to ignore issues in this file, or in one of
+  // files it imports. This is done in order to ignore issues in 3rd party header files. Usually,
+  // when the prefix header is precompiled, this file is not analyzed and errors are not shown in
+  // any case. In some cases this file is not precompiled and is analyzed, in this case, errors in
+  // 3rd party header files are generated, and are suppressed with this statement.
+  #pragma clang system_header
+#endif
+
+// Apple's Frameworks.
+#import <Metal/Metal.h>
+#import <MetalKit/MetalKit.h>
+#import <MetalPerformanceShaders/MetalPerformanceShaders.h>
+
+#ifdef __cplusplus
+  // The following definition prevents compilation errors when certain opencv modules are imported.
+  // It also removes the old C interface of opencv.
+  #define DISABLE_OPENCV_24_COMPATIBILITY
+  #import <opencv2/core.hpp>
+#endif
+
+// LTKit.
+#import <LTKit/LTKit-Prefix.pch>
+
+#import <LTKit/LTCGExtensions.h>
+#import <LTKit/LTKeyPathCoding.h>

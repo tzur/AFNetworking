@@ -35,6 +35,9 @@
       location = "group:../Laboratory/Laboratory.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../MetalToolbox/MetalToolbox.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Milkshake/Milkshake.xcodeproj">
    </FileRef>
    <FileRef
