@@ -1,0 +1,950 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		656155B81D464A28009E701C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B71D464A28009E701C /* opencv2.framework */; };
+		656155BB1D464A65009E701C /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B41D4649F9009E701C /* libSpecta.a */; };
+		8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */; };
+		8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
+		8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
+		8B3DEBFC18296B6100EA0C1A /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE418296B6100EA0C1A /* libMetalToolbox.a */; };
+		8B8720301924A76400517F2E /* half.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8B9D3FDE18913084001A964D /* half.hpp */; };
+		E42E09AD20B46A3F00BE4484 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5120B4237800FDFAC8 /* Metal.framework */; };
+		E42E09AE20B46A3F00BE4484 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5220B4237800FDFAC8 /* MetalKit.framework */; };
+		E42E09AF20B46A3F00BE4484 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */; };
+		E4568FA020F1E7A9009CB9D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568F9F20F1E7A8009CB9D6 /* UIKit.framework */; };
+		E4568FA220F1E7DA009CB9D6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */; };
+		E4568FA420F1E7F3009CB9D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA320F1E7F3009CB9D6 /* CoreGraphics.framework */; };
+		E4568FA620F1E851009CB9D6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA520F1E851009CB9D6 /* QuartzCore.framework */; };
+		E477FB0F20ED01A0003D4302 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB0E20ED01A0003D4302 /* libExpecta.a */; };
+		E477FB1120ED01D9003D4302 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1020ED01D9003D4302 /* libcompression.tbd */; };
+		E477FB1320ED0238003D4302 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1220ED0238003D4302 /* MobileCoreServices.framework */; };
+		E4D6C72120ECF01600C94476 /* MetalToolbox-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */; };
+		E4D6C72520ECF22100C94476 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72420ECF22100C94476 /* AVFoundation.framework */; };
+		E4D6C72720ECF25500C94476 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72620ECF25500C94476 /* CoreMedia.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6561557B1D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		6561557D1D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		6561557F1D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		656155811D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		656155831D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		656155851D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		656155871D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		656155891D4649E2009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		656155A91D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		656155AB1D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		656155AD1D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		656155AF1D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		656155B11D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		656155B31D4649F9009E701C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		8B3690011CA6B7BE003E34CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		8B3690031CA6B7BE003E34CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		8B3690051CA6B7BE003E34CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
+		};
+		E407F8DB20B4228900FDFAC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B3DEBDC18296B6100EA0C1A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		E4568F9720F1E573009CB9D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
+			remoteInfo = TestHost;
+		};
+		E4F73A8420EE5D4C00E34332 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
+		E4F73A8620EE5D4C00E34332 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
+		E4F73A8820EE5D4C00E34332 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E407FB4820B4228900FDFAC8 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		656155701D4649E2009E701C /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
+		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
+		8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		8B3DEBE418296B6100EA0C1A /* libMetalToolbox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMetalToolbox.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B3DEBE718296B6100EA0C1A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8B57B2361D91641E00814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		8B6B4FAB1BDFA41700662235 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		8B6B4FAE1BDFA41700662235 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8B6B4FB01BDFA41700662235 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		8B6B4FB11BDFA41700662235 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		8B9D3FDE18913084001A964D /* half.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = half.hpp; sourceTree = "<group>"; };
+		8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		E407FB4F20B4228900FDFAC8 /* MetalToolboxDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetalToolboxDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E407FB5120B4237800FDFAC8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		E407FB5220B4237800FDFAC8 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		E4568F9F20F1E7A8009CB9D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		E4568FA320F1E7F3009CB9D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E4568FA520F1E851009CB9D6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E477FB0C20ECF868003D4302 /* Expecta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Expecta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E477FB0E20ED01A0003D4302 /* libExpecta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libExpecta.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E477FB1020ED01D9003D4302 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		E477FB1220ED0238003D4302 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		E4979EAD20ED03E70011325C /* MetalToolboxDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MetalToolboxDeviceTests-Prefix.pch"; path = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
+		E4979EAE20ED03E70011325C /* MetalToolboxDeviceTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "MetalToolboxDeviceTests-Info.plist"; path = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Info.plist"; sourceTree = "<group>"; };
+		E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MetalToolbox-Prefix.pch"; path = "MetalToolbox/MetalToolbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		E4D6C72420ECF22100C94476 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E4D6C72620ECF25500C94476 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8B3DEBE118296B6100EA0C1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E407FA1020B4228900FDFAC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4D6C72520ECF22100C94476 /* AVFoundation.framework in Frameworks */,
+				E4568FA420F1E7F3009CB9D6 /* CoreGraphics.framework in Frameworks */,
+				E4D6C72720ECF25500C94476 /* CoreMedia.framework in Frameworks */,
+				E4568FA220F1E7DA009CB9D6 /* CoreVideo.framework in Frameworks */,
+				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				E42E09AD20B46A3F00BE4484 /* Metal.framework in Frameworks */,
+				E42E09AE20B46A3F00BE4484 /* MetalKit.framework in Frameworks */,
+				E42E09AF20B46A3F00BE4484 /* MetalPerformanceShaders.framework in Frameworks */,
+				E477FB1320ED0238003D4302 /* MobileCoreServices.framework in Frameworks */,
+				E4568FA620F1E851009CB9D6 /* QuartzCore.framework in Frameworks */,
+				E4568FA020F1E7A9009CB9D6 /* UIKit.framework in Frameworks */,
+				E477FB0F20ED01A0003D4302 /* libExpecta.a in Frameworks */,
+				8B3DEBFC18296B6100EA0C1A /* libMetalToolbox.a in Frameworks */,
+				656155BB1D464A65009E701C /* libSpecta.a in Frameworks */,
+				E477FB1120ED01D9003D4302 /* libcompression.tbd in Frameworks */,
+				8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */,
+				656155B81D464A28009E701C /* opencv2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		656155711D4649E2009E701C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6561557C1D4649E2009E701C /* Expecta.framework */,
+				6561557E1D4649E2009E701C /* Expecta.framework */,
+				656155801D4649E2009E701C /* ExpectaTests.xctest */,
+				656155821D4649E2009E701C /* Expecta-iOSTests.xctest */,
+				656155841D4649E2009E701C /* libExpecta.a */,
+				656155861D4649E2009E701C /* libExpecta.a */,
+				656155881D4649E2009E701C /* libExpectaTests.xctest */,
+				6561558A1D4649E2009E701C /* libExpecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		656155A11D4649F9009E701C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				656155AA1D4649F9009E701C /* Specta.framework */,
+				656155AC1D4649F9009E701C /* SpectaTests.xctest */,
+				656155AE1D4649F9009E701C /* Specta.framework */,
+				656155B01D4649F9009E701C /* Specta-iOSTests.xctest */,
+				656155B21D4649F9009E701C /* libSpecta.a */,
+				656155B41D4649F9009E701C /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B368FFB1CA6B7BE003E34CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B3690021CA6B7BE003E34CF /* libextobjc_OSX.a */,
+				8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */,
+				8B3690061CA6B7BE003E34CF /* Logic Tests.octest */,
+				8B3690081CA6B7BE003E34CF /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B3DEBDB18296B6100EA0C1A = {
+			isa = PBXGroup;
+			children = (
+				8B3DEBE918296B6100EA0C1A /* MetalToolbox */,
+				E4AFDDEE20B4211B00A431E2 /* MetalToolboxDeviceTests */,
+				8B6B4F8D1BDFA40600662235 /* Configuration */,
+				8BB47145183B533500CA1681 /* Libraries */,
+				8B3DEBE618296B6100EA0C1A /* Frameworks */,
+				8B3DEBE518296B6100EA0C1A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8B3DEBE518296B6100EA0C1A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E407FB4F20B4228900FDFAC8 /* MetalToolboxDeviceTests.xctest */,
+				8B3DEBE418296B6100EA0C1A /* libMetalToolbox.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6C72420ECF22100C94476 /* AVFoundation.framework */,
+				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
+				E4568FA320F1E7F3009CB9D6 /* CoreGraphics.framework */,
+				E4D6C72620ECF25500C94476 /* CoreMedia.framework */,
+				E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */,
+				E477FB0C20ECF868003D4302 /* Expecta.framework */,
+				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
+				E407FB5120B4237800FDFAC8 /* Metal.framework */,
+				E407FB5220B4237800FDFAC8 /* MetalKit.framework */,
+				E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */,
+				E477FB1220ED0238003D4302 /* MobileCoreServices.framework */,
+				E4568FA520F1E851009CB9D6 /* QuartzCore.framework */,
+				E4568F9F20F1E7A8009CB9D6 /* UIKit.framework */,
+				E477FB0E20ED01A0003D4302 /* libExpecta.a */,
+				E477FB1020ED01D9003D4302 /* libcompression.tbd */,
+				656155B71D464A28009E701C /* opencv2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B3DEBE918296B6100EA0C1A /* MetalToolbox */ = {
+			isa = PBXGroup;
+			children = (
+				E415CD5520BA887F00AFF7B9 /* Metal */,
+				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
+			);
+			path = MetalToolbox;
+			sourceTree = "<group>";
+		};
+		8B3DEBEA18296B6100EA0C1A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B6B4F8D1BDFA40600662235 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FAC1BDFA41700662235 /* Configurations */,
+				8B6B4FAF1BDFA41700662235 /* Targets */,
+				8B6B4FAB1BDFA41700662235 /* Common.xcconfig */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		8B6B4FAC1BDFA41700662235 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */,
+				8B6B4FAE1BDFA41700662235 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		8B6B4FAF1BDFA41700662235 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				8B6B4FB01BDFA41700662235 /* Application.xcconfig */,
+				8B57B2361D91641E00814B3C /* Bundle.xcconfig */,
+				8B6B4FB11BDFA41700662235 /* Framework.xcconfig */,
+				8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */,
+			);
+			name = Targets;
+			path = ../Configuration/Targets;
+			sourceTree = "<group>";
+		};
+		8B9D3FDD18913076001A964D /* Half */ = {
+			isa = PBXGroup;
+			children = (
+				8B9D3FDE18913084001A964D /* half.hpp */,
+			);
+			name = Half;
+			path = ../../third_party/half;
+			sourceTree = "<group>";
+		};
+		8BB47145183B533500CA1681 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				8B9D3FDD18913076001A964D /* Half */,
+				656155701D4649E2009E701C /* Expecta.xcodeproj */,
+				8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */,
+				656155A01D4649F9009E701C /* Specta.xcodeproj */,
+				656155BC1D464B4B009E701C /* TestHost.xcodeproj */,
+				8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */,
+			);
+			name = Libraries;
+			path = MetalToolbox;
+			sourceTree = "<group>";
+		};
+		E403BE2720BA898900E94F00 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E403BE2820BA899200E94F00 /* Metal */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		E403BE2820BA899200E94F00 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Metal;
+			sourceTree = "<group>";
+		};
+		E407FB5920B4241D00FDFAC8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4979EAE20ED03E70011325C /* MetalToolboxDeviceTests-Info.plist */,
+				E4979EAD20ED03E70011325C /* MetalToolboxDeviceTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E415CD5520BA887F00AFF7B9 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Metal;
+			sourceTree = "<group>";
+		};
+		E4568F7F20F1E573009CB9D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E4568F9820F1E573009CB9D6 /* TestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E4AFDDEE20B4211B00A431E2 /* MetalToolboxDeviceTests */ = {
+			isa = PBXGroup;
+			children = (
+				E407FB5920B4241D00FDFAC8 /* Supporting Files */,
+				E403BE2720BA898900E94F00 /* Tests */,
+			);
+			name = MetalToolboxDeviceTests;
+			sourceTree = "<group>";
+		};
+		E4F73A7F20EE5D4C00E34332 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E4F73A8520EE5D4C00E34332 /* libLTKit.a */,
+				E4F73A8720EE5D4C00E34332 /* LTKitTests.xctest */,
+				E4F73A8920EE5D4C00E34332 /* libLTKitTestUtils.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8B871FC61924A73A00517F2E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4D6C72120ECF01600C94476 /* MetalToolbox-Prefix.pch in Headers */,
+				8B8720301924A76400517F2E /* half.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8B3DEBE318296B6100EA0C1A /* MetalToolbox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B3DEC0718296B6100EA0C1A /* Build configuration list for PBXNativeTarget "MetalToolbox" */;
+			buildPhases = (
+				8B3DEBE018296B6100EA0C1A /* Sources */,
+				8B3DEBE118296B6100EA0C1A /* Frameworks */,
+				8B871FC61924A73A00517F2E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MetalToolbox;
+			productName = MetalToolbox;
+			productReference = 8B3DEBE418296B6100EA0C1A /* libMetalToolbox.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E407F8D920B4228900FDFAC8 /* MetalToolboxDeviceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E407FB4C20B4228900FDFAC8 /* Build configuration list for PBXNativeTarget "MetalToolboxDeviceTests" */;
+			buildPhases = (
+				E407F8DE20B4228900FDFAC8 /* Sources */,
+				E407FA1020B4228900FDFAC8 /* Frameworks */,
+				E407FA2B20B4228900FDFAC8 /* Resources */,
+				E407FB4820B4228900FDFAC8 /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E407F8DA20B4228900FDFAC8 /* PBXTargetDependency */,
+			);
+			name = MetalToolboxDeviceTests;
+			productName = MetalToolboxDeviceTests;
+			productReference = E407FB4F20B4228900FDFAC8 /* MetalToolboxDeviceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8B3DEBDC18296B6100EA0C1A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					E407F8D920B4228900FDFAC8 = {
+						DevelopmentTeam = KG6GWND6BG;
+					};
+				};
+			};
+			buildConfigurationList = 8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "MetalToolbox" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8B3DEBDB18296B6100EA0C1A;
+			productRefGroup = 8B3DEBE518296B6100EA0C1A /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 656155711D4649E2009E701C /* Products */;
+					ProjectRef = 656155701D4649E2009E701C /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B368FFB1CA6B7BE003E34CF /* Products */;
+					ProjectRef = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = E4F73A7F20EE5D4C00E34332 /* Products */;
+					ProjectRef = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 656155A11D4649F9009E701C /* Products */;
+					ProjectRef = 656155A01D4649F9009E701C /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = E4568F7F20F1E573009CB9D6 /* Products */;
+					ProjectRef = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8B3DEBE318296B6100EA0C1A /* MetalToolbox */,
+				E407F8D920B4228900FDFAC8 /* MetalToolboxDeviceTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6561557C1D4649E2009E701C /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 6561557B1D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6561557E1D4649E2009E701C /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 6561557D1D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155801D4649E2009E701C /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 6561557F1D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155821D4649E2009E701C /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 656155811D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155841D4649E2009E701C /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 656155831D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155861D4649E2009E701C /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 656155851D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155881D4649E2009E701C /* libExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = libExpectaTests.xctest;
+			remoteRef = 656155871D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6561558A1D4649E2009E701C /* libExpecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 656155891D4649E2009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155AA1D4649F9009E701C /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 656155A91D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155AC1D4649F9009E701C /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 656155AB1D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155AE1D4649F9009E701C /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 656155AD1D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155B01D4649F9009E701C /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 656155AF1D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155B21D4649F9009E701C /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 656155B11D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		656155B41D4649F9009E701C /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 656155B31D4649F9009E701C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B3690021CA6B7BE003E34CF /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = 8B3690011CA6B7BE003E34CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = 8B3690031CA6B7BE003E34CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B3690061CA6B7BE003E34CF /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = 8B3690051CA6B7BE003E34CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B3690081CA6B7BE003E34CF /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E4568F9820F1E573009CB9D6 /* TestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestHost.app;
+			remoteRef = E4568F9720F1E573009CB9D6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E4F73A8520EE5D4C00E34332 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = E4F73A8420EE5D4C00E34332 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E4F73A8720EE5D4C00E34332 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = E4F73A8620EE5D4C00E34332 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E4F73A8920EE5D4C00E34332 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = E4F73A8820EE5D4C00E34332 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E407FA2B20B4228900FDFAC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8B3DEBE018296B6100EA0C1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E407F8DE20B4228900FDFAC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E407F8DA20B4228900FDFAC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B3DEBE318296B6100EA0C1A /* MetalToolbox */;
+			targetProxy = E407F8DB20B4228900FDFAC8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8B3DEC0518296B6100EA0C1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/opencv",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"LOGGING=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/half",
+					"$(SRCROOT)/../third_party/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8B3DEC0618296B6100EA0C1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FAE1BDFA41700662235 /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/opencv",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../third_party/half",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		8B3DEC0818296B6100EA0C1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/MetalToolbox.dst;
+				GCC_PREFIX_HEADER = "MetalToolbox/MetalToolbox-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8B3DEC0918296B6100EA0C1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/MetalToolbox.dst;
+				GCC_PREFIX_HEADER = "MetalToolbox/MetalToolbox-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E407FB4D20B4228900FDFAC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		E407FB4E20B4228900FDFAC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "MetalToolbox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B3DEC0518296B6100EA0C1A /* Debug */,
+				8B3DEC0618296B6100EA0C1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B3DEC0718296B6100EA0C1A /* Build configuration list for PBXNativeTarget "MetalToolbox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B3DEC0818296B6100EA0C1A /* Debug */,
+				8B3DEC0918296B6100EA0C1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E407FB4C20B4228900FDFAC8 /* Build configuration list for PBXNativeTarget "MetalToolboxDeviceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E407FB4D20B4228900FDFAC8 /* Debug */,
+				E407FB4E20B4228900FDFAC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8B3DEBDC18296B6100EA0C1A /* Project object */;
+}

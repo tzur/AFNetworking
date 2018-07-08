@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
-               BuildableName = "PinkyDeviceTests.xctest"
-               BlueprintName = "PinkyDeviceTests"
-               ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
+               BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+               BuildableName = "libMetalToolbox.a"
+               BlueprintName = "MetalToolbox"
+               ReferencedContainer = "container:MetalToolbox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,40 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
-               BuildableName = "PinkyDeviceTests.xctest"
-               BlueprintName = "PinkyDeviceTests"
-               ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E407F8D920B4228900FDFAC8"
-               BuildableName = "LTEngineDeviceTests.xctest"
-               BlueprintName = "LTEngineDeviceTests"
-               ReferencedContainer = "container:../LTEngine/LTEngine.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "E407F8D920B4228900FDFAC8"
                BuildableName = "MetalToolboxDeviceTests.xctest"
                BlueprintName = "MetalToolboxDeviceTests"
-               ReferencedContainer = "container:../MetalToolbox/MetalToolbox.xcodeproj">
+               ReferencedContainer = "container:MetalToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
-            BuildableName = "PinkyDeviceTests.xctest"
-            BlueprintName = "PinkyDeviceTests"
-            ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libMetalToolbox.a"
+            BlueprintName = "MetalToolbox"
+            ReferencedContainer = "container:MetalToolbox.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -84,10 +64,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
-            BuildableName = "PinkyDeviceTests.xctest"
-            BlueprintName = "PinkyDeviceTests"
-            ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libMetalToolbox.a"
+            BlueprintName = "MetalToolbox"
+            ReferencedContainer = "container:MetalToolbox.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -102,10 +82,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
-            BuildableName = "PinkyDeviceTests.xctest"
-            BlueprintName = "PinkyDeviceTests"
-            ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
+            BlueprintIdentifier = "8B3DEBE318296B6100EA0C1A"
+            BuildableName = "libMetalToolbox.a"
+            BlueprintName = "MetalToolbox"
+            ReferencedContainer = "container:MetalToolbox.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

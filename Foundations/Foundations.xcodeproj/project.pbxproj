@@ -510,6 +510,7 @@
 		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
 		B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TinCan.xcodeproj; path = ../TinCan/TinCan.xcodeproj; sourceTree = "<group>"; };
 		CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Shopix.xcodeproj; path = ../Shopix/Shopix.xcodeproj; sourceTree = "<group>"; };
+		E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MetalToolbox.xcodeproj; path = ../MetalToolbox/MetalToolbox.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -571,6 +572,7 @@
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
 				884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */,
+				E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */,
 				880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
@@ -800,6 +802,10 @@
 				{
 					ProductGroup = 65BAF1381D47F9D2009BBB6F /* Products */;
 					ProjectRef = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = E4D6C6D420ECECB000C94476 /* Products */;
+					ProjectRef = E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */;
 				},
 				{
 					ProductGroup = 880E4AA81FF3A5E400B4C05E /* Products */;
