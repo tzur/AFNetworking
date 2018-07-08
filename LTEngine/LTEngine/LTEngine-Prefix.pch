@@ -12,9 +12,6 @@
 
 // Apple's Frameworks.
 #import <GLKit/GLKit.h>
-#import <Metal/Metal.h>
-#import <MetalKit/MetalKit.h>
-#import <MetalPerformanceShaders/MetalPerformanceShaders.h>
 #import <OpenGLES/ES2/glext.h>
 #import <OpenGLES/ES3/gl.h>
 
@@ -43,7 +40,6 @@
 // LTEngine.
 #import "LTEasyBoxing+LTEngine.h"
 #import "LTGLCheck.h"
-#import "LTMPSAvailability.h"
 #import "LTRef+LTEngine.h"
 #import "LTShaderUnit.h"
 #import "LTTypedefs+LTEngine.h"
