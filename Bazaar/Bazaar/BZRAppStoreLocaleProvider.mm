@@ -67,13 +67,10 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       subscribeNext:^(NSLocale *appStoreLocale) {
         @strongify(self);
-        if (appStoreLocale != self.appStoreLocale &&
-            ![appStoreLocale isEqual:self.appStoreLocale]) {
-          self.appStoreLocale = appStoreLocale;
-          [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
-                                               bundleID:self.currentApplicationBundleID
-                                                  error:nil];
-        }
+        self.appStoreLocale = appStoreLocale;
+        [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
+                                             bundleID:self.currentApplicationBundleID
+                                                error:nil];
       }];
 }
 
