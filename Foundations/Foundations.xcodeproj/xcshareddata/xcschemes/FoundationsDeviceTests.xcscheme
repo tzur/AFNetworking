@@ -43,16 +43,6 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E407F8D920B4228900FDFAC8"
-               BuildableName = "LTEngineDeviceTests.xctest"
-               BlueprintName = "LTEngineDeviceTests"
-               ReferencedContainer = "container:../LTEngine/LTEngine.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E407F8D920B4228900FDFAC8"
                BuildableName = "MetalToolboxDeviceTests.xctest"
                BlueprintName = "MetalToolboxDeviceTests"
                ReferencedContainer = "container:../MetalToolbox/MetalToolbox.xcodeproj">
