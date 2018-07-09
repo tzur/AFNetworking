@@ -1850,17 +1850,16 @@ context(@"manually fetching products info", ^{
 
 context(@"handling unfinished completed transactions", ^{
   __block LLSignalTestRecorder *errorsRecorder;
-  __block LLSignalTestRecorder *completedTransactionsRecorder;
 
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
-    completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
   });
 
   it(@"should complete when object is deallocated", ^{
     BZRStore * __weak weakStore;
+    LLSignalTestRecorder *completedTransactionsRecorder;
 
     @autoreleasepool {
       BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -1899,37 +1898,83 @@ context(@"handling unfinished completed transactions", ^{
     OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
 
-  it(@"should finish transaction if it appears in receipt transactions", ^{
-    appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
-    auto receiptValidationStatus = [BZRReceiptValidationStatusWithExpiry(YES)
-        modelByOverridingPropertyAtKeypath:
-        @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
-        withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
-    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal return:receiptValidationStatus]);
+  context(@"finishing and sending transactions", ^{
+    beforeEach(^{
+      appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+    });
 
-    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+    it(@"should finish transaction if it appears in receipt transactions", ^{
+      auto receiptValidationStatus = [BZRReceiptValidationStatusWithExpiry(YES)
+          modelByOverridingPropertyAtKeypath:
+          @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
+          withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
 
-    OCMExpect([storeKitFacade finishTransaction:transaction]);
+      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
 
-    [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+      OCMExpect([storeKitFacade finishTransaction:transaction]);
 
-    OCMVerifyAllWithDelay((id)storeKitFacade, 0.01);
-  });
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-  it(@"should not finish transaction if it doesn't appear in receipt transactions", ^{
-    appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
-    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+      OCMVerifyAllWithDelay((id)storeKitFacade, 0.01);
+    });
 
-    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
-    OCMReject([storeKitFacade finishTransaction:transaction]);
+    it(@"should send transaction on completed transactions signal if it appears in receipt "
+       "transactions", ^{
+      auto completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
+      auto receiptValidationStatus =
+          [BZRReceiptValidationStatusWithExpiry(YES)
+           modelByOverridingPropertyAtKeypath:
+           @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
+           withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
 
-    [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+
+      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
+    });
+
+    it(@"should not finish transaction if it doesn't appear in receipt transactions", ^{
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+
+      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+      OCMReject([storeKitFacade finishTransaction:transaction]);
+
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+    });
+
+    it(@"should not send transaction on completed transactions signal if it doesn't appear in "
+       "receipt transactions", ^{
+      LLSignalTestRecorder *completedTransactionsRecorder;
+
+      @autoreleasepool {
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+
+        SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+        OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
+
+        auto store = [[BZRStore alloc] initWithConfiguration:configuration];
+        completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
+
+        [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+      }
+
+      expect(completedTransactionsRecorder).will.complete();
+      expect(completedTransactionsRecorder).will.sendValuesWithCount(0);
+    });
   });
 });
 
