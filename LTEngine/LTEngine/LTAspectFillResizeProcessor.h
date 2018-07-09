@@ -12,4 +12,10 @@
 /// image in.
 - (instancetype)initWithInput:(LTTexture *)inputTexture andOutput:(LTTexture *)outputTexture;
 
+/// Interpolation quality to use when resampling the input image into the output image. Defaults to
+/// \c kCGInterpolationHigh.
+///
+/// @note using a lower quality can significantly improve processing time performance.
+@property (nonatomic) CGInterpolationQuality interpolationQuality;
+
 @end

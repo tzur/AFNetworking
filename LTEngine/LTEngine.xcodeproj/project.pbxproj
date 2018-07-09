@@ -792,6 +792,7 @@
 		8559885C1CE31CF800EC4648 /* LTTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */; };
 		855988611CE31D4200EC4648 /* LTTextureAtlasSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */; };
 		856A19F71C7C5D4A00389432 /* LTSolidRectsDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 858FC7DF1C7A2574000F9625 /* LTSolidRectsDrawer.vsh */; };
+		8574192720F3A6C100632513 /* AspectFittedFlowerLowQuality.png in Resources */ = {isa = PBXBuildFile; fileRef = 857418F320F3A6C100632513 /* AspectFittedFlowerLowQuality.png */; };
 		857F74641D3691BE005DA3E2 /* LTIndicesData.h in Headers */ = {isa = PBXBuildFile; fileRef = 857F74621D3691BE005DA3E2 /* LTIndicesData.h */; };
 		857F74651D3691BE005DA3E2 /* LTIndicesData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857F74631D3691BE005DA3E2 /* LTIndicesData.mm */; };
 		857F74851D3691E8005DA3E2 /* LTIndicesDataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */; };
@@ -2634,6 +2635,7 @@
 		855988591CE31CF800EC4648 /* LTTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureAtlas.h; sourceTree = "<group>"; };
 		8559885A1CE31CF800EC4648 /* LTTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlas.mm; sourceTree = "<group>"; };
 		855988601CE31D4200EC4648 /* LTTextureAtlasSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureAtlasSpec.mm; sourceTree = "<group>"; };
+		857418F320F3A6C100632513 /* AspectFittedFlowerLowQuality.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AspectFittedFlowerLowQuality.png; path = Resources/AspectFittedFlowerLowQuality.png; sourceTree = "<group>"; };
 		857F74621D3691BE005DA3E2 /* LTIndicesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIndicesData.h; sourceTree = "<group>"; };
 		857F74631D3691BE005DA3E2 /* LTIndicesData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesData.mm; sourceTree = "<group>"; };
 		857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTIndicesDataSpec.mm; sourceTree = "<group>"; };
@@ -4692,6 +4694,7 @@
 				C7D13E921E1A76BD00133062 /* ImageZero */,
 				25AF176D1AD50C4A0055E664 /* Vector Graphics */,
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
+				857418F320F3A6C100632513 /* AspectFittedFlowerLowQuality.png */,
 				7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */,
 				B4BF60AA1F9742D400560891 /* Black8bitRA.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
@@ -6845,6 +6848,7 @@
 				28AC7FB51F964D3A0014F062 /* LTColorTransferReference.jpg in Resources */,
 				06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
+				8574192720F3A6C100632513 /* AspectFittedFlowerLowQuality.png in Resources */,
 				307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */,
 				284429F41F98DEBD00355576 /* LTColorTransferResultTransparentInput.png in Resources */,
 				06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */,
