@@ -161,7 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<BZRMultiAppReceiptValidationStatus *> *)fetchReceiptValidationStatuses:
     (NSSet<NSString *> *)bundledApplicationsIDs {
   @weakify(self);
-  return [[[[bundledApplicationsIDs.rac_sequence.signal
+  return [[[[[bundledApplicationsIDs.rac_sequence.signal
+      takeUntil:self.rac_willDeallocSignal]
       flattenMap:^(NSString *bundleID) {
         @strongify(self);
         return [self fetchReceiptValidationStatusWithBundleID:bundleID];
