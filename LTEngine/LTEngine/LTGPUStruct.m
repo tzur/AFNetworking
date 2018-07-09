@@ -12,12 +12,18 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation LTGPUStructField
 
 - (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
-         andOffset:(size_t)offset {
+                   andOffset:(size_t)offset {
+  return [self  initWithName:name type:type size:size offset:offset normalized:NO];
+}
+
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
+                      offset:(size_t)offset normalized:(BOOL)normalized {
   if (self = [super init]) {
     _name = name;
     _type = type;
     _size = size;
     _offset = offset;
+    _normalized = normalized;
     _componentType = [[self class] componentTypeForFieldType:self.type];
     _componentCount = [[self class] componentCountForFieldType:self.type size:self.size];
   }

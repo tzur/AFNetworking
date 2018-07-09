@@ -13,7 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with the given field \c name, serialized \c type, \c size in bytes, and the
 /// \c offset in the struct.
 - (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
-                   andOffset:(size_t)offset NS_DESIGNATED_INITIALIZER;
+                   andOffset:(size_t)offset;
+
+/// Initializes with the given field \c name, serialized \c type, \c size in bytes, the \c offset in
+/// the struct, and the \c normalized indication.
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
+                      offset:(size_t)offset normalized:(BOOL)normalized NS_DESIGNATED_INITIALIZER;
 
 /// Name of the field.
 @property (readonly, nonatomic) NSString *name;
@@ -26,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Offset of the field in the struct.
 @property (readonly, nonatomic) size_t offset;
+
+/// \c YES if this field is normalized. Can be ignored if the \c type of this instance specifies a
+/// floating-point type.
+@property (readonly, nonatomic) BOOL normalized;
 
 /// OpenGL component type (such as \c GL_FLOAT, \c GL_UNSIGNED_SHORT) matching the field's \c type.
 @property (readonly, nonatomic) GLenum componentType;

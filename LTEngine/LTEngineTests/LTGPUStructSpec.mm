@@ -21,8 +21,8 @@ LTGPUStructMake(MyUnsignedByteStruct,
 LTGPUStructMake(MyShortStruct,
                 GLshort, index);
 
-LTGPUStructMake(MyUnsignedShortStruct,
-                GLushort, index);
+LTGPUStructMakeNormalized(MyUnsignedShortStruct,
+                          GLushort, index, YES);
 
 SpecBegin(LTGPUStructs)
 
@@ -45,6 +45,7 @@ context(@"struct registration", ^{
     expect(value.offset).to.equal(0);
     expect(value.type).to.equal(@"float");
     expect(value.size).to.equal(sizeof(float));
+    expect(value.normalized).to.beFalsy();
     expect(value.componentType).to.equal(GL_FLOAT);
     expect(value.componentCount).to.equal(1);
   });
@@ -67,6 +68,7 @@ context(@"struct registration", ^{
     expect(value.offset).to.equal(0);
     expect(value.type).to.equal(@"GLbyte");
     expect(value.size).to.equal(sizeof(GLbyte));
+    expect(value.normalized).to.beFalsy();
     expect(value.componentType).to.equal(GL_BYTE);
     expect(value.componentCount).to.equal(1);
   });
@@ -89,6 +91,7 @@ context(@"struct registration", ^{
     expect(value.offset).to.equal(0);
     expect(value.type).to.equal(@"GLubyte");
     expect(value.size).to.equal(sizeof(GLubyte));
+    expect(value.normalized).to.beFalsy();
     expect(value.componentType).to.equal(GL_UNSIGNED_BYTE);
     expect(value.componentCount).to.equal(1);
   });
@@ -111,6 +114,7 @@ context(@"struct registration", ^{
     expect(value.offset).to.equal(0);
     expect(value.type).to.equal(@"GLshort");
     expect(value.size).to.equal(sizeof(GLshort));
+    expect(value.normalized).to.beFalsy();
     expect(value.componentType).to.equal(GL_SHORT);
     expect(value.componentCount).to.equal(1);
   });
@@ -133,6 +137,7 @@ context(@"struct registration", ^{
     expect(value.offset).to.equal(0);
     expect(value.type).to.equal(@"GLushort");
     expect(value.size).to.equal(sizeof(GLushort));
+    expect(value.normalized).to.beTruthy();
     expect(value.componentType).to.equal(GL_UNSIGNED_SHORT);
     expect(value.componentCount).to.equal(1);
   });
@@ -155,6 +160,7 @@ context(@"struct registration", ^{
     expect(position.offset).to.equal(0);
     expect(position.type).to.equal(@"LTVector2");
     expect(position.size).to.equal(sizeof(LTVector2));
+    expect(position.normalized).to.beFalsy();
     expect(position.componentType).to.equal(GL_FLOAT);
     expect(position.componentCount).to.equal(2);
 
@@ -163,6 +169,7 @@ context(@"struct registration", ^{
     expect(intensity.offset).to.equal(sizeof(LTVector2));
     expect(intensity.type).to.equal(@"LTVector3");
     expect(intensity.size).to.equal(sizeof(LTVector3));
+    expect(intensity.normalized).to.beFalsy();
     expect(intensity.componentType).to.equal(GL_FLOAT);
     expect(intensity.componentCount).to.equal(3);
 
@@ -171,6 +178,7 @@ context(@"struct registration", ^{
     expect(color.offset).to.equal(intensity.offset + intensity.size);
     expect(color.type).to.equal(@"LTVector4");
     expect(color.size).to.equal(sizeof(LTVector4));
+    expect(color.normalized).to.beFalsy();
     expect(color.componentType).to.equal(GL_FLOAT);
     expect(color.componentCount).to.equal(4);
   });
@@ -287,6 +295,13 @@ context(@"NSObject protocol", ^{
       it(@"should return NO when comparing to gpu struct field with different offset", ^{
         LTGPUStructField *anotherField =
             [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 andOffset:1];
+        expect([field isEqual:anotherField]).to.beFalsy();
+      });
+
+      it(@"should return NO when comparing to gpu struct field with different normalization", ^{
+        LTGPUStructField *anotherField =
+            [[LTGPUStructField alloc] initWithName:@"name" type:@"float" size:1 offset:0
+                                        normalized:YES];
         expect([field isEqual:anotherField]).to.beFalsy();
       });
     });
