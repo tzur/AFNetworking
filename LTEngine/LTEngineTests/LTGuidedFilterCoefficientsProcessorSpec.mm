@@ -375,7 +375,7 @@ context(@"processing", ^{
     expect($([shiftCoefficients image])).to.equalMat($(expectedShift));
   });
 
-  it(@"should process correctly with coefficients aspect ratio different from input", ^{
+  it(@"should process correctly with coefficients aspect ratio a bit different from input", ^{
     LTTexture *nonSquareInput =
         [LTTexture textureWithImage:LTLoadMat([self class], @"GuidedFilterLenna67x128.png")];
 
@@ -392,6 +392,21 @@ context(@"processing", ^{
     cv::Mat expectedShift = LTLoadMat([self class], @"GuidedFilterLenna67x128_R7S3_Shift.png");
     expect($([scaleCoefficients image])).to.equalMat($(expectedScale));
     expect($([shiftCoefficients image])).to.equalMat($(expectedShift));
+  });
+
+  it(@"shouldn't raise exceptions when processing with coefficients with aspect ratio very "
+     "different from input", ^{
+    scaleCoefficients = [LTTexture byteRGBATextureWithSize:CGSizeMake(input.size.width, 1)];
+    shiftCoefficients = [LTTexture textureWithPropertiesOf:scaleCoefficients];
+    expect(^{
+      guidedFilterCoefficientsProcessor =
+          [[LTGuidedFilterCoefficientsProcessor alloc] initWithInput:input
+                                                               guide:input
+                                                   scaleCoefficients:@[scaleCoefficients]
+                                                   shiftCoefficients:@[shiftCoefficients]
+                                                         kernelSizes:{7}];
+      [guidedFilterCoefficientsProcessor process];
+    }).toNot.raiseAny();
   });
 });
 

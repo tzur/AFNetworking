@@ -21,10 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// RGBA input is not supported.
 ///
 /// The coefficients textures can be smaller than the \c input texture but must have the same size
-/// pairwise for shift and scale coefficients. The texture components of the coefficients must be
-/// the same as in \c input. If \c input is not the same texture as \c guide, the data type of the
-/// coefficients must be half-float since it needs to store values of wider dynamic range which
-/// can be also outside of <tt>[0, 1]</tt> range.
+/// pairwise for shift and scale coefficients. The aspect ratio of the coefficients textures should
+/// be as close as possible to the aspect ratio of \c input to obtain meaningful results.
+/// The texture components of the coefficients must be the same as in \c input. If \c input is not
+/// the same texture as \c guide, the data type of the coefficients must be half-float since it
+/// needs to store values of wider dynamic range which can be also outside of <tt>[0, 1]</tt> range.
 ///
 /// The \c kernelSizes array length must be equal to the \c scaleCoefficients and
 /// \c shiftCoefficients arrays length. Each value in \c kernelSizes must be an odd number in
