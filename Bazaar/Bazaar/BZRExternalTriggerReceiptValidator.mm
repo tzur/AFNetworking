@@ -62,19 +62,23 @@ NS_ASSUME_NONNULL_BEGIN
     [self deactivate];
 
     @weakify(self);
-    self.triggerSignalSubscription = [triggerSignal subscribeNext:^(id) {
-      @strongify(self);
-      [self fetchReceiptValidationStatus];
-    }];
+    self.triggerSignalSubscription = [[triggerSignal
+        takeUntil:self.rac_willDeallocSignal]
+        subscribeNext:^(id) {
+          @strongify(self);
+          [self fetchReceiptValidationStatus];
+        }];
   }
 }
 
 - (void)fetchReceiptValidationStatus {
   @weakify(self);
-  [[self.validationStatusProvider fetchReceiptValidationStatus] subscribeError:^(NSError *error) {
-    @strongify(self);
-    [self.errorsSubject sendNext:error];
-  }];
+  [[[self.validationStatusProvider fetchReceiptValidationStatus]
+      takeUntil:self.rac_willDeallocSignal]
+      subscribeError:^(NSError *error) {
+        @strongify(self);
+        [self.errorsSubject sendNext:error];
+      }];
 }
 
 #pragma mark -
