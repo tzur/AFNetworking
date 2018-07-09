@@ -217,9 +217,9 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   for (NSUInteger i = 0; i < self.scaleCoefficients.count; ++i) {
-    CGSize ratio = self.input.size / self.scaleCoefficients[i].size;
-    CGSize kernelSize = CGSizeMakeUniform(_kernelSizes[i]);
-    CGSize scaledKernelSize = [self roundToOdd:kernelSize / ratio];
+    CGFloat ratio = std::max(self.input.size / self.scaleCoefficients[i].size);
+    CGFloat kernelSize = _kernelSizes[i];
+    CGFloat scaledKernelSize = [self roundToOdd:kernelSize / ratio];
 
     if (self.blurNormalizationTexture) {
       [self.blurNormalizationTexture clearColor:LTVector4::ones()];
@@ -280,8 +280,8 @@ NS_ASSUME_NONNULL_BEGIN
   [multiplyProcessor process];
 }
 
-- (CGSize)roundToOdd:(CGSize)size {
-  return std::floor(size / 2) * 2 + 1;
+- (CGFloat)roundToOdd:(CGFloat)value {
+  return std::floor(value / 2) * 2 + 1;
 }
 
 - (void)calculateScale {
@@ -319,20 +319,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)boxFilterWithInput:(LTTexture *)input output:(LTTexture *)output
-                kernelSize:(CGSize)kernelSize {
+                kernelSize:(CGFloat)kernelSize {
   [self nonNormalizedBoxFilterWithInput:input output:output kernelSize:kernelSize];
   [self normalizeTexture:output];
 }
 
 - (void)nonNormalizedBoxFilterWithInput:(LTTexture *)input output:(LTTexture *)output
-                             kernelSize:(CGSize)kernelSize {
-  LTParameterAssert(kernelSize.width == kernelSize.height,
-                    @"Prodided kernelSize(%@) dimensions are not equal",
-                    NSStringFromCGSize(kernelSize));
-  CGFloat inputRadius = kernelSize.width;
+                             kernelSize:(CGFloat)kernelSize {
   [input mappedCIImage:^(CIImage *image) {
     [output drawWithCoreImage:^CIImage *{
-      auto filterParameters = @{kCIInputRadiusKey: @(inputRadius)};
+      auto filterParameters = @{kCIInputRadiusKey: @(kernelSize)};
       return [[image
           imageByApplyingFilter:@"CIBoxBlur" withInputParameters:filterParameters]
           imageByCroppingToRect:image.extent];
