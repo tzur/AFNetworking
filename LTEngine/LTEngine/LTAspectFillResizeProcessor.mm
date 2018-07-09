@@ -22,6 +22,7 @@
   if (self = [super init]) {
     self.inputTexture = inputTexture;
     self.outputTexture = outputTexture;
+    self.interpolationQuality = kCGInterpolationHigh;
   }
   return self;
 }
@@ -34,7 +35,7 @@
       CGContextConcatCTM(context, CGAffineTransformInvert(currentTransform));
 
       CGContextSetAllowsAntialiasing(context, true);
-      CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+      CGContextSetInterpolationQuality(context, self.interpolationQuality);
 
       CGSize aspectFillSize = CGSizeAspectFill(self.inputTexture.size, self.outputTexture.size);
       CGSize origin = (self.outputTexture.size - aspectFillSize) / 2;
