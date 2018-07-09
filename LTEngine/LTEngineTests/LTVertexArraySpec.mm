@@ -3,6 +3,8 @@
 
 #import "LTVertexArray.h"
 
+#import <LTKit/NSArray+NSSet.h>
+
 #import "LTArrayBuffer.h"
 #import "LTGLContext.h"
 #import "LTGPUResourceExamples.h"
@@ -15,9 +17,11 @@ LTGPUStructMake(SingleFieldStruct,
 LTGPUStructMake(AnotherSingleFieldStruct,
                 LTVector4, color);
 
-LTGPUStructMake(MultipleFieldsStruct,
-                LTVector2, position,
-                LTVector2, texcoord);
+LTGPUStructMakeNormalized(MultipleFieldsStruct,
+                          LTVector2, position, NO,
+                          LTVector2, texcoord, NO,
+                          GLbyte, byteValue, NO,
+                          GLubyte, unsignedByteValue, YES);
 
 static LTArrayBuffer *LTDummyArrayBuffer() {
   return [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
@@ -25,7 +29,12 @@ static LTArrayBuffer *LTDummyArrayBuffer() {
 }
 
 static LTVertexArrayElement *LTArrayElementForMultipleFieldsStruct() {
-  NSDictionary *attributeMap = @{@"position": @"position", @"texcoord": @"texcoord"};
+  NSDictionary *attributeMap = @{
+    @"position": @"position",
+    @"texcoord": @"texcoord",
+    @"byteValue": @"byteValue",
+    @"unsignedByteValue": @"unsignedByteValue"
+  };
 
   LTVertexArrayElement *element = [[LTVertexArrayElement alloc]
                                    initWithStructName:@"MultipleFieldsStruct"
@@ -76,7 +85,12 @@ static void LTEnumerateVertexArray(LTVertexArray *vertexArray, NSArray *structNa
 SpecBegin(LTVertexArrayElement)
 
 context(@"initialization", ^{
-  NSDictionary *attributeMap = @{@"position": @"position", @"texcoord": @"texcoord"};
+  NSDictionary *attributeMap = @{
+    @"position": @"position",
+    @"texcoord": @"texcoord",
+    @"byteValue": @"byteValue",
+    @"unsignedByteValue": @"unsignedByteValue"
+  };
 
   it(@"should initialize with a valid configuration", ^{
     LTArrayBuffer *arrayBuffer = LTDummyArrayBuffer();
@@ -88,7 +102,7 @@ context(@"initialization", ^{
 
     expect(element.gpuStruct.name).equal(@"MultipleFieldsStruct");
     expect(element.arrayBuffer).equal(arrayBuffer);
-    expect(element.attributeToField.allKeys).equal(attributeMap.allKeys);
+    expect(element.attributeToField.allKeys.lt_set).equal(attributeMap.allKeys.lt_set);
   });
 
   it(@"should not initialize with element buffer", ^{
@@ -295,7 +309,9 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
     NSDictionary * const kAttributeToIndex = @{
       @"position": @(0),
       @"texcoord": @(1),
-      @"intensity": @(2)
+      @"byteValue": @(2),
+      @"unsignedByteValue": @(3),
+      @"intensity": @(4)
     };
 
     __block LTVertexArray *vertexArray;
@@ -363,14 +379,18 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
       });
     });
 
-    it(@"should not require field normalization", ^{
+    it(@"should correctly require or not require field normalization", ^{
       LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
-        ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *) {
+        ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
          GLint arrayNormalize = 0;
+
          glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
                              GL_VERTEX_ATTRIB_ARRAY_NORMALIZED, &arrayNormalize);
 
-         expect(arrayNormalize).to.equal(GL_FALSE);
+          GLint expectedValue =
+              [field.name isEqualToString:@"unsignedByteValue"] ? GL_TRUE : GL_FALSE;
+
+         expect(arrayNormalize).to.equal(expectedValue);
       });
     });
   });
