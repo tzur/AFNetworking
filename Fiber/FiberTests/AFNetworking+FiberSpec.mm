@@ -266,7 +266,6 @@ it(@"should create a session manager with the specified base URL and configurati
       [AFSecurityPolicy fbr_securityPolicyWithFiberSecurityPolicy:securityPolicy];
 
   expect(sessionManager.baseURL).to.equal(baseURL);
-  expect(sessionManager.session.configuration).to.equal(configuration.sessionConfiguration);
   expect(sessionManager.requestSerializer).to.beInstanceOf([expectedSerializer class]);
   expect(sessionManager.requestSerializer.HTTPRequestHeaders).to
       .equal(expectedSerializer.HTTPRequestHeaders);
