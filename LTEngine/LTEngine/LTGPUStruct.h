@@ -1,12 +1,14 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <LTKit/LTValueObject.h>
+
 #import "LTGPUStructsMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Holds data about a single member of a GPU struct.
-@interface LTGPUStructField : NSObject
+@interface LTGPUStructField : LTValueObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -45,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Value object holding data about a struct that can be placed on the GPU.
-@interface LTGPUStruct : NSObject
+@interface LTGPUStruct : LTValueObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
