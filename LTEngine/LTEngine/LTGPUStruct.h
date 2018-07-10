@@ -1,14 +1,26 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <LTKit/LTValueObject.h>
+
 #import "LTGPUStructsMacros.h"
 
-/// Holds data about a single member of a GPU struct.
-@interface LTGPUStructField : NSObject
+NS_ASSUME_NONNULL_BEGIN
 
-/// Initializes with field name, offset in struct, type as string and the field's size.
+/// Holds data about a single member of a GPU struct.
+@interface LTGPUStructField : LTValueObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given field \c name, serialized \c type, \c size in bytes, and the
+/// \c offset in the struct.
 - (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
                    andOffset:(size_t)offset;
+
+/// Initializes with the given field \c name, serialized \c type, \c size in bytes, the \c offset in
+/// the struct, and the \c normalized indication.
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type size:(size_t)size
+                      offset:(size_t)offset normalized:(BOOL)normalized NS_DESIGNATED_INITIALIZER;
 
 /// Name of the field.
 @property (readonly, nonatomic) NSString *name;
@@ -22,6 +34,10 @@
 /// Offset of the field in the struct.
 @property (readonly, nonatomic) size_t offset;
 
+/// \c YES if this field is normalized. Can be ignored if the \c type of this instance specifies a
+/// floating-point type.
+@property (readonly, nonatomic) BOOL normalized;
+
 /// OpenGL component type (such as \c GL_FLOAT, \c GL_UNSIGNED_SHORT) matching the field's \c type.
 @property (readonly, nonatomic) GLenum componentType;
 
@@ -31,10 +47,13 @@
 @end
 
 /// Value object holding data about a struct that can be placed on the GPU.
-@interface LTGPUStruct : NSObject
+@interface LTGPUStruct : LTValueObject
 
-/// Initializes with struct name, size in bytes and \c NSArray of \c LTGPUStructField objects.
-- (instancetype)initWithName:(NSString *)name size:(size_t)size andFields:(NSArray *)fields;
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given struct \c name, \c size in bytes, and \c fields.
+- (instancetype)initWithName:(NSString *)name size:(size_t)size
+                   andFields:(NSArray<LTGPUStructField *> *)fields NS_DESIGNATED_INITIALIZER;
 
 /// Name of the struct.
 @property (readonly, nonatomic) NSString *name;
@@ -43,7 +62,7 @@
 @property (readonly, nonatomic) size_t size;
 
 /// Dictionary of field name to its corresponding \c LTGPUStructField object.
-@property (readonly, nonatomic) NSDictionary *fields;
+@property (readonly, nonatomic) NSDictionary<NSString *, LTGPUStructField *> *fields;
 
 @end
 
@@ -61,3 +80,5 @@
 - (LTGPUStruct *)structForName:(NSString *)name;
 
 @end
+
+NS_ASSUME_NONNULL_END

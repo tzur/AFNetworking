@@ -26,9 +26,17 @@ attribute highp vec3 texcoord;
 /// Center, in non-homogeneous XY object space coordinates, of the rendered quad.
 attribute highp vec2 quadCenter;
 
-/// RGB color, in non-premultiplied format, forwarded to the fragment shader, in case that
-/// \c sampleUniformColorFromColorTexture is \c YES.
-attribute highp vec3 color;
+/// Red component of RGB color, in non-premultiplied unnormalized byte format, forwarded to the
+/// fragment shader, in case that \c sampleUniformColorFromColorTexture is \c YES.
+attribute highp float colorRed;
+
+/// Green component of RGB color, in non-premultiplied unnormalized byte format, forwarded to the
+/// fragment shader, in case that \c sampleUniformColorFromColorTexture is \c YES.
+attribute highp float colorGreen;
+
+/// Blue component of RGB color, in non-premultiplied unnormalized byte format, forwarded to the
+/// fragment shader, in case that \c sampleUniformColorFromColorTexture is \c YES.
+attribute highp float colorBlue;
 
 varying highp vec4 vPosition;
 varying highp vec3 vTexcoord;
@@ -51,7 +59,7 @@ void main() {
   if (sampleUniformColorFromColorTexture) {
     vColor = texture2D(colorTexture, sampleLocationWithOffset(vec2(0.0)));
   } else {
-    vColor = vec4(color, 1.0);
+    vColor = vec4(colorRed, colorGreen, colorBlue, 1.0);
   }
 
   highp vec4 modelviewPosition = modelview * vec4(position.x, position.y, 0, position.w);
