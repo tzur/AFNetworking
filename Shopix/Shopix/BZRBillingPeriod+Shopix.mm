@@ -15,9 +15,23 @@ using namespace spx;
 }
 
 + (nullable NSDictionary *)spx_periodOfProductIdentifier:(NSString *)productIdentifier {
-  auto lastGroupInIdentifier = [productIdentifier componentsSeparatedByString:@"_"].lastObject;
-  auto lastGroupComponents = [lastGroupInIdentifier componentsSeparatedByString:@"."];
-  for (NSString *component in lastGroupComponents) {
+  static const NSUInteger kNewFormatProductSpecifierIndex = 2;
+
+  NSString *productSpecifierComponent;
+  if ([self spx_isNewFormat:productIdentifier]) {
+    if ([productIdentifier componentsSeparatedByString:@"_"].count < 3) {
+      LogWarning(@"Received product ID with unrecognized format: %@", productIdentifier);
+      return nil;
+    }
+
+    productSpecifierComponent =
+        [productIdentifier componentsSeparatedByString:@"_"][kNewFormatProductSpecifierIndex];
+  } else {
+    productSpecifierComponent = productIdentifier;
+  }
+
+  auto productSpecificProperties = [productSpecifierComponent componentsSeparatedByString:@"."];
+  for (NSString *component in productSpecificProperties) {
     if ([component isEqualToString:@"Monthly"] || [component isEqualToString:@"1M"]) {
       return @{
         @"unit": $(BZRBillingPeriodUnitMonths),
@@ -37,6 +51,10 @@ using namespace spx;
   }
 
   return nil;
+}
+
++ (BOOL)spx_isNewFormat:(NSString *)productIdentifier {
+  return [productIdentifier containsString:@"_"];
 }
 
 - (NSString *)spx_billingPeriodString:(BOOL)monthlyFormat {
