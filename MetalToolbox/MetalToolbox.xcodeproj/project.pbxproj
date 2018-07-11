@@ -816,6 +816,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -840,6 +844,10 @@
 					"$(SRCROOT)/../third_party/half",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Release;
