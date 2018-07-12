@@ -56,14 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)init {
-  return [self initWithPreferredImageDataPixelCount:NSUIntegerMax
-                       preferredVideoDataPixelCount:NSUIntegerMax];
+- (instancetype)initWithAPIKey:(NSString *)APIKey {
+  return [self initWithAPIKey:APIKey preferredImageDataPixelCount:NSUIntegerMax
+ preferredVideoDataPixelCount:NSUIntegerMax];
 }
 
-- (instancetype)initWithPreferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
-                        preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
-  return [self initWithClient:[[PTNOceanClient alloc] init]
+- (instancetype)initWithAPIKey:(NSString *)APIKey
+  preferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
+  preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
+  return [self initWithClient:[[PTNOceanClient alloc] initWithAPIKey:APIKey]
                  dateProvider:[[PTNDateProvider alloc] init]
  preferredImageDataPixelCount:preferredImageDataPixelCount
  preferredVideoDataPixelCount:preferredVideoDataPixelCount];
