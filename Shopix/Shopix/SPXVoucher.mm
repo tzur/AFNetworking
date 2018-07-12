@@ -225,7 +225,6 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 
 - (nullable NSString *)serializeAndSignWithKey:(NSString *)key
                                          error:(NSError *__autoreleasing *)error {
-#if defined(DEBUG) && DEBUG
   auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:self];
   auto _Nullable jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
                                                               error:nil];
@@ -258,13 +257,6 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   NSMutableData *data = [signature mutableCopy];
   [data appendData:encrypted];
   return [data lt_urlSafeBase64];
-#else
-  // The real implementation of the method is not in release mode because then users will be able to
-  // create signed vouchers.
-  LogError(@"%@ called in release mode with key %@ and error %p", NSStringFromSelector(_cmd), key,
-           error);
-  return nil;
-#endif
 }
 
 + (nullable instancetype)voucherWithSerializedString:(NSString *)string key:(NSString *)key
