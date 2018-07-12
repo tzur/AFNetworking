@@ -28,12 +28,19 @@ it(@"should parse the yearly billing period from product identifier", ^{
   expect(billingPeriod.unitCount).to.equal(1);
 });
 
-it(@"should parse the billing period from the last group in the product identifier", ^{
+it(@"should parse the billing period from third group in the product identifier", ^{
   auto billingPeriod =
-      [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:@"com.spx.1M_1Y.foo"];
+      [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:@"com.spx_1M_1Y_trial.3D"];
 
   expect(billingPeriod.unit).to.equal($(BZRBillingPeriodUnitYears));
   expect(billingPeriod.unitCount).to.equal(1);
+});
+
+it(@"should return nil if the identifier is in the new format but is not valid", ^{
+  auto billingPeriod =
+      [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:@"com.spx_1M"];
+
+  expect(billingPeriod).to.beNil();
 });
 
 it(@"should return billing period nil", ^{
