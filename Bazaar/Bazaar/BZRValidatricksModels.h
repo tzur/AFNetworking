@@ -69,30 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-#pragma mark BZRUserCreditStatus
-#pragma mark -
-
-/// Model representing Validatrics server response for a "get user credit" request.
-@interface BZRUserCreditStatus : BZRModel <MTLJSONSerializing, NSSecureCoding>
-
-/// Unique identifier of the request. Can be used later to collect logs related to that request.
-@property (readonly, nonatomic) NSString *requestId;
-
-/// Type of the credit the request was made for.
-///
-/// @note Since Validatricks can manage multiple credit balances for every user, each with different
-/// `creditType`. This has to be specified in the request.
-@property (readonly, nonatomic) NSString *creditType;
-
-/// The user's credit balance.
-@property (readonly, nonatomic) NSUInteger credit;
-
-/// Array of all consumable items user has previously consumed using credit of type \c creditType.
-@property (readonly, nonatomic) NSArray<BZRConsumableItemDescriptor *> *consumedItems;
-
-@end
-
-#pragma mark -
 #pragma mark BZRConsumableTypesPriceInfo
 #pragma mark -
 
@@ -151,6 +127,37 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note For consumable items that were already consumed by the user prior to this request, the
 /// \c redeemedCredit field will be \c 0.
 @property (readonly, nonatomic) NSArray<BZRConsumedItemDescriptor *> *consumedItems;
+
+@end
+
+#pragma mark -
+#pragma mark BZRUserCreditStatus
+#pragma mark -
+
+/// Model representing Validatricks server response for a "get user credit" request.
+@interface BZRUserCreditStatus : BZRModel <MTLJSONSerializing, NSSecureCoding>
+
+/// Initializes with the fields taken from the given \c redeemStatus.
+- (instancetype)initWithRedeemStatus:(BZRRedeemConsumablesStatus *)redeemStatus;
+
+/// Returns a copy of the credit status after updating it with data from the  \c redeemStatus.
+- (BZRUserCreditStatus *)updatedUserCreditStatusWithRedeemStatus:
+    (BZRRedeemConsumablesStatus *)redeemStatus;
+
+/// Unique identifier of the request. Can be used later to collect logs related to that request.
+@property (readonly, nonatomic) NSString *requestId;
+
+/// Type of the credit the request was made for.
+///
+/// @note Since Validatricks can manage multiple credit balances for every user, each with different
+/// `creditType`. This has to be specified in the request.
+@property (readonly, nonatomic) NSString *creditType;
+
+/// The user's credit balance.
+@property (readonly, nonatomic) NSUInteger credit;
+
+/// Array of all consumable items user has previously consumed using credit of type \c creditType.
+@property (readonly, nonatomic) NSArray<BZRConsumableItemDescriptor *> *consumedItems;
 
 @end
 

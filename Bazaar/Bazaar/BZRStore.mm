@@ -709,7 +709,7 @@ NS_ASSUME_NONNULL_BEGIN
       allValues];
 
   @weakify(self);
-  return [[RACSignal
+  return [[[RACSignal
       defer:^{
         @strongify(self);
         return self.receiptValidationStatus ? [RACSignal return:self.receiptValidationStatus] :
@@ -725,7 +725,21 @@ NS_ASSUME_NONNULL_BEGIN
         return [self.validatricksClient redeemConsumableItems:itemsToRedeem ofCreditType:creditType
                 userId:self.userIDProvider.userID
                 environment:lt::nn(receiptValidationStatus.receipt).environment];
+      }]
+      doNext:^(BZRRedeemConsumablesStatus *redeemStatus) {
+        [self updateUserCreditStatusCacheWithRedeemStatus:redeemStatus];
       }];
+}
+
+- (void)updateUserCreditStatusCacheWithRedeemStatus:(BZRRedeemConsumablesStatus *)redeemStatus {
+  auto creditTypeKey = [self userCreditCacheKeyForCreditType:redeemStatus.creditType];
+  auto _Nullable cachedUserCreditStatus =
+      (BZRUserCreditStatus *)[self.keychainStorage valueForKey:creditTypeKey error:nil];
+  auto userCreditStatus = cachedUserCreditStatus ?
+      [cachedUserCreditStatus updatedUserCreditStatusWithRedeemStatus:redeemStatus] :
+      [[BZRUserCreditStatus alloc] initWithRedeemStatus:redeemStatus];
+
+  [self.keychainStorage setValue:userCreditStatus forKey:creditTypeKey error:nil];
 }
 
 - (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(NSString *)productIdentifier {
