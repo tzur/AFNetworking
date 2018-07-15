@@ -87,6 +87,10 @@ NS_ASSUME_NONNULL_BEGIN
   return result;
 }
 
+- (nullable id)lt_randomObject {
+  return self.count ? self[arc4random_uniform((uint32_t)self.count)] : nil;
+}
+
 - (NSDictionary<id<NSCopying>, NSArray<id> *> *)
     lt_classify:(NS_NOESCAPE LTArrayClassifierBlock)block {
   LTParameterAssert(block);

@@ -123,6 +123,13 @@ typedef BOOL (^LTArrayCompareBlock)(ObjectType _Nonnull a, ObjectType _Nonnull b
 /// @endcode
 - (nullable ObjectType)lt_min:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
 
+/// Returns a uniformly distributed random element from the receiver or \c nil if the array is
+/// empty.
+///
+/// @note calling this on an array with \c count larger than \c UINT32_MAX will result in undefined
+/// behaviour.
+- (nullable ObjectType)lt_randomObject;
+
 /// Callback block used to classify objects of an array.
 ///
 /// \c object is the array element to classify. The block returns a label for that item. The
