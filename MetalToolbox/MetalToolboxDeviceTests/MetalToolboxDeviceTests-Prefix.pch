@@ -14,3 +14,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#ifdef __cplusplus
+  #import <LTKitTestUtils/LTTestUtils.h>
+#endif
