@@ -21,9 +21,15 @@
 		E4568FA220F1E7DA009CB9D6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */; };
 		E4568FA420F1E7F3009CB9D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA320F1E7F3009CB9D6 /* CoreGraphics.framework */; };
 		E4568FA620F1E851009CB9D6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568FA520F1E851009CB9D6 /* QuartzCore.framework */; };
+		E4669C7720F4F1A80039EB39 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F73A8520EE5D4C00E34332 /* libLTKit.a */; };
+		E4669C7820F4F1A80039EB39 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F73A8920EE5D4C00E34332 /* libLTKitTestUtils.a */; };
 		E477FB0F20ED01A0003D4302 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB0E20ED01A0003D4302 /* libExpecta.a */; };
 		E477FB1120ED01D9003D4302 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1020ED01D9003D4302 /* libcompression.tbd */; };
 		E477FB1320ED0238003D4302 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1220ED0238003D4302 /* MobileCoreServices.framework */; };
+		E4BCB9B720F4E9770021A5E2 /* MTBLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB99F20F4E9770021A5E2 /* MTBLibraryLoader.mm */; };
+		E4BCB9B820F4E9770021A5E2 /* MTBLibraryLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = E4BCB9B620F4E9770021A5E2 /* MTBLibraryLoader.h */; };
+		E4BCB9BB20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */; };
+		E4BCB9BC20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB9BA20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm */; };
 		E4D6C72120ECF01600C94476 /* MetalToolbox-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */; };
 		E4D6C72520ECF22100C94476 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72420ECF22100C94476 /* AVFoundation.framework */; };
 		E4D6C72720ECF25500C94476 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72620ECF25500C94476 /* CoreMedia.framework */; };
@@ -238,6 +244,10 @@
 		E477FB1220ED0238003D4302 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		E4979EAD20ED03E70011325C /* MetalToolboxDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MetalToolboxDeviceTests-Prefix.pch"; path = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
 		E4979EAE20ED03E70011325C /* MetalToolboxDeviceTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "MetalToolboxDeviceTests-Info.plist"; path = "MetalToolboxDeviceTests/MetalToolboxDeviceTests-Info.plist"; sourceTree = "<group>"; };
+		E4BCB99F20F4E9770021A5E2 /* MTBLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MTBLibraryLoader.mm; sourceTree = "<group>"; };
+		E4BCB9B620F4E9770021A5E2 /* MTBLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTBLibraryLoader.h; sourceTree = "<group>"; };
+		E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = MTBLibraryLoaderSpec.metal; path = MetalToolboxDeviceTests/MTBLibraryLoaderSpec.metal; sourceTree = "<group>"; };
+		E4BCB9BA20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBLibraryLoaderSpec.mm; path = MetalToolboxDeviceTests/MTBLibraryLoaderSpec.mm; sourceTree = "<group>"; };
 		E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MetalToolbox-Prefix.pch"; path = "MetalToolbox/MetalToolbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		E4D6C72420ECF22100C94476 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E4D6C72620ECF25500C94476 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -268,6 +278,8 @@
 				E4568FA620F1E851009CB9D6 /* QuartzCore.framework in Frameworks */,
 				E4568FA020F1E7A9009CB9D6 /* UIKit.framework in Frameworks */,
 				E477FB0F20ED01A0003D4302 /* libExpecta.a in Frameworks */,
+				E4669C7720F4F1A80039EB39 /* libLTKit.a in Frameworks */,
+				E4669C7820F4F1A80039EB39 /* libLTKitTestUtils.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libMetalToolbox.a in Frameworks */,
 				656155BB1D464A65009E701C /* libSpecta.a in Frameworks */,
 				E477FB1120ED01D9003D4302 /* libcompression.tbd in Frameworks */,
@@ -312,8 +324,8 @@
 			children = (
 				8B3690021CA6B7BE003E34CF /* libextobjc_OSX.a */,
 				8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */,
-				8B3690061CA6B7BE003E34CF /* Logic Tests.octest */,
-				8B3690081CA6B7BE003E34CF /* iOS Tests.octest */,
+				8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */,
+				8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -445,6 +457,8 @@
 		E403BE2820BA899200E94F00 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
+				E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */,
+				E4BCB9BA20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm */,
 			);
 			name = Metal;
 			sourceTree = "<group>";
@@ -461,6 +475,8 @@
 		E415CD5520BA887F00AFF7B9 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
+				E4BCB9B620F4E9770021A5E2 /* MTBLibraryLoader.h */,
+				E4BCB99F20F4E9770021A5E2 /* MTBLibraryLoader.mm */,
 			);
 			name = Metal;
 			sourceTree = "<group>";
@@ -499,6 +515,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4BCB9B820F4E9770021A5E2 /* MTBLibraryLoader.h in Headers */,
 				E4D6C72120ECF01600C94476 /* MetalToolbox-Prefix.pch in Headers */,
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
 			);
@@ -710,17 +727,17 @@
 			remoteRef = 8B3690031CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690061CA6B7BE003E34CF /* Logic Tests.octest */ = {
+		8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 8B3690051CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690081CA6B7BE003E34CF /* iOS Tests.octest */ = {
+		8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -769,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4BCB9B720F4E9770021A5E2 /* MTBLibraryLoader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,6 +794,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4BCB9BB20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal in Sources */,
+				E4BCB9BC20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
