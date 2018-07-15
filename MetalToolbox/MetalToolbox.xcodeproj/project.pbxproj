@@ -33,6 +33,7 @@
 		E4D6C72120ECF01600C94476 /* MetalToolbox-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */; };
 		E4D6C72520ECF22100C94476 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72420ECF22100C94476 /* AVFoundation.framework */; };
 		E4D6C72720ECF25500C94476 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6C72620ECF25500C94476 /* CoreMedia.framework */; };
+		E4F15CFE20FB7E21005551A1 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F15CE720FB7E21005551A1 /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -251,6 +252,7 @@
 		E4D6C72020ECF01600C94476 /* MetalToolbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MetalToolbox-Prefix.pch"; path = "MetalToolbox/MetalToolbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		E4D6C72420ECF22100C94476 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E4D6C72620ECF25500C94476 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E4F15CE720FB7E21005551A1 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +273,7 @@
 				E4D6C72720ECF25500C94476 /* CoreMedia.framework in Frameworks */,
 				E4568FA220F1E7DA009CB9D6 /* CoreVideo.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				E4F15CFE20FB7E21005551A1 /* GLKit.framework in Frameworks */,
 				E42E09AD20B46A3F00BE4484 /* Metal.framework in Frameworks */,
 				E42E09AE20B46A3F00BE4484 /* MetalKit.framework in Frameworks */,
 				E42E09AF20B46A3F00BE4484 /* MetalPerformanceShaders.framework in Frameworks */,
@@ -361,6 +364,7 @@
 				E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */,
 				E477FB0C20ECF868003D4302 /* Expecta.framework */,
 				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
+				E4F15CE720FB7E21005551A1 /* GLKit.framework */,
 				E407FB5120B4237800FDFAC8 /* Metal.framework */,
 				E407FB5220B4237800FDFAC8 /* MetalKit.framework */,
 				E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */,
