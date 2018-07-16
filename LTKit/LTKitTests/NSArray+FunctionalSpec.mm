@@ -173,4 +173,27 @@ context(@"classify", ^{
   });
 });
 
+context(@"random", ^{
+  it(@"should return the only element for an array with a single element", ^{
+    NSArray<NSNumber *> *array = @[@7];
+    NSNumber *foundItem = [array lt_randomObject];
+
+    expect(foundItem).to.equal(@7);
+  });
+
+  it(@"should return a random element from the array", ^{
+    NSArray<NSNumber *> *array = @[@3, @1, @4, @3, @7];
+    NSNumber *randomItem = [array lt_randomObject];
+
+    expect(array).to.contain(randomItem);
+  });
+
+  it(@"should return nil if the array is empty", ^{
+    NSArray<NSNumber *> *array = @[];
+    NSNumber *foundItem = [array lt_randomObject];
+
+    expect(foundItem).to.beNil();
+  });
+});
+
 SpecEnd
