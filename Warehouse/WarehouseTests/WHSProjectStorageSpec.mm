@@ -78,7 +78,7 @@ context(@"create project", ^{
     });
 
     it(@"should create project with an empty user data", ^{
-      expect(project.userData).to.equal(@{});
+      expect(project.userData).to.equal([NSData data]);
     });
 
     it(@"should create project with the bundle ID of the storage", ^{
@@ -349,7 +349,8 @@ context(@"update project", ^{
   beforeEach(^{
     storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
     projectID = nn([storage createProjectWithError:nil]);
-    auto stepUserData = @{@"importantData": @"air", @"notSoImportantData": @(90210)};
+    auto stepData = 90210;
+    auto stepUserData = [NSData dataWithBytes:&stepData length:sizeof(stepData)];
     auto stepAssetsURL = [NSURL fileURLWithPath:LTTemporaryPath(@"stepAssets")];
     [[NSFileManager defaultManager] createDirectoryAtURL:stepAssetsURL
                              withIntermediateDirectories:YES attributes:nil error:nil];
@@ -419,7 +420,7 @@ context(@"update project", ^{
   it(@"should add multiple steps", ^{
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     auto secondStepContent = [[WHSStepContent alloc] init];
-    secondStepContent.userData = @{};
+    secondStepContent.userData = [NSData data];
     request.stepsContentToAdd = @[stepContent, secondStepContent];
 
     auto result = [storage updateProjectWithRequest:request error:nil];
@@ -455,7 +456,7 @@ context(@"update project", ^{
     NSError *error;
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     auto invalidStepContent = [[WHSStepContent alloc] init];
-    invalidStepContent.userData = @{};
+    invalidStepContent.userData = [NSData data];
     invalidStepContent.assetsSourceURL = [[NSURL alloc] init];
     request.stepsContentToAdd = @[invalidStepContent];
 
@@ -469,7 +470,7 @@ context(@"update project", ^{
   it(@"should delete step", ^{
     auto addRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     auto secondStepContent = [[WHSStepContent alloc] init];
-    secondStepContent.userData = @{};
+    secondStepContent.userData = [NSData data];
     addRequest.stepsContentToAdd = @[stepContent, secondStepContent];
     [storage updateProjectWithRequest:addRequest error:nil];
     auto stepsBeforeDelete = nn([storage
@@ -490,7 +491,7 @@ context(@"update project", ^{
   it(@"should delete multiple steps", ^{
     auto addRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     auto secondStepContent = [[WHSStepContent alloc] init];
-    secondStepContent.userData = @{};
+    secondStepContent.userData = [NSData data];
     addRequest.stepsContentToAdd = @[stepContent, secondStepContent];
     [storage updateProjectWithRequest:addRequest error:nil];
     auto delRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
@@ -583,7 +584,7 @@ context(@"update project", ^{
 
   it(@"should update project user data", ^{
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
-    request.userData = @{@"myProjectData": @"isInteresting"};
+    request.userData = [@"my project data is interesting" dataUsingEncoding:NSUTF8StringEncoding];
 
     auto result = [storage updateProjectWithRequest:request error:nil];
 
@@ -591,12 +592,13 @@ context(@"update project", ^{
     auto _Nullable projectAfterUpdate = [storage
                                          fetchSnapshotOfProjectWithID:projectID
                                          options:WHSProjectFetchOptionsFetchUserData error:nil];
+
     expect(projectAfterUpdate.userData).to.equal(request.userData);
   });
 
   it(@"should not update project user data when user data property of the update object is nil", ^{
     auto request1 = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
-    request1.userData = @{@"myProjectData": @"isInteresting"};
+    request1.userData = [@"my project data is interesting" dataUsingEncoding:NSUTF8StringEncoding];
     [storage updateProjectWithRequest:request1 error:nil];
     auto request2 = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     request2.userData = nil;
@@ -625,7 +627,7 @@ context(@"duplicate project", ^{
   beforeEach(^{
     storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
     auto projectID = nn([storage createProjectWithError:nil]);
-    auto stepUserData = @{@"importantData": @"air", @"notSoImportantData": @(90210)};
+    auto stepUserData = 90210;
 
     auto assetsURL = nn([storage fetchSnapshotOfProjectWithID:projectID options:0
                                                         error:nil]).assetsURL;
@@ -645,7 +647,7 @@ context(@"duplicate project", ^{
     [stepAssetContent writeToFile:stepAssetPath atomically:YES encoding:NSUTF8StringEncoding
                             error:nil];
     stepContent = [[WHSStepContent alloc] init];
-    stepContent.userData = stepUserData;
+    stepContent.userData = [NSData dataWithBytes:&stepUserData length:sizeof(stepUserData)];
     stepContent.assetsSourceURL = stepAssetsURL;
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     request.stepsContentToAdd = @[stepContent];
@@ -751,7 +753,7 @@ context(@"fetch step", ^{
     storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
     projectID = nn([storage createProjectWithError:nil]);
     stepContent = [[WHSStepContent alloc] init];
-    stepContent.userData = @{@"my setp": @"is the best"};
+    stepContent.userData = nn([@"my step is the best" dataUsingEncoding:NSUTF8StringEncoding]);
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     request.stepsContentToAdd = @[stepContent];
     [storage updateProjectWithRequest:request error:nil];
@@ -869,12 +871,13 @@ context(@"set project attributes", ^{
 context(@"observe storage", ^{
   __block WHSProjectStorage *storage;
   __block id observerMock;
-  static auto const updatedUserData = @{@"newKey": @"newVal"};
+  __block NSData *updatedUserData;
 
   beforeEach(^{
     storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
     observerMock = OCMProtocolMock(@protocol(WHSProjectStorageObserver));
     [storage addObserver:observerMock];
+    updatedUserData = [@"new data" dataUsingEncoding:NSUTF8StringEncoding];
   });
 
   it(@"should notify observer when project created", ^{

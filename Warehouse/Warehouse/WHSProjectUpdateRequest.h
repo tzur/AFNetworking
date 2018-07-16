@@ -10,15 +10,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Creates and returns a \c WHSStepContent object with the given \c userData. \c assetsSourceURL is
 /// \c nil.
-+ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData;
++ (instancetype)stepContentWithUserData:(NSData *)userData;
 
 /// Creates and returns a \c WHSStepContent object with the given \c userData and
 /// \c assetsSourceURL.
-+ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData
++ (instancetype)stepContentWithUserData:(NSData *)userData
                         assetsSourceURL:(nullable NSURL *)assetsSourceURL;
 
-/// Dictionary of property list objects containing data that is application specific for this step.
-@property (strong, nonatomic) NSDictionary<NSString *, id> *userData;
+/// Data that is application specific for this step.
+@property (strong, nonatomic) NSData *userData;
 
 /// Source directory containing step-related assets to move to the step storage. The resulting step
 /// will contain the target directory. As part of the update request processing, the source
@@ -73,9 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// deleted.
 @property (strong, nonatomic) NSArray<WHSStepContent *> *stepsContentToAdd;
 
-/// User data of the project after the update. Must contain only property list objects, otherwise
-/// the update operation will fail. If value is \c nil the project user data is not changed.
-@property (strong, nonatomic, nullable) NSDictionary<NSString *, id> *userData;
+/// User data of the project after the update. If value is \c nil the project user data is not
+/// changed.
+@property (strong, nonatomic, nullable) NSData *userData;
 
 @end
 

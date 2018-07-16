@@ -54,7 +54,8 @@ context(@"requestForAddStep", ^{
 
   beforeEach(^{
     stepContent = [[WHSStepContent alloc] init];
-    stepContent.userData = @{@"myNumber": @42, @"myString": @"boing"};
+    NSUInteger userData = 42;
+    stepContent.userData = [NSData dataWithBytes:&userData length:sizeof(userData)];
     stepContent.assetsSourceURL = [NSBundle mainBundle].bundleURL;
   });
 

@@ -158,7 +158,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   }
   auto metadata = @{kWHSStepCursorKey: @0, kWHSBundleIDKey: self.bundleID};
   auto stepsIDs = @[];
-  auto userData = @{};
+  auto userData = [NSData data];
   auto dataUpdated = [self writeDataOfProject:projectID withMetadata:metadata stepsIDs:stepsIDs
                                      userData:userData error:error];
   if (!dataUpdated) {
@@ -256,7 +256,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     }
   }
 
-  NSDictionary<NSString *, id> * _Nullable userData;
+  NSData * _Nullable userData;
   if (fetchOptions & WHSProjectFetchOptionsFetchUserData) {
     userData = [self userDataFromURL:projectURL error:error];
     if (!userData) {
@@ -381,8 +381,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 - (BOOL)writeDataOfProject:(NSUUID *)projectID
               withMetadata:(nullable NSDictionary<NSString *, id> *)metadata
                   stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs
-                  userData:(nullable NSDictionary<NSString *, id> *)userData
-                     error:(NSError *__autoreleasing *)error {
+                  userData:(nullable NSData *)userData error:(NSError *__autoreleasing *)error {
   auto projectURL = [self URLOfProject:projectID];
   auto _Nullable tempURL = [self createTempURLWithError:error];
   if (!tempURL) {
@@ -447,14 +446,13 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   return [stepsData writeToURL:URL.whs_stepsIDsURL options:0 error:error];
 }
 
-- (BOOL)writeUserData:(nullable NSDictionary<NSString *, id> *)userData
-       fromProjectURL:(NSURL *)projectURL to:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+- (BOOL)writeUserData:(nullable NSData *)userData fromProjectURL:(NSURL *)projectURL to:(NSURL *)URL
+                error:(NSError *__autoreleasing *)error {
   if (!userData) {
     return [self.fileManager copyItemAtURL:projectURL.whs_userDataURL toURL:URL.whs_userDataURL
                                      error:error];
   }
-  return [self.fileManager lt_writeDictionary:nn(userData) toFile:nn(URL.whs_userDataURL.path)
-                                       format:NSPropertyListBinaryFormat_v1_0 error:error];
+  return [userData writeToURL:URL.whs_userDataURL options:0 error:error];
 }
 
 - (nullable NSDictionary<NSString *, id> *)metadataOfProject:(NSUUID *)projectID
@@ -518,9 +516,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
       [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
       return nil;
     }
-    auto userDataUpdated = [self.fileManager lt_writeDictionary:stepsContent[i].userData
-                                                         toFile:nn(stepURL.whs_userDataURL.path)
-                                                         format:NSPropertyListBinaryFormat_v1_0
+    auto userDataUpdated = [stepsContent[i].userData writeToURL:stepURL.whs_userDataURL options:0
                                                           error:error];
     if (!userDataUpdated) {
       [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
@@ -663,10 +659,8 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   }
 }
 
-- (nullable NSDictionary<NSString *, id> *)userDataFromURL:(NSURL *)URL
-                                                     error:(NSError *__autoreleasing *)error {
-  return [self.fileManager lt_dictionaryWithContentsOfFile:nn(URL.whs_userDataURL.path)
-                                                     error:error];
+- (nullable NSData *)userDataFromURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+  return [NSData dataWithContentsOfURL:URL.whs_userDataURL options:0 error:error];
 }
 
 - (BOOL)setCreationDate:(NSDate *)creationDate toProjectWithID:(NSUUID *)projectID

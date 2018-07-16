@@ -9,18 +9,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    _userData = @{};
+    _userData = [NSData data];
   }
   return self;
 }
 
-+ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData {
++ (instancetype)stepContentWithUserData:(NSData *)userData {
   auto stepContent = [[WHSStepContent alloc] init];
   stepContent.userData = userData;
   return stepContent;
 }
 
-+ (instancetype)stepContentWithUserData:(NSDictionary<NSString *, id> *)userData
++ (instancetype)stepContentWithUserData:(NSData *)userData
                         assetsSourceURL:(nullable NSURL *)assetsSourceURL {
   auto stepContent = [WHSStepContent stepContentWithUserData:userData];
   stepContent.assetsSourceURL = assetsSourceURL;
