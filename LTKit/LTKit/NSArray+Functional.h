@@ -97,7 +97,7 @@ typedef BOOL (^LTArrayCompareBlock)(ObjectType _Nonnull a, ObjectType _Nonnull b
 /// }];
 /// // longestWord == @"jumped"
 /// @endcode
-- (ObjectType _Nullable)lt_max:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
+- (nullable ObjectType)lt_max:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
 
 /// Returns the mimum element in the array using the given predicate as the comparison between
 /// elements. Returns \c nil If the array is empty.
@@ -121,7 +121,7 @@ typedef BOOL (^LTArrayCompareBlock)(ObjectType _Nonnull a, ObjectType _Nonnull b
 /// }];
 /// // shortestWord == @"me"
 /// @endcode
-- (ObjectType _Nullable)lt_min:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
+- (nullable ObjectType)lt_min:(NS_NOESCAPE LTArrayCompareBlock)areInIncreasingOrder;
 
 /// Callback block used to classify objects of an array.
 ///
