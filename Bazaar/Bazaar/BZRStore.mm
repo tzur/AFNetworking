@@ -618,9 +618,17 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[self validateReceipt]
       map:^BZRPaymentTransactionList *(BZRReceiptValidationStatus *receiptValidationStatus) {
         return [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
-          return [[receiptValidationStatus.receipt.transactions
+          auto containsTransactionIdentifier = [[receiptValidationStatus.receipt.transactions
               valueForKey:@instanceKeypath(BZRReceiptTransactionInfo, transactionId)]
               containsObject:transaction.transactionIdentifier];
+          auto containsTransactionDate =
+              [receiptValidationStatus.receipt.transactions
+               lt_find:^BOOL(BZRReceiptTransactionInfo *transactionInfo) {
+                 return abs([transactionInfo.purchaseDateTime
+                             timeIntervalSinceDate:transaction.transactionDate]) < FLT_EPSILON;
+              }] != nil;
+
+          return containsTransactionIdentifier || containsTransactionDate;
         }];
       }]
       doNext:^(BZRPaymentTransactionList *validatedTransactions) {
