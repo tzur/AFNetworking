@@ -10,8 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
                       size:(uint64_t)size stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs
-                stepCursor:(NSUInteger)stepCursor
-                  userData:(nullable NSDictionary<NSString *, id> *)userData
+                stepCursor:(NSUInteger)stepCursor userData:(nullable NSData *)userData
                  assetsURL:(NSURL *)assetsURL {
   if (self = [super init]) {
     _ID = ID;
@@ -43,8 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WHSStep
 
-- (instancetype)initWithID:(NSUUID *)ID projectID:(NSUUID *)projectID
-                  userData:(NSDictionary<NSString *, id> *)userData assetsURL:(NSURL *)assetsURL {
+- (instancetype)initWithID:(NSUUID *)ID projectID:(NSUUID *)projectID userData:(NSData *)userData
+                 assetsURL:(NSURL *)assetsURL {
   if (self = [super init]) {
     _ID = ID;
     _projectID = projectID;

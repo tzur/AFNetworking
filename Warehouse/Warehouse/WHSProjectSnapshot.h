@@ -10,9 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// time when the project is updated, and thus snapshot is up to date only until the next update.
 ///
 /// There are two kinds of application specific data accesible from the snapshot. The first is the
-/// \c userData that is a dictionary of property list objects that the application can write when
-/// updating the project, and the second is assets that can be stored manually by the application in
-/// the directory the \c assetsURL is pointing to. The \c userData is part of the snapshot and
+/// \c userData that is an \c NSData object that the application can write when updating the
+/// project, and the second is assets that can be stored manually by the application in the
+/// directory the \c assetsURL is pointing to. The \c userData is part of the snapshot and
 /// changes atomically with the other properties of the project during update, where the assets can
 /// be changed manually at any time by the user and these changes does not change any property of
 /// the snapshot, they are only affecting the content of the directory the \c assetsURL is pointing
@@ -27,8 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
                       size:(uint64_t)size stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDS
-                stepCursor:(NSUInteger)stepCursor
-                  userData:(nullable NSDictionary<NSString *, id> *)userData
+                stepCursor:(NSUInteger)stepCursor userData:(nullable NSData *)userData
                  assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
 /// ID of the project.
@@ -59,12 +58,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Index after the current step in the \c stepsIDs array at this snapshot.
 @property (readonly, nonatomic) NSUInteger stepCursor;
 
-/// Dictionary of property list objects containing data that is application specific for this
-/// project snapshot. Can be different between snapshots of the same project.
+/// Data that is application specific for this project snapshot. Can be different between snapshots
+/// of the same project.
 ///
 /// This property is \c nil only if it was fetched without the
 /// \c WHSProjectFetchOptionsFetchUserData flag in \c fetchOptions.
-@property (readonly, nonatomic, nullable) NSDictionary<NSString *, id> *userData;
+@property (readonly, nonatomic, nullable) NSData *userData;
 
 /// Application-managed directory containing assets related to the project, the data in the
 /// directory is not modified by this library, except when a project is deleted, at which point the
@@ -94,8 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given properties.
-- (instancetype)initWithID:(NSUUID *)ID projectID:(NSUUID *)projectID
-                  userData:(NSDictionary<NSString *, id> *)userData
+- (instancetype)initWithID:(NSUUID *)ID projectID:(NSUUID *)projectID userData:(NSData *)userData
                  assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
 /// ID of this step.
@@ -104,8 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// ID of the project containing this step.
 @property (readonly, nonatomic) NSUUID *projectID;
 
-/// Dictionary of property list objects containing data that is application specific for this step.
-@property (readonly, nonatomic) NSDictionary<NSString *, id> *userData;
+/// Data that is application specific for this step.
+@property (readonly, nonatomic) NSData *userData;
 
 /// Directory containing assets related to the step. When the step is deleted, the directory and all
 /// of its content are deleted.
