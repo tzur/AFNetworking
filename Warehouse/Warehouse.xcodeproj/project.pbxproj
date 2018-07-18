@@ -463,8 +463,8 @@
 			children = (
 				198CE62120A32B57000E70BF /* libextobjc_OSX.a */,
 				198CE62320A32B57000E70BF /* libextobjc_iOS.a */,
-				198CE62520A32B57000E70BF /* Logic Tests.octest */,
-				198CE62720A32B57000E70BF /* iOS Tests.octest */,
+				198CE62520A32B57000E70BF /* Logic Tests.xctest */,
+				198CE62720A32B57000E70BF /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -828,17 +828,17 @@
 			remoteRef = 198CE62220A32B57000E70BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		198CE62520A32B57000E70BF /* Logic Tests.octest */ = {
+		198CE62520A32B57000E70BF /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 198CE62420A32B57000E70BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		198CE62720A32B57000E70BF /* iOS Tests.octest */ = {
+		198CE62720A32B57000E70BF /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 198CE62620A32B57000E70BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -905,6 +905,7 @@
 /* Begin XCBuildConfiguration section */
 		1964BF6120A31E9900FF28F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 198CE9FD20A42EA0000E70BF /* Application.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -923,6 +924,7 @@
 		};
 		1964BF6220A31E9900FF28F5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 198CE9FD20A42EA0000E70BF /* Application.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -979,6 +981,7 @@
 		};
 		19E1533A20A314E100F0F438 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 198CE9FC20A42EA0000E70BF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
@@ -989,6 +992,7 @@
 		};
 		19E1533B20A314E100F0F438 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 198CE9FC20A42EA0000E70BF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
