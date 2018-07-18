@@ -104,6 +104,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// width must be positive.
 - (WFImageViewModelBuilder *(^)(CGFloat value))lineWidth;
 
+/// Images will be shown with animation.
+- (WFImageViewModelBuilder *(^)(BOOL animated))animated;
+
+/// Duration used when setting images with animation. Default value is 0.25.
+- (WFImageViewModelBuilder *(^)(NSTimeInterval animationDuration))animationDuration;
+
 /// Finalizes the builder and returns a new instance of the view model matching the built
 /// configuration.
 ///

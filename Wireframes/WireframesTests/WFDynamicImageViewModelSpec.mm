@@ -24,7 +24,9 @@ beforeEach(^{
   imagesSignal = [RACSubject subject];
 
   viewModel = [[WFDynamicImageViewModel alloc] initWithImageProvider:imageProvider
-                                                        imagesSignal:imagesSignal];
+                                                        imagesSignal:imagesSignal
+                                                            animated:NO
+                                                   animationDuration:0.5];
 });
 
 it(@"should deallocate even when images signal has not completed", ^{
@@ -32,7 +34,8 @@ it(@"should deallocate even when images signal has not completed", ^{
   @autoreleasepool {
     WFDynamicImageViewModel *viewModel = [[WFDynamicImageViewModel alloc]
                                           initWithImageProvider:imageProvider
-                                          imagesSignal:[RACSignal never]];
+                                          imagesSignal:[RACSignal never] animated:NO
+                                          animationDuration:0.5];
     weakViewModel = viewModel;
   }
   expect(weakViewModel).to.beNil();
@@ -46,7 +49,8 @@ it(@"should deallocate even when image loading has not completed", ^{
   @autoreleasepool {
     WFDynamicImageViewModel *viewModel = [[WFDynamicImageViewModel alloc]
                                           initWithImageProvider:imageProvider
-                                          imagesSignal:imagesSignal];
+                                          imagesSignal:imagesSignal animated:NO
+                                          animationDuration:0.5];
     weakViewModel = viewModel;
   }
 

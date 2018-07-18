@@ -26,7 +26,7 @@ it(@"should build view model with no image when nil URL is given", ^{
   id<WFImageViewModel> viewModel = [WFImageViewModelBuilder builderWithImageURL:nil]
       .imageProvider(imageProvider)
       .build();
-  
+
   expect(viewModel.image).to.beNil();
   expect(viewModel.highlightedImage).to.beNil();
 });
@@ -444,6 +444,63 @@ context(@"line width", ^{
   });
 });
 
+context(@"animation", ^{
+  it(@"should pass animate flag to view model", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .animated(YES)
+            .build();
+
+    expect(viewModel.isAnimated).to.beTruthy();
+  });
+
+  it(@"should return view model by defaulting isAnimated to NO", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .build();
+
+    expect(viewModel.isAnimated).to.beFalsy();
+  });
+
+  it(@"should use latest animated value", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .animated(YES)
+            .animated(YES)
+            .animated(NO)
+            .build();
+
+    expect(viewModel.isAnimated).to.beFalsy();
+  });
+
+  it(@"should pass animationDuration to view model", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .animationDuration(0.7)
+            .build();
+
+    expect(viewModel.animationDuration).to.equal(0.7);
+  });
+
+  it(@"should return view model by defaulting animationDuration to 0.25", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .build();
+
+    expect(viewModel.animationDuration).to.equal(0.25);
+  });
+
+  it(@"should use latest animationDuration value", ^{
+    id<WFImageViewModel> viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .animationDuration(0.7)
+            .animationDuration(0.5)
+            .build();
+
+    expect(viewModel.animationDuration).to.equal(0.5);
+  });
+});
+
 context(@"errors", ^{
   it(@"should raise if built twice", ^{
     OCMStub([imageProvider imageWithURL:OCMOCK_ANY]).andReturn([RACSignal never]);
@@ -527,7 +584,7 @@ context(@"errors", ^{
       builder.highlightedColor([UIColor whiteColor]);
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if non-positive line width is set", ^{
     WFImageViewModelBuilder *builder =
         [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@""]]
@@ -541,7 +598,7 @@ context(@"errors", ^{
       builder.lineWidth(-1.3);
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if line width is set twice", ^{
     WFImageViewModelBuilder *builder =
         [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@""]]

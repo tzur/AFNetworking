@@ -58,12 +58,23 @@ static const void *kBindingDisposableKey = &kBindingDisposableKey;
         BOOL resetHighlightedState = self.highlighted &&
             (self.highlightedImage != highlightedImage);
 
-        self.image = image;
-        self.highlightedImage = highlightedImage;
+        void (^updateBlock)(void) = ^{
+          self.image = image;
+          self.highlightedImage = highlightedImage;
 
-        if (resetHighlightedState) {
-          self.highlighted = NO;
-          self.highlighted = YES;
+          if (resetHighlightedState) {
+            self.highlighted = NO;
+            self.highlighted = YES;
+          }
+        };
+
+        if (viewModel.isAnimated) {
+          [UIView transitionWithView:self duration:viewModel.animationDuration
+                             options:UIViewAnimationOptionTransitionCrossDissolve
+                          animations:updateBlock
+                          completion:nil];
+        } else {
+          updateBlock();
         }
       }];
 
