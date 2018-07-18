@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   for (int i = 0; i < (int)kDisplacementsCount; ++i) {
     auto displacement = [self tipDisplacementInSpatialSpaceWithFFTSetup:fftSetup];
+    double norm = cv::norm(displacement, cv::NORM_INF);
+    displacement /= norm;
     displacement.copyTo(_treeTipDisplacements.row(i));
   }
 
@@ -65,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   auto numberOfSamplesLog = (vDSP_Length)std::log2(self.numberOfSamples);
 
-  vDSP_fft_zop(fftSetup, &frequencyData, 2, &spatialData, 1, numberOfSamplesLog,
+  vDSP_fft_zop(fftSetup, &frequencyData, 1, &spatialData, 1, numberOfSamplesLog,
                kFFTDirection_Inverse);
 
   return spatialReal;
@@ -81,10 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
   static const CGFloat kMeanWindSpeed = 1;
   static const std::complex<double> kI(0, 1);
 
-  static cv::RNG randomNumbersGenerator;
+  static cv::RNG randomNumbersGenerator(10000);
 
   float seconds = ((float)self.numberOfSamples) / ((float)kFramesPerSecond);
-  float nyquistFrequency = (1. / seconds) / 2;
+  float nyquistFrequency = (1. / seconds) * 2;
 
   cv::Mat1f real(1, (int)self.numberOfSamples);
   cv::Mat1f imag(1, (int)self.numberOfSamples);
@@ -93,20 +95,23 @@ NS_ASSUME_NONNULL_BEGIN
     double frequency = (i - (int)self.numberOfSamples / 2) * nyquistFrequency;
     double xsi = randomNumbersGenerator.gaussian(1.0);
     double phi = randomNumbersGenerator.uniform(0., 2 * M_PI);
+    std::complex<double> windVelocityInFrequencySpace = (double)kMeanWindSpeed /
+        std::pow(std::complex<double>(1 + kKappa * frequency / kMeanWindSpeed, 0), 5. / 3.);
 
-    double velocityRandomField = xsi * phi *
-    std::sqrt(kMeanWindSpeed / std::pow(1 + kKappa * frequency / kMeanWindSpeed, 5. / 3.));
+    std::complex<double> velocityRandomField = xsi * std::exp(std::complex<double>(0, phi)) *
+        std::sqrt(windVelocityInFrequencySpace);
 
     double tanTheta = kGamma * frequency / (2 * M_PI * (frequency * frequency -
                                                         kNaturalFrequencySquare));
     double theta = std::atan(tanTheta);
 
     auto displacementInFrequencySpace = velocityRandomField * std::exp(2. * kI * M_PI * theta) /
-    std::sqrt(std::pow(2 * M_PI * (frequency * frequency - kNaturalFrequencySquare), 2) +
-              kGamma * kGamma * frequency * frequency) / (2 * M_PI * kMass);
+        std::sqrt(std::pow(2 * M_PI * (frequency * frequency - kNaturalFrequencySquare), 2) +
+                  kGamma * kGamma * frequency * frequency) / (2 * M_PI * kMass);
 
-    real.at<float>(0, i) = displacementInFrequencySpace.real();
-    imag.at<float>(0, i) = displacementInFrequencySpace.imag();
+    int index = (i + (int)self.numberOfSamples / 2) % (int)self.numberOfSamples;
+    real.at<float>(0, index) = displacementInFrequencySpace.real();
+    imag.at<float>(0, index) = displacementInFrequencySpace.imag();
   }
 
   return [[LTSplitComplexMat alloc] initWithReal:real imag:imag];
