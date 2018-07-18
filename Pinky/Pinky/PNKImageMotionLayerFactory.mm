@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
       return [[PNKImageMotionGrassLayer alloc] initWithImageSize:imageSize patchSize:32
                                                        amplitude:10];
     case pnk::ImageMotionLayerTypeTrees:
-      return [[PNKImageMotionTreeLayer alloc] initWithImageSize:imageSize numberOfSamples:64
-                                                      amplitude:10];
+      return [[PNKImageMotionTreeLayer alloc] initWithImageSize:imageSize numberOfSamples:256
+                                                      amplitude:1];
     case pnk::ImageMotionLayerTypeStatic:
       return [[PNKImageMotionStaticLayer alloc] initWithImageSize:imageSize];
     case pnk::ImageMotionLayerTypeSky:

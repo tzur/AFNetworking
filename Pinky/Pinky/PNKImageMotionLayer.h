@@ -23,8 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// calculating the displacement field.
 @protocol PNKImageMotionSegmentationAwareLayer <NSObject>
 
-/// Segmentation map.
-@property (nonatomic) cv::Mat1b segmentation;
+/// Update the layer with \c segmentationMap.
+- (void)updateWithSegmentationMap:(const cv::Mat1b &)segmentationMap;
 
 @end
 
