@@ -30,7 +30,7 @@ itShouldBehaveLike(kPNKImageMotionLayerExamples, ^{
   auto treeLayer = [[PNKImageMotionTreeLayer alloc]
                     initWithImageSize:cv::Size(kImageWidth, kImageHeight)
                     numberOfSamples:kNumberOfSamples amplitude:kAmplitude];
-  treeLayer.segmentation = segmentation;
+  [treeLayer updateWithSegmentationMap:segmentation];
 
   return @{
     kPNKImageMotionLayerExamplesLayer: treeLayer,
@@ -53,7 +53,7 @@ it(@"should raise when segmentation width differs from image width", ^{
                     numberOfSamples:kNumberOfSamples amplitude:kAmplitude];
   cv::Mat1b segmentation(kImageHeight, kImageWidth + 1, (uchar)0);
   expect(^{
-    treeLayer.segmentation = segmentation;
+    [treeLayer updateWithSegmentationMap:segmentation];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -63,7 +63,7 @@ it(@"should raise when segmentation height differs from image height", ^{
                     numberOfSamples:kNumberOfSamples amplitude:kAmplitude];
   cv::Mat1b segmentation(kImageHeight + 1, kImageWidth, (uchar)0);
   expect(^{
-    treeLayer.segmentation = segmentation;
+    [treeLayer updateWithSegmentationMap:segmentation];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -72,7 +72,7 @@ it(@"should raise when trying to get displacements without setting segmentation"
                     initWithImageSize:cv::Size(kImageWidth, kImageHeight)
                     numberOfSamples:kNumberOfSamples amplitude:kAmplitude];
 
-  __block cv::Mat1hf displacements(kImageHeight, kImageWidth);
+  __block cv::Mat2hf displacements(kImageHeight, kImageWidth);
   expect(^{
     [treeLayer displacements:&displacements forTime:0];
   }).to.raise(NSInternalInconsistencyException);

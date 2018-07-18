@@ -28,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @synthesize imageSize = _imageSize;
-@synthesize segmentation = _segmentation;
 
 - (instancetype)initWithImageSize:(cv::Size)imageSize numberOfSamples:(NSUInteger)numberOfSamples
                         amplitude:(CGFloat)amplitude {
@@ -47,12 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)setSegmentation:(cv::Mat1b)segmentation {
-  LTParameterAssert(segmentation.size() == self.imageSize, @"Expected segmentation of size "
+- (void)updateWithSegmentationMap:(const cv::Mat1b &)segmentationMap {
+  LTParameterAssert(segmentationMap.size() == self.imageSize, @"Expected segmentation map of size "
                     "(%d, %d), got (%d, %d)", self.imageSize.width, self.imageSize.height,
-                    segmentation.cols, segmentation.rows);
-  _segmentation = segmentation;
-  [self setupTreeConnectedComponentsWithSegmentation:segmentation];
+                    segmentationMap.cols, segmentationMap.rows);
+  [self setupTreeConnectedComponentsWithSegmentation:segmentationMap];
 }
 
 - (void)setupTreeConnectedComponentsWithSegmentation:(const cv::Mat &)segmentation {
@@ -70,11 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)displacements:(cv::Mat *)displacements forTime:(NSTimeInterval)time {
-  LTAssert(!_segmentation.empty(), @"An attempt to calculate tree layer displacements without "
-           "setting segmentation map.");
   PNKImageMotionValidateDisplacementsMatrix(*displacements, self.imageSize);
 
-  *displacements = 0;
+  LTAssert(!_treesStatistics.empty(), @"An attempt to calculate tree layer displacements without "
+           "updating the layer with a segmentation map.");
+
+  displacements->setTo(cv::Vec2hf((half_float::half)10, (half_float::half)10));
 
   static const NSUInteger kFramesPerSecond = 30;
   int displacementsCount = _treeTipDisplacements.rows;
@@ -85,10 +84,10 @@ NS_ASSUME_NONNULL_BEGIN
   int firstSampleIndex = (int)timeRemainderInFrames;
   int secondSampleIndex = (firstSampleIndex < numberOfSamples - 1) ?
       (firstSampleIndex + 1) : 0;
-  float interpolationCoefficient = firstSampleIndex - timeRemainderInFrames;
+  float interpolationCoefficient = timeRemainderInFrames - firstSampleIndex;
 
   for (int component = 1; component < _treesStatistics.rows; ++component) {
-    int displacementsIndex = component % displacementsCount;
+    int displacementsIndex = (component - 1) % displacementsCount;
     float tipDisplacement = _treeTipDisplacements(displacementsIndex, firstSampleIndex) *
         (1 - interpolationCoefficient) +
         _treeTipDisplacements(displacementsIndex, secondSampleIndex) * interpolationCoefficient;

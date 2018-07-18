@@ -111,6 +111,10 @@ static cv::Mat1f PNKHtMatrix(const cv::Mat2f &h0, float t) {
 - (const cv::Mat &)displacementsForTime:(NSTimeInterval)time {
   [self updateFrequencyRealWithTime:time];
   [self performFFT];
+
+  double norm = cv::norm(_spatial.real, cv::NORM_INF);
+  _spatial.real /= norm;
+
   return _spatial.real;
 }
 

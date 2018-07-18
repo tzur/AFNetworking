@@ -206,6 +206,8 @@
 		E434AF0220231E9100B47C65 /* supersky_grayscale_bicycles.png in Resources */ = {isa = PBXBuildFile; fileRef = E434AEE020231E9100B47C65 /* supersky_grayscale_bicycles.png */; };
 		E4352E7A1FFCFC200052C4D7 /* person.png in Resources */ = {isa = PBXBuildFile; fileRef = E4352E771FFCFC1F0052C4D7 /* person.png */; };
 		E4352E7B1FFCFC200052C4D7 /* person_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = E4352E781FFCFC1F0052C4D7 /* person_mask.png */; };
+		E43774F620E222DF00D78632 /* PNKImageMotionDisplacementProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43774F520E222DE00D78632 /* PNKImageMotionDisplacementProcessor.mm */; };
+		E43774F820E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43774F720E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm */; };
 		E43BF18120614B0C00CE1C3A /* PNKArgmax.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43BF15D20614B0B00CE1C3A /* PNKArgmax.mm */; };
 		E43BF18520614B2000CE1C3A /* argmax_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E43BF18320614B2000CE1C3A /* argmax_input_15x16x32.tensor */; };
 		E43BF18620614B2000CE1C3A /* argmax_output_15x16x1.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E43BF18420614B2000CE1C3A /* argmax_output_15x16x1.tensor */; };
@@ -283,6 +285,7 @@
 		E4A781C920CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4A781C820CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm */; };
 		E4A781CB20CA76F6005C6EF1 /* tree.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A781CA20CA76F6005C6EF1 /* tree.png */; };
 		E4A781CF20CCFB7F005C6EF1 /* tree_segmentation.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A781CE20CCFB7F005C6EF1 /* tree_segmentation.png */; };
+		E4AA52C620F393BD007F5835 /* multiclass_segmentation_moved.png in Resources */ = {isa = PBXBuildFile; fileRef = E4AA52A320F393BC007F5835 /* multiclass_segmentation_moved.png */; };
 		E4B3535620615349003FCD7C /* PNKArgmax.metal in Sources */ = {isa = PBXBuildFile; fileRef = E43BF17F20614B0C00CE1C3A /* PNKArgmax.metal */; };
 		E4B3ADAA1FF9178800775329 /* upsample_bilinear_input_15x16x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E4B3ADA81FF9178800775329 /* upsample_bilinear_input_15x16x32.tensor */; };
 		E4B3ADAB1FF9178800775329 /* upsample_bilinear_output_30x32x32.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E4B3ADA91FF9178800775329 /* upsample_bilinear_output_30x32x32.tensor */; };
@@ -943,6 +946,9 @@
 		E434AEE020231E9100B47C65 /* supersky_grayscale_bicycles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = supersky_grayscale_bicycles.png; path = Resources/supersky_grayscale_bicycles.png; sourceTree = "<group>"; };
 		E4352E771FFCFC1F0052C4D7 /* person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person.png; path = Resources/person.png; sourceTree = "<group>"; };
 		E4352E781FFCFC1F0052C4D7 /* person_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person_mask.png; path = Resources/person_mask.png; sourceTree = "<group>"; };
+		E43774D220E222DE00D78632 /* PNKImageMotionDisplacementProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionDisplacementProcessor.h; sourceTree = "<group>"; };
+		E43774F520E222DE00D78632 /* PNKImageMotionDisplacementProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionDisplacementProcessor.mm; sourceTree = "<group>"; };
+		E43774F720E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionDisplacementProcessorSpec.mm; sourceTree = "<group>"; };
 		E43BF15D20614B0B00CE1C3A /* PNKArgmax.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKArgmax.mm; sourceTree = "<group>"; };
 		E43BF17F20614B0C00CE1C3A /* PNKArgmax.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKArgmax.metal; sourceTree = "<group>"; };
 		E43BF18020614B0C00CE1C3A /* PNKArgmax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKArgmax.h; sourceTree = "<group>"; };
@@ -1042,6 +1048,7 @@
 		E4A781C820CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionSegmentationNetworkSpec.mm; sourceTree = "<group>"; };
 		E4A781CA20CA76F6005C6EF1 /* tree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tree.png; path = Resources/tree.png; sourceTree = "<group>"; };
 		E4A781CE20CCFB7F005C6EF1 /* tree_segmentation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tree_segmentation.png; path = Resources/tree_segmentation.png; sourceTree = "<group>"; };
+		E4AA52A320F393BC007F5835 /* multiclass_segmentation_moved.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiclass_segmentation_moved.png; path = Resources/multiclass_segmentation_moved.png; sourceTree = "<group>"; };
 		E4B3ADA81FF9178800775329 /* upsample_bilinear_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = upsample_bilinear_input_15x16x32.tensor; path = Resources/upsample_bilinear_input_15x16x32.tensor; sourceTree = "<group>"; };
 		E4B3ADA91FF9178800775329 /* upsample_bilinear_output_30x32x32.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = upsample_bilinear_output_30x32x32.tensor; path = Resources/upsample_bilinear_output_30x32x32.tensor; sourceTree = "<group>"; };
 		E4B3ADAC1FF91C8700775329 /* upsample_nearest_neighbor_input_15x16x32.tensor */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = upsample_nearest_neighbor_input_15x16x32.tensor; path = Resources/upsample_nearest_neighbor_input_15x16x32.tensor; sourceTree = "<group>"; };
@@ -1341,6 +1348,7 @@
 				E483D41120517CF4000D4809 /* instance_normalization_single_texture_input_15x16x3.tensor */,
 				E483D41420517CF5000D4809 /* instance_normalization_single_texture_output_15x16x3.tensor */,
 				E46CBE1720D640BC002BA751 /* multiclass_segmentation.nnmodel */,
+				E4AA52A320F393BC007F5835 /* multiclass_segmentation_moved.png */,
 				E4C11CB120318040002CC63E /* person.nnmodel */,
 				E4352E771FFCFC1F0052C4D7 /* person.png */,
 				E4C2FCD92021E51F002EF963 /* person_grayscale_processor_mask.png */,
@@ -1981,6 +1989,28 @@
 		E480A460209856AD00423308 /* Image Motion */ = {
 			isa = PBXGroup;
 			children = (
+				E49FB64C20F240D6002FB0A3 /* Implementation */,
+				E43774D220E222DE00D78632 /* PNKImageMotionDisplacementProcessor.h */,
+				E43774F520E222DE00D78632 /* PNKImageMotionDisplacementProcessor.mm */,
+				E4E28DC320DFB0E0001920E6 /* PNKImageMotionSegmentationProcessor.h */,
+				E4E28DE620DFB0E1001920E6 /* PNKImageMotionSegmentationProcessor.mm */,
+			);
+			name = "Image Motion";
+			sourceTree = "<group>";
+		};
+		E480A486209856DE00423308 /* Image Motion */ = {
+			isa = PBXGroup;
+			children = (
+				E49FB66F20F336FB002FB0A3 /* Implementation */,
+				E43774F720E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm */,
+				E4E28DE820DFBE51001920E6 /* PNKImageMotionSegmentationProcessorSpec.mm */,
+			);
+			name = "Image Motion";
+			sourceTree = "<group>";
+		};
+		E49FB64C20F240D6002FB0A3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
 				E425F78520BD4417006E3639 /* PNKImageMotionGrassLayer.h */,
 				E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */,
 				E480A482209856CE00423308 /* PNKImageMotionLayer.h */,
@@ -1994,8 +2024,6 @@
 				E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */,
 				E4A781C620CA72AB005C6EF1 /* PNKImageMotionSegmentationNetwork.h */,
 				E4A781A320CA72AA005C6EF1 /* PNKImageMotionSegmentationNetwork.mm */,
-				E4E28DC320DFB0E0001920E6 /* PNKImageMotionSegmentationProcessor.h */,
-				E4E28DE620DFB0E1001920E6 /* PNKImageMotionSegmentationProcessor.mm */,
 				E45E1BCB20B3F58600EC0B60 /* PNKImageMotionSkyLayer.h */,
 				E45E1BCC20B3F58600EC0B60 /* PNKImageMotionSkyLayer.mm */,
 				E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */,
@@ -2009,22 +2037,21 @@
 				E4590B2620B4367800C7F7F3 /* PNKImageMotionWavePatch.h */,
 				E4590B0220B4367700C7F7F3 /* PNKImageMotionWavePatch.mm */,
 			);
-			name = "Image Motion";
+			name = Implementation;
 			sourceTree = "<group>";
 		};
-		E480A486209856DE00423308 /* Image Motion */ = {
+		E49FB66F20F336FB002FB0A3 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
 				E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */,
 				E46F4C2620DBA6BF0028D62E /* PNKImageMotionLayerFusionSpec.mm */,
 				E4A781C820CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm */,
-				E4E28DE820DFBE51001920E6 /* PNKImageMotionSegmentationProcessorSpec.mm */,
 				E45E1BA820B3F56E00EC0B60 /* PNKImageMotionSkyLayerSpec.mm */,
 				E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */,
 				E48E44D020BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm */,
 				E4590B2920B442E100C7F7F3 /* PNKImageMotionWaterLayerSpec.mm */,
 			);
-			name = "Image Motion";
+			name = Implementation;
 			sourceTree = "<group>";
 		};
 		E4BAEE911FE7C446009F594D /* Neural Networks */ = {
@@ -2565,6 +2592,7 @@
 				E41718B120565768009FEF14 /* gather_output_15x16x5.tensor in Resources */,
 				E48E480B2018C235002B6D55 /* batch_normalization_gamma_32.weights in Resources */,
 				061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */,
+				E4AA52C620F393BD007F5835 /* multiclass_segmentation_moved.png in Resources */,
 				E470C006200BAB4A007573C9 /* upsample_bilinear_aligned_input_15x16x32.tensor in Resources */,
 				061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */,
 				E4C11CB620318041002CC63E /* sketch.nnmodel in Resources */,
@@ -2726,6 +2754,7 @@
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
 				E48E44D120BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm in Sources */,
 				2835A9621FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm in Sources */,
+				E43774F820E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm in Sources */,
 				E4606D7A202341DF00CFBE3A /* PNKBinaryGatherSpec.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
 				06B924CA1F8946D300D07848 /* PNKInstanceNormLayerSpec.mm in Sources */,
@@ -2804,6 +2833,7 @@
 				E4590B2720B4367800C7F7F3 /* PNKImageMotionWavePatch.mm in Sources */,
 				06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
+				E43774F620E222DF00D78632 /* PNKImageMotionDisplacementProcessor.mm in Sources */,
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
 				E42969C320CD0AC300D22382 /* PNKImageMotionLayerFactory.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
