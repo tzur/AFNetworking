@@ -173,6 +173,7 @@ Bazaar's product list provider supports compressed and encrypted file using LZFS
 compression and AES-128 algorithm for encryption.
 The suggested flow for achieving this with Foundations tools is as the following: 
 - Add a User-Defined setting at the project Build Settings named `JSON_ENCRYPTION_KEY` with a valid
+
 hex string of a length of 32 characters, for example ```349be3c634bc67f0e9d8da966bae3c09```.
 
 - Make sure the [python modules](#installing-pip) `pycrypto` and `pylzfse` are installed. If needed,
@@ -370,6 +371,51 @@ current application cannot be aware of another application's multi-app
 subscription. Currently, the only solution is to restore purchases in
 the other application. These cases are thoroughly discussed [in this document](https://docs.google.com/document/d/1Tgdc869E48FKpCHefPqr1xbPgjSSEH6Q1bMDhh2CxOk/edit#heading=h.sv24ekae7r9n).
 
+## Tweaks
+
+Bazaar allows control over some of it's properties through the use of the `Milkshake` library. Currently the following subscription-related tweaks are supported: 
+- Using the on-device subscription (and showing it's content).
+- Changing the subscription to `nil`.
+- Changing the subscription to a valid subscription.
+- Loading the subscription from the device and customizing individual fields in it.
+ 
+
+### Enabling the tweaks
+
+In order to use Bazaar tweaks, one needs to instantiate the class `BZRTweaksProductsInfoProvider`, and use it instead of `BZRStore` as the `BZRProductsInfoProvider` protocol.
+In order to prevent the exploitation of the tweaks code in released products, the tweaks are compiled only in debug, and therefore the instantiation must be wrapped with an `#ifdef DEBUG`.
+
+For example code from Owl:
+```objc
+#ifdef DEBUG
+  auto tweakProvider = [[BZRTweaksProductsInfoProvider alloc] initWithProvider:store];
+  auto userSubscriptionStateProvider =
+      [[OWLUserSubscriptionStateProvider alloc] initWithProductsInfoProvider:tweakProvider];
+#else
+  auto userSubscriptionStateProvider =
+      [[OWLUserSubscriptionStateProvider alloc] initWithProductsInfoProvider:store];
+#endif
+```
+
+To check that tweaks were set up correctly: Shake the screen and verify that "Bazaar" category is visible.
+
+### Usage
+
+Shake the screen, the tweaks menu should appear, all of Bazaar's tweaks appear under the "Bazaar" category.
+
+### Allowed products 
+
+The tweaks do not offer a fine-grained control on the allowed products list, instead, setting the subscription to an
+active one in the tweaks will allow all of the non-consumable products. Setting the subscription to an inactive one (or `nil`) will cause all of the products to be disallowed.
+
+The following table summarises the available subscription tweaks and their effect on the information Bazaar provides:
+
+| Source | Is subscribed? | allowed products? 
+| :---: | :---: | :---: 
+| On-device | Depends on the subscription on the device | Depends on the subscription on the device
+| No subscription| No | None
+| Generic active| Yes| All non-consumable products
+| Customized | Depends on the 'isExpired' tweak | Depends on the 'isExpired' tweak
 ---
 
 ## Troubleshooting
