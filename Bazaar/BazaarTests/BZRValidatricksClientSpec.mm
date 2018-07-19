@@ -204,14 +204,13 @@ sharedExamplesFor(kValidatricksRequestSharedExamplesName, ^(NSDictionary *data) 
     [requestSubject sendCompleted];
 
     auto responseTypeString = [client responseTypeStringForValidatricksResponse:successfulResult];
-    const auto eventInfo = @{
-      kBZREventValidatricksResponseTypeKey: responseTypeString,
-      kBZREventValidatricksResponseKey: successfulResult
-    };
-    auto responseEvent =
-        [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:eventInfo];
 
-    expect(eventRecorder).will.sendValues(@[responseEvent]);
+    expect(eventRecorder).matchValue(0, ^BOOL(BZREvent *event) {
+      return ([event.eventType isEqual:$(BZREventTypeInformational)] &&
+              event.eventInfo[kBZREventValidatricksResponseTypeKey] == responseTypeString &&
+              [event.eventInfo[kBZREventValidatricksResponseKey] isEqual:successfulResult]
+      );
+    });
   });
 });
 

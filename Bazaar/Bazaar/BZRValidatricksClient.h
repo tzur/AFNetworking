@@ -15,6 +15,13 @@ extern NSString * const kBZREventValidatricksResponseTypeKey;
 /// Key in the event info dictionary mapping to the Validatricks response.
 extern NSString * const kBZREventValidatricksResponseKey;
 
+/// Key in the event info dictionary mapping to the duration of the request.
+extern NSString * const kBZREventValidatricksRequestDurationKey;
+
+/// Key in the error's \c userInfo that's emitted through the \c BZRValidatricksClient API. Maps
+// to the duration of the request (until the error was given).
+extern NSString * const kBZRErrorValidatricksRequestDuration;
+
 /// Client providing convenience methods to make requests to Validatricks server over HTTP.
 @protocol BZRValidatricksClient <BZREventEmitter>
 
