@@ -57,6 +57,9 @@ extern NSString * const kPTNDescriptorTraitRawKey;
 /// trait will be present only if the GIF is the first resource.
 extern NSString * const kPTNDescriptorTraitGIFKey;
 
+/// Descriptor that represents a Live Photo asset. Live Photos assets contain an image and a video.
+extern NSString * const kPTNDescriptorTraitLivePhotoKey;
+
 /// Descriptor that acts as a reference to a heavy object. The heavy object is either costly to
 /// fetch or to store in memory. Each descriptor has an identifier, which uniquely identifies the
 /// heavy object across all Photons' objects, and allows re-fetching the descriptor when needed, as
