@@ -1424,6 +1424,124 @@ context(@"AVAsset fetching", ^{
     OCMVerifyAll((id)imageManager);
   });
 
+  if (@available(iOS 9.1, *)) {
+    context(@"Live Photo asset", ^{
+      __block PHLivePhoto *livePhoto;
+
+      beforeEach(^{
+        OCMStub([asset descriptorTraits])
+            .andReturn([NSSet setWithObject:kPTNDescriptorTraitLivePhotoKey]);
+        OCMStub([asset pixelWidth]).andReturn(13);
+        OCMStub([asset pixelHeight]).andReturn(37);
+
+        livePhoto = OCMClassMock([PHLivePhoto class]);
+        OCMStub([livePhoto valueForKey:@"videoAsset"]).andReturn(avasset);
+      });
+
+      it(@"should make requests with network access allowed and high quality delivery mode", ^{
+        id<PTNPhotoKitImageManager> imageManager =
+            OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+        auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher
+                                                                    observer:observer
+                                                                imageManager:imageManager
+                                                        assetResourceManager:assetResourceManager
+                                                        authorizationManager:authorizationManager
+                                                               changeManager:changeManager
+                                                                imageResizer:imageResizer];
+        OCMExpect([imageManager requestLivePhotoForAsset:asset targetSize:CGSizeMake(13, 37)
+            contentMode:PHImageContentModeDefault
+            options:[OCMArg checkWithBlock:^BOOL(PHLivePhotoRequestOptions *options) {
+              return options.isNetworkAccessAllowed;
+            }] resultHandler:([OCMArg invokeBlockWithArgs:livePhoto, @{}, nil])]);
+        expect([assetManager fetchAVAssetWithDescriptor:asset options:options]).will.complete();
+        OCMVerifyAll((id)imageManager);
+      });
+
+      context(@"fetch video of asset", ^{
+        it(@"should fetch AVAsset", ^{
+          [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+          RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+          expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+        });
+
+        it(@"should complete after fetching an AVAsset", ^{
+          [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+          RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+          expect(values).will.sendValuesWithCount(1);
+          expect(values).will.complete();
+        });
+
+        it(@"should fetch downloaded video with progress", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] livePhoto:livePhoto];
+
+          expect([manager fetchAVAssetWithDescriptor:asset options:options]).will.sendValues(@[
+            [[PTNProgress alloc] initWithProgress:@0.25],
+            [[PTNProgress alloc] initWithProgress:@0.5],
+            [[PTNProgress alloc] initWithProgress:@1],
+            [[PTNProgress alloc] initWithResult:videoAsset]
+          ]);
+        });
+
+        it(@"should cancel request upon disposal", ^{
+          RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+          RACDisposable *subscriber = [values subscribeNext:^(id) {}];
+          expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+
+          [subscriber dispose];
+          expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+        });
+
+        it(@"should err on error after progress finished", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+          RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+          expect(values).will.sendValues(@[
+            [[PTNProgress alloc] initWithProgress:@0.25],
+            [[PTNProgress alloc] initWithProgress:@0.5],
+            [[PTNProgress alloc] initWithProgress:@1],
+          ]);
+
+          expect(values).will.matchError(^BOOL(NSError *error) {
+            return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+          });
+        });
+
+        it(@"should err on progress download error", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1]
+                   errorInProgress:defaultError];
+
+          RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+          expect(values).will.sendValues(@[
+            [[PTNProgress alloc] initWithProgress:@0.25],
+            [[PTNProgress alloc] initWithProgress:@0.5]
+          ]);
+
+          expect(values).will.matchError(^BOOL(NSError *error) {
+            return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+          });
+        });
+
+        context(@"thread transitions", ^{
+          it(@"should not operate on the main thread", ^{
+            [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+            RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
+
+            expect(values).will.sendValuesWithCount(1);
+            expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
+          });
+        });
+      });
+    });
+  }
+
   context(@"fetch video of asset", ^{
     it(@"should fetch AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
@@ -1715,6 +1833,130 @@ context(@"AV preview fetching", ^{
     expect([assetManager fetchAVPreviewWithDescriptor:asset options:options]).will.complete();
     OCMVerifyAll((id)imageManager);
   });
+
+  if (@available(iOS 9.1, *)) {
+    context(@"Live Photo asset", ^{
+      __block PHLivePhoto *livePhoto;
+      __block AVAsset *avasset;
+
+      beforeEach(^{
+        OCMStub([asset descriptorTraits])
+            .andReturn([NSSet setWithObject:kPTNDescriptorTraitLivePhotoKey]);
+        OCMStub([asset pixelWidth]).andReturn(13);
+        OCMStub([asset pixelHeight]).andReturn(37);
+
+        avasset = [AVAsset assetWithURL:[NSURL URLWithString:@"file://foo"]];
+        livePhoto = OCMClassMock([PHLivePhoto class]);
+        OCMStub([livePhoto valueForKey:@"videoAsset"]).andReturn(avasset);
+      });
+
+      it(@"should make requests with network access allowed and high quality delivery mode", ^{
+        id<PTNPhotoKitImageManager> imageManager =
+            OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+        auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher
+                                                                    observer:observer
+                                                                imageManager:imageManager
+                                                        assetResourceManager:assetResourceManager
+                                                        authorizationManager:authorizationManager
+                                                               changeManager:changeManager
+                                                                imageResizer:imageResizer];
+        OCMExpect([imageManager requestLivePhotoForAsset:asset targetSize:CGSizeMake(13, 37)
+            contentMode:PHImageContentModeDefault
+            options:[OCMArg checkWithBlock:^BOOL(PHLivePhotoRequestOptions *options) {
+              return options.isNetworkAccessAllowed;
+            }] resultHandler:([OCMArg invokeBlockWithArgs:livePhoto, @{}, nil])]);
+        expect([assetManager fetchAVPreviewWithDescriptor:asset options:options]).will.complete();
+        OCMVerifyAll((id)imageManager);
+      });
+
+      context(@"fetch preview of asset", ^{
+        it(@"should fetch player item", ^{
+          [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+            return [progress.result.asset isEqual:avasset];
+          });
+        });
+
+        it(@"should complete after fetching player item", ^{
+          [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          expect(values).will.sendValuesWithCount(1);
+          expect(values).will.complete();
+        });
+
+        it(@"should fetch player item with progress", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] livePhoto:livePhoto];
+
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          expect(values).will.sendValue(0, [[PTNProgress alloc] initWithProgress:@0.25]);
+          expect(values).will.sendValue(1, [[PTNProgress alloc] initWithProgress:@0.5]);
+          expect(values).will.sendValue(2, [[PTNProgress alloc] initWithProgress:@1]);
+          expect(values).will.matchValue(3, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+            return [progress.result.asset isEqual:avasset];
+          });
+        });
+
+        it(@"should cancel request upon disposal", ^{
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          RACDisposable *subscriber = [values subscribeNext:^(id) {}];
+          expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+
+          [subscriber dispose];
+          expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+        });
+
+        it(@"should err on error after progress finished", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          expect(values).will.sendValues(@[
+            [[PTNProgress alloc] initWithProgress:@0.25],
+            [[PTNProgress alloc] initWithProgress:@0.5],
+            [[PTNProgress alloc] initWithProgress:@1],
+          ]);
+
+          expect(values).will.matchError(^BOOL(NSError *error) {
+            return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+          });
+        });
+
+        it(@"should err on progress download error", ^{
+          [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1]
+                   errorInProgress:defaultError];
+
+          RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+          expect(values).will.sendValues(@[
+            [[PTNProgress alloc] initWithProgress:@0.25],
+            [[PTNProgress alloc] initWithProgress:@0.5]
+          ]);
+
+          expect(values).will.matchError(^BOOL(NSError *error) {
+            return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+          });
+        });
+
+        context(@"thread transitions", ^{
+          it(@"should not operate on the main thread", ^{
+            [imageManager serveAsset:asset withProgress:@[] livePhoto:livePhoto];
+
+            RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
+
+            expect(values).will.sendValuesWithCount(1);
+            expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
+          });
+        });
+      });
+    });
+  }
 
   context(@"fetch preview of asset", ^{
     it(@"should fetch player item", ^{

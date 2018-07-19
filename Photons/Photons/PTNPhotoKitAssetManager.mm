@@ -739,8 +739,23 @@ NS_ASSUME_NONNULL_BEGIN
   /// authorization check.
   return [[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
+        if (@available(iOS 9.1, *)) {
+          if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
+            return [self videoAssetForLivePhotoAsset:asset];
+          }
+        }
+
         return [self videoAssetForPhotoKitAsset:asset options:[options photoKitOptions]];
       }];
+}
+
+- (RACSignal *)videoAssetForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+  return [[self fetchAVAssetForLivePhotoAsset:asset]
+          map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
+            return [progress map:^PTNAudiovisualAsset *(AVAsset *avasset) {
+              return [[PTNAudiovisualAsset alloc] initWithAVAsset:avasset];
+            }];
+          }];
 }
 
 - (RACSignal *)videoAssetForPhotoKitAsset:(PHAsset *)asset
@@ -872,6 +887,51 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV preview fetching
 #pragma mark -
 
+- (RACSignal *)fetchAVAssetForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    auto options = [[PHLivePhotoRequestOptions alloc] init];
+    // In order to fetch the video of the Live Photo, only high quality format must be used.
+    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    options.networkAccessAllowed = YES;
+    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
+      if (!error) {
+        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        [subscriber sendNext:progress];
+      }
+    };
+
+    auto resultHandler = ^(PHLivePhoto * _Nullable livePhoto, NSDictionary * _Nullable info) {
+      if (!livePhoto || info[PHImageErrorKey]) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
+        [subscriber sendError:wrappedError];
+      } else {
+        AVAsset * _Nullable avasset = [livePhoto valueForKey:@"videoAsset"];
+        // Since we use an undocumented API here, it's better to make sure the asset exist.
+        if (!avasset) {
+          [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier]];
+          LogError(@"Live photo asset does not contain a video asset");
+        } else {
+          [subscriber sendNext:[PTNProgress progressWithResult:nn(avasset)]];
+          [subscriber sendCompleted];
+        }
+      }
+    };
+
+    auto targetSize = CGSizeMake(asset.pixelWidth, asset.pixelHeight);
+    auto requestID = [self.imageManager requestLivePhotoForAsset:asset
+                                                      targetSize:targetSize
+                                                     contentMode:PHImageContentModeDefault
+                                                         options:options
+                                                   resultHandler:resultHandler];
+    return [RACDisposable disposableWithBlock:^{
+      [self.imageManager cancelImageRequest:requestID];
+    }];
+  }];
+}
+
 - (RACSignal *)fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
                                     options:(PTNAVAssetFetchOptions *)options {
   if (![descriptor isKindOfClass:[PHAsset class]]) {
@@ -883,9 +943,24 @@ NS_ASSUME_NONNULL_BEGIN
   /// authorization check.
   return [[self fetchAssetForDescriptor:descriptor]
           flattenMap:^(PHAsset *asset) {
+            if (@available(iOS 9.1, *)) {
+              if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
+                return [self playerItemForLivePhotoAsset:asset];
+              }
+            }
+
             return [self videoPreviewForPhotoKitAsset:asset options:[options photoKitOptions]];
           }];
 
+}
+
+- (RACSignal *)playerItemForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+  return [[self fetchAVAssetForLivePhotoAsset:asset]
+    map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
+      return [progress map:^AVPlayerItem *(AVAsset *avasset) {
+        return [[AVPlayerItem alloc] initWithAsset:avasset];
+      }];
+    }];
 }
 
 - (RACSignal *)videoPreviewForPhotoKitAsset:(PHAsset *)asset
