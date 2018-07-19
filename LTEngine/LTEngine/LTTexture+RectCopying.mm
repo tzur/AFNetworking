@@ -3,11 +3,7 @@
 
 #import "LTTexture+RectCopying.h"
 
-#import "LTDynamicQuadDrawer.h"
-#import "LTFbo.h"
-#import "LTFboPool.h"
-#import "LTShaderStorage+LTPassthroughShaderFsh.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTTextureBlitter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,22 +16,14 @@ static const CGRect kCanonicalRect = CGRectFromSize(CGSizeMakeUniform(1));
 }
 
 - (void)copyNormalizedRect:(CGRect)rect toNormalizedRect:(CGRect)targetRect {
-  LTDynamicQuadDrawer *drawer =
-      [[LTDynamicQuadDrawer alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                         fragmentSource:[LTPassthroughShaderFsh source]
-                                             gpuStructs:[NSOrderedSet orderedSet]];
-  [drawer drawQuads:{lt::Quad(targetRect)} textureMapQuads:{lt::Quad(rect)} attributeData:@[]
-            texture:self auxiliaryTextures:@{}
-           uniforms:@{[LTPassthroughShaderVsh modelview]: $(GLKMatrix4Identity),
-                      [LTPassthroughShaderVsh texture]: $(GLKMatrix3Identity)}];
+  [[[LTTextureBlitter alloc] init] copyNormalizedRect:rect ofTexture:self
+                                     toNormalizedRect:targetRect];
 }
 
 - (void)copyNormalizedRect:(CGRect)rect toNormalizedRect:(CGRect)targetRect
                  ofTexture:(LTTexture *)texture {
-  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture];
-  [fbo bindAndDraw:^{
-    [self copyNormalizedRect:rect toNormalizedRect:targetRect];
-  }];
+  [[[LTTextureBlitter alloc] init] copyNormalizedRect:rect ofTexture:self
+                                     toNormalizedRect:targetRect ofTexture:texture];
 }
 
 - (void)copyToRect:(CGRect)rect ofTexture:(LTTexture *)texture {

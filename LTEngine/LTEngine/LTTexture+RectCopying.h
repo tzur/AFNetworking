@@ -9,6 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// the receiving texture into an axis-aligned rectangular subregion of another texture or another
 /// already bound render target. The result is undefined if the pixel format of the receiver does
 /// not equal the pixel format of the render target.
+///
+/// @important Calls to the convenience methods result in the creation and destruction of OpenGL
+/// objects. Hence, the methods are not intended for high-frequency usage (e.g. every display link
+/// frame). If copying needs to be performed with high frequency, hold an \c LTTextureBlitter
+/// instead.
 @interface LTTexture (RectCopying)
 
 /// Copies the entire content of this instance to the given \c rect, provided in normalized
