@@ -7,6 +7,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Block used for sending progress updates to various asset request operations.
+///
+/// @see PHAssetImageProgressHandler, PHAssetVideoProgressHandler.
+typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nullable error,
+                                               BOOL *stop, NSDictionary * _Nullable info);
+
 @interface PTNPhotoKitFakeImageManager ()
 
 /// Maps asset identifier to progress values.
@@ -34,6 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps asset identifier to \c AVPlayerItem.
 @property (strong, nonatomic)
     NSMutableDictionary<NSString *, AVPlayerItem *> *identifierToPlayerItem;
+
+/// Maps asset identifier to live photo.
+@property (strong, nonatomic) NSMutableDictionary<NSString *, PHLivePhoto *> *identifierToLivePhoto
+    API_AVAILABLE(ios(9.1));
 
 /// Maps asset identifier to error.
 @property (strong, nonatomic) NSMutableDictionary *identifierToError;
@@ -67,6 +77,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.identifierToDataUTI = [NSMutableDictionary dictionary];
     self.identifierToOrientation = [NSMutableDictionary dictionary];
     self.identifierToPlayerItem = [NSMutableDictionary dictionary];
+    if (@available(iOS 9.1, *)) {
+      self.identifierToLivePhoto = [NSMutableDictionary dictionary];
+    }
     self.identifierToError = [NSMutableDictionary dictionary];
     self.identifierToProgressError = [NSMutableDictionary dictionary];
     self.requestToIdentifier = [NSMutableDictionary dictionary];
@@ -114,8 +127,20 @@ NS_ASSUME_NONNULL_BEGIN
         playerItem:(AVPlayerItem *)playerItem {
   NSString *identifier = asset.localIdentifier;
 
-  self.identifierToProgress[identifier] = progress;
-  self.identifierToPlayerItem[identifier] = playerItem;
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToPlayerItem[identifier] = playerItem;
+  }
+}
+
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+        livePhoto:(PHLivePhoto *)livePhoto API_AVAILABLE(ios(9.1)) {
+  NSString *identifier = asset.localIdentifier;
+
+  @synchronized(self) {
+    self.identifierToProgress[identifier] = progress;
+    self.identifierToLivePhoto[identifier] = livePhoto;
+  }
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
@@ -165,15 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
       }
 
-      if (options.progressHandler) {
-        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                            NSUInteger idx,
-                                                                            BOOL *stop) {
-          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-              self.identifierToProgressError[identifier] : nil;
-          options.progressHandler(progress.doubleValue, error, stop, nil);
-        }];
-      }
+      [self sendProgressReportsToHandler:options.progressHandler identifier:identifier];
 
       if (self.identifierToError[identifier]) {
         resultHandler(nil, @{
@@ -198,6 +215,19 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
+- (void)sendProgressReportsToHandler:(PTNAssetRequestProgressHandler)progressHandler
+                          identifier:(NSString *)identifier {
+  if (progressHandler) {
+    [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                        NSUInteger idx,
+                                                                        BOOL *stop) {
+      NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+      self.identifierToProgressError[identifier] : nil;
+      progressHandler(progress.doubleValue, error, stop, nil);
+    }];
+  }
+}
+
 - (void)cancelImageRequest:(PHImageRequestID)requestID {
   @synchronized(self) {
     if (self.requestToIdentifier[@(requestID)]) {
@@ -219,15 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
       }
 
-      if (options.progressHandler) {
-        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                            NSUInteger idx,
-                                                                            BOOL *stop) {
-          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-              self.identifierToProgressError[identifier] : nil;
-          options.progressHandler(progress.doubleValue, error, stop, nil);
-        }];
-      }
+      [self sendProgressReportsToHandler:options.progressHandler identifier:identifier];
 
       if (self.identifierToError[identifier]) {
         resultHandler(nil, nil, @{
@@ -267,15 +289,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
       }
 
-      if (options.progressHandler) {
-        [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                            NSUInteger idx,
-                                                                            BOOL *stop) {
-          NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-              self.identifierToProgressError[identifier] : nil;
-          options.progressHandler(progress.doubleValue, error, stop, nil);
-        }];
-      }
+      [self sendProgressReportsToHandler:options.progressHandler identifier:identifier];
 
       if (self.identifierToError[identifier]) {
         resultHandler(nil, nil, UIImageOrientationUp, @{
@@ -314,15 +328,7 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    if (options.progressHandler) {
-      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
-                                                                          NSUInteger idx,
-                                                                          BOOL *stop) {
-        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
-            self.identifierToProgressError[identifier] : nil;
-        options.progressHandler(progress.doubleValue, error, stop, nil);
-      }];
-    }
+    [self sendProgressReportsToHandler:options.progressHandler identifier:identifier];
 
     if (self.identifierToError[identifier]) {
       resultHandler(nil, @{
@@ -334,6 +340,42 @@ NS_ASSUME_NONNULL_BEGIN
       });
     } else if (self.identifierToPlayerItem[identifier]) {
       resultHandler(self.identifierToPlayerItem[identifier], nil);
+    }
+  });
+
+  ++self.nextRequestIdentifier;
+  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+  [self.issuedRequests addObject:identifier];
+
+  return self.nextRequestIdentifier;
+}
+
+- (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize __unused)targetSize
+    contentMode:(PHImageContentMode __unused)contentMode
+    options:(nullable PHLivePhotoRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler API_AVAILABLE(ios(9.1)) {
+  NSString *identifier = asset.localIdentifier;
+
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    if (!self.identifierToProgress[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+      });
+      return;
+    }
+
+    [self sendProgressReportsToHandler:options.progressHandler identifier:identifier];
+
+    if (self.identifierToError[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: self.identifierToError[identifier]
+      });
+    } else if (self.identifierToProgressError[identifier]) {
+      resultHandler(nil, @{
+        PHImageErrorKey: self.identifierToProgressError[identifier]
+      });
+    } else if (self.identifierToLivePhoto[identifier]) {
+      resultHandler(self.identifierToLivePhoto[identifier], nil);
     }
   });
 

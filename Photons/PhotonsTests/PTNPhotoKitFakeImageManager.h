@@ -32,6 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
         playerItem:(AVPlayerItem *)playerItem;
 
 /// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
+/// values), and finally the given \c livePhoto.
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+         livePhoto:(PHLivePhoto *)livePhoto API_AVAILABLE(ios(9.1));
+
+/// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
 /// values), and finally errs with the given \c error.
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
       finallyError:(NSError *)error;

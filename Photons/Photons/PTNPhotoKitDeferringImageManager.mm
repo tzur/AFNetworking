@@ -128,6 +128,23 @@ NS_ASSUME_NONNULL_BEGIN
                                         resultHandler:resultHandler];
 }
 
+- (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize)targetSize
+    contentMode:(PHImageContentMode)contentMode
+    options:(nullable PHLivePhotoRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler API_AVAILABLE(ios(9.1)) {
+  LTParameterAssert(resultHandler, "resultHandler block cannot be nil");
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+    resultHandler(nil, @{PHImageErrorKey: [NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]});
+    return 0;
+  }
+
+  [self instantiateImageManagerIfNeeded];
+  return [self.imageManager requestLivePhotoForAsset:asset targetSize:targetSize
+                                         contentMode:contentMode options:options
+                                       resultHandler:resultHandler];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
