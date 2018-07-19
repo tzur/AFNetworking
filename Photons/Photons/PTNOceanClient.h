@@ -68,9 +68,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// the memory footprint.
 @interface PTNOceanClient : NSObject
 
-/// Initializes with the default \c FBRHTTPClient for \c client. \c sessionManager is initialized
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c APIKey to be used to create \c oceanClient. \c sessionManager is initialized
 /// with background \c NSURLSessionConfiguration.
-- (instancetype)init;
+- (instancetype)initWithAPIKey:(NSString *)APIKey;
 
 /// Initializes with \c oceanClient to handle data exchange with Ocean's server. \c dataClient to
 /// fetch relatively small amount of data like image assets to \c NSData. Downloading files is done

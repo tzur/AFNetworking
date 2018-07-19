@@ -94,6 +94,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Ocean base endpoint.
 static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com";
 
+/// HTTP header name to use for API key when communicating with Ocean server.
+static NSString * const kPTNOceanAPIKeyHeaderName = @"x-api-key";
+
 static NSString * _Nullable PTNEndpointPathForAssetSearch(PTNOceanSearchParameters *parameters) {
   NSString * _Nullable endpointPath = parameters.type.endpointPath;
   if (!endpointPath) {
@@ -134,17 +137,19 @@ static FBRHTTPRequestParameters *
   } mtl_dictionaryByAddingEntriesFromDictionary:PTNOceanBaseRequestParameters()];
 }
 
-- (instancetype)init {
+- (instancetype)initWithAPIKey:(NSString *)APIKey {
   auto configuration = [NSURLSessionConfiguration
       backgroundSessionConfigurationWithIdentifier:@"com.lightricks.photons.ocean"];
   auto sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
 
   auto parametersEncoding = $(FBRHTTPRequestParametersEncodingURLQuery);
+  FBRHTTPRequestHeaders *headers = @{kPTNOceanAPIKeyHeaderName: APIKey};
   auto requestMarshalling = [[FBRHTTPSessionRequestMarshalling alloc]
                              initWithParametersEncoding:parametersEncoding
-                             headers:nil];
+                             headers:headers];
   auto securityPolicy = [FBRHTTPSessionSecurityPolicy
       securityPolicyWithPinnedPublicKeysFromCertificates:@[PTNOceanServerCertificateData()].lt_set];
+
   auto sessionConfiguration =
       [[FBRHTTPSessionConfiguration alloc]
        initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
@@ -155,7 +160,7 @@ static FBRHTTPRequestParameters *
                                                                     URLWithString:kBaseEndpoint]];
 
   return [self initWithOceanClient:oceanClient dataClient:[FBRHTTPClient client]
-                    sessionManager:sessionManager];
+               sessionManager:sessionManager];
 }
 
 - (instancetype)initWithOceanClient:(FBRHTTPClient *)oceanClient
