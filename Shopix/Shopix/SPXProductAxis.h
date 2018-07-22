@@ -90,6 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Full price.
 @property (readonly, nonatomic) SPXBenefitAxisValue *fullPrice;
 
+/// 10% Off.
+@property (readonly, nonatomic) SPXBenefitAxisValue *off10;
+
 /// 25% Off.
 @property (readonly, nonatomic) SPXBenefitAxisValue *off25;
 
@@ -106,6 +109,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Subscription with no trial.
 @property (readonly, nonatomic) SPXBenefitAxisValue *noTrial;
+
+/// Subscription with three days trial.
+@property (readonly, nonatomic) SPXBenefitAxisValue *threeDaysTrial;
 
 /// Subscription with one week trial.
 @property (readonly, nonatomic) SPXBenefitAxisValue *oneWeekTrial;

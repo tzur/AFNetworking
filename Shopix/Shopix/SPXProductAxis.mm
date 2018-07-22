@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXBenefitProductAxisDiscountLevel
 
 - (NSArray<id<SPXProductAxisValue>> *)values {
-  return @[[self fullPrice], [self off25], [self off50], [self off75]];
+  return @[[self fullPrice], [self off10], [self off25], [self off50], [self off75]];
 }
 
 - (SPXBenefitAxisValue *)defaultValue {
@@ -53,6 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (SPXBenefitAxisValue *)fullPrice {
   return [SPXBenefitAxisValue axisValueWithValue:@"FullPrice" andAxis:self];
+}
+
+- (SPXBenefitAxisValue *)off10 {
+  return [SPXBenefitAxisValue axisValueWithValue:@"10Off" andAxis:self];
 }
 
 - (SPXBenefitAxisValue *)off25 {
@@ -72,8 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXBenefitProductAxisFreeTrialDuration
 
 - (NSArray<id<SPXProductAxisValue>> *)values {
-  return @[[self noTrial], [self oneWeekTrial], [self oneMonthTrial], [self threeMonthsTrial],
-           [self sixMonthsTrial]];
+  return @[[self noTrial], [self threeDaysTrial], [self oneWeekTrial], [self oneMonthTrial],
+           [self threeMonthsTrial], [self sixMonthsTrial]];
 }
 
 - (SPXBenefitAxisValue *)defaultValue {
@@ -82,6 +86,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (SPXBenefitAxisValue *)noTrial {
   return [SPXBenefitAxisValue axisValueWithValue:@"NoTrial" andAxis:self];
+}
+
+- (SPXBenefitAxisValue *)threeDaysTrial {
+  return [SPXBenefitAxisValue axisValueWithValue:@"3DaysTrial" andAxis:self];
 }
 
 - (SPXBenefitAxisValue *)oneWeekTrial {
