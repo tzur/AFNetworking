@@ -48,6 +48,8 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   CGFloat _lineWidth;
   UIColor * _Nullable _color;
   UIColor * _Nullable _highlightedColor;
+  BOOL _isAnimated;
+  NSTimeInterval _animationDuration;
   BOOL _isBuilt;
 }
 @end
@@ -61,6 +63,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 - (instancetype)initWithImageURL:(NSURL * _Nullable)imageURL {
   if (self = [super init]) {
     _imageURL = imageURL;
+    _animationDuration = 0.25;
   }
   return self;
 }
@@ -167,6 +170,20 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   };
 }
 
+- (WFImageViewModelBuilder *(^)(BOOL))animated {
+  return ^(BOOL animated) {
+    self->_isAnimated = animated;
+    return self;
+  };
+}
+
+- (WFImageViewModelBuilder *(^)(NSTimeInterval))animationDuration {
+  return ^(NSTimeInterval animationDuration) {
+    self->_animationDuration = animationDuration;
+    return self;
+  };
+}
+
 - (id<WFImageViewModel> (^)(void))build {
   return ^{
     LTParameterAssert(!self->_isBuilt, @"build() can be called only once, and it has already been "
@@ -191,7 +208,9 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
     id<WFImageProvider> imageProvider = self->_imageProvider ?: WFDefaultImageProvider();
     return [[WFDynamicImageViewModel alloc] initWithImageProvider:imageProvider
-                                                     imagesSignal:imagesSignal];
+                                                     imagesSignal:imagesSignal
+                                                         animated:self->_isAnimated
+                                                animationDuration:self->_animationDuration];
   };
 }
 

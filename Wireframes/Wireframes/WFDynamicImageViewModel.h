@@ -26,10 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Images are reloaded each time a new, distinct value is sent via the signal.
 ///
+/// \c animated and \c animationDuration set the receiver's \a isAnimated and \c animatedDuration
+/// respectively.
+///
 /// @note prefer \c WFImageViewModelBuilder to create instances of this view model. It offers a
 /// higher level API, more safety checks, and covers the most common use cases.
 - (instancetype)initWithImageProvider:(id<WFImageProvider>)imageProvider
                          imagesSignal:(RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *)imagesSignal
+                             animated:(BOOL)animated
+                    animationDuration:(NSTimeInterval)animationDuration
     NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;

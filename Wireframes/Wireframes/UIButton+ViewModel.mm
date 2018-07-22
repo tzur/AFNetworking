@@ -52,11 +52,22 @@ static const void *kBindingDisposableKey = &kBindingDisposableKey;
         @strongify(self);
         RACTupleUnpack(UIImage * _Nullable image, UIImage * _Nullable highlightedImage) = values;
 
-        [self setImage:image forState:UIControlStateNormal];
-        [self setImage:highlightedImage forState:UIControlStateHighlighted];
-        [self setImage:highlightedImage forState:UIControlStateSelected];
-        [self setImage:highlightedImage
-              forState:UIControlStateSelected | UIControlStateHighlighted];
+        auto updateBlock = ^{
+          [self setImage:image forState:UIControlStateNormal];
+          [self setImage:highlightedImage forState:UIControlStateHighlighted];
+          [self setImage:highlightedImage forState:UIControlStateSelected];
+          [self setImage:highlightedImage
+                forState:UIControlStateSelected | UIControlStateHighlighted];
+        };
+
+        if (viewModel.isAnimated) {
+          [UIView transitionWithView:self duration:viewModel.animationDuration
+                             options:UIViewAnimationOptionTransitionCrossDissolve
+                          animations:updateBlock
+                          completion:nil];
+        } else {
+          updateBlock();
+        }
       }];
 
   return [[RACDisposable disposableWithBlock:^{

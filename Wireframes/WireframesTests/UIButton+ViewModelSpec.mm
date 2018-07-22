@@ -90,6 +90,15 @@ context(@"image bindings", ^{
     }
     expect(weakButton).to.beNil();
   });
+
+  it(@"should update view with animation", ^{
+    viewModel.isAnimated = YES;
+    viewModel.animationDuration = 0.7;
+    button.wf_viewModel = viewModel;
+
+    expect(button.layer.animationKeys).to.equal(@[@"transition"]);
+    expect([button.layer animationForKey:@"transition"].duration).to.equal(0.7);
+  });
 });
 
 SpecEnd

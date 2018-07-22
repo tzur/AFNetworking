@@ -85,6 +85,15 @@ context(@"image bindings", ^{
     }
     expect(weakView).to.beNil();
   });
+
+  it(@"should update view with animation", ^{
+    viewModel.isAnimated = YES;
+    viewModel.animationDuration = 0.7;
+    view.wf_viewModel = viewModel;
+
+    expect(view.layer.animationKeys).to.equal(@[@"transition"]);
+    expect([view.layer animationForKey:@"transition"].duration).to.equal(0.7);
+  });
 });
 
 context(@"UIImageView highlightedImage bug", ^{

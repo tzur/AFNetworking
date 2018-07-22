@@ -15,6 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Image to display when in highlighted state. If \c nil, \c image is used instead.
 @property (readonly, nonatomic, nullable) UIImage *highlightedImage;
 
+/// \c YES if \c image and \c highlightedImage should change with animation.
+@property (readonly, nonatomic) BOOL isAnimated;
+
+/// Duration of \c image and \c highlightedImage animations. Has no meaning if \c isAnimated is
+/// \c NO.
+@property (readonly, nonatomic) NSTimeInterval animationDuration;
+
 @end
 
 NS_ASSUME_NONNULL_END

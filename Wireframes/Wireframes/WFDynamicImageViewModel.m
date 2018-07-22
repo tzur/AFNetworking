@@ -20,9 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFDynamicImageViewModel
 
+@synthesize isAnimated = _isAnimated;
+@synthesize animationDuration = _animationDuration;
+
 - (instancetype)initWithImageProvider:(id<WFImageProvider>)imageProvider
-                         imagesSignal:(RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *)imagesSignal {
+                         imagesSignal:(RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *)imagesSignal
+                             animated:(BOOL)animated
+                    animationDuration:(NSTimeInterval)animationDuration {
   if (self = [super init]) {
+    _isAnimated = animated;
+    _animationDuration = animationDuration;
+
     @weakify(self);
     [[[[[[[imagesSignal
         takeUntil:self.rac_willDeallocSignal]

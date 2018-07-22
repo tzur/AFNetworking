@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WFFakeImageViewModel : NSObject <WFImageViewModel>
 @property (readwrite, nonatomic, nullable) UIImage *image;
 @property (readwrite, nonatomic, nullable) UIImage *highlightedImage;
+@property (readwrite, nonatomic) BOOL isAnimated;
+@property (readwrite, nonatomic) NSTimeInterval animationDuration;
 @end
 
 NS_ASSUME_NONNULL_END
