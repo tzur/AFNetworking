@@ -115,6 +115,14 @@ module Fastlane
         unless params[:treat_warnings_as_errors].nil?
           flags << " TREAT_WARNINGS_AS_ERRORS=#{params[:treat_warnings_as_errors] ? 'YES' : 'NO'}"
         end
+
+        if params[:enable_undefined_behavior_sanitizer]
+          if params[:other_flags]
+            UI.user_error!("Undefined behavior sanitizer cannot be used with 'other_flags'")
+          end
+          flags << " OTHER_CFLAGS=\"${inherited} -fno-sanitize-recover=all\""
+        end
+
         flags << " " << params[:other_flags] if params[:other_flags]
         flags << " " << ccache_flags if params[:ccache]
 
