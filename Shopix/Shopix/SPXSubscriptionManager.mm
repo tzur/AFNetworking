@@ -9,6 +9,7 @@
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationStatus.h>
 #import <Bazaar/BZRiCloudUserIDProvider.h>
+#import <Bazaar/NSError+Bazaar.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 
 #import "SPXAlertViewModel+ShopixPresets.h"
@@ -195,8 +196,14 @@ NS_ASSUME_NONNULL_BEGIN
 
     // If the purchase succeeded and only the receipt validation failed retry only the receipt
     // validation and not the entire purchase process.
-    if (error.code == BZRErrorCodeReceiptValidationFailed) {
+    if (error.lt_underlyingError.code == BZRErrorCodeReceiptValidationFailed) {
       [self validateReceiptWithCompletionHandler:completionHandler];
+    } else if (error.code == BZRErrorCodeTransactionNotFoundInReceipt) {
+      [self validateTransactionOnError:error productIdentifier:productIdentifier
+                     completionHandler:completionHandler];
+    } else if (error.lt_underlyingError.code == BZRErrorCodeTransactionNotFoundInReceipt) {
+      [self validateTransactionOnError:error.lt_underlyingError productIdentifier:productIdentifier
+                     completionHandler:completionHandler];
     } else {
       [self purchaseSubscription:productIdentifier completionHandler:completionHandler];
     }
@@ -214,6 +221,24 @@ NS_ASSUME_NONNULL_BEGIN
     completionHandler(nil, error);
   }];
   [self.delegate presentAlertWithViewModel:alertViewModel];
+}
+
+- (void)validateTransactionOnError:(NSError *)error productIdentifier:(NSString *)productIdentifier
+                 completionHandler:(SPXPurchaseSubscriptionCompletionBlock)completionHandler {
+  @weakify(self);
+  [[self.productsManager validateTransaction:error.bzr_transactionIdentifier]
+      subscribeError:^(NSError *error) {
+        @strongify(self);
+        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled) {
+          completionHandler(nil, error);
+          return;
+        }
+        [self presentPurchaseFailedAlertWithError:error productIdentifier:productIdentifier
+                                completionHandler:completionHandler];
+      } completed:^{
+        @strongify(self);
+        completionHandler(self.productsInfoProvider.subscriptionInfo, nil);
+      }];
 }
 
 - (void)presentReceiptValidationFailedAlertWithError:(NSError *)error

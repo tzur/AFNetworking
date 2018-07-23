@@ -8,6 +8,7 @@
 #import <Bazaar/BZRProductsManager.h>
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/BZRReceiptValidationStatus.h>
+#import <Bazaar/NSError+Bazaar.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 
 #import "SPXAlertViewModel.h"
@@ -200,7 +201,7 @@ context(@"fetching products information", ^{
 
 context(@"purchasing subscription", ^{
   __block NSError *purchaseError;
-  __block NSError *validationError;
+  __block NSError *purchaseErrorWithUnderlyingValidationError;
   __block SPXPurchaseSubscriptionCompletionBlock completionBlock;
   __block BOOL completionBlockInvoked;
   __block BZRReceiptSubscriptionInfo *completionBlockSubscriptionInfo;
@@ -208,7 +209,9 @@ context(@"purchasing subscription", ^{
 
   beforeEach(^{
     purchaseError = [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed];
-    validationError = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed];
+    purchaseErrorWithUnderlyingValidationError =
+        [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed
+                  underlyingError:[NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed]];
 
     completionBlockInvoked = NO;
     completionBlockSubscriptionInfo = nil;
@@ -244,7 +247,8 @@ context(@"purchasing subscription", ^{
   });
 
   it(@"should present an alert if receipt validation failed", ^{
-    OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal error:validationError]);
+    OCMStub([productsManager purchaseProduct:@"foo"])
+        .andReturn([RACSignal error:purchaseErrorWithUnderlyingValidationError]);
     OCMExpect([delegate presentAlertWithViewModel:OCMOCK_ANY]);
 
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:completionBlock];
@@ -255,14 +259,15 @@ context(@"purchasing subscription", ^{
 
   it(@"should invoke completion block with error immediately if receipt validation has failed and "
      "no delegate is set", ^{
-    OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal error:validationError]);
+    OCMStub([productsManager purchaseProduct:@"foo"])
+        .andReturn([RACSignal error:purchaseErrorWithUnderlyingValidationError]);
     subscriptionManager.delegate = nil;
 
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:completionBlock];
 
     expect(completionBlockInvoked).will.beTruthy();
     expect(completionBlockSubscriptionInfo).to.beNil();
-    expect(completionBlockError).to.equal(validationError);
+    expect(completionBlockError).to.equal(purchaseErrorWithUnderlyingValidationError);
   });
 
   it(@"should invoke the completion block with error immediately and not present an alert if "
@@ -358,7 +363,7 @@ context(@"purchasing subscription", ^{
       it(@"should retry to validate the receipt if the receipt validation phase has failed", ^{
         // Retry the purchase, but this time simulate receipt validation failure.
         OCMExpect([productsManager purchaseProduct:@"foo"])
-            .andReturn([RACSignal error:validationError]);
+            .andReturn([RACSignal error:purchaseErrorWithUnderlyingValidationError]);
         viewModel.buttons[0].action();
 
         // Retry should only execute receipt validation this time.
@@ -368,6 +373,37 @@ context(@"purchasing subscription", ^{
 
         OCMVerifyAll((id)productsManager);
         expect(completionBlockInvoked).to.beFalsy();
+      });
+
+      it(@"should retry to validate the transaction if the transaction was not found while "
+          "validating the receipt", ^{
+        SKPaymentTransaction *transaction = OCMClassMock(SKPaymentTransaction.class);
+        auto transactionIdentifier = @"transactionId";
+        OCMStub([transaction transactionIdentifier]).andReturn(transactionIdentifier);
+        auto transactionNotFoundInReceiptError =
+            [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
+                           transaction:transaction];
+        auto errorWithTransactionNotFoundUnderlyingError =
+            [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed
+                      underlyingError:transactionNotFoundInReceiptError];
+
+        // Should retry validating the transaction both in the case of a nested error (such as
+        // those sent by the \c purchaseProduct: method) and not nested errors ones (sent by
+        // the \c validateTransaction: method).
+        OCMExpect([productsManager purchaseProduct:@"foo"])
+            .andReturn([RACSignal error:errorWithTransactionNotFoundUnderlyingError]);
+        viewModel.buttons[0].action();
+
+        OCMExpect([productsManager validateTransaction:transactionIdentifier])
+            .andReturn([RACSignal error:transactionNotFoundInReceiptError]);
+        viewModel.buttons[0].action();
+
+        OCMExpect([productsManager validateTransaction:transactionIdentifier])
+            .andReturn([RACSignal return:@[transaction]]);
+        viewModel.buttons[0].action();
+
+        expect(completionBlockInvoked).to.beTruthy();
+        OCMVerifyAll((id)productsManager);
       });
     });
 
