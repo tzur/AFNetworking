@@ -836,6 +836,20 @@ context(@"purchasing products", ^{
           OCMVerify([storeKitFacade finishTransaction:purchasedTransaction]);
         });
 
+        it(@"should finish product's transaction if its date appears in receipt transactions", ^{
+          receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
+              @keypath(receiptValidationStatus, receipt.transactions)
+              withValue:@[BZRTransactionWithTransactionIdentifier(@"notFoo")]];
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal return:receiptValidationStatus]);
+          OCMStub([purchasedTransaction transactionDate])
+              .andReturn(receiptValidationStatus.receipt.transactions.firstObject.purchaseDateTime);
+
+          expect([store purchaseProduct:productIdentifier]).will.complete();
+
+          OCMVerify([storeKitFacade finishTransaction:purchasedTransaction]);
+        });
+
         it(@"should not finish product's transaction if it doesn't appear in receipt "
            "transactions", ^{
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
