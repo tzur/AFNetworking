@@ -7,9 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (Retrieval)
 
-- (nullable instancetype)wf_viewForAccessibilityIdentifier:(NSString *)accessibilityIdentifier {
+- (nullable __kindof UIView *)wf_viewForAccessibilityIdentifier:(NSString *)
+    accessibilityIdentifier {
   LTParameterAssert(accessibilityIdentifier);
-  
+
   if ([self.accessibilityIdentifier isEqualToString:accessibilityIdentifier]) {
     return self;
   }
