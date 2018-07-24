@@ -48,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) AVCaptureConnection *videoConnection;
 
 /// Still output attached to this session. Guaranteed to be non-null for iOS 9 and before.
-@property (readonly, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+@property (readonly, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput
+    NS_DEPRECATED_IOS(4_0, 10_0, "Use photoOutput instead");
 
 /// Still output attached to this session. Guaranteed to be non-null for iOS 10 and after.
 @property (readonly, nonatomic, nullable) AVCapturePhotoOutput *photoOutput
