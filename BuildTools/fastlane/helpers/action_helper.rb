@@ -14,6 +14,10 @@ module Fastlane
       def self.resource_path(filename = "")
         File.join(BASE_DIR_ABSOLUTE_PATH, "resources", filename)
       end
+
+      def self.kill_simulators
+        `killall Simulator 1> /dev/null 2>&1`
+      end
     end
   end
 end

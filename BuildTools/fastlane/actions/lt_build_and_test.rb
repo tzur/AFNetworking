@@ -97,8 +97,8 @@ module Fastlane
       def self.run(params)
         # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-        kill_simulators
         build_start_time = Time.now
+        Helpers.kill_simulators
 
         exit_code = other_action.lt_xcodebuild(
           project: params[:project],
