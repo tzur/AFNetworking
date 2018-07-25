@@ -90,7 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
   LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:canvas];
   [fbo bindAndDraw:^{
     for (DVNSplineRenderModel *model in models) {
-      [DVNSplineRenderer processModel:model];
+      @autoreleasepool {
+        [DVNSplineRenderer processModel:model];
+      }
     }
   }];
 }
