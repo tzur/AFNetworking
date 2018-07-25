@@ -72,7 +72,7 @@ module Fastlane
             else
               UI.error("xcodebuild failed too many times (#{MAX_ATTEMPTS})")
             end
-          end          
+          end
         end
 
         exit_code

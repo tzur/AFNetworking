@@ -19,8 +19,18 @@ module Fastlane
         "results of the analysis"
       end
 
+      # rubocop:disable Metrics/MethodLength
       def self.available_options
+        # rubocop:enable Metrics/MethodLength
         [
+          FastlaneCore::ConfigItem.new(
+            key: :html_report_path,
+            env_name: "LT_STATIC_ANALYSIS_HTML_RESULT_PATH",
+            description: "Path to a directory where the HTML report will be generated in",
+            type: String,
+            optional: true,
+            default_value: "output/test_results/tests.html"
+          ),
           LtXcodebuildOptions.project_option,
           LtXcodebuildOptions.workspace_option,
           LtXcodebuildOptions.scheme_option,
@@ -33,7 +43,7 @@ module Fastlane
           LtXcodebuildOptions.raw_logfile_path_option,
           LtXcodebuildOptions.treat_warnings_as_errors_option(default_value: false),
           LtXcodebuildOptions.ccache_option(default_value: false)
-        ] + LtXcprettyOptions.available_options
+        ] + LtTestOptions.available_options
       end
 
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -55,6 +65,7 @@ module Fastlane
           sdk: params[:sdk],
           arch: params[:arch],
           derived_data_path: params[:derived_data_path],
+          result_bundle_path: params[:test_result_path],
           other_flags: params[:other_flags].to_s + clang_analyzer_args,
           raw_logfile_path: params[:raw_logfile_path],
           treat_warnings_as_errors: params[:treat_warnings_as_errors],
