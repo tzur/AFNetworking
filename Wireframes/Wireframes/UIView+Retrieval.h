@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// |-- c
 ///
 /// Will return the view \c a.c for an accessibility identifier of \c c.
-- (nullable instancetype)wf_viewForAccessibilityIdentifier:(NSString *)accessibilityIdentifier;
+- (nullable __kindof UIView *)wf_viewForAccessibilityIdentifier:(NSString *)accessibilityIdentifier;
 
 @end
 
