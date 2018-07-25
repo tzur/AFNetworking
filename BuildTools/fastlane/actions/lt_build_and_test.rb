@@ -4,6 +4,7 @@ require_relative "lt_xcodebuild"
 require_relative "lt_xcpretty"
 require_relative "../helpers/fastlane_bugfixes"
 require_relative "../helpers/action_helper"
+require_relative "../helpers/junit_helper"
 
 module Fastlane
   module Actions
