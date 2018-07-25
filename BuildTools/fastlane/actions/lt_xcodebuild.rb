@@ -5,6 +5,8 @@ require_relative "../helpers/xcodebuild_errors"
 require_relative "../helpers/fastlane_bugfixes"
 require_relative "options/lt_xcodebuild_options"
 
+require "fileutils"
+
 module Fastlane
   module Actions
     # Action that wraps most of xcodebuild flags.
@@ -43,10 +45,16 @@ module Fastlane
                   "tee \"#{raw_logfile_path}\" | " \
                   "xcpretty #{xcpretty_flags}"
 
-
         attempts_left = MAX_ATTEMPTS
         while attempts_left > 0
           attempts_left -= 1
+
+          result_bundle_path = params[:result_bundle_path]
+          if result_bundle_path && File.exist?(result_bundle_path)
+            UI.message("The result bundle directory already exists, deleting it.")
+            FileUtils.remove_dir(result_bundle_path, force=true)
+          end
+
           exit_code, _, stderr = Executor.execute(command)
           if exit_code.zero?
             UI.success("xcodebuild completed successfully")
@@ -66,7 +74,6 @@ module Fastlane
             end
           end          
         end
-
 
         exit_code
       end

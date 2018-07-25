@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "pathname"
+
 module FastlaneCore
   # Configuration item that defines a flag passed to 'xcodebuild'.
   class XcodebuildConfigItem < ConfigItem
@@ -203,6 +205,22 @@ module Fastlane
           env_name: "LT_XCODEBUILD_DERIVED_DATA_PATH",
           description: "Path pointing to the derived data directory",
           xcodebuild_flag: "-derivedDataPath",
+          type: String,
+          optional: true
+        )
+      end
+
+      def self.result_bundle_path_option
+        FastlaneCore::XcodebuildConfigItem.new(
+          key: :result_bundle_path,
+          env_name: "LT_XCODEBUILD_RESULT_BUNDLE_PATH",
+          description: "Path to generate result bundle path in",
+          xcodebuild_flag: "-resultBundlePath",
+          verify_block: proc do |value|
+            if Pathname.new(value).absolute? || value.include?("..")
+              UI.user_error!("Result bundle path must be relative and not escape current directory")
+            end
+          end,
           type: String,
           optional: true
         )
