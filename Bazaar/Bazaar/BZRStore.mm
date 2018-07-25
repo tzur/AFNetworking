@@ -96,6 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide a unique identifier of the user.
 @property (readonly, nonatomic) id<BZRUserIDProvider> userIDProvider;
 
+/// The source of \c completedTransactionsSignal.
+@property (readonly, nonatomic) RACSubject *completedTransactionsSubject;
+
 /// List of products that their content is already available on the device and ready to be used.
 /// Products without content will be in the list as well.
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
@@ -148,6 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
     _keychainStorage = configuration.keychainStorage;
     _validatricksClient = configuration.validatricksClient;
     _userIDProvider = configuration.userIDProvider;
+    _completedTransactionsSubject = [RACSubject subject];
     _downloadedContentProducts = [NSSet set];
     _productListWasFetched = NO;
 
@@ -180,10 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)initializeCompletedTransactionsSignal {
-  _completedTransactionsSignal = [[[self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-      flattenMap:^(BZRPaymentTransactionList *transactions) {
-        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
+  _completedTransactionsSignal = [[self.completedTransactionsSubject
       takeUntil:[self rac_willDeallocSignal]]
       setNameWithFormat:@"%@ -completedTransactionsSignal", self];
 }
@@ -225,6 +226,7 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         for (SKPaymentTransaction *transaction in validatedTransactions) {
           [self.storeKitFacade finishTransaction:transaction];
+          [self.completedTransactionsSubject sendNext:transaction];
         }
       }];
 }
