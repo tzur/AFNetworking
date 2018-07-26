@@ -6,6 +6,7 @@ skip_docs
 
 WORKSPACE = "Foundations/Foundations.xcworkspace"
 SCHEME = "Foundations"
+DEVICE_TEST_SCHEME = "FoundationsDeviceTests"
 DEFAULT_TEST_DESTINATION = "platform=iOS Simulator,name=iPhone 7,OS=latest"
 
 lane :build_and_test do |options|
@@ -28,10 +29,29 @@ lane :build_simulator_test_package do |options|
   )
 end
 
+lane :build_device_test_package do |options|
+  lt_build_test_package(
+    workspace: WORKSPACE,
+    scheme: options[:scheme] || DEVICE_TEST_SCHEME,
+    sdk: "iphoneos",
+    arch: options[:arch] || "arm64",
+    raw_logfile_path: "output/logs/device_build_test_package_raw.log",
+    package_path: "test_package"
+  )
+end
+
 lane :run_simulator_test_package do |options|
   lt_run_test_package(
     raw_logfile_path: "output/logs/simulator_test_package_raw.log",
     destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    package_path: "test_package"
+  )
+end
+
+lane :run_device_test_package do |options|
+  lt_run_test_package(
+    raw_logfile_path: "output/logs/device_run_test_package_raw.log",
+    destination: options[:destination],
     package_path: "test_package"
   )
 end
