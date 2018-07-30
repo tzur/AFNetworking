@@ -121,6 +121,16 @@
 }
 
 #pragma mark -
+#pragma mark Methods
+#pragma mark -
+
+- (BOOL)containsPoint:(CGPoint)point {
+  CGPoint axisAlignedPoint =
+      CGPointApplyAffineTransform(point, CGAffineTransformInvert(self.transform));
+  return CGRectContainsPoint(self.rect, axisAlignedPoint);
+}
+
+#pragma mark -
 #pragma mark Properties
 #pragma mark -
 

@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c rect.
 - (instancetype)initWithRect:(CGRect)rect angle:(CGFloat)angle NS_DESIGNATED_INITIALIZER;
 
+/// Returns \c YES if the given \c point lies inside the rect. A point is considered inside the
+/// rectangle if its coordinates lie inside the rectangle or on the minimum X or minimum Y edge.
+- (BOOL)containsPoint:(CGPoint)point;
+
 /// Unrotated rect.
 @property (readonly, nonatomic) CGRect rect;
 

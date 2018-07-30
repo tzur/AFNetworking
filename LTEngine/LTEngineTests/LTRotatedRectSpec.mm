@@ -63,8 +63,6 @@ context(@"initializers and factory methods", ^{
   });
 });
 
-// The expected values for these tests were calculated in matlab for the current kRect and kAngle.
-// Script is available at: lightricks-research/ltkit/LTRotatedRect/LTRotatedRect.m.
 context(@"properties", ^{
   const CGFloat kAcceptedDifference = 1e-3;
 
@@ -103,6 +101,46 @@ context(@"properties", ^{
     expect(boundingRect.origin.y).to.beCloseToWithin(1.5251, kAcceptedDifference);
     expect(boundingRect.size.width).to.beCloseToWithin(4.9749 - 0.0251, kAcceptedDifference);
     expect(boundingRect.size.height).to.beCloseToWithin(6.4749 - 1.5251, kAcceptedDifference);
+  });
+});
+
+context(@"point containment", ^{
+  context(@"axis-aligned rect", ^{
+    __block LTRotatedRect *rect;
+
+    beforeEach(^{
+      rect = [LTRotatedRect rect:CGRectMake(0, 0, 1, 1)];
+    });
+
+    it(@"should return true for points inside the rect", ^{
+      expect([rect containsPoint:rect.center]).to.beTruthy();
+      expect([rect containsPoint:rect.v0]).to.beTruthy();
+      expect([rect containsPoint:rect.v3 - CGPointMake(0, 0.01)]).to.beTruthy();
+    });
+
+    it(@"should return false for points outside the rect", ^{
+      expect([rect containsPoint:rect.v1]).to.beFalsy();
+      expect([rect containsPoint:rect.v2]).to.beFalsy();
+    });
+  });
+
+  context(@"non axis-aligned rect", ^{
+    __block LTRotatedRect *rect;
+
+    beforeEach(^{
+      rect = [LTRotatedRect rect:kRect withAngle:kAngle];
+    });
+
+    it(@"should return true for points inside the rect", ^{
+      expect([rect containsPoint:rect.center]).to.beTruthy();
+      expect([rect containsPoint:rect.v0 + CGPointMake(0, 0.01)]).to.beTruthy();
+      expect([rect containsPoint:rect.v3 + CGPointMake(0.01, 0)]).to.beTruthy();
+    });
+
+    it(@"should return false for points outside the rect", ^{
+      expect([rect containsPoint:rect.v1 + CGPointMake(0.01, 0)]).to.beFalsy();
+      expect([rect containsPoint:rect.v2 + CGPointMake(0, 0.01)]).to.beFalsy();
+    });
   });
 });
 
