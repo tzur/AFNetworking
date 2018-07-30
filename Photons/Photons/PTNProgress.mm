@@ -31,6 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
   return [[PTNProgress alloc] initWithResult:result];
 }
 
+- (PTNProgress *)map:(NS_NOESCAPE id(^)(id<NSObject> _Nonnull object))block {
+  if (!self.result) {
+    return self;
+  }
+
+  return [PTNProgress progressWithResult:block(self.result)];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
