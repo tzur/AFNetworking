@@ -101,20 +101,22 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)ptn_imageAndMetadata {
-  return [[[self
+  return [[[[self
       ptn_skipProgress]
-      flattenMap:^(id<PTNImageAsset> asset) {
+      map:^(id<PTNImageAsset> asset) {
         return [RACSignal combineLatest:@[[asset fetchImage], [asset fetchImageMetadata]]];
       }]
+      switchToLatest]
       setNameWithFormat:@"[%@] -ptn_imageAndMetadata", self.name];
 }
 
 - (RACSignal *)ptn_image {
-  return [[[self
+  return [[[[self
       ptn_skipProgress]
-      flattenMap:^(id<PTNImageAsset> asset) {
+      map:^(id<PTNImageAsset> asset) {
         return [asset fetchImage];
       }]
+      switchToLatest]
       setNameWithFormat:@"[%@] -ptn_image", self.name];
 }
 
