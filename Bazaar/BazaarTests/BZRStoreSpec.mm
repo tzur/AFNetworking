@@ -1294,6 +1294,94 @@ context(@"redeeming consumable items", ^{
           .will.sendError(error);
     });
   });
+
+  context(@"updating user credit status in cache", ^{
+    __block BZRConsumableItemDescriptor *consumableItemDescriptor;
+    __block BZRRedeemConsumablesStatus *redeemStatus;
+    __block NSString *userCreditCacheKey;
+
+    beforeEach(^{
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+
+      consumableItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+        @instanceKeypath(BZRConsumedItemDescriptor, consumableType): @"imageFoo",
+        @instanceKeypath(BZRConsumedItemDescriptor, consumableItemId): @"foo",
+      } error:nil];
+
+      auto consumedItemDescriptor = [[BZRConsumedItemDescriptor alloc] initWithDictionary:@{
+        @instanceKeypath(BZRConsumedItemDescriptor, consumableType):
+            consumableItemDescriptor.consumableType,
+        @instanceKeypath(BZRConsumedItemDescriptor, consumableItemId):
+            consumableItemDescriptor.consumableItemId,
+        @instanceKeypath(BZRConsumedItemDescriptor, redeemedCredit): @3
+      } error:nil];
+
+      redeemStatus = lt::nn([[BZRRedeemConsumablesStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRRedeemConsumablesStatus, requestId): @"requestId",
+        @instanceKeypath(BZRRedeemConsumablesStatus, creditType): @"baz",
+        @instanceKeypath(BZRRedeemConsumablesStatus, currentCredit): @13,
+        @instanceKeypath(BZRRedeemConsumablesStatus, consumedItems): @[consumedItemDescriptor]
+      } error:nil]);
+      userCreditCacheKey =
+          [NSString stringWithFormat:@"bzr.userCredit.%@", redeemStatus.creditType];
+
+      OCMStub([userIDProvider userID]).andReturn(@"foo user");
+      OCMStub([validatricksClient redeemConsumableItems:OCMOCK_ANY ofCreditType:OCMOCK_ANY
+               userId:OCMOCK_ANY environment:OCMOCK_ANY])
+          .andReturn([RACSignal return:redeemStatus]);
+    });
+
+    it(@"should store user credit status from redeem status when the cache is empty", ^{
+      OCMExpect([keychainStorage valueForKey:userCreditCacheKey error:nil]);
+
+      auto updatedCreditStatus = [[BZRUserCreditStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRUserCreditStatus, requestId): redeemStatus.requestId,
+        @instanceKeypath(BZRUserCreditStatus, creditType): redeemStatus.creditType,
+        @instanceKeypath(BZRUserCreditStatus, credit): @(redeemStatus.currentCredit),
+        @instanceKeypath(BZRUserCreditStatus, consumedItems): @[consumableItemDescriptor]
+      } error:nil];
+      OCMExpect([keychainStorage setValue:updatedCreditStatus
+                                   forKey:userCreditCacheKey error:nil]);
+
+      auto redeemSignal =
+          [store redeemConsumableItems:consumableItemIDToType ofCreditType:redeemStatus.creditType];
+      expect(redeemSignal).will.complete();
+      OCMVerifyAll((id)keychainStorage);
+    });
+
+    it(@"should merge the new data with the old one when there is a cache", ^{
+      auto cachedConsumableItemDescriptor =
+          [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
+            @instanceKeypath(BZRConsumedItemDescriptor, consumableType): @"video_Foo",
+            @instanceKeypath(BZRConsumedItemDescriptor, consumableItemId): @"batman_foo",
+          } error:nil];
+
+      auto cachedCreditStatus = [[BZRUserCreditStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRUserCreditStatus, requestId): redeemStatus.requestId,
+        @instanceKeypath(BZRUserCreditStatus, creditType): redeemStatus.creditType,
+        @instanceKeypath(BZRUserCreditStatus, credit): @(redeemStatus.currentCredit),
+        @instanceKeypath(BZRUserCreditStatus, consumedItems): @[cachedConsumableItemDescriptor]
+      } error:nil];
+      OCMExpect([keychainStorage valueForKey:userCreditCacheKey error:nil])
+          .andReturn(cachedCreditStatus);
+
+      auto updatedCreditStatus = [[BZRUserCreditStatus alloc] initWithDictionary:@{
+        @instanceKeypath(BZRUserCreditStatus, requestId): redeemStatus.requestId,
+        @instanceKeypath(BZRUserCreditStatus, creditType): redeemStatus.creditType,
+        @instanceKeypath(BZRUserCreditStatus, credit): @(redeemStatus.currentCredit),
+        @instanceKeypath(BZRUserCreditStatus, consumedItems):
+            @[cachedConsumableItemDescriptor, consumableItemDescriptor]
+      } error:nil];
+      OCMExpect([keychainStorage setValue:updatedCreditStatus
+                                   forKey:userCreditCacheKey error:nil]);
+
+      auto redeemSignal =
+          [store redeemConsumableItems:consumableItemIDToType ofCreditType:redeemStatus.creditType];
+      expect(redeemSignal).will.complete();
+      OCMVerifyAll((id)keychainStorage);
+    });
+  });
 });
 
 context(@"fetching product content", ^{

@@ -3,6 +3,8 @@
 
 #import "BZRValidatricksModels.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
@@ -112,6 +114,42 @@ static NSString * const kNotEnoughCreditError = @"NotEnoughCredit";
 
 + (BOOL)supportsSecureCoding {
   return YES;
+}
+
+- (instancetype)initWithRedeemStatus:(BZRRedeemConsumablesStatus *)redeemStatus {
+  return [[BZRUserCreditStatus alloc] initWithDictionary:@{
+    @instanceKeypath(BZRUserCreditStatus, requestId): redeemStatus.requestId,
+    @instanceKeypath(BZRUserCreditStatus, creditType): redeemStatus.creditType,
+    @instanceKeypath(BZRUserCreditStatus, credit): @(redeemStatus.currentCredit),
+    @instanceKeypath(BZRUserCreditStatus, consumedItems):
+        [self consumableItemsFromConsumedItems:redeemStatus.consumedItems]
+  } error:nil];
+}
+
+- (BZRUserCreditStatus *)updatedUserCreditStatusWithRedeemStatus:
+      (BZRRedeemConsumablesStatus *)redeemStatus {
+  LTAssert([self.creditType isEqual:redeemStatus.creditType],
+      @"Type mismatch: credit status with credit type %@ cannot be updated with redeem status "
+      "with credit type %@", self.creditType, redeemStatus.creditType);
+
+  auto consumableItemsFromRedeemStatus =
+      [self consumableItemsFromConsumedItems:redeemStatus.consumedItems];
+  auto consumedItems =
+      [self.consumedItems arrayByAddingObjectsFromArray:consumableItemsFromRedeemStatus];
+  return [[[self
+      modelByOverridingProperty:@keypath(self, requestId) withValue:redeemStatus.requestId]
+      modelByOverridingProperty:@keypath(self, consumedItems) withValue:consumedItems]
+      modelByOverridingProperty:@keypath(self, credit) withValue:@(redeemStatus.currentCredit)];
+}
+
+- (NSArray<BZRConsumableItemDescriptor *> *)
+    consumableItemsFromConsumedItems:(NSArray<BZRConsumedItemDescriptor *> *)consumedItems {
+  return [consumedItems lt_map:
+      ^BZRConsumableItemDescriptor *(BZRConsumedItemDescriptor *consumedItem) {
+        return [[BZRConsumableItemDescriptor alloc]
+                initWithConsumableItemId:consumedItem.consumableItemId
+                ofType:consumedItem.consumableType];
+  }];
 }
 
 @end
