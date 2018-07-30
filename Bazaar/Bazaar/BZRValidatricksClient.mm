@@ -7,6 +7,7 @@
 #import <Fiber/NSError+Fiber.h>
 #import <Fiber/NSErrorCodes+Fiber.h>
 #import <Fiber/RACSignal+Fiber.h>
+#import <LTKit/LTTimer.h>
 
 #import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
@@ -22,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 NSString * const kBZREventValidatricksResponseTypeKey = @"BZREventValidatricksResponseType";
 
 NSString * const kBZREventValidatricksResponseKey = @"BZREventValidatricksResponse";
+
+NSString * const kBZREventValidatricksRequestDurationKey = @"BZREventValidatricksRequestDuration";
+
+NSString * const kBZRErrorValidatricksRequestDuration = @"BZRErrorValidatricksRequestDuration";
 
 @interface BZRValidatricksClient ()
 
@@ -93,16 +98,22 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
 - (RACSignal<BZRReceiptValidationStatus *> *)
     validateReceipt:(BZRReceiptValidationParameters *)validationParameters {
   FBRHTTPRequestParameters *parameters = validationParameters.validatricksRequestParameters;
+
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
   return [[[[[self.HTTPClient
       POST:kValidatricksValidateReceiptEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
       bzr_deserializeModel:BZRReceiptValidationStatus.class]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
-        [self sendValidatricksResponseEvent:receiptValidationStatus];
+        [self sendValidatricksResponseEvent:receiptValidationStatus
+                            requestDuration:[timer stop]];
       }]
       catch:^(NSError *error) {
-        return [RACSignal error:[BZRValidatricksClient
-                                 validatricksClientErrorForUnderlyingError:error]];
+        auto timedError =
+            [BZRValidatricksClient validatricksTimedClientErrorForUnderlyingError:error
+                                                                  requestDuration:[timer stop]];
+        return [RACSignal error:timedError];
       }];
 }
 
@@ -118,16 +129,21 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
     kValidatricksEnvironmentKey: environmentParameter
   };
 
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
   return [[[[[self.HTTPClient
       GET:kValidatricksGetUserCreditEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
       bzr_deserializeModel:BZRUserCreditStatus.class]
       doNext:^(BZRUserCreditStatus *userCreditStatus) {
-        [self sendValidatricksResponseEvent:userCreditStatus];
+        [self sendValidatricksResponseEvent:userCreditStatus
+                            requestDuration:[timer stop]];
       }]
       catch:^(NSError *error) {
-        return [RACSignal error:[BZRValidatricksClient
-                                 validatricksClientErrorForUnderlyingError:error]];
+        auto timedError =
+            [BZRValidatricksClient validatricksTimedClientErrorForUnderlyingError:error
+                                                                  requestDuration:[timer stop]];
+        return [RACSignal error:timedError];
       }];
 }
 
@@ -137,16 +153,22 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
     kValidatricksCreditTypeKey: creditType,
     kValidatricksConsumableTypesKey: [consumableTypes componentsJoinedByString:@","]
   };
+
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
   return [[[[[self.HTTPClient
       GET:kValidatricksGetConsumableTypesPricesEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
       bzr_deserializeModel:BZRConsumableTypesPriceInfo.class]
       doNext:^(BZRConsumableTypesPriceInfo *consumableTypesPriceInfo) {
-        [self sendValidatricksResponseEvent:consumableTypesPriceInfo];
+        [self sendValidatricksResponseEvent:consumableTypesPriceInfo
+                            requestDuration:[timer stop]];
       }]
       catch:^(NSError *error) {
-        return [RACSignal error:[BZRValidatricksClient
-                                 validatricksClientErrorForUnderlyingError:error]];
+        auto timedError =
+            [BZRValidatricksClient validatricksTimedClientErrorForUnderlyingError:error
+                                                                  requestDuration:[timer stop]];
+        return [RACSignal error:timedError];
       }];
 }
 
@@ -164,16 +186,21 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
     kValidatricksEnvironmentKey: environmentParameter
   };
 
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
   return [[[[[self.HTTPClient
       POST:kValidatricksRedeemConsumablesEndpoint withParameters:parameters headers:nil]
       fbr_deserializeJSON]
       bzr_deserializeModel:BZRRedeemConsumablesStatus.class]
       doNext:^(BZRRedeemConsumablesStatus *redeemConsumablesStatus) {
-        [self sendValidatricksResponseEvent:redeemConsumablesStatus];
+        [self sendValidatricksResponseEvent:redeemConsumablesStatus
+                            requestDuration:[timer stop]];
       }]
       catch:^(NSError *error) {
-        return [RACSignal error:[BZRValidatricksClient
-                                 validatricksClientErrorForUnderlyingError:error]];
+        auto timedError =
+            [BZRValidatricksClient validatricksTimedClientErrorForUnderlyingError:error
+                                                                  requestDuration:[timer stop]];
+        return [RACSignal error:timedError];
       }];
 }
 
@@ -181,11 +208,13 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
 #pragma mark Sending Events
 #pragma mark -
 
-- (void)sendValidatricksResponseEvent:(BZRModel *)validatricksResponse {
+- (void)sendValidatricksResponseEvent:(BZRModel *)validatricksResponse
+                      requestDuration:(NSTimeInterval)requestDuration {
   auto responseTypeString = [self responseTypeStringForValidatricksResponse:validatricksResponse];
   const auto eventInfo = @{
     kBZREventValidatricksResponseTypeKey: responseTypeString,
-    kBZREventValidatricksResponseKey: validatricksResponse
+    kBZREventValidatricksResponseKey: validatricksResponse,
+    kBZREventValidatricksRequestDurationKey: @(requestDuration)
   };
   auto responseEvent =
       [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:eventInfo];
@@ -222,7 +251,16 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
 //
 // For any other error, i.e. \c error contains no response from the server or the response has no
 // content, the method simply wraps the error with a \c BZRErrorCodeValidatricksRequestFailed error.
-+ (NSError *)validatricksClientErrorForUnderlyingError:(NSError *)error {
++ (NSError *)validatricksTimedClientErrorForUnderlyingError:(NSError *)error
+                                            requestDuration:(NSTimeInterval)requestDuration {
+  auto validatricksError = [self validatricksClientErrorForUnderlyingError:error];
+  auto userInfo = [validatricksError.userInfo mtl_dictionaryByAddingEntriesFromDictionary:@{
+    kBZRErrorValidatricksRequestDuration: @(requestDuration)
+  }];
+  return [NSError lt_errorWithCode:validatricksError.code userInfo:userInfo];
+};
+
++ (NSError *)validatricksClientErrorForUnderlyingError:(NSError *)error  {
   if (error.code != FBRErrorCodeHTTPUnsuccessfulResponseReceived ||
       !error.fbr_HTTPResponse.content) {
     return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed underlyingError:error];
