@@ -3,10 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider, BZREvent, BZRExternalTriggerReceiptValidator,
-    BZRReceiptValidationStatusCache;
+@class BZRAggregatedReceiptValidationStatusProvider, BZRExternalTriggerReceiptValidator;
 
-@protocol BZRTimeProvider;
+@protocol BZRReceiptValidationDateProvider, BZRTimeProvider;
 
 /// Activator used to activate and deactivate periodic receipt validation. The periodic validation
 /// is activated only if the user is a subscriber, and the interval between validations is
@@ -15,45 +14,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes the receiver with the given \c validationStatusProvider that will be used to
-/// fetch receipt validation status. The \c timeProvider will be used to determine whether and when
-/// to fetch the receipt validation status.
-- (instancetype)initWithReceiptValidationStatusCache:
-    (BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-    timeProvider:(id<BZRTimeProvider>)timeProvider
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-    aggregatedValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider;
+/// Convenience initializer that initializes \c receiptValidator with the designated initializer
+/// with the given \c aggregatedValidationStatusProvider.
+- (instancetype)initWithAggregatedValidationStatusProvider:
+    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
+    validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
+    timeProvider:(id<BZRTimeProvider>)timeProvider;
 
 /// Initializes with \c receiptValidator used to validate the receipt periodically.
-/// \c validationStatusProvider is used to fetch the latest receipt validation status and provide
-/// the validation date. \c timeProvider is used to check if the receipt should be validated.
-/// \c bundledApplicationsIDs is the set of applications for which validation will be performed.
-/// \c aggregatedValidationStatusProvider is used to provide the latest aggregated receipt
-/// validation status and determine whether periodic validation is required.
-///
-/// If both the periodic validation interval and the grace period have passed, subscription is
-/// marked as expired.
+/// \c validationDateProvider is used to provide the next validation date. \c timeProvider is used
+/// to provide the current time.
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
-    receiptValidationStatusCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-    timeProvider:(id<BZRTimeProvider>)timeProvider
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-    aggregatedValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
-    NS_DESIGNATED_INITIALIZER;
-
-@end
-
-/// Category exposing properties for testing purposes.
-@interface BZRPeriodicReceiptValidatorActivator (ForTesting)
-
-/// Time between each periodic validation.
-@property (readonly, nonatomic) NSTimeInterval periodicValidationInterval;
-
-/// Returns a signal that sends \c [NSDate date] after \c timeToNextValidation seconds if its larger
-/// than 0, and otherwise sends \c [NSDate date] immediately. After that, it sends \c [NSDate date]
-/// every \c periodicValidationInterval seconds.
-- (RACSignal<NSDate *> *)timerSignal:(NSNumber *)timeToNextValidation;
+    validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
+    timeProvider:(id<BZRTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
 
 @end
 
