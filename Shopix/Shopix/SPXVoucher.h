@@ -35,6 +35,31 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)couponWithBaseProductValues:(NSArray<SPXBaseProductAxisValue *> *)baseProductValues
                               benefitValues:(NSArray<SPXBenefitAxisValue *> *)benefitValues;
 
+/// Registers the axis class specified by \c axis with the name specified by \c axisName for
+/// serialization. Axes classes that were not registered will fail to pass
+/// serialization/deserialization. Returns \c YES if the registeration succeeded and \c NO
+/// otherwise.
+///
+/// @note If the class specified by \c axisClass doesn't conform to \c SPXProductAxis, \c NO will be
+/// returned and \c error will be populated with an error containing the error code
+/// \c SPXErrorCodeAxisRegisterationFailed.
+///
+/// @note If the axis is already registered or if \c axisName is already associated with a class,
+/// \c NO will be returned and \c error will be populated with an error containing the error code
+/// \c SPXErrorCodeAxisRegisterationFailed.
+///
+/// @note The following axes are pre-registered:
+/// - SPXBenefitProductAxisDiscountLevel -> "DiscountLevel"
+/// - SPXBenefitProductAxisFreeTrialDuration -> "FreeTrialDuration"
+/// - SPXBaseProductAxisSubscriptionPeriod -> "SubscriptionPeriod"
++ (BOOL)registerAxisForSerialization:(Class)axisClass withName:(NSString *)axisName
+                               error:(NSError * __autoreleasing *)error;
+
+/// Deregisters the axis class specified by \c axis for serialization. After deserialization the
+/// class won't be able to be deserialized/serialized. If the class specified by \c axisClass is not
+/// registered the receiver will do nothing.
++ (void)deregisterAxisForSerialization:(Class)axisClass;
+
 /// Product with these base product values will have \c benefitValues.
 @property (readonly, nonatomic) NSArray<SPXBaseProductAxisValue *> *baseProductValues;
 

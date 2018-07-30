@@ -20,19 +20,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static LTBidirectionalMap<NSString *, Class> *PTNNameToProductAxis() {
-  static auto nameToProductAxis = [LTBidirectionalMap<NSString *, Class> mapWithDictionary:@{
-    @"DiscountLevel": [SPXBenefitProductAxisDiscountLevel class],
-    @"FreeTrialDuration": [SPXBenefitProductAxisFreeTrialDuration class],
-    @"SubscriptionPeriod": [SPXBaseProductAxisSubscriptionPeriod class]
-  }];
+static LTBidirectionalMap<NSString *, Class> *SPXNameToProductAxis() {
+  static auto const nameToProductAxis =
+      [LTBidirectionalMap<NSString *, Class> mapWithDictionary:@{
+        @"DiscountLevel": [SPXBenefitProductAxisDiscountLevel class],
+        @"FreeTrialDuration": [SPXBenefitProductAxisFreeTrialDuration class],
+        @"SubscriptionPeriod": [SPXBaseProductAxisSubscriptionPeriod class]
+      }];
   return nameToProductAxis;
 }
 
 static NSDictionary<NSString *, NSString *> *
     SPXAxisValueToDictionary(id<SPXProductAxisValue> value) {
   return @{
-    @"axis": nn([PTNNameToProductAxis() keyForObject:[value.axis class]]),
+    @"axis": nn([SPXNameToProductAxis() keyForObject:[value.axis class]]),
     @"value": value.value
   };
 }
@@ -46,7 +47,7 @@ static id<SPXProductAxisValue> _Nullable SPXAxisValueFromDictionary(
     LogError(@"Trying to deserialize axis without axis key or with non-string value");
     return nil;
   }
-  auto _Nullable axisClass = PTNNameToProductAxis()[axisClassName];
+  auto _Nullable axisClass = SPXNameToProductAxis()[axisClassName];
   if (!axisClass) {
     LogError(@"Trying to deserialize axis with non-existing axis class %@", axisClassName);
     return nil;
@@ -153,6 +154,47 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
                               benefitValues:(NSArray<SPXBenefitAxisValue *> *)benefitValues {
   return [[SPXCoupon alloc] initWithBaseProductValues:baseProductValues
                                         benefitValues:benefitValues];
+}
+
++ (BOOL)registerAxisForSerialization:(Class)axisClass withName:(NSString *)axisName
+                               error:(NSError * __autoreleasing *)error {
+  if (![axisClass conformsToProtocol:@protocol(SPXProductAxis)]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeAxisRegisterationFailed
+                             description:@"Given class is does not conform to SPXProductAxis "
+                                         "protocol"];
+    }
+    return NO;
+  }
+
+  if ([SPXNameToProductAxis() keyForObject:axisClass]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeAxisRegisterationFailed
+                            description:@"Axis %@ is already registered with name %@", axisClass,
+                                        [SPXNameToProductAxis() keyForObject:axisClass]];
+    }
+    return NO;
+  }
+
+  if (SPXNameToProductAxis()[axisName]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeAxisRegisterationFailed
+                             description:@"Axis name %@ is already registered with axis class %@",
+                                          axisName, SPXNameToProductAxis()[axisName]];
+    }
+    return NO;
+  }
+
+  SPXNameToProductAxis()[axisName] = axisClass;
+  return YES;
+}
+
++ (void)deregisterAxisForSerialization:(Class)axisClass {
+  auto _Nullable axisName = [SPXNameToProductAxis() keyForObject:axisClass];
+  if (!axisName) {
+    return;
+  }
+  [SPXNameToProductAxis() removeObjectForKey:axisName];
 }
 
 + (NSValueTransformer *)baseProductValuesJSONTransformer {
