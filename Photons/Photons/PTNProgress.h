@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns an initialized \c \c PTNProgress object with the given \c progress in [0, 1].
 + (instancetype)progressWithProgress:(NSNumber *)progress;
 
+/// Returns a new progress object with the result of running \c block on \c result if \c result is
+/// not \c nil. If \c result is nil, returns a progress object with the same \c progress value.
+- (PTNProgress *)map:(NS_NOESCAPE id(^)(ResultType object))block;
+
 /// Value in [0, 1] that reports the current progress. If \c progress is \c nil, \c value must be
 /// set to the resulting value.
 @property (readonly, nonatomic, nullable) NSNumber *progress;
