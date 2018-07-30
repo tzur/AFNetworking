@@ -225,7 +225,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   auto _Nullable projectAttributes = [self.fileManager attributesOfItemAtPath:nn(projectURL.path)
                                                                         error:error];
   if (!projectAttributes) {
-    [self assignErrorFetchingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
   auto modificationDate = projectAttributes.fileModificationDate;
@@ -234,13 +236,17 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 
   auto assetsURL = projectURL.whs_assetsURL;
   if (![self.fileManager fileExistsAtPath:nn(assetsURL.path) error:error]) {
-    [self assignErrorFetchingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
 
   auto _Nullable metadata = [self metadataOfProject:projectID error:error];
   if (!metadata) {
-    [self assignErrorFetchingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
 
@@ -251,7 +257,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   if (fetchOptions & WHSProjectFetchOptionsFetchStepsIDs) {
     stepsIDs = [self stepsIDsOfProject:projectID error:error];
     if (!stepsIDs) {
-      [self assignErrorFetchingProject:projectID to:error];
+      if (error) {
+        *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
+      }
       return nil;
     }
   }
@@ -260,7 +268,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   if (fetchOptions & WHSProjectFetchOptionsFetchUserData) {
     userData = [self userDataFromURL:projectURL error:error];
     if (!userData) {
-      [self assignErrorFetchingProject:projectID to:error];
+      if (error) {
+        *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
+      }
       return nil;
     }
   }
@@ -271,22 +281,20 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                                        userData:userData assetsURL:nn(assetsURL)];
 }
 
-- (void)assignErrorFetchingProject:(NSUUID *)projectID to:(NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
-  }
-}
-
 - (BOOL)deleteProjectWithID:(NSUUID *)projectID error:(NSError *__autoreleasing *)error {
   auto projectURL = [self URLOfProject:projectID];
   if (![self.fileManager fileExistsAtPath:nn(projectURL.path)]) {
-    [self assignErrorDeletingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDeletingProjectWithID:projectID underlyingError:*error];
+    }
     return NO;
   }
 
   auto _Nullable tempURL = [self createTempURLWithError:error];
   if (!tempURL) {
-    [self assignErrorDeletingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDeletingProjectWithID:projectID underlyingError:*error];
+    }
     return NO;
   }
   @onExit {
@@ -299,18 +307,14 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                                           backupItemName:nil options:0 resultingItemURL:nil
                                                    error:error];
   if (!contentMoved) {
-    [self assignErrorDeletingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDeletingProjectWithID:projectID underlyingError:*error];
+    }
     return NO;
   }
   [self.fileManager removeItemAtURL:projectURL error:nil];
   [self notifyProjectDeleted:projectID];
   return YES;
-}
-
-- (void)assignErrorDeletingProject:(NSUUID *)projectID to:(NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError whs_errorDeletingProjectWithID:projectID underlyingError:*error];
-  }
 }
 
 - (BOOL)updateProjectWithRequest:(WHSProjectUpdateRequest *)request
@@ -323,12 +327,16 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   if (request.stepCursor || request.stepIDsToDelete.count || request.stepsContentToAdd.count) {
     metadata = [self metadataOfProject:projectID error:error];
     if (!metadata) {
-      [self assignErrorUpdatingProjectWithRequest:request to:error];
+      if (error) {
+        *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
+      }
       return NO;
     }
     stepsIDs = [self stepsIDsOfProject:projectID error:error];
     if (!stepsIDs) {
-      [self assignErrorUpdatingProjectWithRequest:request to:error];
+      if (error) {
+        *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
+      }
       return NO;
     }
     auto requestValid = [self validateUpdateRequest:request metadata:nn(metadata)
@@ -339,7 +347,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     stepsIDsCreated = [self createStepsFrom:request.stepsContentToAdd inProject:projectID
                                       error:error];
     if (!stepsIDsCreated) {
-      [self assignErrorUpdatingProjectWithRequest:request to:error];
+      if (error) {
+        *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
+      }
       return NO;
     }
 
@@ -354,7 +364,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                                      userData:request.userData error:error];
   if (!dataWritten) {
     [self removeContentOfSteps:nn(stepsIDsCreated) fromProject:projectID];
-    [self assignErrorUpdatingProjectWithRequest:request to:error];
+    if (error) {
+      *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
+    }
     return NO;
   }
 
@@ -369,13 +381,6 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 
   [self notifyProjectUpdated:projectID];
   return YES;
-}
-
-- (void)assignErrorUpdatingProjectWithRequest:(WHSProjectUpdateRequest *)request
-                                           to:(NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
-  }
 }
 
 - (BOOL)writeDataOfProject:(NSUUID *)projectID
@@ -591,7 +596,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   auto duplicatedID = [NSUUID UUID];
   auto _Nullable tempURL = [self createTempURLWithError:error];
   if (!tempURL) {
-    [self assignErrorDuplicatingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDuplicatingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
   @onExit {
@@ -601,7 +608,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   auto contentCopied = [self.fileManager copyItemAtURL:[self URLOfProject:projectID]
                                                  toURL:tempProjectURL error:error];
   if (!contentCopied) {
-    [self assignErrorDuplicatingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDuplicatingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
 
@@ -609,7 +618,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                                          withItemAtURL:tempProjectURL backupItemName:nil options:0
                                       resultingItemURL:nil error:error];
   if (!duplicated) {
-    [self assignErrorDuplicatingProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorDuplicatingProjectWithID:projectID underlyingError:*error];
+    }
     return nil;
   }
   [self notifyProjectDuplicated:projectID to:duplicatedID];
@@ -622,23 +633,22 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                          appropriateForURL:URL create:YES error:error];
 }
 
-- (void)assignErrorDuplicatingProject:(NSUUID *)projectID
-                                   to:(NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError whs_errorDuplicatingProjectWithID:projectID underlyingError:*error];
-  }
-}
-
 - (nullable WHSStep *)fetchStepWithID:(NSUUID *)stepID fromProjectWithID:(NSUUID *)projectID
                                 error:(NSError *__autoreleasing *)error {
   auto stepURL = [self URLOfStep:stepID inProject:projectID];
   if (![self.fileManager fileExistsAtPath:nn(stepURL.path)]) {
-    [self assignErrorFetchingStep:stepID fromProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorFetchingStepWithID:stepID fromProjectWithID:projectID
+                                    underlyingError:*error];
+    }
     return nil;
   }
   auto _Nullable userData = [self userDataFromURL:stepURL error:error];
   if (!userData) {
-    [self assignErrorFetchingStep:stepID fromProject:projectID to:error];
+    if (error) {
+      *error = [NSError whs_errorFetchingStepWithID:stepID fromProjectWithID:projectID
+                                    underlyingError:*error];
+    }
     return nil;
   }
   return [[WHSStep alloc] initWithID:stepID projectID:projectID userData:nn(userData)
@@ -649,14 +659,6 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     auto stepsURL = [[self URLOfProject:projectID] URLByAppendingPathComponent:@"steps"
                                                                    isDirectory:YES];
     return nn([stepsURL URLByAppendingPathComponent:stepID.UUIDString isDirectory:YES]);
-}
-
-- (void)assignErrorFetchingStep:(NSUUID *)stepID fromProject:(NSUUID *)projectID
-                             to:(NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError whs_errorFetchingStepWithID:stepID fromProjectWithID:projectID
-                                  underlyingError:*error];
-  }
 }
 
 - (nullable NSData *)userDataFromURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
