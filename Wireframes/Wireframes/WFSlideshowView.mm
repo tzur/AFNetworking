@@ -3,8 +3,6 @@
 
 #import "WFSlideshowView.h"
 
-#import <Masonry/Masonry.h>
-
 #import "WFSlideView.h"
 
 NS_ASSUME_NONNULL_BEGIN
