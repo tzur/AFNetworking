@@ -50,6 +50,16 @@ NS_ASSUME_NONNULL_BEGIN
                                  toProjectWithID:(NSUUID *)projectID
                                  underlyingError:(nullable NSError *)underlyingError;
 
+/// Creates an error with the given \c underlyingError, describing failure to calculate the size in
+/// bytes of the project with the given \c projectID.
++ (instancetype)whs_errorCalculatingSizeOfProject:(NSUUID *)projectID
+                                  underlyingError:(nullable NSError *)underlyingError;
+
+/// Creates an error with the given \c underlyingError, describing failure to calculate the size in
+/// bytes of the project storage.
++ (instancetype)whs_errorCalculatingStorageSizeWithUnderlyingError:
+    (nullable NSError *)underlyingError;
+
 /// Creates an error with the given \c underlyingError, describing failure to duplicate the project
 /// with the given \c projectID.
 + (instancetype)whs_errorDuplicatingProjectWithID:(NSUUID *)projectID

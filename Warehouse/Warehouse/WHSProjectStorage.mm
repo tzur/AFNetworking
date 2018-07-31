@@ -16,6 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c error is populated with \c LTErrorCodeFileNotFound.
 - (BOOL)fileExistsAtPath:(NSString *)path error:(NSError **)error;
 
+/// Returns the accumulated size of all files in the directory at the given \c URL and all of its
+/// subdirectories. The returned \c NSNumber object is an \c unsigned \c long \c long value. In case
+/// of an error in reading the size of any file, \c error will be populated and \c nil will be
+/// returned.
+///
+/// @note The size of a file with multiple hard links will be counted once.
+///
+/// @note The size of symbolic links will only be the size of the link, not the size of the file
+/// they link to.
+- (NSNumber *)whs_sizeOfDirectoryAtURL:(NSURL *)URL error:(NSError **)error;
+
 @end
 
 @implementation NSFileManager (WHSProjectStorage)
@@ -28,6 +39,18 @@ NS_ASSUME_NONNULL_BEGIN
     *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:path];
   }
   return NO;
+}
+
+- (NSNumber *)whs_sizeOfDirectoryAtURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+  NSError *internalError;
+  auto size = [self lt_sizeOfDirectoryAtPath:URL error:&internalError];
+  if (internalError) {
+    if (error) {
+      *error = internalError;
+    }
+    return nil;
+  }
+  return @(size);
 }
 
 @end
@@ -232,7 +255,6 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   }
   auto modificationDate = projectAttributes.fileModificationDate;
   auto creationDate = projectAttributes.fileCreationDate;
-  auto size = projectAttributes.fileSize;
 
   auto assetsURL = projectURL.whs_assetsURL;
   if (![self.fileManager fileExistsAtPath:nn(assetsURL.path) error:error]) {
@@ -277,8 +299,8 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 
   return [[WHSProjectSnapshot alloc] initWithID:projectID bundleID:bundleID
                                    creationDate:creationDate modificationDate:modificationDate
-                                           size:size stepsIDs:stepsIDs stepCursor:stepCursor
-                                       userData:userData assetsURL:nn(assetsURL)];
+                                       stepsIDs:stepsIDs stepCursor:stepCursor userData:userData
+                                      assetsURL:nn(assetsURL)];
 }
 
 - (BOOL)deleteProjectWithID:(NSUUID *)projectID error:(NSError *__autoreleasing *)error {
@@ -691,8 +713,24 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   return dateSet;
 }
 
+- (NSNumber *)sizeOfProjectWithID:(NSUUID *)projectID error:(NSError *__autoreleasing *)error {
+  auto size = [self.fileManager whs_sizeOfDirectoryAtURL:[self URLOfProject:projectID] error:error];
+  if (!size && error) {
+      *error = [NSError whs_errorCalculatingSizeOfProject:projectID underlyingError:*error];
+  }
+  return size;
+}
+
 - (NSURL *)URLOfProject:(NSUUID *)projectID {
     return nn([self.baseURL URLByAppendingPathComponent:projectID.UUIDString isDirectory:YES]);
+}
+
+- (NSNumber *)storageSizeWithError:(NSError *__autoreleasing *)error {
+  auto size = [self.fileManager whs_sizeOfDirectoryAtURL:self.baseURL error:error];
+  if (!size && error) {
+      *error = [NSError whs_errorCalculatingStorageSizeWithUnderlyingError:*error];
+  }
+  return size;
 }
 
 - (void)addObserver:(id<WHSProjectStorageObserver>)observer {

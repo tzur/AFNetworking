@@ -26,8 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with the given properties.
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
-                      size:(uint64_t)size stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDS
-                stepCursor:(NSUInteger)stepCursor userData:(nullable NSData *)userData
+                  stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDS stepCursor:(NSUInteger)stepCursor
+                  userData:(nullable NSData *)userData
                  assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
 /// ID of the project.
@@ -43,10 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// in \c assetsURL of the project or in \c assetsURL of any of its steps does not affect the
 /// modification date.
 @property (readonly, nonatomic) NSDate *modificationDate;
-
-/// Total size in bytes of the project, including the size of the content in \c assetsURL of the
-/// project and in \c assetsURL of all of its steps.
-@property (readonly, nonatomic) uint64_t size;
 
 /// Array containing the IDs of the steps of the project at this snapshot. The order of the IDs in
 /// the array is the order of the steps in the project at this snapshot.

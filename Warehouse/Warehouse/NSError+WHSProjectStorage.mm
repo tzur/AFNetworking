@@ -63,6 +63,19 @@ NS_ASSUME_NONNULL_BEGIN
                         description:@"Failed to set modification date %@", modificationDate];
 }
 
++ (instancetype)whs_errorCalculatingSizeOfProject:(NSUUID *)projectID
+                                  underlyingError:(nullable NSError *)underlyingError {
+  return [NSError whs_errorWithCode:WHSErrorCodeCalculateSizeFailed associatedProjectID:projectID
+                    underlyingError:underlyingError
+                        description:@"Failed to calculate project size"];
+}
+
++ (instancetype)whs_errorCalculatingStorageSizeWithUnderlyingError:
+    (nullable NSError *)underlyingError {
+  return [NSError lt_errorWithCode:WHSErrorCodeCalculateSizeFailed underlyingError:underlyingError
+                       description:@"Failed to calculate projects storage size"];
+}
+
 + (instancetype)whs_errorDuplicatingProjectWithID:(NSUUID *)projectID
                                   underlyingError:(nullable NSError *)underlyingError {
   return [NSError whs_errorWithCode:WHSErrorCodeWriteFailed associatedProjectID:projectID

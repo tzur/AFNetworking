@@ -168,6 +168,16 @@ typedef NS_OPTIONS(NSUInteger, WHSProjectFetchOptions) {
 - (BOOL)setModificationDate:(NSDate *)modificationDate toProjectWithID:(NSUUID *)projectID
                       error:(NSError **)error;
 
+/// Returns the total size in bytes of all the files in the base directory of the storage. The
+/// returned \c NSNumber object is an \c unsigned \c long \c long value. In case of failure, \c nil
+/// is returned and \c error is populated with \c WHSErrorCodeCalculateSizeFailed.
+- (NSNumber *)storageSizeWithError:(NSError **)error;
+
+/// Returns the size in bytes of the project with the given \c projectID. The returned \c NSNumber
+/// object is an \c unsigned \c long \c long value. In case of failure, \c nil is returned and
+/// \c error is populated with \c WHSErrorCodeCalculateSizeFailed.
+- (NSNumber *)sizeOfProjectWithID:(NSUUID *)projectID error:(NSError **)error;
+
 /// Adds the given \c observer to the receiver. The observer is notified after each operation
 /// modifying the storage on the same thread the operation was invoked on by the application.
 /// Multiple observers can be added to the same storage. The observer is held weakly by the

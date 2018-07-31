@@ -10,7 +10,9 @@ LTErrorCodesImplement(WarehouseErrorCodeProductID,
   /// Caused when fetching from the storage failed.
   WHSErrorCodeFetchFailed,
   /// Caused when deleting from the storage failed.
-  WHSErrorCodeDeleteFailed
+  WHSErrorCodeDeleteFailed,
+  /// Caused when calculating size of the storage or of a subcomponent of the storage failed.
+  WHSErrorCodeCalculateSizeFailed
 );
 
 NS_ASSUME_NONNULL_END
