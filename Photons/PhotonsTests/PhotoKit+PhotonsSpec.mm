@@ -67,7 +67,7 @@ context(@"asset descriptor", ^{
 
     PHAsset *asset = PTNCreateAsset();
     OCMStub(asset.cloudPlaceholderKind).andReturn(7);
-    expect(asset.descriptorTraits).to.equal([NSSet set]);
+    expect(asset.descriptorTraits).to.beEmpty();
   });
 
   it(@"should reveal video based traits when the underlying asset is video", ^{
@@ -77,11 +77,11 @@ context(@"asset descriptor", ^{
 
     PHAsset *imageAsset = PTNCreateAsset();
     OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);
-    expect(imageAsset.descriptorTraits).to.equal([NSSet set]);
+    expect(imageAsset.descriptorTraits).to.beEmpty();
 
     PHAsset *asset = PTNCreateAsset();
     OCMStub(asset.mediaType).andReturn(PHAssetMediaTypeUnknown);
-    expect(asset.descriptorTraits).to.equal([NSSet set]);
+    expect(asset.descriptorTraits).to.beEmpty();
   });
 
   it(@"should reveal raw traits when the underlying asset is raw", ^{
@@ -89,7 +89,7 @@ context(@"asset descriptor", ^{
     expect(rawAsset.descriptorTraits).to.contain(kPTNDescriptorTraitRawKey);
 
     PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
-    expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
+    expect(jpegAsset.descriptorTraits).to.beEmpty();
   });
 
   it(@"should reveal GIF traits when the underlying asset is a GIF", ^{
@@ -97,12 +97,21 @@ context(@"asset descriptor", ^{
     expect(gifAsset.descriptorTraits).to.contain(kPTNDescriptorTraitGIFKey);
 
     PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
-    expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
+    expect(jpegAsset.descriptorTraits).to.beEmpty();
   });
+
+  if (@available(iOS 9.1, *)) {
+    it(@"should reveal live photo trait when the underlying asset has live photo subtype", ^{
+      PHAsset *imageAsset = PTNCreateAsset();
+      OCMStub(imageAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoHDR |
+                                                  PHAssetMediaSubtypePhotoLive);
+      expect(imageAsset.descriptorTraits).to.contain(kPTNDescriptorTraitLivePhotoKey);
+    });
+  }
 
   it(@"should not reveal type traits when UTI is nil", ^{
     PHAsset *asset = PTNCreateAsset(nil);
-    expect(asset.descriptorTraits).to.equal([NSSet set]);
+    expect(asset.descriptorTraits).to.beEmpty();
   });
 
   it(@"should have no artist", ^{

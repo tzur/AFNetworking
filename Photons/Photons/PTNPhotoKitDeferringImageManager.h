@@ -11,8 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 typedef id<PTNPhotoKitImageManager> _Nonnull(^PTNPhotoKitImageManagerBlock)();
 
 /// Concrete implementation of \c PTNPhotoKitImageManager using a block to lazily create a
-/// \c PTNPhotoKitImageManager, thus avoiding premature authorization requesting. The underlying
-/// manager is then proxied.
+/// \c PTNPhotoKitImageManager, thus avoiding premature authorization requesting.
+///
+/// On every method call, \c authorizationManager is queried for the authorization status. If the
+/// status is positive, an underlying \c PTNPhotoKitImageManager is created if it wasn't already
+/// created, and the method call is forwarded to the underlying image manager. If the authorization
+/// status is not positive, the method call has no effect and an error with error code
+/// \c PTNErrorCodeNotAuthorized is returned if the method returns error in any way.
 @interface PTNPhotoKitDeferringImageManager : NSObject <PTNPhotoKitImageManager>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -28,33 +33,6 @@ typedef id<PTNPhotoKitImageManager> _Nonnull(^PTNPhotoKitImageManagerBlock)();
 - (instancetype)initWithAuthorizationManager:(id<PTNAuthorizationManager>)authorizationManager
                         deferredImageManager:(PTNPhotoKitImageManagerBlock)deferredImageManager
     NS_DESIGNATED_INITIALIZER;
-
-/// Requests an image representation for the specified asset. Calling this method before receiving
-/// PhotoKit authorization will return a \c nil image and an appropriate error in the
-/// \c PHImageErrorKey of the \c info dictionary returned by \c resultHandler.
-///
-/// @see -[PTNPhotoKitImageManager
-///     requestImageForAsset:targetSize:contentMode:options:resultHandler:].
-- (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
-                              targetSize:(CGSize)targetSize
-                             contentMode:(PHImageContentMode)contentMode
-                                 options:(PHImageRequestOptions *)options
-                           resultHandler:(PTNPhotoKitImageManagerHandler)resultHandler;
-
-/// Cancels an asynchronous request. Calling this method before receiving PhotoKit authorization has
-/// no effect.
-///
-/// @see -[PTNPhotoKitImageManager cancelImageRequest:].
-- (void)cancelImageRequest:(PHImageRequestID)requestID;
-
-/// Requests an \c AVAsset for the specified asset. Calling this method before receiving
-/// PhotoKit authorization will return a \c nil \c AVAsset and an appropriate error in the
-/// \c PHImageErrorKey of the \c info dictionary returned by \c resultHandler.
-///
-/// @see -[PTNPhotoKitImageManager requestAVAssetForVideo:options:resultHandler:].
-- (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset
-                                   options:(PHVideoRequestOptions *)options
-                             resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler;
 
 @end
 
