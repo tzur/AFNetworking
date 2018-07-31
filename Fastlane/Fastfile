@@ -17,6 +17,25 @@ lane :build_and_test do |options|
   )
 end
 
+lane :build_simulator_test_package do |options|
+  lt_build_test_package(
+    workspace: WORKSPACE,
+    scheme: options[:scheme] || SCHEME,
+    sdk: "iphonesimulator",
+    arch: "x86_64",
+    raw_logfile_path: "output/logs/simulator_test_package_raw.log",
+    package_path: "test_package"
+  )
+end
+
+lane :run_simulator_test_package do |options|
+  lt_run_test_package(
+    raw_logfile_path: "output/logs/simulator_test_package_raw.log",
+    destination: options[:destination] || DEFAULT_TEST_DESTINATION,
+    package_path: "test_package"
+  )
+end
+
 lane :build_release do
   lt_build(
     workspace: WORKSPACE,
