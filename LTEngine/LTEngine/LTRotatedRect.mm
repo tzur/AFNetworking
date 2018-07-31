@@ -3,20 +3,7 @@
 
 #import "LTRotatedRect.h"
 
-@interface LTRotatedRect ()
-
-@property (nonatomic) CGRect rect;
-@property (nonatomic) CGFloat angle;
-@property (nonatomic) CGPoint center;
-
-@property (nonatomic) CGPoint v0;
-@property (nonatomic) CGPoint v1;
-@property (nonatomic) CGPoint v2;
-@property (nonatomic) CGPoint v3;
-
-@property (nonatomic) CGAffineTransform transform;
-
-@end
+#import <LTKit/LTHashExtensions.h>
 
 @implementation LTRotatedRect
 
@@ -50,42 +37,43 @@
 #pragma mark Initializers
 #pragma mark -
 
+- (instancetype)initWithCenter:(CGPoint)center size:(CGSize)size angle:(CGFloat)angle {
+  return [self initWithRect:CGRectCenteredAt(center, size) angle:angle];
+}
+
 - (instancetype)initWithRect:(CGRect)rect angle:(CGFloat)angle {
   if (self = [super init]) {
-    self.rect = rect;
-    self.angle = angle;
-    self.center = CGRectCenter(rect);
+    _rect = rect;
+    _angle = angle;
+    _center = CGRectCenter(rect);
+
     [self updateTransform];
     [self updateVertices];
   }
   return self;
 }
 
-- (instancetype)initWithCenter:(CGPoint)center size:(CGSize)size angle:(CGFloat)angle {
-  return [self initWithRect:CGRectCenteredAt(center, size) angle:angle];
+- (instancetype)init {
+  return [self initWithRect:CGRectZero angle:0];
 }
 
 - (void)updateTransform {
-  CGAffineTransform transform = CGAffineTransformIdentity;
-  if (self.angle) {
-    transform = CGAffineTransformTranslate(transform, self.center.x, self.center.y);
-    // In iOS, negative values mean clockwise rotation, while positive values in OSX.
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
-    transform = CGAffineTransformRotate(transform, self.angle);
-#else
-    transform = CGAffineTransformRotate(transform, -self.angle);
-#endif
-    transform = CGAffineTransformTranslate(transform, -self.center.x, -self.center.y);
+  if (!self.angle) {
+    _transform = CGAffineTransformIdentity;
+    return;
   }
-  self.transform = transform;
+
+  CGAffineTransform transform = CGAffineTransformMakeTranslation(self.center.x, self.center.y);
+  transform = CGAffineTransformRotate(transform, self.angle);
+  _transform = CGAffineTransformTranslate(transform, -self.center.x, -self.center.y);
 }
 
 - (void)updateVertices {
   CGPoint v0 = self.rect.origin;
-  self.v0 = self.transform * v0;
-  self.v1 = self.transform * CGPointMake(v0.x + self.rect.size.width, v0.y);
-  self.v2 = self.transform * CGPointMake(v0.x + self.rect.size.width, v0.y + self.rect.size.height);
-  self.v3 = self.transform * CGPointMake(v0.x, v0.y + self.rect.size.height);
+  _v0 = self.transform * v0;
+  _v1 = self.transform * CGPointMake(v0.x + self.rect.size.width, v0.y);
+  _v2 = self.transform * CGPointMake(v0.x + self.rect.size.width, v0.y + self.rect.size.height);
+  _v3 = self.transform * CGPointMake(v0.x, v0.y + self.rect.size.height);
 }
 
 #pragma mark -
@@ -97,7 +85,7 @@
 }
 
 #pragma mark -
-#pragma mark Equality
+#pragma mark NSObject
 #pragma mark -
 
 - (BOOL)isEqual:(id)object {
@@ -119,10 +107,27 @@
 }
 
 - (NSUInteger)hash {
-  NSUInteger hashCode = CGRectHash(self.rect);
-  hashCode = 31 * hashCode + [@(self.angle) hash];
-  hashCode = 31 * hashCode + CGPointHash(self.center);
-  return hashCode;
+  size_t seed = 0;
+  lt::hash_combine(seed, self.rect);
+  lt::hash_combine(seed, self.angle);
+  lt::hash_combine(seed, self.center);
+  return seed;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, rect: %@, angle: %g, center: %@>",
+          self.class, self, NSStringFromCGRect(self.rect), self.angle,
+          NSStringFromCGPoint(self.center)];
+}
+
+#pragma mark -
+#pragma mark Methods
+#pragma mark -
+
+- (BOOL)containsPoint:(CGPoint)point {
+  CGPoint axisAlignedPoint =
+      CGPointApplyAffineTransform(point, CGAffineTransformInvert(self.transform));
+  return CGRectContainsPoint(self.rect, axisAlignedPoint);
 }
 
 #pragma mark -
@@ -140,12 +145,6 @@
   CGFloat maxY = std::max(self.v0.y, std::max(self.v1.y, std::max(self.v2.y, self.v3.y)));
 
   return CGRectFromEdges(minX, minY, maxX, maxY);
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"Origin: (%g,%g), Size: (%g,%g), Center: (%g,%g), Angle: %g",
-          self.rect.origin.x, self.rect.origin.y, self.rect.size.width, self.rect.size.height,
-          self.center.x, self.center.y, self.angle];
 }
 
 @end
