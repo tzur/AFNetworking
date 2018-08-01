@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSSet setWithArray:self];
 }
 
+- (NSOrderedSet *)lt_orderedSet {
+  return [NSOrderedSet orderedSetWithArray:self];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

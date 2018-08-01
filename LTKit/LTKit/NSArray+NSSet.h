@@ -14,6 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 - (NSSet<ObjectType> *)lt_set;
 
+/// Returns a new \c NSOrderedSet from the array. When the array is not \c nil, this is identical to
+/// calling:
+//
+/// @code
+/// [NSOrderedSet orderedSetWithArray:self];
+/// @endcode
+- (NSOrderedSet<ObjectType> *)lt_orderedSet;
+
 @end
 
 NS_ASSUME_NONNULL_END
