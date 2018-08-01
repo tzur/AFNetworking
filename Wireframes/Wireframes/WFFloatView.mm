@@ -42,6 +42,14 @@ typedef struct {
   /// Minimal ratio between content width to float view width that allows snapping to center anchors
   /// instead of corner anchors.
   CGFloat minWidthRatioForCenterAnchors;
+
+  /// The fraction of the content that should be horizontally hidden in order for visual effect to
+  /// be shown when dragging the content. The alpha value of the visual effect is \c 0  when
+  /// \c hiddenContentFractionForVisualEffectVisibility of the content is horizontally hidden, and
+  /// grows linrearly to \c 1 when dragged to the x position of the docks. Value must be between
+  /// \c 0 and \c 1. If value is \c 0 then the visual effect will start to apprear when one of the
+  /// horizontal content edges is on the horizontal edge of the float view.
+  CGFloat hiddenContentFractionForVisualEffectVisibility;
 } WFFloatViewConfig;
 
 /// Locations in the float view the content can be snapped to.
@@ -208,7 +216,8 @@ LTEnumImplement(NSUInteger, WFFloatViewAnchor,
     .initialVelocityAddition = 10,
     .locationBasedSnappingVelocity = 650,
     .minXDockingVelocity = 2800,
-    .minWidthRatioForCenterAnchors = 0.75
+    .minWidthRatioForCenterAnchors = 0.75,
+    .hiddenContentFractionForVisualEffectVisibility = 0.4
   };
 }
 
@@ -485,24 +494,28 @@ LTEnumImplement(NSUInteger, WFFloatViewAnchor,
 
 - (CGFloat)visualEffectAlphaForPoint:(CGPoint)point {
   auto x = point.x;
+
+  auto floatingViewWidth = CGRectGetWidth(self.floatingView.frame);
+  auto leftBoundForVisualEffect = CGRectGetMinX(self.bounds) +
+      floatingViewWidth * (0.5 - self.config.hiddenContentFractionForVisualEffectVisibility);
+  auto rightBoundForVisualEffect = CGRectGetMaxX(self.bounds) -
+      floatingViewWidth * (0.5 - self.config.hiddenContentFractionForVisualEffectVisibility);
+
   CGFloat maxAlphaX;
   CGFloat minAlphaX;
-  if (![self cornerAllowed]) {
-    minAlphaX = [self centerAnchorX];
-    maxAlphaX = x < [self centerAnchorX] ? [self leftDockX] : [self rightDockX];
+
+  if (x < leftBoundForVisualEffect) {
+    minAlphaX = leftBoundForVisualEffect;
+    maxAlphaX = [self leftDockX];
+  } else if (x > rightBoundForVisualEffect) {
+    minAlphaX = rightBoundForVisualEffect;
+    maxAlphaX = [self rightDockX];
   } else {
-    if (x < [self leftX]) {
-      minAlphaX = [self leftX];
-      maxAlphaX = [self leftDockX];
-    } else if (x > [self rightX]) {
-      minAlphaX = [self rightX];
-      maxAlphaX = [self rightDockX];
-    } else {
-      return 0;
-    }
-  }
-  if (maxAlphaX == minAlphaX) {
     return 0;
+  }
+
+  if (maxAlphaX == minAlphaX) {
+    return 1;
   }
   return std::min(fabs((x - minAlphaX) / (maxAlphaX - minAlphaX)), CGFloat(1));
 }
