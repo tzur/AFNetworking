@@ -69,6 +69,7 @@
 		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
 		84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */; };
 		84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFDF1C591BFF001D8368 /* libPhotons.a */; };
+		883B6CDC20BD86B90066AA47 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 883B6CDB20BD86B90066AA47 /* libFBTweak.a */; };
 		8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */; };
 		8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE001E5A2C1300CA1436 /* UIKit.framework */; };
 		8861FE031E5A2C1D00CA1436 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE021E5A2C1D00CA1436 /* Photos.framework */; };
@@ -80,6 +81,8 @@
 		887265951D772D8300D4F2A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF8F21D7727820023AF7A /* Localizable.strings */; };
 		887265961D772D8700D4F2A6 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF9151D7727890023AF7A /* Localizable.stringsdict */; };
 		887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */; };
+		88C7096620D8CE2500AF11BD /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C7094020D8CE2500AF11BD /* AdSupport.framework */; };
+		88C7096820D8CE3500AF11BD /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C7096720D8CE3400AF11BD /* MessageUI.framework */; };
 		88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */; };
 		8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8BF1F3EFB1D00F76142 /* libLLReactiveMatchers.a */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
@@ -540,6 +543,7 @@
 		84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PTNFakeAssetDescriptor.mm; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.mm; sourceTree = "<group>"; };
 		84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCellSizingStrategySpec.mm; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		883B6CDB20BD86B90066AA47 /* libFBTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBTweak.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		8861FE001E5A2C1300CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8861FE021E5A2C1D00CA1436 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -579,6 +583,8 @@
 		887265701D772D7B00D4F2A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		887267BB1D7C3C8F00D4F2A6 /* PTULocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTULocalization.h; sourceTree = "<group>"; };
 		887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTULocalization.mm; sourceTree = "<group>"; };
+		88C7094020D8CE2500AF11BD /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		88C7096720D8CE3400AF11BD /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88FAF8F31D7727820023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -608,6 +614,7 @@
 			files = (
 				287C87AD1F54116400FCC2CC /* AFNetworking.framework in Frameworks */,
 				0DF151CC1EAF79DB009F3080 /* AVFoundation.framework in Frameworks */,
+				88C7096620D8CE2500AF11BD /* AdSupport.framework in Frameworks */,
 				8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */,
 				8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */,
@@ -616,6 +623,7 @@
 				287C87841F54114C00FCC2CC /* Mantle.framework in Frameworks */,
 				8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */,
 				B411A04D1EEE780300756808 /* MediaPlayer.framework in Frameworks */,
+				88C7096820D8CE3500AF11BD /* MessageUI.framework in Frameworks */,
 				88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */,
 				8861FE031E5A2C1D00CA1436 /* Photos.framework in Frameworks */,
 				0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */,
@@ -623,6 +631,7 @@
 				8861FE051E5A2C4B00CA1436 /* Security.framework in Frameworks */,
 				8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */,
 				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
+				883B6CDC20BD86B90066AA47 /* libFBTweak.a in Frameworks */,
 				287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */,
 				8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
@@ -874,6 +883,7 @@
 			children = (
 				287C87AC1F54116400FCC2CC /* AFNetworking.framework */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
+				88C7094020D8CE2500AF11BD /* AdSupport.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
 				8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */,
@@ -881,11 +891,13 @@
 				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
 				287C87831F54114C00FCC2CC /* Mantle.framework */,
 				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
+				88C7096720D8CE3400AF11BD /* MessageUI.framework */,
 				88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */,
 				8861FE021E5A2C1D00CA1436 /* Photos.framework */,
 				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
 				8861FE041E5A2C4B00CA1436 /* Security.framework */,
 				8861FE001E5A2C1300CA1436 /* UIKit.framework */,
+				883B6CDB20BD86B90066AA47 /* libFBTweak.a */,
 				287C87AA1F54115900FCC2CC /* libFiber.a */,
 				CDE00B211E82AE65007AFD5E /* libcompression.tbd */,
 			);
