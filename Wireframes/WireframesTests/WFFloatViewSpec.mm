@@ -49,7 +49,7 @@ if (@available(iOS 10.0, *)) {
   static const NSUInteger kLowVelocity = 1;
 
   /// Dragging velocity magnitude that is high enough to cause docking.
-  static const NSUInteger kHighVelocity = 3000;
+  static const NSUInteger kHighVelocity = 5000;
 
   /// Delay for verifying the delegate was notified that the float view snapped the content. Even
   /// though the tests use <tt> +[UIView performWithoutAnimation:] </tt> the completion block of the

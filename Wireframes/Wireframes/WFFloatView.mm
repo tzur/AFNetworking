@@ -209,14 +209,14 @@ LTEnumImplement(NSUInteger, WFFloatViewAnchor,
 
 - (WFFloatViewConfig)defaultConfig {
   return {
-    .mass = 0.025,
+    .mass = 0.035,
     .damping = 8,
     .dockStiffness = 8,
-    .nonDockStiffness = 5,
-    .initialVelocityAddition = 10,
-    .locationBasedSnappingVelocity = 650,
-    .minXDockingVelocity = 2800,
-    .minWidthRatioForCenterAnchors = 0.75,
+    .nonDockStiffness = 10,
+    .initialVelocityAddition = 4,
+    .locationBasedSnappingVelocity = 1000,
+    .minXDockingVelocity = 4500,
+    .minWidthRatioForCenterAnchors = 0.65,
     .hiddenContentFractionForVisualEffectVisibility = 0.4
   };
 }
