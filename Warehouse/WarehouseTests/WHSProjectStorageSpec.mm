@@ -7,6 +7,15 @@
 
 #import "WHSProjectUpdateRequest.h"
 
+void WHSWriteDummyFileToDirectory(NSURL *URL, NSUInteger size) {
+  NSMutableString *string = [NSMutableString stringWithCapacity:size];
+  for (NSUInteger i = 0; i < size; ++i) {
+    [string appendString:@"a"];
+  }
+  [string writeToURL:nn([URL URLByAppendingPathComponent:@"dummy"]) atomically:YES
+            encoding:NSUTF8StringEncoding error:nil];
+}
+
 SpecBegin(WHSProjectStorage)
 __block NSURL *baseURL;
 __block NSURL *invalidURL;
@@ -216,7 +225,6 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.size).to.beGreaterThan(0);
     expect(project.stepsIDs).to.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).to.beNil();
@@ -232,7 +240,6 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.size).to.beGreaterThan(0);
     expect(project.stepsIDs).notTo.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).notTo.beNil();
@@ -248,7 +255,6 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.size).to.beGreaterThan(0);
     expect(project.stepsIDs).to.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).notTo.beNil();
@@ -264,7 +270,6 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.size).to.beGreaterThan(0);
     expect(project.stepsIDs).notTo.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).to.beNil();
@@ -866,6 +871,89 @@ context(@"set project attributes", ^{
     expect(error.lt_isLTDomain).to.beTruthy();
     expect(error.code).to.equal(WHSErrorCodeWriteFailed);
   });
+});
+
+context(@"projects and storage size on disk", ^{
+  __block WHSProjectStorage *storage;
+  __block NSUUID *projectID;
+  __block NSURL *assetsURL;
+  __block NSUUID *secondProjectID;
+  __block NSURL *secondAssetsURL;
+
+  beforeEach(^{
+    storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
+    projectID = nn([storage createProjectWithError:nil]);
+    assetsURL = nn([storage fetchSnapshotOfProjectWithID:projectID options:0 error:nil]).assetsURL;
+    secondProjectID = nn([storage createProjectWithError:nil]);
+    secondAssetsURL = nn([storage fetchSnapshotOfProjectWithID:secondProjectID options:0
+                                                         error:nil]).assetsURL;
+  });
+
+  afterEach(^{
+    [storage deleteProjectWithID:projectID error:nil];
+    [storage deleteProjectWithID:secondProjectID error:nil];
+  });
+
+  it(@"should calculate empty project size", ^{
+    auto size = [storage sizeOfProjectWithID:projectID error:nil];
+
+    expect(size).notTo.beNil();
+  });
+
+  it(@"should increase calculated project size by added data size", ^{
+    auto projectSizeBeforeAdding = [storage sizeOfProjectWithID:projectID error:nil];
+    auto assetSize = 1000;
+    WHSWriteDummyFileToDirectory(assetsURL, assetSize);
+    auto expectedSize = [projectSizeBeforeAdding unsignedLongLongValue] + assetSize;
+
+    auto projectSizeAfterAdding = [[storage sizeOfProjectWithID:projectID error:nil]
+                                   unsignedLongLongValue];
+
+    expect(projectSizeAfterAdding).to.equal(expectedSize);
+  });
+
+  it(@"should return nil and set WHSErrorCodeCalculateSizeFailed if failed to get project size", ^{
+    NSError *error;
+
+    auto size = [storage sizeOfProjectWithID:[NSUUID UUID] error:&error];
+
+    expect(size).to.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(WHSErrorCodeCalculateSizeFailed);
+  });
+
+  it(@"should increase calculated storage size by added data size", ^{
+    auto storageSizeBeforeAdding = [[storage storageSizeWithError:nil] unsignedLongLongValue];
+    auto firstAssetSize = 567;
+    auto secondAssetSize = 234;
+    WHSWriteDummyFileToDirectory(assetsURL, firstAssetSize);
+    WHSWriteDummyFileToDirectory(secondAssetsURL, secondAssetSize);
+    auto expectedSize = storageSizeBeforeAdding + firstAssetSize + secondAssetSize;
+
+    auto size = [storage storageSizeWithError:nil];
+
+    expect(size).to.equal(expectedSize);
+  });
+
+  it(@"should return nil and set WHSErrorCodeCalculateSizeFailed if fails to get storage size", ^{
+    NSError *error;
+    storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:invalidURL];
+
+    auto size = [storage storageSizeWithError:&error];
+
+    expect(size).to.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(WHSErrorCodeCalculateSizeFailed);
+  });
+});
+
+// out of the sizes context because the storage has to be empty.
+it(@"should calculate empty storage size", ^{
+  storage = [[WHSProjectStorage alloc] initWithBundleID:bundleID baseURL:baseURL];
+
+  auto size = [storage storageSizeWithError:nil];
+
+  expect(size).notTo.beNil();
 });
 
 context(@"observe storage", ^{

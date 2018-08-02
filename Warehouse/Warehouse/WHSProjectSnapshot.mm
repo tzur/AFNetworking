@@ -9,15 +9,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
-                      size:(uint64_t)size stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs
-                stepCursor:(NSUInteger)stepCursor userData:(nullable NSData *)userData
-                 assetsURL:(NSURL *)assetsURL {
+                  stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs stepCursor:(NSUInteger)stepCursor
+                  userData:(nullable NSData *)userData assetsURL:(NSURL *)assetsURL {
   if (self = [super init]) {
     _ID = ID;
     _bundleID = bundleID;
     _creationDate = creationDate;
     _modificationDate = modificationDate;
-    _size = size;
     _stepsIDs = stepsIDs;
     _stepCursor = stepCursor;
     _userData = userData;

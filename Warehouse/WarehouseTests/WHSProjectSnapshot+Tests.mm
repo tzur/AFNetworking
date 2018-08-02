@@ -36,7 +36,7 @@ static const auto kWHSStepsIDs = @[
                               stepCursor:(NSUInteger)stepCursor {
   auto projectID = [[NSUUID alloc] initWithUUIDString:@"8352CC13-CF1D-4DA7-BDBE-B805E79C2207"];
   return [[WHSProjectSnapshot alloc] initWithID:projectID bundleID:@"dummyBundle"
-                                   creationDate:[NSDate date] modificationDate:[NSDate date] size:0
+                                   creationDate:[NSDate date] modificationDate:[NSDate date]
                                        stepsIDs:stepsIDs stepCursor:stepCursor userData:nil
                                       assetsURL:[NSBundle mainBundle].bundleURL];
 }
