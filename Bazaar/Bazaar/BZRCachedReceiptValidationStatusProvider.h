@@ -32,6 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
+/// Reverts premature invalidation of receipt validation status for the given
+/// \c applicationBundleID. The receipt validation status invalidation is reverted only if it was
+/// invalidated due to failure in fetching receipt validation and the time to live is smaller than
+/// the current time to live. Otherwise, this method does nothing.
+- (void)revertPrematureInvalidationOfReceiptValidationStatus:(NSString *)applicationBundleID;
+
 /// Cache used to store and load receipt validation status cache entries.
 @property (readonly, nonatomic) BZRReceiptValidationStatusCache *cache;
 

@@ -174,6 +174,16 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
                                                            timeProvider:timeProvider
                                                      underlyingProvider:modifiedExpiryProvider];
 
+    // TODO: This code reverts invalidations that happened with previous time to live so that only
+    // the latest time to live will take place. This code should run before loading from cache the
+    // receipt validation status, therefore it is placed before the creation of \c
+    // \c validationStatusProvider. In addition it should be removed in the future when most of the
+    // invalidations with the previous time to live were reverted.
+    for (NSString *relevantApplicationBundleID in relevantApplicationsBundleIDs) {
+      [cachedReceiptValidationStatusProvider
+       revertPrematureInvalidationOfReceiptValidationStatus:relevantApplicationBundleID];
+    }
+
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cachedReceiptValidationStatusProvider
