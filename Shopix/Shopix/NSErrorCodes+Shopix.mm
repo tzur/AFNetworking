@@ -21,7 +21,9 @@ LTErrorCodesImplement(ShopixErrorCodeProductID,
   /// Caused when failed to calculate order summary of consumable items.
   SPXErrorCodeConsumablesOrderSummaryCalculationFailed,
   /// Caused when failed to place order of consumable items.
-  SPXErrorCodeConsumablesPlacingOrderFailed
+  SPXErrorCodeConsumablesPlacingOrderFailed,
+  /// Caused when failed to register axis for serialization.
+  SPXErrorCodeAxisRegisterationFailed
 );
 
 NS_ASSUME_NONNULL_END
