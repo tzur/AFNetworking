@@ -34,13 +34,27 @@ typedef LTCompoundParameterizedObjectFactory<LTSplineControlPoint *> LTSplineCon
 
 /// Adds the given \c controlPoints at the end of the ordered collection of control points of this
 /// spline, possibly resulting in the creation of one or several spline segments. If the control
-/// point addition results in the creation of additional spline segments, the \c splineSegments, the
-/// \c minParametricValue and the \c maxParametricValue of this instance are updated accordingly.
-/// The given \c controlPoints must be ordered according to increasing \c timestamp values.
+/// point addition results in the creation of additional spline segments, the \c segments and the
+/// \c maxParametricValue of this instance are updated accordingly. The given \c controlPoints must
+/// be ordered according to increasing \c timestamp values.
 ///
 /// Time complexity: <tt>O(n * m)</tt>, where \c n is the number of given \c controlPoints and \c m
 /// is the number of spline segments held by this object.
 - (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints;
+
+/// Removes the \c numberOfControlPoints last control points from the ordered collection of control
+/// points of this spline, possibly resulting in the removal of one or several spline segments. If
+/// the control point removal results in the removal of spline segments, the \c segments and the
+/// \c maxParametricValue of this instance are updated accordingly.
+///
+/// @important If the given \c numberOfControlPoints exceeds the number of control points which can
+/// be popped without removal of the very first spline segment, only the minimum of the two numbers
+/// is used. In other words, the first spline segment is never removed. This is in order to avoid
+/// degenerate spline objects.
+///
+/// Time complexity: <tt>O(n * m)</tt>, where \c n is \c numberOfControlPoints and \c m is the
+/// number of spline segments held by this object.
+- (void)popControlPoints:(NSUInteger)numberOfControlPoints;
 
 /// Control points constituting this object.
 ///
