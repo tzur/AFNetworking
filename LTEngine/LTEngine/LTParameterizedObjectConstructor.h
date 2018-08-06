@@ -31,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Adds the given \c control points, possibly creating/extending the \c parameterizedObject.
 - (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints;
 
+/// Removes the \c numberOfControlPoints last control points, shortening or possibly removing the
+/// \c parameterizedObject.
+- (void)popControlPoints:(NSUInteger)numberOfControlPoints;
+
 /// Resets the instance to its initial state. Returns the model representing the
 /// \c parameterizedObject held right before the call to this method.
 - (LTControlPointModel *)reset;

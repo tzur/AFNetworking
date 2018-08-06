@@ -60,8 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) LTMutableEuclideanSpline *spline;
 
 /// Ordered collection used for temporarily buffering control points before construction of spline
-/// becomes feasible. Is set to \c nil upon construction of the spline.
-@property (strong, nonatomic, nullable) NSMutableArray<LTSplineControlPoint *> *buffer;
+/// becomes feasible. Is empty if \c spline is currently set.
+@property (strong, nonatomic) NSMutableArray<LTSplineControlPoint *> *buffer;
 
 @end
 
@@ -126,10 +126,33 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.spline = [[LTMutableEuclideanSpline alloc] initWithFactory:factory
                                                initialControlPoints:self.buffer];
-    self.buffer = nil;
+    [self.buffer removeAllObjects];
     return;
   }
 }
+
+- (void)popControlPoints:(NSUInteger)numberOfControlPoints {
+  if (!self.spline) {
+    numberOfControlPoints = std::min(numberOfControlPoints, self.buffer.count);
+    NSRange range = NSMakeRange(self.buffer.count - numberOfControlPoints, numberOfControlPoints);
+    [self.buffer removeObjectsInRange:range];
+    return;
+  }
+
+  numberOfControlPoints = std::min(numberOfControlPoints, self.spline.numberOfControlPoints);
+
+  NSUInteger numberOfRequiredValues = [[self.factory class] numberOfRequiredValues];
+  if (self.spline.numberOfControlPoints >= numberOfControlPoints + numberOfRequiredValues) {
+    [self.spline popControlPoints:numberOfControlPoints];
+  } else {
+    NSRange range = NSMakeRange(0, self.spline.numberOfControlPoints - numberOfControlPoints);
+    NSArray<LTSplineControlPoint *> *remainingSplineControlPoints =
+        [self.spline.controlPoints subarrayWithRange:range];
+    self.buffer = [remainingSplineControlPoints mutableCopy];
+    self.spline = nil;
+  }
+}
+
 
 - (nullable id<LTParameterizedObject>)parameterizedObject {
   return self.spline;
