@@ -172,7 +172,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     auto cachedReceiptValidationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:modifiedExpiryProvider];
+                                                     underlyingProvider:modifiedExpiryProvider
+                                                  cachedEntryDaysToLive:60];
 
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
@@ -185,7 +186,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
         [[BZRReceiptValidationDateProvider alloc]
          initWithReceiptValidationStatusCache:receiptValidationStatusCache
          receiptValidationStatusProvider:self.validationStatusProvider
-         bundledApplicationsIDs:relevantApplicationsBundleIDs cachedEntryDaysToLive:14];
+         bundledApplicationsIDs:relevantApplicationsBundleIDs validationIntervalDays:14];
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
          initWithAggregatedValidationStatusProvider:self.validationStatusProvider
