@@ -309,7 +309,7 @@ context(@"revalidating invalidated receipt cache", ^{
     receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:receiptValidationStatus
-                       cachingDateTime:[NSDate date]];
+                       cachingDateTime:[timeProvider currentTime]];
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
         error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 

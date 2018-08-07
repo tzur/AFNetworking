@@ -78,11 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)storeReceiptValidationStatus:(BZRReceiptValidationStatus *)receiptValidationStatus
-                     cachingDateTime:(NSDate *)cachingDateTime
                  applicationBundleID:(NSString *)applicationBundleID {
   auto receiptStatusCacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                                   initWithReceiptValidationStatus:receiptValidationStatus
-                                  cachingDateTime:cachingDateTime];
+                                  cachingDateTime:[self.timeProvider currentTime]];
   [self.cache storeCacheEntry:receiptStatusCacheEntry
           applicationBundleID:applicationBundleID error:nil];
 }
@@ -98,7 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
         [self storeReceiptValidationStatus:receiptValidationStatus
-                           cachingDateTime:[self.timeProvider currentTime]
                        applicationBundleID:applicationBundleID];
       }]
       doError:^(NSError *) {
@@ -123,18 +121,16 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  [self invalidateCachedEntry:cacheEntry currentTime:currentTime
-          applicationBundleID:applicationBundleID];
+  [self invalidateCachedEntry:cacheEntry applicationBundleID:applicationBundleID];
 }
 
 - (void)invalidateCachedEntry:(BZRReceiptValidationStatusCacheEntry *)cacheEntry
-                  currentTime:(NSDate *)currentTime
           applicationBundleID:(NSString *)applicationBundleID {
   auto receiptValidationStatusWithExpiredSubscription = [cacheEntry.receiptValidationStatus
       modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptValidationStatus,
       receipt.subscription.isExpired) withValue:@YES];
   [self storeReceiptValidationStatus:receiptValidationStatusWithExpiredSubscription
-                     cachingDateTime:currentTime applicationBundleID:applicationBundleID];
+                 applicationBundleID:applicationBundleID];
 }
 
 - (void)revertPrematureInvalidationOfReceiptValidationStatus:(NSString *)applicationBundleID {
@@ -150,7 +146,6 @@ NS_ASSUME_NONNULL_BEGIN
                                @keypath(receiptValidationStatus, receipt.subscription.isExpired)
                                withValue:@NO];
     [self storeReceiptValidationStatus:receiptValidationStatus
-                       cachingDateTime:cacheEntry.cachingDateTime
                    applicationBundleID:applicationBundleID];
   }
 }
