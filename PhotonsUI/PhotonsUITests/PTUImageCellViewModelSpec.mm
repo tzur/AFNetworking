@@ -153,6 +153,16 @@ context(@"PTNDescriptor", ^{
       expect(gifViewModel.traits).to.contain(kPTUImageCellViewModelTraitGIFKey);
     });
 
+    it(@"should expose live photo trait if underlying descriptor has live photo trait", ^{
+      id<PTNDescriptor> livePhotoAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitLivePhotoKey]);
+      PTUImageCellViewModel *livePhotoViewModel = [[PTUImageCellViewModel alloc]
+                                                   initWithAssetManager:assetManager
+                                                   descriptor:livePhotoAsset
+                                                   imageFetchOptions:options];
+      expect(livePhotoViewModel.traits).to.contain(kPTUImageCellViewModelTraitLivePhotoKey);
+    });
+
     it(@"should expose multiple traits", ^{
       id<PTNDescriptor> multiTraitsAsset =
         PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
@@ -160,7 +170,8 @@ context(@"PTNDescriptor", ^{
           kPTNDescriptorTraitCloudBasedKey,
           kPTNDescriptorTraitAudiovisualKey,
           kPTNDescriptorTraitRawKey,
-          kPTNDescriptorTraitGIFKey
+          kPTNDescriptorTraitGIFKey,
+          kPTNDescriptorTraitLivePhotoKey
         ]]);
       PTUImageCellViewModel *multiTraitsViewModel = [[PTUImageCellViewModel alloc]
                                                      initWithAssetManager:assetManager
@@ -171,6 +182,7 @@ context(@"PTNDescriptor", ^{
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitRawKey);
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitGIFKey);
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitLivePhotoKey);
     });
   });
 });

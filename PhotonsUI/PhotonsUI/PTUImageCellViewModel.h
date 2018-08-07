@@ -23,6 +23,9 @@ extern NSString * const kPTUImageCellViewModelTraitRawKey;
 /// Cell that represents a GIF asset.
 extern NSString * const kPTUImageCellViewModelTraitGIFKey;
 
+/// Cell that represents a Live Photo asset.
+extern NSString * const kPTUImageCellViewModelTraitLivePhotoKey;
+
 @class PTNImageFetchOptions;
 
 /// Protocol for collection view image cells view models to conform to in order to be used by the
