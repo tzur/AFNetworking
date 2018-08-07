@@ -3,6 +3,9 @@
 
 #import "LTArrayBuffer.h"
 
+#import <LTKit/LTWeakContainer.h>
+#import <LTKit/NSArray+Functional.h>
+
 #import "LTGLContext+Internal.h"
 #import "LTGLException.h"
 #import "LTGPUResourceProxy.h"
@@ -17,6 +20,10 @@
 
 /// Set to the previously bound buffer, or \c 0 if the buffer is not bound.
 @property (nonatomic) GLint previousBuffer;
+
+/// Ordered collection of weakly held data which has been copied to the OpenGL array buffer memory
+/// referenced by this instance.
+@property (strong, nonatomic) NSArray<LTWeakContainer<NSData *> *> *previousData;
 
 @end
 
@@ -72,6 +79,10 @@
 }
 
 - (void)setDataWithConcatenatedData:(NSArray *)dataArray {
+  if ([self dataAlreadyMapped:dataArray]) {
+    return;
+  }
+
   // Do not update to zero length.
   NSUInteger totalLength = [self lengthOfDataInArray:dataArray];
   if (!totalLength) {
@@ -104,6 +115,10 @@
         [self updateBufferWithMapping:dataArray];
         break;
     }
+  }];
+
+  self.previousData = [dataArray lt_map:^LTWeakContainer<NSData *> *(NSData *data) {
+    return [[LTWeakContainer alloc] initWithObject:data];
   }];
 }
 
@@ -190,6 +205,20 @@
   }
 
   [self unmapBuffer];
+}
+
+- (BOOL)dataAlreadyMapped:(NSArray<NSData *> *)dataArray {
+  if (dataArray.count != self.previousData.count) {
+    return NO;
+  }
+
+  for (NSUInteger i = 0; i < dataArray.count; ++i) {
+    if (dataArray[i] != self.previousData[i].object) {
+      return NO;
+    }
+  }
+
+  return YES;
 }
 
 - (void)unmapBuffer {

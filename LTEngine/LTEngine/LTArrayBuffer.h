@@ -50,6 +50,10 @@ typedef NS_ENUM(NSUInteger, LTArrayBufferUsage) {
 /// update will yield an \c LTGLException with \c
 /// kLTArrayBufferDisallowsStaticBufferUpdateException. For a buffer than can be updated
 /// continuously, use \c LTArrayBufferUsageDynamicDraw or \c LTArrayBufferUsageStreamDraw.
+///
+/// @note The \c NSData objects in the provided \c dataArray are weakly held by this instance, for
+/// optimization purposes. Providing identical \c NSData objects in consecutive calls to this method
+/// avoids unnecessary memory copying.
 - (void)setDataWithConcatenatedData:(NSArray *)dataArray;
 
 /// Retrieves the buffer data back to the CPU. This triggers a GPU -> CPU copy.
