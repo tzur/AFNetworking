@@ -78,7 +78,7 @@
   [self setDataWithConcatenatedData:@[data]];
 }
 
-- (void)setDataWithConcatenatedData:(NSArray *)dataArray {
+- (void)setDataWithConcatenatedData:(NSArray<NSData *> *)dataArray {
   if ([self dataAlreadyMapped:dataArray]) {
     return;
   }
@@ -122,11 +122,11 @@
   }];
 }
 
-- (NSUInteger)lengthOfDataInArray:(NSArray *)dataArray {
+- (NSUInteger)lengthOfDataInArray:(NSArray<NSData *> *)dataArray {
   return [[dataArray valueForKeyPath:@"@sum.length"] unsignedIntegerValue];
 }
 
-- (NSData *)concatenatedData:(NSArray *)dataArray {
+- (NSData *)concatenatedData:(NSArray<NSData *> *)dataArray {
   if (dataArray.count == 1) {
     return dataArray.firstObject;
   }
@@ -180,7 +180,7 @@
   self.size = data.length;
 }
 
-- (void)updateBufferWithMapping:(NSArray *)dataArray {
+- (void)updateBufferWithMapping:(NSArray<NSData *> *)dataArray {
   __block char *mappedBuffer;
   [self.context executeForOpenGLES2:^{
     mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
