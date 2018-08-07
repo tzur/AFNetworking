@@ -238,5 +238,90 @@ context(@"invalidating cache", ^{
   });
 });
 
-SpecEnd
+context(@"revalidating invalidated receipt cache", ^{
+  it(@"should not revalidate cache if the subscription is not expired", ^{
+    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+        applicationBundleID:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
 
+    auto cacheEntry =
+        [[BZRReceiptValidationStatusCacheEntry alloc]
+         initWithReceiptValidationStatus:BZRReceiptValidationStatusWithExpiry(NO)
+                         cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    [validationStatusProvider revertPrematureInvalidationOfReceiptValidationStatus:@"foo"];
+  });
+
+  it(@"should not revalidate cache if cancellation date exists", ^{
+    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+        applicationBundleID:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
+
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, YES);
+    auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                       initWithReceiptValidationStatus:receiptValidationStatus
+                       cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    [validationStatusProvider revertPrematureInvalidationOfReceiptValidationStatus:@"foo"];
+  });
+
+  it(@"should not revalidate cache if the validation date comes after the expiration date", ^{
+    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+        applicationBundleID:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
+
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
+    auto validationDate =
+        [receiptValidationStatus.receipt.subscription.expirationDateTime
+         dateByAddingTimeInterval:1];
+    receiptValidationStatus =
+        [receiptValidationStatus
+         modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, validationDateTime)
+         withValue:validationDate];
+    auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                       initWithReceiptValidationStatus:receiptValidationStatus
+                       cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    [validationStatusProvider revertPrematureInvalidationOfReceiptValidationStatus:@"foo"];
+  });
+
+  it(@"should not revalidate cache if the time to live has passed", ^{
+    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+        applicationBundleID:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
+
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
+    auto timeIntervalSinceCaching =
+        [BZRTimeConversion numberOfSecondsInDays:(cachedEntryDaysToLive + 10)];
+    auto cachingDateTime = [[NSDate date] dateByAddingTimeInterval:-timeIntervalSinceCaching];
+    auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                       initWithReceiptValidationStatus:receiptValidationStatus
+                       cachingDateTime:cachingDateTime];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    [validationStatusProvider revertPrematureInvalidationOfReceiptValidationStatus:@"foo"];
+  });
+
+  it(@"should revalidate cache if it was invalidated", ^{
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
+    auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                       initWithReceiptValidationStatus:receiptValidationStatus
+                       cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    auto cacheEntryWithNonExpiredSubscription =
+        [cacheEntry modelByOverridingPropertyAtKeypath:
+         @keypath(cacheEntry, receiptValidationStatus.receipt.subscription.isExpired)
+         withValue:@NO];
+
+    [validationStatusProvider revertPrematureInvalidationOfReceiptValidationStatus:@"foo"];
+    OCMVerify([receiptValidationStatusCache storeCacheEntry:cacheEntryWithNonExpiredSubscription
+        applicationBundleID:applicationBundeID error:[OCMArg anyObjectRef]]);
+  });
+});
+
+SpecEnd

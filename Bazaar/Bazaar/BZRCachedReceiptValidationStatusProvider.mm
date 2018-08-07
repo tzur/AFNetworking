@@ -150,6 +150,36 @@ NS_ASSUME_NONNULL_BEGIN
                      cachingDateTime:currentTime applicationBundleID:applicationBundleID];
 }
 
+- (void)revertPrematureInvalidationOfReceiptValidationStatus:(NSString *)applicationBundleID {
+  auto _Nullable cacheEntry =
+      [self loadReceiptValidationStatusCacheEntryFromStorage:applicationBundleID];
+  if (!cacheEntry) {
+    return;
+  }
+
+  if ([self wasSubscriptionInvalidatedPrematurely:cacheEntry]) {
+    auto receiptValidationStatus = nn(cacheEntry).receiptValidationStatus;
+    receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
+                               @keypath(receiptValidationStatus, receipt.subscription.isExpired)
+                               withValue:@NO];
+    [self storeReceiptValidationStatus:receiptValidationStatus
+                       cachingDateTime:cacheEntry.cachingDateTime
+                   applicationBundleID:applicationBundleID];
+  }
+}
+
+- (BOOL)wasSubscriptionInvalidatedPrematurely:
+    (BZRReceiptValidationStatusCacheEntry *)cacheEntry {
+  auto subscription = cacheEntry.receiptValidationStatus.receipt.subscription;
+  BOOL receiptWasValidatedBeforeSubscriptionExpiration =
+      [subscription.expirationDateTime
+       compare:cacheEntry.receiptValidationStatus.validationDateTime] == NSOrderedDescending;
+  BOOL timeToLiveHasNotPassed = [[NSDate date] timeIntervalSinceDate:cacheEntry.cachingDateTime] -
+      self.cachedEntryTimeToLive < 0;
+  return subscription.isExpired && !subscription.cancellationDateTime &&
+      receiptWasValidatedBeforeSubscriptionExpiration && timeToLiveHasNotPassed;
+}
+
 @end
 
 #pragma mark -
