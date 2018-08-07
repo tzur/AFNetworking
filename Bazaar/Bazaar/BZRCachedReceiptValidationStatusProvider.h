@@ -16,12 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c receiptValidationStatusCache, \c timeProvider,
-/// \c applicationBundleID, and \c cachedEntryTimeToLive set to \c 14.
-- (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-                 timeProvider:(id<BZRTimeProvider>)timeProvider
-           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider;
-
 /// Initializes with \c receiptValidationStatusCache, used to persist receipt validation status, and
 /// \c timeProvider used to provide the time the receipt was cached, and with
 /// \c underlyingProvider, used to fetch the receipt validation status. \c cachedEntryDaysToLive is

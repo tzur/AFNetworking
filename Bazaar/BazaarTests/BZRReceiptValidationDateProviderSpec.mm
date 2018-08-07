@@ -41,7 +41,7 @@ SpecBegin(BZRReceiptValidationDateProvider)
 __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block BZRFakeAggregatedReceiptValidationStatusProvider *aggregatedReceiptValidationStatusProvider;
 __block NSSet<NSString *> *bundledApplicationsIDs;
-__block NSTimeInterval periodicValidationInterval;
+__block NSTimeInterval validationInterval;
 __block BZRReceiptValidationDateProvider *validationDateProvider;
 
 beforeEach(^{
@@ -49,13 +49,13 @@ beforeEach(^{
   bundledApplicationsIDs = @[@"foo", @"bar"].lt_set;
   aggregatedReceiptValidationStatusProvider =
       [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
-  NSUInteger daysToLive = 13;
-  periodicValidationInterval = [BZRTimeConversion numberOfSecondsInDays:daysToLive] / 2;
+  NSUInteger validationIntervalDays = 13;
+  validationInterval = [BZRTimeConversion numberOfSecondsInDays:validationIntervalDays];
   validationDateProvider = [[BZRReceiptValidationDateProvider alloc]
       initWithReceiptValidationStatusCache:receiptValidationStatusCache
            receiptValidationStatusProvider:aggregatedReceiptValidationStatusProvider
                     bundledApplicationsIDs:bundledApplicationsIDs
-                     cachedEntryDaysToLive:daysToLive];
+                    validationIntervalDays:validationIntervalDays];
 });
 
 context(@"subscription doesn't exist", ^{
@@ -126,7 +126,7 @@ context(@"calculating next validation date", ^{
     aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
         BZRReceiptValidationStatusWithExpiry(YES);
     expect(validationDateProvider.nextValidationDate).to
-        .equal([lastValidationDate dateByAddingTimeInterval:periodicValidationInterval]);
+        .equal([lastValidationDate dateByAddingTimeInterval:validationInterval]);
   });
 
   it(@"should be nil if there is no last validation date", ^{
@@ -149,7 +149,7 @@ context(@"calculating next validation date", ^{
           BZRReceiptValidationStatusWithExpiry(YES);
 
       expect(validationDateProvider.nextValidationDate).to
-          .equal([earlierDate dateByAddingTimeInterval:periodicValidationInterval]);
+          .equal([earlierDate dateByAddingTimeInterval:validationInterval]);
     });
   });
 });

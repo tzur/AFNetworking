@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSSet<NSString *> *bundledApplicationsIDs;
 
 /// Seconds until the cache is invalidated, starting from the date it was cached.
-@property (readonly, nonatomic) NSTimeInterval cachedEntryTimeToLive;
+@property (readonly, nonatomic) NSTimeInterval validationInterval;
 
 /// Redeclared as readwrite.
 @property (strong, readwrite, nonatomic) NSDate *nextValidationDate;
@@ -43,12 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
     receiptValidationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
     receiptValidationStatusProvider
     bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-    cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive {
+    validationIntervalDays:(NSUInteger)validationIntervalDays {
   if (self = [super init]) {
     _receiptValidationStatusCache = receiptValidationStatusCache;
     _receiptValidationStatusProvider = receiptValidationStatusProvider;
     _bundledApplicationsIDs = bundledApplicationsIDs;
-    _cachedEntryTimeToLive = [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive];
+    _validationInterval = [BZRTimeConversion numberOfSecondsInDays:validationIntervalDays];
 
     [self setupNextValidationDateUpdates];
   }
@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
     return kIntervalBetweenValidationsInSandbox;
   }
 
-  return self.cachedEntryTimeToLive / 2;
+  return self.validationInterval;
 }
 
 @end

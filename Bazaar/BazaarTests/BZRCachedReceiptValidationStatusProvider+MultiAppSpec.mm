@@ -47,7 +47,8 @@ context(@"deallocating object", ^{
           OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
                           initWithCache:receiptValidationStatusCache
                           timeProvider:timeProvider
-                          underlyingProvider:underlyingProvider]);
+                          underlyingProvider:underlyingProvider
+                          cachedEntryDaysToLive:14]);
 
       auto firstReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
       auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
