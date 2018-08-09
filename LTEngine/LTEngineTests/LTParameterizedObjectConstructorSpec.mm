@@ -83,7 +83,7 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
 
       it(@"should not provide parameterized object after popping sufficient number of points", ^{
         [constructor pushControlPoints:controlPointsForPopping];
-        [constructor popControlPoints:sufficientControlPoints.count];
+        [constructor popControlPoints:controlPointsForPopping.count + 1];
         expect([constructor parameterizedObject]).to.beNil();
       });
 
@@ -226,30 +226,58 @@ SharedExamplesEnd
 
 SpecBegin(LTParameterizedObjectConstructor)
 
-static const NSArray<LTSplineControlPoint *> *kPoints =
-    @[[[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointZero],
-      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 1)],
-      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 2)],
-      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 3)]];
+static const NSArray<LTSplineControlPoint *> *kPoints = @[
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointZero],
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 1)],
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 2)],
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 3)]
+];
 
-static const NSArray<LTSplineControlPoint *> *kPointsForPopping =
-    @[[[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 4)],
-      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 5)]];
+static const NSArray<LTSplineControlPoint *> *kPointsForPopping = @[
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 4)],
+  [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 5)]
+];
 
 itShouldBehaveLike(kLTParameterizedObjectConstructorExamples, ^{
-  return @{kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeLinear),
-           kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0]],
-           kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[1], kPoints[2]],
-           kLTBasicParameterizedObjectFactoryControlPointsForPopping: @[kPointsForPopping[0]]};
+  return @{
+    kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeLinear),
+    kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0]],
+    kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[1], kPoints[2]],
+    kLTBasicParameterizedObjectFactoryControlPointsForPopping: @[kPointsForPopping[0]]
+  };
 });
 
 itShouldBehaveLike(kLTParameterizedObjectConstructorExamples, ^{
-  return @{kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeCatmullRom),
-           kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0], kPoints[1],
-                                                                          kPoints[2]],
-           kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[0], kPoints[1],
-                                                                        kPoints[2], kPoints[3]],
-           kLTBasicParameterizedObjectFactoryControlPointsForPopping: kPointsForPopping};
+  return @{
+    kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeCubicBezier),
+    kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0], kPoints[1],
+                                                                   kPoints[2]],
+    kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[1], kPoints[1], kPoints[2],
+                                                                 kPoints[2]],
+    kLTBasicParameterizedObjectFactoryControlPointsForPopping: kPointsForPopping
+  };
+});
+
+itShouldBehaveLike(kLTParameterizedObjectConstructorExamples, ^{
+  return @{
+    kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeCatmullRom),
+    kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0], kPoints[1],
+                                                                   kPoints[2]],
+    kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[0], kPoints[1], kPoints[2],
+                                                                 kPoints[3]],
+    kLTBasicParameterizedObjectFactoryControlPointsForPopping: kPointsForPopping
+  };
+});
+
+itShouldBehaveLike(kLTParameterizedObjectConstructorExamples, ^{
+  return @{
+    kLTParameterizedObjectTypeClass: $(LTParameterizedObjectTypeBSpline),
+    kLTBasicParameterizedObjectFactoryInsufficientControlPoints: @[kPoints[0], kPoints[1],
+                                                                   kPoints[2]],
+    kLTBasicParameterizedObjectFactorySufficientControlPoints: @[kPoints[0], kPoints[1], kPoints[2],
+                                                                 kPoints[3]],
+    kLTBasicParameterizedObjectFactoryControlPointsForPopping: kPointsForPopping
+  };
 });
 
 SpecEnd
