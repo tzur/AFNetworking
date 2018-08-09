@@ -3,6 +3,9 @@
 
 #import "LTArrayBuffer.h"
 
+#import <LTKit/LTWeakContainer.h>
+#import <LTKit/NSArray+Functional.h>
+
 #import "LTGLContext+Internal.h"
 #import "LTGLException.h"
 #import "LTGPUResourceProxy.h"
@@ -17,6 +20,10 @@
 
 /// Set to the previously bound buffer, or \c 0 if the buffer is not bound.
 @property (nonatomic) GLint previousBuffer;
+
+/// Ordered collection of weakly held data which has been copied to the OpenGL array buffer memory
+/// referenced by this instance.
+@property (strong, nonatomic) NSArray<LTWeakContainer<NSData *> *> *previousData;
 
 @end
 
@@ -71,7 +78,11 @@
   [self setDataWithConcatenatedData:@[data]];
 }
 
-- (void)setDataWithConcatenatedData:(NSArray *)dataArray {
+- (void)setDataWithConcatenatedData:(NSArray<NSData *> *)dataArray {
+  if ([self dataAlreadyMapped:dataArray]) {
+    return;
+  }
+
   // Do not update to zero length.
   NSUInteger totalLength = [self lengthOfDataInArray:dataArray];
   if (!totalLength) {
@@ -105,13 +116,17 @@
         break;
     }
   }];
+
+  self.previousData = [dataArray lt_map:^LTWeakContainer<NSData *> *(NSData *data) {
+    return [[LTWeakContainer alloc] initWithObject:data];
+  }];
 }
 
-- (NSUInteger)lengthOfDataInArray:(NSArray *)dataArray {
+- (NSUInteger)lengthOfDataInArray:(NSArray<NSData *> *)dataArray {
   return [[dataArray valueForKeyPath:@"@sum.length"] unsignedIntegerValue];
 }
 
-- (NSData *)concatenatedData:(NSArray *)dataArray {
+- (NSData *)concatenatedData:(NSArray<NSData *> *)dataArray {
   if (dataArray.count == 1) {
     return dataArray.firstObject;
   }
@@ -165,7 +180,7 @@
   self.size = data.length;
 }
 
-- (void)updateBufferWithMapping:(NSArray *)dataArray {
+- (void)updateBufferWithMapping:(NSArray<NSData *> *)dataArray {
   __block char *mappedBuffer;
   [self.context executeForOpenGLES2:^{
     mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
@@ -190,6 +205,20 @@
   }
 
   [self unmapBuffer];
+}
+
+- (BOOL)dataAlreadyMapped:(NSArray<NSData *> *)dataArray {
+  if (dataArray.count != self.previousData.count) {
+    return NO;
+  }
+
+  for (NSUInteger i = 0; i < dataArray.count; ++i) {
+    if (dataArray[i] != self.previousData[i].object) {
+      return NO;
+    }
+  }
+
+  return YES;
 }
 
 - (void)unmapBuffer {

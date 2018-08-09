@@ -6,6 +6,19 @@
 #import "LTGLContext.h"
 #import "LTGPUResourceExamples.h"
 
+@interface LTTestArrayBuffer : LTArrayBuffer
+@property (nonatomic) BOOL previouslyBound;
+@end
+
+@implementation LTTestArrayBuffer
+
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block {
+  [super bindAndExecute:block];
+  self.previouslyBound = YES;
+}
+
+@end
+
 SpecBegin(LTArrayBuffer)
 
 static NSString * const kLTArrayBufferInitializationExamples =
@@ -192,7 +205,8 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
             [buffer setData:data];
 
             expect(^{
-              [buffer setData:data];
+              NSData *nonIdenticalData = [data mutableCopy];
+              [buffer setData:nonIdenticalData];
             }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
           });
         });
@@ -257,7 +271,8 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
             [buffer setData:data];
 
             expect(^{
-              [buffer setData:data];
+              NSData *nonIdenticalData = [data mutableCopy];
+              [buffer setData:nonIdenticalData];
             }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
           });
         });
@@ -308,5 +323,55 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
 
 itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion2)});
 itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion3)});
+
+context(@"caching", ^{
+  __block NSData *data;
+  __block LTTestArrayBuffer *buffer;
+
+  beforeEach(^{
+    data = [@"0123456789" dataUsingEncoding:NSUTF8StringEncoding];
+    buffer = [[LTTestArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                               usage:LTArrayBufferUsageStreamDraw];
+  });
+
+  it(@"should not hold provided NSData instance strongly", ^{
+    __weak NSData *weaklyHeldData;
+    @autoreleasepool {
+      NSData *data = [@"0123456789" dataUsingEncoding:NSUTF8StringEncoding];
+      [buffer setData:data];
+      weaklyHeldData = data;
+      expect(weaklyHeldData).toNot.beNil();
+    }
+    expect(weaklyHeldData).to.beNil();
+  });
+
+  it(@"should ignore updates with identical data", ^{
+    [buffer setData:data];
+
+    buffer.previouslyBound = NO;
+    [buffer setData:data];
+    expect(buffer.previouslyBound).to.beFalsy();
+    expect([buffer data]).to.equal(data);
+  });
+
+  it(@"should perform updates with equal but non-identical data", ^{
+    [buffer setData:data];
+
+    buffer.previouslyBound = NO;
+    [buffer setData:[data mutableCopy]];
+    expect(buffer.previouslyBound).to.beTruthy();
+    expect([buffer data]).to.equal(data);
+  });
+
+  it(@"should perform updates with different data", ^{
+    [buffer setData:data];
+
+    NSData *differentData = [@"9876543210" dataUsingEncoding:NSUTF8StringEncoding];
+    buffer.previouslyBound = NO;
+    [buffer setData:differentData];
+    expect(buffer.previouslyBound).to.beTruthy();
+    expect([buffer data]).to.equal(differentData);
+  });
+});
 
 SpecEnd
