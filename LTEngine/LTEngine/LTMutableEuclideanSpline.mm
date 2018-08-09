@@ -1,9 +1,23 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#if defined(DEBUG) && DEBUG
+  #define USE_BIPARTITE_GRAPH 1
+#else
+  #define USE_BIPARTITE_GRAPH 0
+#endif
+
+#if USE_BIPARTITE_GRAPH
+  #define LT_POTENTIALLY_UNUSED
+#else
+  #define LT_POTENTIALLY_UNUSED __unused
+#endif
+
 #import "LTMutableEuclideanSpline.h"
 
+#if USE_BIPARTITE_GRAPH
 #import <LTKit/LTBipartiteGraph.h>
+#endif
 
 #import "LTCompoundParameterizedObject.h"
 #import "LTCompoundParameterizedObjectFactory.h"
@@ -22,8 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mutable ordered collection of control points of this instance.
 @property (strong, nonatomic) NSMutableArray<LTSplineControlPoint *> *mutableControlPoints;
 
+#if USE_BIPARTITE_GRAPH
 /// Bipartite graph connecting control points and spline segments.
 @property (strong, nonatomic) LTBipartiteGraph *mutableGraph;
+#endif
 
 /// Stack of parameterized objects each of which represents a spline segment of this instance.
 @property (strong, nonatomic) LTParameterizedObjectStack *mutableStack;
@@ -53,7 +69,9 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   if (self = [super init]) {
     self.factory = factory;
     self.mutableControlPoints = [NSMutableArray arrayWithCapacity:initialControlPoints.count];
+#if USE_BIPARTITE_GRAPH
     self.mutableGraph = [[LTBipartiteGraph alloc] init];
+#endif
     [self pushControlPoints:initialControlPoints];
   }
   return self;
@@ -95,7 +113,9 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
     }
     previousControlPoint = controlPoint;
     [self.mutableControlPoints addObject:controlPoint];
+#if USE_BIPARTITE_GRAPH
     [self.mutableGraph addVertex:controlPoint toPartition:LTBipartiteGraphPartitionA];
+#endif
   }
 }
 
@@ -167,9 +187,11 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 }
 
 - (void)addSegment:(LTReparameterizedObject *)segment
-  forControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
+  forControlPoints:(NSArray<LTSplineControlPoint *> LT_POTENTIALLY_UNUSED *)controlPoints {
+#if USE_BIPARTITE_GRAPH
   [self.mutableGraph addVertex:segment toPartition:LTBipartiteGraphPartitionB];
   [self.mutableGraph addEdgesBetweenVertex:segment andVertices:[NSSet setWithArray:controlPoints]];
+#endif
 
   if (!self.mutableStack) {
     self.mutableStack = [[LTParameterizedObjectStack alloc] initWithParameterizedObject:segment];
