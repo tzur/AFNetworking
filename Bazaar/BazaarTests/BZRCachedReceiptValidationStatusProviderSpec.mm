@@ -238,6 +238,46 @@ context(@"invalidating cache", ^{
   });
 });
 
+context(@"storing first error date", ^{
+  it(@"should save first error date on first failure", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+        .andReturn([RACSignal error:error]);
+
+    OCMExpect([receiptValidationStatusCache storeFirstErrorDateTime:currentTime
+                                                applicationBundleID:applicationBundeID]);
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to
+        .finish();
+    OCMVerifyAll((id)receiptValidationStatusCache);
+  });
+
+  it(@"should not store the second error date on failure", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+        .andReturn([RACSignal error:error]);
+
+    OCMExpect([receiptValidationStatusCache
+        firstErrorDateTimeForApplicationBundleID:applicationBundeID]).andReturn([NSDate date]);
+    OCMReject([receiptValidationStatusCache storeFirstErrorDateTime:OCMOCK_ANY
+                                                applicationBundleID:applicationBundeID]);
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to.finish();
+
+    OCMVerifyAll((id)receiptValidationStatusCache);
+  });
+
+  it(@"should remove the first error date on success", ^{
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+    OCMExpect([receiptValidationStatusCache storeFirstErrorDateTime:nil
+                                                applicationBundleID:applicationBundeID]);
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to.finish();
+
+    OCMVerifyAll((id)receiptValidationStatusCache);
+  });
+});
+
 context(@"revalidating invalidated receipt cache", ^{
   it(@"should not revalidate cache if the subscription is not expired", ^{
     OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
