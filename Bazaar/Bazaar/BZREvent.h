@@ -29,6 +29,12 @@ LTEnumDeclare(NSUInteger, BZREventType,
 /// \c BZREventTypeCriticalError.
 - (instancetype)initWithType:(BZREventType *)eventType eventInfo:(NSDictionary *)eventInfo;
 
+/// Initializes with the given \c eventType, \c eventSubtype and \c eventInfo. \c eventError
+/// is set to \c nil. \c eventType cannot be an error event type, i.e., one of
+/// \c BZREventTypeNonCriticalError \c BZREventTypeCriticalError.
+- (instancetype)initWithType:(BZREventType *)eventType eventSubtype:(NSString *)eventSubtype
+                   eventInfo:(NSDictionary *)eventInfo;
+
 /// Type of the event.
 @property (readonly, nonatomic) BZREventType *eventType;
 
@@ -39,6 +45,9 @@ LTEnumDeclare(NSUInteger, BZREventType,
 /// Additional information of the event. \c nil in case the event represents an error, since the
 /// error contains the information in this case.
 @property (readonly, nonatomic, nullable) NSDictionary *eventInfo;
+
+/// Subtype of informational event, \c nil if not set during initialization.
+@property (readonly, nonatomic, nullable) NSString *eventSubtype;
 
 @end
 
