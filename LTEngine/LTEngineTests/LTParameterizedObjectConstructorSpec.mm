@@ -134,7 +134,7 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
         expect(parameterizedObject).to.beNil();
       });
 
-      it(@"should provide correct parameterized object from control point model created by itself", ^{
+      it(@"should provide parameterized object from control point model created by itself", ^{
         [constructor pushControlPoints:sufficientControlPoints];
         LTControlPointModel *model = [constructor reset];
         id<LTParameterizedObject> parameterizedObject =

@@ -153,7 +153,6 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-
 - (nullable id<LTParameterizedObject>)parameterizedObject {
   return self.spline;
 }
