@@ -78,6 +78,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns an immutable copy of the current configuration of this instance.
 - (DVNPipelineConfiguration *)currentConfiguration;
 
+/// Sets the configuration of the receiver to the given \c configuration.
+///
+/// @important Like upon initialization, the given \c configuration must be compatible to the
+/// parameterized object consecutively processed.
+- (void)setConfiguration:(DVNPipelineConfiguration *)configuration;
+
 /// Delegate to be informed.
 @property (weak, nonatomic) id<DVNPipelineDelegate> delegate;
 
