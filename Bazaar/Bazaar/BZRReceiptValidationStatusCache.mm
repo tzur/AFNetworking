@@ -118,7 +118,7 @@ NSString * const kBZRCachedReceiptValidationStatusFirstErrorDateTime =
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSDictionary<NSString *, id> * _Nullable receiptValidationStatusDictionary =
+  auto _Nullable receiptValidationStatusDictionary =
       (NSDictionary *)[self.keychainStorageRoute
                        valueForKey:kCachedReceiptValidationStatusStorageKey
                        serviceName:applicationBundleID error:error];

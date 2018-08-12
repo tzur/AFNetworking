@@ -202,37 +202,71 @@ context(@"invalidating cache", ^{
     expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).to.finish();
   });
 
-  it(@"should not invalidate cache if the time to invalidation has not passed", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+  it(@"should not invalidate cache the first error date is nil", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:applicationBundeID])
         .andReturn([RACSignal error:error]);
-    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
-        applicationBundleID:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
 
-    auto cacheEntry =
-        BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, [NSDate date]);
+    auto cacheEntry = BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, [NSDate date]);
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
-        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+             error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 
-    expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).to.finish();
+    auto cacheEntryWithExpiredSubscription =
+        [cacheEntry modelByOverridingPropertyAtKeypath:
+         @keypath(cacheEntry, receiptValidationStatus.receipt.subscription.isExpired)
+         withValue:@YES];
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to.finish();
+    OCMReject([receiptValidationStatusCache storeCacheEntry:cacheEntryWithExpiredSubscription
+        applicationBundleID:applicationBundeID error:[OCMArg anyObjectRef]]);
+  });
+
+  it(@"should not invalidate cache if the time to invalidation has not passed", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:applicationBundeID])
+        .andReturn([RACSignal error:error]);
+
+    auto dateInRecentPast = [NSDate
+        dateWithTimeInterval:-[BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive / 2]
+                   sinceDate:timeProvider.currentTime];
+
+    auto cacheEntry = BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, [NSDate date]);
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
+             error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+    OCMStub([receiptValidationStatusCache
+             firstErrorDateTimeForApplicationBundleID:applicationBundeID])
+        .andReturn(dateInRecentPast);
+
+    OCMReject([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                        applicationBundleID:OCMOCK_ANY
+                                                      error:[OCMArg anyObjectRef]]);
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to.finish();
+    OCMVerifyAll((id)receiptValidationStatusCache);
   });
 
   it(@"should invalidate cache if the time to invalidation has passed", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus:applicationBundeID])
         .andReturn([RACSignal error:error]);
 
-    auto cachingDateTime = [currentTime dateByAddingTimeInterval:-timeIntervalLongerThanCacheTTL];
-    auto cacheEntry =
-        BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, cachingDateTime);
+    auto dateInFarPast = [NSDate
+        dateWithTimeInterval:-[BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive * 2]
+                   sinceDate:timeProvider.currentTime];
+
+    auto cacheEntry = BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, [NSDate date]);
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
-        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+             error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+    OCMStub([receiptValidationStatusCache
+             firstErrorDateTimeForApplicationBundleID:applicationBundeID])
+        .andReturn(dateInFarPast);
+
     auto cacheEntryWithExpiredSubscription =
-        [[cacheEntry modelByOverridingPropertyAtKeypath:
+        [cacheEntry modelByOverridingPropertyAtKeypath:
          @keypath(cacheEntry, receiptValidationStatus.receipt.subscription.isExpired)
-         withValue:@YES]
-         modelByOverridingProperty:@keypath(cacheEntry, cachingDateTime) withValue:currentTime];
-    expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).to.finish();
+         withValue:@YES];
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundeID]).to.finish();
     OCMVerify([receiptValidationStatusCache storeCacheEntry:cacheEntryWithExpiredSubscription
         applicationBundleID:applicationBundeID error:[OCMArg anyObjectRef]]);
   });
