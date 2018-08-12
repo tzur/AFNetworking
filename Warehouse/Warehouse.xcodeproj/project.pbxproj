@@ -31,6 +31,11 @@
 		19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F10620AC58BA00AF8DB1 /* WHSProjectUpdateRequest.mm */; };
 		19A6F12520AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */; };
 		19B6592420A4BBED005B37AD /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198CE4FE20A32A31000E70BF /* libLTKitTestUtils.a */; };
+		8B1D382021204E50002E0D5C /* WHSBlobStack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B1D381E21204E50002E0D5C /* WHSBlobStack.mm */; };
+		8B1D385E212052CC002E0D5C /* WHSBlobStackSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B1D385D212052CC002E0D5C /* WHSBlobStackSpec.mm */; };
+		8B6ACD4C21207B3800052B64 /* libFMDB-IOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B1D38DF212056D2002E0D5C /* libFMDB-IOS.a */; };
+		8B74C2342121B3BB002048CB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B74C2332121B3BB002048CB /* libsqlite3.tbd */; };
+		8BAFF5ED2122CBE300886D1F /* WHSFakeDatabase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFF5EB2122CBE300886D1F /* WHSFakeDatabase.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -244,6 +249,55 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		8B1D38D8212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
+			remoteInfo = fmdb;
+		};
+		8B1D38DA212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE4290EF12B42F870088BD94;
+			remoteInfo = FMDB;
+		};
+		8B1D38DC212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BF5D041618416BB2008C5AA9;
+			remoteInfo = Tests;
+		};
+		8B1D38DE212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6290CBB5188FE836009790F8;
+			remoteInfo = "FMDB-IOS";
+		};
+		8B1D38E0212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73EFE1C326AB000FFC730;
+			remoteInfo = "FMDB iOS";
+		};
+		8B1D38E2212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
+			remoteInfo = "FMDB MacOS";
+		};
+		8B1D38E4212056D2002E0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2CD2426D1FCC09CA00479FDE;
+			remoteInfo = "FMDB watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -301,6 +355,13 @@
 		19E1533020A314E100F0F438 /* libWarehouse.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWarehouse.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E1535E20A3170200F0F438 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		19E1535F20A3170200F0F438 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8B1D381E21204E50002E0D5C /* WHSBlobStack.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSBlobStack.mm; sourceTree = "<group>"; };
+		8B1D381F21204E50002E0D5C /* WHSBlobStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHSBlobStack.h; sourceTree = "<group>"; };
+		8B1D385D212052CC002E0D5C /* WHSBlobStackSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSBlobStackSpec.mm; sourceTree = "<group>"; };
+		8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = ../third_party/fmdb/fmdb.xcodeproj; sourceTree = "<group>"; };
+		8B74C2332121B3BB002048CB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		8BAFF5EB2122CBE300886D1F /* WHSFakeDatabase.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSFakeDatabase.mm; sourceTree = "<group>"; };
+		8BAFF5EC2122CBE300886D1F /* WHSFakeDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHSFakeDatabase.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +375,7 @@
 				199B54DC20A49EE7009DABCC /* QuartzCore.framework in Frameworks */,
 				199B54D820A49B6D009DABCC /* UIKit.framework in Frameworks */,
 				1964BFB420A3259800FF28F5 /* libExpecta.a in Frameworks */,
+				8B6ACD4C21207B3800052B64 /* libFMDB-IOS.a in Frameworks */,
 				199B54AD20A49740009DABCC /* libLTKit.a in Frameworks */,
 				19B6592420A4BBED005B37AD /* libLTKitTestUtils.a in Frameworks */,
 				1964BFB220A3258100FF28F5 /* libOCMock.a in Frameworks */,
@@ -321,6 +383,7 @@
 				1964BF5D20A31E9900FF28F5 /* libWarehouse.a in Frameworks */,
 				199B54B320A4995C009DABCC /* libcompression.tbd in Frameworks */,
 				199B54B420A499E8009DABCC /* libextobjc_iOS.a in Frameworks */,
+				8B74C2342121B3BB002048CB /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +400,8 @@
 		192A2B9120BAE03A0045422C /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8BAFF5EC2122CBE300886D1F /* WHSFakeDatabase.h */,
+				8BAFF5EB2122CBE300886D1F /* WHSFakeDatabase.mm */,
 				1910C69420BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.h */,
 				1910C69320BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm */,
 			);
@@ -347,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				1910C74920BBED4C00C13FC5 /* NSError+WarehouseSpec.mm */,
+				8B1D385D212052CC002E0D5C /* WHSBlobStackSpec.mm */,
 				198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */,
 				1910C74820BBED4C00C13FC5 /* WHSProjectStorageSpec.mm */,
 				19A6F12420AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm */,
@@ -390,6 +456,7 @@
 				1964BF9C20A3245C00FF28F5 /* Specta.xcodeproj */,
 				198CE9DA20A42BFF000E70BF /* TestHost.xcodeproj */,
 				198CE61920A32B57000E70BF /* extobjc.xcodeproj */,
+				8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -444,6 +511,7 @@
 				199B54DB20A49EE7009DABCC /* QuartzCore.framework */,
 				199B54D720A49B6D009DABCC /* UIKit.framework */,
 				199B54B220A4995C009DABCC /* libcompression.tbd */,
+				8B74C2332121B3BB002048CB /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -520,6 +588,8 @@
 				192A2AB120BABD360045422C /* NSError+Warehouse.mm */,
 				192A2ACF20BABD700045422C /* NSErrorCodes+Warehouse.h */,
 				192A2AD020BABD700045422C /* NSErrorCodes+Warehouse.mm */,
+				8B1D381F21204E50002E0D5C /* WHSBlobStack.h */,
+				8B1D381E21204E50002E0D5C /* WHSBlobStack.mm */,
 				198CE4AA20A32989000E70BF /* WHSProjectSnapshot.h */,
 				198CE4A920A32989000E70BF /* WHSProjectSnapshot.mm */,
 				1910C74320BBEC8900C13FC5 /* WHSProjectStorage.h */,
@@ -548,6 +618,20 @@
 			);
 			name = Configurations;
 			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		8B1D38CF212056D2002E0D5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B1D38D9212056D2002E0D5C /* fmdb */,
+				8B1D38DB212056D2002E0D5C /* libFMDB.a */,
+				8B1D38DD212056D2002E0D5C /* Tests.xctest */,
+				8B1D38DF212056D2002E0D5C /* libFMDB-IOS.a */,
+				8B1D38E1212056D2002E0D5C /* FMDB.framework */,
+				8B1D38E3212056D2002E0D5C /* FMDB.framework */,
+				8B1D38E5212056D2002E0D5C /* FMDB.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -626,6 +710,10 @@
 				{
 					ProductGroup = 198CE61A20A32B57000E70BF /* Products */;
 					ProjectRef = 198CE61920A32B57000E70BF /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B1D38CF212056D2002E0D5C /* Products */;
+					ProjectRef = 8B1D38CE212056D2002E0D5C /* fmdb.xcodeproj */;
 				},
 				{
 					ProductGroup = 198CE4AD20A32A30000E70BF /* Products */;
@@ -849,6 +937,55 @@
 			remoteRef = 198CE9F920A42BFF000E70BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8B1D38D9212056D2002E0D5C /* fmdb */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = fmdb;
+			remoteRef = 8B1D38D8212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38DB212056D2002E0D5C /* libFMDB.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFMDB.a;
+			remoteRef = 8B1D38DA212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38DD212056D2002E0D5C /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = 8B1D38DC212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38DF212056D2002E0D5C /* libFMDB-IOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libFMDB-IOS.a";
+			remoteRef = 8B1D38DE212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38E1212056D2002E0D5C /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = 8B1D38E0212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38E3212056D2002E0D5C /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = 8B1D38E2212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B1D38E5212056D2002E0D5C /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = 8B1D38E4212056D2002E0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -868,6 +1005,8 @@
 			files = (
 				1910C69520BAEFDD00C13FC5 /* WHSProjectSnapshot+Tests.mm in Sources */,
 				1910C74A20BBED4C00C13FC5 /* WHSProjectStorageSpec.mm in Sources */,
+				8B1D385E212052CC002E0D5C /* WHSBlobStackSpec.mm in Sources */,
+				8BAFF5ED2122CBE300886D1F /* WHSFakeDatabase.mm in Sources */,
 				1910C74B20BBED4C00C13FC5 /* NSError+WarehouseSpec.mm in Sources */,
 				19A6F12520AC58E400AF8DB1 /* WHSProjectUpdateRequestSpec.mm in Sources */,
 				198CE4A820A327DA000E70BF /* WHSProjectSnapshotSpec.mm in Sources */,
@@ -879,6 +1018,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1910C74720BBEC8A00C13FC5 /* WHSProjectStorage.mm in Sources */,
+				8B1D382021204E50002E0D5C /* WHSBlobStack.mm in Sources */,
 				192A2AD120BABD710045422C /* NSErrorCodes+Warehouse.mm in Sources */,
 				198CE4AB20A32989000E70BF /* WHSProjectSnapshot.mm in Sources */,
 				19A6F12320AC58BB00AF8DB1 /* WHSProjectUpdateRequest.mm in Sources */,
@@ -949,6 +1089,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/fmdb/**",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -968,6 +1109,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/fmdb/**",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
