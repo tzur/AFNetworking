@@ -58,9 +58,11 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
   BZRReceiptTransactionInfo *transactionInfo = [BZRReceiptTransactionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptTransactionInfo, productId): @"foo",
     @instanceKeypath(BZRReceiptTransactionInfo, transactionId): @"0001337",
-    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:2337],
     @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
   } error:nil];
   BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{

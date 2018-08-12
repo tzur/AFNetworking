@@ -192,6 +192,8 @@
 		B9484B5A1D50A09900910066 /* BZRLocalContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = B9484B561D50A09900910066 /* BZRLocalContentFetcher.h */; };
 		B9484B5B1D50A09900910066 /* BZRLocalContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9484B571D50A09900910066 /* BZRLocalContentFetcher.mm */; };
 		B9484B5F1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9484B5E1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm */; };
+		B94AF97D203EFE03005FC9FC /* libOHHTTPStubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B94AF95F203EFDED005FC9FC /* libOHHTTPStubs.a */; };
+		B94AF9D7203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94AF9D6203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm */; };
 		B94B87781DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = B94B87741DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.h */; };
 		B94B87791DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94B87751DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.mm */; };
 		B94B877A1DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.h in Headers */ = {isa = PBXBuildFile; fileRef = B94B87761DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.h */; };
@@ -238,6 +240,7 @@
 		B999728D1DFD5CC5008CCD98 /* BZRProductsWithDiscountsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B999728B1DFD5CC5008CCD98 /* BZRProductsWithDiscountsProvider.h */; };
 		B999728E1DFD5CC5008CCD98 /* BZRProductsWithDiscountsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B999728C1DFD5CC5008CCD98 /* BZRProductsWithDiscountsProvider.mm */; };
 		B99972BD1DFD60A2008CCD98 /* BZRProductsWithDiscountsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B99972BC1DFD60A2008CCD98 /* BZRProductsWithDiscountsProviderSpec.mm */; };
+		B99DCEE42110946500FB3443 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B99DCEA32110946400FB3443 /* CFNetwork.framework */; };
 		B9A81B621D9060CA00168258 /* BZRProductPriceInfo+StoreKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B9A81B601D9060CA00168258 /* BZRProductPriceInfo+StoreKit.h */; };
 		B9A81B631D9060CA00168258 /* BZRProductPriceInfo+StoreKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9A81B611D9060CA00168258 /* BZRProductPriceInfo+StoreKit.mm */; };
 		B9A81B651D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9A81B641D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm */; };
@@ -799,6 +802,62 @@
 			remoteGlobalIDString = 65FA32971CE2185D00901304;
 			remoteInfo = Bazaar;
 		};
+		B94AF95E203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09110A4119805F4800D175E4;
+			remoteInfo = "OHHTTPStubs iOS StaticLib";
+		};
+		B94AF960203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09110A5119805F4800D175E4;
+			remoteInfo = "OHHTTPStubs iOS Lib Tests";
+		};
+		B94AF962203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 725CD99B1A9EB65100F84C8B;
+			remoteInfo = "OHHTTPStubs iOS Framework";
+		};
+		B94AF964203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 093442F91B80EC4A00A91535;
+			remoteInfo = "OHHTTPStubs iOS Fmk Tests";
+		};
+		B94AF966203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 095981C219806A7900807DBE;
+			remoteInfo = "OHHTTPStubs Mac Framework";
+		};
+		B94AF968203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 095981D219806A7900807DBE;
+			remoteInfo = "OHHTTPStubs Mac Tests";
+		};
+		B94AF96A203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EAA436A51BE1598D000E9E99;
+			remoteInfo = "OHHTTPStubs tvOS Framework";
+		};
+		B94AF96C203EFDED005FC9FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EA100AB71BE15BE400129352;
+			remoteInfo = "OHHTTPStubs tvOS Fmk Tests";
+		};
 		B94C46BC20B9956C00C8B65B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65FA32901CE2185D00901304 /* Project object */;
@@ -1044,6 +1103,8 @@
 		B9484B561D50A09900910066 /* BZRLocalContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRLocalContentFetcher.h; sourceTree = "<group>"; };
 		B9484B571D50A09900910066 /* BZRLocalContentFetcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRLocalContentFetcher.mm; sourceTree = "<group>"; };
 		B9484B5E1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRLocalContentFetcherSpec.mm; sourceTree = "<group>"; };
+		B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OHHTTPStubs.xcodeproj; path = ../third_party/OHHTTPStubs/OHHTTPStubs/OHHTTPStubs.xcodeproj; sourceTree = "<group>"; };
+		B94AF9D6203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationStatusIntegrationSpec.mm; sourceTree = "<group>"; };
 		B94B87741DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRExternalTriggerReceiptValidator.h; sourceTree = "<group>"; };
 		B94B87751DC1F477003BF2C4 /* BZRExternalTriggerReceiptValidator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRExternalTriggerReceiptValidator.mm; sourceTree = "<group>"; };
 		B94B87761DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPeriodicReceiptValidatorActivator.h; sourceTree = "<group>"; };
@@ -1096,6 +1157,7 @@
 		B99CCA7720B70BEE00E0742F /* BazaarTestUtils-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BazaarTestUtils-Prefix.pch"; sourceTree = "<group>"; };
 		B99CCA7820B70BF500E0742F /* BZRTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTestUtils.h; sourceTree = "<group>"; };
 		B99CCA7920B70BF500E0742F /* BZRTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTestUtils.mm; sourceTree = "<group>"; };
+		B99DCEA32110946400FB3443 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		B9A81B601D9060CA00168258 /* BZRProductPriceInfo+StoreKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRProductPriceInfo+StoreKit.h"; sourceTree = "<group>"; };
 		B9A81B611D9060CA00168258 /* BZRProductPriceInfo+StoreKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProductPriceInfo+StoreKit.mm"; sourceTree = "<group>"; };
 		B9A81B641D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRReceiptModel+ProductPurchasedSpec.mm"; sourceTree = "<group>"; };
@@ -1226,6 +1288,7 @@
 			files = (
 				9FE2896C2097055600D33E43 /* AFNetworking.framework in Frameworks */,
 				9FCBD31F208F615900080BEA /* AdSupport.framework in Frameworks */,
+				B99DCEE42110946500FB3443 /* CFNetwork.framework in Frameworks */,
 				65F8A5E01F93418D007F80F6 /* CloudKit.framework in Frameworks */,
 				8861FCB21E5A273600CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCB01E5A272500CA1436 /* GLKit.framework in Frameworks */,
@@ -1248,6 +1311,7 @@
 				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
 				9FCBD31B208F5FD500080BEA /* libMilkshake.a in Frameworks */,
 				6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */,
+				B94AF97D203EFE03005FC9FC /* libOHHTTPStubs.a in Frameworks */,
 				6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */,
 				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
 				CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */,
@@ -1393,8 +1457,8 @@
 			children = (
 				6529F85D1CEB65E900FBABFE /* libextobjc_OSX.a */,
 				6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */,
-				6529F8611CEB65E900FBABFE /* Logic Tests.octest */,
-				6529F8631CEB65E900FBABFE /* iOS Tests.octest */,
+				6529F8611CEB65E900FBABFE /* Logic Tests.xctest */,
+				6529F8631CEB65E900FBABFE /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1463,6 +1527,7 @@
 		654B1F0B1CE22030001F36FA /* BazaarTests */ = {
 			isa = PBXGroup;
 			children = (
+				B94AF99A203EFE7B005FC9FC /* Integration Tests */,
 				654B1F151CE22063001F36FA /* Supporting Files */,
 				65B939A71E251AF300C067A7 /* Test Utils */,
 				654B1F1C1CE221C6001F36FA /* Tests */,
@@ -1507,6 +1572,7 @@
 				6529F8271CEB608B00FBABFE /* Mantle.xcodeproj */,
 				9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */,
 				654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */,
+				B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */,
 				8B6863FF1F33477D00F0EF4C /* ReactiveObjC.xcodeproj */,
 				654B1F391CE2228C001F36FA /* Specta.xcodeproj */,
 				656469671D46463B006BD7DE /* TestHost.xcodeproj */,
@@ -1933,6 +1999,7 @@
 			isa = PBXGroup;
 			children = (
 				9FCBD31C208F608500080BEA /* AdSupport.framework */,
+				B99DCEA32110946400FB3443 /* CFNetwork.framework */,
 				65F8A5DF1F93418D007F80F6 /* CloudKit.framework */,
 				8861FCB11E5A273600CA1436 /* CoreGraphics.framework */,
 				8861FCAF1E5A272400CA1436 /* GLKit.framework */,
@@ -2031,6 +2098,29 @@
 				CD315C881F28C7EC005C3152 /* BZRRetryContentFetcherSpec.mm */,
 			);
 			name = "Content Fetching";
+			sourceTree = "<group>";
+		};
+		B94AF930203EFDEB005FC9FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B94AF95F203EFDED005FC9FC /* libOHHTTPStubs.a */,
+				B94AF961203EFDED005FC9FC /* OHHTTPStubs iOS Lib Tests.xctest */,
+				B94AF963203EFDED005FC9FC /* OHHTTPStubs.framework */,
+				B94AF965203EFDED005FC9FC /* OHHTTPStubs iOS Fmk Tests.xctest */,
+				B94AF967203EFDED005FC9FC /* OHHTTPStubs.framework */,
+				B94AF969203EFDED005FC9FC /* OHHTTPStubs Mac Tests.xctest */,
+				B94AF96B203EFDED005FC9FC /* OHHTTPStubs.framework */,
+				B94AF96D203EFDED005FC9FC /* OHHTTPStubs tvOS Fmk Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B94AF99A203EFE7B005FC9FC /* Integration Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B94AF9D6203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm */,
+			);
+			name = "Integration Tests";
 			sourceTree = "<group>";
 		};
 		B959B80E1E363BE00011DF54 /* Events */ = {
@@ -2537,6 +2627,10 @@
 					ProjectRef = 654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */;
 				},
 				{
+					ProductGroup = B94AF930203EFDEB005FC9FC /* Products */;
+					ProjectRef = B94AF92F203EFDEB005FC9FC /* OHHTTPStubs.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B6864001F33477D00F0EF4C /* Products */;
 					ProjectRef = 8B6863FF1F33477D00F0EF4C /* ReactiveObjC.xcodeproj */;
 				},
@@ -2630,17 +2724,17 @@
 			remoteRef = 6529F85E1CEB65E900FBABFE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6529F8611CEB65E900FBABFE /* Logic Tests.octest */ = {
+		6529F8611CEB65E900FBABFE /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 6529F8601CEB65E900FBABFE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6529F8631CEB65E900FBABFE /* iOS Tests.octest */ = {
+		6529F8631CEB65E900FBABFE /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 6529F8621CEB65E900FBABFE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2959,6 +3053,62 @@
 			remoteRef = 9FCBD2C2208F52A000080BEA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B94AF95F203EFDED005FC9FC /* libOHHTTPStubs.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOHHTTPStubs.a;
+			remoteRef = B94AF95E203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF961203EFDED005FC9FC /* OHHTTPStubs iOS Lib Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs iOS Lib Tests.xctest";
+			remoteRef = B94AF960203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF963203EFDED005FC9FC /* OHHTTPStubs.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OHHTTPStubs.framework;
+			remoteRef = B94AF962203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF965203EFDED005FC9FC /* OHHTTPStubs iOS Fmk Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs iOS Fmk Tests.xctest";
+			remoteRef = B94AF964203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF967203EFDED005FC9FC /* OHHTTPStubs.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OHHTTPStubs.framework;
+			remoteRef = B94AF966203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF969203EFDED005FC9FC /* OHHTTPStubs Mac Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs Mac Tests.xctest";
+			remoteRef = B94AF968203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF96B203EFDED005FC9FC /* OHHTTPStubs.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OHHTTPStubs.framework;
+			remoteRef = B94AF96A203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B94AF96D203EFDED005FC9FC /* OHHTTPStubs tvOS Fmk Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "OHHTTPStubs tvOS Fmk Tests.xctest";
+			remoteRef = B94AF96C203EFDED005FC9FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B9EF54E71FCD8E0800083414 /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3007,6 +3157,7 @@
 				65DA71C01D4A6ACC00B4FA45 /* NSFileManager+BazaarSpec.mm in Sources */,
 				B9FD0A021D645DBF00523BB4 /* BZRTimeProviderSpec.mm in Sources */,
 				B91E01941FE688B600208868 /* BZRFakeAggregatedReceiptValidationStatusProvider.mm in Sources */,
+				B94AF9D7203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm in Sources */,
 				CD9843F91ED18E05007CBCBC /* BZRCompositeContentFetcherSpec.mm in Sources */,
 				65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */,
 				B93F67061DD9B5FA009E9D5D /* BZRProductsWithPriceInfoProviderSpec.mm in Sources */,
