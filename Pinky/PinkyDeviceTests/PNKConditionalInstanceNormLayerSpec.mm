@@ -77,11 +77,11 @@ context(@"encoding parameters checking", ^{
                                                     normalizationModel:normalizationModel
                                                        activationModel:activationModel];
 
-    auto inputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+    auto inputImage = [MPSImage mtb_float16ImageWithDevice:device width:kInputWidth
                                                     height:kInputHeight
                                                   channels:kInputRGBFeatureChannels];
 
-    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device width:kInputWidth
                                                      height:kInputHeight
                                                    channels:kInputRGBFeatureChannels];
 

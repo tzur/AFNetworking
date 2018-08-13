@@ -5,8 +5,6 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
-#import "MPSImage+Factory.h"
-
 /// Performs 2x bilinear upsampling with non-aligned corners. Produces same results as
 /// <tt>tf.image.resize_images(method=ResizeMethod.BILINEAR, align_corners=False)</tt>. See
 /// https://www.tensorflow.org/api_docs/python/tf/image/resize_images for more details.

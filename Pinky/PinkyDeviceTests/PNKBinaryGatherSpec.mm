@@ -123,10 +123,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth + 1, kInputHeight, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -137,10 +137,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight + 1, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -151,10 +151,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth + 1, kInputHeight, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -165,10 +165,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight + 1, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -179,10 +179,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight, kPrimaryInputFeatureChannels + 1};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -193,10 +193,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight, kSecondaryInputFeatureChannels + 1};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];
@@ -207,10 +207,10 @@ context(@"parameter tests", ^{
       MTLSize primaryInputSize{kInputWidth, kInputHeight, kPrimaryInputFeatureChannels};
       MTLSize secondaryInputSize{kInputWidth, kInputHeight, kSecondaryInputFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels + 1};
-      auto primaryInputImage = [MPSImage pnk_float16ImageWithDevice:device size:primaryInputSize];
-      auto secondaryInputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto primaryInputImage = [MPSImage mtb_float16ImageWithDevice:device size:primaryInputSize];
+      auto secondaryInputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                                  size:secondaryInputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                   secondaryInputImage:secondaryInputImage outputImage:outputImage];

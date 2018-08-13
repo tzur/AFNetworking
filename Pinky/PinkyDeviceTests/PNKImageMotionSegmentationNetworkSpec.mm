@@ -26,11 +26,11 @@ it(@"should produce segmentation with pixels in correct range", ^{
 
   cv::Mat4b inputMat = LTLoadMatFromBundle(bundle, @"tree.png");
 
-  auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+  auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
                                                  height:inputMat.rows channels:3];
   PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-  auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+  auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
                                                   height:inputMat.rows channels:1];
 
   [network encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];

@@ -3,8 +3,9 @@
 
 #import "PNKStyleTransferProcessor.h"
 
+#import <MetalToolbox/MPSImage+Factory.h>
+
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKConstantAlpha.h"
@@ -197,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
-  auto netInputImage = [MPSImage pnk_unorm8ImageWithDevice:self.device
+  auto netInputImage = [MPSImage mtb_unorm8ImageWithDevice:self.device
                                                      width:CVPixelBufferGetWidth(output)
                                                     height:CVPixelBufferGetHeight(output)
                                                   channels:self.networkInputChannels];

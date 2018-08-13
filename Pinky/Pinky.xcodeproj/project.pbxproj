@@ -75,7 +75,6 @@
 		06D36EE91F6ACA6D00090584 /* Model.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE11F6ACA5600090584 /* Model.proto */; };
 		06D36EEA1F6ACA6D00090584 /* NeuralNetwork.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE41F6ACA5600090584 /* NeuralNetwork.proto */; };
 		06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E98DDF1F2149710047F80A /* PNKComputeState.mm */; };
-		06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */; };
 		06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */; };
 		06EDBD561F8FB18D00A3FF1E /* PNKBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */; };
 		06FB205A1F92AC0C009F1949 /* PNKTemplatedIO.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */; };
@@ -800,8 +799,6 @@
 		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
 		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
 		06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRef+Pinky.h"; sourceTree = "<group>"; };
-		06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSImage+Factory.h"; sourceTree = "<group>"; };
-		06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSImage+Factory.mm"; sourceTree = "<group>"; };
 		06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSTemporaryImage+Factory.mm"; sourceTree = "<group>"; };
 		06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSTemporaryImage+Factory.h"; sourceTree = "<group>"; };
 		06EDBD541F8FB18D00A3FF1E /* PNKBufferExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKBufferExtensions.h; sourceTree = "<group>"; };
@@ -1952,8 +1949,6 @@
 		C9515C2E1F01125100B973F1 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
-				06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */,
-				06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */,
 				E4DA81251FFA2CD700BF8826 /* MPSImage+Size.h */,
 				E4DA81241FFA2CD700BF8826 /* MPSImage+Size.mm */,
 				06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */,
@@ -2866,7 +2861,6 @@
 				E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */,
 				E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */,
 				2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */,
-				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				E4DA81261FFA2CD700BF8826 /* MPSImage+Size.mm in Sources */,
 				0636A0831F8173F70064E561 /* PNKInstanceNormLayer.mm in Sources */,
 				E47546751FD96E3C006E66C6 /* PNKConvolutionUtils.mm in Sources */,

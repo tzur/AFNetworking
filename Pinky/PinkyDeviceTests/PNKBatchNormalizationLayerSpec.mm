@@ -154,9 +154,9 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                         size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                          size:outputSize];
       expect(^{
         [batchNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -168,9 +168,9 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kFeatureChannels};
       MTLSize outputSize{kInputWidth + 1, kInputHeight, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                         size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                          size:outputSize];
       expect(^{
         [batchNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -182,9 +182,9 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kFeatureChannels + 1};
       MTLSize outputSize{kInputWidth, kInputHeight, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                         size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                          size:outputSize];
       expect(^{
         [batchNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -196,9 +196,9 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kFeatureChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kFeatureChannels + 1};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                         size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device
                                                          size:outputSize];
       expect(^{
         [batchNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage

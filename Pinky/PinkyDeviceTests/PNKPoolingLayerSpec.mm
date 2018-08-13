@@ -237,7 +237,7 @@ context(@"parameter checks", ^{
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
       auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];
@@ -249,7 +249,7 @@ context(@"parameter checks", ^{
       MTLSize outputSize{kInputWidth + 1, kInputHeight, 1};
 
       auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];
@@ -261,7 +261,7 @@ context(@"parameter checks", ^{
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
       auto inputImage = PNKImageMakeAndClearHalf(device, inputSize);
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [poolingKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                  outputImage:outputImage];

@@ -4,9 +4,9 @@
 #import "PNKRunnableNeuralNetwork.h"
 
 #import <LTKit/NSArray+Functional.h>
+#import <MetalToolbox/MPSImage+Factory.h>
 
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKCollectionUtils.h"
 #import "PNKNetworkSchemeFactory.h"

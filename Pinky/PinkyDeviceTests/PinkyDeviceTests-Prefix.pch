@@ -35,10 +35,12 @@ extern "C" {
 #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>
 #endif
 
+// MetalToolbox.
+#import <MetalToolbox/MPSImage+Factory.h>
+
 // Pinky.
 #import "EXPMatchers+equalMTLSize.h"
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKKernelExamples.h"

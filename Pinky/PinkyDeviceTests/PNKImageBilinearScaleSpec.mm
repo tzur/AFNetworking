@@ -38,8 +38,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{32, 32, 2};
       MTLSize outputSize{32, 32, 4};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage
                          outputImage:outputImage];
@@ -62,12 +62,12 @@ context(@"resize", ^{
 
   it(@"should resize image correctly", ^{
     auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
                                                  channels:inputMat.channels()];
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputImage.width * 2.5
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 2.5
                                                     height:inputImage.height * 2.5 channels:4];
 
     [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
@@ -88,12 +88,12 @@ context(@"resize", ^{
     cv::Mat inputMat;
     cv::cvtColor(inputMatRGBA, inputMat, cv::COLOR_RGBA2GRAY);
 
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
                                                  channels:inputMat.channels()];
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputImage.width * 0.5
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 0.5
                                                     height:inputImage.height * 0.5 channels:4];
 
     [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
@@ -114,12 +114,12 @@ context(@"resize", ^{
 
   it(@"should resize image and transform RGBA to Y correctly", ^{
     auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputMat.cols
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
                                                    height:inputMat.rows
                                                  channels:inputMat.channels()];
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputImage.width * 1.5
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 1.5
                                                     height:inputImage.height * 1.5 channels:1];
 
     [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
@@ -145,7 +145,7 @@ context(@"temporary image read count", ^{
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
     MTLSize outputSize{32, 32, 4};
-    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
 
     MTLSize inputSize{64, 64, 4};
     auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer

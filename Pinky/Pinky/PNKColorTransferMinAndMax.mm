@@ -3,7 +3,8 @@
 
 #import "PNKColorTransferMinAndMax.h"
 
-#import "MPSImage+Factory.h"
+#import <MetalToolbox/MPSImage+Factory.h>
+
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 
@@ -169,7 +170,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
   _mpsMinMax = [[MPSImageStatisticsMinAndMax alloc] initWithDevice:self.device];
   auto mpsMinMaxResults = [NSMutableArray array];
   for (NSUInteger i = 0; i < self.inputSizes.count; ++i) {
-    auto result = [MPSImage pnk_imageWithDevice:self.device
+    auto result = [MPSImage mtb_imageWithDevice:self.device
                                          format:MPSImageFeatureChannelFormatFloat32
                                            size:{2, 1, 4}];
     [mpsMinMaxResults addObject:result];
@@ -187,7 +188,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
     NSUInteger width = inputSize.width;
     NSUInteger height = inputSize.height;
     auto transformedInput = [MPSTemporaryImage
-                             pnk_imageWithDevice:self.device
+                             mtb_imageWithDevice:self.device
                              format:MPSImageFeatureChannelFormatFloat32
                              width:width height:height channels:4];
 

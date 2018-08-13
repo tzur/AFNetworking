@@ -14,7 +14,7 @@ static MPSImage *PNKUniformMotionMap(id<MTLDevice> device, int width, int height
   cv::Mat halfFloatMat;
   LTConvertMat(floatMat, &halfFloatMat, CV_16FC2);
 
-  auto motionImage = [MPSImage pnk_float16ImageWithDevice:device width:width height:height
+  auto motionImage = [MPSImage mtb_float16ImageWithDevice:device width:width height:height
                                                  channels:2];
   PNKCopyMatToMTLTexture(motionImage.texture, halfFloatMat);
   return motionImage;
@@ -35,7 +35,7 @@ it(@"should calculate motion map and segmentation map correctly", ^{
   segmentation(cv::Rect(0, kSize / 2, kSize / 2, kSize / 2)) = pnk::ImageMotionLayerTypeGrass;
   segmentation(cv::Rect(kSize / 2, kSize / 2, kSize / 2, kSize / 2)) =
       pnk::ImageMotionLayerTypeWater;
-  auto segmentationImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kSize height:kSize
+  auto segmentationImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kSize height:kSize
                                                       channels:1];
   PNKCopyMatToMTLTexture(segmentationImage.texture, segmentation);
 
@@ -45,10 +45,10 @@ it(@"should calculate motion map and segmentation map correctly", ^{
   auto waterMotionImage = PNKUniformMotionMap(device, kSize, kSize, -0.25, -0.25);
   auto staticMotionImage = PNKUniformMotionMap(device, kSize, kSize, 0, 0);
 
-  auto outputSegmentationImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kSize height:kSize
+  auto outputSegmentationImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kSize height:kSize
                                                             channels:1];
 
-  auto outputMotionImage = [MPSImage pnk_float16ImageWithDevice:device width:kSize height:kSize
+  auto outputMotionImage = [MPSImage mtb_float16ImageWithDevice:device width:kSize height:kSize
                                                        channels:2];
 
   auto layerFusion = [[PNKImageMotionLayerFusion alloc] initWithDevice:device];
