@@ -15,11 +15,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// Operation to be executed by the kernel.
 @property (readonly, nonatomic) pnk::ArithmeticOperation operation;
 
-/// Kernel state to encode single texture addition.
+/// Kernel state to encode single texture arithmetic operation.
 @property (readonly, nonatomic) id<MTLComputePipelineState> stateSingle;
 
-/// Kernel state to encode texture array addition.
+/// Kernel state to encode single texture arithmetic operation with broadcasting the primary input.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateSingleBroadcastPrimary;
+
+/// Kernel state to encode single texture arithmetic operation with broadcasting the secondary
+/// input.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateSingleBroadcastSecondary;
+
+/// Kernel state to encode texture array arithmetic operation.
 @property (readonly, nonatomic) id<MTLComputePipelineState> stateArray;
+
+/// Kernel state to encode arithmetic operation such that the primary input is a single-channel
+/// texture broadcasted onto a texture array secondary input.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateArrayBroadcastPrimary;
+
+/// Kernel state to encode arithmetic operation such that the secondary input is a single-channel
+/// texture broadcasted onto a texture array primary input.
+@property (readonly, nonatomic) id<MTLComputePipelineState> stateArrayBroadcastSecondary;
 
 @end
 
@@ -28,11 +43,25 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize primaryInputFeatureChannels = _primaryInputFeatureChannels;
 @synthesize secondaryInputFeatureChannels = _secondaryInputFeatureChannels;
 
-/// Kernel function name for a single texture.
-static NSString * const kKernelSingleFunctionName = @"arithmeticSingle";
+/// Kernel function name for a single texture. Does not use broadcasting.
+static NSString * const kKernelSingle = @"arithmeticSingle";
 
-/// Kernel function name for texture array.
-static NSString * const kKernelArrayFunctionName = @"arithmeticArray";
+/// Kernel function name for a single texture. Broadcasts the primary input.
+static NSString * const kKernelSingleBroadcastPrimary = @"arithmeticSingleBroadcastPrimary";
+
+/// Kernel function name for a single texture. Broadcasts the secondary input.
+static NSString * const kKernelSingleBroadcastSecondary = @"arithmeticSingleBroadcastSecondary";
+
+/// Kernel function name for texture array. Does not use broadcasting.
+static NSString * const kKernelArray = @"arithmeticArray";
+
+/// Kernel function name for texture array. Broadcasts the single-channel primary input texture
+/// onto a texture array secondary input.
+static NSString * const kKernelArrayBroadcastPrimary = @"arithmeticArrayBroadcastPrimary";
+
+/// Kernel function name for texture array. Broadcasts the single-channel secondary input texture
+/// onto a texture array primary input.
+static NSString * const kKernelArrayBroadcastSecondary = @"arithmeticArrayBroadcastSecondary";
 
 /// Family name of the kernel functions for debug purposes.
 static NSString * const kDebugGroupName = @"arithmetic";
@@ -54,43 +83,25 @@ static NSString * const kDebugGroupName = @"arithmetic";
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&_operation type:MTLDataTypeUShort withName:@"operation"];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
-                                                    functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
-                                                   functionConstants);
+  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingle, functionConstants);
+  _stateSingleBroadcastPrimary = PNKCreateComputeStateWithConstants(self.device,
+                                                                    kKernelSingleBroadcastPrimary,
+                                                                    functionConstants);
+  _stateSingleBroadcastSecondary =
+      PNKCreateComputeStateWithConstants(self.device, kKernelSingleBroadcastSecondary,
+                                         functionConstants);
+  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArray, functionConstants);
+  _stateArrayBroadcastPrimary = PNKCreateComputeStateWithConstants(self.device,
+                                                                   kKernelArrayBroadcastPrimary,
+                                                                   functionConstants);
+  _stateArrayBroadcastSecondary = PNKCreateComputeStateWithConstants(self.device,
+                                                                     kKernelArrayBroadcastSecondary,
+                                                                     functionConstants);
 }
 
 #pragma mark -
 #pragma mark PNKBinaryKernel
 #pragma mark -
-
-- (void)verifyParametersWithPrimaryInputImage:(MPSImage *)primaryInputImage
-                          secondaryInputImage:(MPSImage *)secondaryInputImage
-                                  outputImage:(MPSImage *)outputImage {
-  LTParameterAssert(primaryInputImage.width == secondaryInputImage.width, @"Primary input "
-                    "image width must match secondary input image width. got: (%lu, %lu)",
-                    (unsigned long)primaryInputImage.width,
-                    (unsigned long)secondaryInputImage.width);
-  LTParameterAssert(primaryInputImage.height == secondaryInputImage.height, @"Primary input "
-                    "image height must match secondary input image height. got: (%lu, %lu)",
-                    (unsigned long)primaryInputImage.height,
-                    (unsigned long)secondaryInputImage.height);
-  LTParameterAssert(primaryInputImage.featureChannels == secondaryInputImage.featureChannels,
-                    @"Primary input image featureChannels must match secondary input image "
-                    "featureChannels. got: (%lu, %lu)",
-                    (unsigned long)primaryInputImage.featureChannels,
-                    (unsigned long)secondaryInputImage.featureChannels);
-  LTParameterAssert(primaryInputImage.width == outputImage.width,
-                    @"Primary input image width must match output image width. got: (%lu, %lu)",
-                    (unsigned long)primaryInputImage.width, (unsigned long)outputImage.width);
-  LTParameterAssert(primaryInputImage.height == outputImage.height, @"Primary input image "
-                    "height must match output image height. got: (%lu, %lu)",
-                    (unsigned long)primaryInputImage.height, (unsigned long)outputImage.height);
-  LTParameterAssert(primaryInputImage.featureChannels == outputImage.featureChannels, @"Primary "
-                    "input image featureChannels must match output image featureChannels. got: "
-                    "(%lu, %lu)", (unsigned long)primaryInputImage.featureChannels,
-                    (unsigned long)outputImage.featureChannels);
-}
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
             primaryInputImage:(MPSImage *)primaryInputImage
@@ -103,10 +114,51 @@ static NSString * const kDebugGroupName = @"arithmetic";
 
   MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
-  auto state = outputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
+  id<MTLComputePipelineState> state;
+  if (primaryInputImage.featureChannels == secondaryInputImage.featureChannels) {
+    state = outputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
+  } else if (primaryInputImage.featureChannels == 1) {
+    state = outputImage.pnk_isSingleTexture ?
+        self.stateSingleBroadcastPrimary : self.stateArrayBroadcastPrimary;
+  } else {
+    state = outputImage.pnk_isSingleTexture ?
+        self.stateSingleBroadcastSecondary : self.stateArrayBroadcastSecondary;
+  }
 
   PNKComputeDispatchWithDefaultThreads(state, commandBuffer, inputImages, outputImages,
                                        kDebugGroupName, workingSpaceSize);
+}
+
+- (void)verifyParametersWithPrimaryInputImage:(MPSImage *)primaryInputImage
+                          secondaryInputImage:(MPSImage *)secondaryInputImage
+                                  outputImage:(MPSImage *)outputImage {
+  LTParameterAssert(primaryInputImage.width == secondaryInputImage.width, @"Primary input "
+                    "image width must match secondary input image width. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.width,
+                    (unsigned long)secondaryInputImage.width);
+  LTParameterAssert(primaryInputImage.height == secondaryInputImage.height, @"Primary input "
+                    "image height must match secondary input image height. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.height,
+                    (unsigned long)secondaryInputImage.height);
+  LTParameterAssert(primaryInputImage.featureChannels == secondaryInputImage.featureChannels ||
+                    primaryInputImage.featureChannels == 1 ||
+                    secondaryInputImage.featureChannels == 1,
+                    @"Either primary input image featureChannels must match secondary input image "
+                    "featureChannels or one of them must have a single channel. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.featureChannels,
+                    (unsigned long)secondaryInputImage.featureChannels);
+  LTParameterAssert(primaryInputImage.width == outputImage.width,
+                    @"Primary input image width must match output image width. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.width, (unsigned long)outputImage.width);
+  LTParameterAssert(primaryInputImage.height == outputImage.height, @"Primary input image "
+                    "height must match output image height. got: (%lu, %lu)",
+                    (unsigned long)primaryInputImage.height, (unsigned long)outputImage.height);
+  LTParameterAssert(outputImage.featureChannels == std::max(primaryInputImage.featureChannels,
+                                                            secondaryInputImage.featureChannels),
+                    @"Output image featureChannels must match the maximal featureChannels of the "
+                    "two input images. got: (%lu, %lu)", (unsigned long)outputImage.featureChannels,
+                    (unsigned long)std::max(primaryInputImage.featureChannels,
+                                            secondaryInputImage.featureChannels));
 }
 
 - (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize {
