@@ -196,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
       skip:1]
       map:^BZREvent *(NSLocale * _Nullable appStoreLocale) {
         return [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:@{
-            BZREventAppStoreLocaleKey: appStoreLocale.localeIdentifier ?: [NSNull null]
+            kBZREventAppStoreLocaleKey: appStoreLocale.localeIdentifier ?: [NSNull null]
         }];
       }];
 }

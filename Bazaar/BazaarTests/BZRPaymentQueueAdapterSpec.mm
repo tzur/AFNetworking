@@ -5,6 +5,8 @@
 
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRPaymentQueue.h"
+#import "BZRTestUtils.h"
+#import "SKPaymentTransaction+Bazaar.h"
 
 /// Fake \c BZRInternalPaymentQueue.
 @interface BZRFakeInternalPaymentQueue : NSObject <BZRPaymentQueue>
@@ -103,17 +105,26 @@ context(@"transactions", ^{
   __block NSArray<SKPaymentTransaction *> *restorationTransactions;
 
   beforeEach(^{
-    SKPaymentTransaction *purchasingTransaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([purchasingTransaction transactionState])
-        .andReturn(SKPaymentTransactionStatePurchasing);
-    SKPaymentTransaction *deferredTransaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([deferredTransaction transactionState]).andReturn(SKPaymentTransactionStateDeferred);
-    SKPaymentTransaction *failedTransaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([failedTransaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
-    SKPaymentTransaction *purchasedTransaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([purchasedTransaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    SKPaymentTransaction *restoredTransaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([restoredTransaction transactionState]).andReturn(SKPaymentTransactionStateRestored);
+    SKPaymentTransaction *purchasingTransaction =
+        BZRMockedSKPaymentTransaction(@"foo", @"bar", SKPaymentTransactionStatePurchasing);
+    OCMStub([purchasingTransaction transactionStateString])
+        .andReturn(@"SKPaymentTransactionStatePurchasing");
+    SKPaymentTransaction *deferredTransaction =
+        BZRMockedSKPaymentTransaction(@"foo", @"bar", SKPaymentTransactionStateDeferred);
+    OCMStub([deferredTransaction transactionStateString])
+        .andReturn(@"SKPaymentTransactionStateDeferred");
+    SKPaymentTransaction *failedTransaction =
+        BZRMockedSKPaymentTransaction(@"foo", @"bar", SKPaymentTransactionStateFailed);
+    OCMStub([failedTransaction transactionStateString])
+        .andReturn(@"SKPaymentTransactionStateFailed");
+    SKPaymentTransaction *purchasedTransaction =
+        BZRMockedSKPaymentTransaction(@"foo", @"bar", SKPaymentTransactionStatePurchased);
+    OCMStub([purchasedTransaction transactionStateString])
+        .andReturn(@"SKPaymentTransactionStatePurchased");
+    SKPaymentTransaction *restoredTransaction =
+        BZRMockedSKPaymentTransaction(@"foo", @"bar", SKPaymentTransactionStateRestored);
+    OCMStub([restoredTransaction transactionStateString])
+        .andReturn(@"SKPaymentTransactionStateRestored");
 
     paymentTransactions = @[
       purchasingTransaction,
@@ -331,8 +342,8 @@ if (@available(iOS 11.0, *)) {
 
         expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
           return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
-              [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"] &&
-              [event.eventInfo[BZREventPromotedIAPAbortedKey] boolValue];
+              [event.eventInfo[kBZREventProductIdentifierKey] isEqualToString:@"foo"] &&
+              [event.eventInfo[kBZREventPromotedIAPAbortedKey] boolValue];
         });
       });
     });
@@ -359,8 +370,8 @@ if (@available(iOS 11.0, *)) {
 
         expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
           return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
-              [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"] &&
-              ![event.eventInfo[BZREventPromotedIAPAbortedKey] boolValue];
+              [event.eventInfo[kBZREventProductIdentifierKey] isEqualToString:@"foo"] &&
+              ![event.eventInfo[kBZREventPromotedIAPAbortedKey] boolValue];
         });
       });
 

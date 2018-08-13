@@ -5,17 +5,40 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRReceiptValidationStatus;
+@class BZRReceiptValidationStatus, SKPaymentTransaction;
 
 /// Key in the event info dictionary mapping to a product's identifier.
-extern NSString * const BZREventProductIdentifierKey;
+extern NSString * const kBZREventProductIdentifierKey;
 
 /// Key in the event info dictionary mapping to a boolean flag indicating whether a purchase that
 /// was intiated through the App Store is aborted.
-extern NSString * const BZREventPromotedIAPAbortedKey;
+extern NSString * const kBZREventPromotedIAPAbortedKey;
 
 /// Key in the event info dictionary mapping to the App Store locale.
-extern NSString * const BZREventAppStoreLocaleKey;
+extern NSString * const kBZREventAppStoreLocaleKey;
+
+/// Key in the event info dictionary mapping to a product's identifier. The product identifier may
+/// be sent as additional information in another event, e.g. transaction event.
+extern NSString * const kBZREventProductIdentifier;
+
+/// Key in the event info dictionary mapping to a transaction's quantity.
+extern NSString * const kBZREventTransactionQuantity;
+
+/// Key in the event info dictionary mapping to a transaction's date.
+extern NSString * const kBZREventTransactionDate;
+
+/// Key in the event info dictionary mapping to a transaction's identifier.
+extern NSString * const kBZREventTransactionIdentifier;
+
+/// Key in the event info dictionary mapping to a transaction's state.
+extern NSString * const kBZREventTransactionState;
+
+/// Key in the event info dictionary mapping to an original transaction's identifier.
+extern NSString * const kBZREventOriginalTransactionIdentifier;
+
+/// Key in the event info dictionary mapping to a flag indicating whether the transaction is
+/// removed.
+extern NSString * const kBZREventTransactionRemoved;
 
 /// Adds methods to conveniently create \c BZREvent objects for various types of events.
 @interface BZREvent (AdditionalInfo)
@@ -25,6 +48,10 @@ extern NSString * const BZREventAppStoreLocaleKey;
 + (instancetype)receiptValidationStatusReceivedEvent:
     (BZRReceiptValidationStatus *)receiptValidationStatus
     requestId:(nullable NSString *)requestId;
+
+/// Creates a \c BZREvent when an \c SKPaymentTransaction is received.
++ (instancetype)transactionReceivedEvent:(SKPaymentTransaction *)transaction
+                      removedTransaction:(BOOL)removedTransaction;
 
 /// Receipt validation status associated with this event. \c nil if this event is not of
 /// \c BZREventTypeReceiptValidationStatusReceived type.
