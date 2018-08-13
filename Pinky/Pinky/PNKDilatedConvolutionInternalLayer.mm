@@ -3,8 +3,9 @@
 
 #import "PNKDilatedConvolutionInternalLayer.h"
 
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "MPSCNNConvolution+Factory.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
 #import "PNKConvolutionUtils.h"
@@ -253,10 +254,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   NSUInteger patchWidthWithGap = patchWidth + gapWidth;
   NSUInteger patchHeightWithGap = patchHeight + gapHeight;
 
-  auto patchedInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                            width:patchedImageWidth
-                            height:patchedImageHeight
-                            channels:self.inputFeatureChannels];
+  auto patchedInputImage =
+      [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                              width:patchedImageWidth
+                                                             height:patchedImageHeight
+                                                           channels:self.inputFeatureChannels];
 
   MTLSize workingSpaceSize = {
     patchWidthWithGap,
@@ -271,10 +273,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                                        @[patchedInputImage], self.space2PatchFunctionName,
                                        workingSpaceSize);
 
-  auto patchedOutputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                             width:patchedImageWidth
-                             height:patchedImageHeight
-                             channels:self.outputFeatureChannels];
+  auto patchedOutputImage =
+      [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                              width:patchedImageWidth
+                                                             height:patchedImageHeight
+                                                           channels:self.outputFeatureChannels];
 
   pnk::PaddingSize leftTopPaddingMPS = PNKConvolutionLeftTopPaddingMPS(self.kernelWidth,
                                                                        self.kernelHeight, 1, 1);

@@ -3,7 +3,8 @@
 
 #import "PNKSuperSkySegmentationProcessor.h"
 
-#import "MPSTemporaryImage+Factory.h"
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "PNKAvailability.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
@@ -101,18 +102,20 @@ NS_ASSUME_NONNULL_BEGIN
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
-  auto netInputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                     width:outputImage.width
-                                                                    height:outputImage.height
-                                                                  channels:3];
+  auto netInputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:3];
 
   [self.resizer encodeToCommandBuffer:commandBuffer inputImage:inputImage
                           outputImage:netInputImage];
 
-  auto netOutputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                      width:outputImage.width
-                                                                     height:outputImage.height
-                                                                   channels:2];
+  auto netOutputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:2];
 
   LTParameterAssert(self.network.inputImageNames.count == 1, @"Network must have 1 input image, "
                     "got %lu", (unsigned long)self.network.inputImageNames.count);

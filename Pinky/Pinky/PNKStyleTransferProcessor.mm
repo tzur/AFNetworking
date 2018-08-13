@@ -4,9 +4,9 @@
 #import "PNKStyleTransferProcessor.h"
 
 #import <MetalToolbox/MPSImage+Factory.h>
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
 
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKConstantAlpha.h"
 #import "PNKDeviceAndCommandQueue.h"
@@ -231,10 +231,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   if ([self stylizedOutputChannels] != 1) {
     auto netOutputImage =
-        [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                      width:outputImage.width
-                                                     height:outputImage.height
-                                                   channels:self.networkOutputChannels];
+        [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                               width:outputImage.width
+                                                              height:outputImage.height
+                                                            channels:self.networkOutputChannels];
     [self.network encodeWithCommandBuffer:commandBuffer
                               inputImages:@{inputImageName: state.networkInputImage}
                           inputParameters:@{inputParameterName: @(styleIndex)}

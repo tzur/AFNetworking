@@ -37,11 +37,11 @@ extern "C" {
 
 // MetalToolbox.
 #import <MetalToolbox/MPSImage+Factory.h>
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
 
 // Pinky.
 #import "EXPMatchers+equalMTLSize.h"
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKKernelExamples.h"
 #import "PNKTemporaryImageExamples.h"

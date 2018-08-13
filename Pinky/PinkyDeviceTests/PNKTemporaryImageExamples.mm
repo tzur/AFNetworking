@@ -33,8 +33,8 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
       MTLSize inputSize{32, 32, inputChannels};
       auto outputSize = [unaryKernel outputSizeForInputSize:inputSize];
       auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
-      auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                        size:inputSize];
+      auto inputImage = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                                 size:inputSize];
 
       auto fillWithZeroes = [[PNKFillWithZeroesKernel alloc] initWithDevice:device];
       [fillWithZeroes encodeToCommandBuffer:commandBuffer outputImage:inputImage];
@@ -62,8 +62,8 @@ sharedExamplesFor(kPNKTemporaryImageParametricUnaryExamples, ^(NSDictionary *dat
       MTLSize inputSize{32, 32, inputChannels};
       auto outputSize = [parametricUnaryKernel outputSizeForInputSize:inputSize];
       auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
-      auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                        size:inputSize];
+      auto inputImage = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                                 size:inputSize];
       expect(inputImage.readCount).to.equal(1);
 
       [parametricUnaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -88,12 +88,15 @@ sharedExamplesFor(kPNKTemporaryImageBinaryExamples, ^(NSDictionary *data) {
       auto outputSize = [binaryKernel outputSizeForPrimaryInputSize:inputSize
                                                  secondaryInputSize:inputSize];
       auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
-      auto primaryInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                               size:inputSize];
+      auto primaryInputImage =
+          [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                   size:inputSize];
+
       expect(primaryInputImage.readCount).to.equal(1);
 
-      auto secondaryInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                                 size:inputSize];;
+      auto secondaryInputImage =
+          [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                   size:inputSize];
       expect(secondaryInputImage.readCount).to.equal(1);
 
       [binaryKernel encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage

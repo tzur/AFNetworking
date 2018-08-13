@@ -4,8 +4,8 @@
 #import "PNKColorTransferMinAndMax.h"
 
 #import <MetalToolbox/MPSImage+Factory.h>
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
 
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 
 NS_ASSUME_NONNULL_BEGIN

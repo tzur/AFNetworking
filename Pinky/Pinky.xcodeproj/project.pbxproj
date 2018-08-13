@@ -75,7 +75,6 @@
 		06D36EE91F6ACA6D00090584 /* Model.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE11F6ACA5600090584 /* Model.proto */; };
 		06D36EEA1F6ACA6D00090584 /* NeuralNetwork.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE41F6ACA5600090584 /* NeuralNetwork.proto */; };
 		06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E98DDF1F2149710047F80A /* PNKComputeState.mm */; };
-		06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */; };
 		06EDBD561F8FB18D00A3FF1E /* PNKBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */; };
 		06FB205A1F92AC0C009F1949 /* PNKTemplatedIO.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
@@ -799,8 +798,6 @@
 		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
 		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
 		06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRef+Pinky.h"; sourceTree = "<group>"; };
-		06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSTemporaryImage+Factory.mm"; sourceTree = "<group>"; };
-		06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSTemporaryImage+Factory.h"; sourceTree = "<group>"; };
 		06EDBD541F8FB18D00A3FF1E /* PNKBufferExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKBufferExtensions.h; sourceTree = "<group>"; };
 		06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKBufferExtensions.mm; sourceTree = "<group>"; };
 		06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKTemplatedIO.metal; sourceTree = "<group>"; };
@@ -1951,8 +1948,6 @@
 			children = (
 				E4DA81251FFA2CD700BF8826 /* MPSImage+Size.h */,
 				E4DA81241FFA2CD700BF8826 /* MPSImage+Size.mm */,
-				06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */,
-				06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */,
 				E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */,
 				E4D0B9C61FFCE64800BF5DBF /* PNKActivation.metal.h */,
 				E484D36E1FEF838900DA050C /* PNKAvailability.h */,
@@ -2822,7 +2817,6 @@
 				06D36EE91F6ACA6D00090584 /* Model.proto in Sources */,
 				E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */,
 				06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */,
-				06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */,
 				E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */,
 				E4543CAF20C672F3004E2663 /* PNKIndexTranslator.mm in Sources */,
 				E461C81D20173DB700261FCD /* PNKCrop.mm in Sources */,
