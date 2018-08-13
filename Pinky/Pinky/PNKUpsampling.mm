@@ -102,12 +102,12 @@ static NSString * const kDebugGroupName = @"upsample";
     MTLSize outputTextureSize = outputImage.pnk_textureArraySize;
     [self fillBufferWithSamplingCoefficients:outputTextureSize];
     workingSpaceSize = outputTextureSize;
-    PNKComputeDispatchWithDefaultThreads(state, commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(state, commandBuffer,
                                          @[self.bufferForSamplingCoefficients], @[inputImage],
                                          @[outputImage], kDebugGroupName, workingSpaceSize);
  } else {
     workingSpaceSize = inputImage.pnk_textureArraySize;
-   PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+   MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
                                         kDebugGroupName, workingSpaceSize);
   }
 }

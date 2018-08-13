@@ -325,7 +325,7 @@ static const NSUInteger kLatticeGridSize = 16;
                              minValueBuffer:self.minValueBuffer maxValueBuffer:self.maxValueBuffer];
   }
 
-  PNKComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
                                        @[self.currentLatticeBuffer, self.resultLatticeBuffer],
                                        @"copyLattice: identity", self.latticeElements);
 
@@ -342,15 +342,15 @@ static const NSUInteger kLatticeGridSize = 16;
 
 - (void)prepareBuffersWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                                   input:(MPSImage *)input reference:(MPSImage *)reference {
-  PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
                                        @[self.inputBuffer], @[input], @[],
                                        @"convertByteToFloat: input",
                                        {input.width, input.height, 1});
-  PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
                                        @[self.referenceBuffer], @[reference], @[],
                                        @"convertByteToFloat: reference",
                                        {reference.width, reference.height, 1});
-  PNKComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
                                        @[self.identityLatticeBuffer, self.currentLatticeBuffer],
                                        @"copyLattice: identity", self.latticeElements);
 }

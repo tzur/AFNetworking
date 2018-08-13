@@ -71,7 +71,7 @@ static NSString * const kDebugGroupName = @"crop";
 
   auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
                                        kDebugGroupName, workingSpaceSize);
 }
 

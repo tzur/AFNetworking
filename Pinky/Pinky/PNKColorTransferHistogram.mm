@@ -97,12 +97,12 @@ static const NSUInteger kMaxThreadgroupMemoryLength32K = (1 << 15) - 32;
               histogramBuffer:(id<MTLBuffer>)histogramBuffer {
   auto *buffers = @[inputBuffer, transformBuffer, minValueBuffer, maxValueBuffer,
                     self.partialHistogramsBuffer];
-  PNKComputeDispatch(self.computePartialHistogramsState, commandBuffer,
+  MTBComputeDispatch(self.computePartialHistogramsState, commandBuffer,
                      buffers, @"computePartialHistograms",
                      {self.numberOfThreadsPerThreadgroupForComputePartialHistograms, 1, 1},
                      {self.partialHistogramsCount, 1, 1});
 
-  PNKComputeDispatch(self.mergeHistogramsState, commandBuffer,
+  MTBComputeDispatch(self.mergeHistogramsState, commandBuffer,
                      @[self.partialHistogramsBuffer, histogramBuffer], @"mergeHistograms",
                      {self.partialHistogramsCount, 1, 1}, {self.histogramBins, 1, 1});
 }

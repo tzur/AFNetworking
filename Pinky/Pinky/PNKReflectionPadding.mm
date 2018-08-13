@@ -78,7 +78,7 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
   MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
   auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
                                        self.functionName, workingSpaceSize);
 }
 

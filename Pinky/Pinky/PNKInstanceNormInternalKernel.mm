@@ -153,7 +153,7 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
     kernelBuffers = @[self.scaleBuffer, self.shiftBuffer];
   }
 
-  PNKComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
+  MTBComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
                      self.functionName, threadsInGroup, threadgroupsPerGrid);
 }
 

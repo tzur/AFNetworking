@@ -66,7 +66,7 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
                                        @[outputImage], kKernelFunctionBilinearScale,
                                        workingSpaceSize);
 }

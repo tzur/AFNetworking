@@ -119,7 +119,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
               transformBuffer:(nullable id<MTLBuffer>)transformBuffer
                minValueBuffer:(id<MTLBuffer>)minValueBuffer
                maxValueBuffer:(id<MTLBuffer>)maxValueBuffer {
-  PNKComputeDispatch(self.resetMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer],
+  MTBComputeDispatch(self.resetMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer],
                      @"resetMinMax", {1, 1, 1}, {1, 1, 1});
 
   if (@available(iOS 11.0, *)) {
@@ -142,21 +142,21 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                       minValueBuffer:(id<MTLBuffer>)minValueBuffer
                       maxValueBuffer:(id<MTLBuffer>)maxValueBuffer {
   for (NSUInteger i = 0; i < inputBuffers.count; ++i) {
-    PNKComputeDispatchWithDefaultThreads(self.resetMinMaxState, commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(self.resetMinMaxState, commandBuffer,
                                          @[self.minValuesPerThreadgroupBuffer,
                                            self.maxValuesPerThreadgroupBuffer],
                                          @"resetMinMax temporaryValueBuffers",
                                          kTemporaryBufferElements);
 
     auto inputSize = self.inputSizes[i].CGSizeValue;
-    PNKComputeDispatchWithDefaultThreads(self.findMinMaxPerThreadgroupStates[i], commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(self.findMinMaxPerThreadgroupStates[i], commandBuffer,
                                          @[inputBuffers[i], transformBuffer,
                                            self.minValuesPerThreadgroupBuffer,
                                            self.maxValuesPerThreadgroupBuffer],
                                          @"findMinMaxPerThreadgroup",
                                          inputSize.width * inputSize.height / 2);
 
-    PNKComputeDispatchWithDefaultThreads(self.findMinMaxState, commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(self.findMinMaxState, commandBuffer,
                                          @[self.minValuesPerThreadgroupBuffer,
                                            self.maxValuesPerThreadgroupBuffer,
                                            minValueBuffer, maxValueBuffer],
@@ -192,7 +192,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                              format:MPSImageFeatureChannelFormatFloat32
                              width:width height:height channels:4];
 
-    PNKComputeDispatchWithDefaultThreads(self.applyTransformState, commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(self.applyTransformState, commandBuffer,
                                          @[inputBuffers[i], transformBuffer], @[],
                                          @[transformedInput],
                                          @"applyTransform", {width, height, 1});
@@ -200,7 +200,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
     [self.mpsMinMax encodeToCommandBuffer:commandBuffer sourceImage:transformedInput
                          destinationImage:self.mpsMinMaxResults[i]];
 
-    PNKComputeDispatch(self.mergeMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer], @[],
+    MTBComputeDispatch(self.mergeMinMaxState, commandBuffer, @[minValueBuffer, maxValueBuffer], @[],
                        @[self.mpsMinMaxResults[i]], @"mergeMinMax", {1, 1, 1}, {1, 1, 1});
   }
 }
