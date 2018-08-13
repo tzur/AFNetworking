@@ -7,39 +7,43 @@ static const NSUInteger kInputWidth = 5;
 static const NSUInteger kInputHeight = 5;
 
 template <typename T>
-static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInteger channels,
+static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInteger primaryChannels,
+                                                   NSUInteger secondaryChannels,
                                                    pnk::ArithmeticOperation operation) {
   auto kernel = [[PNKArithmetic alloc] initWithDevice:device operation:operation];
 
-  std::vector<T> primaryInputValues(channels);
-  for (NSUInteger i = 0; i < channels; ++i) {
+  std::vector<T> primaryInputValues(primaryChannels);
+  for (NSUInteger i = 0; i < primaryChannels; ++i) {
     primaryInputValues[i] = (T)(i + 1);
   }
 
   auto primaryInputMat = PNKGenerateChannelwiseConstantMatrix<T>(kInputHeight, kInputWidth,
                                                                  primaryInputValues);
 
-  std::vector<T> secondaryInputValues(channels);
-  for (NSUInteger i = 0; i < channels; ++i) {
+  std::vector<T> secondaryInputValues(secondaryChannels);
+  for (NSUInteger i = 0; i < secondaryChannels; ++i) {
     secondaryInputValues[i] = (T)(i + 2);
   }
   auto secondaryInputMat = PNKGenerateChannelwiseConstantMatrix<T>(kInputHeight, kInputWidth,
                                                                    secondaryInputValues);
+  auto outputChannels = std::max(primaryChannels, secondaryChannels);
+  std::vector<T> expectedValues(outputChannels);
+  for (NSUInteger i = 0; i < outputChannels; ++i) {
+    NSUInteger primaryIndex = std::min(i, primaryChannels - 1);
+    NSUInteger secondaryIndex = std::min(i, secondaryChannels - 1);
 
-  std::vector<T> expectedValues(channels);
-  for (NSUInteger i = 0; i < channels; ++i) {
     switch (operation) {
       case pnk::ArithmeticOperationAddition:
-        expectedValues[i] = primaryInputValues[i] + secondaryInputValues[i];
+        expectedValues[i] = primaryInputValues[primaryIndex] + secondaryInputValues[secondaryIndex];
         break;
       case pnk::ArithmeticOperationSubstraction:
-        expectedValues[i] = primaryInputValues[i] - secondaryInputValues[i];
+        expectedValues[i] = primaryInputValues[primaryIndex] - secondaryInputValues[secondaryIndex];
         break;
       case pnk::ArithmeticOperationMultiplication:
-        expectedValues[i] = primaryInputValues[i] * secondaryInputValues[i];
+        expectedValues[i] = primaryInputValues[primaryIndex] * secondaryInputValues[secondaryIndex];
         break;
       case pnk::ArithmeticOperationDivision:
-        expectedValues[i] = primaryInputValues[i] / secondaryInputValues[i];
+        expectedValues[i] = primaryInputValues[primaryIndex] / secondaryInputValues[secondaryIndex];
         break;
     }
   }
@@ -50,9 +54,9 @@ static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInte
     kPNKKernelExamplesKernel: kernel,
     kPNKKernelExamplesDevice: device,
     kPNKKernelExamplesPixelFormat: @(PNKFeatureChannelFormatFromCVType(cv::DataType<T>::type)),
-    kPNKKernelExamplesPrimaryInputChannels: @(channels),
-    kPNKKernelExamplesSecondaryInputChannels: @(channels),
-    kPNKKernelExamplesOutputChannels: @(channels),
+    kPNKKernelExamplesPrimaryInputChannels: @(primaryChannels),
+    kPNKKernelExamplesSecondaryInputChannels: @(secondaryChannels),
+    kPNKKernelExamplesOutputChannels: @(outputChannels),
     kPNKKernelExamplesOutputWidth: @(kInputWidth),
     kPNKKernelExamplesOutputHeight: @(kInputHeight),
     kPNKKernelExamplesPrimaryInputMat: $(primaryInputMat),
@@ -63,6 +67,7 @@ static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInte
 
 DeviceSpecBegin(PNKArithmetic)
 
+static const NSUInteger kSingleChannel = 1;
 static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
@@ -153,52 +158,34 @@ context(@"kernel input region", ^{
 context(@"addition operation with Unorm8 channel format", ^{
   itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
     return PNKBuildDataForKernelExamples<uchar>(device, kInputFeatureChannels,
+                                                kInputFeatureChannels,
                                                 pnk::ArithmeticOperationAddition);
   });
 
   itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
     return PNKBuildDataForKernelExamples<uchar>(device, kInputArrayFeatureChannels,
+                                                kInputArrayFeatureChannels,
                                                 pnk::ArithmeticOperationAddition);
   });
 });
 
 context(@"arithmetic operations with Float16 channel format", ^{
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputFeatureChannels,
-                                                           pnk::ArithmeticOperationAddition);
-  });
+  for (NSUInteger primaryChannels = 1; primaryChannels <= 7; primaryChannels += 3) {
+    for (NSUInteger secondaryChannels = 1; secondaryChannels <= 7; secondaryChannels += 3) {
+      if (primaryChannels != 1 && secondaryChannels != 1 && primaryChannels != secondaryChannels) {
+        continue;
+      }
 
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputArrayFeatureChannels,
-                                                           pnk::ArithmeticOperationAddition);
-  });
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputFeatureChannels,
-                                                           pnk::ArithmeticOperationSubstraction);
-  });
-
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputArrayFeatureChannels,
-                                                           pnk::ArithmeticOperationSubstraction);
-  });
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputFeatureChannels,
-                                                           pnk::ArithmeticOperationMultiplication);
-  });
-
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputArrayFeatureChannels,
-                                                           pnk::ArithmeticOperationMultiplication);
-  });
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputFeatureChannels,
-                                                           pnk::ArithmeticOperationDivision);
-  });
-
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildDataForKernelExamples<half_float::half>(device, kInputArrayFeatureChannels,
-                                                           pnk::ArithmeticOperationDivision);
-  });
+      for (ushort opcode = pnk::ArithmeticOperationAddition;
+           opcode <= pnk::ArithmeticOperationDivision; ++opcode) {
+        auto operation = (pnk::ArithmeticOperation)opcode;
+        itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+          return PNKBuildDataForKernelExamples<half_float::half>(device, primaryChannels,
+                                                                 secondaryChannels, operation);
+        });
+      }
+    }
+  }
 });
 
 context(@"tensorflow golden standard", ^{
