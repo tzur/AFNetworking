@@ -23,7 +23,7 @@ BZRReceiptValidationStatusCacheEntry *BZRCacheEntryWithReceiptValidationStatusAn
 SpecBegin(BZRCachedReceiptValidationStatusProvider)
 
 __block BZRKeychainStorage *keychainStorage;
-__block id<BZRTimeProvider> timeProvider;
+__block BZRTimeProvider *timeProvider;
 __block NSDate *currentTime;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
@@ -31,11 +31,12 @@ __block RACSubject *underlyingEventsSubject;
 __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block NSString *applicationBundeID;
 __block NSUInteger cachedEntryDaysToLive;
+__block NSTimeInterval timeIntervalLongerThanCacheTTL;
 __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
-  timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
+  timeProvider = OCMClassMock(BZRTimeProvider.class);
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
@@ -43,13 +44,15 @@ beforeEach(^{
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
   applicationBundeID = @"foo";
   cachedEntryDaysToLive = 1337;
+  timeIntervalLongerThanCacheTTL =
+      [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive] + 1;
   validationStatusProvider =
       [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                          timeProvider:timeProvider
                                                    underlyingProvider:underlyingProvider
                                                 cachedEntryDaysToLive:cachedEntryDaysToLive];
   currentTime = [NSDate date];
-  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
+  OCMStub([timeProvider currentTime]).andReturn(currentTime);
 });
 
 context(@"deallocation", ^{
@@ -169,8 +172,7 @@ context(@"invalidating cache", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:fetchedReceiptValidationStatus]);
 
-    auto cachingDateTime = [currentTime dateByAddingTimeInterval:
-        -([BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive] + 1)];
+    auto cachingDateTime = [currentTime dateByAddingTimeInterval:-timeIntervalLongerThanCacheTTL];
     auto cacheEntry =
         BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, cachingDateTime);
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
@@ -220,13 +222,11 @@ context(@"invalidating cache", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal error:error]);
 
-    auto cachingDateTime = [currentTime dateByAddingTimeInterval:
-        -([BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive] + 1)];
+    auto cachingDateTime = [currentTime dateByAddingTimeInterval:-timeIntervalLongerThanCacheTTL];
     auto cacheEntry =
         BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, cachingDateTime);
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
         error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
-
     auto cacheEntryWithExpiredSubscription =
         [[cacheEntry modelByOverridingPropertyAtKeypath:
          @keypath(cacheEntry, receiptValidationStatus.receipt.subscription.isExpired)

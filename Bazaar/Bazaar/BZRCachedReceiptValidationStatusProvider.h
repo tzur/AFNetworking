@@ -6,9 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRKeychainStorage, BZRReceiptValidationStatus, BZRReceiptValidationStatusCache,
-    BZRReceiptValidationStatusCacheEntry;
-
-@protocol BZRTimeProvider;
+    BZRReceiptValidationStatusCacheEntry, BZRTimeProvider;
 
 /// Provider that provides the receipt validation status using an underlying provider and caches the
 /// receipt validation status to \c BZRReceiptValidationStatusCache. This class is thread safe.
@@ -22,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the number of days cache entries are valid for. Cache entries older than that will be
 /// invalidated and remain invalid until a successful receipt validation.
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-                 timeProvider:(id<BZRTimeProvider>)timeProvider
+                 timeProvider:(BZRTimeProvider *)timeProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
