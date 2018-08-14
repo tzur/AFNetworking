@@ -67,6 +67,7 @@ static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInte
 
 DeviceSpecBegin(PNKArithmetic)
 
+static const NSUInteger kInputSingleChannel = 1;
 static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
@@ -147,10 +148,28 @@ context(@"kernel input region", ^{
 
   it(@"should calculate output size correctly", ^{
     MTLSize inputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
-    MTLSize outputSize = [additionOp outputSizeForPrimaryInputSize:inputSize
-                                                secondaryInputSize:inputSize];
+    auto outputSize = [additionOp outputSizeForPrimaryInputSize:inputSize
+                                             secondaryInputSize:inputSize];
 
     expect($(outputSize)).to.equalMTLSize($(inputSize));
+  });
+
+  it(@"should calculate output size correctly for broadcasted primary input", ^{
+    MTLSize primaryInputSize = {kInputWidth, kInputHeight, kInputSingleChannel};
+    MTLSize secondaryInputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    auto outputSize = [additionOp outputSizeForPrimaryInputSize:primaryInputSize
+                                             secondaryInputSize:secondaryInputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(secondaryInputSize));
+  });
+
+  it(@"should calculate output size correctly for broadcasted secondary input", ^{
+    MTLSize primaryInputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    MTLSize secondaryInputSize = {kInputWidth, kInputHeight, kInputSingleChannel};
+    auto outputSize = [additionOp outputSizeForPrimaryInputSize:primaryInputSize
+                                             secondaryInputSize:secondaryInputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(primaryInputSize));
   });
 });
 
