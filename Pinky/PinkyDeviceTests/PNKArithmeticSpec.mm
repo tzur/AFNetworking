@@ -67,7 +67,6 @@ static NSDictionary *PNKBuildDataForKernelExamples(id<MTLDevice> device, NSUInte
 
 DeviceSpecBegin(PNKArithmetic)
 
-static const NSUInteger kSingleChannel = 1;
 static const NSUInteger kInputFeatureChannels = 4;
 static const NSUInteger kInputArrayFeatureChannels = 12;
 
