@@ -38,11 +38,11 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
 
       auto fillWithZeroes = [[PNKFillWithZeroesKernel alloc] initWithDevice:device];
       [fillWithZeroes encodeToCommandBuffer:commandBuffer outputImage:inputImage];
-      expect(inputImage.readCount == 1);
+      expect(inputImage.readCount).to.equal(1);
 
       [unaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                              outputImage:outputImage];
-      expect(inputImage.readCount == 0);
+      expect(inputImage.readCount).to.equal(0);
     });
   });
 });
@@ -64,11 +64,11 @@ sharedExamplesFor(kPNKTemporaryImageParametricUnaryExamples, ^(NSDictionary *dat
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                                                                         size:inputSize];
-      expect(inputImage.readCount == 1);
+      expect(inputImage.readCount).to.equal(1);
 
       [parametricUnaryKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
                                    inputParameters:inputParameters outputImage:outputImage];
-      expect(inputImage.readCount == 0);
+      expect(inputImage.readCount).to.equal(0);
     });
   });
 });
@@ -90,16 +90,16 @@ sharedExamplesFor(kPNKTemporaryImageBinaryExamples, ^(NSDictionary *data) {
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
       auto primaryInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                                                                                size:inputSize];
-      expect(primaryInputImage.readCount == 1);
+      expect(primaryInputImage.readCount).to.equal(1);
 
       auto secondaryInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                                                                                  size:inputSize];;
-      expect(secondaryInputImage.readCount == 1);
+      expect(secondaryInputImage.readCount).to.equal(1);
 
       [binaryKernel encodeToCommandBuffer:commandBuffer primaryInputImage:primaryInputImage
                       secondaryInputImage:secondaryInputImage outputImage:outputImage];
-      expect(primaryInputImage.readCount == 0);
-      expect(secondaryInputImage.readCount == 0);
+      expect(primaryInputImage.readCount).to.equal(0);
+      expect(secondaryInputImage.readCount).to.equal(0);
     });
   });
 });
