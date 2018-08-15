@@ -328,6 +328,10 @@ NS_ASSUME_NONNULL_BEGIN
   if (error.code == BZRErrorCodePurchaseFailed) {
     return [self retryPurchaseSignal:error orderSummary:orderSummary
                    productIdentifier:productIdentifier];
+  } else if (error.code == BZRErrorCodeTransactionNotFoundInReceipt) {
+    auto transactionIdentifier = error.bzr_transactionIdentifier;
+    return [[self.productsManager validateTransaction:transactionIdentifier]
+        concat:[self redeemConsumableItemsFromOrderSummary:orderSummary]];
   } else if (error.code == BZRErrorCodeValidatricksRequestFailed) {
     if ([error.bzr_validatricksErrorInfo
       isKindOfClass:BZRValidatricksNotEnoughCreditErrorInfo.class]) {
