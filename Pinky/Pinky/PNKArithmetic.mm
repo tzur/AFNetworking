@@ -178,14 +178,22 @@ static NSString * const kDebugGroupName = @"arithmetic";
 - (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
                       secondaryInputSize:(MTLSize)secondaryInputSize {
   LTParameterAssert(primaryInputSize.width == secondaryInputSize.width &&
-                    primaryInputSize.height == secondaryInputSize.height &&
-                    primaryInputSize.depth == secondaryInputSize.depth, @"Primary and secondary "
-                    "input sizes must be equal, got (%lu, %lu, %lu) and (%lu, %lu, %lu)",
+                    primaryInputSize.height == secondaryInputSize.height, @"Primary and secondary "
+                    "input width and height must be equal, got (%lu, %lu) and (%lu, %lu)",
                     (unsigned long)primaryInputSize.width, (unsigned long)primaryInputSize.height,
-                    (unsigned long)primaryInputSize.depth, (unsigned long)secondaryInputSize.width,
-                    (unsigned long)secondaryInputSize.height,
+                    (unsigned long)secondaryInputSize.width,
+                    (unsigned long)secondaryInputSize.height);
+  LTParameterAssert(primaryInputSize.depth == secondaryInputSize.depth ||
+                    primaryInputSize.depth == 1 || secondaryInputSize.depth == 1, @"Either primary "
+                    "input depth must match secondary input depth or one of them must equal 1. "
+                    "got: (%lu, %lu)", (unsigned long)primaryInputSize.depth,
                     (unsigned long)secondaryInputSize.depth);
-  return primaryInputSize;
+
+  return {
+    .width = primaryInputSize.width,
+    .height = primaryInputSize.height,
+    .depth = std::max(primaryInputSize.depth, secondaryInputSize.depth)
+  };
 }
 
 @end
