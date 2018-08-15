@@ -75,6 +75,12 @@ context(@"asset descriptor", ^{
     OCMStub(videoAsset.mediaType).andReturn(PHAssetMediaTypeVideo);
     expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
 
+    if (@available(iOS 9.1, *)) {
+      PHAsset *livePhotoAsset = PTNCreateAsset();
+      OCMStub(livePhotoAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoLive);
+      expect(livePhotoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
+    }
+
     PHAsset *imageAsset = PTNCreateAsset();
     OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);
     expect(imageAsset.descriptorTraits).to.beEmpty();

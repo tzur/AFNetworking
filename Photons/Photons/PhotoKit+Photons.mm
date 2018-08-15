@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (@available(iOS 9.1, *)) {
     if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive) {
       [set addObject:kPTNDescriptorTraitLivePhotoKey];
+      [set addObject:kPTNDescriptorTraitAudiovisualKey];
     }
   }
   if ([self ptn_hasUniformTypeIdentifier]) {
