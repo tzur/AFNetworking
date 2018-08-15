@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRModifiedExpiryReceiptValidationStatusProvider ()
 
 /// Provider used to check if the expired subscription grace period is over.
-@property (readonly, nonatomic) id<BZRTimeProvider> timeProvider;
+@property (readonly, nonatomic) BZRTimeProvider *timeProvider;
 
 /// Specifies the number of days the user is allowed to use products that he acquired via
 /// subscription after its subscription has been expired.
@@ -23,10 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provider used to fetch the receipt validation status.
 @property (readonly, nonatomic) id<BZRReceiptValidationStatusProvider> underlyingProvider;
-
-/// Sends time provider as values. The subject completes when the receiver is deallocated. The
-/// subject doesn't err.
-@property (readonly, nonatomic) RACSubject<BZREvent *> *timeProviderErrorsSubject;
 
 @end
 
@@ -36,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithTimeProvider:(id<BZRTimeProvider>)timeProvider
+- (instancetype)initWithTimeProvider:(BZRTimeProvider *)timeProvider
     expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
     underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider {
   if (self = [super init]) {
@@ -44,7 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
     _expiredSubscriptionGracePeriodSeconds =
         [BZRTimeConversion numberOfSecondsInDays:expiredSubscriptionGracePeriod];
     _underlyingProvider = underlyingProvider;
-    _timeProviderErrorsSubject = [RACSubject subject];
   }
   return self;
 }
@@ -54,11 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal<BZREvent *> *)eventsSignal {
-  return [[RACSignal merge:@[
-    self.timeProviderErrorsSubject,
-    self.underlyingProvider.eventsSignal
-  ]]
-  takeUntil:[self rac_willDeallocSignal]];
+  return [self.underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 }
 
 #pragma mark -
@@ -69,11 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
     (NSString *)applicationBundleID {
   @weakify(self);
   return [[[self.underlyingProvider fetchReceiptValidationStatus:applicationBundleID]
-      flattenMap:^RACSignal<BZRReceiptValidationStatus *> *
-          (BZRReceiptValidationStatus *receiptValidationStatus) {
+      map:^BZRReceiptValidationStatus *(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
         if (!receiptValidationStatus.receipt.subscription) {
-          return [RACSignal return:receiptValidationStatus];
+          return receiptValidationStatus;
         }
 
         if (receiptValidationStatus.receipt.subscription.cancellationDateTime) {
@@ -85,23 +75,16 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)
+- (BZRReceiptValidationStatus *)
     cancelledSubscriptionModifier:(BZRReceiptValidationStatus *)receiptValidationStatus {
-  return [RACSignal return:[self receiptValidatioStatus:receiptValidationStatus withExpiry:YES]];
+  return [self receiptValidatioStatus:receiptValidationStatus withExpiry:YES];
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)
+- (BZRReceiptValidationStatus *)
     extendedSubscriptionModifer:(BZRReceiptValidationStatus *)receiptValidationStatus {
-  return [[[[self.timeProvider currentTime] map:^BZRReceiptValidationStatus *(NSDate *currentTime) {
-    return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
-                                             currentTime:currentTime];
-  }]
-  doError:^(NSError *error) {
-    [self.timeProviderErrorsSubject sendNext:
-     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
-  }]
-  catchTo:[RACSignal return:receiptValidationStatus]];
-}
+  return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
+                                           currentTime:[self.timeProvider currentTime]];
+  }
 
 - (BZRReceiptValidationStatus *)extendedValidationStatusWithGracePeriod:
     (BZRReceiptValidationStatus *)receiptValidationStatus

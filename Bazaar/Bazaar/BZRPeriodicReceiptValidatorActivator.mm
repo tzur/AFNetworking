@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *receiptValidator;
 
 /// Provider used to provide the current time.
-@property (readonly, nonatomic) id<BZRTimeProvider> timeProvider;
+@property (readonly, nonatomic) BZRTimeProvider *timeProvider;
 
 /// Time between each periodic validation.
 @property (readwrite, nonatomic) BZRReceiptValidationDateProvider *validationDateProvider;
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAggregatedValidationStatusProvider:
     (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider {
+    timeProvider:(BZRTimeProvider *)timeProvider {
   BZRExternalTriggerReceiptValidator *receiptValidator =
       [[BZRExternalTriggerReceiptValidator alloc]
        initWithValidationStatusProvider:aggregatedValidationStatusProvider];
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider {
+    timeProvider:(BZRTimeProvider *)timeProvider {
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
     _validationDateProvider = validationDateProvider;
@@ -63,20 +63,13 @@ NS_ASSUME_NONNULL_BEGIN
   [RACObserve(self.validationDateProvider, nextValidationDate)
       subscribeNext:^(NSDate * _Nullable nextValidationDate) {
         @strongify(self);
-        if (!self) {
-          return;
-        }
-
         if (!nextValidationDate) {
           [self.receiptValidator deactivate];
           return;
         }
 
-        [self rac_liftSelector:@selector(activatePeriodicValidation:currentTime:)
-          withSignalsFromArray:@[
-            [RACSignal return:nextValidationDate],
-            [self.timeProvider currentTime]
-          ]];
+        [self activatePeriodicValidation:nextValidationDate
+                             currentTime:[self.timeProvider currentTime]];
       }];
 }
 

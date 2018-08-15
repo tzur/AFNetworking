@@ -93,7 +93,7 @@ context(@"single app mode", ^{
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
     BZRStubHTTPClientToReturnReceiptValidationStatus(receiptValidationStatus);
     auto expirationDateTime = receiptValidationStatus.receipt.subscription.expirationDateTime;
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:expirationDateTime]);
+    OCMStub([timeProvider currentTime]).andReturn(expirationDateTime);
 
     expect([store validateReceipt]).will.complete();
 
@@ -104,7 +104,7 @@ context(@"single app mode", ^{
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     BZRStubHTTPClientToReturnReceiptValidationStatus(receiptValidationStatus);
     auto expirationDateTime = receiptValidationStatus.receipt.subscription.expirationDateTime;
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:expirationDateTime]);
+    OCMStub([timeProvider currentTime]).andReturn(expirationDateTime);
 
     expect([store validateReceipt]).will.complete();
 

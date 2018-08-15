@@ -24,14 +24,14 @@ SpecBegin(BZRPeriodicReceiptValidatorActivator)
 __block BZRExternalTriggerReceiptValidator *receiptValidator;
 __block BZRFakeReceiptValidationDateProvider *validationDateProvider;
 __block NSDate *currentTime;
-__block id<BZRTimeProvider> timeProvider;
+__block BZRTimeProvider *timeProvider;
 
 beforeEach(^{
   receiptValidator = OCMClassMock([BZRExternalTriggerReceiptValidator class]);
   validationDateProvider = [[BZRFakeReceiptValidationDateProvider alloc] init];
   currentTime = [NSDate dateWithTimeIntervalSince1970:1337];
-  timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
-  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
+  timeProvider = OCMClassMock(BZRTimeProvider.class);
+  OCMStub([timeProvider currentTime]).andReturn(currentTime);
   auto __unused activator = [[BZRPeriodicReceiptValidatorActivator alloc]
       initWithReceiptValidator:receiptValidator
       validationDateProvider:validationDateProvider timeProvider:timeProvider];
