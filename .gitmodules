@@ -73,3 +73,6 @@
 [submodule "third_party/OHHTTPStubs"]
 	path = third_party/OHHTTPStubs
 	url = https://github.com/Lightricks/OHHTTPStubs
+[submodule "third_party/fmdb"]
+	path = third_party/fmdb
+	url = https://github.com/Lightricks/fmdb.git
