@@ -157,16 +157,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifySizeWithInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormat(input);
-
   auto inputWidth = CVPixelBufferGetWidth(input);
   auto inputHeight = CVPixelBufferGetHeight(input);
   [self verifyOutputBuffer:output withSize:CGSizeMake(inputWidth, inputHeight)];
 }
 
 - (void)verifyOutputBuffer:(CVPixelBufferRef)output withSize:(CGSize)size {
-  PNKAssertPixelBufferFormatChannelCount(output, [self stylizedOutputChannels]);
-
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto expectedOutputSize = [self outputSizeWithInputSize:size];
