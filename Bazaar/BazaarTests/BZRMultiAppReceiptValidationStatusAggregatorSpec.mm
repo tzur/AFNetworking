@@ -233,7 +233,9 @@ context(@"aggregating receipt validation statuses correctly", ^{
              @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt,
              @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
              @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
-                 otherAppReceiptReceiptValidationStatus.validationDateTime
+                 otherAppReceiptReceiptValidationStatus.validationDateTime,
+             @instanceKeypath(BZRReceiptValidationStatus, requestId):
+                 otherAppReceiptReceiptValidationStatus.requestId
            } error:nil];
         expect([aggregator aggregateMultiAppReceiptValidationStatuses:
                 bundleIDToReceiptValidationStatus]).to.equal(expectedReceiptValidationStatus);

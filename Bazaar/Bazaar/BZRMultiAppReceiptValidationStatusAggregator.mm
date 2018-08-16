@@ -51,9 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
       [bundleIDToReceiptValidationStatus[self.currentApplicationBundleID]
        modelByOverridingPropertyAtKeypath:kSubscriptionKeypath
        withValue:receiptValidationStatusWithMostFitSubscription.receipt.subscription] :
-      [self receiptValidationStatusWithSubscriptionAndValidationDateTime:
-       receiptValidationStatusWithMostFitSubscription.receipt.subscription
-       validationDateTime:receiptValidationStatusWithMostFitSubscription.validationDateTime];
+      [self receiptValidationStatusWithFieldsFromRelevantStatus:
+       receiptValidationStatusWithMostFitSubscription];
 }
 
 - (BZRMultiAppReceiptValidationStatus *)relevantReceiptValidationStatuses:
@@ -93,16 +92,20 @@ NS_ASSUME_NONNULL_BEGIN
      ascending:NO];
 }
 
-- (BZRReceiptValidationStatus *)receiptValidationStatusWithSubscriptionAndValidationDateTime:
-    (BZRReceiptSubscriptionInfo *)subscription validationDateTime:(NSDate *)validationDateTime {
+- (BZRReceiptValidationStatus *)receiptValidationStatusWithFieldsFromRelevantStatus:
+    (BZRReceiptValidationStatus *)relevantReceiptValidationStatus {
   BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
-    @instanceKeypath(BZRReceiptInfo, subscription): subscription
+    @instanceKeypath(BZRReceiptInfo, subscription):
+        relevantReceiptValidationStatus.receipt.subscription
   } error:nil];
   return [BZRReceiptValidationStatus modelWithDictionary:@{
     @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt,
     @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
-    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): validationDateTime
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
+        relevantReceiptValidationStatus.validationDateTime,
+    @instanceKeypath(BZRReceiptValidationStatus, requestId):
+        relevantReceiptValidationStatus.requestId
   } error:nil];
 }
 

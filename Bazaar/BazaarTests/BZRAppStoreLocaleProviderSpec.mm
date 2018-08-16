@@ -25,14 +25,14 @@ beforeEach(^{
   appStoreLocaleCache = OCMClassMock([BZRAppStoreLocaleCache class]);
   nonSubscriptionProduct = OCMClassMock([BZRProduct class]);
 
-  SKProduct *firstStoreKitProduct =
-      BZRSKProductWithProperties(@"foo", [NSDecimalNumber decimalNumberWithString:@"1"], @"en_US");
+  auto firstStoreKitProduct = BZRMockedSKProductWithProperties(
+      @"foo", [NSDecimalNumber decimalNumberWithString:@"1"], @"en_US");
   firstSubscriptionProduct = OCMClassMock([BZRProduct class]);
   OCMStub([firstSubscriptionProduct isSubscriptionProduct]).andReturn(YES);
   OCMStub([firstSubscriptionProduct underlyingProduct]).andReturn(firstStoreKitProduct);
 
-  SKProduct *secondStoreKitProduct =
-      BZRSKProductWithProperties(@"boo", [NSDecimalNumber decimalNumberWithString:@"1"], @"en_GB");
+  auto secondStoreKitProduct = BZRMockedSKProductWithProperties(
+      @"boo", [NSDecimalNumber decimalNumberWithString:@"1"], @"en_GB");
   secondSubscriptionProduct = OCMClassMock([BZRProduct class]);
   OCMStub([secondSubscriptionProduct isSubscriptionProduct]).andReturn(YES);
   OCMStub([secondSubscriptionProduct underlyingProduct]).andReturn(secondStoreKitProduct);

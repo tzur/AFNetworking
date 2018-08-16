@@ -74,7 +74,8 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
     @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
     @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
         [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
+    @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt,
+    @instanceKeypath(BZRReceiptValidationStatus, requestId): @"foo.request.id"
   } error:nil];
 }
 
@@ -110,7 +111,7 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
                                    withValue:subscription];
 }
 
-SKProduct *BZRSKProductWithProperties(NSString *identifier, NSDecimalNumber *price,
+SKProduct *BZRMockedSKProductWithProperties(NSString *identifier, NSDecimalNumber *price,
     NSString *localeIdentifier) {
   SKProduct *product = OCMClassMock([SKProduct class]);
   OCMStub([product productIdentifier]).andReturn(identifier);
@@ -119,23 +120,23 @@ SKProduct *BZRSKProductWithProperties(NSString *identifier, NSDecimalNumber *pri
   return product;
 }
 
-SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products) {
+SKProductsResponse *BZRMockedProductsResponseWithSKProducts(NSArray<SKProduct *> *products) {
   SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
   OCMStub([response products]).andReturn(products);
 
   return response;
 }
 
-SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier) {
-  SKProduct *product = BZRSKProductWithProperties(productIdentifier);
-  return BZRProductsResponseWithSKProducts(@[product]);
+SKProductsResponse *BZRMockedProductsResponseWithProduct(NSString *productIdentifier) {
+  SKProduct *product = BZRMockedSKProductWithProperties(productIdentifier);
+  return BZRMockedProductsResponseWithSKProducts(@[product]);
 }
 
-SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers) {
+SKProductsResponse *BZRMockedProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers) {
   NSArray<SKProduct *> *products = [productIdentifiers lt_map:^SKProduct *(NSString *identifier) {
-    return BZRSKProductWithProperties(identifier);
+    return BZRMockedSKProductWithProperties(identifier);
   }];
-  return BZRProductsResponseWithSKProducts(products);
+  return BZRMockedProductsResponseWithSKProducts(products);
 }
 
 BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *transactionId) {
@@ -149,6 +150,21 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
         [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
   } error:nil];
+}
+
+SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
+     SKPaymentTransactionState state,
+     NSDate *transactionDate) {
+  SKPayment *payment = OCMClassMock(SKPayment.class);
+  OCMStub([payment productIdentifier]).andReturn(productID);
+
+  SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+
+  OCMStub([transaction transactionDate]).andReturn(transactionDate);
+  OCMStub([transaction transactionState]).andReturn(state);
+  OCMStub([transaction transactionIdentifier]).andReturn(transactionID);
+  OCMStub([transaction payment]).andReturn(payment);
+  return transaction;
 }
 
 NS_ASSUME_NONNULL_END
