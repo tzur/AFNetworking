@@ -149,7 +149,7 @@ sharedExamplesFor(kValidatricksRequestSharedExamplesName, ^(NSDictionary *data) 
 
     expect(requestRecorder).will.matchError(^BOOL(NSError *error) {
       return error.code == BZRErrorCodeValidatricksRequestFailed &&
-          [error.lt_underlyingErrors containsObject:requestError];
+          [error.lt_underlyingError isEqual:requestError];
     });
   });
 
