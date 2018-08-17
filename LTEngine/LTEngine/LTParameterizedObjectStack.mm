@@ -128,16 +128,23 @@ NS_ASSUME_NONNULL_BEGIN
 
   std::vector<NSUInteger> indices = [self indicesOfObjectsForParametricValues:parametricValues];
 
-  __block cv::Mat1g valuesPerKey((int)self.orderedParameterizationKeys.count,
-                                 (int)parametricValues.size());
+  int numberOfParametricValues = (int)parametricValues.size();
+  __block cv::Mat1g valuesPerKey((int)self.parameterizationKeys.count, numberOfParametricValues);
 
-  [self.orderedParameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i,
-                                                                 BOOL *) {
-    for (int j = 0; j < (int)parametricValues.size(); ++j) {
-      valuesPerKey((int)i, j) =
-          [self.mutableObjects[indices[j]] floatForParametricValue:parametricValues[j] key:key];
+  for (int i = 0; i < numberOfParametricValues; ++i) {
+    CGFloats values = {parametricValues[i]};
+    while (i + 1 < numberOfParametricValues && indices[i + 1] == indices[i]) {
+      ++i;
+      values.push_back(parametricValues[i]);
     }
-  }];
+    LTParameterizationKeyToValues *mapping =
+        [self.mutableObjects[indices[i]] mappingForParametricValues:values];
+    cv::Mat1g partialValuesPerKey = mapping.valuesPerKey;
+    cv::Rect sourceRect(cv::Point(0, 0), cv::Size(partialValuesPerKey.cols,
+                                                  partialValuesPerKey.rows));
+    cv::Rect destinationRect(cv::Point(i + 1 - partialValuesPerKey.cols, 0), sourceRect.size());
+    partialValuesPerKey(sourceRect).copyTo(valuesPerKey(destinationRect));
+  }
 
   return [[LTParameterizationKeyToValues alloc] initWithKeys:self.parameterizationKeys
                                                 valuesPerKey:valuesPerKey];

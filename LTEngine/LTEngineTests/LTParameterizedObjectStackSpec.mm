@@ -229,14 +229,18 @@ context(@"LTParameterizedObject protocol", ^{
       });
 
       it(@"should delegate key to values queries to the correct parameterized object", ^{
-        OCMExpect([strictParameterizedObjectMock floatForParametricValue:3.5 key:@"key0"])
-            .andReturn(0);
-        OCMExpect([strictParameterizedObjectMock floatForParametricValue:3.5 key:@"key1"])
-            .andReturn(1);
-        OCMExpect([anotherStrictParameterizedObjectMock floatForParametricValue:5.5 key:@"key0"])
-            .andReturn(10);
-        OCMExpect([anotherStrictParameterizedObjectMock floatForParametricValue:5.5 key:@"key1"])
-            .andReturn(11);
+        cv::Mat1g values = (cv::Mat1g(2, 1) << 0, 1);
+        LTParameterizationKeyToValues *keyToValues =
+            [[LTParameterizationKeyToValues alloc] initWithKeys:parameterizationKeys
+                                                   valuesPerKey:values];
+        OCMExpect([[(id)strictParameterizedObjectMock ignoringNonObjectArgs]
+                   mappingForParametricValues:{3.5}]).andReturn(keyToValues);
+
+        values = (cv::Mat1g(2, 1) << 10, 11);
+        keyToValues = [[LTParameterizationKeyToValues alloc] initWithKeys:parameterizationKeys
+                                                             valuesPerKey:values];
+        OCMExpect([[(id)anotherStrictParameterizedObjectMock ignoringNonObjectArgs]
+                   mappingForParametricValues:{5.5}]).andReturn(keyToValues);
 
         LTParameterizationKeyToValues *result = [object mappingForParametricValues:{3.5, 5.5}];
 
