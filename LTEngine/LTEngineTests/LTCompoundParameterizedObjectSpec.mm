@@ -174,7 +174,7 @@ context(@"LTParameterizedObject protocol", ^{
   });
 
   it(@"should return the correct parameterization keys", ^{
-    expect(object.parameterizationKeys).to.equal(expectedKeys);
+    expect(object.parameterizationKeys).to.equal([NSOrderedSet orderedSetWithSet:expectedKeys]);
   });
 
   it(@"should use the intrinsic parametric range of the basic parameterized objects", ^{

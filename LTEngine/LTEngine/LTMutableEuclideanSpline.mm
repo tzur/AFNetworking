@@ -315,7 +315,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   return [self.mutableStack floatsForParametricValues:values key:key];
 }
 
-- (NSSet<NSString *> *)parameterizationKeys {
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
   return [self.mutableStack parameterizationKeys];
 }
 
