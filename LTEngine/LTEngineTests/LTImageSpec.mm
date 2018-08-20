@@ -441,7 +441,7 @@ context(@"saving images", ^{
   __block NSString *path;
 
   beforeEach(^{
-    path = [NSTemporaryDirectory() stringByAppendingString:@"_LTImageSaveTest.jpg"];
+    path = LTTemporaryPath(@"_LTImageSaveTest.jpg");
   });
 
   it(@"should write image to path", ^{
@@ -459,8 +459,6 @@ context(@"saving images", ^{
 
     LTImage *loaded = [[LTImage alloc] initWithImage:image];
     expect($(loaded.mat)).to.equalMat($(expected.mat));
-
-    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
   });
 
   it(@"should write non contiguous matrices to path", ^{
