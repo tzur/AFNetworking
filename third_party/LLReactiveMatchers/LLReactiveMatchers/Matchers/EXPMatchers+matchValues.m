@@ -10,18 +10,18 @@ __block LLSignalTestRecorder *actualRecorder;
 __block id failingValue;
 __block NSUInteger failingIndex;
 
-void (^subscribe)(void) = ^{
+void (^subscribe)(id actual) = ^(id actual) {
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }
 };
 
-prerequisite(^BOOL{
+prerequisite(^BOOL(id actual) {
     return LLRMCorrectClassesForActual(actual);
 });
 
-match(^BOOL{
-    subscribe();
+match(^BOOL(id actual) {
+    subscribe(actual);
     
     __block BOOL passed = YES;
     [actualRecorder.values enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -37,7 +37,7 @@ match(^BOOL{
     return passed && actualRecorder.hasFinished;
 });
 
-failureMessageForTo(^NSString *{
+failureMessageForTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
@@ -49,7 +49,7 @@ failureMessageForTo(^NSString *{
     return [[[[LLReactiveMatchersMessageBuilder message] actual:actualRecorder] expectedBehaviour:expectedBehaviour] build];
 });
 
-failureMessageForNotTo(^NSString *{
+failureMessageForNotTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }

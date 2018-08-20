@@ -8,23 +8,23 @@ EXPMatcherImplementationBegin(complete, (void))
 
 __block LLSignalTestRecorder *actualRecorder = nil;
 
-void (^subscribe)(void) = ^{
+void (^subscribe)(id actual) = ^(id actual) {
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }
 };
 
-prerequisite(^BOOL{
+prerequisite(^BOOL(id actual) {
     return LLRMCorrectClassesForActual(actual);
 });
 
-match(^BOOL{
-    subscribe();
+match(^BOOL(id actual) {
+    subscribe(actual);
     
     return actualRecorder.hasCompleted;
 });
 
-failureMessageForTo(^NSString *{
+failureMessageForTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
@@ -36,7 +36,7 @@ failureMessageForTo(^NSString *{
         [NSString stringWithFormat:@"error instead of completion. Error is: %@", actualRecorder.error]] build];
 });
 
-failureMessageForNotTo(^NSString *{
+failureMessageForNotTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }

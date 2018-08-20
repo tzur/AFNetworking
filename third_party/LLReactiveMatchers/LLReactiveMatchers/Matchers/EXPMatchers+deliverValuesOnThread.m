@@ -10,13 +10,13 @@ EXPMatcherImplementationBegin(deliverValuesOnThread, (NSThread *expected)) {
   __block NSString *prerequisiteErrorMessage;
   __block LLSignalTestRecorder *actualRecorder = nil;
   
-  void (^subscribe)(void) = ^{
+  void (^subscribe)(id actual) = ^(id actual) {
     if(!actualRecorder) {
       actualRecorder = LLRMRecorderForObject(actual);
     }
   };
   
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id __unused actual) {
     if (!expected) {
       prerequisiteErrorMessage = @"Expected thread is nil";
     }
@@ -27,13 +27,13 @@ EXPMatcherImplementationBegin(deliverValuesOnThread, (NSThread *expected)) {
     return !prerequisiteErrorMessage;
   });
   
-  match(^BOOL{
-    subscribe();
+  match(^BOOL(id actual) {
+    subscribe(actual);
     
     return [[actualRecorder operatingThreads] containsObject:expected];
   });
   
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id __unused actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -47,7 +47,7 @@ EXPMatcherImplementationBegin(deliverValuesOnThread, (NSThread *expected)) {
     }
   });
   
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id __unused actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

@@ -7,20 +7,22 @@
 
 EXPMatcherImplementationBegin(beSubscribedTo, (NSInteger times))
 
-BOOL correctClasses = [actual isKindOfClass:RACSignal.class];
+BOOL(^correctClasses)(id actual) = ^BOOL(id actual) {
+  return [actual isKindOfClass:RACSignal.class];
+};
 
-prerequisite(^BOOL{
+prerequisite(^BOOL(id actual) {
     return LLRMCorrectClassesForActual(actual);
 });
 
-match(^BOOL{
+match(^BOOL(id actual) {
     @synchronized(actual) {
         return ([actual subscriptionCount] == times);
     }
 });
 
-failureMessageForTo(^NSString *{
-    if(!correctClasses) {
+failureMessageForTo(^NSString *(id actual) {
+    if(!correctClasses(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
     
@@ -33,8 +35,8 @@ failureMessageForTo(^NSString *{
     }
 });
 
-failureMessageForNotTo(^NSString *{
-    if(!correctClasses) {
+failureMessageForNotTo(^NSString *(id actual) {
+    if(!correctClasses(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
     
