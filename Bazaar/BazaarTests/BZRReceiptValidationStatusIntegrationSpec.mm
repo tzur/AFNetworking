@@ -1,10 +1,10 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import <LTKit/NSFileManager+LTKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
+#import "BZRIntegrationTestUtils.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStore.h"
@@ -12,37 +12,6 @@
 #import "BZRTestUtils.h"
 #import "BZRTimeProvider.h"
 #import "SKPaymentQueue+Bazaar.h"
-
-void BZRStubProductsJSONWithASingleProduct(NSFileManager *fileManager, NSString *filepath) {
-  auto product = BZRProductWithIdentifier(@"productInJSON");
-  auto JSONArray = [MTLJSONAdapter JSONArrayFromModels:@[product]];
-  auto JSONData = [NSJSONSerialization dataWithJSONObject:JSONArray options:0 error:NULL];
-  OCMStub([fileManager lt_dataWithContentsOfFile:filepath options:0
-                                           error:[OCMArg anyObjectRef]]).andReturn(JSONData);
-}
-
-void BZRStubReceiptData(NSData *dataMock) {
-  auto receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-  auto receiptDataFromFile = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
-  OCMStub([(id)dataMock dataWithContentsOfURL:receiptURL]).andReturn(receiptDataFromFile);
-}
-
-void BZRStubHTTPClientToReturnReceiptValidationStatus(
-    BZRReceiptValidationStatus *receiptValidationStatus) {
-  auto JSONObject = [MTLJSONAdapter JSONDictionaryFromModel:receiptValidationStatus];
-  auto receiptValidationStatusData =
-      [NSJSONSerialization dataWithJSONObject:JSONObject options:0 error:nil];
-
-  auto isValidateReceiptRequest = ^BOOL(NSURLRequest *request) {
-    return [request.URL.absoluteString containsString:@"validateReceipt"];
-  };
-  auto responseWithReceiptValidationStatus = ^OHHTTPStubsResponse *(NSURLRequest *) {
-    return [OHHTTPStubsResponse responseWithData:receiptValidationStatusData statusCode:200
-                                         headers:nil];
-  };
-  [OHHTTPStubs stubRequestsPassingTest:isValidateReceiptRequest
-                      withStubResponse:responseWithReceiptValidationStatus];
-}
 
 SpecBegin(BZRReceiptValidationStatusIntegration)
 
@@ -77,8 +46,8 @@ afterEach(^{
 context(@"single app mode", ^{
   beforeEach(^{
     auto JSONFilePath = [LTPath pathWithPath:@"foo"];
-    BZRStubProductsJSONWithASingleProduct(fileManager, JSONFilePath.path);
-    BZRStubReceiptData(dataMock);
+    BZRStubFileManagerToReturnJSONWithASingleProduct(fileManager, JSONFilePath.path, @"foo");
+    BZRStubDataMockReceiptData(dataMock, @"foofile");
 
     BZRStoreConfiguration *configuration =
         [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:JSONFilePath
