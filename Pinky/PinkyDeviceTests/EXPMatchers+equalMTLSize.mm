@@ -10,21 +10,21 @@
 EXPMatcherImplementationBegin(equalMTLSize, (NSValue *expectedValue)) {
   __block NSString *prerequisiteErrorMessage;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id) {
     if (strcmp([expectedValue _EXP_objCType], @encode(MTLSize))) {
       prerequisiteErrorMessage = @"Size value is not MTLSize";
     }
     return !prerequisiteErrorMessage;
   });
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     MTLSize expected = [expectedValue MTLSizeValue];
     MTLSize result = [actual MTLSizeValue];
     return expected.width == result.width && expected.height == result.height &&
         expected.depth == result.depth;
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -35,7 +35,7 @@ EXPMatcherImplementationBegin(equalMTLSize, (NSValue *expectedValue)) {
             result.depth];
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
