@@ -27,7 +27,7 @@ EXPMatcherImplementationBegin(_beCloseToMatNormalizedHamming, (NSValue *expected
   __block NSString *prerequisiteErrorMessage;
   __block double actualNormalizedHammingDistance;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (strcmp([expected _EXP_objCType], @encode(cv::Mat))) {
       prerequisiteErrorMessage = @"Expected value is not cv::Mat";
     } else if (![within isKindOfClass:[NSNumber class]]) {
@@ -48,7 +48,7 @@ EXPMatcherImplementationBegin(_beCloseToMatNormalizedHamming, (NSValue *expected
     return !prerequisiteErrorMessage;
   });
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     // Compare pointers.
     if ([actual isEqual:expected]) {
       return YES;
@@ -61,7 +61,7 @@ EXPMatcherImplementationBegin(_beCloseToMatNormalizedHamming, (NSValue *expected
     }
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -70,7 +70,7 @@ EXPMatcherImplementationBegin(_beCloseToMatNormalizedHamming, (NSValue *expected
             "equal to %g", actualNormalizedHammingDistance, [within doubleValue]];
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

@@ -18,7 +18,7 @@ static double LTDefaultRangeForMatType(int type) {
 EXPMatcherImplementationBegin(_beCloseToScalarWithin, (NSValue *expected, id within)) {
   __block NSString *prerequisiteErrorMessage;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (strcmp([expected _EXP_objCType], @encode(cv::Scalar))) {
       prerequisiteErrorMessage = @"Expected value is not cv::Scalar";
     } else if (![within isKindOfClass:[NSNumber class]] && within != nil) {
@@ -29,9 +29,9 @@ EXPMatcherImplementationBegin(_beCloseToScalarWithin, (NSValue *expected, id wit
     return !prerequisiteErrorMessage;
   });
 
-  __block std::vector<int> firstMismatch([actual matValue].dims);
+  __block std::vector<int> firstMismatch;
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     // Compare pointers.
     if ([actual isEqual:expected]) {
       return YES;
@@ -43,7 +43,7 @@ EXPMatcherImplementationBegin(_beCloseToScalarWithin, (NSValue *expected, id wit
     }
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -60,7 +60,7 @@ EXPMatcherImplementationBegin(_beCloseToScalarWithin, (NSValue *expected, id wit
     }
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

@@ -26,7 +26,7 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
   __block NSString *prerequisiteErrorMessage;
   __block double actualPSNR;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (strcmp([expected _EXP_objCType], @encode(cv::Mat))) {
       prerequisiteErrorMessage = @"Expected value is not cv::Mat";
     } else if (![psnr isKindOfClass:[NSNumber class]]) {
@@ -47,7 +47,7 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
     return !prerequisiteErrorMessage;
   });
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     // Compare pointers.
     if ([actual isEqual:expected]) {
       return YES;
@@ -60,7 +60,7 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
     }
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -69,7 +69,7 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
             actualPSNR, [psnr doubleValue]];
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

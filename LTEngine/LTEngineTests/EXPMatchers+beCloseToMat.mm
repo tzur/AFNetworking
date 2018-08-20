@@ -19,7 +19,7 @@ static double LTDefaultRangeForMatType(int type) {
 EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within)) {
   __block NSString *prerequisiteErrorMessage;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (strcmp([expected _EXP_objCType], @encode(cv::Mat))) {
       prerequisiteErrorMessage = @"Expected value is not cv::Mat";
     } else if (![within isKindOfClass:[NSNumber class]] && within != nil) {
@@ -34,7 +34,7 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
 
   __block std::vector<int> firstMismatch([expected matValue].dims);
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     // Compare pointers.
     if ([actual isEqual:expected]) {
       return YES;
@@ -46,7 +46,7 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
     }
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
       LTWriteMatrices([expected matValue], [actual matValue]);
     }
@@ -67,7 +67,7 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
     }
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
       LTWriteMatrices([expected matValue], [actual matValue]);
     }
