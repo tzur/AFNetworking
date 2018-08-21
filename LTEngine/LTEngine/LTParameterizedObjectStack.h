@@ -62,7 +62,21 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Time complexity: \c O(n), where \c n is the number of elements in \c parameterizedObjects, for
 /// the first call after an update (pushing, replacing, popping), and \c O(1) for additional calls.
+///
+/// @important For retrieval of the \c count of this array, use the \c count property. For retrieval
+/// of the first object of this array, use the \c bottom property. For retrieval of the last object
+/// of this array, use the \c top property.
 @property (readonly, nonatomic) NSArray<id<LTParameterizedValueObject>> *parameterizedObjects;
+
+/// Least recently pushed parameterized object.
+///
+/// Time complexity: \c O(1)
+@property (readonly, nonatomic) id<LTParameterizedValueObject> bottom;
+
+/// Most recently pushed parameterized object.
+///
+/// Time complexity: \c O(1)
+@property (readonly, nonatomic) id<LTParameterizedValueObject> top;
 
 @end
 

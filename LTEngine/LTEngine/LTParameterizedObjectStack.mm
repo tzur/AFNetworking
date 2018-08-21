@@ -212,6 +212,14 @@ NS_ASSUME_NONNULL_BEGIN
   return self.immutableObjects;
 }
 
+- (id<LTParameterizedValueObject>)bottom {
+  return self.mutableObjects.firstObject;
+}
+
+- (id<LTParameterizedValueObject>)top {
+  return self.mutableObjects.lastObject;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
