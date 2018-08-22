@@ -146,29 +146,24 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 
   ushort activationTypeAsUshort = (ushort)activationModel.activationType;
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUInt2
-                             withName:@"dilationRate"];
-  [functionConstants setConstantValue:&kernelGap type:MTLDataTypeUInt2
-                             withName:@"kernelGap"];
-  [functionConstants setConstantValue:&stride type:MTLDataTypeUInt2
-                             withName:@"stride"];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant uint2ConstantWithValue:dilationRate name:@"dilationRate"],
+    [MTBFunctionConstant uint2ConstantWithValue:kernelGap name:@"kernelGap"],
+    [MTBFunctionConstant uint2ConstantWithValue:stride name:@"stride"],
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:_hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:_hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
   _space2PatchFunctionName = self.convolutionKernel.inputFeatureChannels > 4 ?
       kS2PKernelArrayFunctionName : kS2PKernelSingleFunctionName;
-  _space2PatchState = PNKCreateComputeStateWithConstants(self.device, self.space2PatchFunctionName,
-                                                         functionConstants);
+  _space2PatchState = PNKCreateComputeState(self.device, self.space2PatchFunctionName,
+                                            functionConstants);
 
   _patch2SpaceFunctionName = self.convolutionKernel.outputFeatureChannels > 4 ?
       kP2SKernelArrayFunctionName : kP2SKernelSingleFunctionName;
-  _patch2SpaceState = PNKCreateComputeStateWithConstants(self.device, self.patch2SpaceFunctionName,
-                                                         functionConstants);
+  _patch2SpaceState = PNKCreateComputeState(self.device, self.patch2SpaceFunctionName,
+                                            functionConstants);
 }
 
 - (void)createBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {

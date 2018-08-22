@@ -138,12 +138,13 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
     }
   }
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&primaryFeatureChannelIndicesSize type:MTLDataTypeUShort
-                             withName:@"primaryFeatureChannelIndicesSize"];
-  [functionConstants setConstantValue:&secondaryFeatureChannelIndicesSize type:MTLDataTypeUShort
-                             withName:@"secondaryFeatureChannelIndicesSize"];
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:primaryFeatureChannelIndicesSize
+                                            name:@"primaryFeatureChannelIndicesSize"],
+    [MTBFunctionConstant ushortConstantWithValue:secondaryFeatureChannelIndicesSize
+                                            name:@"secondaryFeatureChannelIndicesSize"]
+  ];
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)createBuffers {

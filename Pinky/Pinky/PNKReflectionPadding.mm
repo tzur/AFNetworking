@@ -52,19 +52,16 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 }
 
 - (void)createStates {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  short paddingLeftTop[] = {(short)self.paddingSize.left, (short)self.paddingSize.top};
-  short paddingRightBottom[] = {(short)self.paddingSize.right, (short)self.paddingSize.bottom};
+  simd_short2 paddingLeftTop = {(short)self.paddingSize.left, (short)self.paddingSize.top};
+  simd_short2 paddingRightBottom = {(short)self.paddingSize.right, (short)self.paddingSize.bottom};
 
-  [functionConstants setConstantValue:paddingLeftTop type:MTLDataTypeShort2
-                             withName:@"paddingLeftTop"];
-  [functionConstants setConstantValue:paddingRightBottom type:MTLDataTypeShort2
-                             withName:@"paddingRightBottom"];
+  auto functionConstants = @[
+    [MTBFunctionConstant short2ConstantWithValue:paddingLeftTop name:@"paddingLeftTop"],
+    [MTBFunctionConstant short2ConstantWithValue:paddingRightBottom name:@"paddingRightBottom"]
+  ];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
-                                                    functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
-                                                   functionConstants);
+  _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName, functionConstants);
+  _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName, functionConstants);
 }
 
 #pragma mark -

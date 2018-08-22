@@ -80,23 +80,20 @@ static NSString * const kDebugGroupName = @"arithmetic";
 }
 
 - (void)createStates {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&_operation type:MTLDataTypeUShort withName:@"operation"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:_operation name:@"operation"]
+  ];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingle, functionConstants);
-  _stateSingleBroadcastPrimary = PNKCreateComputeStateWithConstants(self.device,
-                                                                    kKernelSingleBroadcastPrimary,
-                                                                    functionConstants);
+  _stateSingle = PNKCreateComputeState(self.device, kKernelSingle, functionConstants);
+  _stateSingleBroadcastPrimary = PNKCreateComputeState(self.device, kKernelSingleBroadcastPrimary,
+                                                       functionConstants);
   _stateSingleBroadcastSecondary =
-      PNKCreateComputeStateWithConstants(self.device, kKernelSingleBroadcastSecondary,
-                                         functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArray, functionConstants);
-  _stateArrayBroadcastPrimary = PNKCreateComputeStateWithConstants(self.device,
-                                                                   kKernelArrayBroadcastPrimary,
-                                                                   functionConstants);
-  _stateArrayBroadcastSecondary = PNKCreateComputeStateWithConstants(self.device,
-                                                                     kKernelArrayBroadcastSecondary,
-                                                                     functionConstants);
+      PNKCreateComputeState(self.device, kKernelSingleBroadcastSecondary, functionConstants);
+  _stateArray = PNKCreateComputeState(self.device, kKernelArray, functionConstants);
+  _stateArrayBroadcastPrimary = PNKCreateComputeState(self.device, kKernelArrayBroadcastPrimary,
+                                                      functionConstants);
+  _stateArrayBroadcastSecondary = PNKCreateComputeState(self.device, kKernelArrayBroadcastSecondary,
+                                                        functionConstants);
 }
 
 #pragma mark -

@@ -121,15 +121,13 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:_hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:_hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)setupBuffersWithNormalizationModel:(const pnk::NormalizationKernelModel &)model {

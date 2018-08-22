@@ -44,9 +44,8 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 }
 
 - (void)compileStateWithGamma:(float)gamma {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-      [functionConstants setConstantValue:&gamma type:MTLDataTypeFloat withName:@"gamma"];
-  _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
+  auto functionConstants = @[[MTBFunctionConstant floatConstantWithValue:gamma name:@"gamma"]];
+  _state = PNKCreateComputeState(self.device, kKernelFunctionName, functionConstants);
 }
 
 #pragma mark -

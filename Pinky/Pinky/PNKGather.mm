@@ -87,17 +87,19 @@ static NSUInteger kChannelsPerTexture = 4;
     }
   }
 
-  vector_ushort4 shortVectorOfIndices;
+  simd_ushort4 shortVectorOfIndices;
   for (ushort i = 0; i < std::min((ushort)kChannelsPerTexture, outputFeatureChannels); ++i) {
     shortVectorOfIndices[i] = _outputFeatureChannelIndices[i];
   }
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&outputFeatureChannels type:MTLDataTypeUShort
-                             withName:@"outputFeatureChannels"];
-  [functionConstants setConstantValue:&shortVectorOfIndices type:MTLDataTypeUShort4
-                             withName:@"outputFeatureChannelsShortList"];
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:outputFeatureChannels
+                                            name:@"outputFeatureChannels"],
+    [MTBFunctionConstant ushort4ConstantWithValue:shortVectorOfIndices
+                                             name:@"outputFeatureChannelsShortList"]
+  ];
+
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)createBuffers {
