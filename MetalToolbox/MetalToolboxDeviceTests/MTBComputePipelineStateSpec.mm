@@ -32,7 +32,9 @@ it(@"should create compute state for function with array of MTBFunctionConstant 
   auto coefficientData = [NSData dataWithBytes:&coefficient length:sizeof(float)];
   auto functionConstants = @[
     [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
-                                      name:@"coefficient"]
+                                      name:@"coefficient"],
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient2"]
   ];
 
   auto computeState = MTBCreateComputePipelineState(library, @"functionWithConstants",
@@ -44,6 +46,7 @@ it(@"should create compute state for function with MTLFunctionConstantValues obj
   float coefficient = 0.5;
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&coefficient type:MTLDataTypeFloat withName:@"coefficient"];
+  [functionConstants setConstantValue:&coefficient type:MTLDataTypeFloat withName:@"coefficient2"];
 
   auto computeState = MTBCreateComputePipelineState(library, @"functionWithConstants",
                                                     functionConstants);
@@ -56,14 +59,12 @@ it(@"should raise when function is not found in the library", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
-it(@"should raise when number of constants does not match that of the function", ^{
+it(@"should raise when number of constants is less than that of the function", ^{
   float coefficient = 0.5;
   auto coefficientData = [NSData dataWithBytes:&coefficient length:sizeof(float)];
   auto functionConstants = @[
     [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
                                       name:@"coefficient"],
-    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
-                                      name:@"coefficient"]
   ];
 
   expect(^{
@@ -72,11 +73,30 @@ it(@"should raise when number of constants does not match that of the function",
   }).to.raise(NSInvalidArgumentException);
 });
 
+it(@"should not raise when number of constants is more than that of the function", ^{
+  float coefficient = 0.5;
+  auto coefficientData = [NSData dataWithBytes:&coefficient length:sizeof(float)];
+  auto functionConstants = @[
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient"],
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient2"],
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient3"],
+  ];
+  expect(^{
+    __unused auto computeState = MTBCreateComputePipelineState(library, @"functionWithConstants",
+                                                               functionConstants);
+  }).notTo.raiseAny();
+});
+
 it(@"should raise when names of constants do not match that of the function", ^{
   float coefficient = 0.5;
   auto coefficientData = [NSData dataWithBytes:&coefficient length:sizeof(float)];
   auto functionConstants = @[
-    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat name:@"foo"]
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat name:@"foo"],
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient2"]
   ];
 
   expect(^{
@@ -89,7 +109,9 @@ it(@"should raise when types of constants does not match that of the function", 
   float coefficient = 0.5;
   auto coefficientData = [NSData dataWithBytes:&coefficient length:sizeof(float)];
   auto functionConstants = @[
-    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeInt name:@"coefficient"]
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeInt name:@"coefficient"],
+    [MTBFunctionConstant constantWithValue:coefficientData type:MTLDataTypeFloat
+                                      name:@"coefficient2"]
   ];
 
   expect(^{
