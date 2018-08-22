@@ -55,6 +55,9 @@ NSString * const kValidationStatusKey = @"validationStatus";
 /// validation status.
 NSString * const kValidationDateKey = @"validationDate";
 
+NSString * const kBZRCachedReceiptValidationStatusFirstErrorDateTime =
+    @"receiptValidationFirstErrorDateTime";
+
 #pragma mark -
 #pragma mark Migration
 #pragma mark -
@@ -94,6 +97,19 @@ NSString * const kValidationDateKey = @"validationDate";
   return [self.keychainStorageRoute setValue:receiptValidationStatusForCaching
                                       forKey:kCachedReceiptValidationStatusStorageKey
                                  serviceName:applicationBundleID error:error];
+}
+
+- (nullable NSDate *)firstErrorDateTimeForApplicationBundleID:(NSString *)applicationBundleID {
+  return (NSDate *)
+      [self.keychainStorageRoute valueForKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                                 serviceName:applicationBundleID error:nil];
+}
+
+- (void)storeFirstErrorDateTime:(nullable NSDate *)firstErrorDateTime
+            applicationBundleID:(NSString *)applicationBundleID {
+  [self.keychainStorageRoute setValue:firstErrorDateTime
+                               forKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                          serviceName:applicationBundleID error:nil];
 }
 
 #pragma mark -

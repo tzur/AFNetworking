@@ -209,6 +209,25 @@ context(@"cache access", ^{
   });
 });
 
+context(@"first error date", ^{
+  it(@"should read first error date from cache", ^{
+    OCMExpect([keychainStorageRoute valueForKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                                    serviceName:applicationBundleID error:nil]);
+    [validationStatusCache firstErrorDateTimeForApplicationBundleID:applicationBundleID];
+    OCMVerifyAll((id)keychainStorageRoute);
+  });
+
+  it(@"should store first error date to cache", ^{
+    auto now = [NSDate date];
+    OCMExpect([keychainStorageRoute setValue:now
+                                      forKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                                 serviceName:applicationBundleID error:nil]);
+
+    [validationStatusCache storeFirstErrorDateTime:now applicationBundleID:applicationBundleID];
+    OCMVerifyAll((id)keychainStorageRoute);
+  });
+});
+
 context(@"loading multiple cache entries from cache", ^{
   __block BZRReceiptValidationStatusCacheEntry *cacheEntry;
 

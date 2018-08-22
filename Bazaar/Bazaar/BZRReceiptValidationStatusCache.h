@@ -10,6 +10,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRTimeProvider;
 
+/// Key to an \c NSDate in the cached entry specifying the date in which the first validation error,
+/// after the last success, occurred.
+extern NSString * const kBZRCachedReceiptValidationStatusFirstErrorDateTime;
+
 /// Value class representing an entry of the \c BZRReceiptValidationStatusCache. Holds the receipt
 /// validation status and the caching date.
 @interface BZRReceiptValidationStatusCacheEntry : BZRModel
@@ -58,6 +62,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c nil is returned.
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError **)error;
+
+/// Returns the date in which the first validation error, after the last success, occurred.
+/// \c nil if the last validation attempt was successful, or if no validation attempt occurred.
+- (nullable NSDate *)firstErrorDateTimeForApplicationBundleID:(NSString *)applicationBundleID;
+
+/// Updates the first error date of an application with \c applicationBundleID to the time
+/// \c firstErrorDateTime.
+- (void)storeFirstErrorDateTime:(nullable NSDate *)firstErrorDateTime
+            applicationBundleID:(NSString *)applicationBundleID;
 
 @end
 

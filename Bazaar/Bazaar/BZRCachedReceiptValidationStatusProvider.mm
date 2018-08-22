@@ -98,12 +98,18 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         [self storeReceiptValidationStatus:receiptValidationStatus
                        applicationBundleID:applicationBundleID];
+        [self removeFirstErrorDateTimeForApplicationWithBundleID:applicationBundleID];
       }]
       doError:^(NSError *) {
         @strongify(self);
         [self invalidateReceiptValidationStatusIfNeeded:applicationBundleID];
+        [self storeFirstErrorDateTimeIfDoesntExistForApplicationWithBundleID:applicationBundleID];
       }]
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
+}
+
+- (void)removeFirstErrorDateTimeForApplicationWithBundleID:(NSString *)applicationBundleID {
+  [self.cache storeFirstErrorDateTime:nil applicationBundleID:applicationBundleID];
 }
 
 - (void)invalidateReceiptValidationStatusIfNeeded:(NSString *)applicationBundleID {
@@ -131,6 +137,18 @@ NS_ASSUME_NONNULL_BEGIN
       receipt.subscription.isExpired) withValue:@YES];
   [self storeReceiptValidationStatus:receiptValidationStatusWithExpiredSubscription
                  applicationBundleID:applicationBundleID];
+}
+
+- (void)storeFirstErrorDateTimeIfDoesntExistForApplicationWithBundleID:
+    (NSString *)applicationBundleID {
+  if ([self isFirstErrorOfApplicationBundleID:applicationBundleID]) {
+    [self.cache storeFirstErrorDateTime:[self.timeProvider currentTime]
+                    applicationBundleID:applicationBundleID];
+  }
+}
+
+- (BOOL)isFirstErrorOfApplicationBundleID:(NSString *)applicationBundleID {
+  return [self.cache firstErrorDateTimeForApplicationBundleID:applicationBundleID] == nil;
 }
 
 - (void)revertPrematureInvalidationOfReceiptValidationStatus:(NSString *)applicationBundleID {
