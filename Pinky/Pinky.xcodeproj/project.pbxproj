@@ -159,13 +159,11 @@
 		C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */; };
 		C9231FA51F04F1F9009E4FDB /* PNKGammaCorrection.metal in Sources */ = {isa = PBXBuildFile; fileRef = C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */; };
 		C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9231FA81F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm */; };
-		C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */; };
 		C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */ = {isa = PBXBuildFile; fileRef = C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */; };
 		C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */; };
 		C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
-		C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4043C9720C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm */; };
@@ -894,7 +892,6 @@
 		C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKGammaCorrection.mm; sourceTree = "<group>"; };
 		C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKGammaCorrection.metal; sourceTree = "<group>"; };
 		C9231FA81F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKGammaCorrectionSpec.mm; sourceTree = "<group>"; };
-		C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoaderSpec.mm; sourceTree = "<group>"; };
 		C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKConstantAlpha.metal; sourceTree = "<group>"; };
 		C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKConstantAlpha.h; sourceTree = "<group>"; };
 		C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConstantAlpha.mm; sourceTree = "<group>"; };
@@ -902,8 +899,6 @@
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
-		C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKLibraryLoader.h; sourceTree = "<group>"; };
-		C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoader.mm; sourceTree = "<group>"; };
 		E4043C9720C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionTreeTipMovement.mm; sourceTree = "<group>"; };
 		E4043C9820C03A7400D27D23 /* PNKImageMotionTreeTipMovement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionTreeTipMovement.h; sourceTree = "<group>"; };
 		E40F42872022F37E00190666 /* PNKSuperSkySegmentationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSuperSkySegmentationProcessor.h; sourceTree = "<group>"; };
@@ -1616,7 +1611,6 @@
 			children = (
 				28C7A03F2019D0AF0065B135 /* Applications */,
 				C9815C651EE88730004868CE /* Extensions */,
-				C9791A541F025AE90009E90F /* GPU */,
 				06A0A94C1F1B4BD100941045 /* Image Processing */,
 				068D90A51F1F5D050012F472 /* Network Layers */,
 				E4BAEEB61FE7D76E009F594D /* Neural Networks */,
@@ -1956,19 +1950,9 @@
 				E41BC78720274857003FC3B7 /* PNKDeviceAndCommandQueue.h */,
 				E41BC78620274857003FC3B7 /* PNKDeviceAndCommandQueue.mm */,
 				06A0A94B1F1B484700941045 /* PNKKernel.h */,
-				C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */,
-				C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */,
 				E4BAEEB31FE7C985009F594D /* PNKPixelBufferUtils.h */,
 				E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */,
 				06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */,
-			);
-			name = GPU;
-			sourceTree = "<group>";
-		};
-		C9791A541F025AE90009E90F /* GPU */ = {
-			isa = PBXGroup;
-			children = (
-				C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */,
 			);
 			name = GPU;
 			sourceTree = "<group>";
@@ -2765,7 +2749,6 @@
 				064723EE1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm in Sources */,
 				E43BF18820614B3600CE1C3A /* PNKArgmaxSpec.mm in Sources */,
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
-				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				E46995231FE6A8E600B944C9 /* PNKImageBilinearScaleSpec.mm in Sources */,
 				E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */,
 				E46F4C2720DBA6BF0028D62E /* PNKImageMotionLayerFusionSpec.mm in Sources */,
@@ -2860,7 +2843,6 @@
 				E43774F620E222DF00D78632 /* PNKImageMotionDisplacementProcessor.mm in Sources */,
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
 				E42969C320CD0AC300D22382 /* PNKImageMotionLayerFactory.mm in Sources */,
-				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
