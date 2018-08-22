@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		643339BA212DA4CA00E37691 /* MTBFunctionConstantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */; };
 		656155B81D464A28009E701C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B71D464A28009E701C /* opencv2.framework */; };
 		656155BB1D464A65009E701C /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B41D4649F9009E701C /* libSpecta.a */; };
 		8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */; };
@@ -235,6 +236,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBFunctionConstantSpec.mm; path = MetalToolboxDeviceTests/MTBFunctionConstantSpec.mm; sourceTree = "<group>"; };
 		656155701D4649E2009E701C /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				E44EAB3821061E0B00085307 /* MTBComputeDispatchSpec.mm */,
 				E4DC7EB420F22DCD00F6893B /* MTBComputePipelineStateSpec.metal */,
 				E4DC7EB320F22DCD00F6893B /* MTBComputePipelineStateSpec.mm */,
+				643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */,
 				E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */,
 				E4BCB9BA20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm */,
 				E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */,
@@ -893,6 +896,7 @@
 				E4BCB9BC20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm in Sources */,
 				E44EAB3B21061E0B00085307 /* MTBComputeDispatchSpec.metal in Sources */,
 				E4DC7EB620F22DCD00F6893B /* MTBComputePipelineStateSpec.metal in Sources */,
+				643339BA212DA4CA00E37691 /* MTBFunctionConstantSpec.mm in Sources */,
 				E4DC7EB520F22DCD00F6893B /* MTBComputePipelineStateSpec.mm in Sources */,
 				E4F15D3E20FB965F005551A1 /* MTBImagePropertiesExamples.mm in Sources */,
 				E485E83F20FCD28B00CC664C /* MTBPixelBufferUtilsSpec.mm in Sources */,
