@@ -193,7 +193,7 @@ context(@"processing with guide equals input", ^{
                                                            output:output];
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna128_R9S1.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 100);
   });
 
   it(@"should process correctly with smaller kernelSize", ^{
@@ -202,7 +202,7 @@ context(@"processing with guide equals input", ^{
                                                            output:output];
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna128_R7S2.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should produce similar result with higher downscaleFactor", ^{
@@ -226,7 +226,7 @@ context(@"processing with guide equals input", ^{
     guidedFilter.smoothingDegree = 0.03;
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna128_R9S1_Smooth.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 100);
   });
 
   it(@"should process correctly with non-square image", ^{
@@ -240,7 +240,7 @@ context(@"processing with guide equals input", ^{
                                                            output:nonSquareOutput];
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna67x128_R7S3.png");
-    expect($([nonSquareOutput image])).to.equalMat($(expected));
+    expect($([nonSquareOutput image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should not fail on one pixel image input", ^{
