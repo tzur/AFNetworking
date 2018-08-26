@@ -45,8 +45,8 @@
   return {7, 8};
 }
 
-- (NSSet<NSString *> *)parameterizationKeys {
-  return [NSSet setWithArray:@[@"key", @"anotherKey"]];
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
+  return [NSOrderedSet orderedSetWithArray:@[@"key", @"anotherKey"]];
 }
 
 - (CGFloat)minParametricValue {

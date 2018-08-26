@@ -9,7 +9,7 @@
 static id<LTParameterizedValueObject>
     LTParameterizedValueObjectMock(BOOL strictMock, CGFloat minParametricValue,
                                    CGFloat maxParametricValue,
-                                   NSSet<NSString *> *parameterizationKeys) {
+                                   NSOrderedSet<NSString *> *parameterizationKeys) {
   id<LTParameterizedValueObject> mock = strictMock ?
       OCMStrictProtocolMock(@protocol(LTParameterizedValueObject)) :
       OCMProtocolMock(@protocol(LTParameterizedValueObject));
@@ -23,10 +23,10 @@ SpecBegin(LTParameterizedObjectStack)
 
 __block LTParameterizedObjectStack *object;
 __block id parameterizedObjectMock;
-__block NSSet<NSString *> *parameterizationKeys;
+__block NSOrderedSet<NSString *> *parameterizationKeys;
 
 beforeEach(^{
-  parameterizationKeys = [NSSet setWithArray:@[@"key0", @"key1"]];
+  parameterizationKeys = [NSOrderedSet orderedSetWithArray:@[@"key0", @"key1"]];
   parameterizedObjectMock = LTParameterizedValueObjectMock(NO, 3, 4, parameterizationKeys);
   object = [[LTParameterizedObjectStack alloc] initWithParameterizedObject:parameterizedObjectMock];
 });
@@ -70,7 +70,7 @@ context(@"modifying extensible parameterized object", ^{
     it(@"should raise when pushing parameterized object with invalid parameterizationKeys", ^{
       OCMStub([anotherParameterizedObjectMock minParametricValue]).andReturn(4);
       OCMStub([anotherParameterizedObjectMock maxParametricValue]).andReturn(7);
-      NSSet *differentParameterizationKeys = [NSSet setWithArray:@[]];
+      NSOrderedSet *differentParameterizationKeys = [NSOrderedSet orderedSetWithArray:@[]];
       OCMStub([anotherParameterizedObjectMock parameterizationKeys])
           .andReturn(differentParameterizationKeys);
 
@@ -112,7 +112,7 @@ context(@"modifying extensible parameterized object", ^{
     it(@"should raise when replacing by parameterized object with invalid parameterization keys", ^{
       OCMStub([anotherParameterizedObjectMock minParametricValue]).andReturn(3);
       OCMStub([anotherParameterizedObjectMock maxParametricValue]).andReturn(4);
-      NSSet *differentParameterizationKeys = [NSSet setWithArray:@[]];
+      NSOrderedSet *differentParameterizationKeys = [NSOrderedSet orderedSetWithArray:@[]];
       OCMStub([anotherParameterizedObjectMock parameterizationKeys])
           .andReturn(differentParameterizationKeys);
       expect(^{
@@ -229,21 +229,25 @@ context(@"LTParameterizedObject protocol", ^{
       });
 
       it(@"should delegate key to values queries to the correct parameterized object", ^{
-        OCMExpect([strictParameterizedObjectMock floatForParametricValue:3.5 key:@"key0"])
-            .andReturn(0);
-        OCMExpect([strictParameterizedObjectMock floatForParametricValue:3.5 key:@"key1"])
-            .andReturn(1);
-        OCMExpect([anotherStrictParameterizedObjectMock floatForParametricValue:5.5 key:@"key0"])
-            .andReturn(10);
-        OCMExpect([anotherStrictParameterizedObjectMock floatForParametricValue:5.5 key:@"key1"])
-            .andReturn(11);
+        cv::Mat1g values = (cv::Mat1g(2, 1) << 0, 1);
+        LTParameterizationKeyToValues *keyToValues =
+            [[LTParameterizationKeyToValues alloc] initWithKeys:parameterizationKeys
+                                                   valuesPerKey:values];
+        OCMExpect([[(id)strictParameterizedObjectMock ignoringNonObjectArgs]
+                   mappingForParametricValues:{3.5}]).andReturn(keyToValues);
+
+        values = (cv::Mat1g(2, 1) << 10, 11);
+        keyToValues = [[LTParameterizationKeyToValues alloc] initWithKeys:parameterizationKeys
+                                                             valuesPerKey:values];
+        OCMExpect([[(id)anotherStrictParameterizedObjectMock ignoringNonObjectArgs]
+                   mappingForParametricValues:{5.5}]).andReturn(keyToValues);
 
         LTParameterizationKeyToValues *result = [object mappingForParametricValues:{3.5, 5.5}];
 
         CGFloats values0 = [result valuesForKey:@"key0"];
         CGFloats values1 = [result valuesForKey:@"key1"];
 
-        expect([result.keys set]).to.equal(parameterizationKeys);
+        expect(result.keys).to.equal(parameterizationKeys);
         expect(values0.size()).to.equal(2);
         expect(values0[0]).to.equal(0);
         expect(values0[1]).to.equal(10);

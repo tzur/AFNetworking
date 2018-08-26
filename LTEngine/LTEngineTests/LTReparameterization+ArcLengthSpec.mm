@@ -42,8 +42,8 @@
   return {};
 }
 
-- (NSSet<NSString *> *)parameterizationKeys {
-  return [NSSet setWithArray:@[@"xCoordinate", @"yCoordinate"]];
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
+  return [NSOrderedSet orderedSetWithArray:@[@"xCoordinate", @"yCoordinate"]];
 }
 
 - (CGFloat)minParametricValue {

@@ -23,9 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// the state of the stack. Used for performance reasons.
 @property (strong, nonatomic, nullable) NSArray<id<LTParameterizedValueObject>> *immutableObjects;
 
-/// Ordered collection of parameterization keys. Stored for optimization.
-@property (strong, nonatomic) NSOrderedSet<NSString *> *orderedParameterizationKeys;
-
 @end
 
 @implementation LTParameterizedObjectStack
@@ -37,8 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithParameterizedObject:(id<LTParameterizedValueObject>)parameterizedObject {
   if (self = [super init]) {
     self.mutableObjects = [NSMutableArray arrayWithObject:parameterizedObject];
-    self.orderedParameterizationKeys =
-        [NSOrderedSet orderedSetWithSet:parameterizedObject.parameterizationKeys];
     [self resetImmutableObjects];
     _mapping.assign({parameterizedObject.minParametricValue,
                      parameterizedObject.maxParametricValue});
@@ -69,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
                     newObject.maxParametricValue, objectToReplace.minParametricValue,
                     objectToReplace.maxParametricValue);
   LTParameterAssert([objectToReplace.parameterizationKeys
-                     isSubsetOfSet:newObject.parameterizationKeys],
+                     isEqualToOrderedSet:newObject.parameterizationKeys],
                     @"Parameterization keys of object to replace (%@) don't match those of new "
                     "object (%@)",
                     objectToReplace.parameterizationKeys.description,
@@ -106,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
                     "maximum value (%g) of last object", parameterizedObject.minParametricValue,
                     self.mutableObjects.lastObject.maxParametricValue);
   LTParameterAssert([[parameterizedObject parameterizationKeys]
-                     isEqualToSet:[self.mutableObjects.lastObject parameterizationKeys]],
+                     isEqualToOrderedSet:[self.mutableObjects.lastObject parameterizationKeys]],
                     @"Parameterization keys (%@) of pushed object must equal those (%@) of the "
                     "objects already held by this object",
                     [parameterizedObject parameterizationKeys],
@@ -133,18 +128,25 @@ NS_ASSUME_NONNULL_BEGIN
 
   std::vector<NSUInteger> indices = [self indicesOfObjectsForParametricValues:parametricValues];
 
-  __block cv::Mat1g valuesPerKey((int)self.orderedParameterizationKeys.count,
-                                 (int)parametricValues.size());
+  int numberOfParametricValues = (int)parametricValues.size();
+  __block cv::Mat1g valuesPerKey((int)self.parameterizationKeys.count, numberOfParametricValues);
 
-  [self.orderedParameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i,
-                                                                 BOOL *) {
-    for (int j = 0; j < (int)parametricValues.size(); ++j) {
-      valuesPerKey((int)i, j) =
-          [self.mutableObjects[indices[j]] floatForParametricValue:parametricValues[j] key:key];
+  for (int i = 0; i < numberOfParametricValues; ++i) {
+    CGFloats values = {parametricValues[i]};
+    while (i + 1 < numberOfParametricValues && indices[i + 1] == indices[i]) {
+      ++i;
+      values.push_back(parametricValues[i]);
     }
-  }];
+    LTParameterizationKeyToValues *mapping =
+        [self.mutableObjects[indices[i]] mappingForParametricValues:values];
+    cv::Mat1g partialValuesPerKey = mapping.valuesPerKey;
+    cv::Rect sourceRect(cv::Point(0, 0), cv::Size(partialValuesPerKey.cols,
+                                                  partialValuesPerKey.rows));
+    cv::Rect destinationRect(cv::Point(i + 1 - partialValuesPerKey.cols, 0), sourceRect.size());
+    partialValuesPerKey(sourceRect).copyTo(valuesPerKey(destinationRect));
+  }
 
-  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.orderedParameterizationKeys
+  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.parameterizationKeys
                                                 valuesPerKey:valuesPerKey];
 }
 
@@ -166,7 +168,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTParameterizedObject - Properties
 #pragma mark -
 
-- (NSSet<NSString *> *)parameterizationKeys {
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
   return [self.mutableObjects.firstObject parameterizationKeys];
 }
 

@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Number of values per key, equal to the number of matrix columns.
 @property (readonly, nonatomic) int numberOfValuesPerKey;
 
+/// Matrix provided upon initialization, each of whose rows is associated with the corresponding key
+/// of \c keys.
+@property (readonly, nonatomic) const cv::Mat1g &valuesPerKey;
+
 @end
 
 NS_ASSUME_NONNULL_END

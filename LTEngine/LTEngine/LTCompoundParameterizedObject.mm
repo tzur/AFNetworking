@@ -3,6 +3,8 @@
 
 #import "LTCompoundParameterizedObject.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "LTBasicParameterizedObject.h"
 #import "LTParameterizationKeyToValues.h"
 
@@ -11,24 +13,39 @@ NS_ASSUME_NONNULL_BEGIN
 /// Represents mutable mapping from key to boxed \c CGFloat returned by parameterized objects.
 typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKeyToValue;
 
-@interface LTCompoundParameterizedObject ()
+#pragma mark -
+#pragma mark LTKeyBasicParameterizedObjectPair
+#pragma mark -
 
-/// Mapping of keys to their corresponding basic parameterized objects.
-@property (strong, readwrite, nonatomic) LTKeyToBaseParameterizedObject *mapping;
+@interface LTKeyBasicParameterizedObjectPair ()
 
-/// See \c LTParameterizedObject protocol.
-@property (strong, nonatomic) NSSet<NSString *> *parameterizationKeys;
-
-/// Ordered set of parameterization keys.
-@property (strong, nonatomic) NSOrderedSet<NSString *> *orderedParameterizationKeys;
-
-/// See \c LTParameterizedObject protocol.
-@property (nonatomic) CGFloat minParametricValue;
-
-/// See \c LTParameterizedObject protocol.
-@property (nonatomic) CGFloat maxParametricValue;
+/// Initializes with the given \c key and the given \c basicParameterizedObject.
+- (instancetype)initWithKey:(NSString *)key
+   basicParameterizedObject:(id<LTBasicParameterizedObject>)basicParameterizedObject;
 
 @end
+
+@implementation LTKeyBasicParameterizedObjectPair
+
+- (instancetype)initWithKey:(NSString *)key
+   basicParameterizedObject:(id<LTBasicParameterizedObject>)basicParameterizedObject {
+  if (self = [super init]) {
+    _key = key;
+    _basicParameterizedObject = basicParameterizedObject;
+  }
+  return self;
+}
+
++ (instancetype)pairWithKey:(NSString *)key
+   basicParameterizedObject:(id<LTBasicParameterizedObject>)basicParameterizedObject {
+  return [[self alloc] initWithKey:key basicParameterizedObject:basicParameterizedObject];
+}
+
+@end
+
+#pragma mark -
+#pragma mark LTCompoundParameterizedObject
+#pragma mark -
 
 @implementation LTCompoundParameterizedObject
 
@@ -37,35 +54,41 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
 #pragma mark -
 
 - (instancetype)initWithMapping:(LTKeyToBaseParameterizedObject *)mapping {
-  LTParameterAssert([mapping allKeys].count <= INT_MAX,
-                    @"Number (%lu) of keys must not exceed INT_MAX",
-                    (unsigned long)[mapping allKeys].count);
+  LTParameterAssert(mapping.count <= INT_MAX, @"Number (%lu) of keys must not exceed INT_MAX",
+                    (unsigned long)mapping.count);
 
   if (self = [super init]) {
-    [self validateMapping:mapping];
-    self.mapping = [mapping copy];
-    self.parameterizationKeys = [NSSet setWithArray:[mapping allKeys]];
-    self.orderedParameterizationKeys = [NSOrderedSet orderedSetWithSet:self.parameterizationKeys];
-    id<LTBasicParameterizedObject> object = mapping[[mapping allKeys].firstObject];
-    self.minParametricValue = object.minParametricValue;
-    self.maxParametricValue = object.maxParametricValue;
+    _mapping = mapping;
+    _parameterizationKeys = [self parameterizationKeysFromValidatedMapping:mapping];
+    id<LTBasicParameterizedObject> object = mapping.firstObject.basicParameterizedObject;
+    _minParametricValue = object.minParametricValue;
+    _maxParametricValue = object.maxParametricValue;
   }
   return self;
 }
 
-- (void)validateMapping:(LTKeyToBaseParameterizedObject *)mapping {
-  NSString *keyOfFirstObject = mapping.allKeys.firstObject;
+- (NSOrderedSet<NSString *> *)
+    parameterizationKeysFromValidatedMapping:(LTKeyToBaseParameterizedObject *)mapping {
+  NSString *keyOfFirstObject = mapping.firstObject.key;
   LTParameterAssert(keyOfFirstObject, @"The given mapping must have at least one key");
-  id<LTBasicParameterizedObject> firstObject = mapping[keyOfFirstObject];
-  [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, id<LTBasicParameterizedObject> object,
-                                               BOOL *) {
+  id<LTBasicParameterizedObject> firstObject = mapping.firstObject.basicParameterizedObject;
+
+  NSMutableOrderedSet *parameterizationKeys =
+      [NSMutableOrderedSet orderedSetWithCapacity:mapping.count];
+
+  for (LTKeyBasicParameterizedObjectPair *pair in mapping) {
+    NSString *key = pair.key;
+    [parameterizationKeys addObject:key];
+    id<LTBasicParameterizedObject> object = pair.basicParameterizedObject;
     LTParameterAssert(object.minParametricValue == firstObject.minParametricValue &&
                       object.maxParametricValue == firstObject.maxParametricValue,
                       @"Intrinsic parametric ranges [%f, %f] of object with key (%@) doesn't match "
                       "range [%f, %f] of object with key (%@)", object.minParametricValue,
                       object.maxParametricValue, key, firstObject.minParametricValue,
                       firstObject.maxParametricValue, keyOfFirstObject);
-  }];
+  }
+
+  return parameterizationKeys;
 }
 
 #pragma mark -
@@ -81,7 +104,7 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
     return NO;
   }
 
-  return [self.mapping isEqualToDictionary:object.mapping];
+  return [self.mapping isEqualToArray:object.mapping];
 }
 
 - (NSUInteger)hash {
@@ -100,11 +123,15 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
 #pragma mark LTParameterizedObject
 #pragma mark -
 
+@synthesize parameterizationKeys = _parameterizationKeys;
+@synthesize minParametricValue = _minParametricValue;
+@synthesize maxParametricValue = _maxParametricValue;
+
 - (LTParameterizationKeyToValue *)mappingForParametricValue:(CGFloat)value {
   LTMutableParameterizationKeyToValue *result =
       [LTMutableParameterizationKeyToValue dictionaryWithCapacity:self.parameterizationKeys.count];
-  for (NSString *key in self.parameterizationKeys) {
-    result[key] = @([self.mapping[key] floatForParametricValue:value]);
+  for (LTKeyBasicParameterizedObjectPair *pair in self.mapping) {
+    result[pair.key] = @([pair.basicParameterizedObject floatForParametricValue:value]);
   }
   return [result copy];
 }
@@ -113,18 +140,17 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
   LTParameterAssert(parametricValues.size() <= INT_MAX,
                     @"Number (%lu) of parametric values must not exceed INT_MAX",
                     (unsigned long)parametricValues.size());
-  __block cv::Mat1g valuesPerKey((int)self.orderedParameterizationKeys.count,
+  __block cv::Mat1g valuesPerKey((int)self.parameterizationKeys.count,
                                  (int)parametricValues.size());
 
-  [self.orderedParameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i,
-                                                                 BOOL *) {
+  [self.parameterizationKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger i, BOOL *) {
     id<LTBasicParameterizedObject> object = [self baseParameterizedObjectForKey:key];
     for (int j = 0; j < (int)parametricValues.size(); ++j) {
       valuesPerKey((int)i, j) = (float)[object floatForParametricValue:parametricValues[j]];
     }
   }];
 
-  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.orderedParameterizationKeys
+  return [[LTParameterizationKeyToValues alloc] initWithKeys:self.parameterizationKeys
                                                 valuesPerKey:valuesPerKey];
 }
 
@@ -147,7 +173,10 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
 #pragma mark -
 
 - (id<LTBasicParameterizedObject>)baseParameterizedObjectForKey:(NSString *)key {
-  id<LTBasicParameterizedObject> result = self.mapping[key];
+  id<LTBasicParameterizedObject> result =
+      [self.mapping lt_find:^BOOL(LTKeyBasicParameterizedObjectPair *pair) {
+    return [pair.key isEqualToString:key];
+  }].basicParameterizedObject;
   LTParameterAssert(result,
                     @"No basic parameterized object specified for given key: \"%@\"", key);
   return result;

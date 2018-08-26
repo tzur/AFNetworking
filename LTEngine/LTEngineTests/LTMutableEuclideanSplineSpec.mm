@@ -341,7 +341,8 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
   it(@"should have the correct parametrization keys", ^{
     expect(spline.parameterizationKeys)
-        .to.equal([initialPoints.firstObject propertiesToInterpolate]);
+        .to.equal([NSOrderedSet orderedSetWithSet:[initialPoints.firstObject
+                                                   propertiesToInterpolate]]);
   });
 
   context(@"properties", ^{

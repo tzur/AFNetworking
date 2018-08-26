@@ -183,7 +183,7 @@ context(@"parameterized object computation", ^{
       expect(values[1]).to.equal(17);
       OCMVerifyAll(basicObjectMockForY);
 
-      expect(result.parameterizationKeys).to.equal(keys);
+      expect(result.parameterizationKeys).to.equal([NSOrderedSet orderedSetWithSet:keys]);
       expect(result.minParametricValue).to.equal(7);
       expect(result.maxParametricValue).to.equal(8.5);
     });
