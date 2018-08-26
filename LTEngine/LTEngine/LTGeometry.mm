@@ -157,8 +157,10 @@ std::vector<CGPoints> LTBoundaries(const cv::Mat &mat) {
 CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
   point = point + (-1 * anchor);
   CGPoint result;
-  result.x = std::cos(angle) * point.x - std::sin(angle) * point.y;
-  result.y = std::sin(angle) * point.x + std::cos(angle) * point.y;
+  CGFloat sinAngle = std::sin(angle);
+  CGFloat cosAngle = std::cos(angle);
+  result.x = cosAngle * point.x - sinAngle * point.y;
+  result.y = sinAngle * point.x + cosAngle * point.y;
   return result + anchor;
 }
 
