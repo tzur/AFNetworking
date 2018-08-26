@@ -10,7 +10,7 @@
 EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
   __block NSString *prerequisiteErrorMessage;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (strcmp([scalar _EXP_objCType], @encode(cv::Scalar))) {
       prerequisiteErrorMessage = @"Scalar value is not cv::Scalar";
     } else if (![actual matValue].data) {
@@ -19,13 +19,13 @@ EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
     return !prerequisiteErrorMessage;
   });
 
-  __block std::vector<int> firstMismatch([actual matValue].dims);
+  __block std::vector<int> firstMismatch;
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     return LTCompareMatWithValue([scalar scalarValue], [actual matValue], &firstMismatch);
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -35,7 +35,7 @@ EXPMatcherImplementationBegin(equalScalar, (NSValue *scalar)) {
             LTMatValueAsString([actual matValue], firstMismatch)];
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id actual) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

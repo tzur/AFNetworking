@@ -9,7 +9,7 @@ EXPMatcherImplementationBegin(sendEvents, (id expected))
 __block LLSignalTestRecorder *actualRecorder = nil;
 __block LLSignalTestRecorder *expectedRecorder = nil;
 
-void (^subscribe)(void) = ^{
+void (^subscribe)(id actual) = ^(id actual) {
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }
@@ -18,12 +18,12 @@ void (^subscribe)(void) = ^{
     }
 };
 
-prerequisite(^BOOL{
+prerequisite(^BOOL(id actual) {
     return LLRMCorrectClassesForActual(actual);
 });
 
-match(^BOOL{
-    subscribe();
+match(^BOOL(id actual) {
+    subscribe(actual);
     
     if(!(actualRecorder.hasFinished && expectedRecorder.hasFinished)) {
         return NO;
@@ -32,7 +32,7 @@ match(^BOOL{
     return LLRMIdenticalValues(actualRecorder, expectedRecorder) && LLRMIdenticalFinishingStatus(actualRecorder, expectedRecorder) && LLRMIdenticalErrors(actualRecorder, expectedRecorder);
 });
 
-failureMessageForTo(^NSString *{
+failureMessageForTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
@@ -49,7 +49,7 @@ failureMessageForTo(^NSString *{
     return [[[[[LLReactiveMatchersMessageBuilder message] actual:actualRecorder] expectedBehaviour:@"finish in the same way as"] expected:expectedRecorder] build];
 });
 
-failureMessageForNotTo(^NSString *{
+failureMessageForNotTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }

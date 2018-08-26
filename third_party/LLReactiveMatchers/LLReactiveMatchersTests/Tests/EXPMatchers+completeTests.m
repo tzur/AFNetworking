@@ -60,7 +60,7 @@
 
 - (void) test_endsInError {
     RACSignal *signal = [[[LLReactiveMatchersFixtures values:@[@1, @2, @3]] concat:[RACSignal error:LLSpecError]] setNameWithFormat:@"foo"];
-    NSString *failureString = @"expected: actual foo to complete, got: error instead of completion";
+    NSString *failureString = [NSString stringWithFormat:@"expected: actual foo to complete, got: error instead of completion. Error is: %@", LLSpecError];
     
     assertPass(test_expect(signal).toNot.complete());
     assertFail(test_expect(signal).to.complete(), failureString);
@@ -68,7 +68,7 @@
     signal = [signal asyncySignal];
     assertPass(test_expect(signal).willNot.complete());
     assertFail(test_expect(signal).will.complete(), failureString);
-    
+
     assertPass(test_expect(signal).willNotContinueTo.complete());
     assertFail(test_expect(signal).willContinueTo.complete(), failureString);
 }
