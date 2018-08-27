@@ -13,6 +13,8 @@
 
 SpecBegin(DVNPipeline)
 
+static const lt::Interval<CGFloat> kInterval = lt::Interval<CGFloat>::zeroToOne();
+
 __block DVNPipelineConfiguration *initialConfiguration;
 __block DVNPipeline *pipeline;
 
@@ -47,11 +49,25 @@ context(@"initialization", ^{
   });
 });
 
-context(@"processing", ^{
-  static const lt::Interval<CGFloat> kInterval({0, 1},
-                                               lt::Interval<CGFloat>::EndpointInclusion::Closed,
-                                               lt::Interval<CGFloat>::EndpointInclusion::Closed);
+context(@"updating configuration", ^{
+  it(@"should provide given configuration as current configuration after setting", ^{
+    __block id<LTParameterizedObject> parameterizedObject =
+        OCMProtocolMock(@protocol(LTParameterizedObject));
+    LTTexture *renderTarget = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
+    [[[LTFbo alloc] initWithTexture:renderTarget] bindAndDraw:^{
+      [pipeline processParameterizedObject:parameterizedObject inInterval:kInterval end:NO];
+    }];
+    DVNPipelineConfiguration *configuration = pipeline.currentConfiguration;
+    expect(configuration).toNot.equal(initialConfiguration);
 
+    [pipeline setConfiguration:initialConfiguration];
+
+    configuration = pipeline.currentConfiguration;
+    expect(configuration).to.equal(initialConfiguration);
+  });
+});
+
+context(@"processing", ^{
   __block id<LTParameterizedObject> parameterizedObject;
   __block LTTexture *renderTarget;
   __block LTFbo *fbo;

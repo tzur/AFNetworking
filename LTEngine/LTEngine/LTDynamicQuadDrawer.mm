@@ -48,6 +48,7 @@ NSString * const kLTQuadDrawerGPUStructName = @"LTDynamicQuadDrawerVertex";
 
   if (self = [super init]) {
     _gpuStruct = [[LTGPUStructRegistry sharedInstance] structForName:kLTQuadDrawerGPUStructName];
+    _initialGPUStructs = gpuStructs;
     gpuStructs =
         [NSOrderedSet orderedSetWithArray:[gpuStructs.array arrayByAddingObject:_gpuStruct]];
     _drawer =
@@ -229,6 +230,18 @@ static const NSDictionary<NSString *, NSValue *> *kDefaultUniformsForDefaultFram
       [kDefaultUniformsForDefaultFramebuffer mutableCopy] : [kDefaultUniforms mutableCopy];
   [mutableUniforms addEntriesFromDictionary:uniforms];
   return [mutableUniforms copy];
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (NSString *)sourceIdentifier {
+  return self.drawer.sourceIdentifier;
+}
+
+- (NSOrderedSet<LTGPUStruct *> *)gpuStructs {
+  return self.drawer.gpuStructs;
 }
 
 @end

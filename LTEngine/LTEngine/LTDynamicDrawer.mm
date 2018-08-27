@@ -14,10 +14,6 @@
 
 @interface LTDynamicDrawer ()
 
-/// GPU structs determining the format of the attributes of the vertex shader executed by this
-/// instance.
-@property (readonly, nonatomic) NSOrderedSet<LTGPUStruct *> *gpuStructs;
-
 /// Ordered collection of array buffers each of which contains the data of a single attribute.
 @property (readonly, nonatomic) NSArray<LTArrayBuffer *> *arrayBuffers;
 
@@ -248,6 +244,10 @@
     return context.maxNumberOfVertexUniforms + context.maxNumberOfFragmentUniforms;
   }
   return _maximumNumberOfCachedUniforms;
+}
+
+- (NSString *)sourceIdentifier {
+  return self.context.program.sourceIdentifier;
 }
 
 @end
