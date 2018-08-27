@@ -588,6 +588,49 @@ context(@"purchasing products", ^{
     OCMVerifyAll((id)storeKitFacade);
   });
 
+  it(@"should send event upon a successful purchase", ^{
+    auto transactionID = @"foo.transactionID";
+    auto successfulTransaction = BZRMockedSKPaymentTransaction(productIdentifier, transactionID);
+
+    OCMStub([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
+        .andReturn([RACSignal return:successfulTransaction]);
+
+    auto receiptValidationStatus =
+      [BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier)
+       modelByOverridingPropertyAtKeypath:
+       @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
+       withValue:
+       @[BZRTransactionWithTransactionIdentifier(successfulTransaction.transactionIdentifier)]];
+
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+
+    BZRStubProductDictionaryToReturnProduct(nonRenewingSubscriptionProduct, productsProvider);
+
+    appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
+    auto purchaseSignal = [store purchaseProduct:subscriptionIdentifier];
+
+    auto eventRecorder = [store.eventsSignal testRecorder];
+    expect(purchaseSignal).will.complete();
+
+    auto successfulPurchaseEventInfo = @{
+      @"EventSubtype": @"PurchaseSuccessful",
+      @"ProductID": productIdentifier,
+      @"PurchaseDate": successfulTransaction.transactionDate,
+      @"ValidatricksRequestID": receiptValidationStatus.requestId,
+      @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
+    };
+    auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                              eventInfo:successfulPurchaseEventInfo];
+
+    expect(eventRecorder).will.sendValues(@[purchaseEvent]);
+  });
+
   it(@"should not add product to acquired via subscription products if the subscription doesn't "
       "enable the product", ^{
     subscriptionProduct = [subscriptionProduct
@@ -776,17 +819,13 @@ context(@"purchasing products", ^{
 
       context(@"validating receipt and finishing transactions", ^{
         __block SKPaymentTransaction *purchasedTransaction;
-
         beforeEach(^{
-          purchasedTransaction = OCMClassMock([SKPaymentTransaction class]);
-          OCMStub([purchasedTransaction transactionState])
-              .andReturn(SKPaymentTransactionStatePurchased);
-          OCMStub([purchasedTransaction transactionIdentifier]).andReturn(@"foo");
-          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
-              .andReturn([RACSignal return:purchasedTransaction]);
+          purchasedTransaction = BZRMockedSKPaymentTransaction(productIdentifier, @"foo");
         });
 
         it(@"should validate receipt when store kit signal sends a transaction", ^{
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:purchasedTransaction]);
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal return:receiptValidationStatus]);
           expect([store purchaseProduct:productIdentifier]).will.finish();
@@ -794,6 +833,8 @@ context(@"purchasing products", ^{
         });
 
         it(@"should send error when validation fails", ^{
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:purchasedTransaction]);
           auto validationError = [NSError lt_errorWithCode:1337];
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal error:validationError]);
@@ -805,6 +846,8 @@ context(@"purchasing products", ^{
         });
 
         it(@"should send two error events when validation fails", ^{
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:purchasedTransaction]);
           auto recorder = [store.eventsSignal testRecorder];
           auto validationError = [NSError lt_errorWithCode:1337];
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -825,6 +868,8 @@ context(@"purchasing products", ^{
         });
 
         it(@"should finish product's transaction if it appears in receipt transactions", ^{
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:purchasedTransaction]);
           receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
               @keypath(receiptValidationStatus, receipt.transactions)
               withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
@@ -837,21 +882,26 @@ context(@"purchasing products", ^{
         });
 
         it(@"should finish product's transaction if its date appears in receipt transactions", ^{
+          auto sameDateTransaction = BZRMockedSKPaymentTransaction
+              (productIdentifier, @"foo", SKPaymentTransactionStatePurchased,
+               receiptValidationStatus.receipt.transactions.firstObject.purchaseDateTime);
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:sameDateTransaction]);
           receiptValidationStatus = [receiptValidationStatus modelByOverridingPropertyAtKeypath:
               @keypath(receiptValidationStatus, receipt.transactions)
               withValue:@[BZRTransactionWithTransactionIdentifier(@"notFoo")]];
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal return:receiptValidationStatus]);
-          OCMStub([purchasedTransaction transactionDate])
-              .andReturn(receiptValidationStatus.receipt.transactions.firstObject.purchaseDateTime);
 
           expect([store purchaseProduct:productIdentifier]).will.complete();
 
-          OCMVerify([storeKitFacade finishTransaction:purchasedTransaction]);
+          OCMVerify([storeKitFacade finishTransaction:sameDateTransaction]);
         });
 
         it(@"should not finish product's transaction if it doesn't appear in receipt "
            "transactions", ^{
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY quantity:1])
+              .andReturn([RACSignal return:purchasedTransaction]);
           OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
               .andReturn([RACSignal return:receiptValidationStatus]);
           OCMReject([storeKitFacade finishTransaction:OCMOCK_ANY]);
@@ -1663,9 +1713,12 @@ context(@"getting product list", ^{
           [RACSignal return:@[product, secondBaseProduct, firstVariant, secondVariant]];
       OCMStub([productsProvider fetchProductList]).andReturn(productList);
 
-      SKProductsResponse *response =
-          BZRProductsResponseWithProducts(@[productIdentifier, @"prod2", firstVariantIdentifier,
-                                            @"prod2.Variant.B"]);
+      auto response = BZRMockedProductsResponseWithProducts(@[
+        productIdentifier,
+        @"prod2",
+        firstVariantIdentifier,
+        @"prod2.Variant.B"
+      ]);
       NSSet *productSet =
           [NSSet setWithObjects:@"prod2", productIdentifier, firstVariantIdentifier,
            @"prod2.Variant.B", nil];
@@ -1955,8 +2008,6 @@ context(@"handling unfinished completed transactions", ^{
 
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
   });
 
   it(@"should complete when object is deallocated", ^{
@@ -2001,8 +2052,11 @@ context(@"handling unfinished completed transactions", ^{
   });
 
   context(@"finishing and sending transactions", ^{
+    __block SKPaymentTransaction *transaction;
+
     beforeEach(^{
       appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+      transaction = BZRMockedSKPaymentTransaction(productIdentifier, @"foo");
     });
 
     it(@"should finish transaction if it appears in receipt transactions", ^{
@@ -2012,10 +2066,6 @@ context(@"handling unfinished completed transactions", ^{
           withValue:@[BZRTransactionWithTransactionIdentifier(@"foo")]];
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
-
-      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
 
       OCMExpect([storeKitFacade finishTransaction:transaction]);
 
@@ -2035,10 +2085,6 @@ context(@"handling unfinished completed transactions", ^{
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
-      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
-
       [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
       expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
@@ -2048,12 +2094,39 @@ context(@"handling unfinished completed transactions", ^{
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
 
-      SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-      OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
-      OCMReject([storeKitFacade finishTransaction:transaction]);
-
       [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
+
+      OCMReject([storeKitFacade finishTransaction:transaction]);
+    });
+
+    it(@"should send purchase successful event if transaction appears in receipt transactions ", ^{
+      auto transactionID = @"foo.transation.id";
+      auto purchasedTransaction = BZRMockedSKPaymentTransaction(productIdentifier, transactionID);
+      auto receiptValidationStatus =
+          [BZRReceiptValidationStatusWithExpiry(YES)
+           modelByOverridingPropertyAtKeypath:
+           @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions)
+           withValue:@[BZRTransactionWithTransactionIdentifier(transactionID)]];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+
+      auto eventRecorder = [store.eventsSignal testRecorder];
+
+      [unhandledSuccessfulTransactionsSubject sendNext:@[purchasedTransaction]];
+
+      auto successfulPurchaseEventInfo = @{
+        @"EventSubtype": @"PurchaseSuccessful",
+        @"ProductID": productIdentifier,
+        @"PurchaseDate": purchasedTransaction.transactionDate,
+        @"ValidatricksRequestID": receiptValidationStatus.requestId,
+        @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
+      };
+      auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                                eventInfo:successfulPurchaseEventInfo];
+
+      expect(eventRecorder).will.sendValues(@[purchaseEvent]);
     });
 
     it(@"should not send transaction on completed transactions signal if it doesn't appear in "
@@ -2063,10 +2136,6 @@ context(@"handling unfinished completed transactions", ^{
       @autoreleasepool {
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
             .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
-
-        SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-        OCMStub([transaction transactionIdentifier]).andReturn(@"foo");
 
         auto store = [[BZRStore alloc] initWithConfiguration:configuration];
         completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];

@@ -85,7 +85,7 @@ context(@"getting product list", ^{
 
   it(@"should return set containing the requested product if fetching that product's metadata "
      "succeeded", ^{
-    SKProductsResponse *response = BZRProductsResponseWithProduct(@"foo");
+    auto response = BZRMockedProductsResponseWithProduct(@"foo");
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
@@ -99,7 +99,7 @@ context(@"getting product list", ^{
   });
 
   it(@"should return empty list if facade returns a response with another product", ^{
-    SKProductsResponse *response = BZRProductsResponseWithProduct(@"bar");
+    auto response = BZRMockedProductsResponseWithProduct(@"bar");
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
@@ -125,17 +125,17 @@ context(@"getting product list", ^{
           modelByOverridingProperty:@keypath(fullPriceProduct, discountedProducts)
           withValue:@[@"bar"]];
       fullPrice = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
-      fullPriceUnderlyingProduct = BZRSKProductWithProperties(@"foo", fullPrice);
+      fullPriceUnderlyingProduct = BZRMockedSKProductWithProperties(@"foo", fullPrice);
 
       discountedPrice = [NSDecimalNumber decimalNumberWithString:@"13"];
       discountedProduct = BZRProductWithIdentifier(@"bar");
       discountedProduct = [discountedProduct
           modelByOverridingProperty:@keypath(discountedProduct, fullPriceProductIdentifier)
           withValue:fullPriceProduct.identifier];
-      discountedUnderlyingProduct = BZRSKProductWithProperties(@"bar", discountedPrice);
+      discountedUnderlyingProduct = BZRMockedSKProductWithProperties(@"bar", discountedPrice);
 
       productList = @[fullPriceProduct, discountedProduct];
-      productsResponse = BZRProductsResponseWithSKProducts(@[
+      productsResponse = BZRMockedProductsResponseWithSKProducts(@[
         fullPriceUnderlyingProduct,
         discountedUnderlyingProduct
       ]);

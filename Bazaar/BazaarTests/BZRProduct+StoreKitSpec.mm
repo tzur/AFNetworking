@@ -15,7 +15,7 @@ __block SKProduct *storeKitProduct;
 
 beforeEach(^{
   baseProduct = BZRProductWithIdentifier(@"foo");
-  storeKitProduct = BZRSKProductWithProperties(@"foo");
+  storeKitProduct = BZRMockedSKProductWithProperties(@"foo");
 });
 
 context(@"setting the underlying product", ^{

@@ -36,22 +36,31 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
     (NSString *subscriptionIdentifier);
 
-/// Returns an \c SKProduct with the given properties.
-SKProduct *BZRSKProductWithProperties(NSString *identifier,
+/// Returns a mock of \c SKProduct with the given properties.
+SKProduct *BZRMockedSKProductWithProperties(NSString *identifier,
     NSDecimalNumber *price = [NSDecimalNumber one],
     NSString *localeIdentifier = [NSLocale currentLocale].localeIdentifier);
 
-/// Returns an \c SKProductsResponse with products set to \c products.
-SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products);
+/// Returns a mock of \c SKProductsResponse with products set to \c products.
+SKProductsResponse *BZRMockedProductsResponseWithSKProducts(NSArray<SKProduct *> *products);
 
-/// Returns an \c SKProductsResponse containing a single \c SKProduct with the given
+/// Returns a mock of \c SKProductsResponse containing a single \c SKProduct with the given
 /// \c productIdentifier.
-SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier);
+SKProductsResponse *BZRMockedProductsResponseWithProduct(NSString *productIdentifier);
 
-/// Returns an \c SKProductsResponse with \c SKProducts with identifiers \c productIdentifiers.
-SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers);
+/// Returns a mock of \c SKProductsResponse with \c SKProducts with identifiers
+/// \c productIdentifiers.
+SKProductsResponse *BZRMockedProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers);
 
 /// Returns a \c BZRReceiptTransactionInfo with transaction identifier set to \c transactionId.
 BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *transactionId);
+
+/// Returns a mock of \c SKPaymentTransaction with an underlying mocked \c SKPayment with productID
+/// set to \c productID, transaction identifier set to \c transactionID, transaction state set to
+/// \c state and transaction Date set to \c transactionDate, the two latter arguments have default
+/// values.
+SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
+     SKPaymentTransactionState state = SKPaymentTransactionStatePurchased,
+     NSDate *transactionDate = [NSDate date]);
 
 NS_ASSUME_NONNULL_END
