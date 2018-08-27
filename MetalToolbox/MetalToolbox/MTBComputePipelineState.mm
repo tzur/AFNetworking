@@ -3,25 +3,32 @@
 
 #import "MTBComputePipelineState.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "MTBFunctionConstant.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 static void MTBValidateConstants(id<MTLFunction> function,
                                  NSArray<MTBFunctionConstant *> * _Nullable userConstants) {
-  auto functionConstants = function.functionConstantsDictionary;
-  LTParameterAssert(userConstants.count == functionConstants.count, @"Function constants array is "
-                    "expected to have %lu members, got %lu",
+  NSMutableDictionary<NSString *, MTLFunctionConstant *> *functionConstants =
+      [function.functionConstantsDictionary mutableCopy];
+  LTParameterAssert(userConstants.count >= functionConstants.count, @"Function constants array is "
+                    "expected to have at least %lu members, got %lu",
                     (unsigned long)functionConstants.count, (unsigned long)userConstants.count);
 
   for (MTBFunctionConstant *userConstant in userConstants) {
-    auto functionConstant = functionConstants[userConstant.name];
-    LTParameterAssert(functionConstant, @"Function does not accept constant with name '%@'",
-                      userConstant.name);
-    LTParameterAssert(userConstant.type == functionConstant.type, @"Function constant %@ is "
-                      "expected to have MTLDataType of %lu, got %lu", userConstant.name,
-                      (unsigned long)functionConstant.type, (unsigned long)userConstant.type);
+    auto _Nullable functionConstant = functionConstants[userConstant.name];
+    if (functionConstant) {
+      LTParameterAssert(userConstant.type == functionConstant.type, @"Function constant %@ is "
+                        "expected to have MTLDataType of %lu, got %lu", userConstant.name,
+                        (unsigned long)functionConstant.type, (unsigned long)userConstant.type);
+      [functionConstants removeObjectForKey:userConstant.name];
+    }
   }
+
+  LTParameterAssert(functionConstants.count == 0, @"Functions constant(s) with name(s) '%@' were "
+                    "not provided by user", functionConstants.allKeys);
 }
 
 static id<MTLFunction> MTBFunction(id<MTLLibrary> library, NSString *functionName,

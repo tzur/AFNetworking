@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		643339BA212DA4CA00E37691 /* MTBFunctionConstantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */; };
 		656155B81D464A28009E701C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B71D464A28009E701C /* opencv2.framework */; };
 		656155BB1D464A65009E701C /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B41D4649F9009E701C /* libSpecta.a */; };
 		8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */; };
@@ -32,12 +33,12 @@
 		E477FB0F20ED01A0003D4302 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB0E20ED01A0003D4302 /* libExpecta.a */; };
 		E477FB1120ED01D9003D4302 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1020ED01D9003D4302 /* libcompression.tbd */; };
 		E477FB1320ED0238003D4302 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E477FB1220ED0238003D4302 /* MobileCoreServices.framework */; };
+		E485E83F20FCD28B00CC664C /* MTBPixelBufferUtilsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */; };
 		E4891B9620F74A7C00B730DA /* MTBFunctionConstant.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4891B9420F74A7C00B730DA /* MTBFunctionConstant.mm */; };
 		E4891B9720F74A7C00B730DA /* MTBFunctionConstant.h in Headers */ = {isa = PBXBuildFile; fileRef = E4891B9520F74A7C00B730DA /* MTBFunctionConstant.h */; };
 		E4A15DCB20FCB91B00393ECE /* MPSTemporaryImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = E4A15DB320FCB91B00393ECE /* MPSTemporaryImage+Factory.h */; };
 		E4A15DCC20FCB91B00393ECE /* MPSTemporaryImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4A15DCA20FCB91B00393ECE /* MPSTemporaryImage+Factory.mm */; };
 		E4A15DCF20FCB92C00393ECE /* MPSTemporaryImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4A15DCD20FCB92500393ECE /* MPSTemporaryImage+FactorySpec.mm */; };
-		E485E83F20FCD28B00CC664C /* MTBPixelBufferUtilsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */; };
 		E4BCB9B720F4E9770021A5E2 /* MTBLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB99F20F4E9770021A5E2 /* MTBLibraryLoader.mm */; };
 		E4BCB9B820F4E9770021A5E2 /* MTBLibraryLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = E4BCB9B620F4E9770021A5E2 /* MTBLibraryLoader.h */; };
 		E4BCB9BB20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */; };
@@ -235,6 +236,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBFunctionConstantSpec.mm; path = MetalToolboxDeviceTests/MTBFunctionConstantSpec.mm; sourceTree = "<group>"; };
 		656155701D4649E2009E701C /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
@@ -256,11 +258,11 @@
 		E407FB5120B4237800FDFAC8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		E407FB5220B4237800FDFAC8 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
-		E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBPixelBufferUtilsSpec.mm; path = MetalToolboxDeviceTests/MTBPixelBufferUtilsSpec.mm; sourceTree = "<group>"; };
 		E44EAB002105C84C00085307 /* MTBComputeDispatch.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MTBComputeDispatch.mm; sourceTree = "<group>"; };
 		E44EAB012105C84C00085307 /* MTBComputeDispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTBComputeDispatch.h; sourceTree = "<group>"; };
 		E44EAB3821061E0B00085307 /* MTBComputeDispatchSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBComputeDispatchSpec.mm; path = MetalToolboxDeviceTests/MTBComputeDispatchSpec.mm; sourceTree = "<group>"; };
 		E44EAB3921061E0B00085307 /* MTBComputeDispatchSpec.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = MTBComputeDispatchSpec.metal; path = MetalToolboxDeviceTests/MTBComputeDispatchSpec.metal; sourceTree = "<group>"; };
+		E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MTBPixelBufferUtilsSpec.mm; path = MetalToolboxDeviceTests/MTBPixelBufferUtilsSpec.mm; sourceTree = "<group>"; };
 		E4568F9F20F1E7A8009CB9D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E4568FA120F1E7DA009CB9D6 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		E4568FA320F1E7F3009CB9D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -511,6 +513,7 @@
 				E44EAB3821061E0B00085307 /* MTBComputeDispatchSpec.mm */,
 				E4DC7EB420F22DCD00F6893B /* MTBComputePipelineStateSpec.metal */,
 				E4DC7EB320F22DCD00F6893B /* MTBComputePipelineStateSpec.mm */,
+				643339B9212DA4CA00E37691 /* MTBFunctionConstantSpec.mm */,
 				E4BCB9B920F4E98A0021A5E2 /* MTBLibraryLoaderSpec.metal */,
 				E4BCB9BA20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm */,
 				E45268A520FC90340059A539 /* MTBPixelBufferUtilsSpec.mm */,
@@ -893,6 +896,7 @@
 				E4BCB9BC20F4E98A0021A5E2 /* MTBLibraryLoaderSpec.mm in Sources */,
 				E44EAB3B21061E0B00085307 /* MTBComputeDispatchSpec.metal in Sources */,
 				E4DC7EB620F22DCD00F6893B /* MTBComputePipelineStateSpec.metal in Sources */,
+				643339BA212DA4CA00E37691 /* MTBFunctionConstantSpec.mm in Sources */,
 				E4DC7EB520F22DCD00F6893B /* MTBComputePipelineStateSpec.mm in Sources */,
 				E4F15D3E20FB965F005551A1 /* MTBImagePropertiesExamples.mm in Sources */,
 				E485E83F20FCD28B00CC664C /* MTBPixelBufferUtilsSpec.mm in Sources */,
