@@ -287,7 +287,7 @@ context(@"provider", ^{
           for (NSUInteger i = 0; i < quads.size(); ++i) {
             maxDimension = std::max(maxDimension, std::max(quads[i].boundingRect().size));
           }
-          expect(maxDimension).to.beGreaterThan(0.2);
+          expect(maxDimension).to.beGreaterThan(0.15);
         });
 
         it(@"should provide quads with correctly bounded scale, when end is YES", ^{
@@ -307,7 +307,7 @@ context(@"provider", ^{
           for (NSUInteger i = 0; i < quads.size(); ++i) {
             maxDimension = std::max(maxDimension, std::max(quads[i].boundingRect().size));
           }
-          expect(maxDimension).to.beGreaterThan(0.2);
+          expect(maxDimension).to.beGreaterThan(0.15);
         });
       });
     });
