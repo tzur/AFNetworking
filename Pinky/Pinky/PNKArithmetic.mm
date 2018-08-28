@@ -125,7 +125,7 @@ static NSString * const kDebugGroupName = @"arithmetic";
         self.stateSingleBroadcastSecondary : self.stateArrayBroadcastSecondary;
   }
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, inputImages, outputImages,
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, inputImages, outputImages,
                                        kDebugGroupName, workingSpaceSize);
 }
 

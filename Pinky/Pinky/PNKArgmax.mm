@@ -106,7 +106,7 @@ static NSString * const kDebugGroupName = @"argmax";
     state = isUnorm ? self.stateArrayUnorm : self.stateArrayHalf;
   }
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[self.bufferForFeatureChannelCount],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[self.bufferForFeatureChannelCount],
                                        @[inputImage], @[outputImage], kDebugGroupName,
                                        workingSpaceSize);
 }

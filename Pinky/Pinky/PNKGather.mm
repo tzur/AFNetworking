@@ -118,7 +118,7 @@ static NSUInteger kChannelsPerTexture = 4;
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
                                        @[outputImage], self.functionName, workingSpaceSize);
 }
 

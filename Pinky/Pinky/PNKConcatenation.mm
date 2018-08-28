@@ -129,7 +129,7 @@ static NSString * const kDebugGroupName = @"concat";
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, inputImages, outputImages,
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, inputImages, outputImages,
                                        kDebugGroupName, workingSpaceSize);
 }
 

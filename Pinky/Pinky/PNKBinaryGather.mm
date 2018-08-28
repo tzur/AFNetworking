@@ -200,7 +200,7 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers,
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers,
                                        @[primaryInputImage, secondaryInputImage], @[outputImage],
                                        self.functionName, workingSpaceSize);
 }

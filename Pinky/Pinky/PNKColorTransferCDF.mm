@@ -156,27 +156,27 @@ static const float kPDFSmoothingKernelSigma = 1;
                       (unsigned long)inverseCDFBuffers[i].length);
   }
 
-  PNKComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
                                        @[inputHistogramBuffer, self.pdfSmoothingKernelBuffer,
                                          self.pdfBuffer],
                                        @"calculatePDF: input", self.histogramBins);
 
-  PNKComputeDispatch(self.calculateCDFState, commandBuffer,
+  MTBComputeDispatch(self.calculateCDFState, commandBuffer,
                      [@[self.pdfBuffer] arrayByAddingObjectsFromArray:cdfBuffers],
                      @"calculateCDF: input", {1, 1, 1}, {1, 1, 1});
 
-  PNKComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
                                        @[referenceHistogramBuffer, self.pdfSmoothingKernelBuffer,
                                          self.pdfBuffer],
                                        @"calculatePDF: reference", self.histogramBins);
-  PNKComputeDispatch(self.calculateCDFState, commandBuffer,
+  MTBComputeDispatch(self.calculateCDFState, commandBuffer,
                      [@[self.pdfBuffer] arrayByAddingObjectsFromArray:self.referenceCDFBuffers],
                      @"calculateCDF: reference", {1, 1, 1}, {1, 1, 1});
 
   for (NSUInteger i = 0; i < 3; ++i) {
     auto buffers = @[self.referenceCDFBuffers[i], minValueBuffer,
                      maxValueBuffer, inverseCDFBuffers[i]];
-    PNKComputeDispatchWithDefaultThreads(self.calculateInverseCDFState[i], commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(self.calculateInverseCDFState[i], commandBuffer,
                                          buffers, @"calculateInverseCDF: reference",
                                          self.histogramBins * kInverseCDFScaleFactor);
   }

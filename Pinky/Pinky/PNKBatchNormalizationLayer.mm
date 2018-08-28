@@ -158,7 +158,7 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   }
 
   MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers, @[inputImage],
                                        @[outputImage], self.functionName, workingSpaceSize);
 }
 

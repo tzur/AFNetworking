@@ -110,7 +110,7 @@ static NSString * const kDebugGroupName = @"activation";
   }
 
   MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
                                        @[outputImage], kDebugGroupName, workingSpaceSize);
 }
 

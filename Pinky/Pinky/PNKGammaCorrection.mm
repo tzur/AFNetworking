@@ -58,7 +58,7 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
   MTLSize workingSpaceSize = {inputImage.width, inputImage.height, 1};
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
                                        kKernelFunctionName, workingSpaceSize);
 }
 

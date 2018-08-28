@@ -62,7 +62,7 @@ static NSString * const kKernelFunctionName = @"translatePixelValue";
 
   MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForTranslationTable],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForTranslationTable],
                                        @[inputImage], @[outputImage], kKernelFunctionName,
                                        workingSpaceSize);
 }

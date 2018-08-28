@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
   auto buffers = [[@[dataBuffer, transformBuffer, minValueBuffer, maxValueBuffer]
                    arrayByAddingObjectsFromArray:inputCDFBuffers]
                    arrayByAddingObjectsFromArray:referenceInverseCDFBuffers];
-  PNKComputeDispatchWithDefaultThreads(self.histogramSpecificationBufferState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.histogramSpecificationBufferState, commandBuffer,
                                        buffers, @"histogramSpecification",
                                        dataBuffer.length / (4 * sizeof(float)));
 }

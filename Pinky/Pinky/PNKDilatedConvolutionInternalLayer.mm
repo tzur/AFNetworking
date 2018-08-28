@@ -269,7 +269,7 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   [self fillBuffer:self.bufferForFullPaddingTF withFirst:fullPaddingTF.x second:fullPaddingTF.y];
   auto buffers = @[self.bufferForFullPaddingTF];
 
-  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, @[inputImage],
                                        @[patchedInputImage], self.space2PatchFunctionName,
                                        workingSpaceSize);
 
@@ -303,7 +303,7 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
     outputImage.pnk_textureArrayDepth
   };
 
-  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers,
+  MTBComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers,
                                        @[patchedOutputImage], @[outputImage],
                                        self.patch2SpaceFunctionName, workingSpaceSize);
 }

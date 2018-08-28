@@ -53,7 +53,7 @@ static NSString * const kDebugGroupName = @"fillWithZeroes";
   bool isSingle = outputImage.pnk_isSingleTexture;
   auto state = isSingle ? self.stateSingle : self.stateArray;
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[], @[outputImage], kDebugGroupName,
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[], @[outputImage], kDebugGroupName,
                                        workingSpaceSize);
 }
 
