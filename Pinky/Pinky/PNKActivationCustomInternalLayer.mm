@@ -69,18 +69,14 @@ static NSString * const kDebugGroupName = @"activation";
   _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:_hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:_hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
-                                                    functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
-                                                   functionConstants);
+  _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName, functionConstants);
+  _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName, functionConstants);
 }
 
 - (void)setupBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {

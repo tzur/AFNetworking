@@ -60,20 +60,19 @@ static const NSUInteger kMaxThreadgroupMemoryLength32K = (1 << 15) - 32;
 }
 
 - (void)createComputeStates {
-  uint size = (uint)self.inputSize;
-  ushort histogramBins = self.histogramBins;
-  auto constants = [[MTLFunctionConstantValues alloc] init];
-  [constants setConstantValue:&histogramBins type:MTLDataTypeUShort withName:@"kHistogramBins"];
-  [constants setConstantValue:&size type:MTLDataTypeUInt withName:@"kInputSize"];
+  auto constants = @[
+    [MTBFunctionConstant ushortConstantWithValue:self.histogramBins name:@"kHistogramBins"],
+    [MTBFunctionConstant uintConstantWithValue:(uint)self.inputSize name:@"kInputSize"]
+  ];
 
   _computePartialHistogramsState = self.isDeviceWithMaxThreadgroupMemoryOf32K ?
-      PNKCreateComputeStateWithConstants(self.device, @"computePartialHistograms32K", constants) :
-      PNKCreateComputeStateWithConstants(self.device, @"computePartialHistograms16K", constants);
+      PNKCreateComputeState(self.device, @"computePartialHistograms32K", constants) :
+      PNKCreateComputeState(self.device, @"computePartialHistograms16K", constants);
 
   _partialHistogramsCount = self.computePartialHistogramsState.maxTotalThreadsPerThreadgroup;
   _mergeHistogramsState = self.partialHistogramsCount == 1024 ?
-      PNKCreateComputeStateWithConstants(self.device, @"mergeHistograms1024", constants):
-      PNKCreateComputeStateWithConstants(self.device, @"mergeHistograms512", constants);
+      PNKCreateComputeState(self.device, @"mergeHistograms1024", constants):
+      PNKCreateComputeState(self.device, @"mergeHistograms512", constants);
 }
 
 - (BOOL)isDeviceWithMaxThreadgroupMemoryOf32K {

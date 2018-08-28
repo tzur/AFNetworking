@@ -81,9 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifyInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormat(input);
-  PNKAssertPixelBufferFormatChannelCount(output, 1);
-
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto inputWidth = CVPixelBufferGetWidth(input);

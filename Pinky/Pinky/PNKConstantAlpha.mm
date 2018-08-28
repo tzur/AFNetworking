@@ -40,9 +40,8 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 - (void)createStateWithAlpha:(float)alpha {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&alpha type:MTLDataTypeFloat withName:@"alpha"];
-  _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
+  auto functionConstants = @[[MTBFunctionConstant floatConstantWithValue:alpha name:@"alpha"]];
+  _state = PNKCreateComputeState(self.device, kKernelFunctionName, functionConstants);
 }
 
 #pragma mark -

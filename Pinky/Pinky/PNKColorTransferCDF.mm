@@ -76,20 +76,24 @@ static const float kPDFSmoothingKernelSigma = 1;
 }
 
 - (void)createComputeStates {
-  auto constants = [[MTLFunctionConstantValues alloc] init];
-  ushort histogramBins = self.histogramBins;
-  [constants setConstantValue:&histogramBins type:MTLDataTypeUShort withName:@"kHistogramBins"];
-  [constants setConstantValue:&kInverseCDFScaleFactor type:MTLDataTypeUShort
-                     withName:@"kInverseCDFScaleFactor"];
-  [constants setConstantValue:&kPDFSmoothingKernelSize type:MTLDataTypeUShort
-                     withName:@"kPDFSmoothingKernelSize"];
+  auto constants = @[
+    [MTBFunctionConstant ushortConstantWithValue:self.histogramBins name:@"kHistogramBins"],
+    [MTBFunctionConstant ushortConstantWithValue:kPDFSmoothingKernelSize
+                                            name:@"kPDFSmoothingKernelSize"]
+  ];
 
-  _calculatePDFState = PNKCreateComputeStateWithConstants(self.device, @"calculatePDF", constants);
-  _calculateCDFState = PNKCreateComputeStateWithConstants(self.device, @"calculateCDF", constants);
+  _calculateCDFState = PNKCreateComputeState(self.device, @"calculateCDF", constants);
+
+  _calculatePDFState = PNKCreateComputeState(self.device, @"calculatePDF", constants);
+
   _calculateInverseCDFState = [@[@0, @1, @2] lt_map:^id(NSNumber *index) {
-    ushort channel = index.unsignedShortValue;
-    [constants setConstantValue:&channel type:MTLDataTypeUShort withName:@"kChannel"];
-    return PNKCreateComputeStateWithConstants(self.device, @"calculateInverseCDF", constants);
+    auto inverseConstants = @[
+      [MTBFunctionConstant ushortConstantWithValue:kInverseCDFScaleFactor
+                                              name:@"kInverseCDFScaleFactor"],
+      [MTBFunctionConstant ushortConstantWithValue:index.unsignedShortValue name:@"kChannel"]
+    ];
+    auto inverseCDFConstants = [constants arrayByAddingObjectsFromArray:inverseConstants];
+    return PNKCreateComputeState(self.device, @"calculateInverseCDF", inverseCDFConstants);
   }];
 }
 

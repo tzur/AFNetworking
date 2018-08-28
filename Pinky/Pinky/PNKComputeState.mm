@@ -3,40 +3,25 @@
 
 #import "PNKComputeState.h"
 
-#import "PNKLibraryLoader.h"
+#import <MetalToolbox/MTBComputePipelineState.h>
+#import <MetalToolbox/MTBLibraryLoader.h>
+
+#import "NSBundle+PinkyBundle.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
-#if PNK_USE_MPS
+id<MTLLibrary> PNKLoadLibrary(id<MTLDevice> device) {
+  NSBundle * _Nullable bundle = [NSBundle pnk_bundle];
+  LTAssert(bundle, @"Could not find Pinky bundle in the main bundle of the app");
+  auto _Nullable metalPath = [bundle pathForResource:@"default" ofType:@"metallib"];
+  LTAssert(metalPath, @"Could not find metallib resource in Pinky bundle");
+  return MTBLoadLibrary(device, metalPath);
+}
 
-static id<MTLComputePipelineState> PNKCreateComputeStateWithParameters(id<MTLDevice> device,
-    NSString *functionName, MTLFunctionConstantValues * _Nullable constants)
-    API_AVAILABLE(ios(10.0)) {
+id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device,
+    NSString * const functionName, NSArray<MTBFunctionConstant *> * _Nullable constants) {
   auto library = PNKLoadLibrary(device);
-  NSError *error;
-  id<MTLFunction> function;
-  if (constants) {
-    function = [library newFunctionWithName:functionName constantValues:constants error:&error];
-  } else {
-    function = [library newFunctionWithName:functionName];
-  }
-  LTAssert(function, @"Can't create function with name %@. Got error %@", functionName, error);
-  auto state = [device newComputePipelineStateWithFunction:function error:&error];
-  LTAssert(state, @"Can't create compute pipeline state for function %@. Got error %@",
-           function.name, error);
-  return state;
+  return MTBCreateComputePipelineState(library, functionName, constants);
 }
-
-id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device, NSString *functionName) {
-  return PNKCreateComputeStateWithParameters(device, functionName, nil);
-}
-
-id<MTLComputePipelineState> PNKCreateComputeStateWithConstants(id<MTLDevice> device,
-    NSString *functionName, MTLFunctionConstantValues *constants) {
-  return PNKCreateComputeStateWithParameters(device, functionName, constants);
-}
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

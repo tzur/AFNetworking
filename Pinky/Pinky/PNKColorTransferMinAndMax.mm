@@ -93,14 +93,12 @@ static const NSUInteger kTemporaryBufferElements = 16384;
 - (void)createSlowComputeStatesAndBuffers {
   _findMinMaxState = PNKCreateComputeState(self.device, @"findMinMax");
 
-  auto constants = [[MTLFunctionConstantValues alloc] init];
   auto findMinMaxStates = [NSMutableArray array];
   for (NSValue *inputSize in self.inputSizes) {
     auto size = inputSize.CGSizeValue;
     uint elements = size.width * size.height;
-    [constants setConstantValue:&elements type:MTLDataTypeUInt withName:@"kInputSize"];
-    auto state =
-        PNKCreateComputeStateWithConstants(self.device, @"findMinMaxPerThreadgroup", constants);
+    auto constants = @[[MTBFunctionConstant uintConstantWithValue:elements name:@"kInputSize"]];
+    auto state = PNKCreateComputeState(self.device, @"findMinMaxPerThreadgroup", constants);
     [findMinMaxStates addObject:state];
   }
   _findMinMaxPerThreadgroupStates = findMinMaxStates;

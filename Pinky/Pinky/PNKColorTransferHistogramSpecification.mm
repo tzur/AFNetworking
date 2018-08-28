@@ -40,18 +40,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)createComputeState {
-  auto constants = [[MTLFunctionConstantValues alloc] init];
-  float dampingFactor = self.dampingFactor;
-  ushort histogramBins = self.histogramBins;
-  ushort inverseCDFScaleFactor = PNKColorTransferCDF.inverseCDFScaleFactor;
-
-  [constants setConstantValue:&histogramBins type:MTLDataTypeUShort withName:@"kHistogramBins"];
-  [constants setConstantValue:&dampingFactor type:MTLDataTypeFloat withName:@"kDampingFactor"];
-  [constants setConstantValue:&inverseCDFScaleFactor type:MTLDataTypeUShort
-                     withName:@"kInverseCDFScaleFactor"];
+  auto constants = @[
+    [MTBFunctionConstant ushortConstantWithValue:self.histogramBins name:@"kHistogramBins"],
+    [MTBFunctionConstant floatConstantWithValue:self.dampingFactor name:@"kDampingFactor"],
+    [MTBFunctionConstant ushortConstantWithValue:PNKColorTransferCDF.inverseCDFScaleFactor
+                                            name:@"kInverseCDFScaleFactor"]
+  ];
 
   _histogramSpecificationBufferState =
-      PNKCreateComputeStateWithConstants(self.device, @"histogramSpecificationBuffer", constants);
+      PNKCreateComputeState(self.device, @"histogramSpecificationBuffer", constants);
 }
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
