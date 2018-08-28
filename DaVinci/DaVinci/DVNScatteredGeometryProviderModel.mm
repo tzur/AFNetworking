@@ -20,6 +20,38 @@ static CGFloat DVNTaperingScale(CGFloat factor, CGFloat polynomialFactor,
   return *taperingScaleFactors.valueAt(normalizedScaleFactor);
 }
 
+/// Heuristic value determining the maximum deviation of the required tapering scale factor and the
+/// one computed while approximating the parametric factor required for performing end tapering.
+static const CGFloat kMaximumAllowedTaperingScaleDeviation = 1e-3;
+
+/// Heuristic value determining the maximum number of iterations to be used for approximating the
+/// parametric factor required for performing end tapering.
+static const NSUInteger kNumberOfIterationsForFactorApproximation = 10;
+
+static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFloat polynomialFactor,
+                                                    lt::Interval<CGFloat> taperingScaleFactors) {
+  CGFloat parametricValue = *taperingScaleFactors.parametricValue(taperingScale);
+  CGFloat scale = DVNTaperingScale(parametricValue, polynomialFactor, taperingScaleFactors);
+
+  // Perform binary search. This is possible since the Bernstein polynomial used in the
+  // \c DVNTaperingScale computation is convex for factors between 0 and 1.
+
+  CGFloat top = 1;
+  CGFloat bottom = 0;
+  for (NSUInteger i = 0; std::abs(scale - taperingScale) > kMaximumAllowedTaperingScaleDeviation &&
+       i < kNumberOfIterationsForFactorApproximation; ++i) {
+    if (scale < taperingScale) {
+      bottom = parametricValue;
+    } else {
+      top = parametricValue;
+    }
+    parametricValue = (bottom + top) / 2;
+    scale = DVNTaperingScale(parametricValue, polynomialFactor, taperingScaleFactors);
+  }
+
+  return parametricValue;
+}
+
 @interface DVNScatteredGeometryProviderModel ()
 
 /// Returns a new instance equal to this instance, with the exception of the given
@@ -83,34 +115,66 @@ static CGFloat DVNTaperingScale(CGFloat factor, CGFloat polynomialFactor,
   CGFloats sampledParametricValues = samples.sampledParametricValues;
   CGFloat minParametricValue = sampledParametricValues.front();
   CGFloat maxParametricValue = sampledParametricValues.back();
-  CGFloat lengthOfStartTapering = self.model.lengthOfStartTapering;
+  CGFloat desiredLengthOfStartTapering = self.model.lengthOfStartTapering;
+  CGFloat desiredLengthOfEndTapering = self.model.lengthOfEndTapering;
+  CGFloat actualLengthOfStartTapering = desiredLengthOfStartTapering;
+  CGFloat actualLengthOfEndTapering = std::min(maxParametricValue - minParametricValue,
+                                               desiredLengthOfEndTapering);
   CGFloat startTaperingFactor = self.model.startTaperingFactor;
-  CGFloat length = std::min(maxParametricValue - minParametricValue,
-                            self.model.lengthOfEndTapering);
-  CGFloat maximumTaperingScaleFactor = 1;
+  CGFloat endTaperingFactor = self.model.endTaperingFactor;
+  lt::Interval<CGFloat> taperingScaleFactors = self.taperingScaleFactors;
+  CGFloat endTaperingInterpolationFactor = 1;
 
-  if (end && lengthOfStartTapering) {
-    CGFloat interpolationValue = std::min<CGFloat>(minParametricValue / lengthOfStartTapering, 1.0);
-    maximumTaperingScaleFactor = DVNTaperingScale(interpolationValue, startTaperingFactor,
-                                                  self.taperingScaleFactors);
+  // If the desired start tapering has not been performed fully but this is the final computation
+  // of values, the actual length of start tapering must be adjusted in order to guarantee a
+  // visually pleasing tapering behavior.
+  CGFloat totalDesiredTaperingLength = desiredLengthOfStartTapering + desiredLengthOfEndTapering;
+
+  if (self.performsTapering && end && desiredLengthOfStartTapering > 0 &&
+      minParametricValue < desiredLengthOfStartTapering &&
+      maxParametricValue < totalDesiredTaperingLength) {
+    CGFloat factor = desiredLengthOfStartTapering / totalDesiredTaperingLength;
+    // Ensure that start tapering is a) at least as long as the parametric range already processed,
+    // b) at most as long as the desired start tapering, and has a length relative to the ratio
+    // between the start and end tapering lengths.
+    actualLengthOfStartTapering =
+        std::max(minParametricValue,
+                 std::min(desiredLengthOfStartTapering, factor * maxParametricValue));
+    actualLengthOfEndTapering = maxParametricValue - actualLengthOfStartTapering;
+
+    if (actualLengthOfEndTapering > 0 &&
+        actualLengthOfStartTapering < desiredLengthOfStartTapering) {
+      // If the actual start tapering length is smaller than the desired start tapering length, the
+      // \c taperingScaleFactors will only be used to compute scale factors up to a parametric value
+      // smaller than \c 1. Hence, the corresponding parametric value must be computed for the
+      // corresponding end tapering computations.
+      CGFloat maximumTaperingScale =
+          DVNTaperingScale(actualLengthOfStartTapering / desiredLengthOfStartTapering,
+                           startTaperingFactor, taperingScaleFactors);
+      endTaperingInterpolationFactor = DVNApproximateFactorForTaperingScale(maximumTaperingScale,
+                                                                            endTaperingFactor,
+                                                                            taperingScaleFactors);
+    }
   }
 
+  lt::Interval<int> countRange = (lt::Interval<int>)self.model.count.closed();
+
   for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
-    lt::Interval<int> countRange = (lt::Interval<int>)self.model.count.closed();
     NSUInteger count = [self.random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];
     CGFloat taperingScaleFactor = 1;
 
     if (self.performsTapering) {
       CGFloat parametricValue = sampledParametricValues[i];
-      if (!end && parametricValue / lengthOfStartTapering < 1) {
-        taperingScaleFactor = DVNTaperingScale(parametricValue / lengthOfStartTapering,
-                                               startTaperingFactor, self.taperingScaleFactors);
+      if (parametricValue < actualLengthOfStartTapering) {
+        taperingScaleFactor = DVNTaperingScale(parametricValue / desiredLengthOfStartTapering,
+                                               startTaperingFactor, taperingScaleFactors);
       } else if (end) {
         CGFloat lengthToEnd = maxParametricValue - parametricValue;
-        CGFloat endTaperingScaleFactor = lengthToEnd > self.model.lengthOfEndTapering ?
-            1 : DVNTaperingScale(lengthToEnd / length, self.model.endTaperingFactor,
-                                 self.taperingScaleFactors);
-        taperingScaleFactor = maximumTaperingScaleFactor * endTaperingScaleFactor;
+        CGFloat factor = lengthToEnd || actualLengthOfEndTapering ?
+            lengthToEnd / actualLengthOfEndTapering : 0;
+        taperingScaleFactor = lengthToEnd > actualLengthOfEndTapering ? 1 :
+            DVNTaperingScale(factor * endTaperingInterpolationFactor, endTaperingFactor,
+                             taperingScaleFactors);
       }
     }
 

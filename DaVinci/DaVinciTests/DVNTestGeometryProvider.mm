@@ -7,30 +7,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNTestGeometryProvider
 
-- (instancetype)initWithState:(NSUInteger)state {
+- (instancetype)initWithState:(NSUInteger)state quads:(std::vector<lt::Quad>)quads {
   if (self = [super init]) {
     _state = state;
+    _quads = quads;
   }
   return self;
 }
 
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(__unused BOOL)end {
   _state++;
-  return dvn::GeometryValues({lt::Quad(CGRectMake(0, 1, 2, 3)), lt::Quad(CGRectMake(4, 5, 6, 7))},
-                             {0, 1}, samples);
+  std::vector<NSUInteger> indices;
+  for (std::vector<lt::Quad>::size_type i = 0; i < self.quads.size(); ++i) {
+    indices.push_back((NSUInteger)i);
+  }
+  return dvn::GeometryValues(self.quads, indices, samples);
 }
 
 - (id<DVNGeometryProviderModel>)currentModel {
-  return [[DVNTestGeometryProviderModel alloc] initWithState:self.state];
+  return [[DVNTestGeometryProviderModel alloc] initWithState:self.state quads:self.quads];
 }
 
 @end
 
 @implementation DVNTestGeometryProviderModel
 
-- (instancetype)initWithState:(NSUInteger)state {
+- (instancetype)initWithState:(NSUInteger)state quads:(std::vector<lt::Quad>)quads {
   if (self = [super init]) {
     _state = state;
+    _quads = quads;
   }
   return self;
 }
@@ -39,12 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
   if (self == model) {
     return YES;
   }
-  
+
   if (![model isKindOfClass:[DVNTestGeometryProviderModel class]]) {
     return NO;
   }
-  
-  return self.state == model.state;
+
+  return self.state == model.state && self.quads == model.quads;
 }
 
 - (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
@@ -52,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id<DVNGeometryProvider>)provider {
-  return [[DVNTestGeometryProvider alloc] initWithState:self.state];
+  return [[DVNTestGeometryProvider alloc] initWithState:self.state quads:self.quads];
 }
 
 @end

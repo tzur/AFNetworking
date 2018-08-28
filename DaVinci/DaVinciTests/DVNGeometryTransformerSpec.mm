@@ -68,7 +68,8 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
 
 itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
   id<DVNGeometryProviderModel> providerModel =
-      [[DVNTestGeometryProviderModel alloc] initWithState:0];
+      [[DVNTestGeometryProviderModel alloc]
+       initWithState:0 quads:{lt::Quad(CGRectMake(0, 1, 2, 3)), lt::Quad(CGRectMake(4, 5, 6, 7))}];
   DVNGeometryTransformerModel *transformerModel =
       [[DVNGeometryTransformerModel alloc] initWithGeometryProviderModel:providerModel
                                                                transform:transform];
@@ -89,7 +90,9 @@ context(@"provider", ^{
   context(@"model", ^{
     it(@"should provide a correct updated model", ^{
       id<DVNGeometryProviderModel> providerModel =
-          [[DVNTestGeometryProviderModel alloc] initWithState:0];
+          [[DVNTestGeometryProviderModel alloc]
+           initWithState:0
+           quads:{lt::Quad(CGRectMake(0, 1, 2, 3)), lt::Quad(CGRectMake(4, 5, 6, 7))}];
       DVNGeometryTransformerModel *transformerModel =
           [[DVNGeometryTransformerModel alloc] initWithGeometryProviderModel:providerModel
                                                                    transform:transform];
