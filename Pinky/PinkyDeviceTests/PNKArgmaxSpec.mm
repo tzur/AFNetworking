@@ -72,8 +72,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth + 1, kImageHeight, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [argmaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                             outputImage:outputImage];
@@ -84,8 +84,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth, kImageHeight + 1, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [argmaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                             outputImage:outputImage];
@@ -96,8 +96,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth , kImageHeight, 2};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [argmaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                             outputImage:outputImage];
@@ -109,8 +109,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, 260};
       MTLSize outputSize{kImageWidth , kImageHeight, 1};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device size:outputSize];
       expect(^{
         [argmaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                             outputImage:outputImage];

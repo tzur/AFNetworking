@@ -16,6 +16,10 @@
   // Lightricks Libraries.
   #import <LTKit/LTKit-Prefix.pch>
   #import <LTEngine/LTEngine-Prefix.pch>
+  #import <MetalToolbox/MetalToolbox-Prefix.pch>
+
+  // MetalToolbox.
+  #import <MetalToolbox/MTBComputeDispatch.h>
 
   // Pinky.
   #import "LTRef+Pinky.h"

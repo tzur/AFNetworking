@@ -82,9 +82,9 @@ sharedExamplesFor(kPNKUnaryKernelExamples, ^(NSDictionary *data) {
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
-      auto expectedImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto inputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:inputSize];
+      auto outputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto expectedImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
 
       PNKCopyMatrixToImage(inputMat, inputImage);
 
@@ -144,9 +144,9 @@ sharedExamplesFor(kPNKParametricUnaryKernelExamples, ^(NSDictionary *data) {
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
-      auto expectedImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto inputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:inputSize];
+      auto outputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto expectedImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
 
       PNKCopyMatrixToImage(inputMat, inputImage);
 
@@ -195,16 +195,16 @@ sharedExamplesFor(kPNKBinaryKernelExamples, ^(NSDictionary *data) {
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      auto primaryInputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat
+      auto primaryInputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat
                                                        width:primaryInputRegion.size.width
                                                       height:primaryInputRegion.size.height
                                                     channels:primaryInputChannels];
-      auto secondaryInputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat
+      auto secondaryInputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat
                                                          width:secondaryInputRegion.size.width
                                                         height:secondaryInputRegion.size.height
                                                       channels:secondaryInputChannels];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
-      auto expectedImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto outputImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
+      auto expectedImage = [MPSImage mtb_imageWithDevice:device format:pixelFormat size:outputSize];
 
       auto primaryInputMat = [data[kPNKKernelExamplesPrimaryInputMat] matValue];
       PNKCopyMatrixToImage(primaryInputMat, primaryInputImage);

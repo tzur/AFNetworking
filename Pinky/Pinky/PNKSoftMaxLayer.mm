@@ -3,7 +3,6 @@
 
 #import "PNKSoftMaxLayer.h"
 
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN

@@ -5,7 +5,6 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
-#import "MPSImage+Factory.h"
 #import "PNKPaddingSize.h"
 
 DeviceSpecBegin(PNKCrop)
@@ -44,10 +43,10 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise when input and output width do not match", ^{
-    auto inputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+    auto inputImage = [MPSImage mtb_float16ImageWithDevice:device width:kInputWidth
                                                     height:kInputHeight
                                                   channels:kInputFeatureChannels];
-    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device width:kOutputWidth + 1
+    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device width:kOutputWidth + 1
                                                      height:kOutputHeight
                                                    channels:kInputFeatureChannels];
 
@@ -57,10 +56,10 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise when input and output height do not match", ^{
-    auto inputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+    auto inputImage = [MPSImage mtb_float16ImageWithDevice:device width:kInputWidth
                                                     height:kInputHeight
                                                   channels:kInputFeatureChannels];
-    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device width:kOutputWidth
+    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device width:kOutputWidth
                                                      height:kOutputHeight + 1
                                                    channels:kInputFeatureChannels];
 
@@ -70,10 +69,10 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise when input and output feature channel count do not match", ^{
-    auto inputImage = [MPSImage pnk_float16ImageWithDevice:device width:kInputWidth
+    auto inputImage = [MPSImage mtb_float16ImageWithDevice:device width:kInputWidth
                                                     height:kInputHeight
                                                   channels:kInputFeatureChannels + 1];
-    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device width:kOutputWidth
+    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device width:kOutputWidth
                                                      height:kOutputHeight
                                                    channels:kInputFeatureChannels];
 

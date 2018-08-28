@@ -75,8 +75,6 @@
 		06D36EE91F6ACA6D00090584 /* Model.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE11F6ACA5600090584 /* Model.proto */; };
 		06D36EEA1F6ACA6D00090584 /* NeuralNetwork.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE41F6ACA5600090584 /* NeuralNetwork.proto */; };
 		06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E98DDF1F2149710047F80A /* PNKComputeState.mm */; };
-		06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */; };
-		06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */; };
 		06EDBD561F8FB18D00A3FF1E /* PNKBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */; };
 		06FB205A1F92AC0C009F1949 /* PNKTemplatedIO.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
@@ -127,6 +125,9 @@
 		285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
 		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
 		28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */; };
+		64333A42212DBB8700E37691 /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 642A5E792121A0BE004C0288 /* libMetalToolbox.a */; };
+		64333A43212DBBAC00E37691 /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 642A5E792121A0BE004C0288 /* libMetalToolbox.a */; };
+		644AB7FA212EC42300B1B166 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A81EDC319800D180C7 /* MetalPerformanceShaders.framework */; };
 		881332A41FE932A200E83C1D /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
@@ -428,6 +429,27 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		642A5E782121A0BE004C0288 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = MetalToolbox;
+		};
+		64333A34212DBB7E00E37691 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E407FB4F20B4228900FDFAC8;
+			remoteInfo = MetalToolboxDeviceTests;
+		};
+		64333A44212DBCFF00E37691 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = MetalToolbox;
+		};
 		882D1F241EC1AC6E007F39F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
@@ -652,13 +674,6 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
-		E425F77020BD4417006E3639 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E407FB4F20B4228900FDFAC8;
-			remoteInfo = LTEngineDeviceTests;
-		};
 		E4786D571FD5499E0057FE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
@@ -783,10 +798,6 @@
 		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
 		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
 		06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRef+Pinky.h"; sourceTree = "<group>"; };
-		06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSImage+Factory.h"; sourceTree = "<group>"; };
-		06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSImage+Factory.mm"; sourceTree = "<group>"; };
-		06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSTemporaryImage+Factory.mm"; sourceTree = "<group>"; };
-		06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSTemporaryImage+Factory.h"; sourceTree = "<group>"; };
 		06EDBD541F8FB18D00A3FF1E /* PNKBufferExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKBufferExtensions.h; sourceTree = "<group>"; };
 		06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKBufferExtensions.mm; sourceTree = "<group>"; };
 		06FB20581F92A9C4009F1949 /* PNKTemplatedIO.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKTemplatedIO.metal; sourceTree = "<group>"; };
@@ -839,6 +850,7 @@
 		28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferTestUtils.h; sourceTree = "<group>"; };
 		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
 		28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferCDFConstants.h; sourceTree = "<group>"; };
+		642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MetalToolbox.xcodeproj; path = ../MetalToolbox/MetalToolbox.xcodeproj; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1150,6 +1162,7 @@
 				060EA4171EDD7E450041487A /* libLTEngine.a in Frameworks */,
 				060EA4181EDD7E4A0041487A /* libLTKit.a in Frameworks */,
 				881332A41FE932A200E83C1D /* libLTKitTestUtils.a in Frameworks */,
+				64333A42212DBB8700E37691 /* libMetalToolbox.a in Frameworks */,
 				06FD92D11EDC872E00D180C7 /* libOCMock.a in Frameworks */,
 				060EA4191EDD7E720041487A /* libOpenEXR.a in Frameworks */,
 				06FD92C11EDC85C600D180C7 /* libPinky.a in Frameworks */,
@@ -1184,6 +1197,7 @@
 				06FD929B1EDC5FAD00D180C7 /* Mantle.framework in Frameworks */,
 				8BB108A21EDD735100B27DC4 /* Metal.framework in Frameworks */,
 				060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */,
+				644AB7FA212EC42300B1B166 /* MetalPerformanceShaders.framework in Frameworks */,
 				06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */,
 				06FD92891EDC5F5D00D180C7 /* Objection-iOS.framework in Frameworks */,
 				8BB1089F1EDD72F700B27DC4 /* OpenGLES.framework in Frameworks */,
@@ -1193,6 +1207,7 @@
 				060EA4101EDD77080041487A /* libLTEngine.a in Frameworks */,
 				060EA4111EDD77160041487A /* libLTKit.a in Frameworks */,
 				1984C7201FE6755200873DA0 /* libLTKitTestUtils.a in Frameworks */,
+				64333A43212DBBAC00E37691 /* libMetalToolbox.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				060EA4151EDD7DB00041487A /* libOpenEXR.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libPinky.a in Frameworks */,
@@ -1680,13 +1695,22 @@
 			name = Applications;
 			sourceTree = "<group>";
 		};
+		642A5E5A2121A0BE004C0288 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				642A5E792121A0BE004C0288 /* libMetalToolbox.a */,
+				64333A35212DBB7E00E37691 /* MetalToolboxDeviceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */,
 				882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */,
-				882D1F291EC1AC6E007F39F5 /* Logic Tests.octest */,
-				882D1F2B1EC1AC6E007F39F5 /* iOS Tests.octest */,
+				882D1F291EC1AC6E007F39F5 /* Logic Tests.xctest */,
+				882D1F2B1EC1AC6E007F39F5 /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1696,7 +1720,6 @@
 			children = (
 				8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */,
 				8BB106911EDD6FB800B27DC4 /* LTEngine.bundle */,
-				E425F77120BD4417006E3639 /* LTEngineDeviceTests.xctest */,
 				8BB106931EDD6FB800B27DC4 /* LTEngineTests.xctest */,
 			);
 			name = Products;
@@ -1770,6 +1793,7 @@
 				06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
 				06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */,
+				642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
@@ -1922,12 +1946,8 @@
 		C9515C2E1F01125100B973F1 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
-				06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */,
-				06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */,
 				E4DA81251FFA2CD700BF8826 /* MPSImage+Size.h */,
 				E4DA81241FFA2CD700BF8826 /* MPSImage+Size.mm */,
-				06EDBCBE1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.h */,
-				06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */,
 				E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */,
 				E4D0B9C61FFCE64800BF5DBF /* PNKActivation.metal.h */,
 				E484D36E1FEF838900DA050C /* PNKAvailability.h */,
@@ -2165,6 +2185,7 @@
 			);
 			dependencies = (
 				060EA4131EDD7C9A0041487A /* PBXTargetDependency */,
+				64333A45212DBCFF00E37691 /* PBXTargetDependency */,
 				06FD92AB1EDC679B00D180C7 /* PBXTargetDependency */,
 			);
 			name = Pinky;
@@ -2256,6 +2277,10 @@
 					ProjectRef = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
 				},
 				{
+					ProductGroup = 642A5E5A2121A0BE004C0288 /* Products */;
+					ProjectRef = 642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */;
+				},
+				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
 					ProjectRef = A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */;
 				},
@@ -2307,6 +2332,20 @@
 			remoteRef = 06FD92991EDC5F9100D180C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		642A5E792121A0BE004C0288 /* libMetalToolbox.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMetalToolbox.a;
+			remoteRef = 642A5E782121A0BE004C0288 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		64333A35212DBB7E00E37691 /* MetalToolboxDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MetalToolboxDeviceTests.xctest;
+			remoteRef = 64333A34212DBB7E00E37691 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2321,17 +2360,17 @@
 			remoteRef = 882D1F261EC1AC6E007F39F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		882D1F291EC1AC6E007F39F5 /* Logic Tests.octest */ = {
+		882D1F291EC1AC6E007F39F5 /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 882D1F281EC1AC6E007F39F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		882D1F2B1EC1AC6E007F39F5 /* iOS Tests.octest */ = {
+		882D1F2B1EC1AC6E007F39F5 /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 882D1F2A1EC1AC6E007F39F5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2515,13 +2554,6 @@
 			fileType = wrapper.application;
 			path = TestHost.app;
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		E425F77120BD4417006E3639 /* LTEngineDeviceTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTEngineDeviceTests.xctest;
-			remoteRef = E425F77020BD4417006E3639 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */ = {
@@ -2785,7 +2817,6 @@
 				06D36EE91F6ACA6D00090584 /* Model.proto in Sources */,
 				E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */,
 				06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */,
-				06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */,
 				E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */,
 				E4543CAF20C672F3004E2663 /* PNKIndexTranslator.mm in Sources */,
 				E461C81D20173DB700261FCD /* PNKCrop.mm in Sources */,
@@ -2824,7 +2855,6 @@
 				E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */,
 				E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */,
 				2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */,
-				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				E4DA81261FFA2CD700BF8826 /* MPSImage+Size.mm in Sources */,
 				0636A0831F8173F70064E561 /* PNKInstanceNormLayer.mm in Sources */,
 				E47546751FD96E3C006E66C6 /* PNKConvolutionUtils.mm in Sources */,
@@ -2886,6 +2916,11 @@
 			isa = PBXTargetDependency;
 			name = TestHost;
 			targetProxy = 06FD92C91EDC86BC00D180C7 /* PBXContainerItemProxy */;
+		};
+		64333A45212DBCFF00E37691 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MetalToolbox;
+			targetProxy = 64333A44212DBCFF00E37691 /* PBXContainerItemProxy */;
 		};
 		A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3002,6 +3037,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../MetalToolbox",
 					"$(SRCROOT)/../third_party/protobuf/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -3032,6 +3068,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
+					"$(SRCROOT)/../MetalToolbox",
 					"$(SRCROOT)/../third_party/protobuf/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -3049,7 +3086,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3062,7 +3099,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

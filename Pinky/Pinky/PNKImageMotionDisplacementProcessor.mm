@@ -4,8 +4,8 @@
 #import "PNKImageMotionDisplacementProcessor.h"
 
 #import <LTEngine/CVPixelBuffer+LTEngine.h>
+#import <MetalToolbox/MPSImage+Factory.h>
 
-#import "MPSImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKImageMotionLayer.h"
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  imageSize:imageSize];
     [layers addObject:layer];
 
-    auto layerDisplacementImage = [MPSImage pnk_float16ImageWithDevice:self.device width:imageWidth
+    auto layerDisplacementImage = [MPSImage mtb_float16ImageWithDevice:self.device width:imageWidth
                                                                 height:imageHeight channels:2];
     [displacementImages addObject:layerDisplacementImage];
   }

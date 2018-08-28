@@ -117,10 +117,10 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 1};
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
+      auto inputImage = [MPSImage mtb_imageWithDevice:device
                                                format:MPSImageFeatureChannelFormatFloat16
                                                  size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
+      auto outputImage = [MPSImage mtb_imageWithDevice:device
                                                 format:MPSImageFeatureChannelFormatFloat16
                                                   size:outputSize];
       expect(^{
@@ -133,10 +133,10 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 1};
       MTLSize outputSize{kInputWidth + 1, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
+      auto inputImage = [MPSImage mtb_imageWithDevice:device
                                                format:MPSImageFeatureChannelFormatFloat16
                                                  size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
+      auto outputImage = [MPSImage mtb_imageWithDevice:device
                                                 format:MPSImageFeatureChannelFormatFloat16
                                                   size:outputSize];
       expect(^{
@@ -149,10 +149,10 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 2};
       MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
+      auto inputImage = [MPSImage mtb_imageWithDevice:device
                                                format:MPSImageFeatureChannelFormatFloat16
                                                  size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
+      auto outputImage = [MPSImage mtb_imageWithDevice:device
                                                 format:MPSImageFeatureChannelFormatFloat16
                                                   size:outputSize];
       expect(^{
@@ -165,10 +165,10 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, 1};
       MTLSize outputSize{kInputWidth, kInputHeight, 2};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
+      auto inputImage = [MPSImage mtb_imageWithDevice:device
                                                format:MPSImageFeatureChannelFormatFloat16
                                                  size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
+      auto outputImage = [MPSImage mtb_imageWithDevice:device
                                                 format:MPSImageFeatureChannelFormatFloat16
                                                   size:outputSize];
       expect(^{

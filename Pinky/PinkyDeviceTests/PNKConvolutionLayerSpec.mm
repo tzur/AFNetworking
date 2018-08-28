@@ -3,7 +3,6 @@
 
 #import "PNKConvolutionLayer.h"
 
-#import "MPSImage+Factory.h"
 #import "PNKConvolutionTestUtils.h"
 #import "PNKNeuralNetworkModel.h"
 #import "PNKTestUtils.h"

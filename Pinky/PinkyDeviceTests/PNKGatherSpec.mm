@@ -87,10 +87,10 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kInputChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device
+      auto inputImage = [MPSImage mtb_imageWithDevice:device
                                                format:MPSImageFeatureChannelFormatFloat16
                                                  size:inputSize];
-      auto outputImage = [MPSImage pnk_imageWithDevice:device
+      auto outputImage = [MPSImage mtb_imageWithDevice:device
                                                 format:MPSImageFeatureChannelFormatFloat16
                                                   size:outputSize];
       expect(^{
@@ -101,8 +101,8 @@ context(@"parameter tests", ^{
     it(@"should raise when input image size does not fit output image size", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kInputChannels};
       MTLSize outputSize{kInputWidth + 1, kInputHeight, kOutputChannels};
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
       }).to.raise(NSInvalidArgumentException);
@@ -111,8 +111,8 @@ context(@"parameter tests", ^{
     it(@"should raise when input image has wrong number of channels", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kInputChannels + 1};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels};
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
       }).to.raise(NSInvalidArgumentException);
@@ -121,8 +121,8 @@ context(@"parameter tests", ^{
     it(@"should raise when output image has wrong number of channels", ^{
       MTLSize inputSize{kInputWidth, kInputHeight, kInputChannels};
       MTLSize outputSize{kInputWidth, kInputHeight, kOutputChannels + 1};
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [gather encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
       }).to.raise(NSInvalidArgumentException);
