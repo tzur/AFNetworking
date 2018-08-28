@@ -104,6 +104,31 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
   return self;
 }
 
+static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat taperingScaleFactor,
+                                                   lt::Interval<CGFloat> distanceRange,
+                                                   lt::Interval<CGFloat> angleRange,
+                                                   lt::Interval<CGFloat> scaleRange,
+                                                   LTRandom *random) {
+  CGFloat distanceLength = [random randomDoubleBetweenMin:distanceRange.inf()
+                                                      max:distanceRange.sup()];
+  CGPoint distance = CGPoint(LTVector2::angle([random randomDoubleBetweenMin:0 max:M_PI * 2]) *
+                             distanceLength) * taperingScaleFactor;
+  CGFloat angle = [random randomDoubleBetweenMin:angleRange.inf() max:angleRange.sup()];
+  CGFloat scale = [random randomDoubleBetweenMin:scaleRange.inf() max:scaleRange.sup()] *
+      taperingScaleFactor;
+  CGPoint center = quad.center();
+
+  // For increased performance, explicitly compute
+  // <tt>quad.rotatedAroundPoint(angle, center).scaledBy(scale).translatedBy(distance)</tt>.
+  CGFloat scaledCos = scale * std::cos(angle);
+  CGFloat scaledSin = scale * std::sin(angle);
+  CGAffineTransform transform =
+      CGAffineTransformMake(scaledCos, scaledSin, -scaledSin, scaledCos,
+                            (1 - scaledCos) * center.x + scaledSin * center.y + distance.x,
+                            -scaledSin * center.x + (1 - scaledCos) * center.y + distance.y);
+  return quad.transformedBy(transform);
+}
+
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(BOOL)end {
   dvn::GeometryValues values = [self.geometryProvider valuesFromSamples:samples end:end];
   const std::vector<lt::Quad> &originalQuads = values.quads();
@@ -158,9 +183,13 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
   }
 
   lt::Interval<int> countRange = (lt::Interval<int>)self.model.count.closed();
+  lt::Interval<CGFloat> distanceRange = self.model.distance.closed();
+  lt::Interval<CGFloat> angleRange = self.model.angle.closed();
+  lt::Interval<CGFloat> scaleRange = self.model.scale.closed();
+  LTRandom *random = self.random;
 
   for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
-    NSUInteger count = [self.random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];
+    NSUInteger count = [random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];
     CGFloat taperingScaleFactor = 1;
 
     if (self.performsTapering) {
@@ -178,32 +207,16 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
       }
     }
 
+    lt::Quad quad = originalQuads[i];
     NSUInteger index = values.indices()[i];
 
     for (NSUInteger j = 0; j < count; ++j) {
-      quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]
-                                        taperingScaleFactor:taperingScaleFactor]);
+      quads.push_back(DVNRandomlyTransformedQuadFromQuad(quad, taperingScaleFactor, distanceRange,
+                                                         angleRange, scaleRange, random));
       indices.push_back(index);
     }
   }
   return dvn::GeometryValues(quads, indices, values.samples());
-}
-
-- (lt::Quad)randomlyTransformedQuadFromQuad:(lt::Quad)quad
-                        taperingScaleFactor:(CGFloat)taperingScaleFactor {
-  lt::Interval<CGFloat> distanceRange = self.model.distance.closed();
-  CGFloat distanceLength = [self.random randomDoubleBetweenMin:distanceRange.inf()
-                                                           max:distanceRange.sup()];
-  CGPoint distance = CGPoint(LTVector2::angle([self.random randomDoubleBetweenMin:0 max:M_PI * 2]) *
-                             distanceLength);
-  lt::Interval<CGFloat> angleRange = self.model.angle.closed();
-  CGFloat angle = [self.random randomDoubleBetweenMin:angleRange.inf() max:angleRange.sup()];
-  lt::Interval<CGFloat> scaleRange = self.model.scale.closed();
-  CGFloat scale = [self.random randomDoubleBetweenMin:scaleRange.inf() max:scaleRange.sup()];
-  return quad
-      .rotatedAroundPoint(angle, quad.center())
-      .scaledBy(scale * taperingScaleFactor)
-      .translatedBy(distance * taperingScaleFactor);
 }
 
 - (id<DVNGeometryProviderModel>)currentModel {
