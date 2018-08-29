@@ -81,7 +81,7 @@ static NSString * const kDebugGroupName = @"arithmetic";
 
 - (void)createStates {
   auto functionConstants = @[
-    [MTBFunctionConstant ushortConstantWithValue:_operation name:@"operation"]
+    [MTBFunctionConstant ushortConstantWithValue:self.operation name:@"operation"]
   ];
 
   _stateSingle = PNKCreateComputeState(self.device, kKernelSingle, functionConstants);
