@@ -96,6 +96,7 @@ context(@"initialization", ^{
       expect(model.numberOfSamplesPerSequence).to.equal(8);
       expect(model.sequenceDistance).to.equal(0.0195312);
       expect(model.countRange == lt::Interval<NSUInteger>({9, 10})).to.beTruthy();
+      expect(model.rotatedWithSplineDirection).to.beTruthy();
       expect(model.distanceJitterFactorRange == lt::Interval<CGFloat>::co({0.0234375, 0.0273438}))
           .to.beTruthy();
       expect(model.angleRange == lt::Interval<CGFloat>::oc({0.03125, 0.0351562})).to.beTruthy();
@@ -219,6 +220,14 @@ context(@"copy constructors", ^{
       DVNBrushModelV1 *modelCopy = [model copyWithCountRange:lt::Interval<NSUInteger>({1, 7})];
       expect(modelCopy.countRange != model.countRange).to.beTruthy();
       expect(modelCopy.countRange == lt::Interval<NSUInteger>({1, 7})).to.beTruthy();
+    });
+  });
+
+  context(@"brush tip rotation", ^{
+    it(@"should return a copy with rotatedWithSplineDirection", ^{
+      DVNBrushModelV1 *modelCopy =
+          [model copyWithRotatedWithSplineDirection:!model.rotatedWithSplineDirection];
+      expect(modelCopy.rotatedWithSplineDirection).to.equal(!model.rotatedWithSplineDirection);
     });
   });
 

@@ -8,6 +8,7 @@
   "numberOfSamplesPerSequence": 8,
   "sequenceDistance": 0.0195312,
   "countRange": "[9, 10]",
+  "rotatedWithSplineDirection": true,
   "distanceJitterFactorRange": "[0.0234375, 0.0273438)",
   "angleRange": "(0.03125, 0.0351562]",
   "scaleJitterRange": "(0.0390625, 2)",
