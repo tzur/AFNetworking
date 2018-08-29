@@ -161,6 +161,43 @@ context(@"single sample", ^{
   });
 });
 
+context(@"multiple consecutive samples", ^{
+  __block id<DVNGeometryProvider> provider;
+  __block id<LTSampleValues> additionalSamples;
+
+  beforeEach(^{
+    DVNDirectedRectProviderModel *model = [[DVNDirectedRectProviderModel alloc]
+                                           initWithSize:size xCoordinateKey:@"xKey"
+                                           yCoordinateKey:@"yKey"];
+    provider = [model provider];
+
+    LTParameterizationKeyToValues *mapping =
+        [[LTParameterizationKeyToValues alloc] initWithKeys:keys
+                                               valuesPerKey:(cv::Mat1g(2, 2) << 5, 6, 7, 8)];
+    additionalSamples = [[LTSampleValues alloc] initWithSampledParametricValues:{2, 3}
+                                                                        mapping:mapping];
+  });
+
+  it(@"should provide quads rotated according to spline direction", ^{
+    dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+    values = [provider valuesFromSamples:additionalSamples end:NO];
+    std::vector<lt::Quad> quads = values.quads();
+    CGPoint firstCenter = CGPointMake(5, 7);
+    CGPoint secondCenter = CGPointMake(6, 8);
+    CGFloat angle = LTVector2(secondCenter - firstCenter).angle(LTVector2(1, 0));
+
+    std::vector<lt::Quad> expectedQuads = {
+      lt::Quad(CGRectCenteredAt(firstCenter, size)).rotatedAroundPoint(-angle, firstCenter),
+      lt::Quad(CGRectCenteredAt(secondCenter, size)).rotatedAroundPoint(-angle, secondCenter)
+    };
+
+    expect(quads.size()).to.equal(expectedQuads.size());
+    for (std::vector<lt::Quad>::size_type i = 0; i < quads.size(); ++i) {
+      expect(quads[i] == expectedQuads[i]).to.beTruthy();
+    }
+  });
+});
+
 itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
   DVNDirectedRectProviderModel *model = [[DVNDirectedRectProviderModel alloc] initWithSize:size];
   NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[
