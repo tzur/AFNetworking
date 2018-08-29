@@ -151,8 +151,8 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
     [MTBFunctionConstant uint2ConstantWithValue:kernelGap name:@"kernelGap"],
     [MTBFunctionConstant uint2ConstantWithValue:stride name:@"stride"],
     [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
-    [MTBFunctionConstant boolConstantWithValue:_hasAlphaBuffer name:@"hasAlphaBuffer"],
-    [MTBFunctionConstant boolConstantWithValue:_hasBetaBuffer name:@"hasBetaBuffer"]
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
   ];
 
   _space2PatchFunctionName = self.convolutionKernel.inputFeatureChannels > 4 ?

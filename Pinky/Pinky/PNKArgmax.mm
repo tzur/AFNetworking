@@ -69,11 +69,11 @@ static NSString * const kDebugGroupName = @"argmax";
                                                                           name:@"scale"]];
 
   _stateSingleUnorm = PNKCreateComputeState(self.device, kKernelFunctionSingle,
-                                                         functionConstantsForUnorm);
+                                            functionConstantsForUnorm);
   _stateSingleHalf = PNKCreateComputeState(self.device, kKernelFunctionSingle,
-                                                        functionConstantsForHalf);
+                                           functionConstantsForHalf);
   _stateArrayUnorm = PNKCreateComputeState(self.device, kKernelFunctionArray,
-                                                        functionConstantsForUnorm);
+                                           functionConstantsForUnorm);
   _stateArrayHalf = PNKCreateComputeState(self.device, kKernelFunctionArray,
                                           functionConstantsForHalf);
 }

@@ -123,8 +123,8 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   ushort activationTypeAsUshort = (ushort)activationType;
   auto functionConstants = @[
     [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
-    [MTBFunctionConstant boolConstantWithValue:_hasAlphaBuffer name:@"hasAlphaBuffer"],
-    [MTBFunctionConstant boolConstantWithValue:_hasBetaBuffer name:@"hasBetaBuffer"]
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
   ];
 
   _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
