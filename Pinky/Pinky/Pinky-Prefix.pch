@@ -20,6 +20,7 @@
 
   // MetalToolbox.
   #import <MetalToolbox/MTBComputeDispatch.h>
+  #import <MetalToolbox/MTBFunctionConstant.h>
 
   // Pinky.
   #import "LTRef+Pinky.h"

@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import <MetalToolbox/MTBFunctionConstant.h>
-
 NS_ASSUME_NONNULL_BEGIN
+
+@class MTBFunctionConstant;
 
 /// Creates a compute pipeline state for a given function specialized for the given constants when
 /// provided.
@@ -12,5 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param constants Constant values to set in the kernel. Used to compile a specialized version of
 /// the kernel when provided.
 id<MTLComputePipelineState> PNKCreateComputeState(id<MTLDevice> device,
-    NSString * const sfunctionName, NSArray<MTBFunctionConstant *> * _Nullable constants = nil);
+    NSString * const functionName, NSArray<MTBFunctionConstant *> * _Nullable constants = nil);
+
 NS_ASSUME_NONNULL_END
