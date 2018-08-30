@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKSoftMaxLayer ()
 
 /// Device to encode this kernel operation.
@@ -80,7 +78,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

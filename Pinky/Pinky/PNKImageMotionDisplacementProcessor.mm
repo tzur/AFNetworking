@@ -17,8 +17,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKImageMotionDisplacementProcessor ()
 
 /// Array of layers. Each layer is used to calculate its corresponding displacements map.
@@ -170,27 +168,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKImageMotionDisplacementProcessor
-
-- (nullable instancetype)initWithSegmentation:(__unused lt::Ref<CVPixelBufferRef>)segmentation
-                                        error:(NSError * __autoreleasing *)error {
-  if (error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
-                           description:@"Supported on device only"];
-  }
-  return nil;
-}
-
-- (void)displacements:(__unused CVPixelBufferRef)displacements
-   andNewSegmentation:(__unused CVPixelBufferRef)newSegmentation
-              forTime:(__unused NSTimeInterval)time {
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

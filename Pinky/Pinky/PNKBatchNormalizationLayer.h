@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 namespace pnk {
   struct ActivationKernelModel;
   struct NormalizationKernelModel;
@@ -33,7 +31,5 @@ API_AVAILABLE(ios(10.0))
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

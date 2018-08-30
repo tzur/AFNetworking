@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @protocol MTLBuffer;
 
 /// Computes global minimum and maximum pixel values per each channel for given \c MTLBuffers after
@@ -40,7 +38,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) NSArray<NSValue *> *inputSizes;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

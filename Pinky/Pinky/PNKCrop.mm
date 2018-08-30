@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKCrop ()
 
 /// Device to encode this kernel operation.
@@ -103,7 +101,5 @@ static NSString * const kDebugGroupName = @"crop";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

@@ -17,8 +17,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKStyleTransferState ()
 
 /// Initializes a new state object with the given original input size and the resulting image to be
@@ -284,44 +282,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKStyleTransferState
-
-@end
-
-@implementation PNKStyleTransferProcessor
-
-- (nullable instancetype)initWithModel:(__unused NSURL *)networkModelURL
-                                 error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)stylizeWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              styleIndex:(__unused NSUInteger)styleIndex
-              completion:(__unused PNKStyleTransferCompletionBlock)completion {
-}
-
-- (void)stylizeWithState:(PNKStyleTransferState __unused *)state
-                  output:(__unused CVPixelBufferRef)output
-              styleIndex:(__unused NSUInteger)styleIndex
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-- (NSUInteger)stylizedOutputChannels {
-  return 0;
-}
-
-- (NSUInteger)stylesCount {
-  return 0;
-}
-
-@end
-#endif
 
 NS_ASSUME_NONNULL_END

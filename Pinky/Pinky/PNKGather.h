@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that reshuffles the feature channels of the input image in arbitrary order. Omissions and
 /// duplications of channels are permitted.
 API_AVAILABLE(ios(10.0))
@@ -31,7 +29,5 @@ API_AVAILABLE(ios(10.0))
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

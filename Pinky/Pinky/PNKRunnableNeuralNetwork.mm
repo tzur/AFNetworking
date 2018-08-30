@@ -14,8 +14,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Dictionary of images with their names as keys.
 API_AVAILABLE(ios(10.0))
 typedef NSDictionary<NSString *, MPSImage *> PNKImageCollection;
@@ -222,7 +220,5 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKUpsampling ()
 
 /// Device to encode this kernel operation.
@@ -168,7 +166,5 @@ static NSString * const kDebugGroupName = @"upsample";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

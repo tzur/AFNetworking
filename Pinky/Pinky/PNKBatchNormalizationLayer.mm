@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKBatchNormalizationLayer ()
 
 /// Device to encode this kernel operation.
@@ -190,7 +188,5 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

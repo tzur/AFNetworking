@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @class PNKNeuralNode;
 
 namespace pnk {
@@ -62,7 +60,5 @@ API_AVAILABLE(ios(10.0))
                                                               error:(NSError **)error;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

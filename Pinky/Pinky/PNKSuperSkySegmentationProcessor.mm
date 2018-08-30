@@ -15,8 +15,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKSuperSkySegmentationProcessor ()
 
 /// Neural network performing the segmentation.
@@ -149,26 +147,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKSuperSkySegmentationProcessor
-
-- (nullable instancetype)initWithNetworkModel:(__unused NSURL *)networkModelURL
-                                        error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)segmentWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

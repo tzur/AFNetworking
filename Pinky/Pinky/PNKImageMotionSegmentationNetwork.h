@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Class that produces a segmentation map from a still image. The segmentation mask is a single
 /// channel image such that each pixel value is one of \c pnk::ImageMotionLayerType.
 API_AVAILABLE(ios(10.0))
@@ -32,7 +30,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) NSUInteger inputChannels;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

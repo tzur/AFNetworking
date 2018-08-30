@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKNeuralNode ()
 
 /// Unary kernel as set by initializer. Exactly one of \c unaryKernel, \c parametricUnaryKernel and
@@ -131,7 +129,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

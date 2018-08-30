@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKIndexTranslator ()
 
 /// Device to encode this kernel operation.
@@ -92,7 +90,5 @@ static NSString * const kKernelFunctionName = @"translatePixelValue";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

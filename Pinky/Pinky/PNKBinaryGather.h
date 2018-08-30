@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that has a two stage operation. First the kernel reshuffles and gathers the feature
 /// channels of each of the primary and secondary inputs. Then the kernel concatenates the results
 /// of those gathers in order such that the output channel order maintains that all channels from
@@ -32,7 +30,5 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
     NS_DESIGNATED_INITIALIZER;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

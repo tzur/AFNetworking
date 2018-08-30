@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that performs basic arithmetic per-pixel operations on two textures.
 API_AVAILABLE(ios(10.0))
 @interface PNKArithmetic : NSObject <PNKBinaryKernel>
@@ -27,7 +25,5 @@ API_AVAILABLE(ios(10.0))
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

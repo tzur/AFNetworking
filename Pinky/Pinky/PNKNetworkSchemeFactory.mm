@@ -31,8 +31,6 @@ PNK_PROTOBUF_INCLUDE_END
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 namespace cms = CoreML::Specification;
 
 typedef std::vector<const cms::NeuralNetworkLayer *> Layers;
@@ -529,7 +527,5 @@ struct GraphTraversalData {
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

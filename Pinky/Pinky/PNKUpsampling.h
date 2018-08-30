@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Upsampling type. See https://www.tensorflow.org/api_docs/python/tf/image/resize_images for
 /// discussion.
 typedef NS_ENUM(NSUInteger, PNKUpsamplingType) {
@@ -38,7 +36,5 @@ API_AVAILABLE(ios(10.0))
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

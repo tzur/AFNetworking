@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKColorTransferHistogramSpecification ()
 
 /// Device to encode kernel operations.
@@ -99,7 +97,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END
