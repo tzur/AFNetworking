@@ -1155,6 +1155,14 @@ context(@"", ^{
         expect(videoDevice.torchLevel).to.equal(kTorchLevel);
       });
 
+      it(@"should set torch mode", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchMode:AVCaptureTorchModeAuto]
+                                          testRecorder];
+        expect(recorder).will.sendValues(@[@(AVCaptureTorchModeAuto)]);
+        expect(recorder).to.complete();
+        expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeAuto);
+      });
+
       it(@"should set torch on and off", ^{
         expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOff);
         LLSignalTestRecorder *onRecorder = [[device setTorchLevel:1] testRecorder];
@@ -1185,20 +1193,54 @@ context(@"", ^{
         expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOn);
         expect(videoDevice.torchLevel).to.equal(0);
       });
+
+      it(@"should not set torch mode", ^{
+        [device setTorchMode:AVCaptureTorchModeOn];
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOn);
+      });
     });
 
     context(@"negative", ^{
-      it(@"should return error when torch off is unsupported", ^{
-        LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
-        NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
-        expect(recorder).will.sendError(expected);
-        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
+      static const auto kModeNotSupportedError =
+          [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+
+      beforeEach(^{
+        auto defaultTorchMode = AVCaptureTorchModeOff;
+        videoDevice.torchMode = defaultTorchMode;
       });
 
-      it(@"should return error when torch on in unsupported", ^{
+      it(@"should return error when torch level 0 is unsupported", ^{
+        videoDevice.torchMode = AVCaptureTorchModeAuto;
+        LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
+        expect(recorder).will.sendError(kModeNotSupportedError);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOff);
+      });
+
+      it(@"should return error when torch mode off is unsupported", ^{
+        videoDevice.torchMode = AVCaptureTorchModeAuto;
+        LLSignalTestRecorder *recorder = [[device setTorchMode:AVCaptureTorchModeOff]
+                                          testRecorder];
+        expect(recorder).will.sendError(kModeNotSupportedError);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOff);
+      });
+
+      it(@"should return error when torch level greater than 0 in unsupported", ^{
         LLSignalTestRecorder *recorder = [[device setTorchLevel:kTorchLevel] testRecorder];
-        NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
-        expect(recorder).will.sendError(expected);
+        expect(recorder).will.sendError(kModeNotSupportedError);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOn);
+      });
+
+      it(@"should return error when torch mode on is unsupported", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchMode:AVCaptureTorchModeOn]
+                                          testRecorder];
+        expect(recorder).will.sendError(kModeNotSupportedError);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOn);
+      });
+
+      it(@"should return error when torch mode auto is unsupported", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchMode:AVCaptureTorchModeAuto]
+                                          testRecorder];
+        expect(recorder).will.sendError(kModeNotSupportedError);
         expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
       });
 
@@ -1399,7 +1441,15 @@ context(@"retaining", ^{
   }});
 
   itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
+    return [device setTorchMode:AVCaptureTorchModeOff];
+  }});
+
+  itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
     return [device setTorchLevel:0.01];
+  }});
+
+  itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
+    return [device setTorchMode:AVCaptureTorchModeOn];
   }});
 
   itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {

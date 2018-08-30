@@ -1028,6 +1028,31 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return YES;
 }
 
+- (RACSignal *)setTorchMode:(AVCaptureTorchMode)torchMode {
+  @weakify(self);
+  return [[RACSignal defer:^RACSignal *{
+    @strongify(self);
+    NSError *error;
+    BOOL success = [self setTorchMode:torchMode error:&error];
+    return success ? [RACSignal return:@(torchMode)] : [RACSignal error:error];
+  }] subscribeOn:self.scheduler];
+}
+
+- (BOOL)setTorchMode:(AVCaptureTorchMode)torchMode error:(NSError * __autoreleasing *)error {
+  AVCaptureDevice *device = self.session.videoDevice;
+  BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+    if (![device isTorchModeSupported:torchMode]) {
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+      }
+      return NO;
+    }
+    device.torchMode = torchMode;
+    return YES;
+  } error:error];
+  return success;
+}
+
 #pragma mark -
 #pragma mark CAMFlipDevice
 #pragma mark -

@@ -182,6 +182,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported]];
 }
 
+- (nonnull RACSignal *)setTorchMode:(AVCaptureTorchMode __unused)torchMode {
+  return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported]];
+}
+
 - (RACSignal *)setCamera:(CAMDeviceCamera *)camera {
   if ([camera isEqual:$(CAMDeviceCameraBack)]) {
     return [RACSignal return:camera];
