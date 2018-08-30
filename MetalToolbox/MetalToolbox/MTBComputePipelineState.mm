@@ -9,6 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if defined(DEBUG) && DEBUG
+
 static void MTBValidateConstants(id<MTLFunction> function,
                                  NSArray<MTBFunctionConstant *> * _Nullable userConstants) {
   NSMutableDictionary<NSString *, MTLFunctionConstant *> *functionConstants =
@@ -30,6 +32,8 @@ static void MTBValidateConstants(id<MTLFunction> function,
   LTParameterAssert(functionConstants.count == 0, @"Functions constant(s) with name(s) '%@' were "
                     "not provided by user", functionConstants.allKeys);
 }
+
+#endif
 
 static id<MTLFunction> MTBFunction(id<MTLLibrary> library, NSString *functionName,
                                    MTLFunctionConstantValues * _Nullable constants = nil) {

@@ -53,15 +53,15 @@ MTB_UNUSED static mtb::MPSImageMetadata MTBImageMetadata(MTB_UNUSED CVPixelBuffe
   auto pixelBufferFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
   auto pixelFormatPair = kSupportedCVPixelFormatToMTLPixelFormat.find(pixelBufferFormat);
   LTParameterAssert(pixelFormatPair != kSupportedCVPixelFormatToMTLPixelFormat.end(),
-                    @"Pixel format %u is not supported", pixelBufferFormat);
+                    @"Pixel format %lu is not supported", (unsigned long)pixelBufferFormat);
   auto metalPixelFormat = pixelFormatPair->second.first;
 
   if (!featureChannels) {
     featureChannels = pixelFormatPair->second.second;
   }
   LTParameterAssert(featureChannels <= pixelFormatPair->second.second, @"Cannot create an image "
-                    "with %lu feature channels from a buffer with pixel format %u",
-                    (unsigned long)featureChannels, pixelBufferFormat);
+                    "with %lu feature channels from a buffer with pixel format %lu",
+                    (unsigned long)featureChannels, (unsigned long)pixelBufferFormat);
 
   return {
     .width = CVPixelBufferGetWidth(pixelBuffer),
