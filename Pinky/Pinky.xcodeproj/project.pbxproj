@@ -716,7 +716,6 @@
 
 /* Begin PBXFileReference section */
 		060EA4221EDD85DC0041487A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
@@ -1881,7 +1880,6 @@
 				06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */,
 				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
 				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
-				060EA49B1EDD9C740041487A /* PNKDefines.h */,
 				0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */,
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
 			);

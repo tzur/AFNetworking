@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @protocol MTLBuffer;
 
 /// Performs histogram specification operation on a given \c MTLBuffer, converting the pixels such
@@ -56,7 +54,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) float dampingFactor;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

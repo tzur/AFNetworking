@@ -9,8 +9,6 @@ namespace pnk {
   struct ActivationKernelModel;
 }
 
-#if PNK_USE_MPS
-
 /// Category for conveniently creating \c MPSCNNNeuron objects from pinky \c ActivationKernelModel.
 API_AVAILABLE(ios(10.0))
 @interface MPSCNNNeuron (Factory)
@@ -25,7 +23,5 @@ API_AVAILABLE(ios(10.0))
 + (BOOL)pnk_doesSupportActivationType:(pnk::ActivationType)activationType;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

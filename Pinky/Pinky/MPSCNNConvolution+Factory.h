@@ -10,8 +10,6 @@ namespace pnk {
   struct ConvolutionKernelModel;
 }
 
-#if PNK_USE_MPS
-
 /// Category for conveniently creating \c MPSCNNConvolution objects from pinky model structs.
 API_AVAILABLE(ios(10.0))
 @interface MPSCNNConvolution (Factory)
@@ -31,7 +29,5 @@ API_AVAILABLE(ios(10.0))
 + (BOOL)pnk_doesSupportActivationType:(pnk::ActivationType)activationType;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

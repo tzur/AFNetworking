@@ -12,8 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKDilatedConvolutionInternalLayer ()
 
 /// Device to encode this kernel operation.
@@ -319,7 +317,5 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

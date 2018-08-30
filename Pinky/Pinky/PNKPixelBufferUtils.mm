@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
+#if COREVIDEO_SUPPORTS_METAL
 
 static CVMetalTextureCacheRef PNKMetalTextureCacheForDevice(id<MTLDevice> device) {
   static auto mapTable =
@@ -47,6 +47,14 @@ MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> de
   CVMetalTextureCacheFlush(textureCache, 0);
 
   return mpsImage;
+}
+
+#else
+
+MPSImage *PNKImageFromPixelBuffer(__unused CVPixelBufferRef pixelBuffer,
+                                  __unused id<MTLDevice> device,
+                                  __unused NSUInteger featureChannels) {
+  return nil;
 }
 
 #endif

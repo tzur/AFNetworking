@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that does channel-wise concatenation of textures.
 API_AVAILABLE(ios(10.0))
 @interface PNKConcatenation : NSObject <PNKBinaryKernel>
@@ -36,7 +34,5 @@ API_AVAILABLE(ios(10.0))
 - (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

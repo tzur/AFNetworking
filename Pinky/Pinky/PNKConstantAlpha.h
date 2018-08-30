@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that sets the Alpha channel to a constant value. Input is expected to be an RGB(A) or
 /// BGR(A) image.
 API_AVAILABLE(ios(10.0))
@@ -25,7 +23,5 @@ API_AVAILABLE(ios(10.0))
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

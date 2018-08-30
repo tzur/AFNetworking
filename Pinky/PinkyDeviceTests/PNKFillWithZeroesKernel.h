@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel filling the output image with zeroes. Can be used on images in private GPU memory such as
 /// \c MPSTemporaryImage that cannot be accessed by CPU.
 @interface PNKFillWithZeroesKernel : NSObject
@@ -20,7 +18,5 @@ NS_ASSUME_NONNULL_BEGIN
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

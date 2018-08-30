@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Category for convenient retrieval of the size of an \c MPSImage.
 @interface MPSImage (Size)
 
@@ -25,7 +23,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (MTLSize)pnk_textureArraySize;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

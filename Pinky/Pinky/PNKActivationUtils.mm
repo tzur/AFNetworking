@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 std::pair<BOOL, BOOL> PNKActivationNeedsAlphaBetaParameters(pnk::ActivationType activationType) {
   switch (activationType) {
     case pnk::ActivationTypeIdentity:
@@ -28,7 +26,5 @@ std::pair<BOOL, BOOL> PNKActivationNeedsAlphaBetaParameters(pnk::ActivationType 
       return {YES, YES};
   }
 }
-
-#endif
 
 NS_ASSUME_NONNULL_END

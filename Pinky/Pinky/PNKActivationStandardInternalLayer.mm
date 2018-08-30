@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKActivationStandardInternalLayer ()
 
 /// Underlying activation kernel used for performing the operation.
@@ -59,7 +57,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#endif // PNK_USE_MPS
-
 NS_ASSUME_NONNULL_END
-

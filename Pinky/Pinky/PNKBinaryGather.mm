@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKBinaryGather ()
 
 /// Device to encode this kernel operation.
@@ -236,7 +234,5 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

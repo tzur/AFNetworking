@@ -5,9 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
-#if PNK_USE_MPS
-
 @interface PNKConstantAlpha ()
 
 /// Device to encode this kernel operation.
@@ -83,7 +80,5 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

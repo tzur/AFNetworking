@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKGather ()
 
 /// Device to encode this kernel operation.
@@ -161,7 +159,5 @@ static NSUInteger kChannelsPerTexture = 4;
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

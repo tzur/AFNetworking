@@ -2,16 +2,11 @@
 // Created by Ofir Bibi.
 
 #ifdef __OBJC__
-  // Pinky helpers.
-  #import "PNKDefines.h"
-
   // iOS Frameworks.
   #import <Foundation/Foundation.h>
   #import <Metal/Metal.h>
   #import <MetalKit/MetalKit.h>
-  #if PNK_USE_MPS
-    #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
-  #endif
+  #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
 
   // Lightricks Libraries.
   #import <LTKit/LTKit-Prefix.pch>

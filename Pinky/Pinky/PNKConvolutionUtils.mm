@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 static NSUInteger PNKDilatedKernelSize(NSUInteger kernelSize, NSUInteger dilation) {
   return (kernelSize - 1) * dilation + 1;
 }
@@ -99,7 +97,5 @@ MTLSize PNKConvolutionInputSize(MTLSize outputSize, NSUInteger kernelWidth, NSUI
       };
   }
 }
-
-#endif
 
 NS_ASSUME_NONNULL_END

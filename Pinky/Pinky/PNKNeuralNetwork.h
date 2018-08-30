@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Protocol implemented by classes representing a neural network.
 API_AVAILABLE(ios(10.0))
 @protocol PNKNeuralNetwork <NSObject>
@@ -34,7 +32,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) NSDictionary<NSString *, NSString *> *metadata;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

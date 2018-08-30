@@ -11,8 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface MPSCNNConvolution ()
 
 /// Declaration of a deprecated initializer of \c MPSCNNConvolution class. It is the only
@@ -182,7 +180,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

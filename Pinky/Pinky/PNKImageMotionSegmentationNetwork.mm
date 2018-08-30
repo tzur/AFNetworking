@@ -12,8 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 const static std::array<uchar, 256> kTranslationTable = {{
   pnk::ImageMotionLayerTypeStatic,
   pnk::ImageMotionLayerTypeSky,
@@ -137,7 +135,5 @@ const static std::array<uchar, 256> kTranslationTable = {{
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

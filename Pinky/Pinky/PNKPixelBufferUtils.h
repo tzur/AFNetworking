@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Creates an \c MPSImage wrapper of the \c pixelBuffer for use with \c device and returns it to
 /// the caller. \c pixelBuffer must have one of supported pixel formats. Currently supported pixel
 /// formats are 1- and 4-channels non-planar formats with either uchar or half-float channels. The
@@ -16,7 +14,5 @@ NS_ASSUME_NONNULL_BEGIN
 /// the Metal texture wrapper from the GPU side are the caller's responsibility.
 MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,
                                   NSUInteger featureChannels = 0) API_AVAILABLE(ios(10.0));
-
-#endif
 
 NS_ASSUME_NONNULL_END

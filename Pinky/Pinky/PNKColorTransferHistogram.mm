@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKColorTransferHistogram ()
 
 /// Device to encode kernel operations.
@@ -122,7 +120,5 @@ static const NSUInteger kMaxThreadgroupMemoryLength32K = (1 << 15) - 32;
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

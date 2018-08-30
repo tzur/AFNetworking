@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKFillWithZeroesKernel ()
 
 /// Device to encode this kernel operation.
@@ -58,7 +56,5 @@ static NSString * const kDebugGroupName = @"fillWithZeroes";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

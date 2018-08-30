@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKImageBilinearScale ()
 
 /// Device to encode this kernel operation.
@@ -99,7 +97,5 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

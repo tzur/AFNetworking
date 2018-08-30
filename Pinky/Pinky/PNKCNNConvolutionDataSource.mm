@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKCNNConvolutionDataSource ()
 
 /// Convolution descriptor.
@@ -161,7 +159,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

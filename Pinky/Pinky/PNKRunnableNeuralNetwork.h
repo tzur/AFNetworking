@@ -6,8 +6,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Neural network implementation running the underlying \c pnk::NetworkScheme using a collection of
 /// input images to produce a collection of output images.
 API_AVAILABLE(ios(10.0))
@@ -44,7 +42,5 @@ API_AVAILABLE(ios(10.0))
     (const std::unordered_map<std::string, MTLSize> &)inputImageSizes;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

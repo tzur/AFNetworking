@@ -17,8 +17,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 static const pnk::PaddingSize kPadding = {
   .left = 8,
   .top = 0,
@@ -188,26 +186,5 @@ static const pnk::PaddingSize kPadding = {
 }
 
 @end
-
-#else
-
-@implementation PNKPersonSegmentationProcessor
-
-- (nullable instancetype)initWithNetworkModel:(__unused NSURL *)networkModelURL
-                                        error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)segmentWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

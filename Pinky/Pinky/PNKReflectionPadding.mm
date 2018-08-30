@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKReflectionPadding ()
 
 /// Device to encode this kernel operation.
@@ -130,7 +128,5 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

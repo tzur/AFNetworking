@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKColorTransferCDF ()
 
 /// Device to encode kernel operations.
@@ -207,7 +205,5 @@ static const float kPDFSmoothingKernelSigma = 1;
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

@@ -10,8 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKColorTransferMinAndMax ()
 
 /// Device to encode kernel operations.
@@ -204,7 +202,5 @@ static const NSUInteger kTemporaryBufferElements = 16384;
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

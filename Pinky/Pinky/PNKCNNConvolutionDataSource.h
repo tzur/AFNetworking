@@ -10,8 +10,6 @@ namespace pnk {
   struct ConvolutionKernelModel;
 }
 
-#if PNK_USE_MPS
-
 /// Convolution kernel data source that provides the data from \c pnk::ConvolutionKernelModel and
 /// \c pnk::ActivationKernelModel provided on initialization.
 API_AVAILABLE(ios(11.0))
@@ -26,7 +24,5 @@ API_AVAILABLE(ios(11.0))
     NS_DESIGNATED_INITIALIZER;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END
