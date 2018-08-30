@@ -1046,6 +1046,7 @@
 		E49052DF201742D900D4C252 /* PNKPersonSegmentationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPersonSegmentationProcessor.h; sourceTree = "<group>"; };
 		E49052E1201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPersonSegmentationProcessorSpec.mm; sourceTree = "<group>"; };
 		E49052E320175C8000D4C252 /* person_processor_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person_processor_mask.png; path = Resources/person_processor_mask.png; sourceTree = "<group>"; };
+		E49B65C021380F84002DA40A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		E4A781A320CA72AA005C6EF1 /* PNKImageMotionSegmentationNetwork.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionSegmentationNetwork.mm; sourceTree = "<group>"; };
 		E4A781C620CA72AB005C6EF1 /* PNKImageMotionSegmentationNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionSegmentationNetwork.h; sourceTree = "<group>"; };
 		E4A781C820CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionSegmentationNetworkSpec.mm; sourceTree = "<group>"; };
@@ -1880,6 +1881,7 @@
 				06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */,
 				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
 				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
+				E49B65C021380F84002DA40A /* PNKDefines.h */,
 				0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */,
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
 			);
