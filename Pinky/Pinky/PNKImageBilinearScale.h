@@ -28,6 +28,19 @@ API_AVAILABLE(ios(10.0))
                    inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage;
 
+/// Encodes the operation performed by the kernel to \c commandBuffer using the region of
+/// \c inputImage defined by \c inputRegion as input. Output is written asynchronously to the region
+/// of \c outputImage defined by \c outputRegion. Only the first 2 dimensions (x/y/height/width) of
+/// both \c inputRegion and \c outputRegion are taken into account. The feature channels for both
+/// \c inputImage and \c outputImage must be either \c 1, \c 3 or \c 4. When the feature channels of
+/// \c inputImage is \c 1 and the feature channels of \c outputImage is either \c 3 or \c 4 the
+/// <tt>Y->RGB(A)</tt> transformation is applied. When the feature channels of \c inputImage is \c 3
+/// or \c 4 and the feature channels of \c outputImage is \c 1 the <tt>RGB(A)->Y</tt> transformation
+/// is applied.
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage inputRegion:(MTLRegion)inputRegion
+                  outputImage:(MPSImage *)outputImage outputRegion:(MTLRegion)outputRegion;
+
 @end
 
 NS_ASSUME_NONNULL_END

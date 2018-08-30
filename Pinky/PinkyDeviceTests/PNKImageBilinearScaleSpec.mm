@@ -35,14 +35,44 @@ context(@"parameter tests", ^{
     });
 
     it(@"should raise when called with illegal combination of channels count", ^{
-      MTLSize inputSize{32, 32, 2};
-      MTLSize outputSize{32, 32, 4};
+      auto inputSize = MTLSizeMake(32, 32, 2);
+      auto outputSize = MTLSizeMake(32, 32, 4);
 
       auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
       auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage
                          outputImage:outputImage];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when input region stretches beyond the input image", ^{
+      auto inputSize = MTLSizeMake(32, 32, 1);
+      auto outputSize = MTLSizeMake(32, 32, 1);
+
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
+
+      auto inputRegion = MTLRegionMake(1, 0, 0, inputSize);
+      auto outputRegion = MTLRegionMake(0, 0, 0, outputSize);
+      expect(^{
+        [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
+                         outputImage:outputImage outputRegion:outputRegion];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when output region stretches beyond the output image", ^{
+      auto inputSize = MTLSizeMake(32, 32, 1);
+      auto outputSize = MTLSizeMake(32, 32, 1);
+
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
+
+      auto inputRegion = MTLRegionMake(0, 0, 0, inputSize);
+      auto outputRegion = MTLRegionMake(1, 0, 0, outputSize);
+      expect(^{
+        [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
+                         outputImage:outputImage outputRegion:outputRegion];
       }).to.raise(NSInvalidArgumentException);
     });
   });
@@ -79,6 +109,65 @@ context(@"resize", ^{
 
     cv::Mat expectedMat;
     cv::resize(inputMat, expectedMat, cv::Size(0, 0), 2.5, 2.5);
+
+    expect($(outputMat)).to.beCloseToMat($(expectedMat));
+  });
+
+  it(@"should resize a region of image correctly", ^{
+    auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
+                                                   height:inputMat.rows
+                                                 channels:inputMat.channels()];
+    PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
+
+    cv::Rect cvRect(0.3 * inputImage.width, 0.3 * inputImage.height, 0.3 * inputImage.width,
+                    0.3 * inputImage.height);
+    auto inputRegion = MTLRegionMake(cvRect.x, cvRect.y, 0, cvRect.width, cvRect.height,
+                                     inputImage.featureChannels);
+
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 2.5
+                                                    height:inputImage.height * 2.5 channels:4];
+    auto outputRegion = MTLRegionMake(0, 0, 0, outputImage.pnk_size);
+
+    [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
+                     outputImage:outputImage outputRegion:outputRegion];
+
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+
+    auto outputMat = PNKMatFromMTLTexture(outputImage.texture);
+
+    cv::Mat expectedMat;
+    cv::resize(inputMat(cvRect), expectedMat,
+               cv::Size((int)outputImage.width, (int)outputImage.height));
+
+    expect($(outputMat)).to.beCloseToMat($(expectedMat));
+  });
+
+  it(@"should resize to a region of image correctly", ^{
+    auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
+                                                   height:inputMat.rows
+                                                 channels:inputMat.channels()];
+    PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
+    auto inputRegion = MTLRegionMake(0, 0, 0, inputImage.pnk_size);
+
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 2.5
+                                                    height:inputImage.height * 2.5 channels:4];
+    cv::Rect cvRect(0.3 * outputImage.width, 0.3 * outputImage.height, 0.3 * outputImage.width,
+                    0.3 * outputImage.height);
+    auto outputRegion = MTLRegionMake(cvRect.x, cvRect.y, 0, cvRect.width, cvRect.height, 1);
+
+    [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
+                     outputImage:outputImage outputRegion:outputRegion];
+
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+
+    auto outputMat = PNKMatFromMTLTextureRegion(outputImage.texture, outputRegion);
+
+    cv::Mat expectedMat;
+    cv::resize(inputMat, expectedMat, cv::Size(cvRect.width, cvRect.height));
 
     expect($(outputMat)).to.beCloseToMat($(expectedMat));
   });
@@ -144,10 +233,10 @@ context(@"temporary image read count", ^{
     auto commandQueue = [device newCommandQueue];
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-    MTLSize outputSize{32, 32, 4};
+    auto outputSize = MTLSizeMake(32, 32, 4);
     auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
 
-    MTLSize inputSize{64, 64, 4};
+    auto inputSize = MTLSizeMake(64, 64, 4);
     auto inputImage = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
                                                                                size:inputSize];
     expect(inputImage.readCount == 1);

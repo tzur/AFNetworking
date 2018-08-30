@@ -1,6 +1,14 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
+#import "PNKDefines.h"
+
+#if PNK_METAL_COMPILER
+  namespace pnk_simd = metal;
+#else
+  namespace pnk_simd = simd;
+#endif
+
 namespace pnk {
 
   /// Color transform to be applied on image.
@@ -37,5 +45,16 @@ namespace pnk {
     /// Y-coordinate bias.
     float biasY;
   };
+
+  /// Structure that stores rectangle coordinates.
+  template<typename T> struct Rect {
+    /// Origin of the rectangle.
+    T origin;
+    /// Size of the rectangle.
+    T size;
+  };
+
+  typedef Rect<pnk_simd::float2> Rect2f;
+  typedef Rect<pnk_simd::uint2> Rect2ui;
 
 } // namespace pnk
