@@ -3,28 +3,19 @@
 
 #import "BZRReceiptValidationDateProvider.h"
 
-#import <LTKit/NSArray+Functional.h>
-
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
-#import "BZRReceiptValidationStatusCache.h"
 #import "BZRTimeConversion.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRReceiptValidationDateProvider ()
 
-/// Cache used to load receipt validation status cache entry from storage.
-@property (readonly, nonatomic) BZRReceiptValidationStatusCache *receiptValidationStatusCache;
-
 /// Provider used to provide the aggregated receipt validation status.
 @property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
     receiptValidationStatusProvider;
-
-/// Set of applications bundle IDs.
-@property (readonly, nonatomic) NSSet<NSString *> *bundledApplicationsIDs;
 
 /// Seconds until the cache is invalidated, starting from the date it was cached.
 @property (readonly, nonatomic) NSTimeInterval validationInterval;
@@ -38,16 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize nextValidationDate = _nextValidationDate;
 
-- (instancetype)initWithReceiptValidationStatusCache:
-    (BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-    receiptValidationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
-    receiptValidationStatusProvider
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+- (instancetype)initWithReceiptValidationStatusProvider:
+    (BZRAggregatedReceiptValidationStatusProvider *)receiptValidationStatusProvider
     validationIntervalDays:(NSUInteger)validationIntervalDays {
   if (self = [super init]) {
-    _receiptValidationStatusCache = receiptValidationStatusCache;
     _receiptValidationStatusProvider = receiptValidationStatusProvider;
-    _bundledApplicationsIDs = bundledApplicationsIDs;
     _validationInterval = [BZRTimeConversion numberOfSecondsInDays:validationIntervalDays];
 
     [self setupNextValidationDateUpdates];
@@ -59,14 +45,14 @@ NS_ASSUME_NONNULL_BEGIN
   @weakify(self);
   RAC(self, nextValidationDate) =
       [RACObserve(self.receiptValidationStatusProvider, receiptValidationStatus)
-       map:^NSDate * _Nullable(BZRReceiptValidationStatus *receiptValidationStatus) {
+       map:^NSDate * _Nullable(BZRReceiptValidationStatus * _Nullable receiptValidationStatus) {
          @strongify(self);
          if (![self shouldValidateReceiptForValidationStatus:receiptValidationStatus]) {
            return nil;
          }
 
-         auto _Nullable lastReceiptValidation = [self earliestReceiptValidationDate];
-         return [lastReceiptValidation dateByAddingTimeInterval:self.intervalBetweenValidations];
+         return [receiptValidationStatus.validationDateTime
+                 dateByAddingTimeInterval:self.intervalBetweenValidations];
       }];
 }
 
@@ -93,20 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
   // Subscription is either not marked as expired or marked as expired because the last successful
   // validation occurred too long ago. In these scenarios periodic validation is required.
   return YES;
-}
-
-- (nullable NSDate *)earliestReceiptValidationDate {
-  auto lastValidationDates = [self lastReceiptValidationDatesForBundledApplications];
-  return [lastValidationDates valueForKeyPath:@"@min.self"];
-}
-
-- (NSArray<NSDate *> *)lastReceiptValidationDatesForBundledApplications {
-  return [[[self.receiptValidationStatusCache
-      loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
-      allValues]
-      lt_map:^NSDate *(BZRReceiptValidationStatusCacheEntry *cacheEntry) {
-        return cacheEntry.cachingDateTime;
-      }];
 }
 
 - (NSTimeInterval)intervalBetweenValidations {
