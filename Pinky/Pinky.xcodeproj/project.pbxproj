@@ -1003,6 +1003,7 @@
 		E47324EE205FFA76002140F9 /* PNKTypeDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKTypeDefinitions.h; sourceTree = "<group>"; };
 		E47546731FD96E3C006E66C6 /* PNKConvolutionUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKConvolutionUtils.h; sourceTree = "<group>"; };
 		E47546741FD96E3C006E66C6 /* PNKConvolutionUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionUtils.mm; sourceTree = "<group>"; };
+		E47750AD2137BDBD00AE61C9 /* PNKTestUtils+MTLRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PNKTestUtils+MTLRegion.h"; sourceTree = "<group>"; };
 		E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+FactorySpec.mm"; sourceTree = "<group>"; };
 		E480A482209856CE00423308 /* PNKImageMotionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayer.h; sourceTree = "<group>"; };
 		E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionStaticLayer.h; sourceTree = "<group>"; };
@@ -1286,6 +1287,7 @@
 				E43F3D98207B9CB90017AE3A /* PNKTestComputeState.mm */,
 				068D90A61F1F60A90012F472 /* PNKTestUtils.h */,
 				068D90A71F1F60A90012F472 /* PNKTestUtils.mm */,
+				E47750AD2137BDBD00AE61C9 /* PNKTestUtils+MTLRegion.h */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";

@@ -46,3 +46,4 @@ extern "C" {
 #import "PNKKernelExamples.h"
 #import "PNKTemporaryImageExamples.h"
 #import "PNKTestUtils.h"
+#import "PNKTestUtils+MTLRegion.h"
