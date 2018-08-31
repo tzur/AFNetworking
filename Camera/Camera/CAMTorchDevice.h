@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// there is a problem setting the torch level. All events are sent on an arbitrary thread.
 - (RACSignal *)setTorchLevel:(float)torchLevel;
 
+/// Sets the camera's torch to the given torch mode.
+///
+/// Returned signal sends the new \c torchMode and completes when the new mode is set, or errs if
+/// there is a problem setting the torch mode. All events are sent on an arbitrary thread.
+- (RACSignal *)setTorchMode:(AVCaptureTorchMode)torchMode;
+
 /// Whether the camera has a torch.
 @property (readonly, nonatomic) BOOL hasTorch;
 

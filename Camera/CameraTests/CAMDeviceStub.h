@@ -114,6 +114,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Return value for the \c setTorchLevel: method.
 @property (strong, nonatomic, nullable) RACSignal *setTorchLevelSignal;
 
+/// Last received value for the \c setTorchMode: method.
+@property (nonatomic) AVCaptureTorchMode lastReceivedTorchMode;
+
+/// Return value for the \c setTorchMode: method.
+@property (strong, nonatomic, nullable) RACSignal *setTorchModeSignal;
+
 #pragma mark -
 #pragma mark CAMFlipDevice
 #pragma mark -

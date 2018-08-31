@@ -58,16 +58,6 @@ context(@"setters", ^{
     });
   });
 
-  context(@"torch", ^{
-    it(@"should not support torch", ^{
-      expect(device.hasTorch).to.beFalsy();
-
-      LLSignalTestRecorder *recorder = [[device setTorchLevel:0.5] testRecorder];
-      expect(recorder).to
-          .sendError([NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported]);
-    });
-  });
-
   context(@"flip", ^{
     it(@"should start with back camera", ^{
       expect(device.activeCamera).to.equal($(CAMDeviceCameraBack));
@@ -169,16 +159,25 @@ context(@"setters", ^{
   });
 
   context(@"torch", ^{
+    static const auto kTorchNotSupportedError =
+        [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+
     it(@"should not support torch", ^{
       expect(device.hasTorch).to.beFalsy();
     });
 
-    it(@"should err when setting torch", ^{
-      expect([device setTorchLevel:2]).to.error();
-      expect([device setTorchLevel:0.5]).to.error();
-      expect([device setTorchLevel:0]).to.error();
-      expect([device setTorchLevel:-0.5]).to.error();
-      expect([device setTorchLevel:NAN]).to.error();
+    it(@"should err when setting torch level", ^{
+      expect([device setTorchLevel:2]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchLevel:0.5]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchLevel:0]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchLevel:-0.5]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchLevel:NAN]).to.sendError(kTorchNotSupportedError);
+    });
+
+    it(@"should err when setting torch mode", ^{
+      expect([device setTorchMode:AVCaptureTorchModeOn]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchMode:AVCaptureTorchModeOff]).to.sendError(kTorchNotSupportedError);
+      expect([device setTorchMode:AVCaptureTorchModeAuto]).to.sendError(kTorchNotSupportedError);
     });
   });
 });
