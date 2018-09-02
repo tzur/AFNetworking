@@ -92,9 +92,12 @@ def buildAndTestSimulatorsStage() {
       node("Xcode9") {
         ws("${workspaceBasePath()}/Repo") {
           try {
+            setCommitStatus("PENDING", env.STAGE_NAME, "Build started")
             ltCheckoutStage()
             sh "fastlane build_simulator_test_package package_path:test_package"
+            setCommitStatus("SUCCESS", env.STAGE_NAME, "Build successful")
           } catch(e) {
+            setCommitStatus("FAILED", env.STAGE_NAME, "Build failed")
             detectInterruption(e)
             notifyFailed()
             throw new LtStageFailedException(e)
@@ -118,9 +121,12 @@ def buildAndTestDevicesStage() {
       node("Xcode9") {
         ws("${workspaceBasePath()}/Repo") {
           try {
+            setCommitStatus("PENDING", env.STAGE_NAME, "Build started")
             ltCheckoutStage()
             sh "fastlane build_device_test_package package_path:test_package"
+            setCommitStatus("SUCCESS", env.STAGE_NAME, "Build successful")
           } catch(e) {
+            setCommitStatus("FAILED", env.STAGE_NAME, "Build failed")
             detectInterruption(e)
             notifyFailed()
             throw new LtStageFailedException(e)
@@ -144,10 +150,13 @@ def deviceTestStageWithLabel(label) {
       node(label) {
         ws("${workspaceBasePath()}/Tests") {
           try {
+            setCommitStatus("PENDING", env.STAGE_NAME, "Test started")
             cleanWs()
             unstash name: "device test package"
             sh "fastlane run_device_test_package package_path:test_package destination:'id=${env.DEVICE_IDENTIFIER}'"
+            setCommitStatus("SUCCESS", env.STAGE_NAME, "Test successful")
           } catch(e) {
+            setCommitStatus("FAILED", env.STAGE_NAME, "Test failed")
             detectInterruption(e)
             notifyFailed()
             throw new LtStageFailedException(e)
@@ -167,10 +176,13 @@ def simulatorTestStageWithLabel(simulatorName) {
       node("Xcode9") {
         ws("${workspaceBasePath()}/Tests") {
           try {
+            setCommitStatus("PENDING", env.STAGE_NAME, "Test started")
             cleanWs()
             unstash name: "simulator test package"
             sh "fastlane run_simulator_test_package package_path:test_package destination:'platform=iOS Simulator,name=${simulatorName},OS=latest'"
+            setCommitStatus("SUCCESS", env.STAGE_NAME, "Test successful")
           } catch(e) {
+            setCommitStatus("FAILED", env.STAGE_NAME, "Test failed")
             detectInterruption(e)
             notifyFailed()
             throw new LtStageFailedException(e)
@@ -286,6 +298,20 @@ def detectInterruption(Exception ex) {
       (ex instanceof hudson.AbortException && ex.getMessage().contains("script returned exit code 143"))) {
     echo "Stage timed out or aborted"
   }
+}
+
+def setCommitStatus(String state, String context, String message) {
+  if (!isPR()) {
+    return
+  }
+
+  step([
+    $class: 'GitHubCommitStatusSetter',
+    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
+    statusBackrefSource: [$class: "ManuallyEnteredBackrefSource", backref: "${env.RUN_DISPLAY_URL}"],
+    statusResultSource: [$class: "ConditionalStatusResultSource",
+                         results: [[$class: "AnyBuildResult", message: message, state: state]]]
+  ])
 }
 
 class LtStageFailedException extends Exception {
