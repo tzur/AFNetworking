@@ -87,6 +87,10 @@ typedef void (^PNKStyleTransferCompletionBlock)(PNKStyleTransferState *state);
 /// value is \c 1024.
 @property (nonatomic) NSUInteger stylizedOutputSmallSide;
 
+/// Maximal size of the large side of the images returned when calling \c stylizeWithInput:. Default
+/// value is \c 3072.
+@property (nonatomic) NSUInteger stylizedOutputLargeSide;
+
 /// Number of channels for the stylized image. One of <tt>{1, 4}</tt>.
 @property (readonly, nonatomic) NSUInteger stylizedOutputChannels;
 

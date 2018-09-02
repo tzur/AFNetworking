@@ -102,6 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
                                            DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
 
     _stylizedOutputSmallSide = 1024;
+    _stylizedOutputLargeSide = 3072;
 
     _inputResizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
     _alphaCorrect = [[PNKConstantAlpha alloc] initWithDevice:self.device alpha:1.];
@@ -267,13 +268,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)outputSizeWithInputSize:(CGSize)size {
   CGFloat smallSide = std::min(size.width, size.height);
+  CGFloat largeSide = std::max(size.width, size.height);
 
   CGSize resizedInputSize;
-  if (smallSide <= self.stylizedOutputSmallSide) {
+  if (smallSide <= self.stylizedOutputSmallSide && largeSide <= self.stylizedOutputLargeSide) {
     resizedInputSize = size;
   } else {
-    CGSize sizeToFill = CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputSmallSide);
-    resizedInputSize = CGSizeAspectFill(size, sizeToFill);
+    CGSize sizeToFit = (size.width < size.height) ?
+        CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputLargeSide) :
+        CGSizeMake(self.stylizedOutputLargeSide, self.stylizedOutputSmallSide);
+    resizedInputSize = CGSizeAspectFit(size, sizeToFit);
   }
 
   resizedInputSize.width = ((int)(resizedInputSize.width + 3) / 4) * 4;

@@ -47,13 +47,40 @@ context(@"stylize", ^{
     });
   });
 
-  it(@"should stylize image correctly using a cached state", ^{
+  it(@"should stylize a 1024 x 8192 image without crash", ^{
     NSBundle *bundle = NSBundle.lt_testBundle;
     NSError *error;
     auto modelURL = [NSURL URLWithString:[bundle lt_pathForResource:kGreyNetworkFileName]];
     processor = [[PNKStyleTransferProcessor alloc] initWithModel:modelURL error:&error];
 
-    cv::Mat4b inputMat = LTLoadMat([self class], kLargeImageFileName);
+    cv::Mat4b inputMat = cv::Mat4b::zeros(1024, 8192);
+    auto inputBuffer = LTCVPixelBufferCreate(inputMat.cols, inputMat.rows,
+                                             kCVPixelFormatType_32BGRA);
+    LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat * _Nonnull image) {
+      inputMat.copyTo(*image);
+    });
+
+    auto outputSize = [processor outputSizeWithInputSize:CGSizeMake(inputMat.cols, inputMat.rows)];
+    auto outputBuffer = LTCVPixelBufferCreate(outputSize.width, outputSize.height,
+                                              kCVPixelFormatType_OneComponent8);
+
+    expect(^{
+      waitUntil(^(DoneCallback done) {
+        [processor stylizeWithInput:inputBuffer.get() output:outputBuffer.get() styleIndex:1
+                         completion:^(PNKStyleTransferState * __unused state) {
+          done();
+        }];
+      });
+    }).notTo.raiseAny();
+  });
+
+  it(@"should stylize image correctly using a cached state", ^{
+    auto bundle = NSBundle.lt_testBundle;
+    NSError *error;
+    auto modelURL = [NSURL URLWithString:[bundle lt_pathForResource:kGreyNetworkFileName]];
+    processor = [[PNKStyleTransferProcessor alloc] initWithModel:modelURL error:&error];
+
+    auto inputMat = LTLoadMat([self class], kLargeImageFileName);
     auto inputBuffer = LTCVPixelBufferCreate(inputMat.cols, inputMat.rows,
                                              kCVPixelFormatType_32BGRA);
     LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat * _Nonnull image) {
@@ -68,9 +95,9 @@ context(@"stylize", ^{
 
     waitUntil(^(DoneCallback done) {
       [processor stylizeWithInput:inputBuffer.get() output:outputBuffer1.get() styleIndex:1
-                       completion:^(PNKStyleTransferState *returnedState){
-         state = returnedState;
-         done();
+                       completion:^(PNKStyleTransferState *returnedState) {
+        state = returnedState;
+        done();
       }];
     });
 
@@ -79,7 +106,7 @@ context(@"stylize", ^{
     waitUntil(^(DoneCallback done) {
       [processor stylizeWithState:state output:outputBuffer2.get() styleIndex:1
                        completion:^{
-         done();
+        done();
       }];
     });
 
