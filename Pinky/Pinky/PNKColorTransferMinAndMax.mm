@@ -79,8 +79,8 @@ static const NSUInteger kTemporaryBufferElements = 16384;
   _resetMinMaxState = PNKCreateComputeState(self.device, @"resetMinMax");
 
   if (@available(iOS 11.0, *)) {
-    if (PNKSupportsMTLDevice(self.device)) {
-      [self createFastCompuateStatesAndBuffers];
+    if ([self.device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily3_v3]) {
+      [self createFastComputeStatesAndBuffers];
       return;
     }
   }
@@ -119,7 +119,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
                      @"resetMinMax", {1, 1, 1}, {1, 1, 1});
 
   if (@available(iOS 11.0, *)) {
-    if (PNKSupportsMTLDevice(self.device)) {
+    if ([self.device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily3_v3]) {
       [self mpsEncodeToCommandBuffer:commandBuffer inputBuffers:inputBuffers
                      transformBuffer:transformBuffer minValueBuffer:minValueBuffer
                       maxValueBuffer:maxValueBuffer];
@@ -160,7 +160,7 @@ static const NSUInteger kTemporaryBufferElements = 16384;
   }
 }
 
-- (void)createFastCompuateStatesAndBuffers NS_AVAILABLE_IOS(11) {
+- (void)createFastComputeStatesAndBuffers NS_AVAILABLE_IOS(11) {
   _applyTransformState = PNKCreateComputeState(self.device, @"applyTransformOnBuffer");
   _mergeMinMaxState = PNKCreateComputeState(self.device, @"mergeMinMax");
   _mpsMinMax = [[MPSImageStatisticsMinAndMax alloc] initWithDevice:self.device];
