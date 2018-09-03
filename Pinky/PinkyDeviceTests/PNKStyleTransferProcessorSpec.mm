@@ -48,6 +48,11 @@ context(@"stylize", ^{
   });
 
   it(@"should stylize a 1024 x 8192 image without crash", ^{
+    auto device = MTLCreateSystemDefaultDevice();
+    if (![device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily3_v2]) {
+      return;
+    }
+
     NSBundle *bundle = NSBundle.lt_testBundle;
     NSError *error;
     auto modelURL = [NSURL URLWithString:[bundle lt_pathForResource:kGreyNetworkFileName]];
