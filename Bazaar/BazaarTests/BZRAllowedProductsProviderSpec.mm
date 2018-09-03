@@ -13,17 +13,6 @@
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
 
-static BZRReceiptSubscriptionInfo *BZRSubscriptionWithIdentifier(NSString *subscriptionIdentifier) {
-  return [BZRReceiptSubscriptionInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
-        [NSDate dateWithTimeIntervalSinceNow:1337],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @NO
-  } error:nil];
-}
-
 SpecBegin(BZRAllowedProductsProvider)
 
 context(@"allowed products provider", ^{
@@ -44,13 +33,13 @@ context(@"allowed products provider", ^{
     purchasedProductIdentifier = @"foo";
     filterProductIdentifier = @"filters.bar";
     nonFilterProductIdentifier = @"nonFilter.baz";
-    BZRProduct *purchasedProduct = BZRProductWithIdentifier(purchasedProductIdentifier);
-    BZRProduct *filterProduct = BZRProductWithIdentifier(filterProductIdentifier);
-    BZRProduct *nonFilterProduct = BZRProductWithIdentifier(nonFilterProductIdentifier);
-    BZRProduct *fullSubscription = [BZRProductWithIdentifier(@"fullSubscription")
+    auto purchasedProduct = BZRProductWithIdentifier(purchasedProductIdentifier);
+    auto filterProduct = BZRProductWithIdentifier(filterProductIdentifier);
+    auto nonFilterProduct = BZRProductWithIdentifier(nonFilterProductIdentifier);
+    auto fullSubscription = [BZRProductWithIdentifier(@"fullSubscription")
         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
         withValue:$(BZRProductTypeNonRenewingSubscription)];
-    BZRProduct *partialSubscription = [[BZRProductWithIdentifier(@"partialSubscription")
+    auto partialSubscription = [[BZRProductWithIdentifier(@"partialSubscription")
         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
         withValue:$(BZRProductTypeNonRenewingSubscription)]
         modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts)
@@ -156,8 +145,7 @@ context(@"allowed products provider", ^{
 
   context(@"full subscription", ^{
     beforeEach(^{
-      BZRReceiptSubscriptionInfo *subscription =
-          BZRSubscriptionWithIdentifier(@"fullSubscription");
+      BZRReceiptSubscriptionInfo *subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
       validationStatusProvider.receiptValidationStatus =
           [validationStatusProvider.receiptValidationStatus
            modelByOverridingPropertyAtKeypath:
@@ -203,8 +191,7 @@ context(@"allowed products provider", ^{
 
   context(@"partial subscription", ^{
     beforeEach(^{
-      BZRReceiptSubscriptionInfo *subscription =
-          BZRSubscriptionWithIdentifier(@"partialSubscription");
+      auto subscription = BZRSubscriptionWithIdentifier(@"partialSubscription");
       validationStatusProvider.receiptValidationStatus =
           [validationStatusProvider.receiptValidationStatus
            modelByOverridingPropertyAtKeypath:
@@ -247,7 +234,7 @@ context(@"allowed products provider", ^{
       RACSignal *allowedProductsSignal =
           [RACObserve(allowedProvider, allowedProducts) testRecorder];
 
-      BZRReceiptSubscriptionInfo *subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
+      auto subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
       validationStatusProvider.receiptValidationStatus =
           [validationStatusProvider.receiptValidationStatus
            modelByOverridingPropertyAtKeypath:
@@ -269,8 +256,7 @@ context(@"allowed products provider", ^{
       productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
       OCMStub([productsProvider fetchProductList]).andReturn(subject);
 
-      BZRReceiptSubscriptionInfo *subscription =
-          BZRSubscriptionWithIdentifier(@"partialSubscription");
+      auto subscription = BZRSubscriptionWithIdentifier(@"partialSubscription");
       validationStatusProvider.receiptValidationStatus =
           [validationStatusProvider.receiptValidationStatus
            modelByOverridingPropertyAtKeypath:

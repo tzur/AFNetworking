@@ -21,6 +21,10 @@ BZRProduct *BZRProductWithIdentifier(NSString *identifier);
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
     BZRContentFetcherParameters * _Nullable parameters);
 
+/// Returns a \c BZRReceiptValidationStatus without any subscription, transaction or in app
+/// purchases.
+BZRReceiptValidationStatus *BZREmptyReceiptValidationStatus();
+
 /// Returns a \c BZRReceiptValidationStatus with \c subscription expiry set to \c expiry. If
 /// \c cancelled is \c YES then \c receipt.subscription.cancellation date will be set to somewhen
 /// between now and the expiration date.
@@ -30,6 +34,9 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
 /// \c identifier and \c subscription expiry set to \c expiry.
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(
     NSString *identifier, BOOL expiry);
+
+/// Returns a \c BZRReceiptInAppPurchaseInfo with identifier set to \c productID.
+BZRReceiptInAppPurchaseInfo *BZRReceiptInAppPurchaseInfoWithProductID(NSString *productID);
 
 /// Returns a \c BZRReceiptValidationStatus with a not expired subscription with an identifier set
 /// to \c subscriptionIdentifier.
@@ -62,5 +69,9 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
 SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
      SKPaymentTransactionState state = SKPaymentTransactionStatePurchased,
      NSDate *transactionDate = [NSDate date]);
+
+/// Returns a \c BZRReceiptSubscriptionInfo with identifier set to \c subscriptionIdentifier.
+ BZRReceiptSubscriptionInfo *BZRSubscriptionWithIdentifier(NSString *subscriptionIdentifier,
+     BOOL expired = NO, BOOL cancelled = NO);
 
 NS_ASSUME_NONNULL_END
