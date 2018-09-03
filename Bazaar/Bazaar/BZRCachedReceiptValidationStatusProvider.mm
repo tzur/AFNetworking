@@ -78,10 +78,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)storeReceiptValidationStatus:(BZRReceiptValidationStatus *)receiptValidationStatus
-                 applicationBundleID:(NSString *)applicationBundleID {
+                 applicationBundleID:(NSString *)applicationBundleID
+                     cachingDateTime:(NSDate *)cachingDateTime {
   auto receiptStatusCacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                                   initWithReceiptValidationStatus:receiptValidationStatus
-                                  cachingDateTime:[self.timeProvider currentTime]];
+                                  cachingDateTime:cachingDateTime];
   [self.cache storeCacheEntry:receiptStatusCacheEntry
           applicationBundleID:applicationBundleID error:nil];
 }
@@ -97,7 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
         [self storeReceiptValidationStatus:receiptValidationStatus
-                       applicationBundleID:applicationBundleID];
+                       applicationBundleID:applicationBundleID
+                           cachingDateTime:[self.timeProvider currentTime]];
         [self removeFirstErrorDateTimeForApplicationWithBundleID:applicationBundleID];
       }]
       doError:^(NSError *) {
@@ -121,13 +123,20 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  auto currentTime = [self.timeProvider currentTime];
-  if ([currentTime timeIntervalSinceDate:cacheEntry.cachingDateTime] -
-      self.cachedEntryTimeToLive < 0) {
-    return;
+  if ([self shouldInvalidateSubscriptionForCacheOfApplication:applicationBundleID]) {
+    [self invalidateCachedEntry:cacheEntry applicationBundleID:applicationBundleID];
   }
+}
 
-  [self invalidateCachedEntry:cacheEntry applicationBundleID:applicationBundleID];
+- (BOOL)shouldInvalidateSubscriptionForCacheOfApplication:(NSString *)applicationBundleID {
+  auto _Nullable firstErrorDateTime =
+      [self.cache firstErrorDateTimeForApplicationBundleID:applicationBundleID];
+  if (!firstErrorDateTime) {
+    return NO;
+  }
+  auto timeSinceFirstError =
+      [[self.timeProvider currentTime] timeIntervalSinceDate:firstErrorDateTime];
+  return timeSinceFirstError > self.cachedEntryTimeToLive;
 }
 
 - (void)invalidateCachedEntry:(BZRReceiptValidationStatusCacheEntry *)cacheEntry
@@ -136,7 +145,8 @@ NS_ASSUME_NONNULL_BEGIN
       modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptValidationStatus,
       receipt.subscription.isExpired) withValue:@YES];
   [self storeReceiptValidationStatus:receiptValidationStatusWithExpiredSubscription
-                 applicationBundleID:applicationBundleID];
+                 applicationBundleID:applicationBundleID
+                     cachingDateTime:cacheEntry.cachingDateTime];
 }
 
 - (void)storeFirstErrorDateTimeIfDoesntExistForApplicationWithBundleID:
@@ -164,7 +174,8 @@ NS_ASSUME_NONNULL_BEGIN
                                @keypath(receiptValidationStatus, receipt.subscription.isExpired)
                                withValue:@NO];
     [self storeReceiptValidationStatus:receiptValidationStatus
-                   applicationBundleID:applicationBundleID];
+                   applicationBundleID:applicationBundleID
+                       cachingDateTime:cacheEntry.cachingDateTime];
   }
 }
 
