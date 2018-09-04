@@ -7,14 +7,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kSPXDefaultLocalizationTableName = @"Localizable";
 
+/// Used to allow NSBundle to locate the bundle that contains Shopix.
+@interface SPXBundleLocator : NSObject
+@end
+
+@implementation SPXBundleLocator
+@end
+
 @implementation SPXLocalization
 
 + (NSDictionary<NSString *, LTLocalizationTable *> *)localizationTables {
   static NSDictionary<NSString *, LTLocalizationTable *> *sharedInstance;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSString * _Nullable path = [[NSBundle mainBundle] pathForResource:@"Shopix" ofType:@"bundle"];
-    LTAssert(path, @"Could not find Shopix bundle");
+    auto _Nullable executableBundle = [NSBundle bundleForClass:SPXBundleLocator.class];
+    auto _Nullable path = [executableBundle pathForResource:@"Shopix" ofType:@"bundle"];
+    LTAssert(path, @"Cannot find Shopix.bundle in Shopix's executable directory");
 
     auto _Nullable bundle = [NSBundle bundleWithPath:path];
     if (!bundle) {
