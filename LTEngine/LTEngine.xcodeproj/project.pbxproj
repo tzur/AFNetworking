@@ -860,7 +860,7 @@
 		85F599AE1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 85F599A81CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png */; };
 		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; };
 		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; };
-		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; };
+		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */; };
 		8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B17A5921C32A232001713BB /* LTEAGLView.h */; };
 		8B17A5951C32A232001713BB /* LTEAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B17A5931C32A232001713BB /* LTEAGLView.mm */; };
 		8B17A5B41C32A834001713BB /* LTEAGLViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B17A5B31C32A834001713BB /* LTEAGLViewSpec.mm */; };
@@ -1197,6 +1197,7 @@
 		8BFA8F87191A2F9F0088310E /* LTGLKitExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F86191A2F9F0088310E /* LTGLKitExtensionsSpec.mm */; };
 		8BFA90CB1920FC8F0088310E /* LTImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA90CA1920FC8F0088310E /* LTImageProcessor.mm */; };
 		8BFA90E119212AC70088310E /* LTImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA90E019212AC70088310E /* LTImageProcessorSpec.mm */; };
+		8BFBD07F213E6F2C002A82CD /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFBFF318CF0AF000E612DE /* LTEngine.bundle */; };
 		8BFE1E0818756A69008035BF /* LTOneShotBaseImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E0718756A69008035BF /* LTOneShotBaseImageProcessor.mm */; };
 		8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E1618756B1D008035BF /* LTIterativeImageProcessor.mm */; };
 		A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC6371AC9DA64005FC392 /* CircularPatchDrawerAlpha.png */; };
@@ -2708,7 +2709,7 @@
 		8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTypedefs+LTEngine.h"; sourceTree = "<group>"; };
 		8B16C9741BAEAEB7002FB750 /* LTEasyBoxing+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+LTEngine.h"; sourceTree = "<group>"; };
 		8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTEngineBundle.h"; sourceTree = "<group>"; };
-		8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+LTEngineBundle.m"; sourceTree = "<group>"; };
+		8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+LTEngineBundle.mm"; sourceTree = "<group>"; };
 		8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8B16CAD01BB06797002FB750 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -4494,8 +4495,8 @@
 			children = (
 				8B3690021CA6B7BE003E34CF /* libextobjc_OSX.a */,
 				8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */,
-				8B3690061CA6B7BE003E34CF /* Logic Tests.octest */,
-				8B3690081CA6B7BE003E34CF /* iOS Tests.octest */,
+				8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */,
+				8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4657,7 +4658,7 @@
 				8B8664321BF5026D006FFF03 /* LTRef+LTEngine.h */,
 				8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */,
 				8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */,
-				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */,
+				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -6557,17 +6558,17 @@
 			remoteRef = 8B3690031CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690061CA6B7BE003E34CF /* Logic Tests.octest */ = {
+		8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 8B3690051CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690081CA6B7BE003E34CF /* iOS Tests.octest */ = {
+		8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -6863,6 +6864,7 @@
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
 				06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */,
 				B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */,
+				8BFBD07F213E6F2C002A82CD /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7166,7 +7168,7 @@
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				28FC0E701D2A9FFE00237FF8 /* LTContentTouchEventOrPredicate.mm in Sources */,
 				28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */,
-				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */,
+				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.mm in Sources */,
 				288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */,
 				28463D11196983DE0021A7CD /* LTDefaultModule.mm in Sources */,
 				8B422A6D1C30493200398F27 /* LTTexture+Writing.mm in Sources */,
