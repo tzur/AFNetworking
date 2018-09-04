@@ -2613,7 +2613,6 @@
 				E483D41A20517CF5000D4809 /* instance_normalization_relu_output_15x16x32.tensor in Resources */,
 				E46CBE1820D640BC002BA751 /* multiclass_segmentation.nnmodel in Resources */,
 				E4C2FCFB2021E51F002EF963 /* person_grayscale_processor_mask.png in Resources */,
-				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
 				E470C005200BAB4A007573C9 /* upsample_bilinear_aligned_output_30x32x32.tensor in Resources */,
 				E4BC761C201DE057000477B4 /* conv_dilation_kernel_8x3x3x32.weights in Resources */,
 				06C2F309202A7695004B7F86 /* Lena_echo55.png in Resources */,
@@ -2651,6 +2650,7 @@
 				E41718AC20565768009FEF14 /* concat_output_15x16x64.tensor in Resources */,
 				064745311FD8891A00BAE7BD /* Bicycles_skymask512.png in Resources */,
 				E41718AA20565768009FEF14 /* reflection_padding_output_23x22x32.tensor in Resources */,
+				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
