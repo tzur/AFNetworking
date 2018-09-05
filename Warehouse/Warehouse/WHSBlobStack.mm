@@ -152,6 +152,10 @@ NS_ASSUME_NONNULL_BEGIN
   return @([resultSet unsignedLongLongIntForColumnIndex:0]);
 }
 
+- (BOOL)isOpen {
+  return [self.database isOpen];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

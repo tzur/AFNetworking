@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Blob stack backed by an SQLite database. In contrast to common knowledge, SQLite performs
 /// better than the file system for small blobs (~10KB in size). Performance tests we ran on actual
-/// iOS device with SQLite version 3.19.3 shows that reads of blobs at this size are about/ x9
+/// iOS device with SQLite version 3.19.3 shows that reads of blobs at this size are about x9
 /// faster, while writing are x3 faster than using the file system.
 ///
 /// @see https://www.sqlite.org/fasterthanfs.html
@@ -69,6 +69,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note the stack automatically closes the connection on deallocation. Use this only if you need
 /// to ensure the underlying database is closed prior to file operations such as move or delete.
 - (BOOL)close;
+
+/// \c YES if the database connection is open.
+@property (readonly, nonatomic) BOOL isOpen;
 
 @end
 
