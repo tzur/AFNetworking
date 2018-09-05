@@ -92,29 +92,38 @@ static const CGFloat kDefaultWidth = 1.0;
 }
 
 - (LTArrayBuffer *)createArrayBuffer {
-  std::vector<LTGridDrawerVertex> vLines = [self verticesForVerticalGridLines];
-  std::vector<LTGridDrawerVertex> hLines = [self verticesForHorizontalGridLines];
-  vLines.insert(vLines.cend(), hLines.cbegin(), hLines.cend());
+  std::vector<LTGridDrawerVertex> lines = [self verticesForGridLines];
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
                                                              usage:LTArrayBufferUsageStaticDraw];
-  [arrayBuffer setData:[NSData dataWithBytesNoCopy:&vLines[0]
-                                            length:vLines.size() * sizeof(LTGridDrawerVertex)
+  [arrayBuffer setData:[NSData dataWithBytesNoCopy:&lines[0]
+                                            length:lines.size() * sizeof(LTGridDrawerVertex)
                                       freeWhenDone:NO]];
   return arrayBuffer;
 }
 
-/// Creates the vertices for the vertical grid lines according to the grid size.
+/// Creates the vertices for the vertical and horizontal grid lines according to the grid size.
 /// Ideally, we would use two degenerate triangles for each grid line, and the vertex shader would
 /// update their values according to the offset, pixel size, and width to create a rectangle with
 /// the desired width.
-/// However, since openGL automatically discards degenerate triangles a hack was necessary, adding
+///
+/// However, since OpenGL automatically discards degenerate triangles, a hack was necessary, adding
 /// the offset to the position as well, with the vertex shader subtracting it before applying the
 /// modelview and projection transformations.
-- (std::vector<LTGridDrawerVertex>) verticesForVerticalGridLines {
-  std::vector<LTGridDrawerVertex> vertexData;
-  CGFloat gridSpacing = 1.0;
+- (std::vector<LTGridDrawerVertex>)verticesForGridLines {
+  // Spacing, in content pixels, between each grid.
+  static const CGFloat kGridSpacing = 1;
+
   GLfloat height = self.size.height;
-  for (GLfloat x = 0; x <= self.size.width; x += gridSpacing) {
+  GLfloat width = self.size.width;
+
+  size_t widthRects = std::floor(width / kGridSpacing) + 1;
+  size_t heightRects = std::floor(height / kGridSpacing) + 1;
+
+  static const size_t kVerticesPerGridLine = 6;
+  std::vector<LTGridDrawerVertex> vertexData;
+  vertexData.reserve((widthRects + heightRects) * kVerticesPerGridLine);
+
+  for (GLfloat x = 0; x <= width; x += kGridSpacing) {
     LTGridDrawerVertex topLeft = {
       .position = LTVector2(x - 1, 0), .offset = LTVector2(-1, 0)
     };
@@ -134,16 +143,8 @@ static const CGFloat kDefaultWidth = 1.0;
     vertexData.push_back(bottomRight);
     vertexData.push_back(bottomLeft);
   }
-  return vertexData;
-}
 
-/// Creates the vertices for the horizontal grid lines according to the grid size. See comment above
-/// (\c verticesForVerticalGridLines) for more details.
-- (std::vector<LTGridDrawerVertex>)verticesForHorizontalGridLines {
-  std::vector<LTGridDrawerVertex> vertexData;
-  CGFloat gridSpacing = 1.0;
-  GLfloat width = self.size.width;
-  for (GLfloat y = 0; y <= self.size.height; y += gridSpacing) {
+  for (GLfloat y = 0; y <= height; y += kGridSpacing) {
     LTGridDrawerVertex topLeft = {
       .position = LTVector2(0, y - 1), .offset = LTVector2(0, -1)
     };
@@ -163,6 +164,7 @@ static const CGFloat kDefaultWidth = 1.0;
     vertexData.push_back(bottomRight);
     vertexData.push_back(bottomLeft);
   }
+
   return vertexData;
 }
 
