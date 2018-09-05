@@ -37,6 +37,19 @@ LTEnumImplement(NSUInteger, BZREventType,
   return self;
 }
 
+- (instancetype)initWithType:(BZREventType *)eventType eventSubtype:(NSString *)eventSubtype
+                   eventInfo:(NSDictionary *)eventInfo {
+  LTAssert(![eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+           ![eventType isEqual:$(BZREventTypeCriticalError)], @"A non-error event cannot have the "
+           "event type %@.", eventType);
+  if (self = [super init]) {
+    _eventType = eventType;
+    _eventInfo = eventInfo;
+    _eventSubtype = eventSubtype;
+  }
+  return self;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

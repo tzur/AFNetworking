@@ -147,6 +147,21 @@ NS_ASSUME_NONNULL_BEGIN
   [self storeReceiptValidationStatus:receiptValidationStatusWithExpiredSubscription
                  applicationBundleID:applicationBundleID
                      cachingDateTime:cacheEntry.cachingDateTime];
+  [self sendInvalidationEventForCacheEntry:cacheEntry applicationBundleID:applicationBundleID];
+}
+
+- (void)sendInvalidationEventForCacheEntry:(BZRReceiptValidationStatusCacheEntry *)cacheEntry
+                       applicationBundleID:(NSString *)applicationBundleID {
+  auto invalidationEventData = @{
+    @"ApplicationBundleID": applicationBundleID,
+    @"FirstErrorDate":
+        [self.cache firstErrorDateTimeForApplicationBundleID:applicationBundleID] ?: [NSNull null],
+    @"CachingDate": cacheEntry.cachingDateTime
+  };
+  auto invalidationEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                             eventSubtype:@"InvalidatedSubscription"
+                                                eventInfo:invalidationEventData];
+  [self.eventsSubject sendNext:invalidationEvent];
 }
 
 - (void)storeFirstErrorDateTimeIfDoesntExistForApplicationWithBundleID:
