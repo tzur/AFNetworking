@@ -7,114 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0651F3BB1EDC8E39009FA384 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0651F3B41EDC8E01009FA384 /* Pinky.bundle */; };
-		6505A7BC1F9352B5007569C8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6505A7BB1F9352B5007569C8 /* CloudKit.framework */; };
-		656155E31D464DC9009E701C /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 656155DE1D464DAF009E701C /* LTEngine.bundle */; };
 		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
 		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
 		65CEFBB71D3BF72800402230 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB61D3BF72800402230 /* main.m */; };
 		65CEFBBA1D3BF72800402230 /* FNDAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */; };
 		65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC11D3BF72800402230 /* Assets.xcassets */; };
 		65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */; };
-		CDB949BF200F86E800708E0C /* Shopix.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CDB949BC200F86C500708E0C /* Shopix.bundle */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0651F3B11EDC8E01009FA384 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
-			remoteInfo = Pinky;
-		};
-		0651F3B31EDC8E01009FA384 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 06FD92A11EDC66E500D180C7;
-			remoteInfo = PinkyBundle;
-		};
-		0651F3B51EDC8E01009FA384 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
-			remoteInfo = PinkyTests;
-		};
-		0651F3B71EDC8E01009FA384 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 06FD92BC1EDC85C600D180C7;
-			remoteInfo = PinkyDeviceTests;
-		};
-		0651F3B91EDC8E1C009FA384 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 06FD92A01EDC66E500D180C7;
-			remoteInfo = PinkyBundle;
-		};
-		656155DB1D464DAF009E701C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
-			remoteInfo = LTEngine;
-		};
-		656155DD1D464DAF009E701C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
-			remoteInfo = LTEngineBundle;
-		};
-		656155DF1D464DAF009E701C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
-			remoteInfo = LTEngineTests;
-		};
-		656155E11D464DB8009E701C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
-			remoteInfo = LTEngineBundle;
-		};
-		CDB949B7200F86C500708E0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84FF72E91C8EED6D00D1DA9F;
-			remoteInfo = Shopix;
-		};
-		CDB949B9200F86C500708E0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 848E000D1C591DD1001D8368;
-			remoteInfo = ShopixTests;
-		};
-		CDB949BB200F86C500708E0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD5550151F45C8050048215C;
-			remoteInfo = ShopixBundle;
-		};
-		CDB949BD200F86CF00708E0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CD5550141F45C8050048215C;
-			remoteInfo = ShopixBundle;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinky.xcodeproj; path = ../Pinky/Pinky.xcodeproj; sourceTree = "<group>"; };
 		6505A7BA1F9351B2007569C8 /* TestHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestHost.entitlements; sourceTree = "<group>"; };
 		6505A7BB1F9352B5007569C8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		652F75DB1D3D429F00EF9256 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
@@ -123,7 +24,6 @@
 		652F75E21D3D429F00EF9256 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		652F75E31D3D429F00EF9256 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		652F75E41D3D429F00EF9256 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		656155C71D464DAE009E701C /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		65BAF4A41D48BD08009BBB6F /* TestHost-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestHost-Prefix.pch"; sourceTree = "<group>"; };
 		65BB8B701D3D67C5004886DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		65BB8B721D3D67C9004886DC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -134,7 +34,6 @@
 		65CEFBC11D3BF72800402230 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65CEFBC41D3BF72800402230 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65CEFBC61D3BF72800402230 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CDB949AC200F86C500708E0C /* Shopix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Shopix.xcodeproj; path = ../Shopix/Shopix.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +41,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6505A7BC1F9352B5007569C8 /* CloudKit.framework in Frameworks */,
 				65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */,
 				65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */,
 			);
@@ -151,17 +49,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0651F3A11EDC8E00009FA384 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0651F3B21EDC8E01009FA384 /* libPinky.a */,
-				0651F3B41EDC8E01009FA384 /* Pinky.bundle */,
-				0651F3B81EDC8E01009FA384 /* PinkyDeviceTests.xctest */,
-				0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		652F75301D3D1BE600EF9256 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,26 +87,6 @@
 			path = Targets;
 			sourceTree = "<group>";
 		};
-		656155C61D464D91009E701C /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				656155C71D464DAE009E701C /* LTEngine.xcodeproj */,
-				0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */,
-				CDB949AC200F86C500708E0C /* Shopix.xcodeproj */,
-			);
-			name = Libraries;
-			sourceTree = "<group>";
-		};
-		656155C81D464DAE009E701C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				656155DC1D464DAF009E701C /* libLTEngine.a */,
-				656155DE1D464DAF009E701C /* LTEngine.bundle */,
-				656155E01D464DAF009E701C /* LTEngineTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		65BB8B741D3D67E2004886DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,7 +103,6 @@
 				652F75DA1D3D429F00EF9256 /* Configuration */,
 				65CEFBB41D3BF72800402230 /* TestHost */,
 				65BB8B741D3D67E2004886DC /* Frameworks */,
-				656155C61D464D91009E701C /* Libraries */,
 				65CEFBB31D3BF72800402230 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -272,16 +138,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CDB949AD200F86C500708E0C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CDB949B8200F86C500708E0C /* libShopix.a */,
-				CDB949BA200F86C500708E0C /* ShopixTests.xctest */,
-				CDB949BC200F86C500708E0C /* Shopix.bundle */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -296,9 +152,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				656155E21D464DB8009E701C /* PBXTargetDependency */,
-				0651F3BA1EDC8E1C009FA384 /* PBXTargetDependency */,
-				CDB949BE200F86CF00708E0C /* PBXTargetDependency */,
 			);
 			name = TestHost;
 			productName = TestHost;
@@ -337,99 +190,12 @@
 			mainGroup = 65CEFBA91D3BF72800402230;
 			productRefGroup = 65CEFBB31D3BF72800402230 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 656155C81D464DAE009E701C /* Products */;
-					ProjectRef = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
-				},
-				{
-					ProductGroup = 0651F3A11EDC8E00009FA384 /* Products */;
-					ProjectRef = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
-				},
-				{
-					ProductGroup = CDB949AD200F86C500708E0C /* Products */;
-					ProjectRef = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				65CEFBB11D3BF72800402230 /* TestHost */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0651F3B21EDC8E01009FA384 /* libPinky.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libPinky.a;
-			remoteRef = 0651F3B11EDC8E01009FA384 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0651F3B41EDC8E01009FA384 /* Pinky.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Pinky.bundle;
-			remoteRef = 0651F3B31EDC8E01009FA384 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PinkyTests.xctest;
-			remoteRef = 0651F3B51EDC8E01009FA384 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0651F3B81EDC8E01009FA384 /* PinkyDeviceTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PinkyDeviceTests.xctest;
-			remoteRef = 0651F3B71EDC8E01009FA384 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		656155DC1D464DAF009E701C /* libLTEngine.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLTEngine.a;
-			remoteRef = 656155DB1D464DAF009E701C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		656155DE1D464DAF009E701C /* LTEngine.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTEngine.bundle;
-			remoteRef = 656155DD1D464DAF009E701C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		656155E01D464DAF009E701C /* LTEngineTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = LTEngineTests.xctest;
-			remoteRef = 656155DF1D464DAF009E701C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CDB949B8200F86C500708E0C /* libShopix.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libShopix.a;
-			remoteRef = CDB949B7200F86C500708E0C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CDB949BA200F86C500708E0C /* ShopixTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ShopixTests.xctest;
-			remoteRef = CDB949B9200F86C500708E0C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CDB949BC200F86C500708E0C /* Shopix.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Shopix.bundle;
-			remoteRef = CDB949BB200F86C500708E0C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		65CEFBB01D3BF72800402230 /* Resources */ = {
@@ -438,9 +204,6 @@
 			files = (
 				65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */,
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
-				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
-				0651F3BB1EDC8E39009FA384 /* Pinky.bundle in Resources */,
-				CDB949BF200F86E800708E0C /* Shopix.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,24 +220,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0651F3BA1EDC8E1C009FA384 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = PinkyBundle;
-			targetProxy = 0651F3B91EDC8E1C009FA384 /* PBXContainerItemProxy */;
-		};
-		656155E21D464DB8009E701C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LTEngineBundle;
-			targetProxy = 656155E11D464DB8009E701C /* PBXContainerItemProxy */;
-		};
-		CDB949BE200F86CF00708E0C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ShopixBundle;
-			targetProxy = CDB949BD200F86CF00708E0C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */ = {
