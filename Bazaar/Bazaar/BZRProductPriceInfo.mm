@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
   dispatch_once(&onceToken, ^{
     optionalPropertyKeys = [NSSet setWithObject:@instanceKeypath(BZRProductPriceInfo, fullPrice)];
   });
-  
+
   return optionalPropertyKeys;
 }
 

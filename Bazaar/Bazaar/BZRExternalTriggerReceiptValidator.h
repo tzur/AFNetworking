@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider;
+@class BZRMultiAppReceiptValidationStatusProvider;
 
 /// Validator that once activated with a trigger signal initiates receipt validation whenever the
 /// trigger signal fires, until the validator is deactivated. The validator will deacivate itself if
@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c validationStatusProvider, used to fetch the aggregated receipt validation
-/// status.
+/// Initializes with \c multiAppValidationStatusProvider, used to fetch the aggregated receipt
+/// validation status.
 - (instancetype)initWithValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)validationStatusProvider
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppValidationStatusProvider
     NS_DESIGNATED_INITIALIZER;
 
 /// Activates the validator with the given \c triggerSignal. The receiver will immediately subscribe

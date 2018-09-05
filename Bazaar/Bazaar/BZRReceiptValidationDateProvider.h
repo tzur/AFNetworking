@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider, BZRReceiptValidationStatusCache;
+@class BZRMultiAppReceiptValidationStatusProvider, BZRReceiptValidationStatusCache;
 
 /// Provider that provides the time for the next receipt validation.
 @protocol BZRReceiptValidationDateProvider <NSObject>
@@ -22,11 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c receiptValidationStatusProvider is used to provide the latest receipt
-/// validation status. \c validationIntervalDays is the number of days required between validations
-/// for production receipts.
+/// Initializes with \c multiAppReceiptValidationStatusProvider that is used to provide the latest
+/// receipt validation status. \c validationIntervalDays is the number of days required between
+/// validations for production receipts.
 - (instancetype)initWithReceiptValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)receiptValidationStatusProvider
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppReceiptValidationStatusProvider
     validationIntervalDays:(NSUInteger)validationIntervalDays;
 
 @end

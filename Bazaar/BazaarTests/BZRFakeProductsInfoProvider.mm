@@ -49,6 +49,16 @@ NS_ASSUME_NONNULL_BEGIN
                                   modelByOverridingPropertyAtKeypath:
                                   @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
                                   withValue:self.subscriptionInfo];
+  auto barReceiptValidationStatus =
+      [self.receiptValidationStatus
+       modelByOverridingPropertyAtKeypath:
+       @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription.productId)
+       withValue: @"barReceiptValidationStatus"];
+
+  self.multiAppReceiptValidationStatus = @{
+    @"foo.bundleID": self.receiptValidationStatus,
+    @"bar.bundleID": barReceiptValidationStatus
+  };
 }
 
 - (BZRSubscriptionPendingRenewalInfo *)createArbitraryPendingRenewalInfo {

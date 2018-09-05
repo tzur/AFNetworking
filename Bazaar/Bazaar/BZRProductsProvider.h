@@ -2,7 +2,6 @@
 // Created by Ben Yohay.
 
 #import "BZREventEmitter.h"
-#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

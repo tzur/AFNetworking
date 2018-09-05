@@ -7,7 +7,6 @@
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRAppStoreLocaleCache.h"
 #import "BZRAppStoreLocaleProvider.h"
@@ -21,6 +20,7 @@
 #import "BZRLocalProductsProvider.h"
 #import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
@@ -181,15 +181,15 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     // TODO: This code reverts invalidations that happened with previous time to live so that only
     // the latest time to live will take place. This code should run before loading from cache the
     // receipt validation status, therefore it is placed before the creation of \c
-    // \c validationStatusProvider. In addition it should be removed in the future when most of the
-    // invalidations with the previous time to live were reverted.
+    // \c multiAppValidationStatusProvider. In addition it should be removed in the future when most
+    // of the invalidations with the previous time to live were reverted.
     for (NSString *relevantApplicationBundleID in relevantApplicationsBundleIDs) {
       [cachedReceiptValidationStatusProvider
        revertPrematureInvalidationOfReceiptValidationStatus:relevantApplicationBundleID];
     }
 
-    _validationStatusProvider =
-        [[BZRAggregatedReceiptValidationStatusProvider alloc]
+    _multiAppValidationStatusProvider =
+        [[BZRMultiAppReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cachedReceiptValidationStatusProvider
          currentApplicationBundleID:applicationBundleID
          bundleIDsForValidation:relevantApplicationsBundleIDs
@@ -198,21 +198,21 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     if (activatePeriodicValidation) {
       auto validationDateProvider =
           [[BZRReceiptValidationDateProvider alloc]
-           initWithReceiptValidationStatusProvider:self.validationStatusProvider
+           initWithReceiptValidationStatusProvider:self.multiAppValidationStatusProvider
            validationIntervalDays:14];
       _periodicValidatorActivator =
           [[BZRPeriodicReceiptValidatorActivator alloc]
-           initWithAggregatedValidationStatusProvider:self.validationStatusProvider
+           initWithMultiAppValidationStatusProvider:self.multiAppValidationStatusProvider
            validationDateProvider:validationDateProvider
            timeProvider:timeProvider];
     }
 
     _allowedProductsProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider
-         validationStatusProvider:self.validationStatusProvider
+         multiAppValidationStatusProvider:self.multiAppValidationStatusProvider
          acquiredViaSubscriptionProvider:self.acquiredViaSubscriptionProvider];
 
-    purchaseHelper.aggregatedReceiptProvider = self.validationStatusProvider;
+    purchaseHelper.multiAppReceiptValidationStatusProvider = self.multiAppValidationStatusProvider;
   }
   return self;
 }

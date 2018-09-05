@@ -4,7 +4,7 @@
 #import "BZRAllowedProductsProvider.h"
 
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
-#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
+#import "BZRFakeMultiAppReceiptValidationStatusProvider.h"
 #import "BZRProduct.h"
 #import "BZRProductsProvider.h"
 #import "BZRReceiptModel.h"
@@ -17,7 +17,7 @@ SpecBegin(BZRAllowedProductsProvider)
 
 context(@"allowed products provider", ^{
   __block id<BZRProductsProvider> productsProvider;
-  __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeMultiAppReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
   __block BZRAllowedProductsProvider *allowedProvider;
 
@@ -27,7 +27,7 @@ context(@"allowed products provider", ^{
 
   beforeEach(^{
     productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-    validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
+    validationStatusProvider = [[BZRFakeMultiAppReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider = [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
 
     purchasedProductIdentifier = @"foo";
@@ -55,10 +55,10 @@ context(@"allowed products provider", ^{
 
     allowedProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-         validationStatusProvider:validationStatusProvider
+         multiAppValidationStatusProvider:validationStatusProvider
          acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
 
-    validationStatusProvider.receiptValidationStatus =
+    validationStatusProvider.aggregatedReceiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(purchasedProductIdentifier, NO);
   });
 
@@ -66,8 +66,8 @@ context(@"allowed products provider", ^{
      "product list", ^{
     BZRReceiptSubscriptionInfo *subscription =
         BZRSubscriptionWithIdentifier(@"notFoundSubscription");
-    validationStatusProvider.receiptValidationStatus =
-        [validationStatusProvider.receiptValidationStatus
+    validationStatusProvider.aggregatedReceiptValidationStatus =
+        [validationStatusProvider.aggregatedReceiptValidationStatus
          modelByOverridingPropertyAtKeypath:
          @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
          withValue:subscription];
@@ -82,7 +82,7 @@ context(@"allowed products provider", ^{
   });
 
   it(@"should return empty set if the receipt is nil", ^{
-    validationStatusProvider.receiptValidationStatus =
+    validationStatusProvider.aggregatedReceiptValidationStatus =
         [BZRReceiptValidationStatus modelWithDictionary:@{
           @instanceKeypath(BZRReceiptValidationStatus, isValid): @NO,
           @instanceKeypath(BZRReceiptValidationStatus, error): $(BZRReceiptValidationErrorUnknown),
@@ -100,7 +100,7 @@ context(@"allowed products provider", ^{
         [NSSet setWithObject:filterProductIdentifier];
     allowedProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-         validationStatusProvider:validationStatusProvider
+         multiAppValidationStatusProvider:validationStatusProvider
          acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
 
     expect(allowedProvider.allowedProducts).to
@@ -117,7 +117,7 @@ context(@"allowed products provider", ^{
         [NSSet setWithObject:filterProductIdentifier];
     allowedProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-         validationStatusProvider:validationStatusProvider
+         multiAppValidationStatusProvider:validationStatusProvider
          acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
 
     expect(allowedProvider.allowedProducts).to
@@ -127,7 +127,7 @@ context(@"allowed products provider", ^{
   it(@"should return only purchased product if failed to fetch product list and the user has no "
      "active subscription", ^{
     NSError *fetchingError = [NSError lt_errorWithCode:1337];
-    validationStatusProvider.receiptValidationStatus =
+    validationStatusProvider.aggregatedReceiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(purchasedProductIdentifier, YES);
     productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:fetchingError]);
@@ -135,8 +135,9 @@ context(@"allowed products provider", ^{
     acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
         [NSSet setWithObject:filterProductIdentifier];
     allowedProvider =
-        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-         validationStatusProvider:validationStatusProvider
+        [[BZRAllowedProductsProvider alloc]
+         initWithProductsProvider:productsProvider
+         multiAppValidationStatusProvider:validationStatusProvider
          acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
 
     expect(allowedProvider.allowedProducts).to
@@ -146,8 +147,8 @@ context(@"allowed products provider", ^{
   context(@"full subscription", ^{
     beforeEach(^{
       BZRReceiptSubscriptionInfo *subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:
            @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
            withValue:subscription];
@@ -168,8 +169,8 @@ context(@"allowed products provider", ^{
     it(@"should provide only the purchased products if subscription is expired", ^{
       NSString *isExiredKeypath =
           @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription.isExpired);
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:isExiredKeypath withValue:@YES];
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
           [NSSet setWithObjects:filterProductIdentifier, nonFilterProductIdentifier, nil];
@@ -192,8 +193,8 @@ context(@"allowed products provider", ^{
   context(@"partial subscription", ^{
     beforeEach(^{
       auto subscription = BZRSubscriptionWithIdentifier(@"partialSubscription");
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:
            @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
            withValue:subscription];
@@ -214,12 +215,12 @@ context(@"allowed products provider", ^{
   });
 
   context(@"KVO-compliance", ^{
-    it(@"should update when receiptValidationStatus changes", ^{
+    it(@"should update when aggregatedReceiptValidationStatus changes", ^{
       RACSignal *allowedProductsSignal =
           [RACObserve(allowedProvider, allowedProducts) testRecorder];
 
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:
            @instanceKeypath(BZRReceiptValidationStatus, receipt.inAppPurchases)
            withValue:@[]];
@@ -235,8 +236,8 @@ context(@"allowed products provider", ^{
           [RACObserve(allowedProvider, allowedProducts) testRecorder];
 
       auto subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:
            @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
            withValue:subscription];
@@ -257,8 +258,8 @@ context(@"allowed products provider", ^{
       OCMStub([productsProvider fetchProductList]).andReturn(subject);
 
       auto subscription = BZRSubscriptionWithIdentifier(@"partialSubscription");
-      validationStatusProvider.receiptValidationStatus =
-          [validationStatusProvider.receiptValidationStatus
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          [validationStatusProvider.aggregatedReceiptValidationStatus
            modelByOverridingPropertyAtKeypath:
            @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
            withValue:subscription];
@@ -266,7 +267,7 @@ context(@"allowed products provider", ^{
           [NSSet setWithObject:filterProductIdentifier];
       allowedProvider =
           [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-           validationStatusProvider:validationStatusProvider
+           multiAppValidationStatusProvider:validationStatusProvider
            acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
 
       RACSignal *allowedProductsSignal =

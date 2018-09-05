@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider;
+@class BZRMultiAppReceiptValidationStatusProvider;
 
 /// Protocol for providing information regarding the subscription.
 @protocol BZRPurchaseHelper <NSObject>
@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider that provides the latest receipt validation status.
 /// TODO: The weak reference is here to solve a cyclic reference situation. The solution is to
 /// extract the receipt validation status to a common state class.
-@property (weak, nonatomic) BZRAggregatedReceiptValidationStatusProvider *aggregatedReceiptProvider;
+@property (weak, nonatomic) BZRMultiAppReceiptValidationStatusProvider
+    *multiAppReceiptValidationStatusProvider;
 
 @end
 

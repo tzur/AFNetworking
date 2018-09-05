@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider, BZRExternalTriggerReceiptValidator,
+@class BZRExternalTriggerReceiptValidator, BZRMultiAppReceiptValidationStatusProvider,
     BZRTimeProvider;
 
 @protocol BZRReceiptValidationDateProvider;
@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Convenience initializer that initializes \c receiptValidator with the designated initializer
-/// with the given \c aggregatedValidationStatusProvider.
-- (instancetype)initWithAggregatedValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
+/// with the given \c multiAppReceiptValidationStatusProvider.
+- (instancetype)initWithMultiAppValidationStatusProvider:
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppReceiptValidationStatusProvider
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
     timeProvider:(BZRTimeProvider *)timeProvider;
 

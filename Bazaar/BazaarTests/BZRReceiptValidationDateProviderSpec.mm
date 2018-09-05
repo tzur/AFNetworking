@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationDateProvider.h"
 
-#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
+#import "BZRFakeMultiAppReceiptValidationStatusProvider.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
@@ -12,24 +12,24 @@
 
 SpecBegin(BZRReceiptValidationDateProvider)
 
-__block BZRFakeAggregatedReceiptValidationStatusProvider *aggregatedReceiptValidationStatusProvider;
+__block BZRFakeMultiAppReceiptValidationStatusProvider *multiAppReceiptValidationStatusProvider;
 __block NSTimeInterval validationInterval;
 __block BZRReceiptValidationDateProvider *validationDateProvider;
 
 beforeEach(^{
-  aggregatedReceiptValidationStatusProvider =
-      [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
+  multiAppReceiptValidationStatusProvider =
+      [[BZRFakeMultiAppReceiptValidationStatusProvider alloc] init];
   NSUInteger validationIntervalDays = 13;
   validationInterval = [BZRTimeConversion numberOfSecondsInDays:validationIntervalDays];
   validationDateProvider =
       [[BZRReceiptValidationDateProvider alloc]
-       initWithReceiptValidationStatusProvider:aggregatedReceiptValidationStatusProvider
+       initWithReceiptValidationStatusProvider:multiAppReceiptValidationStatusProvider
        validationIntervalDays:validationIntervalDays];
 });
 
 context(@"subscription doesn't exist", ^{
   it(@"should be nil if subscription is nil", ^{
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
         [BZRReceiptValidationStatusWithExpiry(NO)
          modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptValidationStatus,
          receipt.subscription) withValue:nil];
@@ -45,7 +45,8 @@ context(@"subscription exists", ^{
         compare:receiptValidationStatus.validationDateTime] == NSOrderedDescending,
         @"Expected validation status with validation time prior to expiration time");
 
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
+        receiptValidationStatus;
 
     expect(validationDateProvider.nextValidationDate).to.beNil();
   });
@@ -56,7 +57,7 @@ context(@"subscription exists", ^{
         [receiptValidationStatus.receipt.subscription.expirationDateTime
             dateByAddingTimeInterval:1];
 
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
         [receiptValidationStatus
             modelByOverridingProperty:@keypath(receiptValidationStatus, validationDateTime)
                             withValue:postExpirationDateTime];
@@ -65,14 +66,14 @@ context(@"subscription exists", ^{
   });
 
   it(@"should not be nil if subscription exists and is not marked as expired", ^{
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
         BZRReceiptValidationStatusWithExpiry(NO);
 
     expect(validationDateProvider.nextValidationDate).toNot.beNil();
   });
 
   it(@"should not be nil if subscription was marked as expired before expiration", ^{
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
         BZRReceiptValidationStatusWithExpiry(YES, NO);
 
     expect(validationDateProvider.nextValidationDate).toNot.beNil();
@@ -84,7 +85,7 @@ context(@"calculating next validation date", ^{
      "interval", ^{
     auto lastValidationDate = [NSDate dateWithTimeIntervalSince1970:2337];
 
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus =
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus =
         [BZRReceiptValidationStatusWithExpiry(YES)
          modelByOverridingPropertyAtKeypath:
          @instanceKeypath(BZRReceiptValidationStatus, validationDateTime)
@@ -95,7 +96,7 @@ context(@"calculating next validation date", ^{
   });
 
   it(@"should be nil if there is no receipt validation status", ^{
-    aggregatedReceiptValidationStatusProvider.receiptValidationStatus = nil;
+    multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus = nil;
     expect(validationDateProvider.nextValidationDate).to.beNil();
   });
 

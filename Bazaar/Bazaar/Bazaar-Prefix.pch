@@ -19,3 +19,5 @@
 #import <LTKit/LTProgress.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSErrorCodes+LTKit.h>
+
+#import "BZRTypedefs.h"

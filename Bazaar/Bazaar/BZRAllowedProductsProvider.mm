@@ -6,9 +6,8 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 #import "BZRProduct+EnablesProduct.h"
-#import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -22,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRProductsProvider> productsProvider;
 
 /// Provider used to provide the latest aggregated \c BZRReceiptValidationStatus.
-@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
-    validationStatusProvider;
+@property (readonly, nonatomic) BZRMultiAppReceiptValidationStatusProvider
+    *multiAppValidationStatusProvider;
 
 /// Provider used to provide list of products that were acquired via subscription.
 @property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
@@ -44,12 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithProductsProvider:(id<BZRProductsProvider>)productsProvider
-    validationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
-    validationStatusProvider acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
+    multiAppValidationStatusProvider:(BZRMultiAppReceiptValidationStatusProvider *)
+    multiAppValidationStatusProvider
+    acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
     acquiredViaSubscriptionProvider {
   if (self = [super init]) {
     _productsProvider = productsProvider;
-    _validationStatusProvider = validationStatusProvider;
+    _multiAppValidationStatusProvider = multiAppValidationStatusProvider;
     _acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
     _productList = @[];
     _allowedProducts = [NSSet set];
@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupAllowedProductsUpdates {
   @weakify(self);
   RAC(self, allowedProducts) = [RACSignal combineLatest:@[
-    RACObserve(self.validationStatusProvider, receiptValidationStatus),
+    RACObserve(self.multiAppValidationStatusProvider, aggregatedReceiptValidationStatus),
     RACObserve(self.acquiredViaSubscriptionProvider, productsAcquiredViaSubscription),
     RACObserve(self, productList)
   ] reduce:(id)^NSSet<NSString *> *(BZRReceiptValidationStatus * _Nullable receiptValidationStatus,

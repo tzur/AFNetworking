@@ -3,8 +3,6 @@
 
 #import "BZRProductsVariantSelector.h"
 
-#import "BZRProductTypedefs.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRProduct;

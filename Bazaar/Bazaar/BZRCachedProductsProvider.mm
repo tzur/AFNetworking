@@ -4,7 +4,6 @@
 #import "BZRCachedProductsProvider.h"
 
 #import "BZRProduct.h"
-#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

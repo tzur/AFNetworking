@@ -7,7 +7,6 @@
 
 #import "BZREvent.h"
 #import "BZRProduct.h"
-#import "BZRProductTypedefs.h"
 #import "BZRStoreKitMetadataFetcher.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"

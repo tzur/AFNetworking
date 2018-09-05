@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 
 #import <LTKit/NSDictionary+Functional.h>
 
@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRAggregatedReceiptValidationStatusProvider ()
+@interface BZRMultiAppReceiptValidationStatusProvider ()
 
 /// Object used to fetch and get the latest receipt validation status of multiple applications.
 @property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *underlyingProvider;
@@ -27,14 +27,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSSet<NSString *> *bundleIDsForValidation;
 
 /// The most recent receipt validation status.
-@property (readwrite, atomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+@property (readwrite, atomic, nullable) BZRReceiptValidationStatus
+    *aggregatedReceiptValidationStatus;
 
+/// Redeclare as readwrite.
+@property (readwrite, atomic, nullable) NSDictionary<NSString *, BZRReceiptValidationStatus *>
+    *multiAppReceiptValidationStatus;
 @end
 
-@implementation BZRAggregatedReceiptValidationStatusProvider
+@implementation BZRMultiAppReceiptValidationStatusProvider
 
 @synthesize eventsSignal = _eventsSignal;
-@synthesize receiptValidationStatus = _receiptValidationStatus;
 
 #pragma mark -
 #pragma mark Initialization
@@ -63,22 +66,23 @@ NS_ASSUME_NONNULL_BEGIN
     _bundleIDsForValidation = [bundleIDsForValidation copy];
     _eventsSignal = [self.underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 
-    [self loadAggregatedReceiptValidationStatusFromStorage];
+    [self loadReceiptValidationStatusesFromStorage];
   }
 
   return self;
 }
 
-- (void)loadAggregatedReceiptValidationStatusFromStorage {
-  BZRMultiAppReceiptValidationStatus *multiAppReceiptValidationStatus =
+- (void)loadReceiptValidationStatusesFromStorage {
+  _multiAppReceiptValidationStatus =
       [[self.underlyingProvider.cache
           loadReceiptValidationStatusCacheEntries:self.bundleIDsForValidation]
           lt_mapValues:^(NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
             return cacheEntry.receiptValidationStatus;
           }];
 
-  _receiptValidationStatus =
-      [self.aggregator aggregateMultiAppReceiptValidationStatuses:multiAppReceiptValidationStatus];
+  _aggregatedReceiptValidationStatus =
+      [self.aggregator
+       aggregateMultiAppReceiptValidationStatuses:self.multiAppReceiptValidationStatus];
 }
 
 #pragma mark -
@@ -87,7 +91,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
-  return [[[self.underlyingProvider fetchReceiptValidationStatuses:self.bundleIDsForValidation]
+  return [[[[self.underlyingProvider fetchReceiptValidationStatuses:self.bundleIDsForValidation]
+      doNext:^(BZRMultiAppReceiptValidationStatus *bundleIDToReceiptValidationStatus) {
+        @strongify(self);
+        self.multiAppReceiptValidationStatus = bundleIDToReceiptValidationStatus;
+      }]
       tryMap:^BZRReceiptValidationStatus *
           (BZRMultiAppReceiptValidationStatus *bundleIDToReceiptValidationStatus,
            NSError * __autoreleasing *error) {
@@ -97,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
-        self.receiptValidationStatus = receiptValidationStatus;
+        self.aggregatedReceiptValidationStatus = receiptValidationStatus;
       }];
 }
 
