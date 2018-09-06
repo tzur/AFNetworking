@@ -86,6 +86,15 @@ context(@"integration tests", ^{
     expect([sameStack blobAtIndex:2 error:nil]).to.equal(blobs[2]);
     expect([sameStack blobAtIndex:3 error:nil]).to.equal(blobs[3]);
   });
+
+  it(@"should report open upon successful initialization", ^{
+    expect([stack isOpen]).to.beTruthy();
+  });
+
+  it(@"should report closed after closing", ^{
+    [stack close];
+    expect([stack isOpen]).to.beFalsy();
+  });
 });
 
 context(@"database failure", ^{
