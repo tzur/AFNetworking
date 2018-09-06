@@ -128,6 +128,7 @@
 		503C579E1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */; };
 		504720471FA21A6100D11F96 /* DVNDirectedRectProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 504720461FA21A6100D11F96 /* DVNDirectedRectProvider.mm */; };
 		504720491FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 504720481FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm */; };
+		504BA825213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png in Resources */ = {isa = PBXBuildFile; fileRef = 504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */; };
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
 		505ECF39203F20E200E62A71 /* DVNBrushRenderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505ECF38203F20E200E62A71 /* DVNBrushRenderModel.mm */; };
@@ -687,6 +688,7 @@
 		504720251FA21A6000D11F96 /* DVNDirectedRectProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNDirectedRectProvider.h; sourceTree = "<group>"; };
 		504720461FA21A6100D11F96 /* DVNDirectedRectProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNDirectedRectProvider.mm; sourceTree = "<group>"; };
 		504720481FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNDirectedRectProviderSpec.mm; sourceTree = "<group>"; };
+		504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_SplineDirection.png; path = Resources/DVNBrushModelV1_SplineDirection.png; sourceTree = "<group>"; };
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		505ECF16203F20E200E62A71 /* DVNBrushRenderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushRenderModel.h; sourceTree = "<group>"; };
@@ -1063,6 +1065,7 @@
 				501A42642044212B00F80073 /* DVNBrushModelV1_ScaleJitter.png */,
 				501A424E2044212700F80073 /* DVNBrushModelV1_SequenceDistance.png */,
 				501A42592044212900F80073 /* DVNBrushModelV1_Spacing.png */,
+				504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */,
 				501A42542044212800F80073 /* DVNBrushModelV1_TaperingExponent.png */,
 				501A425A2044212900F80073 /* DVNBrushModelV1_TaperingLengths.png */,
 				501A42512044212800F80073 /* DVNBrushModelV1_TaperingScaleFactor.png */,
@@ -2036,6 +2039,7 @@
 				501A426D2044212B00F80073 /* DVNBrushModelV1_BrightnessJitter.png in Resources */,
 				501A42752044212B00F80073 /* DVNBrushModelV1_AngleJitter.png in Resources */,
 				501A42672044212B00F80073 /* DVNBrushModelV1_SamplingMode_Fixed.png in Resources */,
+				504BA825213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png in Resources */,
 				501A42702044212B00F80073 /* DVNBrushModelV1_SamplingMode_Subimage.png in Resources */,
 				501A426F2044212B00F80073 /* DVNBrushModelV1_Color.png in Resources */,
 				50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */,

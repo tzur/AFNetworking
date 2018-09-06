@@ -53,6 +53,10 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// \c allowedCountRange of the receiver.
 - (instancetype)copyWithCountRange:(lt::Interval<NSUInteger>)countRange;
 
+/// Returns a copy of the receiver with the exception of the given \c rotatedWithSplineDirection
+/// indication.
+- (instancetype)copyWithRotatedWithSplineDirection:(BOOL)rotatedWithSplineDirection;
+
 /// Returns a copy of the receiver with the exception of the given \c distanceJitterFactorRange,
 /// clamped to the \c allowedDistanceJitterFactorRange of the receiver.
 - (instancetype)copyWithDistanceJitterFactorRange:(lt::Interval<CGFloat>)distanceJitterFactorRange;
@@ -192,6 +196,14 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 
 /// Allowed range of \c countRange.
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedCountRange;
+
+#pragma mark -
+#pragma mark Orientation of Brush Tip Geometry
+#pragma mark -
+
+/// \c YES if the brush tip squares are rotated according to the spline direction, in case of brush
+/// tip geometry. If \c NO, the brush tip squares are axis-aligned.
+@property (readonly, nonatomic) BOOL rotatedWithSplineDirection;
 
 #pragma mark -
 #pragma mark Random Spatial Jittering, Rotation and Scaling of Brush Tip Geometry

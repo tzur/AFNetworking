@@ -139,9 +139,9 @@ NS_ASSUME_NONNULL_BEGIN
   quads.reserve(xCoordinates.size());
 
   BOOL directionComputationBasePointWasNull = CGPointIsNull(self.directionComputationBasePoint);
-  self.directionComputationBasePoint = CGPointMake(xCoordinates.front(), yCoordinates.front());
 
   if (directionComputationBasePointWasNull) {
+    self.directionComputationBasePoint = CGPointMake(xCoordinates.front(), yCoordinates.front());
     quads.push_back([self firstQuadForXCoordinates:xCoordinates yCoordinates:yCoordinates end:end]);
   }
 

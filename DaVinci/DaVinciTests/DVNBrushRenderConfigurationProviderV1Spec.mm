@@ -163,6 +163,37 @@ context(@"version 1", ^{
     expect($(painter.canvas.image)).to.equalMat($(expected));
   });
 
+  it(@"should render according to rotatedWithSplineDirection indication", ^{
+    cv::Mat4b image = (cv::Mat4b(2, 1) << cv::Vec4b(255, 0, 0, 255), cv::Vec4b(0, 0, 255, 255));
+    sourceTexture = [LTTexture textureWithImage:image];
+    textureMapping = @{
+      @"sourceImageURL": sourceTexture,
+      @"maskImageURL": maskTexture
+    };
+    CGSize renderTargetSize = CGSizeMake(kSize.height, kSize.width);
+    painter = [[DVNTestBrushStrokePainter alloc] initWithCanvasSize:renderTargetSize];
+    painter.textureMapping = textureMapping;
+
+    painter.startControlPoints = @[
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.height / 2 - 0.5,
+                                                                             3)],
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.height / 2 - 0.5,
+                                                                             kSize.width - 3)]
+    ];
+    painter.endControlPoints = @[];
+
+    auto changes = @{
+      @instanceKeypath(DVNBrushModelV1, rotatedWithSplineDirection): @true,
+      @instanceKeypath(DVNBrushModelV1, scale): @2,
+    };
+    painter.model = DVNTestBrushRenderModel(kDictionary, changes, renderTargetSize);
+
+    [painter paint];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_SplineDirection.png");
+    expect($(painter.canvas.image)).to.equalMat($(expected));
+  });
+
   it(@"should render according to distance jitter factor range", ^{
     painter.model =
         DVNTestBrushRenderModel(kDictionary,
