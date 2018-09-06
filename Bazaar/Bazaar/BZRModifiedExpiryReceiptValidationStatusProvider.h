@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol BZRTimeProvider;
+@class BZRTimeProvider;
 
 /// Provider that provides the receipt validation status using an underlying provider and modifies
 /// its subscription's expiry according to the given time provider and grace period.
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with \c timeProvider, used to provide the current time, and with
 /// \c expiredSubscriptionGracePeriod that specifies how many grace days the user is allowed to use
 /// products that he acquired via subscription after its subscription has been expired.
-- (instancetype)initWithTimeProvider:(id<BZRTimeProvider>)timeProvider
+- (instancetype)initWithTimeProvider:(BZRTimeProvider *)timeProvider
     expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
     underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
     NS_DESIGNATED_INITIALIZER;

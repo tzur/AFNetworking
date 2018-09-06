@@ -3,9 +3,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider, BZRExternalTriggerReceiptValidator;
+@class BZRAggregatedReceiptValidationStatusProvider, BZRExternalTriggerReceiptValidator,
+    BZRTimeProvider;
 
-@protocol BZRReceiptValidationDateProvider, BZRTimeProvider;
+@protocol BZRReceiptValidationDateProvider;
 
 /// Activator used to activate and deactivate periodic receipt validation. The periodic validation
 /// is activated only if the user is a subscriber, and the interval between validations is
@@ -19,14 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAggregatedValidationStatusProvider:
     (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider;
+    timeProvider:(BZRTimeProvider *)timeProvider;
 
 /// Initializes with \c receiptValidator used to validate the receipt periodically.
 /// \c validationDateProvider is used to provide the next validation date. \c timeProvider is used
 /// to provide the current time.
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
+    timeProvider:(BZRTimeProvider *)timeProvider NS_DESIGNATED_INITIALIZER;
 
 @end
 

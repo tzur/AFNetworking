@@ -13,14 +13,14 @@
 
 SpecBegin(BZRModifiedExpiryReceiptValidationStatusProvider)
 
-__block id<BZRTimeProvider> timeProvider;
+__block BZRTimeProvider *timeProvider;
 __block NSUInteger gracePeriod;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
 __block RACSubject *underlyingEventsSubject;
 __block BZRModifiedExpiryReceiptValidationStatusProvider *modifiedReceiptProvider;
 
 beforeEach(^{
-  timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
+  timeProvider = OCMClassMock(BZRTimeProvider.class);
   gracePeriod = 7;
   underlyingProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
@@ -37,13 +37,13 @@ context(@"deallocating object", ^{
     RACSignal *fetchSignal;
     RACSignal *eventsSignal;
 
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate distantPast]]);
+    OCMStub([timeProvider currentTime]).andReturn([NSDate distantPast]);
     BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
 
     @autoreleasepool {
-      BZRModifiedExpiryReceiptValidationStatusProvider *modifiedReceiptProvider =
+      auto modifiedReceiptProvider =
           [[BZRModifiedExpiryReceiptValidationStatusProvider alloc]
            initWithTimeProvider:timeProvider expiredSubscriptionGracePeriod:gracePeriod
            underlyingProvider:underlyingProvider];
@@ -77,34 +77,6 @@ context(@"handling errors", ^{
 
     expect(recorder).will.sendError(error);
   });
-
-  context(@"time provider errs", ^{
-    __block NSError *error;
-    __block BZRReceiptValidationStatus *receiptValidationStatus;
-
-    beforeEach(^{
-      error = OCMClassMock([NSError class]);
-      OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
-      receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-      OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
-          .andReturn([RACSignal return:receiptValidationStatus]);
-    });
-
-    it(@"should send error event when time provider errs", ^{
-      LLSignalTestRecorder *recorder =
-          [modifiedReceiptProvider.eventsSignal testRecorder];
-      expect([modifiedReceiptProvider fetchReceiptValidationStatus:@"foo"]).will.complete();
-      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-        return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
-            [event.eventError isEqual:error];
-      });
-    });
-
-    it(@"should provide the underlying provider receipt validation status", ^{
-      expect([modifiedReceiptProvider fetchReceiptValidationStatus:@"foo"]).will
-          .sendValues(@[receiptValidationStatus]);
-    });
-  });
 });
 
 context(@"receipt validation status without subscription", ^{
@@ -119,7 +91,7 @@ context(@"receipt validation status without subscription", ^{
           @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
         } error:nil];
 
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate distantPast]]);
+    OCMStub([timeProvider currentTime]).andReturn([NSDate distantPast]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
 
@@ -153,7 +125,7 @@ sharedExamplesFor(kModifiedExpiryProviderExamples, ^(NSDictionary *data) {
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
     NSDate *currentTime = data[kModifiedExpiryProviderCurrentTimeKey];
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
+    OCMStub([timeProvider currentTime]).andReturn(currentTime);
     expectedIsExpired = data[kModifiedExpiryProviderExpectedIsExpiredValueKey];
   });
 

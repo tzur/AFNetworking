@@ -11,7 +11,7 @@
 
 SpecBegin(BZRCachedReceiptValidationStatusProvider_MultiApp)
 
-__block id<BZRTimeProvider> timeProvider;
+__block BZRTimeProvider *timeProvider;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
 __block RACSubject *underlyingEventsSubject;
@@ -19,14 +19,13 @@ __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
-  timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
+  timeProvider = OCMClassMock(BZRTimeProvider.class);
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
-  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
-
+  OCMStub([timeProvider currentTime]).andReturn([NSDate date]);
   validationStatusProvider = OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
                                              initWithCache:receiptValidationStatusCache
                                              timeProvider:timeProvider

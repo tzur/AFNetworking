@@ -55,6 +55,9 @@ NSString * const kValidationStatusKey = @"validationStatus";
 /// validation status.
 NSString * const kValidationDateKey = @"validationDate";
 
+NSString * const kBZRCachedReceiptValidationStatusFirstErrorDateTime =
+    @"receiptValidationFirstErrorDateTime";
+
 #pragma mark -
 #pragma mark Migration
 #pragma mark -
@@ -96,13 +99,26 @@ NSString * const kValidationDateKey = @"validationDate";
                                  serviceName:applicationBundleID error:error];
 }
 
+- (nullable NSDate *)firstErrorDateTimeForApplicationBundleID:(NSString *)applicationBundleID {
+  return (NSDate *)
+      [self.keychainStorageRoute valueForKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                                 serviceName:applicationBundleID error:nil];
+}
+
+- (void)storeFirstErrorDateTime:(nullable NSDate *)firstErrorDateTime
+            applicationBundleID:(NSString *)applicationBundleID {
+  [self.keychainStorageRoute setValue:firstErrorDateTime
+                               forKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
+                          serviceName:applicationBundleID error:nil];
+}
+
 #pragma mark -
 #pragma mark Loading receipt validation status
 #pragma mark -
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSDictionary<NSString *, id> * _Nullable receiptValidationStatusDictionary =
+  auto _Nullable receiptValidationStatusDictionary =
       (NSDictionary *)[self.keychainStorageRoute
                        valueForKey:kCachedReceiptValidationStatusStorageKey
                        serviceName:applicationBundleID error:error];
