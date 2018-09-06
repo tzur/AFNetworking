@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKArgmax ()
 
 /// Device to encode this kernel operation.
@@ -61,22 +59,21 @@ static NSString * const kDebugGroupName = @"argmax";
 
 - (void)createStates {
   half_float::half scaleForUnorm = (half_float::half)(1.0 / 255.0);
-  auto functionConstantsForUnorm = [[MTLFunctionConstantValues alloc] init];
-  [functionConstantsForUnorm setConstantValue:&scaleForUnorm type:MTLDataTypeHalf
-                                     withName:@"scale"];
+  auto functionConstantsForUnorm = @[[MTBFunctionConstant halfConstantWithValue:scaleForUnorm
+                                                                           name:@"scale"]];
 
   half_float::half scaleForHalf = (half_float::half)1.0;
-  auto functionConstantsForHalf = [[MTLFunctionConstantValues alloc] init];
-  [functionConstantsForHalf setConstantValue:&scaleForHalf type:MTLDataTypeHalf withName:@"scale"];
+  auto functionConstantsForHalf = @[[MTBFunctionConstant halfConstantWithValue:scaleForHalf
+                                                                          name:@"scale"]];
 
-  _stateSingleUnorm = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionSingle,
-                                                         functionConstantsForUnorm);
-  _stateSingleHalf = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionSingle,
-                                                        functionConstantsForHalf);
-  _stateArrayUnorm = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionArray,
-                                                        functionConstantsForUnorm);
-  _stateArrayHalf = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionArray,
-                                                       functionConstantsForHalf);
+  _stateSingleUnorm = PNKCreateComputeState(self.device, kKernelFunctionSingle,
+                                            functionConstantsForUnorm);
+  _stateSingleHalf = PNKCreateComputeState(self.device, kKernelFunctionSingle,
+                                           functionConstantsForHalf);
+  _stateArrayUnorm = PNKCreateComputeState(self.device, kKernelFunctionArray,
+                                           functionConstantsForUnorm);
+  _stateArrayHalf = PNKCreateComputeState(self.device, kKernelFunctionArray,
+                                          functionConstantsForHalf);
 }
 
 - (void)createBuffer {
@@ -106,7 +103,7 @@ static NSString * const kDebugGroupName = @"argmax";
     state = isUnorm ? self.stateArrayUnorm : self.stateArrayHalf;
   }
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[self.bufferForFeatureChannelCount],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[self.bufferForFeatureChannelCount],
                                        @[inputImage], @[outputImage], kDebugGroupName,
                                        workingSpaceSize);
 }
@@ -142,7 +139,5 @@ static NSString * const kDebugGroupName = @"argmax";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKActivationCustomInternalLayer ()
 
 /// Device to encode this kernel operation.
@@ -69,18 +67,14 @@ static NSString * const kDebugGroupName = @"activation";
   _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
-                                                    functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
-                                                   functionConstants);
+  _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName, functionConstants);
+  _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName, functionConstants);
 }
 
 - (void)setupBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {
@@ -110,7 +104,7 @@ static NSString * const kDebugGroupName = @"activation";
   }
 
   MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
                                        @[outputImage], kDebugGroupName, workingSpaceSize);
 }
 
@@ -144,7 +138,5 @@ static NSString * const kDebugGroupName = @"activation";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

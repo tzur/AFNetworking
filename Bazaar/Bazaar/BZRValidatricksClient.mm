@@ -260,34 +260,43 @@ static NSString * const kValidatricksEnvironmentKey = @"environment";
   return [NSError lt_errorWithCode:validatricksError.code userInfo:userInfo];
 };
 
-+ (NSError *)validatricksClientErrorForUnderlyingError:(NSError *)error  {
-  if (error.code != FBRErrorCodeHTTPUnsuccessfulResponseReceived ||
-      !error.fbr_HTTPResponse.content) {
-    return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed underlyingError:error];
-  }
-
-  NSError *deserializationError;
-  auto _Nullable errorInfo = [self deserializeValidatricksErrorInfo:error.fbr_HTTPResponse
-                                                              error:&deserializationError];
-  if (!errorInfo) {
++ (NSError *)validatricksClientErrorForUnderlyingError:(NSError *)underlyingError {
+  if (underlyingError.code != FBRErrorCodeHTTPUnsuccessfulResponseReceived ||
+      !underlyingError.fbr_HTTPResponse.content) {
     return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed
-                    underlyingErrors:@[error, deserializationError]];
+                     underlyingError:underlyingError];
   }
 
-  auto requestURL = lt::nn(error.fbr_HTTPResponse).metadata.URL;
-  return [NSError bzr_validatricksRequestErrorWithURL:requestURL validatricksErrorInfo:errorInfo
-                                      underlyingError:error];
+  NSError * _Nullable JSONDeserializationError;
+  NSDictionary * _Nullable JSONObject =
+      [underlyingError.fbr_HTTPResponse deserializeJSONContentWithError:&JSONDeserializationError];
+  if (JSONDeserializationError) {
+    return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed
+                    underlyingErrors:@[underlyingError, JSONDeserializationError]];
+  }
+
+  if (![self containsValidatricksErrorMetadata:JSONObject]) {
+    return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed
+                    underlyingError:underlyingError];
+  }
+
+  NSError * _Nullable validatricksErrorInfoDeserializationError;
+  BZRValidatricksErrorInfo * _Nullable deserializedValidatricksError =
+      [MTLJSONAdapter modelOfClass:BZRValidatricksErrorInfo.class fromJSONDictionary:JSONObject
+       error:&validatricksErrorInfoDeserializationError];
+  if (validatricksErrorInfoDeserializationError) {
+    return [NSError lt_errorWithCode:BZRErrorCodeValidatricksRequestFailed
+                    underlyingErrors:@[underlyingError, validatricksErrorInfoDeserializationError]];
+  }
+
+  auto requestURL = lt::nn(underlyingError.fbr_HTTPResponse).metadata.URL;
+  return [NSError bzr_validatricksRequestErrorWithURL:requestURL
+                                validatricksErrorInfo:deserializedValidatricksError
+                                      underlyingError:underlyingError];
 }
 
-+ (nullable BZRValidatricksErrorInfo *)deserializeValidatricksErrorInfo:(FBRHTTPResponse *)response
-    error:(NSError * __autoreleasing *)error {
-  id _Nullable JSONObject = [response deserializeJSONContentWithError:error];
-  if (!JSONObject) {
-    return nil;
-  }
-
-  return [MTLJSONAdapter modelOfClass:BZRValidatricksErrorInfo.class fromJSONDictionary:JSONObject
-                                error:error];
++ (BOOL)containsValidatricksErrorMetadata:(NSDictionary *)JSONObject {
+  return JSONObject[@"error"] != nil;
 }
 
 @end

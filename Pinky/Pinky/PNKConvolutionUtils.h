@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 namespace pnk {
   /// Padding size in pixels.
   struct PaddingSize {
@@ -49,7 +47,5 @@ MTLSize PNKConvolutionInputSize(MTLSize outputSize, NSUInteger kernelWidth, NSUI
                                 NSUInteger dilationX, NSUInteger dilationY, NSUInteger strideX,
                                 NSUInteger strideY, pnk::PaddingType paddingType,
                                 NSUInteger inputDepth) API_AVAILABLE(ios(10.0));
-
-#endif
 
 NS_ASSUME_NONNULL_END

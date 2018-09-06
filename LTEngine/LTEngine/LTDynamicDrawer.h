@@ -8,8 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Immutable object for drawing triangular geometry by invocating single OpenGLES draw calls, using
 /// a fixed OpenGLES program and changing attribute data. The drawer is optimized for attribute data
 /// dynamically changing in both size and content between consecutive draw calls. The drawer is
-/// independent of the render target; hence, a framebuffer must be bound before performing draw calls
-/// with this object.
+/// independent of the render target; hence, a framebuffer must be bound before performing draw
+/// calls with this object.
 @interface LTDynamicDrawer : NSObject
 
 /// Initializes with the given \c vertexSource, \c fragmentSource and the given \c gpuStructs.
@@ -77,6 +77,14 @@ NS_ASSUME_NONNULL_BEGIN
                       indices:(LTIndicesData *)indices
     samplerUniformsToTextures:(NSDictionary<NSString *, LTTexture *> *)samplerUniformsToTextures
                      uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms;
+
+/// Unique identifier of source code provided upon initialization.
+@property (readonly, nonatomic) NSString *sourceIdentifier;
+
+/// GPU structs provided upon initialization, determining the format of the attributes of the vertex
+/// shader executed by this instance.
+@property (readonly, nonatomic) NSOrderedSet<LTGPUStruct *> *gpuStructs;
+
 @end
 
 NS_ASSUME_NONNULL_END

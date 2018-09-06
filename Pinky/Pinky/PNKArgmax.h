@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel operating in a pixel-wise manner, searching for the maximal value across all channels and
 /// assigning the index of the channel where the maximal value was found to the result at the same
 /// pixel location.
@@ -34,7 +32,5 @@ API_AVAILABLE(ios(10.0))
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

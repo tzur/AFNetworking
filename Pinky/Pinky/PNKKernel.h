@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Protocol implemented by kernels operating on a single input texture.
 API_AVAILABLE(ios(10.0))
 @protocol PNKBasicUnaryKernel <NSObject>
@@ -97,7 +95,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) NSUInteger secondaryInputFeatureChannels;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

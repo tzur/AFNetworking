@@ -7,22 +7,22 @@ EXPMatcherImplementationBegin(sendValuesWithCount, (NSUInteger expected))
 
 __block LLSignalTestRecorder *actualRecorder;
 
-void (^subscribe)(void) = ^{
+void (^subscribe)(id actual) = ^(id actual) {
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }
 };
 
-prerequisite(^BOOL{
+prerequisite(^BOOL(id actual) {
     return LLRMCorrectClassesForActual(actual);
 });
 
-match(^BOOL{
-    subscribe();
+match(^BOOL(id actual) {
+    subscribe(actual);
     return (actualRecorder.valuesSentCount == expected);
 });
 
-failureMessageForTo(^NSString *{
+failureMessageForTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }
@@ -32,7 +32,7 @@ failureMessageForTo(^NSString *{
     return [[[[[LLReactiveMatchersMessageBuilder message] actual:actualRecorder] expectedBehaviour:expectedBehaviour] actualBehaviour:actualBehaviour] build];
 });
 
-failureMessageForNotTo(^NSString *{
+failureMessageForNotTo(^NSString *(id actual) {
     if(!LLRMCorrectClassesForActual(actual)) {
         return [LLReactiveMatchersMessageBuilder actualNotCorrectClass:actual];
     }

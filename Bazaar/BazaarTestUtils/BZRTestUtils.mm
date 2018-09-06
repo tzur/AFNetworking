@@ -43,32 +43,10 @@ BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
   return [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
 }
 
-BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BOOL cancelled) {
-  BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"foo",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
-        [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
-        [NSDate dateWithTimeIntervalSince1970:2337],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime) :
-        cancelled ? [NSDate dateWithTimeIntervalSince1970:2337 / 2] : [NSNull null],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expiry)
-  } error:nil];
-  BZRReceiptTransactionInfo *transactionInfo = [BZRReceiptTransactionInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptTransactionInfo, productId): @"foo",
-    @instanceKeypath(BZRReceiptTransactionInfo, transactionId): @"0001337",
-    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime):
-        [NSDate dateWithTimeIntervalSince1970:2337],
-    @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
-        [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
-  } error:nil];
-  BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
+BZRReceiptValidationStatus *BZREmptyReceiptValidationStatus() {
+  auto receipt = [BZRReceiptInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
-    @instanceKeypath(BZRReceiptInfo, subscription): subscription,
-    @instanceKeypath(BZRReceiptInfo, transactions): @[transactionInfo]
+    @instanceKeypath(BZRReceiptInfo, transactions): @[]
   } error:nil];
   return [BZRReceiptValidationStatus modelWithDictionary:@{
     @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
@@ -78,39 +56,60 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
   } error:nil];
 }
 
+BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BOOL cancelled) {
+  auto subscription = BZRSubscriptionWithIdentifier(@"foo", expiry, cancelled);
+  auto transactionInfo = [BZRReceiptTransactionInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptTransactionInfo, productId): @"foo",
+    @instanceKeypath(BZRReceiptTransactionInfo, transactionId): @"0001337",
+    @instanceKeypath(BZRReceiptTransactionInfo, purchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:2337],
+    @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"000000",
+    @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
+    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
+  } error:nil];
+  auto receipt = [BZRReceiptInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
+    @instanceKeypath(BZRReceiptInfo, subscription): subscription,
+    @instanceKeypath(BZRReceiptInfo, transactions): @[transactionInfo]
+  } error:nil];
+  return [BZRReceiptValidationStatus modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
+    @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt,
+    @instanceKeypath(BZRReceiptValidationStatus, requestId): @"foo.request.id"
+  } error:nil];
+}
+
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(
     NSString *identifier, BOOL expiry) {
-  BZRReceiptValidationStatus *receiptValidationStatus =
-      BZRReceiptValidationStatusWithExpiry(expiry);
-  BZRReceiptInAppPurchaseInfo *inAppPurchase = [BZRReceiptInAppPurchaseInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptInAppPurchaseInfo, productId): identifier,
-    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime):
-        [NSDate dateWithTimeIntervalSince1970:1337]
-  } error:nil];
+  auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(expiry);
+  auto inAppPurchase = BZRReceiptInAppPurchaseInfoWithProductID(identifier);
   return [receiptValidationStatus
       modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.inAppPurchases)
                                withValue:@[inAppPurchase]];
 }
 
+BZRReceiptInAppPurchaseInfo *BZRReceiptInAppPurchaseInfoWithProductID(NSString *productID) {
+  return [BZRReceiptInAppPurchaseInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, productId): productID,
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"000000",
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337]
+  } error:nil];
+}
+
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
     (NSString *subscriptionIdentifier) {
   BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-  BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
-        [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
-        [NSDate dateWithTimeIntervalSince1970:2337],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @NO
-  } error:nil];
+  auto subscription = BZRSubscriptionWithIdentifier(subscriptionIdentifier);
   return [receiptValidationStatus
           modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.subscription)
                                    withValue:subscription];
 }
 
-SKProduct *BZRSKProductWithProperties(NSString *identifier, NSDecimalNumber *price,
+SKProduct *BZRMockedSKProductWithProperties(NSString *identifier, NSDecimalNumber *price,
     NSString *localeIdentifier) {
   SKProduct *product = OCMClassMock([SKProduct class]);
   OCMStub([product productIdentifier]).andReturn(identifier);
@@ -119,23 +118,23 @@ SKProduct *BZRSKProductWithProperties(NSString *identifier, NSDecimalNumber *pri
   return product;
 }
 
-SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products) {
+SKProductsResponse *BZRMockedProductsResponseWithSKProducts(NSArray<SKProduct *> *products) {
   SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
   OCMStub([response products]).andReturn(products);
 
   return response;
 }
 
-SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier) {
-  SKProduct *product = BZRSKProductWithProperties(productIdentifier);
-  return BZRProductsResponseWithSKProducts(@[product]);
+SKProductsResponse *BZRMockedProductsResponseWithProduct(NSString *productIdentifier) {
+  auto product = BZRMockedSKProductWithProperties(productIdentifier);
+  return BZRMockedProductsResponseWithSKProducts(@[product]);
 }
 
-SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers) {
+SKProductsResponse *BZRMockedProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers) {
   NSArray<SKProduct *> *products = [productIdentifiers lt_map:^SKProduct *(NSString *identifier) {
-    return BZRSKProductWithProperties(identifier);
+    return BZRMockedSKProductWithProperties(identifier);
   }];
-  return BZRProductsResponseWithSKProducts(products);
+  return BZRMockedProductsResponseWithSKProducts(products);
 }
 
 BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *transactionId) {
@@ -148,6 +147,35 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
     @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
         [NSDate dateWithTimeIntervalSince1970:1337],
     @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
+  } error:nil];
+}
+
+SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
+     SKPaymentTransactionState state, NSDate *transactionDate) {
+  SKPayment *payment = OCMClassMock(SKPayment.class);
+  OCMStub([payment productIdentifier]).andReturn(productID);
+
+  SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+
+  OCMStub([transaction transactionDate]).andReturn(transactionDate);
+  OCMStub([transaction transactionState]).andReturn(state);
+  OCMStub([transaction transactionIdentifier]).andReturn(transactionID);
+  OCMStub([transaction payment]).andReturn(payment);
+  return transaction;
+}
+
+BZRReceiptSubscriptionInfo *BZRSubscriptionWithIdentifier(NSString *subscriptionIdentifier,
+    BOOL expired, BOOL cancelled) {
+  auto cancellationDateTimeOrNull =
+      cancelled ? [NSDate dateWithTimeIntervalSince1970:2337] : [NSNull null];
+  return [BZRReceiptSubscriptionInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar.transaction.id",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime):
+        [NSDate dateWithTimeIntervalSince1970:1337],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime): [NSDate distantFuture],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime): cancellationDateTimeOrNull,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expired)
   } error:nil];
 }
 

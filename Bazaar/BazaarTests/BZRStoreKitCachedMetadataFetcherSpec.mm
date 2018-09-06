@@ -20,7 +20,7 @@ beforeEach(^{
   storeKitMetadataFetcher =
       [[BZRStoreKitCachedMetadataFetcher alloc] initWithUnderlyingFetcher:underlyingFetcher];
   product = BZRProductWithIdentifier(@"foo");
-  SKProduct *storeKitProduct = BZRSKProductWithProperties(@"foo");
+  auto storeKitProduct = BZRMockedSKProductWithProperties(@"foo");
   productWithMetadata = [product productByAssociatingStoreKitProduct:storeKitProduct];
 });
 
@@ -72,8 +72,8 @@ it(@"should send cached product with the full price added to it", ^{
       modelByOverridingProperty:@keypath(product, fullPriceProductIdentifier) withValue:@"bar"];
 
   auto fullPriceProduct = BZRProductWithIdentifier(@"bar");
-  SKProduct *fullPriceSKProduct =
-      BZRSKProductWithProperties(@"bar", [NSDecimalNumber decimalNumberWithString:@"2"]);
+  auto fullPriceSKProduct =
+      BZRMockedSKProductWithProperties(@"bar", [NSDecimalNumber decimalNumberWithString:@"2"]);
   auto fullPriceProductWithMetadata =
       [fullPriceProduct productByAssociatingStoreKitProduct:fullPriceSKProduct];
 

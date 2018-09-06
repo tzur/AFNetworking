@@ -11,4 +11,4 @@
 
 1. Pinky runs on iOS 10 and up only (best results are shown on iOS 11).
 2. Pinky does not support GPU family 1. To check if it runs on the current device please call `PNKSupportsMTLDevice` before calling any other Pinky API.
-3. Pinky does not run on simulators. To prevent your Pinky-calling code from being compiled on simulators - wrap it in `#if PNK_USE_MPS ... #endif` macro and include "PNKDefines.h" that defines this macro.
+3. Pinky does not run on simulators as Metal is not supported there. Calling Pinky methods on simulator will have no effect and/or return nil. 

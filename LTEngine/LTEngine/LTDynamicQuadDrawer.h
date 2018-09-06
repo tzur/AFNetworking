@@ -114,6 +114,17 @@ extern NSString * const kLTQuadDrawerGPUStructName;
 auxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)uniformsToAuxiliaryTextures
          uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms;
 
+/// Unique identifier of source code this instance was initialized with.
+@property (readonly, nonatomic) NSString *sourceIdentifier;
+
+/// GPU structs provided upon initialization.
+@property (readonly, nonatomic) NSOrderedSet<LTGPUStruct *> *initialGPUStructs;
+
+/// GPU structs determining the format of the attributes of the vertex shader executed by this
+/// instance, including the GPU struct with name \c kLTQuadDrawerGPUStructName additionally used by
+/// this instance.
+@property (readonly, nonatomic) NSOrderedSet<LTGPUStruct *> *gpuStructs;
+
 @end
 
 NS_ASSUME_NONNULL_END

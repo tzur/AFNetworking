@@ -13,7 +13,7 @@ static NSString * const kPath = @"/foo";
 
 it(@"should initialize with path", ^{
   LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
-                                andRelativePath:kPath];
+                               andRelativePath:kPath];
   PTNFileSystemDirectoryDescriptor *descriptor = [[PTNFileSystemDirectoryDescriptor alloc]
                                                   initWithPath:path];
   NSURL *identifier = descriptor.ptn_identifier;

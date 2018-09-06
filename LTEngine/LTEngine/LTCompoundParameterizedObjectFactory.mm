@@ -3,9 +3,11 @@
 
 #import "LTCompoundParameterizedObjectFactory.h"
 
+#import <LTKit/NSArray+Functional.h>
+
+#import "LTBasicParameterizedObjectFactory.h"
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
-#import "LTBasicParameterizedObjectFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,18 +42,20 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Number of provided interpolatable objects (%lu) does not match number of "
                     "required values (%lu)", (unsigned long)objects.count,
                     (unsigned long)[[self.factory class] numberOfRequiredValues]);
-  NSSet<NSString *> *propertiesToInterpolate = [objects.firstObject propertiesToInterpolate];
-  LTMutableKeyToBaseParameterizedObject *mapping =
-      [LTMutableKeyToBaseParameterizedObject dictionaryWithCapacity:propertiesToInterpolate.count];
+  NSArray<NSString *> *propertiesToInterpolate =
+      [objects.firstObject propertiesToInterpolate].allObjects;
 
   // TODO(rouven): If required, parallelize the iterations of this loop.
-  for (NSString *propertyName in propertiesToInterpolate) {
+  LTKeyToBaseParameterizedObject *mapping =
+      [propertiesToInterpolate lt_map:^LTKeyBasicParameterizedObjectPair *(NSString *propertyName) {
     CGFloats values;
     for (NSObject<LTInterpolatableObject> *object in objects) {
       values.push_back([[object valueForKey:propertyName] CGFloatValue]);
     }
-    mapping[propertyName] = [self.factory baseParameterizedObjectsFromValues:values];
-  }
+    return [LTKeyBasicParameterizedObjectPair
+            pairWithKey:propertyName
+            basicParameterizedObject:[self.factory baseParameterizedObjectsFromValues:values]];
+  }];
   return [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
 }
 

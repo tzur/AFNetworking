@@ -44,9 +44,9 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise an exception when output width differs from input width", ^{
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                    height:kImageHeight channels:kSingleChannel];
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth - 1
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth - 1
                                                     height:kImageHeight channels:kSingleChannel];
     expect(^{
       [translator encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -55,9 +55,9 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise an exception when output height differs from input height", ^{
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                    height:kImageHeight channels:kSingleChannel];
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                     height:kImageHeight - 1
                                                   channels:kSingleChannel];
     expect(^{
@@ -67,9 +67,9 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise an exception when input has more than one channel", ^{
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                    height:kImageHeight channels:2];
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                     height:kImageHeight channels:kSingleChannel];
     expect(^{
       [translator encodeToCommandBuffer:commandBuffer inputImage:inputImage
@@ -78,9 +78,9 @@ context(@"kernel input verification", ^{
   });
 
   it(@"should raise an exception when output has more than one channel", ^{
-    auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                    height:kImageHeight channels:kSingleChannel];
-    auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:kImageWidth
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:kImageWidth
                                                     height:kImageHeight channels:2];
     expect(^{
       [translator encodeToCommandBuffer:commandBuffer inputImage:inputImage

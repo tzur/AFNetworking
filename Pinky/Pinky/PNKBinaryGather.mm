@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKBinaryGather ()
 
 /// Device to encode this kernel operation.
@@ -138,12 +136,13 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
     }
   }
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&primaryFeatureChannelIndicesSize type:MTLDataTypeUShort
-                             withName:@"primaryFeatureChannelIndicesSize"];
-  [functionConstants setConstantValue:&secondaryFeatureChannelIndicesSize type:MTLDataTypeUShort
-                             withName:@"secondaryFeatureChannelIndicesSize"];
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:primaryFeatureChannelIndicesSize
+                                            name:@"primaryFeatureChannelIndicesSize"],
+    [MTBFunctionConstant ushortConstantWithValue:secondaryFeatureChannelIndicesSize
+                                            name:@"secondaryFeatureChannelIndicesSize"]
+  ];
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)createBuffers {
@@ -200,7 +199,7 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers,
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers,
                                        @[primaryInputImage, secondaryInputImage], @[outputImage],
                                        self.functionName, workingSpaceSize);
 }
@@ -235,7 +234,5 @@ secondaryFeatureChannelIndices:(const std::vector<ushort> &)secondaryFeatureChan
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

@@ -16,8 +16,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Array of single-precision floats.
 typedef std::vector<float> Floats;
 
@@ -325,7 +323,7 @@ static const NSUInteger kLatticeGridSize = 16;
                              minValueBuffer:self.minValueBuffer maxValueBuffer:self.maxValueBuffer];
   }
 
-  PNKComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
                                        @[self.currentLatticeBuffer, self.resultLatticeBuffer],
                                        @"copyLattice: identity", self.latticeElements);
 
@@ -342,15 +340,15 @@ static const NSUInteger kLatticeGridSize = 16;
 
 - (void)prepareBuffersWithCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                                   input:(MPSImage *)input reference:(MPSImage *)reference {
-  PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
                                        @[self.inputBuffer], @[input], @[],
                                        @"convertByteToFloat: input",
                                        {input.width, input.height, 1});
-  PNKComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.convertToBufferState, commandBuffer,
                                        @[self.referenceBuffer], @[reference], @[],
                                        @"convertByteToFloat: reference",
                                        {reference.width, reference.height, 1});
-  PNKComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
+  MTBComputeDispatchWithDefaultThreads(self.cloneLatticeState, commandBuffer,
                                        @[self.identityLatticeBuffer, self.currentLatticeBuffer],
                                        @"copyLattice: identity", self.latticeElements);
 }
@@ -444,31 +442,5 @@ LTProperty(float, dampingFactor, DampingFactor, 0, 1, 0.2);
 }
 
 @end
-
-#else
-
-@implementation PNKColorTransferProcessor
-
-- (nullable instancetype)initWithInputSize:(__unused CGSize)inputSize
-                             referenceSize:(__unused CGSize)referenceSize {
-  return nil;
-}
-
-- (nullable LT3DLUT *)lutForInput:(__unused CVPixelBufferRef)input
-                        reference:(__unused CVPixelBufferRef)reference {
-  return nil;
-}
-
-+ (NSUInteger)recommendedNumberOfPixels {
-  return 0;
-}
-
-LTProperty(NSUInteger, iterations, Iterations, 1, 50, 20);
-LTProperty(NSUInteger, histogramBins, HistogramBins, 2, 256, 32);
-LTProperty(float, dampingFactor, DampingFactor, 0, 1, 0.2);
-
-@end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

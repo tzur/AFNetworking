@@ -372,6 +372,8 @@ context(@"file download", ^{
     auto assetData = [NSData dataWithContentsOfURL:PTNOneSecondVideoURL()];
     expect(fileData).equal(assetData);
     expect(recorder).to.complete();
+
+    [[NSFileManager defaultManager] removeItemAtURL:downloadURL error:nil];
   });
 
   it(@"should send a path to the temporary file that was downloaded with UTI from the MIME type", ^{
@@ -403,6 +405,8 @@ context(@"file download", ^{
     expect(((PTNProgress *)recorder.values[0]).result).to.beKindOf([LTPath class]);
     LTPath *resultPath = ((PTNProgress *)recorder.values[0]).result;
     expect([resultPath.path pathExtension]).to.equal(@"mp4");
+
+    [[NSFileManager defaultManager] removeItemAtURL:downloadURL error:nil];
   });
 
   context(@"download errors", ^{

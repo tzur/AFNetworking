@@ -6,7 +6,6 @@
 #import <LTEngine/LTOpenCVExtensions.h>
 #import <LTKit/NSBundle+Path.h>
 
-#import "MPSImage+Factory.h"
 #import "PNKNetworkSchemeFactory.h"
 
 DeviceSpecBegin(PNKRunnableNeuralNetwork)
@@ -33,10 +32,10 @@ it(@"should run the network successfully", ^{
   auto inputMat = LTLoadMat([self class], @"person.png");
 
   MTLSize inputSize = {(NSUInteger)inputMat.cols, (NSUInteger)inputMat.rows, 3};
-  auto inputImage = [MPSImage pnk_unorm8ImageWithDevice:device size:inputSize];
+  auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device size:inputSize];
   PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
 
-  auto outputImage = [MPSImage pnk_unorm8ImageWithDevice:device width:inputImage.width
+  auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width
                                                   height:inputImage.height channels:2];
 
   auto buffer = [commandQueue commandBuffer];

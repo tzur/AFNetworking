@@ -201,6 +201,101 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 }
 
 #pragma mark -
+#pragma mark Popping Control Points
+#pragma mark -
+
+- (void)popControlPoints:(NSUInteger)numberOfPoints {
+  if (!numberOfPoints) {
+    return;
+  }
+  numberOfPoints = std::min(numberOfPoints, self.mutableControlPoints.count);
+  NSUInteger numberOfPoppedControlPoints =
+      [self popControlPointsWithoutSegmentAssociation:numberOfPoints];
+  numberOfPoints -= numberOfPoppedControlPoints;
+  [self popControlPointsWithSegmentAssociation:numberOfPoints];
+
+  self.indexOfControlPointAtEndOfIntrinsicParametricRange = self.mutableControlPoints.count - 1 -
+      self.numberOfRequiredInterpolatableObjects + self.intrinsicParametricRange.location +
+      self.intrinsicParametricRange.length;
+}
+
+- (NSUInteger)popControlPointsWithoutSegmentAssociation:(NSUInteger)numberOfPoints {
+  NSUInteger finalLength = self.numberOfRequiredInterpolatableObjects -
+      NSMaxRange(self.intrinsicParametricRange);
+  NSRange range =
+      NSMakeRange(self.indexOfControlPointAtEndOfIntrinsicParametricRange + 1,
+                  self.mutableControlPoints.count - 1 -
+                  self.indexOfControlPointAtEndOfIntrinsicParametricRange - finalLength);
+  if (range.length > numberOfPoints) {
+    range = NSMakeRange(self.mutableControlPoints.count - numberOfPoints, numberOfPoints);
+  }
+  NSIndexSet *indices = [NSIndexSet indexSetWithIndexesInRange:range];
+
+#if USE_BIPARTITE_GRAPH
+  NSArray<LTSplineControlPoint *> *removedControlPoints =
+      [self.mutableControlPoints objectsAtIndexes:indices];
+  for (LTSplineControlPoint *controlPoint in removedControlPoints) {
+    LTAssert([self.mutableGraph partitionOfVertex:controlPoint] == LTBipartiteGraphPartitionA,
+             @"Control point (%@) in wrong partition (%lu)", controlPoint,
+             (unsigned long)[self.mutableGraph partitionOfVertex:controlPoint]);
+    LTAssert(![self.mutableGraph verticesAdjacentToVertex:controlPoint].count,
+             @"Control point (%@) must not be connected to parameterized objects.", controlPoint);
+    [self.mutableGraph removeVertex:controlPoint];
+  }
+#endif
+
+  [self.mutableControlPoints removeObjectsAtIndexes:indices];
+  return range.length;
+}
+
+- (void)popControlPointsWithSegmentAssociation:(NSUInteger)numberOfPoints {
+  for (NSUInteger i = 0; i < numberOfPoints; i += self.intrinsicParametricRange.length - 1) {
+    if (self.mutableStack.count == 1) {
+      break;
+    }
+
+    NSRange range =
+        NSMakeRange(self.mutableControlPoints.count - (self.intrinsicParametricRange.length - 1),
+                    self.intrinsicParametricRange.length - 1);
+    NSIndexSet *indices = [NSIndexSet indexSetWithIndexesInRange:range];
+
+#if USE_BIPARTITE_GRAPH
+    id<LTParameterizedValueObject> parameterizedObject = self.mutableStack.top;
+    NSArray<LTSplineControlPoint *> *removedControlPoints =
+        [self.mutableControlPoints objectsAtIndexes:indices];
+#endif
+
+    [self.mutableStack popParameterizedObject];
+    [self.mutableControlPoints removeObjectsAtIndexes:indices];
+
+#if USE_BIPARTITE_GRAPH
+    LTSplineControlPoint *lastPointToRemove = removedControlPoints.lastObject;
+    NSSet<id<LTParameterizedValueObject>> * _Nullable segments =
+        (NSSet<id<LTParameterizedValueObject>> *)[self.mutableGraph
+                                                  verticesAdjacentToVertex:lastPointToRemove];
+    LTAssert([segments containsObject:parameterizedObject],
+             @"Bipartite graph does not contain segment %@", parameterizedObject);
+
+    NSSet<LTSplineControlPoint *> * _Nullable connectedControlPoints =
+        (NSSet<LTSplineControlPoint *> *)[self.mutableGraph
+                                          verticesAdjacentToVertex:parameterizedObject];
+    LTAssert(connectedControlPoints.count == self.numberOfRequiredInterpolatableObjects,
+             @"Number (%lu) of spline control points associated with parameterized object must "
+             "match number of required interpolatable objects (%lu)",
+             (unsigned long)connectedControlPoints.count,
+             (unsigned long)self.numberOfRequiredInterpolatableObjects);
+    for (LTSplineControlPoint *controlPoint in removedControlPoints) {
+      LTAssert([connectedControlPoints containsObject:controlPoint],
+               @"Control point %@ among removed control points %@ but not connected control points "
+               "%@ ", controlPoint, removedControlPoints, connectedControlPoints);
+      [self.mutableGraph removeVertex:controlPoint];
+    }
+    [self.mutableGraph removeVertex:parameterizedObject];
+#endif
+  }
+}
+
+#pragma mark -
 #pragma mark LTParameterizedObject
 #pragma mark -
 
@@ -220,7 +315,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   return [self.mutableStack floatsForParametricValues:values key:key];
 }
 
-- (NSSet<NSString *> *)parameterizationKeys {
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
   return [self.mutableStack parameterizationKeys];
 }
 

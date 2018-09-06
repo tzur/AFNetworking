@@ -3,6 +3,11 @@
 
 #import "LTAppIntegrity.h"
 
+/// Required since the test suite runs as logic test and doesn't link with an actual binary.
+int main(int, char * _Nonnull[]) {
+  return 0;
+}
+
 SpecBegin(LTAppIntegrity)
 
 it(@"should return app entitlements", ^{

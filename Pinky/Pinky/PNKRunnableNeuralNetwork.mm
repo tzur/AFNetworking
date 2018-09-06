@@ -4,17 +4,15 @@
 #import "PNKRunnableNeuralNetwork.h"
 
 #import <LTKit/NSArray+Functional.h>
+#import <MetalToolbox/MPSImage+Factory.h>
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
 
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSImage+Factory.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKCollectionUtils.h"
 #import "PNKNetworkSchemeFactory.h"
 #import "PNKNeuralNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 /// Dictionary of images with their names as keys.
 API_AVAILABLE(ios(10.0))
@@ -131,8 +129,8 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
   auto temporaryImages = [PNKMutableImageCollection dictionary];
 
   for (auto pair: temporaryImageSizes) {
-    auto image = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                                                                 size:pair.second];
+    auto image = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                          size:pair.second];
     auto name = [NSString stringWithUTF8String:pair.first.c_str()];
     temporaryImages[name] = image;
   }
@@ -222,7 +220,5 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

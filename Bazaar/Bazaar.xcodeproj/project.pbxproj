@@ -154,6 +154,8 @@
 		9FF9D00120C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9CFFC20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm */; };
 		9FF9D00220C01B010047F3DF /* BZRTweaksSubscriptionSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionSource.h */; };
 		9FF9D00320C01B010047F3DF /* BZRTweaksSubscriptionSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionSource.mm */; };
+		9FFA30AF20F4AA3100624216 /* BZRIntegrationTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FFA30AD20F4AA3100624216 /* BZRIntegrationTestUtils.mm */; };
+		9FFA30B020F4AA3100624216 /* BZRStoreAllowedProductsIntegrationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FFA30AE20F4AA3100624216 /* BZRStoreAllowedProductsIntegrationSpec.mm */; };
 		B90D4AF21FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.h in Headers */ = {isa = PBXBuildFile; fileRef = B90D4AF01FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.h */; };
 		B90D4AF31FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = B90D4AF11FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.mm */; };
 		B90E7F1C1FCEA0A600781890 /* BZRReceiptDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = B90E7F1A1FCEA0A600781890 /* BZRReceiptDataCache.h */; };
@@ -1061,6 +1063,9 @@
 		9FF9CFFC20C01B010047F3DF /* BZRTweaksSubscriptionCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksSubscriptionCollectionsProvider.mm; sourceTree = "<group>"; };
 		9FF9CFFD20C01B010047F3DF /* BZRTweaksSubscriptionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTweaksSubscriptionSource.h; sourceTree = "<group>"; };
 		9FF9CFFE20C01B010047F3DF /* BZRTweaksSubscriptionSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTweaksSubscriptionSource.mm; sourceTree = "<group>"; };
+		9FFA30AC20F4AA3100624216 /* BZRIntegrationTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRIntegrationTestUtils.h; sourceTree = "<group>"; };
+		9FFA30AD20F4AA3100624216 /* BZRIntegrationTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRIntegrationTestUtils.mm; sourceTree = "<group>"; };
+		9FFA30AE20F4AA3100624216 /* BZRStoreAllowedProductsIntegrationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRStoreAllowedProductsIntegrationSpec.mm; sourceTree = "<group>"; };
 		B90D4AF01FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRMultiAppSubscriptionClassifier.h; sourceTree = "<group>"; };
 		B90D4AF11FE7FE250033C0D1 /* BZRMultiAppSubscriptionClassifier.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRMultiAppSubscriptionClassifier.mm; sourceTree = "<group>"; };
 		B90E7F1A1FCEA0A600781890 /* BZRReceiptDataCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRReceiptDataCache.h; sourceTree = "<group>"; };
@@ -2115,7 +2120,10 @@
 		B94AF99A203EFE7B005FC9FC /* Integration Tests */ = {
 			isa = PBXGroup;
 			children = (
+				9FFA30AC20F4AA3100624216 /* BZRIntegrationTestUtils.h */,
+				9FFA30AD20F4AA3100624216 /* BZRIntegrationTestUtils.mm */,
 				B94AF9D6203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm */,
+				9FFA30AE20F4AA3100624216 /* BZRStoreAllowedProductsIntegrationSpec.mm */,
 			);
 			name = "Integration Tests";
 			sourceTree = "<group>";
@@ -3173,8 +3181,10 @@
 				9F4D853020A9B0A800529017 /* BZRTweaksCategorySpec.mm in Sources */,
 				B9C9C85220177B5C0035432E /* BZRPurchaseHelperSpec.mm in Sources */,
 				B9A84FED1DE1C042001AA37C /* BZRLocaleBasedVariantSelectorSpec.mm in Sources */,
+				9FFA30B020F4AA3100624216 /* BZRStoreAllowedProductsIntegrationSpec.mm in Sources */,
 				B97A87461D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm in Sources */,
 				B90E81A51FD001E100781890 /* BZRReceiptDataCacheSpec.mm in Sources */,
+				9FFA30AF20F4AA3100624216 /* BZRIntegrationTestUtils.mm in Sources */,
 				65F8A5DE1F933FBC007F80F6 /* RACSignal+CloudKitRetrySpec.mm in Sources */,
 				B964749F1FBC59610056510D /* BZRStoreKitMetadataFetcherSpec.mm in Sources */,
 				65332E461D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm in Sources */,

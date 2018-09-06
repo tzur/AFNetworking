@@ -194,9 +194,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
     auto validationDateProvider =
         [[BZRReceiptValidationDateProvider alloc]
-         initWithReceiptValidationStatusCache:receiptValidationStatusCache
-         receiptValidationStatusProvider:self.validationStatusProvider
-         bundledApplicationsIDs:relevantApplicationsBundleIDs validationIntervalDays:14];
+         initWithReceiptValidationStatusProvider:self.validationStatusProvider
+         validationIntervalDays:14];
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
          initWithAggregatedValidationStatusProvider:self.validationStatusProvider

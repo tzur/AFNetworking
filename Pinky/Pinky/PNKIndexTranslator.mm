@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKIndexTranslator ()
 
 /// Device to encode this kernel operation.
@@ -62,7 +60,7 @@ static NSString * const kKernelFunctionName = @"translatePixelValue";
 
   MTLSize workingSpaceSize = outputImage.pnk_textureArraySize;
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForTranslationTable],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForTranslationTable],
                                        @[inputImage], @[outputImage], kKernelFunctionName,
                                        workingSpaceSize);
 }
@@ -92,7 +90,5 @@ static NSString * const kKernelFunctionName = @"translatePixelValue";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

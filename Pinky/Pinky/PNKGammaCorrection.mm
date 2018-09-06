@@ -5,9 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
-#if PNK_USE_MPS
-
 @interface PNKGammaCorrection ()
 
 /// Device to encode this kernel operation.
@@ -44,9 +41,8 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 }
 
 - (void)compileStateWithGamma:(float)gamma {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-      [functionConstants setConstantValue:&gamma type:MTLDataTypeFloat withName:@"gamma"];
-  _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
+  auto functionConstants = @[[MTBFunctionConstant floatConstantWithValue:gamma name:@"gamma"]];
+  _state = PNKCreateComputeState(self.device, kKernelFunctionName, functionConstants);
 }
 
 #pragma mark -
@@ -58,7 +54,7 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
   MTLSize workingSpaceSize = {inputImage.width, inputImage.height, 1};
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
                                        kKernelFunctionName, workingSpaceSize);
 }
 
@@ -90,7 +86,5 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

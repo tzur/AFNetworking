@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKCrop ()
 
 /// Device to encode this kernel operation.
@@ -49,15 +47,12 @@ static NSString * const kDebugGroupName = @"crop";
 }
 
 - (void)createStates {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  uint marginsLeftTop[] = {(uint)self.margins.left, (uint)self.margins.top};
-  [functionConstants setConstantValue:marginsLeftTop type:MTLDataTypeUInt2
-                             withName:@"marginsLeftTop"];
+  simd_uint2 marginsLeftTop = {(uint)self.margins.left, (uint)self.margins.top};
+  auto functionConstants = @[[MTBFunctionConstant uint2ConstantWithValue:marginsLeftTop
+                                                                    name:@"marginsLeftTop"]];
 
-  _stateSingle = PNKCreateComputeStateWithConstants(self.device, kKernelSingleFunctionName,
-                                                    functionConstants);
-  _stateArray = PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName,
-                                                   functionConstants);
+  _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName, functionConstants);
+  _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName, functionConstants);
 }
 
 #pragma mark -
@@ -71,7 +66,7 @@ static NSString * const kDebugGroupName = @"crop";
 
   auto state = inputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
                                        kDebugGroupName, workingSpaceSize);
 }
 
@@ -106,7 +101,5 @@ static NSString * const kDebugGroupName = @"crop";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

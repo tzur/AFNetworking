@@ -5,9 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
-#if PNK_USE_MPS
-
 @interface PNKConstantAlpha ()
 
 /// Device to encode this kernel operation.
@@ -40,9 +37,8 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 - (void)createStateWithAlpha:(float)alpha {
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&alpha type:MTLDataTypeFloat withName:@"alpha"];
-  _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
+  auto functionConstants = @[[MTBFunctionConstant floatConstantWithValue:alpha name:@"alpha"]];
+  _state = PNKCreateComputeState(self.device, kKernelFunctionName, functionConstants);
 }
 
 #pragma mark -
@@ -54,7 +50,7 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
   [self verifyParametersWithInputImage:inputImage outputImage:outputImage];
 
   MTLSize workingSpaceSize = {inputImage.width, inputImage.height, 1};
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[inputImage], @[outputImage],
                                        kKernelFunctionName, workingSpaceSize);
 }
 
@@ -84,7 +80,5 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

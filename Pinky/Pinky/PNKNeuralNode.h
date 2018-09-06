@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Node describing a single stage in the neural network scheme.
 API_AVAILABLE(ios(10.0))
 @interface PNKNeuralNode : NSObject
@@ -78,7 +76,5 @@ API_AVAILABLE(ios(10.0))
 @property (readonly, nonatomic) NSString *outputImageName;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

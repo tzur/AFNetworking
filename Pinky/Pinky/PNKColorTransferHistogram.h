@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @protocol MTLBuffer;
 
 /// Computes the histogram per each channel for a given \c MTLBuffer after a given \c 3x3 linear
@@ -49,7 +47,5 @@ API_AVAILABLE(ios(10.0))
 @property (class, readonly, nonatomic) NSUInteger maxSupportedHistogramBins;
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

@@ -18,8 +18,7 @@
 #import "LTTextureRepository.h"
 
 static LTPath *LTPathMake(NSString *relativePath) {
-  relativePath = [[@__FILE__ lastPathComponent] stringByAppendingPathComponent:relativePath];
-  return [LTPath pathWithBaseDirectory:LTPathBaseDirectoryDocuments andRelativePath:relativePath];
+  return [LTPath pathWithPath:LTTemporaryPath(relativePath)];
 }
 
 static BOOL LTFileExists(NSString *relativePath) {
@@ -875,10 +874,6 @@ context(@"duplication", ^{
     targetPath = LTPathMake(@"target");
   });
 
-  afterEach(^{
-    [fileManager removeItemAtPath:targetPath.path error:nil];
-  });
-
   it(@"should successfully duplicate a texture", ^{
     [archiver archiveTexture:texture inPath:archivePath withArchiveType:$(LTTextureArchiveTypeJPEG)
                        error:nil];
@@ -926,7 +921,8 @@ context(@"duplication", ^{
       [invocation setReturnValue:&returnValue];
     });
 
-    result = [archiver archiveTexture:texture inPath:archivePath withArchiveType:typeMock error:nil];
+    result = [archiver archiveTexture:texture inPath:archivePath withArchiveType:typeMock
+                                error:nil];
 
     result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
     expect(result).to.beTruthy();

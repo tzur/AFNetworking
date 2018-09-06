@@ -39,8 +39,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth + 1, kImageHeight, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [softMaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                              outputImage:outputImage];
@@ -51,8 +51,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth, kImageHeight + 1, kFeatureChannels};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [softMaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                              outputImage:outputImage];
@@ -63,8 +63,8 @@ context(@"parameter tests", ^{
       MTLSize inputSize{kImageWidth, kImageHeight, kFeatureChannels};
       MTLSize outputSize{kImageWidth , kImageHeight, kFeatureChannels + 1};
 
-      auto inputImage = [MPSImage pnk_float16ImageWithDevice:device size:inputSize];
-      auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+      auto inputImage = [MPSImage mtb_float16ImageWithDevice:device size:inputSize];
+      auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
       expect(^{
         [softMaxOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
                              outputImage:outputImage];

@@ -3,7 +3,8 @@
 
 #import "PNKPersonSegmentationProcessor.h"
 
-#import "MPSTemporaryImage+Factory.h"
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "PNKAvailability.h"
 #import "PNKCrop.h"
 #import "PNKDeviceAndCommandQueue.h"
@@ -15,8 +16,6 @@
 #import "PNKRunnableNeuralNetwork.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 static const pnk::PaddingSize kPadding = {
   .left = 8,
@@ -102,9 +101,6 @@ static const pnk::PaddingSize kPadding = {
 }
 
 - (void)verifyInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormat(input);
-  PNKAssertPixelBufferFormatChannelCount(output, 1);
-
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto inputWidth = CVPixelBufferGetWidth(input);
@@ -126,24 +122,27 @@ static const pnk::PaddingSize kPadding = {
   NSUInteger paddedOutputWidth = outputImage.width + kPadding.left + kPadding.right;
   NSUInteger paddedOutputHeight = outputImage.height + kPadding.top + kPadding.bottom;
 
-  auto resizedInputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                         width:outputImage.width
-                                                                        height:outputImage.height
-                                                                      channels:3];
+  auto resizedInputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:3];
   [self.resizer encodeToCommandBuffer:commandBuffer inputImage:inputImage
                           outputImage:resizedInputImage];
 
-  auto netInputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                     width:paddedOutputWidth
-                                                                    height:paddedOutputHeight
-                                                                  channels:3];
+  auto netInputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:paddedOutputWidth
+                                                            height:paddedOutputHeight
+                                                          channels:3];
   [self.padder encodeToCommandBuffer:commandBuffer inputImage:resizedInputImage
                          outputImage:netInputImage];
 
-  auto netOutputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                      width:paddedOutputWidth
-                                                                     height:paddedOutputHeight
-                                                                   channels:2];
+  auto netOutputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:paddedOutputWidth
+                                                            height:paddedOutputHeight
+                                                          channels:2];
 
   LTParameterAssert(self.network.inputImageNames.count == 1, @"Network must have 1 input image, "
                     "got %lu", (unsigned long)self.network.inputImageNames.count);
@@ -156,9 +155,10 @@ static const pnk::PaddingSize kPadding = {
                            outputImages:@{outputImageName: netOutputImage}];
 
   auto croppedOutputImage =
-      [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer width:outputImage.width
-                                                   height:outputImage.height
-                                                 channels:netOutputImage.featureChannels];
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:netOutputImage.featureChannels];
   [self.cropper encodeToCommandBuffer:commandBuffer inputImage:netOutputImage
                           outputImage:croppedOutputImage];
 
@@ -186,26 +186,5 @@ static const pnk::PaddingSize kPadding = {
 }
 
 @end
-
-#else
-
-@implementation PNKPersonSegmentationProcessor
-
-- (nullable instancetype)initWithNetworkModel:(__unused NSURL *)networkModelURL
-                                        error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)segmentWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

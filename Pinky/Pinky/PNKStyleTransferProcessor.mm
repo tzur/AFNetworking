@@ -3,9 +3,10 @@
 
 #import "PNKStyleTransferProcessor.h"
 
+#import <MetalToolbox/MPSImage+Factory.h>
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "LTEasyBoxing+Pinky.h"
-#import "MPSImage+Factory.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKConstantAlpha.h"
 #import "PNKDeviceAndCommandQueue.h"
@@ -15,8 +16,6 @@
 #import "PNKStyleTransferState.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKStyleTransferState ()
 
@@ -103,6 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
                                            DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
 
     _stylizedOutputSmallSide = 1024;
+    _stylizedOutputLargeSide = 3072;
 
     _inputResizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
     _alphaCorrect = [[PNKConstantAlpha alloc] initWithDevice:self.device alpha:1.];
@@ -156,16 +156,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifySizeWithInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormat(input);
-
   auto inputWidth = CVPixelBufferGetWidth(input);
   auto inputHeight = CVPixelBufferGetHeight(input);
   [self verifyOutputBuffer:output withSize:CGSizeMake(inputWidth, inputHeight)];
 }
 
 - (void)verifyOutputBuffer:(CVPixelBufferRef)output withSize:(CGSize)size {
-  PNKAssertPixelBufferFormatChannelCount(output, [self stylizedOutputChannels]);
-
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto expectedOutputSize = [self outputSizeWithInputSize:size];
@@ -197,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
-  auto netInputImage = [MPSImage pnk_unorm8ImageWithDevice:self.device
+  auto netInputImage = [MPSImage mtb_unorm8ImageWithDevice:self.device
                                                      width:CVPixelBufferGetWidth(output)
                                                     height:CVPixelBufferGetHeight(output)
                                                   channels:self.networkInputChannels];
@@ -230,10 +226,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   if ([self stylizedOutputChannels] != 1) {
     auto netOutputImage =
-        [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                      width:outputImage.width
-                                                     height:outputImage.height
-                                                   channels:self.networkOutputChannels];
+        [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                               width:outputImage.width
+                                                              height:outputImage.height
+                                                            channels:self.networkOutputChannels];
     [self.network encodeWithCommandBuffer:commandBuffer
                               inputImages:@{inputImageName: state.networkInputImage}
                           inputParameters:@{inputParameterName: @(styleIndex)}
@@ -272,13 +268,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)outputSizeWithInputSize:(CGSize)size {
   CGFloat smallSide = std::min(size.width, size.height);
+  CGFloat largeSide = std::max(size.width, size.height);
 
   CGSize resizedInputSize;
-  if (smallSide <= self.stylizedOutputSmallSide) {
+  if (smallSide <= self.stylizedOutputSmallSide && largeSide <= self.stylizedOutputLargeSide) {
     resizedInputSize = size;
   } else {
-    CGSize sizeToFill = CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputSmallSide);
-    resizedInputSize = CGSizeAspectFill(size, sizeToFill);
+    CGSize sizeToFit = (size.width < size.height) ?
+        CGSizeMake(self.stylizedOutputSmallSide, self.stylizedOutputLargeSide) :
+        CGSizeMake(self.stylizedOutputLargeSide, self.stylizedOutputSmallSide);
+    resizedInputSize = CGSizeAspectFit(size, sizeToFit);
   }
 
   resizedInputSize.width = ((int)(resizedInputSize.width + 3) / 4) * 4;
@@ -287,44 +286,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKStyleTransferState
-
-@end
-
-@implementation PNKStyleTransferProcessor
-
-- (nullable instancetype)initWithModel:(__unused NSURL *)networkModelURL
-                                 error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)stylizeWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              styleIndex:(__unused NSUInteger)styleIndex
-              completion:(__unused PNKStyleTransferCompletionBlock)completion {
-}
-
-- (void)stylizeWithState:(PNKStyleTransferState __unused *)state
-                  output:(__unused CVPixelBufferRef)output
-              styleIndex:(__unused NSUInteger)styleIndex
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-- (NSUInteger)stylizedOutputChannels {
-  return 0;
-}
-
-- (NSUInteger)stylesCount {
-  return 0;
-}
-
-@end
-#endif
 
 NS_ASSUME_NONNULL_END

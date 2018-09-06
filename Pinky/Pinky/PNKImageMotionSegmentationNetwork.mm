@@ -3,15 +3,14 @@
 
 #import "PNKImageMotionSegmentationNetwork.h"
 
-#import "MPSTemporaryImage+Factory.h"
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "PNKArgmax.h"
 #import "PNKImageMotionLayerType.h"
 #import "PNKIndexTranslator.h"
 #import "PNKRunnableNeuralNetwork.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 const static std::array<uchar, 256> kTranslationTable = {{
   pnk::ImageMotionLayerTypeStatic,
@@ -97,18 +96,20 @@ const static std::array<uchar, 256> kTranslationTable = {{
   NSString *inputImageName = self.network.inputImageNames[0];
   NSString *outputImageName = self.network.outputImageNames[0];
 
-  auto networkOutputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                             width:outputImage.width
-                             height:outputImage.height
-                             channels:self.outputChannels];
+  auto networkOutputImage =
+      [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                              width:outputImage.width
+                                                             height:outputImage.height
+                                                           channels:self.outputChannels];
 
   [self.network encodeWithCommandBuffer:commandBuffer inputImages:@{inputImageName: inputImage}
                            outputImages:@{outputImageName: networkOutputImage}];
 
-  auto rawSegmentationImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                            width:outputImage.width
-                                                                           height:outputImage.height
-                                                                         channels:1];
+  auto rawSegmentationImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:1];
   [self.argmax encodeToCommandBuffer:commandBuffer inputImage:networkOutputImage
                          outputImage:rawSegmentationImage];
   [self.layerIndexTranslator encodeToCommandBuffer:commandBuffer inputImage:rawSegmentationImage
@@ -134,7 +135,5 @@ const static std::array<uchar, 256> kTranslationTable = {{
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

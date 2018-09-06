@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKBatchNormalizationLayer ()
 
 /// Device to encode this kernel operation.
@@ -121,15 +119,13 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)setupBuffersWithNormalizationModel:(const pnk::NormalizationKernelModel &)model {
@@ -158,7 +154,7 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   }
 
   MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, kernelBuffers, @[inputImage],
                                        @[outputImage], self.functionName, workingSpaceSize);
 }
 
@@ -192,7 +188,5 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

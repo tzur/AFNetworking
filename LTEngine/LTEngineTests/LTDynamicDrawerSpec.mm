@@ -40,6 +40,7 @@ static NSString * const kFragmentSource = @"\
 
 __block LTDynamicDrawer *drawer;
 __block LTGPUStruct *gpuStruct;
+__block NSOrderedSet<LTGPUStruct *> *gpuStructs;
 
 beforeEach(^{
   LTGLContext *context = [[LTGLContext alloc] init];
@@ -47,7 +48,7 @@ beforeEach(^{
   context.faceCullingEnabled = YES;
 
   gpuStruct = [[LTGPUStructRegistry sharedInstance] structForName:@"LTDynamicDrawerTestStruct"];
-  NSOrderedSet<LTGPUStruct *> *gpuStructs = [NSOrderedSet orderedSetWithObject:gpuStruct];
+  gpuStructs = [NSOrderedSet orderedSetWithObject:gpuStruct];
   drawer = [[LTDynamicDrawer alloc] initWithVertexSource:kVertexSource
                                           fragmentSource:kFragmentSource gpuStructs:gpuStructs];
 });
@@ -304,7 +305,8 @@ context(@"execution", ^{
         LTDynamicDrawerTestStruct nonTriangularData[] = {
           {.position = LTVector3(-1, -1, 0), .texCoord = LTVector2(0, 0)},
         };
-        NSData *data = [NSData dataWithBytes:&nonTriangularData[0] length:sizeof(nonTriangularData)];
+        NSData *data = [NSData dataWithBytes:&nonTriangularData[0]
+                                      length:sizeof(nonTriangularData)];
         LTAttributeData *attributeData = [[LTAttributeData alloc] initWithData:data
                                                            inFormatOfGPUStruct:gpuStruct];
         expect(^{
@@ -542,6 +544,22 @@ context(@"execution", ^{
         }).to.raise(NSInvalidArgumentException);
       });
     });
+  });
+});
+
+context(@"properties", ^{
+  it(@"should return identifier of program source code", ^{
+    NSString *sourceIdentifier = drawer.sourceIdentifier;
+
+    drawer = [[LTDynamicDrawer alloc]
+              initWithVertexSource:[kVertexSource stringByAppendingString:@" "]
+              fragmentSource:kFragmentSource gpuStructs:gpuStructs];
+
+    expect(drawer.sourceIdentifier).toNot.equal(sourceIdentifier);
+  });
+
+  it(@"should return GPU structs provided upon initialization", ^{
+    expect(drawer.gpuStructs).to.equal(gpuStructs);
   });
 });
 

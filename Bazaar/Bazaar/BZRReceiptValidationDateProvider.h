@@ -22,17 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c receiptValidationStatusCache which is used to fetch the earliest validation
-/// date. \c receiptValidationStatusProvider is used to provide the latest receipt validation
-/// status. \c bundledApplicationsIDs is the set of applications for which validation will be
-/// performed. \c validationIntervalDays is the number of days required between validations for
-/// production receipts.
-- (instancetype)initWithReceiptValidationStatusCache:
-    (BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-    receiptValidationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
-    receiptValidationStatusProvider
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
-    validationIntervalDays:(NSUInteger)validationIntervalDays NS_DESIGNATED_INITIALIZER;
+/// Initializes with \c receiptValidationStatusProvider is used to provide the latest receipt
+/// validation status. \c validationIntervalDays is the number of days required between validations
+/// for production receipts.
+- (instancetype)initWithReceiptValidationStatusProvider:
+    (BZRAggregatedReceiptValidationStatusProvider *)receiptValidationStatusProvider
+    validationIntervalDays:(NSUInteger)validationIntervalDays;
 
 @end
 

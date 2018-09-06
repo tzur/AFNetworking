@@ -10,7 +10,7 @@
 EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
   __block NSString *prerequisiteErrorMessage;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id) {
     if (strcmp([expected _EXP_objCType], @encode(cv::Mat))) {
       prerequisiteErrorMessage = @"Expected value is not cv::Mat";
     }
@@ -19,7 +19,7 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
 
   __block std::vector<int> firstMismatch;
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     // Compare pointers.
     if ([actual isEqual:expected]) {
       return YES;
@@ -28,7 +28,7 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     }
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
       LTWriteMatrices([expected matValue], [actual matValue]);
     }
@@ -51,7 +51,7 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     }
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
       LTWriteMatrices([expected matValue], [actual matValue]);
     }

@@ -48,13 +48,13 @@ static void *continousAsyncKey = &continousAsyncKey;
     
     @synchronized(EXPExpect.class) {
         if(!hasSwizzledMethod) {
-            SEL originalSelector = @selector(applyMatcher:to:);
+            SEL originalSelector = @selector(applyMatcher:);
             
-            void (*originalImplementation)(id, SEL, id<EXPMatcher>, NSObject **) = NULL;
+            void (*originalImplementation)(id, SEL, id<EXPMatcher>) = NULL;
             originalImplementation = (typeof(originalImplementation)) class_getMethodImplementation(EXPExpect.class, originalSelector);
             
-            IMP newImplementation = imp_implementationWithBlock(^(id blockSelf, id<EXPMatcher>matcher, NSObject *__autoreleasing* actual){
-                [blockSelf applyMatcherLLRMTrampoline:matcher to:actual originalImplementation:originalImplementation];
+            IMP newImplementation = imp_implementationWithBlock(^(id blockSelf, id<EXPMatcher> matcher){
+                [blockSelf applyMatcherLLRMTrampoline:matcher originalImplementation:originalImplementation];
             });
             
             Method method = class_getInstanceMethod(EXPExpect.class, originalSelector);
@@ -66,19 +66,19 @@ static void *continousAsyncKey = &continousAsyncKey;
     }
 }
 
-- (void) applyMatcherLLRMTrampoline:(id<EXPMatcher>)matcher to:(NSObject *__autoreleasing *)actual originalImplementation:(void (*)(id, SEL, id<EXPMatcher>, NSObject **) )originalIMP {
+- (void) applyMatcherLLRMTrampoline:(id<EXPMatcher>)matcher originalImplementation:(void (*)(id, SEL, id<EXPMatcher>) )originalIMP {
     if(self.continuousAsync) {
-        [self applyMatcherLLRMContinousAsync:matcher to:actual];
+        [self applyMatcherLLRMContinousAsync:matcher];
     } else {
-        __strong NSObject *originalObject = *actual;
-        originalIMP(self, _cmd, matcher, &originalObject);
+        originalIMP(self, _cmd, matcher);
     }
 }
 
-- (void) applyMatcherLLRMContinousAsync:(id<EXPMatcher>)matcher to:(NSObject *__autoreleasing *)actual {
+- (void) applyMatcherLLRMContinousAsync:(id<EXPMatcher>)matcher {
     BOOL failed = YES;
-    
-    if([matcher respondsToSelector:@selector(meetsPrerequesiteFor:)] && ![matcher meetsPrerequesiteFor:*actual]) {
+
+    id actual = self.actual;
+    if([matcher respondsToSelector:@selector(meetsPrerequesiteFor:)] && ![matcher meetsPrerequesiteFor:actual]) {
         failed = YES;
     } else {
         BOOL matchResult = NO;
@@ -87,14 +87,14 @@ static void *continousAsyncKey = &continousAsyncKey;
         NSDate *expiryDate = [NSDate dateWithTimeIntervalSinceNow:timeOut];
     
         while(1) {
-            matchResult = [matcher matches:*actual];
+            matchResult = [matcher matches:actual];
             if([[NSDate date] compare:expiryDate] == NSOrderedDescending) {
                 break;
             }
             
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
             atomic_thread_fence(memory_order_seq_cst);
-            *actual = self.actual;
+            actual = self.actual;
         }
         
         failed = self.negative ? matchResult : !matchResult;
@@ -104,11 +104,11 @@ static void *continousAsyncKey = &continousAsyncKey;
         
         if(self.negative) {
             if ([matcher respondsToSelector:@selector(failureMessageForNotTo:)]) {
-                message = [matcher failureMessageForNotTo:*actual];
+                message = [matcher failureMessageForNotTo:actual];
             }
         } else {
             if ([matcher respondsToSelector:@selector(failureMessageForTo:)]) {
-                message = [matcher failureMessageForTo:*actual];
+                message = [matcher failureMessageForTo:actual];
             }
         }
         if (message == nil) {

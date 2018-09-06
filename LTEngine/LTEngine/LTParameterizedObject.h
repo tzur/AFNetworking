@@ -37,7 +37,8 @@ typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 
 /// Returns the mapping from all \c parameterizationKeys to ordered collections of the corresponding
 /// real values, for the given parametric \c values. The number of values in the given \c values
-/// must not exceed \c INT_MAX.
+/// must not exceed \c INT_MAX. The \c keys of the returned object equal the \c parameterizationKeys
+/// of this instance.
 ///
 /// @note This is a convenience method aimed at improving the performance of mapping retrieval for
 /// several parametric values.
@@ -56,7 +57,7 @@ typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 - (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key;
 
 /// Keys of the mappings returned by this object. Number of keys does not exceed \c INT_MAX.
-@property (readonly, nonatomic) NSSet<NSString *> *parameterizationKeys;
+@property (readonly, nonatomic) NSOrderedSet<NSString *> *parameterizationKeys;
 
 /// Lower bound of the intrinsic parametric range of this instance. Is smaller than or equal to
 /// \c maxParametricValue.

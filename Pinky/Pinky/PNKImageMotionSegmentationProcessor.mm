@@ -10,8 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKImageMotionSegmentationProcessor ()
 
 /// Neural network performing the segmentation.
@@ -74,9 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifyInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormatChannelCount(output, 1);
-  PNKAssertPixelBufferFormatChannelCount(input, 4);
-
   auto inputWidth = CVPixelBufferGetWidth(input);
   auto inputHeight = CVPixelBufferGetHeight(input);
   auto outputWidth = CVPixelBufferGetWidth(output);
@@ -88,25 +83,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKImageMotionSegmentationProcessor
-
-- (nullable instancetype)initWithNetworkModel:(__unused NSURL *)networkModelURL
-                                        error:(__unused NSError *__autoreleasing *)error {
-  if (error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
-                           description:@"Supported on device only"];
-  }
-  return nil;
-}
-
-- (void)segmentWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output {
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

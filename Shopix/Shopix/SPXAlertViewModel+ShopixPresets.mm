@@ -60,8 +60,8 @@ using namespace spx;
   auto concatedSettingsAction = ^{
     settingsAction();
 
-    auto iCloudSettingsURL = [NSURL URLWithString:@"App-Prefs:root=CASTLE"];
-    [[UIApplication sharedApplication] openURL:iCloudSettingsURL];
+    auto settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    [[UIApplication sharedApplication] openURL:settingsURL];
   };
 
   return [SPXAlertViewModelBuilder builder]

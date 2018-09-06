@@ -4,8 +4,8 @@
 #import "PNKImageMotionDisplacementProcessor.h"
 
 #import <LTEngine/CVPixelBuffer+LTEngine.h>
+#import <MetalToolbox/MPSImage+Factory.h>
 
-#import "MPSImage+Factory.h"
 #import "PNKAvailability.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKImageMotionLayer.h"
@@ -16,8 +16,6 @@
 #import "PNKPixelBufferUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKImageMotionDisplacementProcessor ()
 
@@ -76,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  imageSize:imageSize];
     [layers addObject:layer];
 
-    auto layerDisplacementImage = [MPSImage pnk_float16ImageWithDevice:self.device width:imageWidth
+    auto layerDisplacementImage = [MPSImage mtb_float16ImageWithDevice:self.device width:imageWidth
                                                                 height:imageHeight channels:2];
     [displacementImages addObject:layerDisplacementImage];
   }
@@ -170,27 +168,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKImageMotionDisplacementProcessor
-
-- (nullable instancetype)initWithSegmentation:(__unused lt::Ref<CVPixelBufferRef>)segmentation
-                                        error:(NSError * __autoreleasing *)error {
-  if (error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
-                           description:@"Supported on device only"];
-  }
-  return nil;
-}
-
-- (void)displacements:(__unused CVPixelBufferRef)displacements
-   andNewSegmentation:(__unused CVPixelBufferRef)newSegmentation
-              forTime:(__unused NSTimeInterval)time {
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

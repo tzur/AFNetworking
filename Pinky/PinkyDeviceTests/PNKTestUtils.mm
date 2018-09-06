@@ -6,8 +6,6 @@
 #import <LTKit/LTMMInputFile.h>
 #import <LTKit/NSBundle+Path.h>
 
-#import "MPSImage+Factory.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Maps Open CV type constants to \c MPSImageFeatureChannelFormat.
@@ -43,17 +41,17 @@ static MTLSize PNKImageSizeFromFileName(NSString *fileName) {
 
 MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format,
                        NSUInteger width, NSUInteger height, NSUInteger channels) {
-  return [MPSImage pnk_imageWithDevice:device format:format width:width height:height
+  return [MPSImage mtb_imageWithDevice:device format:format width:width height:height
                               channels:channels];
 }
 
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels) {
-  return [MPSImage pnk_unorm8ImageWithDevice:device width:width height:height channels:channels];
+  return [MPSImage mtb_unorm8ImageWithDevice:device width:width height:height channels:channels];
 }
 
 MPSImage *PNKImageMakeAndClearHalf(id<MTLDevice> device, MTLSize size) {
-  auto image = [MPSImage pnk_float16ImageWithDevice:device size:size];
+  auto image = [MPSImage mtb_float16ImageWithDevice:device size:size];
 
   auto slices = (int)image.pnk_textureArrayDepth;
   auto channelsPerSlice = (size.depth <= 2) ? (int)size.depth : 4;

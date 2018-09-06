@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @implementation MPSImage (Size)
 
 - (MTLSize)pnk_size {
@@ -38,7 +36,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

@@ -3,7 +3,8 @@
 
 #import "PNKSuperSkySegmentationProcessor.h"
 
-#import "MPSTemporaryImage+Factory.h"
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "PNKAvailability.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
@@ -13,8 +14,6 @@
 #import "PNKRunnableNeuralNetwork.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKSuperSkySegmentationProcessor ()
 
@@ -80,9 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)verifyInputBuffer:(CVPixelBufferRef)input outputBuffer:(CVPixelBufferRef)output {
-  PNKAssertPixelBufferFormat(input);
-  PNKAssertPixelBufferFormatChannelCount(output, 1);
-
   auto outputWidth = CVPixelBufferGetWidth(output);
   auto outputHeight = CVPixelBufferGetHeight(output);
   auto inputWidth = CVPixelBufferGetWidth(input);
@@ -101,18 +97,20 @@ NS_ASSUME_NONNULL_BEGIN
 
   auto commandBuffer = [self.commandQueue commandBuffer];
 
-  auto netInputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                     width:outputImage.width
-                                                                    height:outputImage.height
-                                                                  channels:3];
+  auto netInputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:3];
 
   [self.resizer encodeToCommandBuffer:commandBuffer inputImage:inputImage
                           outputImage:netInputImage];
 
-  auto netOutputImage = [MPSTemporaryImage pnk_unorm8ImageWithCommandBuffer:commandBuffer
-                                                                      width:outputImage.width
-                                                                     height:outputImage.height
-                                                                   channels:2];
+  auto netOutputImage =
+      [MPSTemporaryImage mtb_unorm8TemporaryImageWithCommandBuffer:commandBuffer
+                                                             width:outputImage.width
+                                                            height:outputImage.height
+                                                          channels:2];
 
   LTParameterAssert(self.network.inputImageNames.count == 1, @"Network must have 1 input image, "
                     "got %lu", (unsigned long)self.network.inputImageNames.count);
@@ -149,26 +147,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#else
-
-@implementation PNKSuperSkySegmentationProcessor
-
-- (nullable instancetype)initWithNetworkModel:(__unused NSURL *)networkModelURL
-                                        error:(__unused NSError *__autoreleasing *)error {
-  return nil;
-}
-
-- (void)segmentWithInput:(__unused CVPixelBufferRef)input output:(__unused CVPixelBufferRef)output
-              completion:(__unused LTCompletionBlock)completion {
-}
-
-- (CGSize)outputSizeWithInputSize:(__unused CGSize)size {
-  return CGSizeZero;
-}
-
-@end
-
-#endif
 
 NS_ASSUME_NONNULL_END

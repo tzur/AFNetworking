@@ -3,8 +3,8 @@
 
 #import "LTCompoundParameterizedObject.h"
 
-#import "LTParameterizationKeyToValues.h"
 #import "LTBasicParameterizedObject.h"
+#import "LTParameterizationKeyToValues.h"
 
 SpecBegin(LTCompoundParameterizedObject)
 
@@ -20,10 +20,10 @@ beforeEach(^{
   OCMStub([basicMock maxParametricValue]).andReturn(1);
   OCMStub([anotherBasicMock minParametricValue]).andReturn(0);
   OCMStub([anotherBasicMock maxParametricValue]).andReturn(1);
-  mapping = @{
-    @"x": basicMock,
-    @"y": anotherBasicMock
-  };
+  mapping = @[
+    [LTKeyBasicParameterizedObjectPair pairWithKey:@"x" basicParameterizedObject:basicMock],
+    [LTKeyBasicParameterizedObjectPair pairWithKey:@"y" basicParameterizedObject:anotherBasicMock]
+  ];
   object = [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
 });
 
@@ -37,16 +37,15 @@ context(@"initialization", ^{
     expect(object.mapping).to.equal(mapping);
   });
 
-  it(@"should initialize with a copy of the provided mapping", ^{
+  it(@"should initialize with a given mutable mapping", ^{
     LTKeyToBaseParameterizedObject *mutableMapping = [mapping mutableCopy];
     object = [[LTCompoundParameterizedObject alloc] initWithMapping:mutableMapping];
-    expect(object.mapping).to.equal(mutableMapping);
-    expect(object.mapping).toNot.beIdenticalTo(mutableMapping);
+    expect(object.mapping).to.beIdenticalTo(mutableMapping);
   });
 
   it(@"should raise when attempting to initialize with mapping without keys", ^{
     expect(^{
-      object = [[LTCompoundParameterizedObject alloc] initWithMapping:@{}];
+      object = [[LTCompoundParameterizedObject alloc] initWithMapping:@[]];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -55,10 +54,12 @@ context(@"initialization", ^{
         OCMProtocolMock(@protocol(LTBasicParameterizedObject));
     OCMStub([anotherBasicMockWithDifferentParametricRange minParametricValue]).andReturn(0.5);
     OCMStub([anotherBasicMockWithDifferentParametricRange maxParametricValue]).andReturn(1);
-    mapping = @{
-      @"x": basicMock,
-      @"y": anotherBasicMockWithDifferentParametricRange
-    };
+    mapping = @[
+      [LTKeyBasicParameterizedObjectPair pairWithKey:@"x"
+                            basicParameterizedObject:basicMock],
+      [LTKeyBasicParameterizedObjectPair pairWithKey:@"y"
+                            basicParameterizedObject:anotherBasicMockWithDifferentParametricRange]
+    ];
     expect(^{
       object = [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
     }).to.raise(NSInvalidArgumentException);
@@ -88,7 +89,10 @@ context(@"NSObject protocol", ^{
 
     it(@"should return NO when comparing to an object with different properties", ^{
       id baseParameterizedObjectMock = OCMProtocolMock(@protocol(LTBasicParameterizedObject));
-      LTKeyToBaseParameterizedObject *mapping = @{@"test": baseParameterizedObjectMock};
+      LTKeyToBaseParameterizedObject *mapping = @[
+        [LTKeyBasicParameterizedObjectPair pairWithKey:@"test"
+                              basicParameterizedObject:baseParameterizedObjectMock]
+      ];
       LTCompoundParameterizedObject *anotherObject =
           [[LTCompoundParameterizedObject alloc] initWithMapping:mapping];
       expect([object isEqual:anotherObject]).to.beFalsy();
@@ -174,7 +178,7 @@ context(@"LTParameterizedObject protocol", ^{
   });
 
   it(@"should return the correct parameterization keys", ^{
-    expect(object.parameterizationKeys).to.equal(expectedKeys);
+    expect(object.parameterizationKeys).to.equal([NSOrderedSet orderedSetWithSet:expectedKeys]);
   });
 
   it(@"should use the intrinsic parametric range of the basic parameterized objects", ^{
@@ -182,7 +186,9 @@ context(@"LTParameterizedObject protocol", ^{
     OCMStub([basicMock minParametricValue]).andReturn(5.5);
     OCMStub([basicMock maxParametricValue]).andReturn(7);
 
-    object = [[LTCompoundParameterizedObject alloc] initWithMapping:@{@"x": basicMock}];
+    object = [[LTCompoundParameterizedObject alloc]
+              initWithMapping:@[[LTKeyBasicParameterizedObjectPair pairWithKey:@"x"
+                                                      basicParameterizedObject:basicMock]]];
 
     expect(object.minParametricValue).to.equal(5.5);
     expect(object.maxParametricValue).to.equal(7);

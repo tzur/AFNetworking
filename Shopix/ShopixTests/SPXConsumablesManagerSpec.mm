@@ -494,6 +494,37 @@ context(@"placing order", ^{
 
       it(@"should pass try again action with validating transaction and redeem if the transaction "
          "wasn't found in receipt", ^{
+        OCMStub([productsManager redeemConsumableItems:OCMOCK_ANY ofCreditType:creditType])
+            .andReturn([RACSignal return:redeemStatus]);
+
+       SKPaymentTransaction *transaction = OCMClassMock(SKPaymentTransaction.class);
+        OCMStub([transaction transactionIdentifier]).andReturn(@"transactionId");
+        auto transactionNotFoundError =
+            [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt
+                           transaction:transaction];
+        auto bazaarError = [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed
+                                     underlyingError:transactionNotFoundError];
+
+        OCMExpect([[(id)productsManager ignoringNonObjectArgs]
+            purchaseConsumableProduct:OCMOCK_ANY quantity:0])
+            .andReturn([RACSignal error:bazaarError]);
+
+        OCMExpect([productsManager validateTransaction:@"transactionId"])
+            .andReturn([RACSignal error:transactionNotFoundError]);
+
+        OCMExpect([productsManager validateTransaction:@"transactionId"])
+            .andReturn([RACSignal empty]);
+
+        auto recorder = [[consumablesManager placeOrder:orderSummaryWithoutEnoughCredit
+                                  withProductIdentifier:@"baz"] testRecorder];
+
+        expect(recorder).will.complete();
+        expect(recorder).will.sendValuesWithCount(1);
+        OCMVerifyAll((id)productsManager);
+      });
+
+      it(@"should pass try again action with validating transaction and redeem if the transaction "
+         "wasn't found in receipt", ^{
         SKPaymentTransaction *transaction = OCMClassMock(SKPaymentTransaction.class);
         OCMStub([transaction transactionIdentifier]).andReturn(@"transactionId");
         auto underlyingError = [NSError bzr_errorWithCode:BZRErrorCodeTransactionNotFoundInReceipt

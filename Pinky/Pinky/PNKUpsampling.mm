@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKUpsampling ()
 
 /// Device to encode this kernel operation.
@@ -102,12 +100,12 @@ static NSString * const kDebugGroupName = @"upsample";
     MTLSize outputTextureSize = outputImage.pnk_textureArraySize;
     [self fillBufferWithSamplingCoefficients:outputTextureSize];
     workingSpaceSize = outputTextureSize;
-    PNKComputeDispatchWithDefaultThreads(state, commandBuffer,
+    MTBComputeDispatchWithDefaultThreads(state, commandBuffer,
                                          @[self.bufferForSamplingCoefficients], @[inputImage],
                                          @[outputImage], kDebugGroupName, workingSpaceSize);
  } else {
     workingSpaceSize = inputImage.pnk_textureArraySize;
-   PNKComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+   MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
                                         kDebugGroupName, workingSpaceSize);
   }
 }
@@ -168,7 +166,5 @@ static NSString * const kDebugGroupName = @"upsample";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

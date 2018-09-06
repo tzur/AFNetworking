@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKGather ()
 
 /// Device to encode this kernel operation.
@@ -87,17 +85,19 @@ static NSUInteger kChannelsPerTexture = 4;
     }
   }
 
-  vector_ushort4 shortVectorOfIndices;
+  simd_ushort4 shortVectorOfIndices;
   for (ushort i = 0; i < std::min((ushort)kChannelsPerTexture, outputFeatureChannels); ++i) {
     shortVectorOfIndices[i] = _outputFeatureChannelIndices[i];
   }
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&outputFeatureChannels type:MTLDataTypeUShort
-                             withName:@"outputFeatureChannels"];
-  [functionConstants setConstantValue:&shortVectorOfIndices type:MTLDataTypeUShort4
-                             withName:@"outputFeatureChannelsShortList"];
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:outputFeatureChannels
+                                            name:@"outputFeatureChannels"],
+    [MTBFunctionConstant ushort4ConstantWithValue:shortVectorOfIndices
+                                             name:@"outputFeatureChannelsShortList"]
+  ];
+
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)createBuffers {
@@ -118,7 +118,7 @@ static NSUInteger kChannelsPerTexture = 4;
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, buffers, @[inputImage],
                                        @[outputImage], self.functionName, workingSpaceSize);
 }
 
@@ -159,7 +159,5 @@ static NSUInteger kChannelsPerTexture = 4;
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

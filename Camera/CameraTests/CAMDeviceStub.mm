@@ -71,6 +71,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self.setTorchLevelSignal;
 }
 
+- (RACSignal *)setTorchMode:(AVCaptureTorchMode)torchMode {
+  self.lastReceivedTorchMode = torchMode;
+  return self.setTorchModeSignal;
+}
+
 #pragma mark -
 #pragma mark CAMFlipDevice
 #pragma mark -

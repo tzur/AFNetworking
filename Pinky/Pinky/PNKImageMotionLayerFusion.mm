@@ -7,8 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKImageMotionLayerFusion ()
 
 /// Device to encode this kernel operation.
@@ -64,7 +62,7 @@ static NSString * const kKernelFunction = @"layerFusion";
                       arrayByAddingObjectsFromArray:inputDisplacementImages];
   auto outputImages = @[outputSegmentationImage, outputDisplacementImage];
 
-  PNKComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForInverseImageSize],
+  MTBComputeDispatchWithDefaultThreads(self.state, commandBuffer, @[self.bufferForInverseImageSize],
                                        inputImages, outputImages, kKernelFunction,
                                        workingSpaceSize);
 }
@@ -133,7 +131,5 @@ static NSString * const kKernelFunction = @"layerFusion";
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

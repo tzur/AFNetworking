@@ -554,6 +554,7 @@
 		28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */; };
 		28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */; };
 		307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */ = {isa = PBXBuildFile; fileRef = 307C4B591E965EC800BAB302 /* RadialMaskTransformed.png */; };
+		30AFF03D212D94300029489E /* GuidedFilterCoefficientsCombine.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 30AFF009212D942F0029489E /* GuidedFilterCoefficientsCombine.fsh */; };
 		30D929901EDD62B7006D4E65 /* LTPassthroughWithPerspectiveShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 30D9298F1EDD62B7006D4E65 /* LTPassthroughWithPerspectiveShader.vsh */; };
 		30D929C41EDD63A6006D4E65 /* LTPassthroughWithPerspectiveShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 30D929C31EDD63A6006D4E65 /* LTPassthroughWithPerspectiveShader.fsh */; };
 		30DDD6A11CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */; };
@@ -859,7 +860,7 @@
 		85F599AE1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 85F599A81CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png */; };
 		8B0337C51BD3C3E000ACDF26 /* ImageZeroGrayscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0337C41BD3C3E000ACDF26 /* ImageZeroGrayscale.png */; };
 		8B16CA471BAF147B002FB750 /* NSBundle+LTEngineBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */; };
-		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */; };
+		8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */; };
 		8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B17A5921C32A232001713BB /* LTEAGLView.h */; };
 		8B17A5951C32A232001713BB /* LTEAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B17A5931C32A232001713BB /* LTEAGLView.mm */; };
 		8B17A5B41C32A834001713BB /* LTEAGLViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B17A5B31C32A834001713BB /* LTEAGLViewSpec.mm */; };
@@ -1196,6 +1197,7 @@
 		8BFA8F87191A2F9F0088310E /* LTGLKitExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F86191A2F9F0088310E /* LTGLKitExtensionsSpec.mm */; };
 		8BFA90CB1920FC8F0088310E /* LTImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA90CA1920FC8F0088310E /* LTImageProcessor.mm */; };
 		8BFA90E119212AC70088310E /* LTImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA90E019212AC70088310E /* LTImageProcessorSpec.mm */; };
+		8BFBD07F213E6F2C002A82CD /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8BCFBFF318CF0AF000E612DE /* LTEngine.bundle */; };
 		8BFE1E0818756A69008035BF /* LTOneShotBaseImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E0718756A69008035BF /* LTOneShotBaseImageProcessor.mm */; };
 		8BFE1E1718756B1D008035BF /* LTIterativeImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE1E1618756B1D008035BF /* LTIterativeImageProcessor.mm */; };
 		A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC6371AC9DA64005FC392 /* CircularPatchDrawerAlpha.png */; };
@@ -1257,14 +1259,8 @@
 		E412C8A31F61432C0070FCBC /* LTGuidedFilterShift.fsh in Sources */ = {isa = PBXBuildFile; fileRef = E412C8961F6140F90070FCBC /* LTGuidedFilterShift.fsh */; };
 		E412C8A61F6144310070FCBC /* GuidedFilterBWMask.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8A41F6144310070FCBC /* GuidedFilterBWMask.png */; };
 		E412C8A71F6144310070FCBC /* GuidedFilterBWMaskResult.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8A51F6144310070FCBC /* GuidedFilterBWMaskResult.png */; };
-		E412C8B21F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8A81F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png */; };
-		E412C8B31F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8A91F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png */; };
 		E412C8B41F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AA1F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3.png */; };
-		E412C8B51F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AB1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png */; };
 		E412C8B61F6144B20070FCBC /* GuidedFilterLenna128_R7S2.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AC1F6144B20070FCBC /* GuidedFilterLenna128_R7S2.png */; };
-		E412C8B71F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Scale.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AD1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Scale.png */; };
-		E412C8B81F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Scale.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AE1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Scale.png */; };
-		E412C8B91F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Shift.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8AF1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Shift.png */; };
 		E412C8BA1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Smooth.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8B01F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Smooth.png */; };
 		E412C8BB1F6144B20070FCBC /* GuidedFilterLenna128_R9S1.png in Resources */ = {isa = PBXBuildFile; fileRef = E412C8B11F6144B20070FCBC /* GuidedFilterLenna128_R9S1.png */; };
 		E412C8BC1F6145260070FCBC /* LTGuidedFilterCombine.fsh in Sources */ = {isa = PBXBuildFile; fileRef = E412C8901F6140F90070FCBC /* LTGuidedFilterCombine.fsh */; };
@@ -2387,6 +2383,7 @@
 		28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRotatedRect+UIColor.h"; sourceTree = "<group>"; };
 		28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTRotatedRect+UIColor.mm"; sourceTree = "<group>"; };
 		307C4B591E965EC800BAB302 /* RadialMaskTransformed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskTransformed.png; path = Resources/RadialMaskTransformed.png; sourceTree = "<group>"; };
+		30AFF009212D942F0029489E /* GuidedFilterCoefficientsCombine.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = GuidedFilterCoefficientsCombine.fsh; path = Resources/GuidedFilterCoefficientsCombine.fsh; sourceTree = "<group>"; };
 		30D9298F1EDD62B7006D4E65 /* LTPassthroughWithPerspectiveShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughWithPerspectiveShader.vsh; sourceTree = "<group>"; };
 		30D929C31EDD63A6006D4E65 /* LTPassthroughWithPerspectiveShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPassthroughWithPerspectiveShader.fsh; sourceTree = "<group>"; };
 		30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTConsistentGaussianFilterProcessor.h; sourceTree = "<group>"; };
@@ -2712,7 +2709,7 @@
 		8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTypedefs+LTEngine.h"; sourceTree = "<group>"; };
 		8B16C9741BAEAEB7002FB750 /* LTEasyBoxing+LTEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+LTEngine.h"; sourceTree = "<group>"; };
 		8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+LTEngineBundle.h"; sourceTree = "<group>"; };
-		8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+LTEngineBundle.m"; sourceTree = "<group>"; };
+		8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+LTEngineBundle.mm"; sourceTree = "<group>"; };
 		8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8B16CAD01BB06797002FB750 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -3117,14 +3114,8 @@
 		E412C89D1F6141E10070FCBC /* LTGuidedFilterProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGuidedFilterProcessorSpec.mm; sourceTree = "<group>"; };
 		E412C8A41F6144310070FCBC /* GuidedFilterBWMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterBWMask.png; path = Resources/GuidedFilterBWMask.png; sourceTree = "<group>"; };
 		E412C8A51F6144310070FCBC /* GuidedFilterBWMaskResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterBWMaskResult.png; path = Resources/GuidedFilterBWMaskResult.png; sourceTree = "<group>"; };
-		E412C8A81F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna67x128_R7S3_Scale.png; path = Resources/GuidedFilterLenna67x128_R7S3_Scale.png; sourceTree = "<group>"; };
-		E412C8A91F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna67x128_R7S3_Shift.png; path = Resources/GuidedFilterLenna67x128_R7S3_Shift.png; sourceTree = "<group>"; };
 		E412C8AA1F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna67x128_R7S3.png; path = Resources/GuidedFilterLenna67x128_R7S3.png; sourceTree = "<group>"; };
-		E412C8AB1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R7S2_Shift.png; path = Resources/GuidedFilterLenna128_R7S2_Shift.png; sourceTree = "<group>"; };
 		E412C8AC1F6144B20070FCBC /* GuidedFilterLenna128_R7S2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R7S2.png; path = Resources/GuidedFilterLenna128_R7S2.png; sourceTree = "<group>"; };
-		E412C8AD1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R9S1_Scale.png; path = Resources/GuidedFilterLenna128_R9S1_Scale.png; sourceTree = "<group>"; };
-		E412C8AE1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R7S2_Scale.png; path = Resources/GuidedFilterLenna128_R7S2_Scale.png; sourceTree = "<group>"; };
-		E412C8AF1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Shift.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R9S1_Shift.png; path = Resources/GuidedFilterLenna128_R9S1_Shift.png; sourceTree = "<group>"; };
 		E412C8B01F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Smooth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R9S1_Smooth.png; path = Resources/GuidedFilterLenna128_R9S1_Smooth.png; sourceTree = "<group>"; };
 		E412C8B11F6144B20070FCBC /* GuidedFilterLenna128_R9S1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna128_R9S1.png; path = Resources/GuidedFilterLenna128_R9S1.png; sourceTree = "<group>"; };
 		E412C8BE1F6146410070FCBC /* GuidedFilterLenna67x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GuidedFilterLenna67x128.png; path = Resources/GuidedFilterLenna67x128.png; sourceTree = "<group>"; };
@@ -4504,8 +4495,8 @@
 			children = (
 				8B3690021CA6B7BE003E34CF /* libextobjc_OSX.a */,
 				8B3690041CA6B7BE003E34CF /* libextobjc_iOS.a */,
-				8B3690061CA6B7BE003E34CF /* Logic Tests.octest */,
-				8B3690081CA6B7BE003E34CF /* iOS Tests.octest */,
+				8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */,
+				8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4667,7 +4658,7 @@
 				8B8664321BF5026D006FFF03 /* LTRef+LTEngine.h */,
 				8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */,
 				8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */,
-				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */,
+				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -4773,16 +4764,10 @@
 				E412C8A51F6144310070FCBC /* GuidedFilterBWMaskResult.png */,
 				E412C8C01F653DC00070FCBC /* GuidedFilterInput.jpg */,
 				E412C8AC1F6144B20070FCBC /* GuidedFilterLenna128_R7S2.png */,
-				E412C8AE1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Scale.png */,
-				E412C8AB1F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png */,
 				E412C8B11F6144B20070FCBC /* GuidedFilterLenna128_R9S1.png */,
-				E412C8AD1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Scale.png */,
-				E412C8AF1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Shift.png */,
 				E412C8B01F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Smooth.png */,
 				E412C8BE1F6146410070FCBC /* GuidedFilterLenna67x128.png */,
 				E412C8AA1F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3.png */,
-				E412C8A81F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png */,
-				E412C8A91F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png */,
 				B4BF60A91F9742C000560891 /* HorizontalStep16bitRGBA.png */,
 				B4BF60761F9742B900560891 /* HorizontalStep8bitRGBA.png */,
 				06B5C1F11D181A9400401556 /* HorizontalStepFunction32.png */,
@@ -4979,6 +4964,7 @@
 			children = (
 				8B3F94A3187AEA0200FAA265 /* Adder.fsh */,
 				8B7EAA21187C5D960004A57A /* Colorize.fsh */,
+				30AFF009212D942F0029489E /* GuidedFilterCoefficientsCombine.fsh */,
 				50FD868D1D05A9680005C318 /* Mix.fsh */,
 				50FD868E1D05A9680005C318 /* Mix.vsh */,
 				50FD86931D05AADA0005C318 /* MixWithAttribute.fsh */,
@@ -6572,17 +6558,17 @@
 			remoteRef = 8B3690031CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690061CA6B7BE003E34CF /* Logic Tests.octest */ = {
+		8B3690061CA6B7BE003E34CF /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 8B3690051CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B3690081CA6B7BE003E34CF /* iOS Tests.octest */ = {
+		8B3690081CA6B7BE003E34CF /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -6631,7 +6617,6 @@
 				8597AEBB1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_3_sigma_0_8.png in Resources */,
 				B48C2BCC1F9744AC008CC04C /* HorizontalStep8bitRGBA.png in Resources */,
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,
-				E412C8B51F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png in Resources */,
 				8518E26A1C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png in Resources */,
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
 				5068081F1E0039B9003EF92A /* PerspectiveTextureQuad1.png in Resources */,
@@ -6650,7 +6635,6 @@
 				64F1C9751D41106800AF2DA6 /* BlurWithUserMaskIntensity1.png in Resources */,
 				038DDD8219EFD19D0018F9E4 /* Lena128CLAHE.png in Resources */,
 				E412C8BA1F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Smooth.png in Resources */,
-				E412C8B81F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Scale.png in Resources */,
 				65057CA71B7773400029A164 /* Island.png in Resources */,
 				282AC6971924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeMultipleTriangles.png in Resources */,
 				06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */,
@@ -6722,7 +6706,6 @@
 				8597AEBC1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_5_sigma_0_8.png in Resources */,
 				C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
-				E412C8B71F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Scale.png in Resources */,
 				28FB00F01A0AB46D004490AF /* BristleBrushBristles.RoundBlunt.png in Resources */,
 				50E498821F8F7CB000C38B1D /* PerspectiveQuad0.png in Resources */,
 				65057CC51B7778200029A164 /* SanFrancisco.png in Resources */,
@@ -6749,7 +6732,6 @@
 				06E3C6841D9725D900FCD007 /* VerticalStepFunction33_bilateral_guided_upsample_L1toL3toL1.png in Resources */,
 				8BF4D39D1DA55F320080BB1C /* White16.png in Resources */,
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
-				E412C8B21F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png in Resources */,
 				2840187A19C704BF0003A064 /* PyramidGrid1.png in Resources */,
 				B48C2C011F9744D2008CC04C /* Black8bitRA.png in Resources */,
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
@@ -6778,7 +6760,6 @@
 				28FB00F11A0AB46D004490AF /* BristleBrushBristles.RoundFan.png in Resources */,
 				2888EEA81993BC910008F1C7 /* CropInput.png in Resources */,
 				03C3152C1965986F00F742B1 /* MacbethColorEdges.png in Resources */,
-				E412C8B31F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png in Resources */,
 				284AA2BB1AC99DD1007F86DB /* CircularPatchMirror.png in Resources */,
 				8518E2671C858D890051FAF3 /* NoiseGuide.png in Resources */,
 				03AFC1571908ED0500F17063 /* SemiTransparentBlack.png in Resources */,
@@ -6802,7 +6783,6 @@
 				30FE29381ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png in Resources */,
 				8BA820BA1981572700FBE68E /* LTPatchProcessorSolution.png in Resources */,
 				85CB44991D75DADD00519E37 /* LTAnisotropicDiffusion_non_guided_kernel_3_sigma_0_8.png in Resources */,
-				E412C8B91F6144B20070FCBC /* GuidedFilterLenna128_R9S1_Shift.png in Resources */,
 				286A934118CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,
 				286A934018CF743200F203DF /* BristleBrushThickness.0.75.png in Resources */,
 				8BABFD8C188D4C15004163DA /* Noise.png in Resources */,
@@ -6884,6 +6864,7 @@
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
 				06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */,
 				B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */,
+				8BFBD07F213E6F2C002A82CD /* LTEngine.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7187,7 +7168,7 @@
 				8B7DC39D18328063008D004B /* LTBoundaryCondition.mm in Sources */,
 				28FC0E701D2A9FFE00237FF8 /* LTContentTouchEventOrPredicate.mm in Sources */,
 				28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */,
-				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */,
+				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.mm in Sources */,
 				288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */,
 				28463D11196983DE0021A7CD /* LTDefaultModule.mm in Sources */,
 				8B422A6D1C30493200398F27 /* LTTexture+Writing.mm in Sources */,
@@ -7291,6 +7272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30AFF03D212D94300029489E /* GuidedFilterCoefficientsCombine.fsh in Sources */,
 				50FD86981D05AB4B0005C318 /* MixWithAttribute.fsh in Sources */,
 				50FD86971D05AB470005C318 /* MixWithAttribute.vsh in Sources */,
 				50FD86921D05AA820005C318 /* Mix.vsh in Sources */,

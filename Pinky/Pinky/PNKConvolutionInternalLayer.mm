@@ -3,14 +3,13 @@
 
 #import "PNKConvolutionInternalLayer.h"
 
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "MPSCNNConvolution+Factory.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKActivationCustomInternalLayer.h"
 #import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKConvolutionInternalLayer ()
 
@@ -101,10 +100,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                        self.dilationX, self.dilationY, self.strideX,
                                                        self.strideY, self.padding);
   if (self.activationKernel) {
-    auto intermediateImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                              width:outputImage.width
-                              height:outputImage.height
-                              channels:outputImage.featureChannels];
+    auto intermediateImage =
+        [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                                width:outputImage.width
+                                                               height:outputImage.height
+                                                             channels:outputImage.featureChannels];
     [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
                                  destinationImage:intermediateImage];
     [self.activationKernel encodeToCommandBuffer:commandBuffer inputImage:intermediateImage
@@ -131,7 +131,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

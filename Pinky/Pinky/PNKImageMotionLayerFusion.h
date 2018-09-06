@@ -3,8 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Class for fusing the displacement maps of individual layers into a composite displacements map.
 /// Also creates the modified segmentation map as it will look like after applying the relevant
 /// displacements.
@@ -44,7 +42,5 @@ API_AVAILABLE(ios(10.0))
       outputDisplacementImage:(MPSImage *)outputDisplacementImage;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

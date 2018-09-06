@@ -3,12 +3,9 @@
 
 #import "PNKSoftMaxLayer.h"
 
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKSoftMaxLayer ()
 
@@ -81,7 +78,5 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Layer performing the elementwise SoftMax operation.
 API_AVAILABLE(ios(10.0))
 @interface PNKSoftMaxLayer : NSObject <PNKUnaryNeuralKernel>
@@ -17,7 +15,5 @@ API_AVAILABLE(ios(10.0))
 - (instancetype)initWithDevice:(id<MTLDevice>)device NS_DESIGNATED_INITIALIZER;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

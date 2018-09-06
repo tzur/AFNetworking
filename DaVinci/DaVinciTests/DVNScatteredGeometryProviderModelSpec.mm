@@ -32,7 +32,9 @@ __block CGFloat minimumTaperingScaleFactor;
 __block DVNScatteredGeometryProviderModel *model;
 
 beforeEach(^{
-  underlyingProviderModel = [[DVNTestGeometryProviderModel alloc] initWithState:0];
+  underlyingProviderModel =
+      [[DVNTestGeometryProviderModel alloc]
+       initWithState:0 quads:{lt::Quad(CGRectMake(0, 1, 2, 3)), lt::Quad(CGRectMake(4, 5, 6, 7))}];
   randomState = [[LTRandom alloc] init].engineState;
   count = lt::Interval<NSUInteger>({300, 500});
   distance = lt::Interval<CGFloat>({1, 5});
@@ -260,6 +262,53 @@ context(@"provider", ^{
                                   originalCornerVector.length())).to.beTruthy();
           }
         }
+      });
+
+      context(@"special cases", ^{
+        static const std::vector<lt::Quad> kQuads = {
+          lt::Quad(CGRectMake(0, 0, 1, 1)),
+          lt::Quad(CGRectMake(1, 1, 2, 2))
+        };
+
+        it(@"should provide quads with correctly bounded scale, when tapering lenghts overlap", ^{
+          auto underlyingProviderModel = [[DVNTestGeometryProviderModel alloc]
+                                          initWithState:0 quads:kQuads];
+          auto model = [[DVNScatteredGeometryProviderModel alloc]
+                        initWithGeometryProviderModel:underlyingProviderModel
+                        randomState:randomState
+                        count:lt::Interval<NSUInteger>(2) distance:lt::Interval<CGFloat>(0)
+                        angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                        lengthOfStartTapering:10 lengthOfEndTapering:10 startTaperingFactor:1
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1];
+          dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:YES];
+          auto quads = values.quads();
+
+          CGFloat maxDimension = 0;
+          for (NSUInteger i = 0; i < quads.size(); ++i) {
+            maxDimension = std::max(maxDimension, std::max(quads[i].boundingRect().size));
+          }
+          expect(maxDimension).to.beGreaterThan(0.15);
+        });
+
+        it(@"should provide quads with correctly bounded scale, when end is YES", ^{
+          auto underlyingProviderModel = [[DVNTestGeometryProviderModel alloc]
+                                          initWithState:0 quads:kQuads];
+          auto model = [[DVNScatteredGeometryProviderModel alloc]
+                        initWithGeometryProviderModel:underlyingProviderModel
+                        randomState:randomState
+                        count:lt::Interval<NSUInteger>(2) distance:lt::Interval<CGFloat>(0)
+                        angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                        lengthOfStartTapering:0.5 lengthOfEndTapering:0 startTaperingFactor:1
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1];
+          dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:YES];
+          auto quads = values.quads();
+
+          CGFloat maxDimension = 0;
+          for (NSUInteger i = 0; i < quads.size(); ++i) {
+            maxDimension = std::max(maxDimension, std::max(quads[i].boundingRect().size));
+          }
+          expect(maxDimension).to.beGreaterThan(0.15);
+        });
       });
     });
   });

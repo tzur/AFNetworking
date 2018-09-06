@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKConcatenation ()
 
 /// Device to encode this kernel operation.
@@ -129,7 +127,7 @@ static NSString * const kDebugGroupName = @"concat";
 
   MTLSize workingSpaceSize = {outputImage.width, outputImage.height, 1};
 
-  PNKComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, inputImages, outputImages,
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, buffers, inputImages, outputImages,
                                        kDebugGroupName, workingSpaceSize);
 }
 
@@ -197,7 +195,5 @@ static NSString * const kDebugGroupName = @"concat";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

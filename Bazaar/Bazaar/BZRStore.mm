@@ -226,6 +226,9 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         for (SKPaymentTransaction *transaction in validatedTransactions) {
           [self.storeKitFacade finishTransaction:transaction];
+          if (transaction.transactionState == SKPaymentTransactionStatePurchased) {
+            [self sendPurchaseSuccessEventForTransaction:transaction];
+          }
           [self.completedTransactionsSubject sendNext:transaction];
         }
       }];
@@ -543,10 +546,14 @@ NS_ASSUME_NONNULL_BEGIN
       take:1]
       flattenMap:^(SKPaymentTransaction *transaction) {
         @strongify(self);
-        return [[[self validateAndFinishTransaction:transaction]
+        return [[[[self validateAndFinishTransaction:transaction]
             catch:^(NSError *error) {
               return [RACSignal error:
                   [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed underlyingError:error]];
+            }]
+            doNext:^(SKPaymentTransaction *transaction) {
+              @strongify(self);
+              [self sendPurchaseSuccessEventForTransaction:transaction];
             }]
             doError:^(NSError *error) {
               @strongify(self);
@@ -554,6 +561,19 @@ NS_ASSUME_NONNULL_BEGIN
             }];
       }]
       ignoreValues];
+}
+
+- (void)sendPurchaseSuccessEventForTransaction:(SKPaymentTransaction *)transaction {
+  auto successfulPurchaseEventInfo = @{
+    @"EventSubtype": @"PurchaseSuccessful",
+    @"ProductID": transaction.payment.productIdentifier,
+    @"PurchaseDate": transaction.transactionDate ?: [NSNull null],
+    @"ValidatricksRequestID": self.receiptValidationStatus.requestId ?: [NSNull null],
+    @"AppStoreLocale": self.appStoreLocale ?: [NSNull null]
+  };
+  auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                            eventInfo:successfulPurchaseEventInfo];
+  [self.eventsSubject sendNext:purchaseEvent];
 }
 
 - (RACSignal *)validateTransaction:(NSString *)transactionId {

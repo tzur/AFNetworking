@@ -18,7 +18,7 @@ EXPMatcherImplementationBegin(_beCloseToCATransform3DWithin, (id expected, id wi
   __block NSString *prerequisiteErrorMessage;
   __block CATransform3D expectedTransform, actualTransform;
 
-  prerequisite(^BOOL{
+  prerequisite(^BOOL(id actual) {
     if (!([expected isKindOfClass:[NSValue class]] && [actual isKindOfClass:[NSValue class]])) {
       prerequisiteErrorMessage = @"Expected value must be CATransform3D.";
     } else if (within && ![within isKindOfClass:[NSNumber class]]) {
@@ -27,7 +27,7 @@ EXPMatcherImplementationBegin(_beCloseToCATransform3DWithin, (id expected, id wi
     return !prerequisiteErrorMessage;
   });
 
-  match(^BOOL{
+  match(^BOOL(id actual) {
     [((NSValue *)expected) getValue:&expectedTransform];
     [((NSValue *)actual) getValue:&actualTransform];
     double range = within ? [within doubleValue] : FLT_MIN;
@@ -41,7 +41,7 @@ EXPMatcherImplementationBegin(_beCloseToCATransform3DWithin, (id expected, id wi
     return YES;
   });
 
-  failureMessageForTo(^NSString *{
+  failureMessageForTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -55,7 +55,7 @@ EXPMatcherImplementationBegin(_beCloseToCATransform3DWithin, (id expected, id wi
     }
   });
 
-  failureMessageForNotTo(^NSString *{
+  failureMessageForNotTo(^NSString *(id) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }

@@ -49,6 +49,7 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
       @instanceKeypath(DVNBrushModelV1, numberOfSamplesPerSequence): @"numberOfSamplesPerSequence",
       @instanceKeypath(DVNBrushModelV1, sequenceDistance): @"sequenceDistance",
       @instanceKeypath(DVNBrushModelV1, countRange): @"countRange",
+      @instanceKeypath(DVNBrushModelV1, rotatedWithSplineDirection): @"rotatedWithSplineDirection",
       @instanceKeypath(DVNBrushModelV1, distanceJitterFactorRange): @"distanceJitterFactorRange",
       @instanceKeypath(DVNBrushModelV1, angleRange): @"angleRange",
       @instanceKeypath(DVNBrushModelV1, scaleJitterRange): @"scaleJitterRange",
@@ -187,6 +188,12 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
   DVNBrushModelV1 *model = [self copy];
   [model setValue:[NSValue valueWithLTNSUIntegerInterval:countRange]
            forKey:@keypath(model, countRange)];
+  return model;
+}
+
+- (instancetype)copyWithRotatedWithSplineDirection:(BOOL)rotatedWithSplineDirection {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(rotatedWithSplineDirection) forKey:@keypath(model, rotatedWithSplineDirection)];
   return model;
 }
 

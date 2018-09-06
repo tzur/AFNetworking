@@ -2,25 +2,24 @@
 // Created by Ofir Bibi.
 
 #ifdef __OBJC__
-  // Pinky helpers.
-  #import "PNKDefines.h"
-
   // iOS Frameworks.
   #import <Foundation/Foundation.h>
   #import <Metal/Metal.h>
   #import <MetalKit/MetalKit.h>
-  #if PNK_USE_MPS
-    #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
-  #endif
+  #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
 
   // Lightricks Libraries.
   #import <LTKit/LTKit-Prefix.pch>
   #import <LTEngine/LTEngine-Prefix.pch>
+  #import <MetalToolbox/MetalToolbox-Prefix.pch>
+
+  // MetalToolbox.
+  #import <MetalToolbox/MTBComputeDispatch.h>
+  #import <MetalToolbox/MTBFunctionConstant.h>
 
   // Pinky.
   #import "LTRef+Pinky.h"
   #import "MPSImage+Size.h"
-  #import "PNKComputeDispatch.h"
   #import "PNKComputeState.h"
   #import "PNKTypeDefinitions.h"
 

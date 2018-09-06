@@ -529,4 +529,42 @@ context(@"drawing", ^{
   });
 });
 
+context(@"properties", ^{
+  it(@"should return identifier of program source code", ^{
+    NSString *sourceIdentifier = drawer.sourceIdentifier;
+
+    drawer = [[LTDynamicQuadDrawer alloc]
+              initWithVertexSource:[[MixVsh source] stringByAppendingString:@" "]
+              fragmentSource:[MixFsh source] gpuStructs:[NSOrderedSet orderedSet]];
+
+    expect(drawer.sourceIdentifier).toNot.equal(sourceIdentifier);
+  });
+
+  context(@"GPU structs", ^{
+    __block NSOrderedSet<LTGPUStruct *> *gpuStructs;
+
+    beforeEach(^{
+      LTGPUStruct *gpuStruct =
+          [[LTGPUStructRegistry sharedInstance] structForName:@"LTDynamicQuadDrawerTestStruct"];
+      gpuStructs = [NSOrderedSet orderedSetWithObject:gpuStruct];
+
+      drawer = [[LTDynamicQuadDrawer alloc]
+                initWithVertexSource:[MixWithAttributeVsh source]
+                fragmentSource:[MixWithAttributeFsh source]
+                gpuStructs:gpuStructs];
+    });
+
+    it(@"should return GPU structs provided upon initialization", ^{
+      expect(drawer.initialGPUStructs).to.equal(gpuStructs);
+    });
+
+    it(@"should return GPU structs used by instance", ^{
+      NSMutableOrderedSet<LTGPUStruct *> *augmentedGPUStructs = [gpuStructs mutableCopy];
+      [augmentedGPUStructs addObject:[[LTGPUStructRegistry sharedInstance]
+                                      structForName:kLTQuadDrawerGPUStructName]];
+      expect(drawer.gpuStructs).to.equal(augmentedGPUStructs);
+    });
+  });
+});
+
 SpecEnd

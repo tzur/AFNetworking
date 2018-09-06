@@ -140,6 +140,40 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     });
   });
 
+  context(@"popping control points", ^{
+    it(@"should pop control points", ^{
+      [spline pushControlPoints:additionalPoints];
+      expect(spline.controlPoints)
+          .to.equal([initialPoints arrayByAddingObjectsFromArray:additionalPoints]);
+      [spline popControlPoints:additionalPoints.count];
+      expect(spline.controlPoints).to.equal(initialPoints);
+    });
+
+    it(@"should remove segments when popping control points", ^{
+      [spline pushControlPoints:additionalPoints];
+      expect(spline.numberOfSegments).to.equal(3);
+      [spline popControlPoints:additionalPoints.count];
+      expect(spline.numberOfSegments).to.equal(1);
+    });
+
+    it(@"should silently ignore popping of zero control points", ^{
+      [spline popControlPoints:0];
+      expect(spline.controlPoints).to.equal(initialPoints);
+    });
+
+    it(@"should silently ignore popping of control points if spline consists of single segment", ^{
+      [spline popControlPoints:initialPoints.count];
+      expect(spline.controlPoints).to.equal(initialPoints);
+    });
+
+    it(@"should pop only as much control points as possible", ^{
+      [spline pushControlPoints:additionalPoints];
+      [spline popControlPoints:NSUIntegerMax];
+      expect(spline.controlPoints).to.equal(initialPoints);
+      expect(spline.numberOfSegments).to.equal(1);
+    });
+  });
+
   context(@"LTParameterizedObject protocol", ^{
     context(@"after initialization", ^{
       context(@"intrinsic parametric range", ^{
@@ -307,7 +341,8 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
 
   it(@"should have the correct parametrization keys", ^{
     expect(spline.parameterizationKeys)
-        .to.equal([initialPoints.firstObject propertiesToInterpolate]);
+        .to.equal([NSOrderedSet orderedSetWithSet:[initialPoints.firstObject
+                                                   propertiesToInterpolate]]);
   });
 
   context(@"properties", ^{
@@ -368,6 +403,32 @@ itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
                            CGPointMake(3, 3)}, @"attribute", @[@8.5, @9, @9.5, @10, @10.5, @11]),
   kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
   kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(M_SQRT2 * 3)
+});
+
+context(@"Bezier interpolation", ^{
+  it(@"should pop control points without popping spline segments", ^{
+    NSArray<LTSplineControlPoint *> *initialPoints =
+        LTCreateSplinePoints({0, 1, 2, 3, 4, 5, 6},
+                             {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1),
+                              CGPointMake(1, 1), CGPointMake(1, 1), CGPointZero},
+                             @"attribute", @[@7, @7.1, @7.2, @7.3, @7.4, @7.5, @7.6]);
+    LTBasicCubicBezierInterpolantFactory *basicFactory =
+        [[LTBasicCubicBezierInterpolantFactory alloc] init];
+    LTCompoundParameterizedObjectFactory *factory =
+        [[LTCompoundParameterizedObjectFactory alloc] initWithBasicFactory:basicFactory];
+    LTMutableEuclideanSpline *spline =
+        [[LTMutableEuclideanSpline alloc] initWithFactory:factory
+                                     initialControlPoints:initialPoints];
+    NSArray<LTSplineControlPoint *> *additionalPoints =
+        LTCreateSplinePoints({7, 8}, {CGPointZero, CGPointMake(1, 1)}, @"attribute", @[@7.7, @7.8]);
+    [spline pushControlPoints:additionalPoints];
+    expect(spline.controlPoints)
+        .to.equal([initialPoints arrayByAddingObjectsFromArray:additionalPoints]);
+    NSArray<id<LTParameterizedObject>> *segments = spline.segments;
+    [spline popControlPoints:additionalPoints.count];
+    expect(spline.controlPoints).to.equal(initialPoints);
+    expect(spline.segments).to.equal(segments);
+  });
 });
 
 itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{

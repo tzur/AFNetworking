@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 @interface PNKInstanceNormInternalKernel ()
 
 /// Device to encode this kernel operation.
@@ -95,15 +93,13 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
-  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
+  _state = PNKCreateComputeState(self.device, self.functionName, functionConstants);
 }
 
 - (void)setScaleParameters:(const cv::Mat &)parameters {
@@ -153,7 +149,7 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
     kernelBuffers = @[self.scaleBuffer, self.shiftBuffer];
   }
 
-  PNKComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
+  MTBComputeDispatch(self.state, commandBuffer, kernelBuffers, @[inputImage], @[outputImage],
                      self.functionName, threadsInGroup, threadgroupsPerGrid);
 }
 
@@ -187,7 +183,5 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

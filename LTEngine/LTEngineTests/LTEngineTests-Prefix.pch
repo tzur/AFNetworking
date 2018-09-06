@@ -27,6 +27,7 @@ extern "C" {
   #import "EXPMatchers+equalMat.h"
   #import "EXPMatchers+equalScalar.h"
   #import "EXPMatchers+beCloseToMat.h"
+  #import "EXPMatchers+beCloseToMatPSNR.h"
   #import "EXPMatchers+beCloseToScalar.h"
   #import "LTEasyBoxing+OpenCVExtensions.h"
 #endif

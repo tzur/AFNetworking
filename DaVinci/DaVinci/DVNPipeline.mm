@@ -6,8 +6,11 @@
 #import <LTEngine/LTAttributeData.h>
 #import <LTEngine/LTContinuousSampler.h>
 #import <LTEngine/LTDynamicQuadDrawer.h>
+#import <LTEngine/LTGPUStruct.h>
 #import <LTEngine/LTRotatedRect.h>
 #import <LTEngine/LTSampleValues.h>
+#import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSString+Hashing.h>
 
 #import "DVNAttributeProvider.h"
 #import "DVNAttributeStageConfiguration.h"
@@ -23,27 +26,27 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DVNPipeline ()
 
 /// Object used to sample provided parameterized objects.
-@property (readonly, nonatomic) id<LTContinuousSampler> sampler;
+@property (strong, nonatomic) id<LTContinuousSampler> sampler;
 
 /// Object providing quadrilateral geometry, given values sampled from parameterized objects.
-@property (readonly, nonatomic) id<DVNGeometryProvider> geometryProvider;
+@property (strong, nonatomic) id<DVNGeometryProvider> geometryProvider;
 
 /// Texture used for texture mapping of the rendered quadrilateral geometry.
-@property (readonly, nonatomic) LTTexture *texture;
+@property (strong, nonatomic) LTTexture *texture;
 
 /// Object providing for each vertex of the rendered quadrilaterals the corresponding texture
 /// coordinates.
-@property (readonly, nonatomic) id<DVNTexCoordProvider> texCoordProvider;
+@property (strong, nonatomic) id<DVNTexCoordProvider> texCoordProvider;
 
 /// Object potentially assigning to each vertex of the rendered quadrilaterals additional
 /// attributes.
-@property (readonly, nonatomic) NSArray<id<DVNAttributeProvider>> *attributeProviders;
+@property (strong, nonatomic) NSArray<id<DVNAttributeProvider>> *attributeProviders;
 
 /// Configuration of the render stage.
-@property (readonly, nonatomic) DVNRenderStageConfiguration *renderStageConfiguration;
+@property (strong, nonatomic) DVNRenderStageConfiguration *renderStageConfiguration;
 
 /// Object used to perform the actual rendering.
-@property (readonly, nonatomic) LTDynamicQuadDrawer *drawer;
+@property (strong, nonatomic) LTDynamicQuadDrawer *drawer;
 
 @end
 
@@ -57,45 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(configuration);
 
   if (self = [super init]) {
-    _sampler = [configuration.samplingStageConfiguration sampler];
-    _geometryProvider = [configuration.geometryStageConfiguration provider];
-    _texture = configuration.textureStageConfiguration.texture;
-    _texCoordProvider = [configuration.textureStageConfiguration.model provider];
-    NSArray<id<DVNAttributeProviderModel>> *attributeProviderModels =
-        configuration.attributeStageConfiguration.models;
-    _attributeProviders = [self attributeProvidersFromModels:attributeProviderModels];
-    NSOrderedSet<LTGPUStruct *> *gpuStructs = [self gpuStructsFromModels:attributeProviderModels];
-    _renderStageConfiguration = configuration.renderStageConfiguration;
-    _drawer = [[LTDynamicQuadDrawer alloc]
-               initWithVertexSource:self.renderStageConfiguration.vertexSource
-               fragmentSource:self.renderStageConfiguration.fragmentSource
-               gpuStructs:gpuStructs];
+    [self setConfiguration:configuration];
   }
   return self;
-}
-
-- (NSArray<id<DVNAttributeProvider>> *)
-    attributeProvidersFromModels:(NSArray<id<DVNAttributeProviderModel>> *)models {
-  NSMutableArray<id<DVNAttributeProvider>> *providers =
-      [NSMutableArray arrayWithCapacity:models.count];
-
-  for (id<DVNAttributeProviderModel> model in models) {
-    [providers addObject:[model provider]];
-  }
-
-  return [providers copy];
-}
-
-- (NSOrderedSet<LTGPUStruct *> *)
-    gpuStructsFromModels:(NSArray<id<DVNAttributeProviderModel>> *)models {
-  NSMutableOrderedSet<LTGPUStruct *> *gpuStructs =
-      [NSMutableOrderedSet orderedSetWithCapacity:models.count];
-
-  for (id<DVNAttributeProviderModel> model in models) {
-    [gpuStructs addObject:[model sampleAttributeData].gpuStruct];
-  }
-
-  return [gpuStructs copy];
 }
 
 #pragma mark -
@@ -130,14 +97,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<LTAttributeData *> *)
     attributeDataFromGeometryValues:(const dvn::GeometryValues &)values {
-  NSMutableArray<LTAttributeData *> *data =
-      [NSMutableArray arrayWithCapacity:self.attributeProviders.count];
-
-  for (id<DVNAttributeProvider> provider in self.attributeProviders) {
-    [data addObject:[provider attributeDataFromGeometryValues:values]];
-  }
-
-  return [data copy];
+  return [self.attributeProviders lt_map:^LTAttributeData *(id<DVNAttributeProvider> provider) {
+    return [provider attributeDataFromGeometryValues:values];
+  }];
 }
 
 #pragma mark -
@@ -160,14 +122,67 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (DVNAttributeStageConfiguration *)currentAttributeStageConfiguration {
-  NSMutableArray<id<DVNAttributeProviderModel>> *models =
-      [NSMutableArray arrayWithCapacity:self.attributeProviders.count];
+  auto models = [self.attributeProviders
+                 lt_map:^id<DVNAttributeProviderModel>(id<DVNAttributeProvider> provider) {
+    return [provider currentModel];
+  }];
+  return [[DVNAttributeStageConfiguration alloc] initWithAttributeProviderModels:models];
+}
 
-  for (id<DVNAttributeProvider> provider in self.attributeProviders) {
-    [models addObject:[provider currentModel]];
+- (void)setConfiguration:(DVNPipelineConfiguration *)configuration {
+  self.sampler = [configuration.samplingStageConfiguration sampler];
+  self.geometryProvider = [configuration.geometryStageConfiguration provider];
+  self.texture = configuration.textureStageConfiguration.texture;
+  self.texCoordProvider = [configuration.textureStageConfiguration.model provider];
+  NSArray<id<DVNAttributeProviderModel>> *attributeProviderModels =
+      configuration.attributeStageConfiguration.models;
+  self.attributeProviders = [self attributeProvidersFromModels:attributeProviderModels];
+  NSOrderedSet<LTGPUStruct *> *gpuStructs = [self gpuStructsFromModels:attributeProviderModels];
+  self.renderStageConfiguration = configuration.renderStageConfiguration;
+
+  if (!self.drawer) {
+    self.drawer = [self drawerWithGPUStructs:gpuStructs];
+  } else {
+    NSString *sourceIdentifier =
+        [[self.renderStageConfiguration.vertexSource lt_SHA1]
+         stringByAppendingString:[self.renderStageConfiguration.fragmentSource lt_SHA1]];
+    BOOL equalParameters = [self.drawer.sourceIdentifier isEqualToString:sourceIdentifier] &&
+        [self.drawer.initialGPUStructs isEqual:gpuStructs];
+
+    if (equalParameters) {
+      return;
+    }
+
+    LogDebug(@"Using configuration with different vertex source and/or fragment source or GPU "
+             "structs. If switching between configurations with different source code or GPU "
+             "structs occurs frequently, consider allocating separate DVNPipeline instances.");
+    self.drawer = [self drawerWithGPUStructs:gpuStructs];
+  }
+}
+
+- (NSArray<id<DVNAttributeProvider>> *)
+    attributeProvidersFromModels:(NSArray<id<DVNAttributeProviderModel>> *)models {
+  return [models lt_map:^id<DVNAttributeProvider>(id<DVNAttributeProviderModel> model) {
+    return [model provider];
+  }];
+}
+
+- (NSOrderedSet<LTGPUStruct *> *)
+    gpuStructsFromModels:(NSArray<id<DVNAttributeProviderModel>> *)models {
+  NSMutableOrderedSet<LTGPUStruct *> *gpuStructs =
+      [NSMutableOrderedSet orderedSetWithCapacity:models.count];
+
+  for (id<DVNAttributeProviderModel> model in models) {
+    [gpuStructs addObject:[model sampleAttributeData].gpuStruct];
   }
 
-  return [[DVNAttributeStageConfiguration alloc] initWithAttributeProviderModels:[models copy]];
+  return [gpuStructs copy];
+}
+
+- (LTDynamicQuadDrawer *)drawerWithGPUStructs:(NSOrderedSet<LTGPUStruct *> *)gpuStructs {
+  return [[LTDynamicQuadDrawer alloc]
+          initWithVertexSource:self.renderStageConfiguration.vertexSource
+          fragmentSource:self.renderStageConfiguration.fragmentSource gpuStructs:gpuStructs];
 }
 
 #pragma mark -

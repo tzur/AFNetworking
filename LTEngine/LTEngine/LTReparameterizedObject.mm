@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTParameterizedObject - Properties
 #pragma mark -
 
-- (NSSet<NSString *> *)parameterizationKeys {
+- (NSOrderedSet<NSString *> *)parameterizationKeys {
   return self.parameterizedObject.parameterizationKeys;
 }
 

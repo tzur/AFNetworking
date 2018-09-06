@@ -3,15 +3,14 @@
 
 #import "PNKDilatedConvolutionInternalLayer.h"
 
+#import <MetalToolbox/MPSTemporaryImage+Factory.h>
+
 #import "MPSCNNConvolution+Factory.h"
-#import "MPSTemporaryImage+Factory.h"
 #import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
 #import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-#if PNK_USE_MPS
 
 @interface PNKDilatedConvolutionInternalLayer ()
 
@@ -145,29 +144,24 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 
   ushort activationTypeAsUshort = (ushort)activationModel.activationType;
 
-  auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUInt2
-                             withName:@"dilationRate"];
-  [functionConstants setConstantValue:&kernelGap type:MTLDataTypeUInt2
-                             withName:@"kernelGap"];
-  [functionConstants setConstantValue:&stride type:MTLDataTypeUInt2
-                             withName:@"stride"];
-  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
-                             withName:@"activationType"];
-  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
-                             withName:@"hasAlphaBuffer"];
-  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
-                             withName:@"hasBetaBuffer"];
+  auto functionConstants = @[
+    [MTBFunctionConstant uint2ConstantWithValue:dilationRate name:@"dilationRate"],
+    [MTBFunctionConstant uint2ConstantWithValue:kernelGap name:@"kernelGap"],
+    [MTBFunctionConstant uint2ConstantWithValue:stride name:@"stride"],
+    [MTBFunctionConstant ushortConstantWithValue:activationTypeAsUshort name:@"activationType"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasAlphaBuffer name:@"hasAlphaBuffer"],
+    [MTBFunctionConstant boolConstantWithValue:self.hasBetaBuffer name:@"hasBetaBuffer"]
+  ];
 
   _space2PatchFunctionName = self.convolutionKernel.inputFeatureChannels > 4 ?
       kS2PKernelArrayFunctionName : kS2PKernelSingleFunctionName;
-  _space2PatchState = PNKCreateComputeStateWithConstants(self.device, self.space2PatchFunctionName,
-                                                         functionConstants);
+  _space2PatchState = PNKCreateComputeState(self.device, self.space2PatchFunctionName,
+                                            functionConstants);
 
   _patch2SpaceFunctionName = self.convolutionKernel.outputFeatureChannels > 4 ?
       kP2SKernelArrayFunctionName : kP2SKernelSingleFunctionName;
-  _patch2SpaceState = PNKCreateComputeStateWithConstants(self.device, self.patch2SpaceFunctionName,
-                                                         functionConstants);
+  _patch2SpaceState = PNKCreateComputeState(self.device, self.patch2SpaceFunctionName,
+                                            functionConstants);
 }
 
 - (void)createBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {
@@ -253,10 +247,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   NSUInteger patchWidthWithGap = patchWidth + gapWidth;
   NSUInteger patchHeightWithGap = patchHeight + gapHeight;
 
-  auto patchedInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                            width:patchedImageWidth
-                            height:patchedImageHeight
-                            channels:self.inputFeatureChannels];
+  auto patchedInputImage =
+      [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                              width:patchedImageWidth
+                                                             height:patchedImageHeight
+                                                           channels:self.inputFeatureChannels];
 
   MTLSize workingSpaceSize = {
     patchWidthWithGap,
@@ -267,14 +262,15 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   [self fillBuffer:self.bufferForFullPaddingTF withFirst:fullPaddingTF.x second:fullPaddingTF.y];
   auto buffers = @[self.bufferForFullPaddingTF];
 
-  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, @[inputImage],
+  MTBComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, @[inputImage],
                                        @[patchedInputImage], self.space2PatchFunctionName,
                                        workingSpaceSize);
 
-  auto patchedOutputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
-                             width:patchedImageWidth
-                             height:patchedImageHeight
-                             channels:self.outputFeatureChannels];
+  auto patchedOutputImage =
+      [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
+                                                              width:patchedImageWidth
+                                                             height:patchedImageHeight
+                                                           channels:self.outputFeatureChannels];
 
   pnk::PaddingSize leftTopPaddingMPS = PNKConvolutionLeftTopPaddingMPS(self.kernelWidth,
                                                                        self.kernelHeight, 1, 1);
@@ -300,7 +296,7 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
     outputImage.pnk_textureArrayDepth
   };
 
-  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers,
+  MTBComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers,
                                        @[patchedOutputImage], @[outputImage],
                                        self.patch2SpaceFunctionName, workingSpaceSize);
 }
@@ -321,7 +317,5 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 @end
-
-#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END

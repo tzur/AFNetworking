@@ -5,8 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if PNK_USE_MPS
-
 /// Kernel that translates each pixel value of the input image into another value according to a
 /// translation table. The input pixel values are converted to the \c uchar type (with scaling for
 /// floating-point channel formats and clamping to the \c [0, 255] range for all formats). The
@@ -32,7 +30,5 @@ API_AVAILABLE(ios(10.0))
                   outputImage:(MPSImage *)outputImage;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END

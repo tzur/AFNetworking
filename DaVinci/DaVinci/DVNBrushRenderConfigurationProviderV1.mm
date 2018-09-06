@@ -16,6 +16,7 @@
 #import "DVNBrushRenderModel.h"
 #import "DVNBrushRenderTargetInformation.h"
 #import "DVNCanonicalTexCoordProvider.h"
+#import "DVNDirectedRectProvider.h"
 #import "DVNJitteredColorAttributeProviderModel.h"
 #import "DVNPipelineConfiguration.h"
 #import "DVNQuadCenterAttributeProvider.h"
@@ -56,7 +57,10 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
 - (id<DVNGeometryProviderModel>)geometryStageConfigurationFromModel:(DVNBrushModelV1 *)model
                                                    conversionFactor:(CGFloat)conversionFactor {
   CGFloat scaleInSplineCoordinates = conversionFactor * model.scale;
-  DVNSquareProviderModel *providerModel = [[DVNSquareProviderModel alloc] initWithEdgeLength:1];
+  id<DVNGeometryProviderModel> providerModel =
+      model.rotatedWithSplineDirection ?
+      [[DVNDirectedRectProviderModel alloc] initWithSize:CGSizeMakeUniform(1)] :
+      [[DVNSquareProviderModel alloc] initWithEdgeLength:1];
 
   lt::Interval<CGFloat> distance({
     *model.distanceJitterFactorRange.min() * scaleInSplineCoordinates,
