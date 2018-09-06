@@ -20,20 +20,6 @@
                ReferencedContainer = "container:Pinky.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
-               BuildableName = "PinkyTests.xctest"
-               BlueprintName = "PinkyTests"
-               ReferencedContainer = "container:Pinky.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
-               BuildableName = "PinkyTests.xctest"
-               BlueprintName = "PinkyTests"
-               ReferencedContainer = "container:Pinky.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
