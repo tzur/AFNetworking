@@ -565,13 +565,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendPurchaseSuccessEventForTransaction:(SKPaymentTransaction *)transaction {
   auto successfulPurchaseEventInfo = @{
-    @"EventSubtype": @"PurchaseSuccessful",
     @"ProductID": transaction.payment.productIdentifier,
     @"PurchaseDate": transaction.transactionDate ?: [NSNull null],
     @"ValidatricksRequestID": self.receiptValidationStatus.requestId ?: [NSNull null],
     @"AppStoreLocale": self.appStoreLocale ?: [NSNull null]
   };
   auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                         eventSubtype:@"PurchaseSuccessful"
                                             eventInfo:successfulPurchaseEventInfo];
   [self.eventsSubject sendNext:purchaseEvent];
 }

@@ -619,13 +619,13 @@ context(@"purchasing products", ^{
     expect(purchaseSignal).will.complete();
 
     auto successfulPurchaseEventInfo = @{
-      @"EventSubtype": @"PurchaseSuccessful",
       @"ProductID": productIdentifier,
       @"PurchaseDate": successfulTransaction.transactionDate,
       @"ValidatricksRequestID": receiptValidationStatus.requestId,
       @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
     };
     auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                           eventSubtype:@"PurchaseSuccessful"
                                               eventInfo:successfulPurchaseEventInfo];
 
     expect(eventRecorder).will.sendValues(@[purchaseEvent]);
@@ -2117,13 +2117,13 @@ context(@"handling unfinished completed transactions", ^{
       [unhandledSuccessfulTransactionsSubject sendNext:@[purchasedTransaction]];
 
       auto successfulPurchaseEventInfo = @{
-        @"EventSubtype": @"PurchaseSuccessful",
         @"ProductID": productIdentifier,
         @"PurchaseDate": purchasedTransaction.transactionDate,
         @"ValidatricksRequestID": receiptValidationStatus.requestId,
         @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
       };
       auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                             eventSubtype:@"PurchaseSuccessful"
                                                 eventInfo:successfulPurchaseEventInfo];
 
       expect(eventRecorder).will.sendValues(@[purchaseEvent]);

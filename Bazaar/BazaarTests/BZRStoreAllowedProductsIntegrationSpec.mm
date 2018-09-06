@@ -46,7 +46,7 @@ beforeEach(^{
 
   timeProvider = OCMClassMock([BZRTimeProvider class]);
   OCMStub([(id)timeProvider defaultTimeProvider]).andReturn(timeProvider);
-  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
+  OCMStub([timeProvider currentTime]).andReturn([NSDate date]);
 
   dataMock = OCMClassMock([NSData class]);
   BZRStubDataMockReceiptData(dataMock, @"foofile");
