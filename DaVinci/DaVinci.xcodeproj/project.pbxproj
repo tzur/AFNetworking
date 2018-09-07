@@ -131,6 +131,8 @@
 		504BA825213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png in Resources */ = {isa = PBXBuildFile; fileRef = 504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */; };
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
+		505E432021411F4F00E445F3 /* DVNSplineControlPointStabilizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505E431F21411F4F00E445F3 /* DVNSplineControlPointStabilizer.mm */; };
+		505E43C32142EF1400E445F3 /* DVNSplineControlPointStabilizerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505E43C22142EF1400E445F3 /* DVNSplineControlPointStabilizerSpec.mm */; };
 		505ECF39203F20E200E62A71 /* DVNBrushRenderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505ECF38203F20E200E62A71 /* DVNBrushRenderModel.mm */; };
 		505ECF3B20401E2300E62A71 /* DVNBrushRenderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505ECF3A20401E2200E62A71 /* DVNBrushRenderModelSpec.mm */; };
 		5075B991200640DB000A73AE /* DVNBrushRenderTargetInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5075B990200640DA000A73AE /* DVNBrushRenderTargetInformation.mm */; };
@@ -684,6 +686,9 @@
 		504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_SplineDirection.png; path = Resources/DVNBrushModelV1_SplineDirection.png; sourceTree = "<group>"; };
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
+		505E431E21411BD400E445F3 /* DVNSplineControlPointStabilizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNSplineControlPointStabilizer.h; sourceTree = "<group>"; };
+		505E431F21411F4F00E445F3 /* DVNSplineControlPointStabilizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineControlPointStabilizer.mm; sourceTree = "<group>"; };
+		505E43C22142EF1400E445F3 /* DVNSplineControlPointStabilizerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineControlPointStabilizerSpec.mm; sourceTree = "<group>"; };
 		505ECF16203F20E200E62A71 /* DVNBrushRenderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushRenderModel.h; sourceTree = "<group>"; };
 		505ECF38203F20E200E62A71 /* DVNBrushRenderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushRenderModel.mm; sourceTree = "<group>"; };
 		505ECF3A20401E2200E62A71 /* DVNBrushRenderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushRenderModelSpec.mm; sourceTree = "<group>"; };
@@ -1227,6 +1232,7 @@
 			children = (
 				250154C61D1AEB5900420FA9 /* Pipeline */,
 				503C57701D3665ED00C20B38 /* Spline Renderer */,
+				505E42FC21411B6500E445F3 /* Utils */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1393,6 +1399,7 @@
 			children = (
 				500F77D81D2D3A6900023343 /* Pipeline */,
 				503C57B91D3685A900C20B38 /* Spline Renderer */,
+				505E43A02142EEE600E445F3 /* Utils */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1487,6 +1494,23 @@
 				50073F931D363274009F7F48 /* NSValue+OpenCVExtensions.mm */,
 			);
 			name = TestUtils;
+			sourceTree = "<group>";
+		};
+		505E42FC21411B6500E445F3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				505E431E21411BD400E445F3 /* DVNSplineControlPointStabilizer.h */,
+				505E431F21411F4F00E445F3 /* DVNSplineControlPointStabilizer.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		505E43A02142EEE600E445F3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				505E43C22142EF1400E445F3 /* DVNSplineControlPointStabilizerSpec.mm */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		5075B8EF2006398F000A73AE /* Brush Models */ = {
@@ -2081,6 +2105,7 @@
 				505ECF39203F20E200E62A71 /* DVNBrushRenderModel.mm in Sources */,
 				50395507201B5E78005D81A4 /* DVNBrushRenderConfigurationProvider.mm in Sources */,
 				500A999D2090A341007CF2A6 /* DVNBrushStroke.mm in Sources */,
+				505E432021411F4F00E445F3 /* DVNSplineControlPointStabilizer.mm in Sources */,
 				283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
 				50053157200FB3A300B72186 /* DVNBrushModelV1.mm in Sources */,
@@ -2164,6 +2189,7 @@
 				502CD07F20984F4600D1943A /* DVNBrushStrokeSpec.mm in Sources */,
 				257344F71D3792A300E852B2 /* DVNSquareProviderSpec.mm in Sources */,
 				28662D5C1DF57D8A0051B9DA /* DVNPainterSpec.mm in Sources */,
+				505E43C32142EF1400E445F3 /* DVNSplineControlPointStabilizerSpec.mm in Sources */,
 				50163CCD1D33821600590860 /* DVNAttributeStageConfigurationSpec.mm in Sources */,
 				257344FA1D3795D500E852B2 /* DVNGeometryProviderExamples.mm in Sources */,
 				500FC8F2201755110005D295 /* DVNBrushModel+DeserializationSpec.mm in Sources */,
