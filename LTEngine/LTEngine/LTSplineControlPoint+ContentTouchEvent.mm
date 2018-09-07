@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (event.force) {
     [attributes setValue:event.force forKey:[self keyForForce]];
   }
+  [attributes setValue:event.speedInViewCoordinates ?: @0
+                forKey:[self keyForSpeedInScreenCoordinates]];
   return attributes;
 }
 
