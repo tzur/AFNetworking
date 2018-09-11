@@ -27,17 +27,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// retrievable from this instance.
 @property (nonatomic) CGPoint directionComputationBasePoint;
 
+/// Sample values stored in order to create identical results independent of the division of the
+/// sample sequence into subsequences. Is \c nil if no such sample values are currently stored.
+@property (strong, nonatomic, nullable) id<LTSampleValues> storedSampleValues;
+
 @end
 
 @interface DVNDirectedRectProviderModel ()
 
 /// Returns a new instance equal to this instance, with the exception of the given
-/// \c directionComputationBasePoint.
-- (instancetype)copyWithDirectionComputationBasePoint:(CGPoint)point;
+/// \c directionComputationBasePoint and \c storedSampleValues.
+- (instancetype)copyWithDirectionComputationBasePoint:(CGPoint)point
+                                   storedSampleValues:(id<LTSampleValues>)storedSampleValues;
 
 /// Base point to be used for computing the rotation of the next quad returned by the \c provider
 /// retrievable from this instance.
 @property (nonatomic) CGPoint directionComputationBasePoint;
+
+/// Sample values stored in order to create identical results independent of the division of the
+/// sample sequence into subsequences. Is \c nil if no such sample values are currently stored.
+@property (strong, nonatomic, nullable) id<LTSampleValues> storedSampleValues;
 
 @end
 
@@ -66,6 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
     _xCoordinateKey = xCoordinateKey;
     _yCoordinateKey = yCoordinateKey;
     _directionComputationBasePoint = CGPointNull;
+    _storedSampleValues = nil;
   }
   return self;
 }
@@ -86,11 +96,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Copying
 #pragma mark -
 
-- (instancetype)copyWithDirectionComputationBasePoint:(CGPoint)point {
+- (instancetype)copyWithDirectionComputationBasePoint:(CGPoint)point
+                                   storedSampleValues:(id<LTSampleValues>)storedSampleValues {
   DVNDirectedRectProviderModel *model = [[[self class] alloc] initWithSize:self.size
                                                             xCoordinateKey:self.xCoordinateKey
                                                             yCoordinateKey:self.yCoordinateKey];
   model.directionComputationBasePoint = point;
+  model.storedSampleValues = storedSampleValues;
   return model;
 }
 
@@ -114,6 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _model = model;
     _directionComputationBasePoint = model.directionComputationBasePoint;
+    _storedSampleValues = model.storedSampleValues;
   }
   return self;
 }
@@ -135,31 +148,47 @@ NS_ASSUME_NONNULL_BEGIN
            @"Number (%lu) of x-coordinates does not match number (%lu) of y-coordinates",
            (unsigned long)xCoordinates.size(), (unsigned long)yCoordinates.size());
 
+  BOOL isBeginningOfSampleSequence = CGPointIsNull(self.directionComputationBasePoint);
+
   std::vector<lt::Quad> quads;
-  quads.reserve(xCoordinates.size());
+  std::vector<NSUInteger> indices;
+  // Reserve enough space for all quads and indices, including the one possibly added for the
+  // potentially stored sample values.
+  quads.reserve(xCoordinates.size() + 1);
+  indices.reserve(xCoordinates.size() + 1);
 
-  BOOL directionComputationBasePointWasNull = CGPointIsNull(self.directionComputationBasePoint);
+  if (self.storedSampleValues) {
+    LTAssert(!isBeginningOfSampleSequence);
+    xCoordinates.insert(xCoordinates.begin(), self.directionComputationBasePoint.x);
+    yCoordinates.insert(yCoordinates.begin(), self.directionComputationBasePoint.y);
+    samples = [self.storedSampleValues concatenatedWithSampleValues:samples];
+    self.storedSampleValues = nil;
+    isBeginningOfSampleSequence = YES;
+  }
 
-  if (directionComputationBasePointWasNull) {
+  if (isBeginningOfSampleSequence && xCoordinates.size()) {
     self.directionComputationBasePoint = CGPointMake(xCoordinates.front(), yCoordinates.front());
+
+    if (xCoordinates.size() == 1 && !end) {
+      // There need to be at least two sampled points in order to compute an approximation for the
+      // direction; hence, store the sample values and return an empty dvn::GeometryValues instance.
+      self.storedSampleValues = samples;
+      return dvn::GeometryValues();
+    }
+
     quads.push_back([self firstQuadForXCoordinates:xCoordinates yCoordinates:yCoordinates end:end]);
+    indices.push_back(0);
   }
 
   CGSize size = self.model.size;
 
-  for (NSUInteger i = directionComputationBasePointWasNull ? 1 : 0; i < xCoordinates.size(); ++i) {
+  for (NSUInteger i = isBeginningOfSampleSequence ? 1 : 0; i < xCoordinates.size(); ++i) {
     CGPoint center = CGPointMake(xCoordinates[i], yCoordinates[i]);
     CGRect rect = CGRectCenteredAt(center, size);
     CGFloat angle = LTVector2(center - self.directionComputationBasePoint).angle(LTVector2(1, 0));
     quads.push_back(lt::Quad(rect).rotatedAroundPoint(-angle, center));
-    self.directionComputationBasePoint = center;
-  }
-
-  std::vector<NSUInteger> indices;
-  indices.reserve(quads.size());
-
-  for (NSUInteger i = 0; i < quads.size(); ++i) {
     indices.push_back(i);
+    self.directionComputationBasePoint = center;
   }
 
   if (end) {
@@ -172,15 +201,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (lt::Quad)firstQuadForXCoordinates:(const CGFloats &)xCoordinates
                         yCoordinates:(const CGFloats &)yCoordinates end:(BOOL)end {
   if (xCoordinates.size() == 1) {
-    if (!end) {
-      // If this is the first but not the only sample, create a degenerate quad since the correct
-      // rotation angle is not known yet.
-      return lt::Quad(CGRectCenteredAt(self.directionComputationBasePoint, CGSizeMakeUniform(0)));
-    } else {
-      // If this is the first and only sample, no direction can be computed, so provide a quad of
-      // the desired size and without rotation.
-      return lt::Quad(CGRectCenteredAt(self.directionComputationBasePoint, self.model.size));
-    }
+    LTParameterAssert(end);
+    // If this is the first and only sample, no direction can be computed, so provide a quad of
+    // the desired size and without rotation.
+    return lt::Quad(CGRectCenteredAt(self.directionComputationBasePoint, self.model.size));
   }
 
   // If more than one sample are provided, use the rotation of the second quad also for the
@@ -201,7 +225,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id<DVNGeometryProviderModel>)currentModel {
-  return [self.model copyWithDirectionComputationBasePoint:self.directionComputationBasePoint];
+  return [self.model copyWithDirectionComputationBasePoint:self.directionComputationBasePoint
+                                        storedSampleValues:self.storedSampleValues];
 }
 
 @end

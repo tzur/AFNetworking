@@ -138,19 +138,15 @@ context(@"single sample", ^{
     samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0} mapping:mapping];
   });
 
-  it(@"should provide the correct quad for single sample with end indication set to NO", ^{
-    itShouldBehaveLike(kDVNDeterministicGeometryProviderExamples, ^{
-      NSArray<NSValue *> *expectedQuads = DVNConvertedBoxedQuadsFromQuads({
-        lt::Quad(CGRectCenteredAt(CGPointMake(1, 3), CGSizeMakeUniform(0)))
-      });
-      std::vector<NSUInteger> indices = {0};
-      return @{
-        kDVNGeometryProviderExamplesModel: model,
-        kDVNGeometryProviderExamplesSamples: samples,
-        kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
-        kDVNGeometryProviderExamplesExpectedIndices: $(indices)
-      };
-    });
+  itShouldBehaveLike(kDVNDeterministicGeometryProviderExamples, ^{
+    NSArray<NSValue *> *expectedQuads = @[];
+    std::vector<NSUInteger> indices = {};
+    return @{
+      kDVNGeometryProviderExamplesModel: model,
+      kDVNGeometryProviderExamplesSamples: samples,
+      kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
+      kDVNGeometryProviderExamplesExpectedIndices: $(indices)
+    };
   });
 
   it(@"should provide the correct quad for single sample with end indication set to YES", ^{
@@ -195,6 +191,49 @@ context(@"multiple consecutive samples", ^{
     for (std::vector<lt::Quad>::size_type i = 0; i < quads.size(); ++i) {
       expect(quads[i] == expectedQuads[i]).to.beTruthy();
     }
+  });
+
+  context(@"multiple consecutive samples starting with single sample", ^{
+    beforeEach(^{
+      LTParameterizationKeyToValues *mapping =
+          [[LTParameterizationKeyToValues alloc] initWithKeys:keys
+                                                 valuesPerKey:(cv::Mat1g(2, 1) << 1, 4)];
+      samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0} mapping:mapping];
+    });
+
+    it(@"should provide empty geometry values when buffering single sample", ^{
+      dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+      expect(values == dvn::GeometryValues()).to.beTruthy();
+    });
+
+    it(@"should provide quads rotated according to spline direction, after buffering", ^{
+      dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+
+      LTParameterizationKeyToValues *mapping =
+          [[LTParameterizationKeyToValues alloc] initWithKeys:keys
+                                                 valuesPerKey:(cv::Mat1g(2, 2) << 2, 3, 5, 6)];
+      additionalSamples = [[LTSampleValues alloc] initWithSampledParametricValues:{1, 2}
+                                                                          mapping:mapping];
+      values = [provider valuesFromSamples:additionalSamples end:NO];
+      std::vector<lt::Quad> quads = values.quads();
+      CGPoint firstCenter = CGPointMake(1, 4);
+      CGPoint secondCenter = CGPointMake(2, 5);
+      CGPoint thirdCenter = CGPointMake(3, 6);
+      CGFloat firstAngle = LTVector2(secondCenter - firstCenter).angle(LTVector2(1, 0));
+      CGFloat secondAngle = LTVector2(secondCenter - firstCenter).angle(LTVector2(1, 0));
+
+      std::vector<lt::Quad> expectedQuads = {
+        lt::Quad(CGRectCenteredAt(firstCenter, size)).rotatedAroundPoint(-firstAngle, firstCenter),
+        lt::Quad(CGRectCenteredAt(secondCenter, size)).rotatedAroundPoint(-firstAngle,
+                                                                          secondCenter),
+        lt::Quad(CGRectCenteredAt(thirdCenter, size)).rotatedAroundPoint(-secondAngle, thirdCenter),
+      };
+
+      expect(quads.size()).to.equal(expectedQuads.size());
+      for (std::vector<lt::Quad>::size_type i = 0; i < quads.size(); ++i) {
+        expect(quads[i] == expectedQuads[i]).to.beTruthy();
+      }
+    });
   });
 });
 
