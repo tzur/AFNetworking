@@ -3,6 +3,8 @@
 
 #import "LTParameterizationKeyToValues.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTParameterizationKeyToValues () {
@@ -32,6 +34,30 @@ NS_ASSUME_NONNULL_BEGIN
     _numberOfValuesPerKey = valuesPerKey.cols;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTParameterizationKeyToValues *)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return [self.keys isEqualToOrderedSet:object.keys] &&
+      (sum(_valuesPerKey != object.valuesPerKey) == cv::Scalar(0));
+}
+
+- (NSUInteger)hash {
+  size_t seed = 0;
+  lt::hash_combine(seed, self.keys.hash);
+  // Refrain from computing a hash of the matrix for efficiency reasons.
+  return seed;
 }
 
 #pragma mark -
