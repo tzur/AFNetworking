@@ -24,7 +24,7 @@ GeometryValues::GeometryValues(const std::vector<lt::Quad> &quads,
 
 bool operator==(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs) {
   return lhs.quads() == rhs.quads() && lhs.indices() == rhs.indices() &&
-  [lhs.samples() isEqual:rhs.samples()];
+      [lhs.samples() isEqual:rhs.samples()];
 }
 
 bool operator!=(const dvn::GeometryValues &lhs, const dvn::GeometryValues &rhs) {

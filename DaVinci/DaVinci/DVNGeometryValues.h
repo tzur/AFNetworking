@@ -2,7 +2,6 @@
 // Created by Rouven Strauss.
 
 #import <LTEngine/LTQuad.h>
-
 #import <LTEngine/LTSampleValues.h>
 #import <LTKit/LTHashExtensions.h>
 
