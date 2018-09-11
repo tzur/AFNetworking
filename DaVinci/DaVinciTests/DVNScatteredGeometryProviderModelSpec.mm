@@ -15,6 +15,71 @@
 #import "DVNGeometryProviderExamples.h"
 #import "DVNTestGeometryProvider.h"
 
+@interface DVNScatteredGeometryProviderModelTestModel : NSObject <DVNGeometryProviderModel>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithCount:(NSUInteger)count NS_DESIGNATED_INITIALIZER;
+
+@property (readonly, nonatomic) NSUInteger count;
+
+@end
+
+@interface DVNScatteredGeometryProviderModelTestProvider : NSObject <DVNGeometryProvider>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithCount:(NSUInteger)count NS_DESIGNATED_INITIALIZER;
+
+@property (readonly, nonatomic) NSUInteger count;
+
+@end
+
+@implementation DVNScatteredGeometryProviderModelTestProvider
+
+- (instancetype)initWithCount:(NSUInteger)count {
+  if (self = [super init]) {
+    _count = count;
+  }
+  return self;
+}
+
+- (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(__unused BOOL)end {
+  std::vector<lt::Quad> quads = {lt::Quad()};
+  std::vector<NSUInteger> indices = {0};
+  for (NSUInteger i = 1; i < self.count; ++i) {
+    samples = [samples concatenatedWithSampleValues:samples];
+    quads.push_back(lt::Quad());
+    indices.push_back(i);
+  }
+  return !self.count ? dvn::GeometryValues() : dvn::GeometryValues(quads, indices, samples);
+}
+
+- (id<DVNGeometryProviderModel>)currentModel {
+  return [[DVNScatteredGeometryProviderModelTestModel alloc] initWithCount:self.count];
+}
+
+@end
+
+@implementation DVNScatteredGeometryProviderModelTestModel
+
+- (instancetype)initWithCount:(NSUInteger)count {
+  if (self = [super init]) {
+    _count = count;
+  }
+  return self;
+}
+
+- (instancetype)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
+}
+
+- (id<DVNGeometryProvider>)provider {
+  return [[DVNScatteredGeometryProviderModelTestProvider alloc] initWithCount:self.count];
+}
+
+@end
+
 SpecBegin(DVNScatteredGeometryProviderModel)
 
 __block id<LTSampleValues> samples;
@@ -310,6 +375,41 @@ context(@"provider", ^{
           expect(maxDimension).to.beGreaterThan(0.15);
         });
       });
+    });
+  });
+
+  context(@"geometry values", ^{
+    it(@"should provide no samples if underlying provider returns no samples", ^{
+      DVNScatteredGeometryProviderModelTestModel *underlyingProviderModel =
+          [[DVNScatteredGeometryProviderModelTestModel alloc] initWithCount:0];
+      model = [[DVNScatteredGeometryProviderModel alloc]
+               initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
+               count:count distance:distance angle:angle scale:scale
+               lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+               startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+      id<DVNGeometryProvider> provider = [model provider];
+
+      dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+
+      expect(values).to.equal(dvn::GeometryValues());
+    });
+
+    it(@"should provide correct samples if underlying provider returns different samples", ^{
+      DVNScatteredGeometryProviderModelTestModel *underlyingProviderModel =
+          [[DVNScatteredGeometryProviderModelTestModel alloc] initWithCount:2];
+      model = [[DVNScatteredGeometryProviderModel alloc]
+               initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
+               count:count distance:distance angle:angle scale:scale
+               lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+               startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+      id<DVNGeometryProvider> provider = [model provider];
+
+      dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+
+      LTSampleValues *expectedSampleValues = [samples concatenatedWithSampleValues:samples];
+      expect(values.samples()).to.equal(expectedSampleValues);
     });
   });
 });

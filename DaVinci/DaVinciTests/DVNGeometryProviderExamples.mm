@@ -53,10 +53,6 @@ sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
     });
 
     context(@"providing geometry", ^{
-      it(@"should provide the correct samples", ^{
-        expect([provider valuesFromSamples:samples end:NO].samples()).to.equal(samples);
-      });
-
       it(@"should reproduce the same values when using the same model", ^{
         dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
         id<DVNGeometryProvider> otherProvider = [model provider];

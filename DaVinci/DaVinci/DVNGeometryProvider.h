@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns quadrilateral geometry constructed from the given \c samples. The \c end indication
 /// should be set to \c YES in order to indicate the end of a consecutively provided sample
 /// sequence.
+///
+/// @important The \c samples() of the returned \c dvn::GeometryValues may be different from the
+/// given \c samples, e.g. in case in which the receiver performs buffering, and, hence, must
+/// consecutively be used rather than the given \c samples.
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(BOOL)end;
 
 /// Returns an immutable model representing the current state of this object.

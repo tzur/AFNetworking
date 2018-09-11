@@ -131,6 +131,12 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat taperi
 
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(BOOL)end {
   dvn::GeometryValues values = [self.geometryProvider valuesFromSamples:samples end:end];
+  samples = values.samples();
+
+  if (!samples.sampledParametricValues.size()) {
+    return dvn::GeometryValues();
+  }
+
   const std::vector<lt::Quad> &originalQuads = values.quads();
   std::vector<lt::Quad> quads;
   quads.reserve(originalQuads.size());
@@ -216,7 +222,7 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat taperi
       indices.push_back(index);
     }
   }
-  return dvn::GeometryValues(quads, indices, values.samples());
+  return dvn::GeometryValues(quads, indices, samples);
 }
 
 - (id<DVNGeometryProviderModel>)currentModel {
