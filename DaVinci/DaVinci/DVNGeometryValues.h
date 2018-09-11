@@ -12,7 +12,8 @@ namespace dvn {
   struct GeometryValues {
   public:
     /// Returns an empty struct.
-    GeometryValues() noexcept : _quads({}), _indices({}), _samples(nil) {}
+    GeometryValues() noexcept : _quads({}), _indices({}),
+        _samples([[LTSampleValues alloc] initWithSampledParametricValues:{} mapping:nil]) {}
 
     /// Initializes with the given \c quads, \c indices and \c samples. The \c size() of the given
     /// \c quads must equal to the \c size() of the given \c indices.

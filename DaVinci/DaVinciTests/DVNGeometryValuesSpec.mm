@@ -26,6 +26,16 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
+  it(@"should initialize correctly without values", ^{
+    dvn::GeometryValues geometryValues = dvn::GeometryValues();
+
+    LTSampleValues *expectedSampleValues =
+        [[LTSampleValues alloc] initWithSampledParametricValues:{} mapping:nil];
+    expect(geometryValues.quads().size()).to.equal(0);
+    expect(geometryValues.indices().size()).to.equal(0);
+    expect(geometryValues.samples()).to.equal(expectedSampleValues);
+  });
+
   it(@"should initialize correctly", ^{
     dvn::GeometryValues geometryValues(quads, indices, samples);
 
@@ -48,10 +58,18 @@ context(@"initialization", ^{
     expect(geometryValues.indices().size()).to.equal(1);
   });
 
-  it(@"should raise when attempting to initialize with mismatching size of indices", ^{
-    expect(^{
-      dvn::GeometryValues geometryValues(quads, {}, samples);
-    }).to.raise(NSInvalidArgumentException);
+  context(@"invalid parameters", ^{
+    it(@"should raise when attempting to initialize with mismatching size of indices", ^{
+      expect(^{
+        dvn::GeometryValues geometryValues(quads, {}, samples);
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when attempting to initialize without samples", ^{
+      expect(^{
+        dvn::GeometryValues geometryValues({}, {}, nil);
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 });
 

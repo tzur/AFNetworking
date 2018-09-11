@@ -13,6 +13,8 @@ GeometryValues::GeometryValues(const std::vector<lt::Quad> &quads,
   LTParameterAssert(quads.size() == indices.size(),
                     @"Number (%lu) of quads must equal number (%lu) of indices",
                     (unsigned long)quads.size(),  (unsigned long)indices.size());
+  LTParameterAssert(samples);
+
   _quads = quads;
   _indices = indices;
   _samples = samples;
