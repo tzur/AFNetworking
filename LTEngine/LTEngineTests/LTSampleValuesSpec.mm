@@ -46,4 +46,84 @@ context(@"initialization", ^{
   });
 });
 
+context(@"concatenation", ^{
+  static NSOrderedSet<NSString *> * const kKeys =
+      [NSOrderedSet orderedSetWithArray:@[@"foo", @"bar"]];
+
+  __block cv::Mat1g matrix;
+
+  beforeEach(^{
+    matrix = (cv::Mat1g(2, 1) << 0, 3);
+  });
+
+  it(@"should return concatenation of copy of receiver with given object", ^{
+    LTParameterizationKeyToValues *mapping =
+        [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys valuesPerKey:matrix];
+    LTSampleValues *sampleValues = [[LTSampleValues alloc] initWithSampledParametricValues:{1}
+                                                                                   mapping:mapping];
+    cv::Mat1g otherMatrix = (cv::Mat1g(2, 2) << 1, 2, 4, 5);
+    mapping = [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys valuesPerKey:otherMatrix];
+    LTSampleValues *otherSampleValues =
+        [[LTSampleValues alloc] initWithSampledParametricValues:{2, 3} mapping:mapping];
+
+    LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
+
+    CGFloats expectedSampledParametricValues = {1, 2, 3};
+    cv::Mat1g expectedMatrix = (cv::Mat1g(2, 3) << 0, 1, 2, 3, 4, 5);
+    expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
+    expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
+    expect(result.mappingOfSampledValues.numberOfValuesPerKey).to.equal(3);
+    expect($(result.mappingOfSampledValues.valuesPerKey)).to.equalMat($(expectedMatrix));
+  });
+
+  context(@"empty sample values", ^{
+    it(@"should return concatenation of copy of empty receiver with given object", ^{
+      LTSampleValues *sampleValues = [[LTSampleValues alloc] initWithSampledParametricValues:{}
+                                                                                     mapping:nil];
+      LTParameterizationKeyToValues *mapping = [[LTParameterizationKeyToValues alloc]
+                                                initWithKeys:kKeys valuesPerKey:matrix];
+      LTSampleValues *otherSampleValues =
+          [[LTSampleValues alloc] initWithSampledParametricValues:{1} mapping:mapping];
+
+      LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
+
+      CGFloats expectedSampledParametricValues = {1};
+      expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
+      expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
+      expect(result.mappingOfSampledValues.numberOfValuesPerKey).to.equal(1);
+      expect($(result.mappingOfSampledValues.valuesPerKey)).to.equalMat($(matrix));
+    });
+
+    it(@"should return concatenation of copy of receiver with given empty object", ^{
+      LTParameterizationKeyToValues *mapping = [[LTParameterizationKeyToValues alloc]
+                                                initWithKeys:kKeys valuesPerKey:matrix];
+      LTSampleValues *sampleValues = [[LTSampleValues alloc]
+                                      initWithSampledParametricValues:{1} mapping:mapping];
+      LTSampleValues *otherSampleValues = [[LTSampleValues alloc]
+                                           initWithSampledParametricValues:{} mapping:nil];
+
+      LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
+
+      CGFloats expectedSampledParametricValues = {1};
+      expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
+      expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
+      expect(result.mappingOfSampledValues.numberOfValuesPerKey).to.equal(1);
+      expect($(result.mappingOfSampledValues.valuesPerKey)).to.equalMat($(matrix));
+    });
+
+    it(@"should return concatenation of copy of empty receiver with given empty object", ^{
+      LTSampleValues *sampleValues = [[LTSampleValues alloc]
+                                      initWithSampledParametricValues:{} mapping:nil];
+      LTSampleValues *otherSampleValues = [[LTSampleValues alloc]
+                                           initWithSampledParametricValues:{} mapping:nil];
+
+      LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
+
+      CGFloats expectedSampledParametricValues = {};
+      expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
+      expect(result.mappingOfSampledValues).to.beNil();
+    });
+  });
+});
+
 SpecEnd
