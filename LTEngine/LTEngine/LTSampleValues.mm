@@ -3,6 +3,8 @@
 
 #import "LTSampleValues.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 #import "LTParameterizationKeyToValues.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +25,31 @@ NS_ASSUME_NONNULL_BEGIN
     _mappingOfSampledValues = mapping;
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTSampleValues *)sampleValues {
+  if (self == sampleValues) {
+    return YES;
+  }
+
+  if (![sampleValues isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return _sampledParametricValues == sampleValues.sampledParametricValues &&
+      (self.mappingOfSampledValues == sampleValues.mappingOfSampledValues ||
+       [self.mappingOfSampledValues isEqual:sampleValues.mappingOfSampledValues]);
+}
+
+- (NSUInteger)hash {
+  size_t seed = 0;
+  lt::hash_combine(seed, std::hash<CGFloats>()(_sampledParametricValues));
+  lt::hash_combine(seed, self.mappingOfSampledValues.hash);
+  return seed;
 }
 
 #pragma mark -
