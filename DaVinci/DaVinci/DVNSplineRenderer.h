@@ -51,6 +51,27 @@ NS_ASSUME_NONNULL_BEGIN
                configuration:(DVNPipelineConfiguration *)configuration
                     delegate:(nullable id<DVNSplineRenderingDelegate>)delegate;
 
+/// Processes the given \c controlPoints belonging to an ongoing control point sequence by a)
+/// creating a spline, in the form of a continuous \c id<LTParameterizedObject>, from the
+/// \c controlPoints or extending the already existing spline with them, b) rendering geometry
+/// created according to the spline, and, if \c preserveState is \c YES, c) resetting the state of
+/// the internally used objects, including the internally used \c DVNPipeline, except for the
+/// content of the render target, to the state prior to the method call.
+///
+/// In order to indicate the end of a process sequence, the \c end indication must be \c YES. If
+/// \c end is \c YES and \c preserveState is \c NO, this instance transitions into its initial state
+/// in which the next provided control points are considered to belong to a new control point
+/// sequence. If both \c end and \c preserveState are \c YES, the instance only performs the
+/// rendering as if the control point sequence has ended without transitioning into its initial
+/// state, preserving its state prior to rendering, as described above.
+///
+/// @important The \c renderingOfSplineRenderer:endedWithModel: method of the delegate provided upon
+/// initialization is not called when \c preserveState is \c YES. This allows for consecutive
+/// renderings of the final brush stroke part on the render target without informing the delegate
+/// more than once.
+- (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints
+               preserveState:(BOOL)preserveState end:(BOOL)end;
+
 /// Processes the given \c model. The effect of this method is identical to creating a
 /// \c DVNSplineRenderer and performing a process sequence with the information provided by the
 /// given \c model. It is the responsibility of the user to ensure the usage of an appropriate

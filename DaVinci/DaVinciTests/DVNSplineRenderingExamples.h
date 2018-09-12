@@ -6,10 +6,6 @@
 /// Group name of shared tests for objects conforming to the \c DVNSplineRendering protocol.
 extern NSString * const kDVNSplineRenderingExamples;
 
-/// Dictionary key to a block returning an \c NSDictionary whose keys are the ones listed in this
-/// header.
-extern NSString * const kDVNSplineRenderingExamplesDictionary;
-
 /// Dictionary key to the \c LTTexture to be used as render target.
 extern NSString * const kDVNSplineRenderingExamplesTexture;
 

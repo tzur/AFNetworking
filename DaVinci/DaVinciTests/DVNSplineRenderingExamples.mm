@@ -19,7 +19,6 @@
 
 NSString * const kDVNSplineRenderingExamples = @"DVNSplineRenderingExamples";
 NSString * const kDVNSplineRenderingExamplesTexture = @"DVNSplineRenderingExamplesTexture";
-NSString * const kDVNSplineRenderingExamplesDictionary = @"DVNSplineRenderingExamplesDictionary";
 NSString * const kDVNSplineRenderingExamplesDelegateMock =
     @"DVNSplineRenderingExamplesDelegateMock";
 NSString * const kDVNSplineRenderingExamplesStrictDelegateMock =
@@ -42,17 +41,14 @@ NSString * const kDVNSplineRenderingExamplesPipelineConfiguration =
 
 SharedExamplesBegin(DVNSplineRendering)
 
-sharedExamples(kDVNSplineRenderingExamples, ^(NSDictionary *data) {
+sharedExamples(kDVNSplineRenderingExamples, ^(NSDictionary *values) {
   __block LTParameterizedObjectType *type;
-  __block NSDictionary *values;
   __block NSArray<LTSplineControlPoint *> *insufficientControlPointsForRendering;
   __block NSArray<LTSplineControlPoint *> *controlPoints;
   __block NSArray<LTSplineControlPoint *> *additionalControlPoints;
   __block DVNPipelineConfiguration *initialConfiguration;
 
   beforeEach(^{
-    NSDictionary *(^block)() = data[kDVNSplineRenderingExamplesDictionary];
-    values = block();
     type = values[kDVNSplineRenderingExamplesType];
     insufficientControlPointsForRendering =
         values[kDVNSplineRenderingExamplesInsufficientControlPoints];
@@ -61,17 +57,7 @@ sharedExamples(kDVNSplineRenderingExamples, ^(NSDictionary *data) {
     initialConfiguration = values[kDVNSplineRenderingExamplesPipelineConfiguration];
   });
 
-  afterEach(^{
-    initialConfiguration = nil;
-    type = nil;
-    values = nil;
-  });
-
   context(@"processing", ^{
-    static const lt::Interval<CGFloat> kInterval({0, 1},
-                                                 lt::Interval<CGFloat>::EndpointInclusion::Closed,
-                                                 lt::Interval<CGFloat>::EndpointInclusion::Closed);
-
     __block id<LTParameterizedObject> parameterizedObject;
     __block id<DVNSplineRendering> renderer;
     __block LTTexture *renderTarget;
