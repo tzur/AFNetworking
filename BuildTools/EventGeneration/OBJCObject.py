@@ -133,8 +133,8 @@ class OBJCObject(object):
 
     @staticmethod
     def __parse_property_name(name):
-        objc_name = re.sub("(?!^)_([a-zA-Z])", lambda m: m.group(1).upper(), name)
-        objc_name = re.sub(r'(?!^)[_](\d+)', lambda m: "", objc_name)
+        objc_name = re.sub("(?!^)_([a-zA-Z0-9])", lambda m: m.group(1).upper(), name)
+        objc_name = re.sub("^(\\d+)", lambda m: "", objc_name)
         objc_name = re.sub("(?!^)[.]([a-z]+)", lambda m: "", objc_name)
         return re.sub("Id", "ID", objc_name)
 
@@ -188,8 +188,8 @@ class OBJCObject(object):
     def objc_class_name(self, capitalized=False):
         """Converts file name to Objective-C name, such as /usr/bin/foo_bar.json to FooBar."""
         variable_name = os.path.splitext(self.__basename)[0]
-        variable_name = re.sub(r'[_]([a-zA-Z])', lambda m: m.group(1).upper(), variable_name)
-        variable_name = re.sub(r'([_](\d+))|([.]([a-zA-Z]+))', lambda m: "", variable_name)
+        variable_name = re.sub("[_]([a-zA-Z])", lambda m: m.group(1).upper(), variable_name)
+        variable_name = re.sub("([_](\\d+))|([.]([a-zA-Z]+))", lambda m: "", variable_name)
         variable_name = re.sub("Id", "ID", variable_name)
         if not capitalized:
             return variable_name
