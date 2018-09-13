@@ -24,10 +24,9 @@
 @property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *videoInput;
 @property (readwrite, nonatomic, nullable) AVCaptureVideoDataOutput *videoOutput;
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *videoConnection;
-@property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
-@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput NS_AVAILABLE_IOS(10_0);
+@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
 @property (readwrite, nonatomic, nullable) CAMPixelFormat *pixelFormat;
-@property (readwrite, nonatomic, nullable) AVCaptureConnection *stillConnection;
+@property (readwrite, nonatomic, nullable) AVCaptureConnection *photoConnection;
 @property (readwrite, nonatomic, nullable) AVCaptureDevice *audioDevice;
 @property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *audioInput;
 @property (readwrite, nonatomic, nullable) AVCaptureAudioDataOutput *audioOutput;
@@ -69,100 +68,32 @@ context(@"", ^{
   context(@"video", ^{
     static const CGSize kSize = CGSizeMake(3, 6);
 
-    if (@available(iOS 10.0, *)) {
-      it(@"should set pixel format for photo output", ^{
-        id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
-        session.videoOutput = videoOutput;
-        id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
-        session.photoOutput = photoOutput;
-
-        CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
-        OCMExpect([videoOutput setVideoSettings:pixelFormat.videoSettings]);
-
-        LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
-        OCMVerifyAllWithDelay(videoOutput, 1);
-        expect(session.pixelFormat).to.equal(pixelFormat);
-        expect(recorder).to.sendValues(@[pixelFormat]);
-        expect(recorder).to.complete();
-      });
-    } else {
-      it(@"should set pixel format for still output", ^{
-        id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
-        session.videoOutput = videoOutput;
-        id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
-        session.stillOutput = stillOutput;
-
-        CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
-        OCMExpect([videoOutput setVideoSettings:pixelFormat.videoSettings]);
-        OCMExpect([stillOutput setOutputSettings:pixelFormat.videoSettings]);
-
-        LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
-        OCMVerifyAllWithDelay(videoOutput, 1);
-        OCMVerifyAllWithDelay(stillOutput, 1);
-        expect(recorder).to.sendValues(@[pixelFormat]);
-        expect(recorder).to.complete();
-      });
-    }
-
-    it(@"should not set pixel format for still output without subscribing", ^{
+    it(@"should set pixel format for photo output", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
-      id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
-      session.stillOutput = stillOutput;
+      id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
+      session.photoOutput = photoOutput;
 
-      OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
-      OCMReject([stillOutput setOutputSettings:OCMOCK_ANY]);
-      [device setPixelFormat:$(CAMPixelFormat420f)];
+      CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
+      OCMExpect([videoOutput setVideoSettings:pixelFormat.videoSettings]);
+
+      LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
+      OCMVerifyAllWithDelay(videoOutput, 1);
+      expect(session.pixelFormat).to.equal(pixelFormat);
+      expect(recorder).to.sendValues(@[pixelFormat]);
+      expect(recorder).to.complete();
     });
 
-    if (@available(iOS 10.0, *)) {
-      it(@"should not set pixel format for photo output without subscribing", ^{
-        id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
-        session.videoOutput = videoOutput;
-        id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
-        session.photoOutput = photoOutput;
+    it(@"should not set pixel format for photo output without subscribing", ^{
+      id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
+      session.videoOutput = videoOutput;
+      id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
+      session.photoOutput = photoOutput;
 
-        OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
-        OCMReject([session setPixelFormat:OCMOCK_ANY]);
-        [device setPixelFormat:$(CAMPixelFormat420f)];
-      });
-    } else {
-      it(@"should capture still frames", ^{
-        id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
-        session.stillOutput = stillOutput;
-
-        RACSubject *trigger = [RACSubject subject];
-        RACSignal *stillFrames = [device stillFramesWithTrigger:trigger];
-
-        __block lt::Ref<CMSampleBufferRef>
-            sampleBuffer(CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA), kSize));
-        CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
-        NSValue *boxedSampleBuffer = [NSValue value:&sampleBufferRef
-                                       withObjCType:@encode(CMSampleBufferRef)];
-        OCMStub([stillOutput
-                 captureStillImageAsynchronouslyFromConnection:OCMOCK_ANY
-                 completionHandler:
-                     ([OCMArg invokeBlockWithArgs:boxedSampleBuffer, [NSNull null], nil])]);
-
-        LLSignalTestRecorder *recorder = [stillFrames testRecorder];
-
-        [trigger sendNext:nil];
-        expect(recorder).will.sendValuesWithCount(1);
-        expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
-          return [frame sampleBuffer].get() == sampleBuffer.get();
-        });
-        [trigger sendNext:nil];
-        expect(recorder).will.sendValuesWithCount(2);
-        expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
-          return [frame sampleBuffer].get() == sampleBuffer.get();
-        });
-        expect(recorder).toNot.complete();
-        [trigger sendCompleted];
-        expect(recorder).will.complete();
-
-        boxedSampleBuffer = nil;
-      });
-    }
+      OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
+      OCMReject([session setPixelFormat:OCMOCK_ANY]);
+      [device setPixelFormat:$(CAMPixelFormat420f)];
+    });
 
     context(@"video frames", ^{
       static const CFStringRef kOrientationKey = (__bridge CFStringRef)@"Orientation";
@@ -310,15 +241,15 @@ context(@"", ^{
       id previewConnection = OCMClassMock([AVCaptureConnection class]);
       OCMStub([previewLayer connection]).andReturn(previewConnection);
       id videoConnection = OCMClassMock([AVCaptureConnection class]);
-      id stillConnection = OCMClassMock([AVCaptureConnection class]);
+      id photoConnection = OCMClassMock([AVCaptureConnection class]);
       session.previewLayer = previewLayer;
       session.videoConnection = videoConnection;
-      session.stillConnection = stillConnection;
+      session.photoConnection = photoConnection;
 
       UIInterfaceOrientation interfaceOrientation = UIInterfaceOrientationLandscapeRight;
       AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)interfaceOrientation;
 
-      [[[stillConnection reject] ignoringNonObjectArgs] setVideoOrientation:videoOrientation];
+      [[[photoConnection reject] ignoringNonObjectArgs] setVideoOrientation:videoOrientation];
 
       device.interfaceOrientation = interfaceOrientation;
 
@@ -332,10 +263,10 @@ context(@"", ^{
       id previewConnection = OCMClassMock([AVCaptureConnection class]);
       OCMStub([previewLayer connection]).andReturn(previewConnection);
       id videoConnection = OCMClassMock([AVCaptureConnection class]);
-      id stillConnection = OCMClassMock([AVCaptureConnection class]);
+      id photoConnection = OCMClassMock([AVCaptureConnection class]);
       session.previewLayer = previewLayer;
       session.videoConnection = videoConnection;
-      session.stillConnection = stillConnection;
+      session.photoConnection = photoConnection;
 
       UIInterfaceOrientation gravityOrientation = UIInterfaceOrientationLandscapeLeft;
       AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)gravityOrientation;
@@ -346,7 +277,7 @@ context(@"", ^{
       device.gravityOrientation = gravityOrientation;
 
       expect(device.gravityOrientation).to.equal(gravityOrientation);
-      OCMVerify([stillConnection setVideoOrientation:videoOrientation]);
+      OCMVerify([photoConnection setVideoOrientation:videoOrientation]);
     });
 
     it(@"should not update video orientation to Unknown", ^{
@@ -354,14 +285,14 @@ context(@"", ^{
       id previewConnection = OCMClassMock([AVCaptureConnection class]);
       OCMStub([previewLayer connection]).andReturn(previewConnection);
       id videoConnection = OCMClassMock([AVCaptureConnection class]);
-      id stillConnection = OCMClassMock([AVCaptureConnection class]);
+      id photoConnection = OCMClassMock([AVCaptureConnection class]);
       session.previewLayer = previewLayer;
       session.videoConnection = videoConnection;
-      session.stillConnection = stillConnection;
+      session.photoConnection = photoConnection;
 
       device.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
 
-      [[[stillConnection reject] ignoringNonObjectArgs]
+      [[[photoConnection reject] ignoringNonObjectArgs]
           setVideoOrientation:(AVCaptureVideoOrientation)0];
       [[[previewConnection reject] ignoringNonObjectArgs]
           setVideoOrientation:(AVCaptureVideoOrientation)0];
@@ -382,27 +313,6 @@ context(@"", ^{
       expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
       expect(recorder).toNot.complete();
     });
-
-    if (@available(iOS 10.0, *)) {
-    } else {
-      it(@"should return error from still output", ^{
-        id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
-        session.stillOutput = stillOutput;
-        OCMStub([stillOutput
-                 captureStillImageAsynchronouslyFromConnection:OCMOCK_ANY
-                 completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], kError, nil])]);
-
-        RACSubject *trigger = [RACSubject subject];
-        RACSignal *stillFrames = [device stillFramesWithTrigger:trigger];
-
-        LLSignalTestRecorder *recorder = [stillFrames testRecorder];
-        [trigger sendNext:nil];
-
-        NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
-                                      underlyingError:kError];
-        expect(recorder).will.sendError(expected);
-      });
-    }
   });
 
   context(@"audio", ^{

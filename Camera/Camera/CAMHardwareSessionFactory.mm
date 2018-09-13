@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
   session.videoOutput.videoSettings = preset.pixelFormat.videoSettings;
 
-  success = [session setupStillOutputGenericWithPixelFormat:preset.pixelFormat error:error];
+  success = [session setupPhotoOutputWithPixelFormat:preset.pixelFormat error:error];
   if (!success) {
     return NO;
   }

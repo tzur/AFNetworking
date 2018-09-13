@@ -254,7 +254,7 @@ context(@"still frames signal", ^{
   it(@"should err", ^{
     RACSignal *stillFrames =
         [device stillFramesWithTrigger:[RACSignal return:[RACUnit defaultUnit]]];
-    NSError *expectedError = [NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput];
+    NSError *expectedError = [NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromPhotoOutput];
     expect(stillFrames).to.sendError(expectedError);
   });
 });

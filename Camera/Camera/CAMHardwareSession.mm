@@ -31,15 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Video connection between \c videoInput and \c videoOutput.
 @property (readwrite, nonatomic) AVCaptureConnection *videoConnection;
 
-/// Still output attached to this session.
-@property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+/// Photo output attached to this session.
+@property (readwrite, nonatomic) AVCapturePhotoOutput *photoOutput;
 
-/// Still output attached to this session when running on iOS 10 and up.
-@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput
-    API_AVAILABLE(ios(10.0));
-
-/// Still connection between \c videoInput and \c stillOutput.
-@property (readwrite, nonatomic) AVCaptureConnection *stillConnection;
+/// Photo connection between \c videoInput and \c photoOutput.
+@property (readwrite, nonatomic) AVCaptureConnection *photoConnection;
 
 /// Audio device attached to this session, or \c nil if audio is not enabled in the preset.
 @property (readwrite, nonatomic, nullable) AVCaptureDevice *audioDevice;
@@ -93,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert([device hasMediaType:AVMediaTypeVideo], @"device must provide video");
   NSError *internalError;
   AVCaptureVideoOrientation videoOrientation = self.videoConnection.videoOrientation;
-  AVCaptureVideoOrientation stillOrientation = self.stillConnection.videoOrientation;
+  AVCaptureVideoOrientation photoOrientation = self.photoConnection.videoOrientation;
   AVCaptureVideoOrientation previewOrientation = self.previewLayer.connection.videoOrientation;
 
   if (self.videoInput) {
@@ -139,9 +135,9 @@ NS_ASSUME_NONNULL_BEGIN
   [self.session addInput:self.videoInput];
 
   [self updateVideoConnection];
-  [self updateStillConnection];
+  [self updatePhotoConnection];
   self.videoConnection.videoOrientation = videoOrientation;
-  self.stillConnection.videoOrientation = stillOrientation;
+  self.photoConnection.videoOrientation = photoOrientation;
   self.previewLayer.connection.videoOrientation = previewOrientation;
 
   return YES;
@@ -177,48 +173,34 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (BOOL)setupStillOutputGenericWithPixelFormat:(CAMPixelFormat *)pixelFormat
-                                         error:(NSError * __autoreleasing *)error {
-  AVCaptureVideoOrientation stillOrientation = self.stillConnection.videoOrientation;
+- (BOOL)setupPhotoOutputWithPixelFormat:(CAMPixelFormat *)pixelFormat
+                                  error:(NSError * __autoreleasing *)error {
+  AVCaptureVideoOrientation photoOrientation = self.photoConnection.videoOrientation;
 
-  if (self.stillOutputGeneric) {
-    [self.session removeOutput:self.stillOutputGeneric];
+  if (self.photoOutput) {
+    [self.session removeOutput:self.photoOutput];
   }
 
-  if (@available(iOS 10.0, *)) {
-    self.photoOutput = [[AVCapturePhotoOutput alloc] init];
-    self.photoOutput.highResolutionCaptureEnabled = YES;
-    self.pixelFormat = pixelFormat;
-  } else {
-    self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
-    self.stillOutput.outputSettings = pixelFormat.videoSettings;
-    self.stillOutput.highResolutionStillImageOutputEnabled = YES;
-  }
+  self.photoOutput = [[AVCapturePhotoOutput alloc] init];
+  self.photoOutput.highResolutionCaptureEnabled = YES;
+  self.pixelFormat = pixelFormat;
 
-  if (![self.session canAddOutput:self.stillOutputGeneric]) {
+  if (![self.session canAddOutput:self.photoOutput]) {
     if (error) {
-      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingStillOutput];
+      *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingPhotoOutput];
     }
     return NO;
   }
-  [self.session addOutput:self.stillOutputGeneric];
+  [self.session addOutput:self.photoOutput];
 
-  [self updateStillConnection];
-  self.stillConnection.videoOrientation = stillOrientation;
+  [self updatePhotoConnection];
+  self.photoConnection.videoOrientation = photoOrientation;
 
   return YES;
 }
 
-- (AVCaptureOutput *)stillOutputGeneric {
-  if (@available(iOS 10.0, *)) {
-    return self.photoOutput;
-  } else {
-    return self.stillOutput;
-  }
-}
-
-- (void)updateStillConnection {
-  self.stillConnection = self.stillOutputGeneric.connections.firstObject;
+- (void)updatePhotoConnection {
+  self.photoConnection = self.photoOutput.connections.firstObject;
 }
 
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device
