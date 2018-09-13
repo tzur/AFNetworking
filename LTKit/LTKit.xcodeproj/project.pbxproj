@@ -2037,7 +2037,7 @@
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -2057,7 +2057,7 @@
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wnullable-to-nonnull-conversion",
