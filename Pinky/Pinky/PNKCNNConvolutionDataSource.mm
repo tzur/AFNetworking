@@ -122,6 +122,10 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
+#pragma mark -
+#pragma mark MPSCNNConvolutionDataSource
+#pragma mark -
+
 - (MPSDataType)dataType {
   switch (_weights.depth()) {
     case CV_16F:
@@ -146,8 +150,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)purge {
-  _weights.release();
-  _biasTerms.release();
 }
 
 - (NSString * __nullable)label {
@@ -156,6 +158,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (MPSCNNConvolutionDescriptor * _Nonnull)descriptor {
   return self.convolutionDescriptor;
+}
+
+#pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (nonnull id)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
 }
 
 @end
