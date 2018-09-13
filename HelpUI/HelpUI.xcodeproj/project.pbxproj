@@ -704,8 +704,8 @@
 			children = (
 				195B38451FFE216700F8DAB4 /* libextobjc_OSX.a */,
 				195B38471FFE216700F8DAB4 /* libextobjc_iOS.a */,
-				195B38491FFE216700F8DAB4 /* Logic Tests.octest */,
-				195B384B1FFE216700F8DAB4 /* iOS Tests.octest */,
+				195B38491FFE216700F8DAB4 /* Logic Tests.xctest */,
+				195B384B1FFE216700F8DAB4 /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1193,17 +1193,17 @@
 			remoteRef = 195B38461FFE216700F8DAB4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		195B38491FFE216700F8DAB4 /* Logic Tests.octest */ = {
+		195B38491FFE216700F8DAB4 /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 195B38481FFE216700F8DAB4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		195B384B1FFE216700F8DAB4 /* iOS Tests.octest */ = {
+		195B384B1FFE216700F8DAB4 /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 195B384A1FFE216700F8DAB4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1558,7 +1558,7 @@
 					"$(SRCROOT)/../Wireframes",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 			};
 			name = Debug;
@@ -1574,7 +1574,7 @@
 					"$(SRCROOT)/../Wireframes",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 			};
 			name = Release;
