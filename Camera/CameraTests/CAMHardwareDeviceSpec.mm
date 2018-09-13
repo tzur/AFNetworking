@@ -34,6 +34,24 @@
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *audioConnection;
 @end
 
+/// Protocol for faking the \c AVCapturePhotoOutput class.
+@protocol AVCapturePhotoOutput
+@property (nonatomic, readonly) BOOL isFlashScene;
+@end
+
+/// Make the \c AVCapturePhotoOutput conform to the protocol with the same name.
+@interface AVCapturePhotoOutput (Protocol) <AVCapturePhotoOutput>
+@end
+
+/// Fake output object to test the effects of different properites.
+@interface CAMFakeAVCapturePhotoOutput : NSObject <AVCapturePhotoOutput>
+@property (nonatomic, readwrite) BOOL isFlashScene;
+@property (nonatomic, readwrite) NSArray<NSNumber *> *supportedFlashModes;
+@end
+
+@implementation CAMFakeAVCapturePhotoOutput
+@end
+
 SpecBegin(CAMHardwareDevice)
 
 static NSError * const kError = [NSError lt_errorWithCode:123];
@@ -1076,15 +1094,18 @@ context(@"", ^{
 
   context(@"flash", ^{
     __block CAMFakeAVCaptureDevice *videoDevice;
+    __block CAMFakeAVCapturePhotoOutput *photoOutput;
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
+      photoOutput = [[CAMFakeAVCapturePhotoOutput alloc] init];
       session.videoDevice = (id)videoDevice;
+      session.photoOutput = (id)photoOutput;
     });
 
     context(@"positive", ^{
       beforeEach(^{
-        videoDevice.flashModeSupported = YES;
+        photoOutput.supportedFlashModes = @[@(AVCaptureFlashModeAuto)];
       });
 
       it(@"should set flash mode and update currentFlashMode", ^{
@@ -1092,7 +1113,6 @@ context(@"", ^{
             [[device setFlashMode:AVCaptureFlashModeAuto] testRecorder];
         expect(recorder).will.sendValues(@[@(AVCaptureFlashModeAuto)]);
         expect(recorder).to.complete();
-        expect(videoDevice.flashMode).to.equal(AVCaptureFlashModeAuto);
         expect(device.currentFlashMode).to.equal(AVCaptureFlashModeAuto);
       });
 
@@ -1104,19 +1124,21 @@ context(@"", ^{
 
       it(@"should update flashWillFire", ^{
         expect(device.flashWillFire).to.beFalsy();
-        videoDevice.flashActive = YES;
+        photoOutput.isFlashScene = YES;
         expect(device.flashWillFire).will.beTruthy();
       });
     });
 
     context(@"require subscription", ^{
+      __block id photoOutput;
+
       beforeEach(^{
-        videoDevice.flashModeSupported = YES;
+        photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
+        session.photoOutput = photoOutput;
       });
 
       it(@"should not set flash mode and update currentFlashMode", ^{
         [device setFlashMode:AVCaptureFlashModeAuto];
-        expect(videoDevice.flashMode).toNot.equal(AVCaptureFlashModeAuto);
         expect(device.currentFlashMode).toNot.equal(AVCaptureFlashModeAuto);
       });
     });
@@ -1127,7 +1149,7 @@ context(@"", ^{
             [[device setFlashMode:AVCaptureFlashModeAuto] testRecorder];
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported];
         expect(recorder).will.sendError(expected);
-        expect(videoDevice.flashMode).toNot.equal(AVCaptureFlashModeAuto);
+        expect(device.currentFlashMode).toNot.equal(AVCaptureFlashModeAuto);
       });
     });
   });

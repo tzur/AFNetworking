@@ -56,9 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Value to return in \c deviceWhiteBalanceGainsForTemperatureAndTintValues:.
 @property (nonatomic) AVCaptureWhiteBalanceGains gainsToReturnFromConversion;
 
-/// Value to return in \c isFlashModeSupported:.
-@property (nonatomic) BOOL flashModeSupported;
-
 /// Value to return in \c isTorchModeSupported:.
 @property (nonatomic) BOOL torchModeSupported;
 
@@ -67,9 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Override to allow setting this property.
 @property (nonatomic) BOOL hasTorch;
-
-/// Override to allow setting this property.
-@property (nonatomic) BOOL flashActive;
 
 /// Override to allow setting this property.
 @property (nonatomic) float maxWhiteBalanceGain;
@@ -93,7 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) AVCaptureWhiteBalanceMode whiteBalanceMode;
 @property (readonly, nonatomic) AVCaptureWhiteBalanceGains deviceWhiteBalanceGains;
 @property (nonatomic) CGFloat videoZoomFactor;
-@property (nonatomic) AVCaptureFlashMode flashMode;
 @property (nonatomic) AVCaptureTorchMode torchMode;
 @property (readonly, nonatomic) float torchLevel;
 @property (readonly, nonatomic) AVCaptureDevicePosition position;

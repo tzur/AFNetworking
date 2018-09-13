@@ -197,10 +197,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupFlashProperties {
   RAC(self, hasFlash, @NO) = RACObserve(self, session.videoDevice.hasFlash);
 
-  RAC(self, flashWillFire, @NO) = RACObserve(self, session.videoDevice.flashActive);
+  RAC(self, flashWillFire, @NO) = RACObserve(self, session.photoOutput.isFlashScene);
 
-  RAC(self, currentFlashMode, @(AVCaptureFlashModeOff)) =
-      RACObserve(self, session.videoDevice.flashMode);
+  self.currentFlashMode = AVCaptureFlashModeOff;
 }
 
 - (void)setupTorchProperties {
@@ -362,10 +361,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       takeUntil:[self rac_willDeallocSignal]];
 }
 
-- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber API_AVAILABLE(ios(10.0)) {
+- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber {
   AVCapturePhotoSettings *photoSettings =
       [AVCapturePhotoSettings photoSettingsWithFormat:self.session.pixelFormat.videoSettings];
-  photoSettings.flashMode = self.session.videoDevice.flashMode;
+  photoSettings.flashMode = self.currentFlashMode;
   photoSettings.highResolutionPhotoEnabled = YES;
   @synchronized(self.uniqueIdToSubscriber) {
     self.uniqueIdToSubscriber[@(photoSettings.uniqueID)] = subscriber;
@@ -950,20 +949,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   @weakify(self);
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
-    NSError *error;
-    AVCaptureDevice *device = self.session.videoDevice;
-    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-      if ([device isFlashModeSupported:flashMode]) {
-        device.flashMode = flashMode;
-        return YES;
-      } else {
-        if (errorPtr) {
-          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported];
-        }
-        return NO;
-      }
-    } error:&error];
-    return success ? [RACSignal return:@(flashMode)] : [RACSignal error:error];
+    if ([[self.session.photoOutput supportedFlashModes] containsObject:@(flashMode)]) {
+      self.currentFlashMode = flashMode;
+      return [RACSignal return:@(flashMode)];
+    } else {
+      return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported]];
+    }
   }] subscribeOn:self.scheduler];
 }
 
