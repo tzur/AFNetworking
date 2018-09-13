@@ -93,7 +93,7 @@ beforeEach(^{
        initWithProductsListJSONFilePath:JSONFilePath productListDecryptionKey:nil
        keychainAccessGroup:nil expiredSubscriptionGracePeriod:6 applicationUserID:nil
        applicationBundleID:[[NSBundle mainBundle] bundleIdentifier] bundledApplicationsIDs:nil
-       multiAppSubscriptionClassifier:nil useiCloudUserID:YES];
+       multiAppSubscriptionClassifier:nil useiCloudUserID:YES activatePeriodicValidation:NO];
 
   store = [[BZRStore alloc] initWithConfiguration:storeConfiguration];
 });
