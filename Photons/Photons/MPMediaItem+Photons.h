@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MPMediaItem (Photons) <PTNAssetDescriptor>
 
 /// Identifier of the Photons object.
-@property (readonly, nonatomic) NSURL *ptn_identifier API_AVAILABLE(ios(9.3));
+@property (readonly, nonatomic) NSURL *ptn_identifier;
 
 @end
 

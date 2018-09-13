@@ -131,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize)targetSize
     contentMode:(PHImageContentMode)contentMode
     options:(nullable PHLivePhotoRequestOptions *)options
-    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler API_AVAILABLE(ios(9.1)) {
+    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler {
   LTParameterAssert(resultHandler, "resultHandler block cannot be nil");
   if (![self.authorizationManager.authorizationStatus
         isEqual:$(PTNAuthorizationStatusAuthorized)]) {

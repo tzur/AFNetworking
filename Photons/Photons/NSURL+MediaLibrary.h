@@ -43,55 +43,51 @@ LTEnumDeclare(NSUInteger, PTNMediaLibraryFetchType,
 @interface NSURL (MediaLibrary)
 
 /// Returns \c NSArray of all values, in order of appearance, for the given \c predicate.
-- (NSArray<NSString *> *)ptn_valuesForPredicate:(NSString *)predicate API_AVAILABLE(ios(9.3));
+- (NSArray<NSString *> *)ptn_valuesForPredicate:(NSString *)predicate;
 
 /// URL Scheme associated with Media Library URLs.
-+ (NSString *)ptn_mediaLibraryScheme API_AVAILABLE(ios(9.3));
++ (NSString *)ptn_mediaLibraryScheme;
 
 /// Unique identifier URL of a song asset, pointed by the given \c item. The song is fetch as an
 /// item.
-+ (NSURL *)ptn_mediaLibraryAssetWithItem:(MPMediaItem *)item API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAssetWithItem:(MPMediaItem *)item;
 
 /// Unique identifier URL of album holding a list of songs. Each song belongs to the same music
 /// album, pointed by the given \c item. The album is fetched as a list of items. Albums are sorted
 /// by music album alphabetically.
-+ (NSURL *)ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:(MPMediaItem *)item API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:(MPMediaItem *)item;
 
 /// Unique identifier URL of an album, which holds all music albums of an artist, pointed by the
 /// given \c item. Music albums are fetched as list of collections, when each is holding songs.
 /// Albums sorted by music album title alphabetically.
-+ (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item
-    API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item;
 
 /// Unique identifier URL of an album, which holds all songs of an artist, pointed by the given
 /// \c item. Songs are fetched as a list of items, sorted by title alphabetically.
-+ (NSURL *)ptn_mediaLibraryAlbumArtistSongsWithItem:(MPMediaItem *)item API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumArtistSongsWithItem:(MPMediaItem *)item;
 
 /// Unique identifier URL of album, which holds all music albums available in Media Library.
 /// music albums are fetched as list of collections, when each is holding songs. Albums sorted by
 /// music albums alphabetically.
-+ (NSURL *)ptn_mediaLibraryAlbumSongsByMusicAlbum API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumSongsByMusicAlbum;
 
 /// Unique identifier URL of album, which holds all artists available in Media Library. Artist
 /// are fetched as collections, when each is holding songs. Albums sorted by artists alphabetically.
-+ (NSURL *)ptn_mediaLibraryAlbumSongsByAritst API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumSongsByAritst;
 
 /// Unique identifier URL of album, which holds all songs available in Media Library. Songs are
 /// fetched as items. Songs are ordered alphabetically by title.
-+ (NSURL *)ptn_mediaLibraryAlbumSongs API_AVAILABLE(ios(9.3));
++ (NSURL *)ptn_mediaLibraryAlbumSongs;
 
 /// Type of the URL, or \c PTNMediaLibraryURLTypeInvalid if the URL is not of Media Library type.
-@property (readonly, nonatomic) PTNMediaLibraryURLType ptn_mediaLibraryURLType
-    API_AVAILABLE(ios(9.3));
+@property (readonly, nonatomic) PTNMediaLibraryURLType ptn_mediaLibraryURLType;
 
 /// Media Library entity fetching option.
-@property (readonly, nonatomic) PTNMediaLibraryFetchType *ptn_mediaLibraryFetch
-    API_AVAILABLE(ios(9.3));
+@property (readonly, nonatomic) PTNMediaLibraryFetchType *ptn_mediaLibraryFetch;
 
 /// \c MPMediaGrouping or \c nil if the URL is invalid or does not represent a URL with a specific
 /// media grouping.
-@property (readonly, nonatomic, nullable) NSNumber *ptn_mediaLibraryGrouping
-    API_AVAILABLE(ios(9.3));
+@property (readonly, nonatomic, nullable) NSNumber *ptn_mediaLibraryGrouping;
 
 @end
 
@@ -102,8 +98,7 @@ LTEnumDeclare(NSUInteger, PTNMediaLibraryFetchType,
 /// Returns \c PTNMediaQuery which is represented by this instance, or \c nil if this instance does
 /// not represent a valid \c PTNMediaQuery. Uses the given \c provider when createing
 /// \c PTNMediaQuery.
-- (nullable id<PTNMediaQuery>)ptn_mediaLibraryQueryWithProvider:(id<PTNMediaQueryProvider>)provider
-    API_AVAILABLE(ios(9.3));
+- (nullable id<PTNMediaQuery>)ptn_mediaLibraryQueryWithProvider:(id<PTNMediaQueryProvider>)provider;
 
 @end
 

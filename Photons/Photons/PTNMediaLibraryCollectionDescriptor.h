@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Value class implementing \c PTNAlbumDescriptor, which holds \c MPMediaItemCollection and a URL,
 /// which represents the \c MPMediaItemCollection.
-API_AVAILABLE(ios(9.3))
 @interface PTNMediaLibraryCollectionDescriptor : NSObject <PTNAlbumDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -10,7 +10,7 @@
 #import "PTNMediaQueryProvider.h"
 
 static _Nullable id<PTNMediaQuery> PTNQuery(id<PTNMediaQueryProvider> provider, NSString *type,
-                                            NSString *queryString) API_AVAILABLE(ios(9.3)) {
+                                            NSString *queryString) {
   auto urlString = [NSString stringWithFormat:@"%@://%@?%@", [NSURL ptn_mediaLibraryScheme],
                     type, queryString];
   auto url = [NSURL URLWithString:urlString];
@@ -18,16 +18,15 @@ static _Nullable id<PTNMediaQuery> PTNQuery(id<PTNMediaQueryProvider> provider, 
 }
 
 static _Nullable id<PTNMediaQuery> PTNAssetQuery(id<PTNMediaQueryProvider> provider,
-                                                 NSString *queryString) API_AVAILABLE(ios(9.3)) {
+                                                 NSString *queryString) {
   return PTNQuery(provider, @"asset", queryString);
 }
 
 static _Nullable id<PTNMediaQuery> PTNAlbumQuery(id<PTNMediaQueryProvider> provider,
-                                                 NSString *queryString) API_AVAILABLE(ios(9.3)) {
+                                                 NSString *queryString) {
   return PTNQuery(provider, @"album", queryString);
 }
 
-API_AVAILABLE(ios(9.3))
 SpecBegin(NSURL_MediaLibrary)
 
 __block MPMediaItem *mediaLibraryItemMock;

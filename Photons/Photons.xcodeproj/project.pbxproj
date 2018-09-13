@@ -2627,7 +2627,7 @@
 					"$(SRCROOT)/../third_party/Tweaks/",
 					"$(SRCROOT)/../Milkshake/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -2652,7 +2652,7 @@
 					"$(SRCROOT)/../third_party/Tweaks/",
 					"$(SRCROOT)/../Milkshake/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				VALIDATE_PRODUCT = YES;
 			};

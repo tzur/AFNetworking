@@ -35,7 +35,7 @@ static void PTNPostMediaLibraryNotification(NSString *senderName) {
                                                       object:senderName];
 }
 
-API_AVAILABLE(ios(9.3)) SpecBegin(PTNMediaLibraryAssetManager)
+SpecBegin(PTNMediaLibraryAssetManager)
 
 __block PTNMediaLibraryAssetManager *manager;
 __block PTNFakeMediaQueryProvider *queryProvider;
@@ -330,7 +330,10 @@ context(@"fetching", ^{
                                               includeMetadata:NO];
       auto image = [[UIImage alloc] init];
       imageAsset = [[PTNStaticImageAsset alloc] initWithImage:image];
-      artwork = [[MPMediaItemArtwork alloc] initWithImage:image];
+      artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:image.size
+                                                requestHandler:^UIImage *(CGSize __unused size) {
+        return image;
+      }];
     });
 
     it(@"should fetch an image", ^{

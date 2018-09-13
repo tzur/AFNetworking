@@ -74,11 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.mediaType == PHAssetMediaTypeVideo) {
     [set addObject:kPTNDescriptorTraitAudiovisualKey];
   }
-  if (@available(iOS 9.1, *)) {
-    if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive) {
-      [set addObject:kPTNDescriptorTraitLivePhotoKey];
-      [set addObject:kPTNDescriptorTraitAudiovisualKey];
-    }
+  if (self.mediaSubtypes & PHAssetMediaSubtypePhotoLive) {
+    [set addObject:kPTNDescriptorTraitLivePhotoKey];
+    [set addObject:kPTNDescriptorTraitAudiovisualKey];
   }
   if ([self ptn_hasUniformTypeIdentifier]) {
     if ([nn(self.uniformTypeIdentifier) ptn_isRawImageUTI]) {

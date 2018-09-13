@@ -265,7 +265,7 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
   return [self exifDateFrom:self.data[BRIDGE(kCGImagePropertyExifDictionary)]
                                      [BRIDGE(kCGImagePropertyExifDateTimeOriginal)]
                      subsec:self.data[BRIDGE(kCGImagePropertyExifDictionary)]
-                                     [BRIDGE(kCGImagePropertyExifSubsecTimeOrginal)]];
+                                     [BRIDGE(kCGImagePropertyExifSubsecTimeOriginal)]];
 }
 
 - (nullable NSDate *)digitizedTime {
@@ -447,7 +447,7 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
   [self.data[BRIDGE(kCGImagePropertyTIFFDictionary)]
       setValue:dateTime forKey:BRIDGE(kCGImagePropertyTIFFDateTime)];
   [self.data[BRIDGE(kCGImagePropertyExifDictionary)]
-      setValue:subsecTime forKey:BRIDGE(kCGImagePropertyExifSubsecTimeOrginal)];
+      setValue:subsecTime forKey:BRIDGE(kCGImagePropertyExifSubsecTimeOriginal)];
   [self.data[BRIDGE(kCGImagePropertyExifDictionary)]
       setValue:subsecTime forKey:BRIDGE(kCGImagePropertyExifSubsecTime)];
 }

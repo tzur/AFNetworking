@@ -6,7 +6,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Encapsulates the Media Library authorization process.
-API_AVAILABLE(ios(9.3))
 @interface PTNMediaLibraryAuthorizer : NSObject
 
 /// Callback of requests for authorization of the Media Library.

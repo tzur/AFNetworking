@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Implementation of the \c PTNAuthorizationManager protocol for Media Library, managing
 /// authorization status and flow.
-API_AVAILABLE(ios(9.3))
 @interface PTNMediaLibraryAuthorizationManager : NSObject <PTNAuthorizationManager>
 
 /// Initializes with the default \c PTNMediaLibraryAuthorizer.

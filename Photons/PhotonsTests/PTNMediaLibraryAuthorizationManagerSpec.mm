@@ -7,7 +7,6 @@
 #import "PTNAuthorizationStatus.h"
 #import "PTNMediaLibraryAuthorizer.h"
 
-API_AVAILABLE(ios(9.3))
 SpecBegin(PTNMediaLibraryAuthorizationManager)
 
 __block PTNMediaLibraryAuthorizationManager *manager;
