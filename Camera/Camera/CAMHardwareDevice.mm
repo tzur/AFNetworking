@@ -221,7 +221,11 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }];
 
-  self.canChangeCamera = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count > 1;
+  auto generalPurposeCameras = [AVCaptureDeviceDiscoverySession
+      discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+      mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified].devices;
+
+  self.canChangeCamera = generalPurposeCameras.count > 1;
 }
 
 #pragma mark -

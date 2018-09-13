@@ -38,7 +38,10 @@ LTEnumImplement(NSUInteger, CAMDeviceCamera,
 @implementation CAMDeviceCamera (Utility)
 
 - (nullable AVCaptureDevice *)device {
-  NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+  auto devices = [AVCaptureDeviceDiscoverySession
+                  discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+                  mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified].devices;
+
   for (AVCaptureDevice *device in devices) {
     if (device.position == self.position) {
       return device;
