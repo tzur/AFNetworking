@@ -3,7 +3,6 @@
 
 #import "LTTouchEvent.h"
 
-API_AVAILABLE(ios(9.1))
 SpecBegin(LTTouchEvent)
 
 __block NSTimeInterval timestamp;
@@ -95,11 +94,7 @@ context(@"initialization", ^{
   context(@"locations in view", ^{
     it(@"should initialize using the view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
-      if (@available(iOS 9.1, *)) {
-        OCMExpect([touchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
-      } else {
-        OCMExpect([touchMock locationInView:strictViewMock]).andReturn(viewLocation);
-      }
+      OCMExpect([touchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.viewLocation).to.equal(viewLocation);
@@ -108,13 +103,8 @@ context(@"initialization", ^{
 
     it(@"should initialize using the previous view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
-      if (@available(iOS 9.1, *)) {
-        OCMExpect([touchMock precisePreviousLocationInView:strictViewMock])
-            .andReturn(previousViewLocation);
-      } else {
-        OCMExpect([touchMock previousLocationInView:strictViewMock])
-            .andReturn(previousViewLocation);
-      }
+      OCMExpect([touchMock precisePreviousLocationInView:strictViewMock])
+          .andReturn(previousViewLocation);
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.previousViewLocation).to.equal(previousViewLocation);
@@ -262,15 +252,9 @@ context(@"initialization", ^{
     // This test ensures that no additional new or existing properties of the given touch are
     // accessed without updating the tests.
     OCMExpect([strictTouchMock timestamp]).andReturn(timestamp);
-    if (@available(iOS 9.1, *)) {
-      OCMExpect([strictTouchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
-      OCMExpect([strictTouchMock precisePreviousLocationInView:strictViewMock])
-          .andReturn(previousViewLocation);
-    } else {
-      OCMExpect([strictTouchMock locationInView:strictViewMock]).andReturn(viewLocation);
-      OCMExpect([strictTouchMock previousLocationInView:strictViewMock])
-          .andReturn(previousViewLocation);
-    }
+    OCMExpect([strictTouchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
+    OCMExpect([strictTouchMock precisePreviousLocationInView:strictViewMock])
+        .andReturn(previousViewLocation);
     OCMExpect([strictTouchMock phase]).andReturn(phase);
     OCMExpect([strictTouchMock tapCount]).andReturn(tapCount);
     OCMExpect([strictTouchMock majorRadius]).andReturn(majorRadius);
@@ -439,14 +423,8 @@ context(@"velocity and speed", ^{
 
   beforeEach(^{
     touchMock = OCMClassMock([UITouch class]);
-    if (@available(iOS 9.1, *)) {
-      OCMExpect([touchMock preciseLocationInView:OCMOCK_ANY]).andReturn(CGPointMake(0, 7));
-      OCMExpect([touchMock precisePreviousLocationInView:OCMOCK_ANY]).andReturn(CGPointZero);
-    } else {
-      OCMExpect([touchMock locationInView:OCMOCK_ANY]).andReturn(CGPointMake(0, 7));
-      OCMExpect([touchMock previousLocationInView:OCMOCK_ANY]).andReturn(CGPointZero);
-    }
-
+    OCMExpect([touchMock preciseLocationInView:OCMOCK_ANY]).andReturn(CGPointMake(0, 7));
+    OCMExpect([touchMock precisePreviousLocationInView:OCMOCK_ANY]).andReturn(CGPointZero);
     OCMStub([touchMock timestamp]).andReturn(1);
   });
 

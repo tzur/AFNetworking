@@ -5,18 +5,6 @@
 
 #import "LTGLPixelFormat.h"
 
-// The working format is not available prior to iOS 10.
-@interface CIContext ()
-
-// \c workingFormat is documented to be available from iOS 9.0, however it is publicly available
-// only on iOS 10.0 and above.
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_10_0
-/// Working pixel format of the \c CIContext used for intermediate buffers.
-@property (readonly, nonatomic) CIFormat workingFormat;
-#endif
-
-@end
-
 SpecBegin(CIContext_PixelFormat)
 
 context(@"create context with correct working format precision", ^{
