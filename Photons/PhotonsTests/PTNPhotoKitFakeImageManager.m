@@ -42,8 +42,7 @@ typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nulla
     NSMutableDictionary<NSString *, AVPlayerItem *> *identifierToPlayerItem;
 
 /// Maps asset identifier to live photo.
-@property (strong, nonatomic) NSMutableDictionary<NSString *, PHLivePhoto *> *identifierToLivePhoto
-    API_AVAILABLE(ios(9.1));
+@property (strong, nonatomic) NSMutableDictionary<NSString *, PHLivePhoto *> *identifierToLivePhoto;
 
 /// Maps asset identifier to error.
 @property (strong, nonatomic) NSMutableDictionary *identifierToError;
@@ -77,9 +76,7 @@ typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nulla
     self.identifierToDataUTI = [NSMutableDictionary dictionary];
     self.identifierToOrientation = [NSMutableDictionary dictionary];
     self.identifierToPlayerItem = [NSMutableDictionary dictionary];
-    if (@available(iOS 9.1, *)) {
-      self.identifierToLivePhoto = [NSMutableDictionary dictionary];
-    }
+    self.identifierToLivePhoto = [NSMutableDictionary dictionary];
     self.identifierToError = [NSMutableDictionary dictionary];
     self.identifierToProgressError = [NSMutableDictionary dictionary];
     self.requestToIdentifier = [NSMutableDictionary dictionary];
@@ -134,7 +131,7 @@ typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nulla
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
-        livePhoto:(PHLivePhoto *)livePhoto API_AVAILABLE(ios(9.1)) {
+        livePhoto:(PHLivePhoto *)livePhoto {
   NSString *identifier = asset.localIdentifier;
 
   @synchronized(self) {
@@ -353,7 +350,7 @@ typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nulla
 - (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize __unused)targetSize
     contentMode:(PHImageContentMode __unused)contentMode
     options:(nullable PHLivePhotoRequestOptions *)options
-    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler API_AVAILABLE(ios(9.1)) {
+    resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler {
   NSString *identifier = asset.localIdentifier;
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

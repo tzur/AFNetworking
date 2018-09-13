@@ -61,7 +61,7 @@ using namespace spx;
     settingsAction();
 
     auto settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    [[UIApplication sharedApplication] openURL:settingsURL];
+    [[UIApplication sharedApplication] openURL:settingsURL options:@{} completionHandler:nil];
   };
 
   return [SPXAlertViewModelBuilder builder]

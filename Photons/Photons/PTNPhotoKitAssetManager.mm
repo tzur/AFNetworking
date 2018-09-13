@@ -739,17 +739,15 @@ NS_ASSUME_NONNULL_BEGIN
   /// authorization check.
   return [[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
-        if (@available(iOS 9.1, *)) {
-          if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
-            return [self videoAssetForLivePhotoAsset:asset];
-          }
+        if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
+          return [self videoAssetForLivePhotoAsset:asset];
         }
 
         return [self videoAssetForPhotoKitAsset:asset options:[options photoKitOptions]];
       }];
 }
 
-- (RACSignal *)videoAssetForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+- (RACSignal *)videoAssetForLivePhotoAsset:(PHAsset *)asset {
   return [[self fetchAVAssetForLivePhotoAsset:asset]
           map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
             return [progress map:^PTNAudiovisualAsset *(AVAsset *avasset) {
@@ -887,7 +885,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV preview fetching
 #pragma mark -
 
-- (RACSignal *)fetchAVAssetForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+- (RACSignal *)fetchAVAssetForLivePhotoAsset:(PHAsset *)asset {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     auto options = [[PHLivePhotoRequestOptions alloc] init];
     // In order to fetch the video of the Live Photo, only high quality format must be used.
@@ -943,10 +941,8 @@ NS_ASSUME_NONNULL_BEGIN
   /// authorization check.
   return [[self fetchAssetForDescriptor:descriptor]
           flattenMap:^(PHAsset *asset) {
-            if (@available(iOS 9.1, *)) {
-              if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
-                return [self playerItemForLivePhotoAsset:asset];
-              }
+            if ([asset.descriptorTraits containsObject:kPTNDescriptorTraitLivePhotoKey]) {
+              return [self playerItemForLivePhotoAsset:asset];
             }
 
             return [self videoPreviewForPhotoKitAsset:asset options:[options photoKitOptions]];
@@ -954,7 +950,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 }
 
-- (RACSignal *)playerItemForLivePhotoAsset:(PHAsset *)asset API_AVAILABLE(ios(9.1)) {
+- (RACSignal *)playerItemForLivePhotoAsset:(PHAsset *)asset {
   return [[self fetchAVAssetForLivePhotoAsset:asset]
     map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
       return [progress map:^AVPlayerItem *(AVAsset *avasset) {

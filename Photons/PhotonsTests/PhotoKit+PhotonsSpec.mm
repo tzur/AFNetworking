@@ -75,11 +75,9 @@ context(@"asset descriptor", ^{
     OCMStub(videoAsset.mediaType).andReturn(PHAssetMediaTypeVideo);
     expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
 
-    if (@available(iOS 9.1, *)) {
-      PHAsset *livePhotoAsset = PTNCreateAsset();
-      OCMStub(livePhotoAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoLive);
-      expect(livePhotoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
-    }
+    PHAsset *livePhotoAsset = PTNCreateAsset();
+    OCMStub(livePhotoAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoLive);
+    expect(livePhotoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
 
     PHAsset *imageAsset = PTNCreateAsset();
     OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);
@@ -106,14 +104,12 @@ context(@"asset descriptor", ^{
     expect(jpegAsset.descriptorTraits).to.beEmpty();
   });
 
-  if (@available(iOS 9.1, *)) {
-    it(@"should reveal live photo trait when the underlying asset has live photo subtype", ^{
-      PHAsset *imageAsset = PTNCreateAsset();
-      OCMStub(imageAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoHDR |
-                                                  PHAssetMediaSubtypePhotoLive);
-      expect(imageAsset.descriptorTraits).to.contain(kPTNDescriptorTraitLivePhotoKey);
-    });
-  }
+  it(@"should reveal live photo trait when the underlying asset has live photo subtype", ^{
+    PHAsset *imageAsset = PTNCreateAsset();
+    OCMStub(imageAsset.mediaSubtypes).andReturn(PHAssetMediaSubtypePhotoHDR |
+                                                PHAssetMediaSubtypePhotoLive);
+    expect(imageAsset.descriptorTraits).to.contain(kPTNDescriptorTraitLivePhotoKey);
+  });
 
   it(@"should not reveal type traits when UTI is nil", ^{
     PHAsset *asset = PTNCreateAsset(nil);

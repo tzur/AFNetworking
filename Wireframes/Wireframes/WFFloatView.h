@@ -90,7 +90,6 @@ LTEnumDeclare(NSUInteger, WFFloatViewAnchor,
 /// views are located at the left and right edges of the visual effect view. When docked, the
 /// visible width of the content is the accessory view width and the rest of the content is located
 /// outside the boundaries of the float view.
-API_AVAILABLE(ios(10.0))
 @interface WFFloatView : WFTransparentView
 
 /// Sets the center of the given \c contentView and animate its movement from the given

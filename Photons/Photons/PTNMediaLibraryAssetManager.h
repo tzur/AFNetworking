@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PTNAuthorizationManager, PTNMediaQueryProvider;
 
 /// Asset manager which backs the Media Library assets.
-API_AVAILABLE(ios(9.3))
 @interface PTNMediaLibraryAssetManager : NSObject <PTNAssetManager>
 
 /// Initializes with the default implementations of \c PTNMediaQueryProvider and an instance of

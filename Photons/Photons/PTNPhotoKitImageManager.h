@@ -32,8 +32,7 @@ typedef void (^PTNPhotoKitImageManagerAVPreviewHandler)(AVPlayerItem *__nullable
 /// Handles successful or erroneous callbacks of
 /// \c requestLivePhotoForAsset:targetSize:contentMode:options:resultHandler:.
 typedef void (^PTNPhotoKitImageManagerLivePhotoHandler)(PHLivePhoto *__nullable livePhoto,
-                                                        NSDictionary *__nullable info)
-    API_AVAILABLE(ios(9.1));
+                                                        NSDictionary *__nullable info);
 
 /// Requests an image representation for the specified asset.
 ///
@@ -76,8 +75,7 @@ typedef void (^PTNPhotoKitImageManagerLivePhotoHandler)(PHLivePhoto *__nullable 
 - (PHImageRequestID)requestLivePhotoForAsset:(PHAsset *)asset targetSize:(CGSize)targetSize
                                  contentMode:(PHImageContentMode)contentMode
                                      options:(nullable PHLivePhotoRequestOptions *)options
-                               resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler
-    API_AVAILABLE(ios(9.1));
+                               resultHandler:(PTNPhotoKitImageManagerLivePhotoHandler)resultHandler;
 
 @end
 

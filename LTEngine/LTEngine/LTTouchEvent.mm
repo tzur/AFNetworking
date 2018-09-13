@@ -105,18 +105,10 @@ NS_ASSUME_NONNULL_BEGIN
                               previousTimestamp:(nullable NSNumber *)previousTimestamp
                                      sequenceID:(NSUInteger)sequenceID {
   CGPoint viewLocation;
-  if (@available(iOS 9.1, *)) {
-    viewLocation = [touch preciseLocationInView:touch.view];
-  } else {
-    viewLocation = [touch locationInView:touch.view];
-  }
+  viewLocation = [touch preciseLocationInView:touch.view];
 
   CGPoint previousViewLocation;
-  if (@available(iOS 9.1, *)) {
-    previousViewLocation = [touch precisePreviousLocationInView:touch.view];
-  } else {
-    previousViewLocation = [touch previousLocationInView:touch.view];
-  }
+  previousViewLocation = [touch precisePreviousLocationInView:touch.view];
 
   return [[LTTouchEvent alloc] initWithSequenceID:sequenceID timestamp:timestamp view:touch.view
                                      viewLocation:viewLocation
@@ -166,53 +158,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable NSNumber *)azimuthAngleOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    return touch.type == UITouchTypeStylus ? @([touch azimuthAngleInView:nil]) : nil;
-  } else {
-    return nil;
-  }
+  return touch.type == UITouchTypeStylus ? @([touch azimuthAngleInView:nil]) : nil;
 }
 
 + (LTVector2)azimuthUnitVectorOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    if (touch.type == UITouchTypeStylus) {
-      CGVector vector = [touch azimuthUnitVectorInView:nil];
-      return LTVector2(vector.dx, vector.dy);
-    }
+  if (touch.type == UITouchTypeStylus) {
+    CGVector vector = [touch azimuthUnitVectorInView:nil];
+    return LTVector2(vector.dx, vector.dy);
   }
   return LTVector2::null();
 }
 
 + (nullable NSNumber *)altitudeAngleOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    return touch.type == UITouchTypeStylus ? @(touch.altitudeAngle) : nil;
-  } else {
-    return nil;
-  }
+  return touch.type == UITouchTypeStylus ? @(touch.altitudeAngle) : nil;
 }
 
 + (nullable NSNumber *)estimationUpdateIndexOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    return touch.estimationUpdateIndex;
-  } else {
-    return nil;
-  }
+  return touch.estimationUpdateIndex;
 }
 
 + (UITouchProperties)estimatedPropertiesOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    return touch.estimatedProperties;
-  } else {
-    return 0;
-  }
+  return touch.estimatedProperties;
 }
 
 + (UITouchProperties)propertiesExpectingUpdateOfTouch:(UITouch *)touch {
-  if (@available(iOS 9.1, *)) {
-    return touch.estimatedPropertiesExpectingUpdates;
-  } else {
-    return 0;
-  }
+  return touch.estimatedPropertiesExpectingUpdates;
 }
 
 #pragma mark -

@@ -3,7 +3,6 @@
 
 #import "LTContentTouchEvent.h"
 
-API_AVAILABLE(ios(9.1))
 SpecBegin(LTContentTouchEvent)
 
 static const NSTimeInterval kTimestamp = 1;

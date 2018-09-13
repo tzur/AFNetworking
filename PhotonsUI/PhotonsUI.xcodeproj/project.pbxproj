@@ -677,8 +677,8 @@
 			children = (
 				650BB32D1D46533E008648A3 /* libextobjc_OSX.a */,
 				650BB32F1D46533E008648A3 /* libextobjc_iOS.a */,
-				650BB3311D46533E008648A3 /* Logic Tests.octest */,
-				650BB3331D46533E008648A3 /* iOS Tests.octest */,
+				650BB3311D46533E008648A3 /* Logic Tests.xctest */,
+				650BB3331D46533E008648A3 /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1273,17 +1273,17 @@
 			remoteRef = 650BB32E1D46533E008648A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		650BB3311D46533E008648A3 /* Logic Tests.octest */ = {
+		650BB3311D46533E008648A3 /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 650BB3301D46533E008648A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		650BB3331D46533E008648A3 /* iOS Tests.octest */ = {
+		650BB3331D46533E008648A3 /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 650BB3321D46533E008648A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1781,7 +1781,7 @@
 					"$(SRCROOT)/../Photons",
 					"$(SRCROOT)/../third_party/libextobjc/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1811,7 +1811,7 @@
 					"$(SRCROOT)/../Photons",
 					"$(SRCROOT)/../third_party/libextobjc/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

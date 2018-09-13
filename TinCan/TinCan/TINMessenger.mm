@@ -104,12 +104,7 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
     block(YES, nil);
   };
 
-  if (@available(iOS 10.0, *)) {
-    [self.application openURL:url options:@{} completionHandler:completion];
-  } else {
-    auto success = [self.application openURL:url];
-    completion(success);
-  }
+  [self.application openURL:url options:@{} completionHandler:completion];
 }
 
 - (BOOL)canSendMessageToTargetScheme:(NSString *)scheme {

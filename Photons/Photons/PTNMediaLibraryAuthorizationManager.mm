@@ -16,15 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns a new \c PTNAuthorizationStatus object corresponding to the given authorization
 /// \c status.
-+ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status
-    API_AVAILABLE(ios(9.3));
++ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status;
 
 @end
 
 @implementation PTNAuthorizationStatus (MediaPlayer)
 
-+ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status
-    API_AVAILABLE(ios(9.3)) {
++ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status {
   switch (status) {
     case MPMediaLibraryAuthorizationStatusAuthorized:
       return $(PTNAuthorizationStatusAuthorized);

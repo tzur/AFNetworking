@@ -59,24 +59,16 @@ context(@"message send", ^{
       BOOL itemsMatch = [url.lt_queryDictionary isEqualToDictionary:expectedQueryDictionary];
       return schemeMatch && hostMatch && itemsMatch;
     };
-    if (@available(iOS 10.0, *)) {
-      OCMStub([applicationMock openURL:[OCMArg checkWithBlock:urlCheckBlock] options:OCMOCK_ANY
-                     completionHandler:OCMOCK_ANY]);
-    } else {
-      OCMStub([applicationMock openURL:[OCMArg checkWithBlock:urlCheckBlock]]);
-    }
+    OCMStub([applicationMock openURL:[OCMArg checkWithBlock:urlCheckBlock] options:OCMOCK_ANY
+                   completionHandler:OCMOCK_ANY]);
     [messenger sendMessage:message completion:^(BOOL, NSError *) {}];
     OCMVerifyAll((id)applicationMock);
   });
 
   it(@"should invoke the completion block when open URL succeeds", ^{
     OCMStub([applicationMock canOpenURL:OCMOCK_ANY]).andReturn(YES);
-    if (@available(iOS 10.0, *)) {
-      OCMStub([applicationMock openURL:OCMOCK_ANY options:OCMOCK_ANY
-                     completionHandler:([OCMArg invokeBlockWithArgs:@YES, nil])]);
-    } else {
-      OCMStub([applicationMock openURL:OCMOCK_ANY]).andReturn(YES);
-    }
+    OCMStub([applicationMock openURL:OCMOCK_ANY options:OCMOCK_ANY
+                   completionHandler:([OCMArg invokeBlockWithArgs:@YES, nil])]);
 
     __block BOOL blockHasRun = NO;
     [messenger sendMessage:message completion:^(BOOL success, NSError *error) {
@@ -89,12 +81,8 @@ context(@"message send", ^{
 
   it(@"should set an error when failed to open the URL", ^{
     OCMStub([applicationMock canOpenURL:OCMOCK_ANY]).andReturn(YES);
-    if (@available(iOS 10.0, *)) {
-      OCMStub([applicationMock openURL:OCMOCK_ANY options:OCMOCK_ANY
-                     completionHandler:([OCMArg invokeBlockWithArgs:@NO, nil])]);
-    } else {
-      OCMStub([applicationMock openURL:OCMOCK_ANY]).andReturn(NO);
-    }
+    OCMStub([applicationMock openURL:OCMOCK_ANY options:OCMOCK_ANY
+                   completionHandler:([OCMArg invokeBlockWithArgs:@NO, nil])]);
     __block BOOL blockHasRun = NO;
     [messenger sendMessage:message completion:^(BOOL success, NSError *error) {
       expect(error.code).to.equal(TINErrorCodeMessageSendFailed);

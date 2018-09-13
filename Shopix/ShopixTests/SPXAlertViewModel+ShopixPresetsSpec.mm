@@ -174,7 +174,7 @@ context(@"no iCloud account alert", ^{
   it(@"should open the settings url when the settings button is pressed", ^{
     UIApplication *application = OCMPartialMock([UIApplication sharedApplication]);
     auto settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    OCMExpect([application openURL:settingsURL]);
+    OCMExpect([application openURL:settingsURL options:OCMOCK_ANY completionHandler:OCMOCK_ANY]);
 
     viewModel.buttons[1].action();
 

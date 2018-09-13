@@ -221,20 +221,18 @@ context(@"loading images", ^{
       }
     });
 
-    if (@available(iOS 9.3, *)) {
+    it(@"should load as P3 image", ^{
       auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
-      it(@"should load as P3 image", ^{
-        auto image = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA8U
-                                         colorSpace:colorSpace.get()];
-        cv::Mat4b expected = (cv::Mat4b(size) <<
-                              cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255),
-                              cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255));
-        expect($(image.mat)).to.equalMat($(expected));
-        if (@available(iOS 11.0, *)) {
-          expect(CGColorSpaceGetName(image.colorSpace)).to.equal(kCGColorSpaceDisplayP3);
-        }
-      });
-    }
+      auto image = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA8U
+                                       colorSpace:colorSpace.get()];
+      cv::Mat4b expected = (cv::Mat4b(size) <<
+                            cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255),
+                            cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255));
+      expect($(image.mat)).to.equalMat($(expected));
+      if (@available(iOS 11.0, *)) {
+        expect(CGColorSpaceGetName(image.colorSpace)).to.equal(kCGColorSpaceDisplayP3);
+      }
+    });
   });
 
   itShouldBehaveLike(kLTImageInitializationExamples, @{
@@ -353,30 +351,28 @@ context(@"image properties", ^{
     expect(CGColorSpaceGetModel(image.colorSpace)).to.equal(CGColorSpaceGetModel(jpegColorSpace));
   });
 
-  if (@available(iOS 9.3, *)) {
-    it(@"should load wide gamut color space", ^{
-      auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+  it(@"should load wide gamut color space", ^{
+    auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
 
-      const CGFloat sourceComponents[] = {0.5, 0.75, 0.25, 1.0};
-      auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
-          LTVector4(sourceComponents[0], sourceComponents[1], sourceComponents[2],
-                    sourceComponents[3]));
-      auto uiImage = [[UIImage alloc] initWithCGImage:cgImageRef.get()];
+    const CGFloat sourceComponents[] = {0.5, 0.75, 0.25, 1.0};
+    auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
+        LTVector4(sourceComponents[0], sourceComponents[1], sourceComponents[2],
+                  sourceComponents[3]));
+    auto uiImage = [[UIImage alloc] initWithCGImage:cgImageRef.get()];
 
-      auto p3ColorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
+    auto p3ColorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
 
-      cv::Vec4b expectedColor = LTConvertRGBAComponents(
-          sourceComponents, p3ColorSpace.get(), CGImageGetRenderingIntent(cgImageRef.get()));
-      cv::Mat4b expected = (cv::Mat4b(uiImage.size.height, uiImage.size.width) << expectedColor,
-          expectedColor, expectedColor, expectedColor);
+    cv::Vec4b expectedColor = LTConvertRGBAComponents(
+        sourceComponents, p3ColorSpace.get(), CGImageGetRenderingIntent(cgImageRef.get()));
+    cv::Mat4b expected = (cv::Mat4b(uiImage.size.height, uiImage.size.width) << expectedColor,
+        expectedColor, expectedColor, expectedColor);
 
-      auto actual = [[LTImage alloc] initWithImage:uiImage targetColorSpace:p3ColorSpace.get()];
+    auto actual = [[LTImage alloc] initWithImage:uiImage targetColorSpace:p3ColorSpace.get()];
 
-      expect(CGColorSpaceGetModel(actual.colorSpace))
-          .to.equal(CGColorSpaceGetModel((p3ColorSpace.get())));
-      expect($(actual.mat)).to.beCloseToMatWithin($(expected), 1);
-    });
-  }
+    expect(CGColorSpaceGetModel(actual.colorSpace))
+        .to.equal(CGColorSpaceGetModel((p3ColorSpace.get())));
+    expect($(actual.mat)).to.beCloseToMatWithin($(expected), 1);
+  });
 
   it(@"should load NULL color space when initialize with mat", ^{
     cv::Mat4b mat(2, 2, cv::Vec4b(255, 255, 255, 255));
