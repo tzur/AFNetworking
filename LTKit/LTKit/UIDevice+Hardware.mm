@@ -120,6 +120,10 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     @"iPhone10,4": @(UIDeviceKindIPhone8),
     @"iPhone10,5": @(UIDeviceKindIPhone8Plus),
     @"iPhone10,6": @(UIDeviceKindIPhoneX),
+    @"iPhone11,2": @(UIDeviceKindIPhoneXS),
+    @"iPhone11,4": @(UIDeviceKindIPhoneXSMax),
+    @"iPhone11,6": @(UIDeviceKindIPhoneXSMax),
+    @"iPhone11,8": @(UIDeviceKindIPhoneXR),
 
     // iPod.
     @"iPod1,1": @(UIDeviceKindIPod1G),
@@ -240,6 +244,9 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     @(UIDeviceKindIPhone8): @"UIDeviceKindIPhone8",
     @(UIDeviceKindIPhone8Plus): @"UIDeviceKindIPhone8Plus",
     @(UIDeviceKindIPhoneX): @"UIDeviceKindIPhoneX",
+    @(UIDeviceKindIPhoneXS): @"UIDeviceKindIPhoneXS",
+    @(UIDeviceKindIPhoneXSMax): @"UIDeviceKindIPhoneXSMax",
+    @(UIDeviceKindIPhoneXR): @"UIDeviceKindIPhoneXR",
 
     // iPod.
     @(UIDeviceKindIPod1G): @"UIDeviceKindIPod1G",
@@ -312,6 +319,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     case UIDeviceKindIPhoneSE:
     case UIDeviceKindIPhone7:
     case UIDeviceKindIPhone8:
+    case UIDeviceKindIPhoneXR:
     case UIDeviceKindUnknownIPhone:
     case UIDeviceKindSimulatorIPhone:
       return UIDeviceScreenTypeIPhoneRetina;
@@ -334,6 +342,8 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
       return UIDeviceScreenTypeIPhonePlusRetina;
 
     case UIDeviceKindIPhoneX:
+    case UIDeviceKindIPhoneXS:
+    case UIDeviceKindIPhoneXSMax:
       return UIDeviceScreenTypeIPhoneSuperRetina;
 
     case UIDeviceKindIPad1G:
