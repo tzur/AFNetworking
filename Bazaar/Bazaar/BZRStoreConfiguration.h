@@ -73,6 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// the user from iCloud. Passing \c YES in this flag without the appropriate entitlements will
 /// result in an exception being raised.
 ///
+/// \c activatePeriodicValidation is a flag indicating whether Bazaar should periodically validate
+/// the receipt.
+///
 /// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.
 ///
@@ -96,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c storeKitFacade will be initialized using \c -[BZRStoreKitFacade initApplicationUseID:].
 ///
 /// \c periodicValidatorActivator will be initialized with the default initializer of
-/// \c BZRPeriodicReceiptValidatorActivator.
+/// \c BZRPeriodicReceiptValidatorActivator. \c nil if \c activatePeriodicValidation is \c NO.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
     productListDecryptionKey:(nullable NSString *)productListDecryptionKey
     keychainAccessGroup:(nullable NSString *)keychainAccessGroup
@@ -106,7 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
     bundledApplicationsIDs:(nullable NSSet<NSString *> *)bundledApplicationsIDs
     multiAppSubscriptionClassifier:
     (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier
-    useiCloudUserID:(BOOL)useiCloudUserID NS_DESIGNATED_INITIALIZER;
+    useiCloudUserID:(BOOL)useiCloudUserID
+    activatePeriodicValidation:(BOOL)activatePeriodicValidation NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to provide the list of products.
 @property (strong, nonatomic) id<BZRProductsProvider> productsProvider;
@@ -134,7 +138,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) BZRAppStoreLocaleProvider *appStoreLocaleProvider;
 
 /// Activator used to control the periodic receipt validation.
-@property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
+@property (strong, nonatomic, nullable) BZRPeriodicReceiptValidatorActivator
+    *periodicValidatorActivator;
 
 /// Factory used to create \c BZRProductsVariantSelector.
 @property (strong, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;

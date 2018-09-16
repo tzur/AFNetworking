@@ -61,7 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 
 /// Activator used to control the periodic validation.
-@property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
+@property (readonly, nonatomic, nullable) BZRPeriodicReceiptValidatorActivator
+    *periodicValidatorActivator;
 
 /// Facade used to interact with Apple StoreKit.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;

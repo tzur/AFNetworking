@@ -72,7 +72,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
                               applicationUserID:nil
                             applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]
                          bundledApplicationsIDs:nil multiAppSubscriptionClassifier:nil
-                                useiCloudUserID:useiCloudUserID];
+                                useiCloudUserID:useiCloudUserID
+                     activatePeriodicValidation:YES];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
@@ -93,7 +94,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
                             applicationBundleID:applicationBundleID
                          bundledApplicationsIDs:bundledApplicationsIDs
                  multiAppSubscriptionClassifier:multiAppSubscriptionClassifier
-                                useiCloudUserID:useiCloudUserID];
+                                useiCloudUserID:useiCloudUserID
+                     activatePeriodicValidation:YES];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
@@ -105,7 +107,8 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     bundledApplicationsIDs:(nullable NSSet<NSString *> *)bundledApplicationsIDs
     multiAppSubscriptionClassifier:
     (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier
-    useiCloudUserID:(BOOL)useiCloudUserID {
+    useiCloudUserID:(BOOL)useiCloudUserID
+    activatePeriodicValidation:(BOOL)activatePeriodicValidation {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
     _contentFetcher = [[BZRCachedContentFetcher alloc] init];
@@ -192,15 +195,17 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          bundleIDsForValidation:relevantApplicationsBundleIDs
          multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
 
-    auto validationDateProvider =
-        [[BZRReceiptValidationDateProvider alloc]
-         initWithReceiptValidationStatusProvider:self.validationStatusProvider
-         validationIntervalDays:14];
-    _periodicValidatorActivator =
-        [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithAggregatedValidationStatusProvider:self.validationStatusProvider
-                             validationDateProvider:validationDateProvider
-                                       timeProvider:timeProvider];
+    if (activatePeriodicValidation) {
+      auto validationDateProvider =
+          [[BZRReceiptValidationDateProvider alloc]
+           initWithReceiptValidationStatusProvider:self.validationStatusProvider
+           validationIntervalDays:14];
+      _periodicValidatorActivator =
+          [[BZRPeriodicReceiptValidatorActivator alloc]
+           initWithAggregatedValidationStatusProvider:self.validationStatusProvider
+           validationDateProvider:validationDateProvider
+           timeProvider:timeProvider];
+    }
 
     _allowedProductsProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider

@@ -53,7 +53,8 @@ context(@"single app mode", ^{
         [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:JSONFilePath
          productListDecryptionKey:nil keychainAccessGroup:nil expiredSubscriptionGracePeriod:1
          applicationUserID:nil applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]
-         bundledApplicationsIDs:nil multiAppSubscriptionClassifier:nil useiCloudUserID:NO];
+         bundledApplicationsIDs:nil multiAppSubscriptionClassifier:nil useiCloudUserID:NO
+         activatePeriodicValidation:NO];
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
