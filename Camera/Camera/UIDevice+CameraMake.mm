@@ -53,6 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPhone 8 Plus";
     case UIDeviceKindIPhoneX:
       return @"iPhone X";
+    case UIDeviceKindIPhoneXS:
+      return @"iPhone XS";
+    case UIDeviceKindIPhoneXSMax:
+      return @"iPhone XS Max";
+    case UIDeviceKindIPhoneXR:
+      return @"iPhone XR";
 
     case UIDeviceKindIPod1G:
     case UIDeviceKindIPod2G:
