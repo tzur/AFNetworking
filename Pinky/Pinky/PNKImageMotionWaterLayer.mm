@@ -41,19 +41,23 @@ NS_ASSUME_NONNULL_BEGIN
 
   cv::Mat1f patchDisplacements = [self.wavePatch displacementsForTime:time];
 
+  float inverseHeight = 1. / (float)self.imageSize.height;
+  float inverseFocalLength = 1. / focalLength;
+
   for (int row = 0; row < displacements->rows; ++row) {
+    auto pointerToCurrentDisplacement = (half_float::half *)displacements->ptr<cv::Vec2hf>(row);
+    float yOverZ = (row - principalPoint.y) * inverseFocalLength;
+    float z = waterSurfaceY / (yOverZ + 1.e-6);
+    int patchZ = (int)std::round(z) % patchDisplacements.rows;
     for (int col = 0; col < displacements->cols; ++col) {
-      float xOverZ = (col - principalPoint.x) / focalLength;
-      float yOverZ = (row - principalPoint.y) / focalLength;
-      float z = waterSurfaceY / (yOverZ + 1.e-6);
+      float xOverZ = (col - principalPoint.x) * inverseFocalLength;
       float x = xOverZ * z;
       int patchX = (int)std::round(x) % patchDisplacements.cols;
-      int patchZ = (int)std::round(z) % patchDisplacements.rows;
-      float newY = waterSurfaceY + self.amplitude * patchDisplacements(patchZ, patchX);
+      float newY = waterSurfaceY + _amplitude * patchDisplacements(patchZ, patchX);
       int newRow = (focalLength / z) * newY + principalPoint.y;
-      displacements->at<cv::Vec2hf>(row, col)[0] = 0;
-      displacements->at<cv::Vec2hf>(row, col)[1] = (half_float::half)(newRow - row) /
-          (half_float::half)displacements->rows;
+
+      *pointerToCurrentDisplacement++ = 0;
+      *pointerToCurrentDisplacement++ = (half_float::half)((newRow - row) * inverseHeight);
     }
   }
 }
