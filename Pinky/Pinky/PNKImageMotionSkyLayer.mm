@@ -40,20 +40,25 @@ NS_ASSUME_NONNULL_BEGIN
   float deltaX = self.velocityX * time;
   float deltaZ = self.velocityZ * time;
 
-  for (int row = 0; row < self.imageSize.height; ++row) {
-    for (int col = 0; col < self.imageSize.width; ++col) {
+  float inverseWidth = 1. / (float)_imageSize.width;
+  float inverseHeight = 1. / (float)_imageSize.height;
+
+  for (int row = 0; row < _imageSize.height; ++row) {
+    auto pointerToCurrentDisplacement = (half_float::half *)displacements->ptr<cv::Vec2hf>(row);
+    float yOverZ = (row - principalPoint.y) / focalLength;
+    float z = skySurfaceY / (yOverZ + 1.e-6);
+    float newZ = z + deltaZ;
+    float focalLengthDividedByNewZ = focalLength / newZ;
+    int newRow = (int)std::round(focalLengthDividedByNewZ * skySurfaceY + principalPoint.y);
+    auto yDisplacement = (half_float::half)((newRow - row) * inverseHeight);
+    for (int col = 0; col < _imageSize.width; ++col) {
       float xOverZ = (col - principalPoint.x) / focalLength;
-      float yOverZ = (row - principalPoint.y) / focalLength;
-      float z = skySurfaceY / (yOverZ + 1.e-6);
       float x = xOverZ * z;
       float newX = x + deltaX;
-      float newZ = z + deltaZ;
-      int newCol = (int)std::round((focalLength / newZ) * newX + principalPoint.x);
-      int newRow = (int)std::round((focalLength / newZ) * skySurfaceY + principalPoint.y);
-      displacements->at<cv::Vec2hf>(row, col)[0] = (half_float::half)(newCol - col) /
-          (half_float::half)self.imageSize.width;
-      displacements->at<cv::Vec2hf>(row, col)[1] = (half_float::half)(newRow - row) /
-          (half_float::half)self.imageSize.height;
+      int newCol = (int)std::round(focalLengthDividedByNewZ * newX + principalPoint.x);
+      *pointerToCurrentDisplacement++ = (half_float::half)((newCol - col) * inverseWidth);
+
+      *pointerToCurrentDisplacement++ = yDisplacement;
     }
   }
 }

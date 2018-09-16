@@ -47,14 +47,23 @@ NS_ASSUME_NONNULL_BEGIN
   cv::Mat1f patchDisplacementsY = [self.wavePatchY displacementsForTime:time];
 
   for (int row = 0; row < displacements->rows; ++row) {
+    auto pointerToCurrentDisplacement = (half_float::half *)displacements->ptr<cv::Vec2hf>(row);
     float perspectiveCoefficient = (float)row / (float)displacements->rows;
+    float adjustedAmplitudeX = _amplitude * perspectiveCoefficient;
+    float adjustedAmplitudeY = adjustedAmplitudeX / 6;
+    int rowInPatch = row % _patchSize;
+    int colInPatch = 0;
     for (int col = 0; col < displacements->cols; ++col) {
-      displacements->at<cv::Vec2hf>(row, col)[0] = (half_float::half)
-          (self.amplitude * patchDisplacementsX(row % self.patchSize, col % self.patchSize) *
-           perspectiveCoefficient);
-      displacements->at<cv::Vec2hf>(row, col)[1] = (half_float::half)
-          ((self.amplitude / 6) * patchDisplacementsY(row % self.patchSize, col % self.patchSize) *
-           perspectiveCoefficient);
+      *pointerToCurrentDisplacement++ =
+          (half_float::half)(adjustedAmplitudeX * patchDisplacementsX(rowInPatch, colInPatch));
+
+      *pointerToCurrentDisplacement++ =
+          (half_float::half)(adjustedAmplitudeY * patchDisplacementsY(rowInPatch, colInPatch));
+
+      colInPatch++;
+      if (colInPatch == (int)_patchSize) {
+        colInPatch = 0;
+      }
     }
   }
 }

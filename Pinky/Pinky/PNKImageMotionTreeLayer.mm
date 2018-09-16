@@ -86,6 +86,9 @@ NS_ASSUME_NONNULL_BEGIN
       (firstSampleIndex + 1) : 0;
   float interpolationCoefficient = timeRemainderInFrames - firstSampleIndex;
 
+  float inverseWidth = 1. / (float)self.imageSize.width;
+  float inverseHeight = 1. / (float)self.imageSize.height;
+
   for (int component = 1; component < _treesStatistics.rows; ++component) {
     int displacementsIndex = (component - 1) % displacementsCount;
     float tipDisplacement = _treeTipDisplacements(displacementsIndex, firstSampleIndex) *
@@ -106,21 +109,25 @@ NS_ASSUME_NONNULL_BEGIN
           2 * std::pow(relativeHeightAboveGround, 2);
 
       float angle = tipDisplacement * relativeAngle;
+
       float xDisplacement = std::sin(angle) * heightAboveGround;
       float yDisplacement = (1 - std::cos(angle)) * heightAboveGround;
 
+      auto xRelativeDisplacement = (half_float::half)(-xDisplacement * inverseWidth);
+      auto yRelativeDisplacement = (half_float::half)(-yDisplacement * inverseHeight);
+
+      int newRow = std::clamp(row + std::round(yDisplacement), 0, _treesWithLabels.rows - 1);
+      auto pointerToNewRow = (half_float::half *)displacements->ptr(newRow);
+
       for (int col = left; col < left + width; ++col) {
-        if(_treesWithLabels.at<int>(row, col) != component) {
+        if (_treesWithLabels.at<int>(row, col) != component) {
           continue;
         }
 
         int newCol = std::clamp(col + std::round(xDisplacement), 0, _treesWithLabels.cols - 1);
-        int newRow = std::clamp(row + std::round(yDisplacement), 0, _treesWithLabels.rows - 1);
 
-        displacements->at<cv::Vec2hf>(newRow, newCol)[0] = -(half_float::half)xDisplacement /
-            (half_float::half)displacements->cols;
-        displacements->at<cv::Vec2hf>(newRow, newCol)[1] = -(half_float::half)yDisplacement /
-            (half_float::half)displacements->rows;
+        pointerToNewRow[2 * newCol] = xRelativeDisplacement;
+        pointerToNewRow[2 * newCol + 1] = yRelativeDisplacement;
       }
     }
   }
