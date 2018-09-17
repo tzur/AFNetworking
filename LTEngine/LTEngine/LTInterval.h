@@ -63,6 +63,10 @@ public:
     return Interval<T>(values, Closed, Open);
   }
 
+  static Interval<T> minusOneToOne() {
+    return Interval<T>({-1, 1});
+  }
+
   /// Returns the closed interval <tt>[0, 1]</tt>.
   static Interval<T> zeroToOne() {
     return Interval<T>({0, 1});

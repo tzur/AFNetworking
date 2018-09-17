@@ -649,6 +649,16 @@ context(@"extrema", ^{
   });
 });
 
+context(@"fixed intervals containing negative numbers", ^{
+  it(@"should return a [-1, 1] interval", ^{
+    Interval<CGFloat> interval = Interval<CGFloat>::minusOneToOne();
+    expect(interval.inf()).to.equal(-1);
+    expect(interval.sup()).to.equal(1);
+    expect(interval.infIncluded()).to.beTruthy();
+    expect(interval.supIncluded()).to.beTruthy();
+  });
+});
+
 context(@"empty intervals", ^{
   it(@"should indicate that an empty CGFloat interval is empty", ^{
     Interval<CGFloat> interval = Interval<CGFloat>::oo({0, std::nextafter((CGFloat)0, (CGFloat)1)});
