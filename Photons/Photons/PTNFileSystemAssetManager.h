@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFileManager:(id<PTNFileSystemFileManager>)fileManager
                        imageResizer:(PTNImageResizer *)imageResizer NS_DESIGNATED_INITIALIZER;
 
+/// Returns an array of UTIs that are supported by the receiver.
++ (NSArray<NSString *> *)supportedUTIs;
+
 @end
 
 NS_ASSUME_NONNULL_END

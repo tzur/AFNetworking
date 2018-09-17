@@ -126,8 +126,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [LTPath pathWithBaseDirectory:path.baseDirectory andRelativePath:relativePath];
 }
 
-+ (NSArray *)supportedUTIs {
-  static NSArray *supportedUTIs;
++ (NSArray<NSString *> *)supportedUTIs {
+  static NSArray<NSString *> *supportedUTIs;
 
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
