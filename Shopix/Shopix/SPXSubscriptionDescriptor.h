@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRProductsInfoProvider;
 
-@class BZRBillingPeriod, BZRProductPriceInfo;
+@class BZRBillingPeriod, BZRProductPriceInfo, BZRSubscriptionIntroductoryDiscount;
 
 /// Descriptor representing a subscription product and providing information that is crucial for
 /// presenting the product to the user.
@@ -47,6 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Price information of the subscription product. KVO Compliant.
 @property (strong, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
+
+/// Introductory discount of the product. \c nil if product is not a renewable subscription, the
+/// product offers no introductory discount or if the information is not available. KVO Compliant.
+///
+/// @note For introductory discount offering guidelines read this document by Apple:
+/// https://developer.apple.com/documentation/storekit/in_app_purchase/offering_introductory_prices_in_your_app?language=objc.
+@property (strong, nonatomic, nullable) BZRSubscriptionIntroductoryDiscount *introductoryDiscount;
 
 /// Discount percentage in range <tt>[0, 100)</tt> defines a desired fictive discount percentage for
 /// the product, where the price after the discount is \c priceInfo.price. \c 0 if there is no
