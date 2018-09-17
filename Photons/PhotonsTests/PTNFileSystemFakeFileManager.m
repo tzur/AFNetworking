@@ -114,6 +114,12 @@ NS_ASSUME_NONNULL_BEGIN
             NSURLIsDirectoryKey: @(file.isDirectory),
             NSURLTypeIdentifierKey: (NSString *)kUTTypeJPEG
           };
+        } else if ([filePath.pathExtension.lowercaseString isEqual:@"gif"]) {
+          fileURL.resources = @{
+            NSURLNameKey: file.name,
+            NSURLIsDirectoryKey: @(file.isDirectory),
+            NSURLTypeIdentifierKey: (NSString *)kUTTypeGIF
+          };
         } else {
           fileURL.resources = @{
             NSURLNameKey: file.name,

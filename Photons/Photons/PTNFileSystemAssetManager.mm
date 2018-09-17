@@ -136,6 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
       (NSString *)kUTTypeJPEG,
       (NSString *)kUTTypeTIFF,
       (NSString *)kUTTypePNG,
+      (NSString *)kUTTypeGIF,
     ]];
   });
 

@@ -56,6 +56,7 @@ beforeEach(^{
                                                isDirectory:NO],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"" path:PTNOneSecondVideoURL().path
                                                isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.gif" path:@"/baz" isDirectory:NO],
   ]];
   imageResizer = OCMClassMock([PTNImageResizer class]);
   manager = [[PTNFileSystemAssetManager alloc] initWithFileManager:fileManager
@@ -92,7 +93,8 @@ context(@"album fetching", ^{
       PTNFileSystemFileFromString(@"baz/foo.mp4"),
       PTNFileSystemFileFromString(@"baz/foo.mov"),
       PTNFileSystemFileFromString(@"baz/foo.m4v"),
-      PTNFileSystemFileFromString(@"baz/foo.qt")
+      PTNFileSystemFileFromString(@"baz/foo.qt"),
+      PTNFileSystemFileFromString(@"baz/foo.gif")
     ];
     id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:files];
 
