@@ -3,21 +3,26 @@
 
 #import "DVNScatteredGeometryProviderModel.h"
 
+#import <LTEngine/LTParameterizationKeyToValues.h>
+#import <LTEngine/LTSplineControlPoint+AttributeKeys.h>
 #import <LTKit/LTRandom.h>
 
 #import "DVNGeometryProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-static CGFloat DVNTaperingScale(CGFloat factor, CGFloat polynomialFactor,
-                                lt::Interval<CGFloat> taperingScaleFactors) {
+static CGFloat DVNTaperingScaleRangeFactor(CGFloat factor, CGFloat polynomialFactor) {
   CGFloat t = factor;
   CGFloat t2 = t * t;
   CGFloat t3 = t2 * t;
   // Use the Bernstein polynomial originating from the cubic Bezier curve determined by control
   // points \c 0, \c polynomialFactor, \c 1, and \c 1.
-  CGFloat normalizedScaleFactor = (3 * t3 - 6 * t2 + 3 * t) * polynomialFactor - 2 * t3 + 3 * t2;
-  return *taperingScaleFactors.valueAt(normalizedScaleFactor);
+  return (3 * t3 - 6 * t2 + 3 * t) * polynomialFactor - 2 * t3 + 3 * t2;
+}
+
+static CGFloat DVNTaperingScale(CGFloat factor, CGFloat polynomialFactor,
+                                lt::Interval<CGFloat> taperingScaleFactors) {
+  return *taperingScaleFactors.valueAt(DVNTaperingScaleRangeFactor(factor, polynomialFactor));
 }
 
 /// Heuristic value determining the maximum deviation of the required tapering scale factor and the
@@ -59,6 +64,12 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
 - (instancetype)copyWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
                                   randomState:(LTRandomState *)randomState;
 
+/// Parametric value associated with the most recently processed sample.
+@property (readonly, nonatomic) CGFloat previousParametricValue;
+
+/// Most recently computed parametric value used for speed-based tapering.
+@property (readonly, nonatomic) CGFloat previousSpeedBasedTaperingScaleFactor;
+
 @end
 
 /// Geometry provider constructible from \c DVNScatteredGeometryProviderModel objects.
@@ -84,8 +95,17 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
 /// Indication whether tapering is performed.
 @property (readonly, nonatomic) BOOL performsTapering;
 
+/// Indication whether speed-based tapering is performed.
+@property (readonly, nonatomic) BOOL performsSpeedBasedTapering;
+
 /// Range of scale factors used for tapering.
 @property (readonly, nonatomic) lt::Interval<CGFloat> taperingScaleFactors;
+
+/// Parametric value associated with the most recently processed sample.
+@property (nonatomic) CGFloat previousParametricValue;
+
+/// Most recently computed parametric value used for speed-based tapering.
+@property (nonatomic) CGFloat previousSpeedBasedTaperingScaleFactor;
 
 @end
 
@@ -99,9 +119,18 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
     _model = model;
     _performsTapering = (model.lengthOfStartTapering > 0 || model.lengthOfEndTapering > 0) &&
         model.minimumTaperingScaleFactor < 1;
+    _performsSpeedBasedTapering = model.speedBasedTaperingFactor != 0;
     _taperingScaleFactors = lt::Interval<CGFloat>({model.minimumTaperingScaleFactor, 1});
+    [self reset];
   }
   return self;
+}
+
+- (void)reset {
+  self.previousParametricValue = 0;
+  self.previousSpeedBasedTaperingScaleFactor =
+      std::min<CGFloat>(1 + self.model.speedBasedTaperingFactor *
+                        (1 - self.model.minimumTaperingScaleFactor), 1);
 }
 
 static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleFactor,
@@ -128,6 +157,51 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
                             -scaledSin * center.x + (1 - scaledCos) * center.y + distance.y);
   return quad.transformedBy(transform);
 }
+
+/// Heuristically determined minimum speed below which no tapering is performed.
+static const CGFloat kMinSpeedForTapering = 500;
+
+/// Heuristically determined speed range inside which tapering is performed.
+static const CGFloat kSpeedRangeForTapering = 12000;
+
+/// Heuristically determined value used for computing the speed-based tapering scale factor.
+static const CGFloat kSpeedBasedTaperingExponent = 0.4;
+
+/// Heuristically determined value used for smoothing the speed-based tapering scale factor.
+static const CGFloat kSpeedBasedTaperingInterpolationBase = 0.995;
+
+/// Returns the interpolation value, in range <tt>[0, 1]</tt>, to be used for determining the
+/// speed-based tapering scale factor, based on the given \c speedValue, \c taperingFactor,
+/// \c parametricStepSize, and \c previousScaleRangeFactor. \c speedValue is the speed, in view
+/// coordinates of the spline at the processed samples. \c taperingFactor determines the intensity
+/// and the behavior of the tapering. \c parametricStepSize is the difference of the parametric
+/// value of the first spline sample processed in the current call and the parametric value of the
+/// most recently processed spline sample. \c previousScaleRangeFactor is the value most recently
+/// returned by this functionn.
+///
+/// @important The given \c speedValue must be positive. The given \c taperingFactor must be in
+/// <tt>[-1, 1]</tt>. The given \c parametricStepSize must be positive. The given
+/// \c previousScaleRangeFactor must be in <tt>[0, 1]</tt>.
+static CGFloat DVNSpeedBasedTaperingScaleRangeFactor(CGFloat speedValue, CGFloat taperingFactor,
+                                                     CGFloat parametricStepSize,
+                                                     CGFloat previousScaleRangeFactor) {
+  NSUInteger additiveFactor = taperingFactor < 0 ? 1 : 0;
+  CGFloat taperingIntensity = taperingFactor;
+  CGFloat speedFactor =
+      pow(std::clamp((speedValue - kMinSpeedForTapering) / kSpeedRangeForTapering, 0, 1),
+          kSpeedBasedTaperingExponent);
+  CGFloat scaleRangeFactor = 1 - (taperingIntensity * (speedFactor - additiveFactor));
+
+  /// In order to make sure that it is independent of the sampling pattern of the parametric values,
+  /// it is ensured that the change takes into account the current parametric step size.
+  CGFloat t = pow(kSpeedBasedTaperingInterpolationBase, parametricStepSize);
+
+  /// In order to achieve a smooth transition of the computed speed-based tapering scale range
+  /// factor, it is ensured that the change takes into account the previous scale range factor.
+  return (1 - t) * scaleRangeFactor + t * previousScaleRangeFactor;
+}
+
+static NSString * const kKeyForSpeed = [LTSplineControlPoint keyForSpeedInScreenCoordinates];
 
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(BOOL)end {
   dvn::GeometryValues values = [self.geometryProvider valuesFromSamples:samples end:end];
@@ -188,40 +262,62 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
     }
   }
 
+  BOOL performsTapering = self.performsTapering;
+  BOOL performsSpeedBasedTapering = self.performsSpeedBasedTapering;
   lt::Interval<int> countRange = (lt::Interval<int>)self.model.count.closed();
   lt::Interval<CGFloat> distanceRange = self.model.distance.closed();
   lt::Interval<CGFloat> angleRange = self.model.angle.closed();
   lt::Interval<CGFloat> scaleRange = self.model.scale.closed();
   LTRandom *random = self.random;
+  CGFloat speedBasedTaperingFactor = self.model.speedBasedTaperingFactor;
+  CGFloat conversionFactor = self.model.conversionFactor;
+  CGFloats speedValues = [samples.mappingOfSampledValues valuesForKey:kKeyForSpeed];
 
   for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
     NSUInteger count = [random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];
-    CGFloat taperingScaleFactor = 1;
+    CGFloat taperingScaleRangeFactor = 1;
+    CGFloat parametricValue = sampledParametricValues[i];
 
-    if (self.performsTapering) {
-      CGFloat parametricValue = sampledParametricValues[i];
+    if (performsTapering) {
       if (parametricValue < actualLengthOfStartTapering) {
-        taperingScaleFactor = DVNTaperingScale(parametricValue / desiredLengthOfStartTapering,
-                                               startTaperingFactor, taperingScaleFactors);
+        taperingScaleRangeFactor =
+            DVNTaperingScaleRangeFactor(parametricValue / desiredLengthOfStartTapering,
+                                        startTaperingFactor);
       } else if (end) {
         CGFloat lengthToEnd = maxParametricValue - parametricValue;
         CGFloat factor = lengthToEnd || actualLengthOfEndTapering ?
             lengthToEnd / actualLengthOfEndTapering : 0;
-        taperingScaleFactor = lengthToEnd > actualLengthOfEndTapering ? 1 :
-            DVNTaperingScale(factor * endTaperingInterpolationFactor, endTaperingFactor,
-                             taperingScaleFactors);
+        taperingScaleRangeFactor = lengthToEnd > actualLengthOfEndTapering ? 1 :
+            DVNTaperingScaleRangeFactor(factor * endTaperingInterpolationFactor, endTaperingFactor);
       }
+    }
+    if (performsSpeedBasedTapering) {
+      CGFloat speedBasedTaperingScaleRangeFactor =
+          DVNSpeedBasedTaperingScaleRangeFactor(speedValues[i], speedBasedTaperingFactor,
+                                                conversionFactor * (parametricValue -
+                                                                    self.previousParametricValue),
+                                                self.previousSpeedBasedTaperingScaleFactor);
+      taperingScaleRangeFactor *= speedBasedTaperingScaleRangeFactor;
+      self.previousSpeedBasedTaperingScaleFactor = speedBasedTaperingScaleRangeFactor;
     }
 
     lt::Quad quad = originalQuads[i];
     NSUInteger index = values.indices()[i];
+    CGFloat taperingScaleFactor = *taperingScaleFactors.valueAt(taperingScaleRangeFactor);
 
     for (NSUInteger j = 0; j < count; ++j) {
       quads.push_back(DVNRandomlyTransformedQuadFromQuad(quad, taperingScaleFactor, distanceRange,
                                                          angleRange, scaleRange, random));
       indices.push_back(index);
     }
+
+    self.previousParametricValue = parametricValue;
   }
+
+  if (end) {
+    [self reset];
+  }
+
   return dvn::GeometryValues(quads, indices, samples);
 }
 
@@ -248,7 +344,8 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
   return [self initWithGeometryProviderModel:geometryProviderModel randomState:randomState
                                        count:count distance:distance angle:angle scale:scale
                        lengthOfStartTapering:0 lengthOfEndTapering:0 startTaperingFactor:1
-                         endTaperingFactor:1 minimumTaperingScaleFactor:1];
+                           endTaperingFactor:1 minimumTaperingScaleFactor:1
+                    speedBasedTaperingFactor:0 conversionFactor:1];
 }
 
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
@@ -261,11 +358,14 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
                           lengthOfEndTapering:(CGFloat)lengthOfEndTapering
                           startTaperingFactor:(CGFloat)startTaperingFactor
                             endTaperingFactor:(CGFloat)endTaperingFactor
-                   minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
+                   minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor
+                     speedBasedTaperingFactor:(CGFloat)speedBasedTaperingFactor
+                             conversionFactor:(CGFloat)conversionFactor {
   [self validateDistance:distance angle:angle scale:scale
    lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
    startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-   minTaperingScaleFactor:minimumTaperingScaleFactor];
+   minTaperingScaleFactor:minimumTaperingScaleFactor speedTaperingFactor:speedBasedTaperingFactor
+   conversionFactor:conversionFactor];
 
   if (self = [super init]) {
     _geometryProviderModel = geometryProviderModel;
@@ -279,16 +379,51 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
     _startTaperingFactor = startTaperingFactor;
     _endTaperingFactor = endTaperingFactor;
     _minimumTaperingScaleFactor = minimumTaperingScaleFactor;
+    _speedBasedTaperingFactor = speedBasedTaperingFactor;
+    _conversionFactor = conversionFactor;
+    _previousParametricValue = 0;
+    _previousSpeedBasedTaperingScaleFactor = 0;
+  }
+  return self;
+}
+
+- (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
+                                  randomState:(LTRandomState *)randomState
+                                        count:(lt::Interval<NSUInteger>)count
+                                     distance:(lt::Interval<CGFloat>)distance
+                                        angle:(lt::Interval<CGFloat>)angle
+                                        scale:(lt::Interval<CGFloat>)scale
+                        lengthOfStartTapering:(CGFloat)lengthOfStartTapering
+                          lengthOfEndTapering:(CGFloat)lengthOfEndTapering
+                          startTaperingFactor:(CGFloat)startTaperingFactor
+                            endTaperingFactor:(CGFloat)endTaperingFactor
+                   minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor
+                     speedBasedTaperingFactor:(CGFloat)speedBasedTaperingFactor
+                             conversionFactor:(CGFloat)conversionFactor
+                      previousParametricValue:(CGFloat)previousParametricValue
+        previousSpeedBasedTaperingScaleFactor:(CGFloat)previousSpeedBasedTaperingScaleFactor {
+  if (self = [self initWithGeometryProviderModel:geometryProviderModel randomState:randomState
+                                           count:count distance:distance angle:angle scale:scale
+                           lengthOfStartTapering:lengthOfStartTapering
+                             lengthOfEndTapering:lengthOfEndTapering
+                             startTaperingFactor:startTaperingFactor
+                               endTaperingFactor:endTaperingFactor
+                      minimumTaperingScaleFactor:minimumTaperingScaleFactor
+                        speedBasedTaperingFactor:speedBasedTaperingFactor
+                                conversionFactor:conversionFactor]) {
+    _previousParametricValue = previousParametricValue;
+    _previousSpeedBasedTaperingScaleFactor = previousSpeedBasedTaperingScaleFactor;
   }
   return self;
 }
 
 - (void)validateDistance:(lt::Interval<CGFloat>)distance angle:(lt::Interval<CGFloat>)angle
-                   scale:(lt::Interval<CGFloat>)scale
-   lengthOfStartTapering:(CGFloat)lengthOfStartTapering
-     lengthOfEndTapering:(CGFloat)lengthOfEndTapering
-     startTaperingFactor:(CGFloat)startTaperingFactor endTaperingFactor:(CGFloat)endTaperingFactor
-  minTaperingScaleFactor:(CGFloat)minTaperingScaleFactor {
+    scale:(lt::Interval<CGFloat>)scale
+    lengthOfStartTapering:(CGFloat)lengthOfStartTapering
+    lengthOfEndTapering:(CGFloat)lengthOfEndTapering
+    startTaperingFactor:(CGFloat)startTaperingFactor endTaperingFactor:(CGFloat)endTaperingFactor
+    minTaperingScaleFactor:(CGFloat)minTaperingScaleFactor
+    speedTaperingFactor:(CGFloat)speedTaperingFactor conversionFactor:(CGFloat)conversionFactor {
   LTParameterAssert(distance.intersectionWith(lt::Interval<CGFloat>::nonNegativeNumbers()) ==
                     distance, @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX])",
                     distance.description());
@@ -309,6 +444,10 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
                     @"Invalid end tapering factor: %g", endTaperingFactor);
   LTParameterAssert(lt::Interval<CGFloat>::openZeroToClosedOne().contains(minTaperingScaleFactor),
                     @"Invalid minimum tapering scale factor: %g", minTaperingScaleFactor);
+  LTParameterAssert(lt::Interval<CGFloat>::minusOneToOne().contains(speedTaperingFactor),
+                    @"Invalid factor for speed-based tapering: %g", speedTaperingFactor);
+  LTParameterAssert(lt::Interval<CGFloat>::positiveNumbers().contains(conversionFactor),
+                    @"Invalid factor for conversion factor: %g", conversionFactor);
 }
 
 #pragma mark -
@@ -331,7 +470,11 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
       self.lengthOfEndTapering == model.lengthOfEndTapering &&
       self.startTaperingFactor == model.startTaperingFactor &&
       self.endTaperingFactor == model.endTaperingFactor &&
-      self.minimumTaperingScaleFactor == model.minimumTaperingScaleFactor;
+      self.minimumTaperingScaleFactor == model.minimumTaperingScaleFactor &&
+      self.speedBasedTaperingFactor == model.speedBasedTaperingFactor &&
+      self.conversionFactor == model.conversionFactor &&
+      self.previousParametricValue == model.previousParametricValue &&
+      self.previousSpeedBasedTaperingScaleFactor == model.previousSpeedBasedTaperingScaleFactor;
 }
 
 - (NSUInteger)hash {
@@ -347,6 +490,10 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
   lt::hash_combine(seed, self.startTaperingFactor);
   lt::hash_combine(seed, self.endTaperingFactor);
   lt::hash_combine(seed, self.minimumTaperingScaleFactor);
+  lt::hash_combine(seed, self.speedBasedTaperingFactor);
+  lt::hash_combine(seed, self.conversionFactor);
+  lt::hash_combine(seed, self.previousParametricValue);
+  lt::hash_combine(seed, self.previousSpeedBasedTaperingScaleFactor);
   return seed;
 }
 
@@ -364,15 +511,17 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleF
 
 - (instancetype)copyWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
                                   randomState:(LTRandomState *)randomState {
-  return [[[self class] alloc] initWithGeometryProviderModel:geometryProviderModel
-                                                 randomState:randomState count:self.count
-                                                    distance:self.distance angle:self.angle
-                                                       scale:self.scale
-                                       lengthOfStartTapering:self.lengthOfStartTapering
-                                         lengthOfEndTapering:self.lengthOfEndTapering
-                                         startTaperingFactor:self.startTaperingFactor
-                                           endTaperingFactor:self.endTaperingFactor
-                                  minimumTaperingScaleFactor:self.minimumTaperingScaleFactor];
+  return [[[self class] alloc]
+          initWithGeometryProviderModel:geometryProviderModel randomState:randomState
+          count:self.count distance:self.distance angle:self.angle scale:self.scale
+          lengthOfStartTapering:self.lengthOfStartTapering
+          lengthOfEndTapering:self.lengthOfEndTapering startTaperingFactor:self.startTaperingFactor
+          endTaperingFactor:self.endTaperingFactor
+          minimumTaperingScaleFactor:self.minimumTaperingScaleFactor
+          speedBasedTaperingFactor:self.speedBasedTaperingFactor
+          conversionFactor:self.conversionFactor
+          previousParametricValue:self.previousParametricValue
+          previousSpeedBasedTaperingScaleFactor:self.previousSpeedBasedTaperingScaleFactor];
 }
 
 #pragma mark -

@@ -6,7 +6,7 @@
 #import <LTEngine/LTControlPointModel.h>
 #import <LTEngine/LTGLContext.h>
 #import <LTEngine/LTParameterizedObjectType.h>
-#import <LTEngine/LTSplineControlPoint.h>
+#import <LTEngine/LTSplineControlPoint+AttributeKeys.h>
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "DVNBrushModel+Deserialization.h"
@@ -324,11 +324,17 @@ context(@"properties", ^{
 });
 
 context(@"brush stroke painting", ^{
+  static NSDictionary<NSString *, NSNumber *> *kAttributes = @{
+    [LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0
+  };
+
   static NSArray<LTSplineControlPoint *> * const kControlPoints = @[
     [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(3.5,
-                                                                           kSize.height / 2)],
+                                                                           kSize.height / 2)
+                                         attributes:kAttributes],
     [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.width - 3.5,
-                                                                           kSize.height / 2)]
+                                                                           kSize.height / 2)
+                                         attributes:kAttributes]
   ];
 
   __block LTTexture *sourceTexture;
