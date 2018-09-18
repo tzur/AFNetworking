@@ -8,6 +8,7 @@
 #import <LTEngine/LTTexture.h>
 #import <LTEngine/LTTextureAtlas.h>
 #import <LTKit/LTRandom.h>
+#import <LTKit/UIDevice+Hardware.h>
 
 #import "DVNAttributeStageConfiguration.h"
 #import "DVNBlendMode.h"
@@ -78,7 +79,9 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
           lengthOfStartTapering:model.taperingLengths.x * scaleInSplineCoordinates
           lengthOfEndTapering:model.taperingLengths.y * scaleInSplineCoordinates
           startTaperingFactor:model.taperingFactors.x endTaperingFactor:model.taperingFactors.y
-          minimumTaperingScaleFactor:model.minimumTaperingScaleFactor];
+          minimumTaperingScaleFactor:model.minimumTaperingScaleFactor
+          speedBasedTaperingFactor:model.speedBasedTaperingFactor
+          conversionFactor:conversionFactor / [UIDevice currentDevice].lt_pixelsPerInch];
 }
 
 - (LTRandomState *)randomStateFromModel:(DVNBrushModelV1 *)model {

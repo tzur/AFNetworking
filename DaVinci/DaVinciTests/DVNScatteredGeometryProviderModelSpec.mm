@@ -544,7 +544,8 @@ context(@"provider", ^{
                count:count distance:distance angle:angle scale:scale
                lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
                startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor
+               speedBasedTaperingFactor:0 conversionFactor:1];
       id<DVNGeometryProvider> provider = [model provider];
 
       dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
@@ -560,7 +561,8 @@ context(@"provider", ^{
                count:count distance:distance angle:angle scale:scale
                lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
                startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor
+               speedBasedTaperingFactor:0 conversionFactor:1];
       id<DVNGeometryProvider> provider = [model provider];
 
       dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
