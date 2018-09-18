@@ -104,7 +104,7 @@ static CGFloat DVNApproximateFactorForTaperingScale(CGFloat taperingScale, CGFlo
   return self;
 }
 
-static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat taperingScaleFactor,
+static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat scaleFactor,
                                                    lt::Interval<CGFloat> distanceRange,
                                                    lt::Interval<CGFloat> angleRange,
                                                    lt::Interval<CGFloat> scaleRange,
@@ -112,10 +112,10 @@ static lt::Quad DVNRandomlyTransformedQuadFromQuad(lt::Quad quad, CGFloat taperi
   CGFloat distanceLength = [random randomDoubleBetweenMin:distanceRange.inf()
                                                       max:distanceRange.sup()];
   CGPoint distance = CGPoint(LTVector2::angle([random randomDoubleBetweenMin:0 max:M_PI * 2]) *
-                             distanceLength) * taperingScaleFactor;
+                             distanceLength) * scaleFactor;
   CGFloat angle = [random randomDoubleBetweenMin:angleRange.inf() max:angleRange.sup()];
   CGFloat scale = [random randomDoubleBetweenMin:scaleRange.inf() max:scaleRange.sup()] *
-      taperingScaleFactor;
+      scaleFactor;
   CGPoint center = quad.center();
 
   // For increased performance, explicitly compute
