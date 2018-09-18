@@ -81,6 +81,10 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 /// the \c allowedTaperingFactorRange of the receiver.
 - (instancetype)copyWithTaperingFactors:(LTVector2)taperingFactors;
 
+/// Returns a copy of the receiver with the exception of the given \c speedBasedTaperingFactor,
+/// clamped to the \c allowedSpeedBasedTaperingFactorRange of the receiver.
+- (instancetype)copyWithSpeedBasedTaperingFactor:(CGFloat)speedBasedTaperingFactor;
+
 /// Returns a copy of the receiver with the exception of the given \c flow, clamped to the
 /// \c flowRange of the receiver.
 - (instancetype)copyWithFlow:(CGFloat)flow;
@@ -327,6 +331,26 @@ LTEnumDeclare(NSUInteger, DVNSourceSamplingMode,
 
 /// Allowed range of the x- and y-coordinate of \c taperingFactors.
 @property (class, readonly, nonatomic) lt::Interval<float> allowedTaperingFactorRange;
+
+/// Factor, in range \c allowedSpeedBasedTaperingFactorRange, used for determining the effect
+/// of speed-based tapering. A value of \c 0 results in no tapering due to variations in the speed
+/// of the brush stroke, while an absolute value of \c 1 results in a maximum tapering effect.
+/// Negative values cause the brush stroke to be thinner for lower brush stroke speeds, while
+/// postive values cause the brush stroke to be thinner for higher brush stroke speeds.
+///
+/// (Order) Dependencies:
+/// \c scale
+/// \c spacing
+/// \c numberOfSamplesPerSequence
+/// \c sequenceDistance
+/// \c countRange
+/// \c distanceJitterFactorRange
+/// \c angleRange
+/// \c scaleJitterRange
+@property (readonly, nonatomic) float speedBasedTaperingFactor;
+
+/// Allowed range of \c speedBasedTaperingFactor.
+@property (class, readonly, nonatomic) lt::Interval<float> allowedSpeedBasedTaperingFactorRange;
 
 #pragma mark -
 #pragma mark Flow
