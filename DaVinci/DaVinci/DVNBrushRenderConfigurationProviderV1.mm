@@ -72,6 +72,8 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
     *model.scaleJitterRange.min() * scaleInSplineCoordinates,
     *model.scaleJitterRange.max() * scaleInSplineCoordinates
   });
+  CGFloat minimumTaperingScaleFactor =
+      std::max(*model.scaleRange.min() / model.scale, model.minimumTaperingScaleFactor);
   lt::Interval<NSUInteger> count = model.countRange;
   return [[DVNScatteredGeometryProviderModel alloc]
           initWithGeometryProviderModel:providerModel randomState:[self randomStateFromModel:model]
@@ -79,7 +81,7 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
           lengthOfStartTapering:model.taperingLengths.x * scaleInSplineCoordinates
           lengthOfEndTapering:model.taperingLengths.y * scaleInSplineCoordinates
           startTaperingFactor:model.taperingFactors.x endTaperingFactor:model.taperingFactors.y
-          minimumTaperingScaleFactor:model.minimumTaperingScaleFactor
+          minimumTaperingScaleFactor:minimumTaperingScaleFactor
           speedBasedTaperingFactor:model.speedBasedTaperingFactor
           conversionFactor:conversionFactor / [UIDevice currentDevice].lt_pixelsPerInch];
 }
