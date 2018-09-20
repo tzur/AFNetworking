@@ -44,10 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Stack of parameterized objects each of which represents a spline segment of this instance.
 @property (strong, nonatomic) LTParameterizedObjectStack *mutableStack;
 
-/// Index of the control point constituting the end of the intrinsic parametric range of this
-/// spline.
-@property (nonatomic) NSUInteger indexOfControlPointAtEndOfIntrinsicParametricRange;
-
 @end
 
 @implementation LTMutableEuclideanSpline
@@ -148,12 +144,6 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   for (NSUInteger i = index; i < self.numberOfControlPoints - windowSize + 1; i += stepSize) {
     [self extendSplineWithSingleSegmentUsingControlPointsStartingAtIndex:i windowSize:windowSize];
   }
-
-  NSUInteger numberOfIterations =
-      std::ceil((CGFloat)(self.numberOfControlPoints - windowSize + 1 - index) / stepSize);
-
-  self.indexOfControlPointAtEndOfIntrinsicParametricRange =
-      index + numberOfIterations * stepSize + range.location;
 }
 
 - (void)extendSplineWithSingleSegmentUsingControlPointsStartingAtIndex:(NSUInteger)index
@@ -213,10 +203,6 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
       [self popControlPointsWithoutSegmentAssociation:numberOfPoints];
   numberOfPoints -= numberOfPoppedControlPoints;
   [self popControlPointsWithSegmentAssociation:numberOfPoints];
-
-  self.indexOfControlPointAtEndOfIntrinsicParametricRange = self.mutableControlPoints.count - 1 -
-      self.numberOfRequiredInterpolatableObjects + self.intrinsicParametricRange.location +
-      self.intrinsicParametricRange.length;
 }
 
 - (NSUInteger)popControlPointsWithoutSegmentAssociation:(NSUInteger)numberOfPoints {
@@ -357,6 +343,11 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 
 - (NSRange)intrinsicParametricRange {
   return self.factory.intrinsicParametricRange;
+}
+
+- (NSUInteger)indexOfControlPointAtEndOfIntrinsicParametricRange {
+  return self.intrinsicParametricRange.location +
+      self.mutableStack.count * (self.intrinsicParametricRange.length - 1);
 }
 
 @end
