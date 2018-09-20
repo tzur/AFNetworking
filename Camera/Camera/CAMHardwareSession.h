@@ -14,11 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// All methods operate synchronously on the current queue. It's the caller's responsibility to
 /// make sure the main queue is not blocked.
-///
-/// Still image output is represented either by \c stillOutput property (iOS 9 and before) or by
-/// \c photoOutput property (iOS 10 and after). The distinction is done because the
-/// \c AVCapturePhotoOutput class (the class of \c photoOutput property) has been introduced in iOS
-/// 10.
 @interface CAMHardwareSession : NSObject
 
 /// Unavailable. Use \c CAMHardwareSessionFactory instead.
@@ -47,19 +42,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Video connection between \c videoInput and \c videoOutput.
 @property (readonly, nonatomic) AVCaptureConnection *videoConnection;
 
-/// Still output attached to this session. Guaranteed to be non-null for iOS 9 and before.
-@property (readonly, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput
-    NS_DEPRECATED_IOS(4_0, 10_0, "Use photoOutput instead");
-
-/// Still output attached to this session. Guaranteed to be non-null for iOS 10 and after.
-@property (readonly, nonatomic, nullable) AVCapturePhotoOutput *photoOutput
-    API_AVAILABLE(ios(10.0));
+/// Photo output attached to this session.
+@property (readonly, nonatomic) AVCapturePhotoOutput *photoOutput;
 
 /// Pixel format to use for a single photo capture request when running on iOS 10 and up.
 @property (strong, nonatomic, nullable) CAMPixelFormat *pixelFormat;
 
-/// Still connection between \c videoInput and \c stillOutput.
-@property (readonly, nonatomic) AVCaptureConnection *stillConnection;
+/// Photo connection between \c videoInput and \c photoOutput.
+@property (readonly, nonatomic) AVCaptureConnection *photoConnection;
 
 /// Audio device attached to this session, or \c nil if audio is not enabled in the preset.
 @property (readonly, nonatomic, nullable) AVCaptureDevice *audioDevice;

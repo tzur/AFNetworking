@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)stillFramesWithTrigger:(RACSignal __unused *)trigger {
-  return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput]];
+  return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromPhotoOutput]];
 }
 
 - (RACSignal *)videoFrames {

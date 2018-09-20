@@ -29,10 +29,10 @@ LTErrorCodesImplement(CameraErrorCodeProductID,
   CAMErrorCodeFailedAttachingAudioInput,
   /// Caused when there was an error attaching the audio output to the session.
   CAMErrorCodeFailedAttachingAudioOutput,
-  /// Caused when there was an error attaching the still image output to the session.
-  CAMErrorCodeFailedAttachingStillOutput,
-  /// Caused when there was an error capturing an image from the still image output.
-  CAMErrorCodeFailedCapturingFromStillOutput,
+  /// Caused when there was an error attaching the photo image output to the session.
+  CAMErrorCodeFailedAttachingPhotoOutput,
+  /// Caused when there was an error capturing an image from the photo image output.
+  CAMErrorCodeFailedCapturingFromPhotoOutput,
   /// Caused when the requested focus setting is not supported.
   CAMErrorCodeFocusSettingUnsupported,
   /// Caused when the requested exposure setting is not supported.

@@ -197,10 +197,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupFlashProperties {
   RAC(self, hasFlash, @NO) = RACObserve(self, session.videoDevice.hasFlash);
 
-  RAC(self, flashWillFire, @NO) = RACObserve(self, session.videoDevice.flashActive);
+  RAC(self, flashWillFire, @NO) = RACObserve(self, session.photoOutput.isFlashScene);
 
-  RAC(self, currentFlashMode, @(AVCaptureFlashModeOff)) =
-      RACObserve(self, session.videoDevice.flashMode);
+  self.currentFlashMode = AVCaptureFlashModeOff;
 }
 
 - (void)setupTorchProperties {
@@ -221,7 +220,11 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }];
 
-  self.canChangeCamera = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count > 1;
+  auto generalPurposeCameras = [AVCaptureDeviceDiscoverySession
+      discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+      mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified].devices;
+
+  self.canChangeCamera = generalPurposeCameras.count > 1;
 }
 
 #pragma mark -
@@ -330,11 +333,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
-    if (@available(iOS 10.0, *)) {
-      self.session.pixelFormat = pixelFormat;
-    } else {
-      self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
-    }
+    self.session.pixelFormat = pixelFormat;
     return [RACSignal return:pixelFormat];
   }] subscribeOn:self.scheduler];
 }
@@ -344,11 +343,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   RACSignal *captureStillImage = [[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        if (@available(iOS 10.0, *)) {
-          [self capturePhotoAndSendToSuscriber:subscriber];
-        } else {
-          [self captureStillImageAndSendToSuscriber:subscriber];
-        }
+        [self capturePhotoAndSendToSuscriber:subscriber];
         return nil;
       }]
       subscribeOn:self.scheduler];
@@ -358,30 +353,15 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       takeUntil:[self rac_willDeallocSignal]];
 }
 
-- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber API_AVAILABLE(ios(10.0)) {
+- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber {
   AVCapturePhotoSettings *photoSettings =
       [AVCapturePhotoSettings photoSettingsWithFormat:self.session.pixelFormat.videoSettings];
-  photoSettings.flashMode = self.session.videoDevice.flashMode;
+  photoSettings.flashMode = self.currentFlashMode;
   photoSettings.highResolutionPhotoEnabled = YES;
   @synchronized(self.uniqueIdToSubscriber) {
     self.uniqueIdToSubscriber[@(photoSettings.uniqueID)] = subscriber;
   }
   [self.session.photoOutput capturePhotoWithSettings:photoSettings delegate:self];
-}
-
-- (void)captureStillImageAndSendToSuscriber:(id<RACSubscriber>)subscriber {
-  [self.session.stillOutput
-   captureStillImageAsynchronouslyFromConnection:self.session.stillConnection
-   completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-     if (error) {
-       [subscriber sendError:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
-                                       underlyingError:error]];
-     } else {
-       CAMVideoFrame *frame = [[CAMVideoFrame alloc] initWithSampleBuffer:imageDataSampleBuffer];
-       [subscriber sendNext:frame];
-       [subscriber sendCompleted];
-     }
-   }];
 }
 
 - (RACSignal *)videoFrames {
@@ -407,7 +387,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   if (gravityOrientation != UIInterfaceOrientationUnknown) {
     AVCaptureVideoOrientation videoOrientation =
         [self videoOrientationForInterfaceOrientation:gravityOrientation];
-    self.session.stillConnection.videoOrientation = videoOrientation;
+    self.session.photoConnection.videoOrientation = videoOrientation;
   }
 }
 
@@ -443,14 +423,14 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     previewPhotoSampleBuffer:(nullable CMSampleBufferRef __unused)previewPhotoSampleBuffer
     resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
     bracketSettings:(nullable AVCaptureBracketedStillImageSettings * __unused)bracketSettings
-    error:(nullable NSError *)error API_AVAILABLE(ios(10.0)) {
+    error:(nullable NSError *)error {
   id<RACSubscriber> subscriber;
   @synchronized(self.uniqueIdToSubscriber) {
     subscriber = self.uniqueIdToSubscriber[@(resolvedSettings.uniqueID)];
   }
 
   if (error) {
-    [subscriber sendError:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
+    [subscriber sendError:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromPhotoOutput
                                     underlyingError:error]];
   } else {
     CAMVideoFrame *frame = [[CAMVideoFrame alloc] initWithSampleBuffer:photoSampleBuffer];
@@ -461,7 +441,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)captureOutput:(AVCapturePhotoOutput * __unused)captureOutput
     didFinishCaptureForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
-    error:(nullable NSError * __unused)error API_AVAILABLE(ios(10.0)) {
+    error:(nullable NSError * __unused)error {
   @synchronized(self.uniqueIdToSubscriber) {
     [self.uniqueIdToSubscriber removeObjectForKey:@(resolvedSettings.uniqueID)];
   }
@@ -946,20 +926,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   @weakify(self);
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
-    NSError *error;
-    AVCaptureDevice *device = self.session.videoDevice;
-    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-      if ([device isFlashModeSupported:flashMode]) {
-        device.flashMode = flashMode;
-        return YES;
-      } else {
-        if (errorPtr) {
-          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported];
-        }
-        return NO;
-      }
-    } error:&error];
-    return success ? [RACSignal return:@(flashMode)] : [RACSignal error:error];
+    if ([[self.session.photoOutput supportedFlashModes] containsObject:@(flashMode)]) {
+      self.currentFlashMode = flashMode;
+      return [RACSignal return:@(flashMode)];
+    } else {
+      return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported]];
+    }
   }] subscribeOn:self.scheduler];
 }
 

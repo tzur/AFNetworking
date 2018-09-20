@@ -163,14 +163,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Flash
-#pragma mark -
-
-- (BOOL)isFlashModeSupported:(AVCaptureFlashMode __unused)flashMode {
-  return self.flashModeSupported;
-}
-
-#pragma mark -
 #pragma mark Torch
 #pragma mark -
 

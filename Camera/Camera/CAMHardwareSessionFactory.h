@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CAMHardwareSessionFactory : NSObject
 
 /// Creates a session according to the given \c preset. This includes creating and attaching video
-/// input and output, still output, and according to the preset, may also include audio input and
+/// input and output, photo output, and according to the preset, may also include audio input and
 /// output.
 ///
 /// Returned signal sends the created \c CAMHardwareSession and completes, or sends an appropriate

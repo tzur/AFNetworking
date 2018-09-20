@@ -383,6 +383,13 @@
 			remoteGlobalIDString = 83FF06D81CD7266B00383C6B;
 			remoteInfo = Camera;
 		};
+		88CD4C8021119B7800A18BF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6542A5011D46359F00450B46 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		8B10C7F21F3EF99B00F76142 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B10C7ED1F3EF99A00F76142 /* LLReactiveMatchers.xcodeproj */;
@@ -716,6 +723,7 @@
 			children = (
 				6542A5071D46359F00450B46 /* libLTKit.a */,
 				6542A5091D46359F00450B46 /* LTKitTests.xctest */,
+				88CD4C8121119B7800A18BF5 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -725,8 +733,8 @@
 			children = (
 				6542A5121D4635A700450B46 /* libextobjc_OSX.a */,
 				6542A5141D4635A700450B46 /* libextobjc_iOS.a */,
-				6542A5161D4635A700450B46 /* Logic Tests.octest */,
-				6542A5181D4635A700450B46 /* iOS Tests.octest */,
+				6542A5161D4635A700450B46 /* Logic Tests.xctest */,
+				6542A5181D4635A700450B46 /* iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1312,17 +1320,17 @@
 			remoteRef = 6542A5131D4635A700450B46 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6542A5161D4635A700450B46 /* Logic Tests.octest */ = {
+		6542A5161D4635A700450B46 /* Logic Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Logic Tests.octest";
+			path = "Logic Tests.xctest";
 			remoteRef = 6542A5151D4635A700450B46 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6542A5181D4635A700450B46 /* iOS Tests.octest */ = {
+		6542A5181D4635A700450B46 /* iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "iOS Tests.octest";
+			path = "iOS Tests.xctest";
 			remoteRef = 6542A5171D4635A700450B46 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1492,6 +1500,13 @@
 			fileType = wrapper.cfbundle;
 			path = LTEngineTests.xctest;
 			remoteRef = 83B72CDE1CDA3E5E0090C0BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		88CD4C8121119B7800A18BF5 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 88CD4C8021119B7800A18BF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8B10C7F31F3EF99B00F76142 /* libLLReactiveMatchers.a */ = {
@@ -1700,7 +1715,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1735,7 +1750,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/Mantle",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SHADER_ENCRYPTION_KEY = "performSelector:";

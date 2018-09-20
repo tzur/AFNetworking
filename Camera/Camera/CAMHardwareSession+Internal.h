@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Setup video output. On failure return \c NO and set \c error.
 - (BOOL)setupVideoOutputWithError:(NSError * __autoreleasing *)error;
 
-/// Setup still output with given \c pixelFormat. On failure return \c NO and set \c error.
-- (BOOL)setupStillOutputGenericWithPixelFormat:(CAMPixelFormat *)pixelFormat
-                                         error:(NSError * __autoreleasing *)error;
+/// Setup photo output with given \c pixelFormat. On failure return \c NO and set \c error.
+- (BOOL)setupPhotoOutputWithPixelFormat:(CAMPixelFormat *)pixelFormat
+                                  error:(NSError * __autoreleasing *)error;
 
 /// Setup audio input with given \c device. On failure return \c NO and set \c error.
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device

@@ -23,11 +23,10 @@ context(@"pixel format", ^{
 });
 
 context(@"physical device", ^{
-  __block id classMock;
+  __block id discovery;
   __block AVCaptureDevice *frontCamera;
   __block AVCaptureDevice *backCamera;
   __block AVCaptureDevice *otherCamera;
-  __block AVCaptureDevice *notCamera;
 
   beforeEach(^{
     frontCamera = OCMClassMock([AVCaptureDevice class]);
@@ -37,22 +36,22 @@ context(@"physical device", ^{
     otherCamera = OCMClassMock([AVCaptureDevice class]);
     OCMStub([(AVCaptureDevice *)otherCamera position])
         .andReturn(AVCaptureDevicePositionUnspecified);
-    notCamera = OCMClassMock([AVCaptureDevice class]);
-
-    classMock = OCMClassMock([AVCaptureDevice class]);
-
-    NSArray *notCameras = @[notCamera];
-    OCMStub([classMock devicesWithMediaType:AVMediaTypeAudio]).andReturn(notCameras);
+    discovery = OCMClassMock([AVCaptureDeviceDiscoverySession class]);
   });
 
   afterEach(^{
-    [classMock stopMocking];
+    [discovery stopMocking];
   });
 
   context(@"positive flows", ^{
     beforeEach(^{
       NSArray *cameras = @[frontCamera, backCamera, otherCamera];
-      OCMStub([classMock devicesWithMediaType:AVMediaTypeVideo]).andReturn(cameras);
+      OCMStub([discovery devices]).andReturn(cameras);
+
+      OCMStub(ClassMethod([discovery
+               discoverySessionWithDeviceTypes:OCMOCK_ANY
+               mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified]))
+          .andReturn(discovery);
     });
 
     it(@"should return correct physical device", ^{
@@ -69,7 +68,11 @@ context(@"physical device", ^{
   context(@"negative flows", ^{
     beforeEach(^{
       NSArray *cameras = @[frontCamera, otherCamera];
-      OCMStub([classMock devicesWithMediaType:AVMediaTypeVideo]).andReturn(cameras);
+      OCMStub([discovery devices]).andReturn(cameras);
+      OCMStub([discovery
+               discoverySessionWithDeviceTypes:OCMOCK_ANY
+               mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified])
+          .andReturn(discovery);
     });
 
     it(@"should return nil device for non-existing camera", ^{
