@@ -9,6 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// parameterized object.
 @protocol LTSampleValues <NSObject>
 
+/// Returns a new instance with its \c sampledParametricValues (/ \c valuesPerKey of the
+/// \c mappingOfSampledValues) being a concatenation of the \c sampledParametricValues
+/// (/ \c valuesPerKey of the \c mappingOfSampledValues) of the receiver and the corresponding
+/// values of the given \c sampleValues.
+- (instancetype)concatenatedWithSampleValues:(id<LTSampleValues>)sampleValues;
+
 /// Parametric values at which the parameterized object has been sampled. Is empty if no values were
 /// sampled. The number of parametric values equals the number of values for each key of the
 /// \c mappingOfSampledValues.
