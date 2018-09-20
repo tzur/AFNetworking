@@ -4,7 +4,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol implemented by classes representing a neural network.
-API_AVAILABLE(ios(10.0))
 @protocol PNKNeuralNetwork <NSObject>
 
 /// Encodes the entire set of operations performed by the neural network onto \c commandBuffer.

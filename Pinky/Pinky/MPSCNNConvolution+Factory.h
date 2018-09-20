@@ -11,7 +11,6 @@ namespace pnk {
 }
 
 /// Category for conveniently creating \c MPSCNNConvolution objects from pinky model structs.
-API_AVAILABLE(ios(10.0))
 @interface MPSCNNConvolution (Factory)
 
 /// Returns \c MPSCNNConvolution that performs the convolution represented by \c convolutionModel

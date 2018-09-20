@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// translation table. The input pixel values are converted to the \c uchar type (with scaling for
 /// floating-point channel formats and clamping to the \c [0, 255] range for all formats). The
 /// converted values are translated using a user-provided translation table of 256 entries.
-API_AVAILABLE(ios(10.0))
 @interface PNKIndexTranslator : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

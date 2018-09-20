@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// processing stages and shortening the processing time.
 ///
 /// @note This class may hold large objects and textures mapped to GPU memory.
-API_AVAILABLE(ios(10.0))
 @interface PNKStyleTransferState : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

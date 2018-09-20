@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that performs gamma correction. Input is expected to be an RGBA or BGRA image, the
 /// correction is performed only for the R, G and B channels.
-API_AVAILABLE(ios(10.0))
 @interface PNKGammaCorrection : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

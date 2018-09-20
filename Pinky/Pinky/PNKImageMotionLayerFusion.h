@@ -6,7 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class for fusing the displacement maps of individual layers into a composite displacements map.
 /// Also creates the modified segmentation map as it will look like after applying the relevant
 /// displacements.
-API_AVAILABLE(ios(10.0))
 @interface PNKImageMotionLayerFusion : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

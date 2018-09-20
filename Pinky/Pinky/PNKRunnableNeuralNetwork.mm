@@ -15,15 +15,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Dictionary of images with their names as keys.
-API_AVAILABLE(ios(10.0))
 typedef NSDictionary<NSString *, MPSImage *> PNKImageCollection;
 
 /// Mutable dictionary of images with their names as keys.
-API_AVAILABLE(ios(10.0))
 typedef NSMutableDictionary<NSString *, MPSImage *> PNKMutableImageCollection;
 
 /// Dictionary of image sizes with image names as keys.
-API_AVAILABLE(ios(10.0))
 typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 
 @interface PNKRunnableNeuralNetwork ()

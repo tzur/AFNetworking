@@ -4,7 +4,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol implemented by kernels operating on a single input texture.
-API_AVAILABLE(ios(10.0))
 @protocol PNKBasicUnaryKernel <NSObject>
 
 /// Determines which region of the \c inputImage will be read by
@@ -26,7 +25,6 @@ API_AVAILABLE(ios(10.0))
 
 /// Protocol implemented by kernels operating on a single input texture without any additional
 /// input parameters.
-API_AVAILABLE(ios(10.0))
 @protocol PNKUnaryKernel <PNKBasicUnaryKernel>
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
@@ -38,7 +36,6 @@ API_AVAILABLE(ios(10.0))
 
 /// Protocol implemented by kernels operating on a single input texture and an arbitrary number of
 /// input parameters that must fit the parameters named in \c inputParameterKernelNames.
-API_AVAILABLE(ios(10.0))
 @protocol PNKParametricUnaryKernel <PNKBasicUnaryKernel>
 
 /// Sets the kernel parameters using \c inputParameters and then encodes the operation performed by
@@ -56,7 +53,6 @@ API_AVAILABLE(ios(10.0))
 @end
 
 /// Protocol implemented by kernels operating on two input textures.
-API_AVAILABLE(ios(10.0))
 @protocol PNKBinaryKernel <NSObject>
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputImage

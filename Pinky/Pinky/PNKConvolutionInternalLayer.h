@@ -11,7 +11,6 @@ namespace pnk {
 }
 
 /// Wrapper for \c MPSCNNConvolution object implementing \c PNKUnaryNeuralKernel protocol.
-API_AVAILABLE(ios(10.0))
 @interface PNKConvolutionInternalLayer : NSObject <PNKUnaryNeuralKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

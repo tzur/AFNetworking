@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// a given \c 3x3 linear transformation is applied on them. Inputs are expected to be Float RGBA,
 /// and the alpha channel is ignored. The transformation is applied on the fly, such that the input
 /// buffers are left unchanged.
-API_AVAILABLE(ios(10.0))
 @interface PNKColorTransferMinAndMax : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

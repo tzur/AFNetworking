@@ -10,7 +10,6 @@ namespace pnk {
 };
 
 /// Kernel that crops a rectangular area from the input image.
-API_AVAILABLE(ios(10.0))
 @interface PNKCrop : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that sets the Alpha channel to a constant value. Input is expected to be an RGB(A) or
 /// BGR(A) image.
-API_AVAILABLE(ios(10.0))
 @interface PNKConstantAlpha : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

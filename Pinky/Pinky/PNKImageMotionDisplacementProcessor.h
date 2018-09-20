@@ -6,7 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Processor for calculating a displacement map which animates a scene given its segmentation to
 /// different types of objects. The processor also calculates the segmentation of the animated scene
 /// as it changes due to motion added to the scene.
-API_AVAILABLE(ios(10.0))
 @interface PNKImageMotionDisplacementProcessor : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

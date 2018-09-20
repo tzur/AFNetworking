@@ -6,7 +6,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Layer performing the elementwise SoftMax operation.
-API_AVAILABLE(ios(10.0))
 @interface PNKSoftMaxLayer : NSObject <PNKUnaryNeuralKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

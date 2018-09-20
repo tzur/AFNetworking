@@ -11,7 +11,6 @@ namespace pnk {
 }
 
 /// Layer performing an instance normalization operation.
-API_AVAILABLE(ios(10.0))
 @interface PNKInstanceNormLayer : NSObject <PNKUnaryNeuralKernel>
 
 /// Initializes a new layer that runs on \c device and performs an instance normalization operation

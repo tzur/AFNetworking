@@ -17,7 +17,6 @@ typedef NS_ENUM(NSUInteger, PNKUpsamplingType) {
 };
 
 /// Kernel that performs a dyadic upsampling of the input.
-API_AVAILABLE(ios(10.0))
 @interface PNKUpsampling : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

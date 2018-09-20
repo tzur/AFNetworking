@@ -13,6 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// synchronization of reading/writing the \c pixelBuffer from the CPU side and reading/writing
 /// the Metal texture wrapper from the GPU side are the caller's responsibility.
 MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,
-                                  NSUInteger featureChannels = 0) API_AVAILABLE(ios(10.0));
+                                  NSUInteger featureChannels = 0);
 
 NS_ASSUME_NONNULL_END

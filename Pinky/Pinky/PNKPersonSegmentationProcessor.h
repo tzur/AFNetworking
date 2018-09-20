@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @important The processor is NOT thread safe and synchronization of the calls to
 /// \c segmentWithInput:output:completion: are left to the user of this class.
-API_AVAILABLE(ios(10.0))
 @interface PNKPersonSegmentationProcessor : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
