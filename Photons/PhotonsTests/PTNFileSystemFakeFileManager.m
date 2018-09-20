@@ -3,6 +3,8 @@
 
 #import "PTNFileSystemFakeFileManager.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PTNFileSystemFakeFileManagerFile ()
@@ -104,13 +106,13 @@ NS_ASSUME_NONNULL_BEGIN
           fileURL.resources = @{
             NSURLNameKey: file.name,
             NSURLIsDirectoryKey: @(file.isDirectory),
-            NSURLTypeIdentifierKey: @"public.mpeg-4"
+            NSURLTypeIdentifierKey: (NSString *)kUTTypeMPEG4
           };
         } else if ([[self imageExtensions] containsObject:filePath.pathExtension.lowercaseString]) {
           fileURL.resources = @{
             NSURLNameKey: file.name,
             NSURLIsDirectoryKey: @(file.isDirectory),
-            NSURLTypeIdentifierKey: @"public.jpeg"
+            NSURLTypeIdentifierKey: (NSString *)kUTTypeJPEG
           };
         } else {
           fileURL.resources = @{
