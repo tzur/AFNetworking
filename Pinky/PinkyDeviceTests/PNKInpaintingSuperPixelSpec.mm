@@ -5,6 +5,8 @@
 
 SpecBegin(PNKInpaintingSuperPixel)
 
+using namespace pnk_inpainting;
+
 context(@"initialization", ^{
   it(@"should create superpixel with correct center, bounding box and offsets", ^{
     std::vector<cv::Point> coordinates = {{2, 2}, {2, 6}, {6, 2}, {6, 6}};
@@ -13,11 +15,11 @@ context(@"initialization", ^{
     cv::Rect expectedBoundingBox(2, 2, 5, 5);
     auto expectedOffsets = cv::Mat(coordinates) - cv::Scalar(expectedCenter.x, expectedCenter.y);
 
-    auto superpixel = [[PNKInpaintingSuperPixel alloc] initWithCoordinates:coordinates];
+    SuperPixel superpixel(coordinates);
 
-    expect($(superpixel.center == expectedCenter)).to.beTruthy();
-    expect($(superpixel.boundingBox == expectedBoundingBox)).to.beTruthy();
-    expect($(superpixel.offsets)).to.equalMat($(expectedOffsets));
+    expect($(superpixel.center() == expectedCenter)).to.beTruthy();
+    expect($(superpixel.boundingBox() == expectedBoundingBox)).to.beTruthy();
+    expect($(superpixel.offsets())).to.equalMat($(expectedOffsets));
   });
 
   it(@"should create superpixel with correct center, bounding box and offsets when center is not "
@@ -28,11 +30,11 @@ context(@"initialization", ^{
     cv::Rect expectedBoundingBox(0, 0, 3, 3);
     auto expectedOffsets = cv::Mat(coordinates) - cv::Scalar(expectedCenter.x, expectedCenter.y);
 
-    auto superpixel = [[PNKInpaintingSuperPixel alloc] initWithCoordinates:coordinates];
+    SuperPixel superpixel(coordinates);
 
-    expect($(superpixel.center == expectedCenter)).to.beTruthy();
-    expect($(superpixel.boundingBox == expectedBoundingBox)).to.beTruthy();
-    expect($(superpixel.offsets)).to.equalMat($(expectedOffsets));
+    expect($(superpixel.center() == expectedCenter)).to.beTruthy();
+    expect($(superpixel.boundingBox() == expectedBoundingBox)).to.beTruthy();
+    expect($(superpixel.offsets())).to.equalMat($(expectedOffsets));
   });
 });
 
@@ -40,17 +42,17 @@ context(@"create other superpixel", ^{
   it(@"should create correct superpixel given new center", ^{
     std::vector<cv::Point> coordinates = {{2, 2}, {2, 6}, {6, 2}, {6, 6}};
 
-    auto superpixel = [[PNKInpaintingSuperPixel alloc] initWithCoordinates:coordinates];
+    SuperPixel superpixel(coordinates);
 
     cv::Point otherCenter(10, 15);
-    auto otherSuperPixel = [superpixel superPixelCenteredAt:otherCenter];
+    auto otherSuperPixel = superpixel.centeredAt(otherCenter);
 
-    cv::Rect expectedBoundingBox(superpixel.boundingBox.tl() - superpixel.center + otherCenter,
-                                 superpixel.boundingBox.size());
+    cv::Rect expectedBoundingBox(superpixel.boundingBox().tl() - superpixel.center() + otherCenter,
+                                 superpixel.boundingBox().size());
 
-    expect($(otherSuperPixel.center == otherCenter)).to.beTruthy();
-    expect($(otherSuperPixel.boundingBox == expectedBoundingBox)).to.beTruthy();
-    expect($(otherSuperPixel.offsets)).to.equalMat($(superpixel.offsets));
+    expect($(otherSuperPixel.center() == otherCenter)).to.beTruthy();
+    expect($(otherSuperPixel.boundingBox() == expectedBoundingBox)).to.beTruthy();
+    expect($(otherSuperPixel.offsets())).to.equalMat($(superpixel.offsets()));
   });
 });
 
