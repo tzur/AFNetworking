@@ -92,6 +92,7 @@ context(@"initialization", ^{
       // DVNBrushModelV1
       expect(model.randomInitialSeed).to.beTruthy();
       expect(model.initialSeed).to.equal(7);
+      expect(model.splineSmoothness).to.equal(0.0898438);
       expect(model.spacing).to.equal(0.015625);
       expect(model.numberOfSamplesPerSequence).to.equal(8);
       expect(model.sequenceDistance).to.equal(0.0195312);
@@ -561,7 +562,9 @@ context(@"allowed ranges", ^{
     expect([DVNBrushModel allowedScaleRange] == lt::Interval<CGFloat>::oc({0, kCGFloatMax}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedInitialSeedRange] ==
-           lt::Interval<NSUInteger>({0, kNSUIntegerMax})).to.beTruthy();
+           lt::Interval<NSUInteger>::nonNegativeNumbers()).to.beTruthy();
+    expect([DVNBrushModel allowedSplineSmoothnessRange] == lt::Interval<CGFloat>::zeroToOne())
+        .to.beTruthy();
     expect([DVNBrushModelV1 allowedSpacingRange] ==
            lt::Interval<CGFloat>({0.001, kCGFloatMax})).to.beTruthy();
     expect([DVNBrushModelV1 allowedNumberOfSamplesPerSequenceRange] ==
@@ -569,9 +572,9 @@ context(@"allowed ranges", ^{
     expect([DVNBrushModelV1 allowedSequenceDistanceRange] ==
            lt::Interval<CGFloat>({0.001, kCGFloatMax})).to.beTruthy();
     expect([DVNBrushModelV1 allowedCountRange] ==
-           lt::Interval<NSUInteger>({0, kNSUIntegerMax})).to.beTruthy();
+           lt::Interval<NSUInteger>::nonNegativeNumbers()).to.beTruthy();
     expect([DVNBrushModelV1 allowedDistanceJitterFactorRange] ==
-           lt::Interval<CGFloat>({0, kCGFloatMax})).to.beTruthy();
+           lt::Interval<CGFloat>::nonNegativeNumbers()).to.beTruthy();
     expect([DVNBrushModelV1 allowedAngleRange] == lt::Interval<CGFloat>({0, 4 * M_PI}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedScaleJitterRange] == lt::Interval<CGFloat>({0, kCGFloatMax}))
@@ -594,7 +597,7 @@ context(@"allowed ranges", ^{
     expect([DVNBrushModelV1 allowedEdgeAvoidanceRange] == lt::Interval<CGFloat>({0, 1}))
         .to.beTruthy();
     expect([DVNBrushModelV1 allowedEdgeAvoidanceSamplingOffsetRange] ==
-           lt::Interval<CGFloat>({0, kCGFloatMax})).to.beTruthy();
+           lt::Interval<CGFloat>::nonNegativeNumbers()).to.beTruthy();
   });
 });
 

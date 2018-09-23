@@ -44,6 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a copy of the receiver with the exception of the given \c initialSeed.
 - (instancetype)copyWithInitialSeed:(NSUInteger)initialSeed;
 
+/// Returns a copy of the receiver with the exception of the given \c splineSmoothness, clamped to
+/// the \c allowedSplineSmoothnessRange of the receiver.
+- (instancetype)copyWithSplineSmoothness:(CGFloat)splineSmoothness;
+
 /// Returns \c YES if the given \c textureMapping is valid for this model. In particular, checks
 /// whether the keys of the given \c textureMapping are an appropriate subset of the
 /// \c imageURLPropertyKeys of this class.
@@ -108,6 +112,20 @@ extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushM
 
 /// Allowed range of \c initialSeed.
 @property (class, readonly, nonatomic) lt::Interval<NSUInteger> allowedInitialSeedRange;
+
+#pragma mark -
+#pragma mark Brush Stroke Smoothness
+#pragma mark -
+
+/// Smoothness of the spline used for brush stroke rendering. A value of
+/// \c allowedSplineSmoothnessRange.min() causes the spline to not be smoothened, while a value of
+/// \c allowedSplineSmoothnessRange.max() causes the spline to be maximally smoothened.
+///
+/// (Order) Dependencies: none
+@property (readonly, nonatomic) CGFloat splineSmoothness;
+
+/// Allowed range of \c splineSmoothness.
+@property (class, readonly, nonatomic) lt::Interval<CGFloat> allowedSplineSmoothnessRange;
 
 @end
 

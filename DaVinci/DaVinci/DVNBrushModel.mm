@@ -41,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
       @instanceKeypath(DVNBrushModel, scale): @"scale",
       @instanceKeypath(DVNBrushModel, scaleRange): @"scaleRange",
       @instanceKeypath(DVNBrushModel, randomInitialSeed): @"randomInitialSeed",
-      @instanceKeypath(DVNBrushModel, initialSeed): @"initialSeed"
+      @instanceKeypath(DVNBrushModel, initialSeed): @"initialSeed",
+      @instanceKeypath(DVNBrushModel, splineSmoothness): @"splineSmoothness"
     };
   });
 
@@ -93,6 +94,12 @@ NS_ASSUME_NONNULL_BEGIN
   return model;
 }
 
+- (instancetype)copyWithSplineSmoothness:(CGFloat)splineSmoothness {
+  DVNBrushModel *model = [self copy];
+  [model setValue:@(splineSmoothness) forKey:@keypath(model, splineSmoothness)];
+  return model;
+}
+
 #pragma mark -
 #pragma mark Public API - Texture Mapping
 #pragma mark -
@@ -128,6 +135,12 @@ DVNLeftOpenRangeClassProperty(CGFloat, allowedScale, AllowedScale, 0,
 }
 
 DVNClosedRangeClassProperty(NSUInteger, allowedInitialSeed, AllowedInitialSeed, 0, NSUIntegerMax);
+
+DVNClosedRangeClassProperty(CGFloat, allowedSplineSmoothness, AllowedSplineSmoothness, 0, 1);
+
+- (void)setSplineSmoothness:(CGFloat)splineSmoothness {
+  _splineSmoothness = *[[self class] allowedSplineSmoothnessRange].clamp(splineSmoothness);
+}
 
 @end
 
