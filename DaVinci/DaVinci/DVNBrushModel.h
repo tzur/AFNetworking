@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Brush models have a unique version, the so-called brush model \c version, used to determine all
 /// derived objects.
+///
+/// @note Upon initialization, values of properties \c x for which a corresponding
+/// <tt>allowed<X>Range</tt> class property exists are clamped to the interval.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
 /// Returns a copy of the receiver with the exception of its spatial properties which are scaled by
