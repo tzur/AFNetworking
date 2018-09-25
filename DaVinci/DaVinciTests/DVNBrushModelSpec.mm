@@ -14,7 +14,8 @@ static NSDictionary * const kDictionary = @{
   @"scaleRange": @"[7, 9)",
   @"scale": @8,
   @"randomInitialSeed": @YES,
-  @"initialSeed": @7
+  @"initialSeed": @7,
+  @"splineSmoothness": @0.7
 };
 
 context(@"initialization", ^{
@@ -25,6 +26,7 @@ context(@"initialization", ^{
     expect(model.scaleRange == lt::Interval<CGFloat>::oc({0, CGFLOAT_MAX})).to.beTruthy();
     expect(model.randomInitialSeed).to.beFalsy();
     expect(model.initialSeed).to.equal(0);
+    expect(model.splineSmoothness).to.equal(0);
   });
 
   context(@"deserialization", ^{
@@ -47,6 +49,7 @@ context(@"initialization", ^{
       expect(model.scaleRange == lt::Interval<CGFloat>::co({7, 9})).to.beTruthy();
       expect(model.randomInitialSeed).to.beTruthy();
       expect(model.initialSeed).to.equal(7);
+      expect(model.splineSmoothness).to.equal(0.7);
     });
   });
 
@@ -99,6 +102,20 @@ context(@"copy constructors", ^{
       DVNBrushModel *modelCopy = [model copyWithInitialSeed:8];
       expect(modelCopy.initialSeed).to.equal(8);
       expect(modelCopy.initialSeed).toNot.equal(model.initialSeed);
+    });
+  });
+
+  context(@"spline smoothness", ^{
+    it(@"should return a copy with spline smoothness", ^{
+      DVNBrushModel *modelCopy = [model copyWithSplineSmoothness:0.5];
+      expect(modelCopy.splineSmoothness).toNot.equal(model.splineSmoothness);
+      expect(modelCopy.splineSmoothness).to.equal(0.5);
+    });
+
+    it(@"should return a copy with spline smoothness, clamped to the allowed range", ^{
+      DVNBrushModel *modelCopy = [model copyWithSplineSmoothness:-1];
+      expect(modelCopy.splineSmoothness).toNot.equal(model.splineSmoothness);
+      expect(modelCopy.splineSmoothness).to.equal(0);
     });
   });
 });

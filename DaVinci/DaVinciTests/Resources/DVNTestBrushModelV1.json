@@ -4,6 +4,7 @@
   "scaleRange": "(1.25, 1.75]",
   "randomInitialSeed": true,
   "initialSeed": 7,
+  "splineSmoothness": 0.0898438,
   "spacing": 0.015625,
   "numberOfSamplesPerSequence": 8,
   "sequenceDistance": 0.0195312,
