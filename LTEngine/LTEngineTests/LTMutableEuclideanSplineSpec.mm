@@ -61,12 +61,24 @@ static NSString * const kLTMutableEuclideanSplineMaxParametericValue =
 static NSString * const kLTMutableEuclideanSplineMaxParametericValueAfterPushing =
     @"LTMutableEuclideanSplineMaxParametericValueAfterPushing";
 
+static NSString * const kLTMutableEuclideanSplineNumberOfPointsToPop =
+    @"LTMutableEuclideanSplineNumberOfPointsToPop";
+
+static NSString * const kLTMutableEuclideanSplinePointsAfterPopping =
+    @"LTMutableEuclideanSplinePointsAfterPopping";
+
+static NSString * const kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval =
+    @"LTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval";
+
 sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
   __block id<LTBasicParameterizedObjectFactory> baseFactory;
   __block LTCompoundParameterizedObjectFactory *factory;
   __block NSArray<LTSplineControlPoint *> *initialPoints;
   __block NSArray<LTSplineControlPoint *> *additionalPoints;
   __block LTMutableEuclideanSpline *spline;
+  __block NSUInteger numberOfPointsToPop;
+  __block NSArray<LTSplineControlPoint *> *pointsAfterPopping;
+  __block NSArray<LTSplineControlPoint *> *pointsForPoppingWithoutSegmentRemoval;
 
   beforeEach(^{
     baseFactory = data[kLTMutableEuclideanSplineBaseFactory];
@@ -75,6 +87,10 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
     additionalPoints = data[kLTMutableEuclideanSplineAdditionalPoints];
     spline = [[LTMutableEuclideanSpline alloc] initWithFactory:factory
                                           initialControlPoints:initialPoints];
+    numberOfPointsToPop = [data[kLTMutableEuclideanSplineNumberOfPointsToPop] unsignedIntegerValue];
+    pointsAfterPopping = data[kLTMutableEuclideanSplinePointsAfterPopping];
+    pointsForPoppingWithoutSegmentRemoval =
+        data[kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval];
   });
 
   context(@"initialization", ^{
@@ -143,10 +159,28 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
   context(@"popping control points", ^{
     it(@"should pop control points", ^{
       [spline pushControlPoints:additionalPoints];
-      expect(spline.controlPoints)
-          .to.equal([initialPoints arrayByAddingObjectsFromArray:additionalPoints]);
+      LTAssert([spline.controlPoints
+                isEqual:[initialPoints arrayByAddingObjectsFromArray:additionalPoints]]);
       [spline popControlPoints:additionalPoints.count];
       expect(spline.controlPoints).to.equal(initialPoints);
+    });
+
+    it(@"should pop correct number of control points", ^{
+      [spline pushControlPoints:additionalPoints];
+      LTAssert([spline.controlPoints
+                isEqual:[initialPoints arrayByAddingObjectsFromArray:additionalPoints]]);
+
+      [spline popControlPoints:numberOfPointsToPop];
+
+      expect(spline.controlPoints).to.equal(pointsAfterPopping);
+    });
+
+    it(@"should pop control points without popping spline segments", ^{
+      [spline pushControlPoints:additionalPoints];
+      [spline pushControlPoints:pointsForPoppingWithoutSegmentRemoval];
+      NSArray<id<LTParameterizedObject>> *segments = spline.segments;
+      [spline popControlPoints:pointsForPoppingWithoutSegmentRemoval.count];
+      expect(spline.segments).to.equal(segments);
     });
 
     it(@"should remove segments when popping control points", ^{
@@ -378,92 +412,94 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
   });
 });
 
-itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplineBaseFactory: [[LTBasicLinearInterpolantFactory alloc] init],
-  kLTMutableEuclideanSplineInitialPoints:
-      LTCreateSplinePoints({0, 1}, {CGPointZero, CGPointMake(1, 1)}, @"attribute", @[@7, @8]),
-  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
-  kLTMutableEuclideanSplineAdditionalPoints:
-      LTCreateSplinePoints({2, 3}, {CGPointMake(2, 0), CGPointMake(3, 1)}, @"attribute",
-                           @[@10, @11]),
-  kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
-  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(3 * M_SQRT2)
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, ^{
+  NSArray<LTSplineControlPoint *> *initialPoints =
+      LTCreateSplinePoints({0, 1}, {CGPointZero, CGPointMake(1, 1)}, @"attribute", @[@7, @8]);
+  return @{
+    kLTMutableEuclideanSplineBaseFactory: [[LTBasicLinearInterpolantFactory alloc] init],
+    kLTMutableEuclideanSplineInitialPoints: initialPoints,
+    kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
+    kLTMutableEuclideanSplineAdditionalPoints:
+        LTCreateSplinePoints({2, 3}, {CGPointMake(2, 0), CGPointMake(3, 1)}, @"attribute",
+                             @[@10, @11]),
+    kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
+    kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(3 * M_SQRT2),
+    kLTMutableEuclideanSplineNumberOfPointsToPop: @2,
+    kLTMutableEuclideanSplinePointsAfterPopping: initialPoints,
+    kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval: @[]
+  };
 });
 
-itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplineBaseFactory: [[LTBasicCubicBezierInterpolantFactory alloc] init],
-  kLTMutableEuclideanSplineInitialPoints:
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, ^{
+  NSArray<LTSplineControlPoint *> *initialPoints =
       LTCreateSplinePoints({0, 1, 2, 3},
                            {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},
-                           @"attribute", @[@7, @7.1, @7.2, @8]),
-  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
-  kLTMutableEuclideanSplineAdditionalPoints:
-      LTCreateSplinePoints({4, 5, 6, 7, 8, 9}, {CGPointMake(1, 1), CGPointMake(2, 2),
-                           CGPointMake(2, 2), CGPointMake(2, 2), CGPointMake(3, 3),
-                           CGPointMake(3, 3)}, @"attribute", @[@8.5, @9, @9.5, @10, @10.5, @11]),
-  kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
-  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(M_SQRT2 * 3)
+                           @"attribute", @[@7, @7.1, @7.2, @8]);
+  return @{
+    kLTMutableEuclideanSplineBaseFactory: [[LTBasicCubicBezierInterpolantFactory alloc] init],
+    kLTMutableEuclideanSplineInitialPoints: initialPoints,
+    kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({4}, {CGPointZero},
+                                                                                @"attribute",
+                                                                                @[@8.1]),
+    kLTMutableEuclideanSplineAdditionalPoints:
+        LTCreateSplinePoints({4, 5, 6, 7, 8, 9}, {CGPointMake(1, 1), CGPointMake(2, 2),
+                             CGPointMake(2, 2), CGPointMake(2, 2), CGPointMake(3, 3),
+                             CGPointMake(3, 3)}, @"attribute", @[@8.5, @9, @9.5, @10, @10.5, @11]),
+    kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
+    kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @(M_SQRT2 * 3),
+    kLTMutableEuclideanSplineNumberOfPointsToPop: @6,
+    kLTMutableEuclideanSplinePointsAfterPopping: initialPoints,
+    kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval:
+        LTCreateSplinePoints({10, 11}, {CGPointMake(4, 4), CGPointMake(4, 4)}, @"attribute",
+                             @[@11.1, @11.2])
+  };
 });
 
-context(@"Bezier interpolation", ^{
-  it(@"should pop control points without popping spline segments", ^{
-    NSArray<LTSplineControlPoint *> *initialPoints =
-        LTCreateSplinePoints({0, 1, 2, 3, 4, 5, 6},
-                             {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1),
-                              CGPointMake(1, 1), CGPointMake(1, 1), CGPointZero},
-                             @"attribute", @[@7, @7.1, @7.2, @7.3, @7.4, @7.5, @7.6]);
-    LTBasicCubicBezierInterpolantFactory *basicFactory =
-        [[LTBasicCubicBezierInterpolantFactory alloc] init];
-    LTCompoundParameterizedObjectFactory *factory =
-        [[LTCompoundParameterizedObjectFactory alloc] initWithBasicFactory:basicFactory];
-    LTMutableEuclideanSpline *spline =
-        [[LTMutableEuclideanSpline alloc] initWithFactory:factory
-                                     initialControlPoints:initialPoints];
-    NSArray<LTSplineControlPoint *> *additionalPoints =
-        LTCreateSplinePoints({7, 8}, {CGPointZero, CGPointMake(1, 1)}, @"attribute", @[@7.7, @7.8]);
-    [spline pushControlPoints:additionalPoints];
-    expect(spline.controlPoints)
-        .to.equal([initialPoints arrayByAddingObjectsFromArray:additionalPoints]);
-    NSArray<id<LTParameterizedObject>> *segments = spline.segments;
-    [spline popControlPoints:additionalPoints.count];
-    expect(spline.controlPoints).to.equal(initialPoints);
-    expect(spline.segments).to.equal(segments);
-  });
-});
-
-itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplineBaseFactory: [[LTBasicCatmullRomInterpolantFactory alloc] init],
-  kLTMutableEuclideanSplineInitialPoints:
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, ^{
+  NSArray<LTSplineControlPoint *> *initialPoints =
       LTCreateSplinePoints({0, 1, 2, 3},
                            {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},
-                           @"attribute", @[@6, @7, @8, @9]),
-  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
-  kLTMutableEuclideanSplineAdditionalPoints:
-      LTCreateSplinePoints({4, 5}, {CGPointMake(2, 0), CGPointMake(2, 0)}, @"attribute",
-                           @[@11, @12]),
-  kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
-  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @3.1677561067696
+                           @"attribute", @[@6, @7, @8, @9]);
+  return @{
+    kLTMutableEuclideanSplineBaseFactory: [[LTBasicCatmullRomInterpolantFactory alloc] init],
+    kLTMutableEuclideanSplineInitialPoints: initialPoints,
+    kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
+    kLTMutableEuclideanSplineAdditionalPoints:
+        LTCreateSplinePoints({4, 5}, {CGPointMake(2, 0), CGPointMake(2, 0)}, @"attribute",
+                             @[@11, @12]),
+    kLTMutableEuclideanSplineMaxParametericValue: @(M_SQRT2),
+    kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @3.1677561067696,
+    kLTMutableEuclideanSplineNumberOfPointsToPop: @2,
+    kLTMutableEuclideanSplinePointsAfterPopping: initialPoints,
+    kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval: @[]
+  };
 });
 
-itShouldBehaveLike(kLTMutableEuclideanSplineExamples, @{
-  kLTMutableEuclideanSplineBaseFactory: [[LTBasicBSplineInterpolantFactory alloc] init],
-  kLTMutableEuclideanSplineInitialPoints:
+itShouldBehaveLike(kLTMutableEuclideanSplineExamples, ^{
+  NSArray<LTSplineControlPoint *> *initialPoints =
       LTCreateSplinePoints({0, 1, 2, 3},
                            {CGPointZero, CGPointZero, CGPointMake(1, 1), CGPointMake(1, 1)},
-                           @"attribute", @[@6, @7, @8, @9]),
-  kLTMutableEuclideanSplineStartPoint: LTCreateSplinePoints({0}, {CGPointMake(1.0 / 6, 1.0 / 6)},
-                                                            @"attribute", @[@7]).firstObject,
-  kLTMutableEuclideanSplineEndPoint: LTCreateSplinePoints({0}, {CGPointMake(1 / 1.2, 1 / 1.2)},
-                                                          @"attribute", @[@8]).firstObject,
-  kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
-  kLTMutableEuclideanSplineAdditionalPoints:
-      LTCreateSplinePoints({4, 5}, {CGPointMake(2, 0), CGPointMake(2, 0)}, @"attribute",
-                           @[@11.25, @12]),
-  kLTMutableEuclideanSplineEndPointAfterPushing:
-      LTCreateSplinePoints({0}, {CGPointMake(1 + 1 / 1.2, 1.0 / 6)}, @"attribute",
-                           @[@8]).firstObject,
-  kLTMutableEuclideanSplineMaxParametericValue: @0.942809,
-  kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @2.310366
+                           @"attribute", @[@6, @7, @8, @9]);
+  return @{
+    kLTMutableEuclideanSplineBaseFactory: [[LTBasicBSplineInterpolantFactory alloc] init],
+    kLTMutableEuclideanSplineInitialPoints: initialPoints,
+    kLTMutableEuclideanSplineStartPoint: LTCreateSplinePoints({0}, {CGPointMake(1.0 / 6, 1.0 / 6)},
+                                                              @"attribute", @[@7]).firstObject,
+    kLTMutableEuclideanSplineEndPoint: LTCreateSplinePoints({0}, {CGPointMake(1 / 1.2, 1 / 1.2)},
+                                                            @"attribute", @[@8]).firstObject,
+    kLTMutableEuclideanSplineInsufficientAdditionalPoints: LTCreateSplinePoints({}, {}, nil, nil),
+    kLTMutableEuclideanSplineAdditionalPoints:
+        LTCreateSplinePoints({4, 5}, {CGPointMake(2, 0), CGPointMake(2, 0)}, @"attribute",
+                             @[@11.25, @12]),
+    kLTMutableEuclideanSplineEndPointAfterPushing:
+        LTCreateSplinePoints({0}, {CGPointMake(1 + 1 / 1.2, 1.0 / 6)}, @"attribute",
+                             @[@8]).firstObject,
+    kLTMutableEuclideanSplineMaxParametericValue: @0.942809,
+    kLTMutableEuclideanSplineMaxParametericValueAfterPushing: @2.310366,
+    kLTMutableEuclideanSplineNumberOfPointsToPop: @2,
+    kLTMutableEuclideanSplinePointsAfterPopping: initialPoints,
+    kLTMutableEuclideanSplinePointsForPoppingWithoutSegmentRemoval: @[]
+  };
 });
 
 SpecEnd

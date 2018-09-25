@@ -235,14 +235,18 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
 }
 
 - (void)popControlPointsWithSegmentAssociation:(NSUInteger)numberOfPoints {
+  NSUInteger numberOfRemainingPointsToPop = numberOfPoints;
   for (NSUInteger i = 0; i < numberOfPoints; i += self.intrinsicParametricRange.length - 1) {
     if (self.mutableStack.count == 1) {
       break;
     }
 
-    NSRange range =
-        NSMakeRange(self.mutableControlPoints.count - (self.intrinsicParametricRange.length - 1),
-                    self.intrinsicParametricRange.length - 1);
+    NSUInteger numberOfPointsInSegmentToPop =
+        std::min(numberOfRemainingPointsToPop, self.intrinsicParametricRange.length - 1);
+    numberOfRemainingPointsToPop -= numberOfPointsInSegmentToPop;
+
+    NSRange range = NSMakeRange(self.mutableControlPoints.count - numberOfPointsInSegmentToPop,
+                                numberOfPointsInSegmentToPop);
     NSIndexSet *indices = [NSIndexSet indexSetWithIndexesInRange:range];
 
 #if USE_BIPARTITE_GRAPH
