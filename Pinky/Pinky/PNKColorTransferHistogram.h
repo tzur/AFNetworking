@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Computes the histogram per each channel for a given \c MTLBuffer after a given \c 3x3 linear
 /// transformation is applied on them. Input is expected to be Float RGBA, and the alpha channel is
 /// ignored. The transformation is applied on the fly, such that the input buffer is left unchanged.
-API_AVAILABLE(ios(10.0))
 @interface PNKColorTransferHistogram : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

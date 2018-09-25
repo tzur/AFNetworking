@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel that resamples (upsamples or downsamples) the input image using bilinear interpolation.
 /// When called with appropriate channels count it performs Y->RGBA transformation (with alpha
 /// channel being set to 1) or RGB->Y transformation alongside the resampling.
-API_AVAILABLE(ios(10.0))
 @interface PNKImageBilinearScale : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

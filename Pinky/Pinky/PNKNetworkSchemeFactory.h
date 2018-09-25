@@ -36,7 +36,6 @@ struct NetworkScheme {
 
 /// Factory that deserializes a neural network model, creates its corresponding nodes and orders
 /// them in the proper encoding order to instantiate a \c pnk::NetworkScheme.
-API_AVAILABLE(ios(10.0))
 @interface PNKNetworkSchemeFactory : NSObject
 
 /// Builds a network scheme from a serialized model found at \c modelURL. The network scheme is a

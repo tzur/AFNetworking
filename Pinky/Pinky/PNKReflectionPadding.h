@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel that performs reflection padding of textures. Padding is done in a manner such that the
 /// value at the border is not repeated, i.e. <tt>dcb|abcdefgh|gfe</tt>. Padding is done up to the
 /// size of the original input in each direction, larger paddings require multiple passes.
-API_AVAILABLE(ios(10.0))
 @interface PNKReflectionPadding : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -7,7 +7,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel performing an instance normalization operation.
-API_AVAILABLE(ios(10.0))
 @interface PNKInstanceNormInternalKernel : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

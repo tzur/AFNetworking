@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel operating in a pixel-wise manner, searching for the maximal value across all channels and
 /// assigning the index of the channel where the maximal value was found to the result at the same
 /// pixel location.
-API_AVAILABLE(ios(10.0))
 @interface PNKArgmax : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note This processor creates multiple buffers and compute states for its process and is meant to
 /// be used by continuously calling \c segmentWithInput:output:completion: without reinitialization
 /// of a new processor at each call. Consecutive calls result in faster processing.
-API_AVAILABLE(ios(10.0))
 @interface PNKColorTransferProcessor : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

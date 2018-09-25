@@ -10,7 +10,6 @@ namespace pnk {
 }
 
 /// Layer performing activation of a tensor.
-API_AVAILABLE(ios(10.0))
 @interface PNKActivationLayer : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

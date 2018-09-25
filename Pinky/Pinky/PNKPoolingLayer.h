@@ -10,7 +10,6 @@ namespace pnk {
 }
 
 /// Layer performing a pooling operation.
-API_AVAILABLE(ios(10.0))
 @interface PNKPoolingLayer : NSObject <PNKUnaryNeuralKernel>
 
 /// Initializes a new layer that runs on \c device and performs a pooling operation described by

@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Neural network implementation running the underlying \c pnk::NetworkScheme using a collection of
 /// input images to produce a collection of output images.
-API_AVAILABLE(ios(10.0))
 @interface PNKRunnableNeuralNetwork : NSObject <PNKNeuralNetwork>
 
 - (instancetype)init NS_UNAVAILABLE;

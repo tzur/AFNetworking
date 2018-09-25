@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// the primary input come before those of the secondary input. The kernel effectively does the job
 /// of three other kernels, two \c PNKGather passes on each of the primary and secondary inputs and
 /// a final \c PNKConcatenation pass.
-API_AVAILABLE(ios(10.0))
 @interface PNKBinaryGather : NSObject <PNKBinaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -11,7 +11,6 @@ namespace pnk {
 }
 
 /// Layer performing a convolution operation.
-API_AVAILABLE(ios(10.0))
 @interface PNKConvolutionLayer : NSObject <PNKUnaryNeuralKernel>
 
 /// Initializes a new layer that runs on \c device and performs a convolution operation described by

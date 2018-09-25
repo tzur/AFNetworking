@@ -6,7 +6,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that does channel-wise concatenation of textures.
-API_AVAILABLE(ios(10.0))
 @interface PNKConcatenation : NSObject <PNKBinaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -10,7 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// basis is performed on the fly, and the provided cumulative distribution function (CDF) of the
 /// input and inverse CDF of the reference are assumed to be in this basis). Input is expected to be
 /// float RGBA, and the alpha channel is ignored.
-API_AVAILABLE(ios(10.0))
 @interface PNKColorTransferHistogramSpecification : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

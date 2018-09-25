@@ -22,30 +22,29 @@ pnk::PaddingSize PNKConvolutionFullPaddingTF(NSUInteger imageWidth, NSUInteger i
                                              NSUInteger kernelWidth, NSUInteger kernelHeight,
                                              NSUInteger dilationX, NSUInteger dilationY,
                                              NSUInteger strideX, NSUInteger strideY,
-                                             pnk::PaddingType paddingType) API_AVAILABLE(ios(10.0));
+                                             pnk::PaddingType paddingType);
 
 /// Calculates <tt>(left, top)</tt> padding for given convolution parameters in MPS convention.
 pnk::PaddingSize PNKConvolutionLeftTopPaddingMPS(NSUInteger kernelWidth, NSUInteger kernelHeight,
-                                                 NSUInteger dilationX, NSUInteger dilationY)
-    API_AVAILABLE(ios(10.0));
+                                                 NSUInteger dilationX, NSUInteger dilationY);
 
 /// Calculates the difference between <tt>(left, top)</tt> paddings for given input image size and
 /// convolution parameters in TF and MPS conventions.
 MPSOffset PNKConvolutionOffset(NSUInteger imageWidth, NSUInteger imageHeight, NSUInteger
                                kernelWidth, NSUInteger kernelHeight, NSUInteger dilationX,
                                NSUInteger dilationY, NSUInteger strideX, NSUInteger strideY,
-                               pnk::PaddingType paddingType) API_AVAILABLE(ios(10.0));
+                               pnk::PaddingType paddingType);
 
 /// Calculates the output image size for given input image size and convolution parameters.
 MTLSize PNKConvolutionOutputSize(MTLSize inputSize, NSUInteger kernelWidth, NSUInteger kernelHeight,
                                  NSUInteger dilationX, NSUInteger dilationY, NSUInteger strideX,
                                  NSUInteger strideY, pnk::PaddingType padding,
-                                 NSUInteger outputDepth) API_AVAILABLE(ios(10.0));
+                                 NSUInteger outputDepth);
 
 /// Calculates the input image size for given output image size and convolution parameters.
 MTLSize PNKConvolutionInputSize(MTLSize outputSize, NSUInteger kernelWidth, NSUInteger kernelHeight,
                                 NSUInteger dilationX, NSUInteger dilationY, NSUInteger strideX,
                                 NSUInteger strideY, pnk::PaddingType paddingType,
-                                NSUInteger inputDepth) API_AVAILABLE(ios(10.0));
+                                NSUInteger inputDepth);
 
 NS_ASSUME_NONNULL_END

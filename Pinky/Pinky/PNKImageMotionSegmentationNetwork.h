@@ -5,7 +5,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Class that produces a segmentation map from a still image. The segmentation mask is a single
 /// channel image such that each pixel value is one of \c pnk::ImageMotionLayerType.
-API_AVAILABLE(ios(10.0))
 @interface PNKImageMotionSegmentationNetwork : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
