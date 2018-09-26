@@ -149,13 +149,13 @@ struct LTVector2 {
 
   /// Returns the determinant of this vector and the given \c vector.
   inline float determinant(LTVector2 vector) const {
-    return this->x * vector.y - this->y * vector.x;
+    return x * vector.y - y * vector.x;
   }
 
   /// Returns the counter-clockwise angle (in bottom-left origin coordinate system) between this
   /// vector and the given \c vector. The result is guaranteed to be in the range [0, 2 * PI).
   inline CGFloat angle(LTVector2 vector) const {
-    return CGNormalizedAngle(std::atan2(this->determinant(vector), this->dot(vector)));
+    return CGNormalizedAngle(std::atan2(determinant(vector), dot(vector)));
   }
 
   /// Returns a new vector which is a normalized copy of this vector.
@@ -169,7 +169,7 @@ struct LTVector2 {
   /// origin coordinate system), otherwise it reflects a counter-clockwise one. By default
   /// \c clockwise is set to \c YES.
   inline LTVector2 perpendicular(BOOL clockwise = YES) const {
-    return clockwise ? LTVector2(this->y, -this->x) : LTVector2(-this->y, this->x);
+    return clockwise ? LTVector2(y, -x) : LTVector2(-y, x);
   }
 
   /// Returns pointer to the first element of the vector.
