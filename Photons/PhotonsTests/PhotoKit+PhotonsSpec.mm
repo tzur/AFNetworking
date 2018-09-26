@@ -92,15 +92,15 @@ context(@"asset descriptor", ^{
     PHAsset *rawAsset = PTNCreateAsset(@"com.adobe.raw-image");
     expect(rawAsset.descriptorTraits).to.contain(kPTNDescriptorTraitRawKey);
 
-    PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
+    PHAsset *jpegAsset = PTNCreateAsset((NSString *)kUTTypeImage);
     expect(jpegAsset.descriptorTraits).to.beEmpty();
   });
 
   it(@"should reveal GIF traits when the underlying asset is a GIF", ^{
-    PHAsset *gifAsset = PTNCreateAsset(@"com.compuserve.gif");
+    PHAsset *gifAsset = PTNCreateAsset((NSString *)kUTTypeGIF);
     expect(gifAsset.descriptorTraits).to.contain(kPTNDescriptorTraitGIFKey);
 
-    PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
+    PHAsset *jpegAsset = PTNCreateAsset((NSString *)kUTTypeImage);
     expect(jpegAsset.descriptorTraits).to.beEmpty();
   });
 

@@ -6,6 +6,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/LTRandomAccessCollection.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
@@ -126,15 +127,15 @@ NS_ASSUME_NONNULL_BEGIN
   return [LTPath pathWithBaseDirectory:path.baseDirectory andRelativePath:relativePath];
 }
 
-+ (NSArray *)supportedUTIs {
-  static NSArray *supportedUTIs;
++ (NSArray<NSString *> *)supportedUTIs {
+  static NSArray<NSString *> *supportedUTIs;
 
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     supportedUTIs = [[AVURLAsset audiovisualTypes] arrayByAddingObjectsFromArray:@[
-      @"public.jpeg",
-      @"public.tiff",
-      @"public.png"
+      (NSString *)kUTTypeJPEG,
+      (NSString *)kUTTypeTIFF,
+      (NSString *)kUTTypePNG,
     ]];
   });
 
