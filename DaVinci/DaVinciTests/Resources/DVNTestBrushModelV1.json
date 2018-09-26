@@ -16,6 +16,7 @@
   "taperingLengths": "(0.046875, 0.0507812)",
   "minimumTaperingScaleFactor": 0.0546875,
   "taperingFactors": "(0.0585938, 0.0664062)",
+  "speedBasedTaperingFactor": 0.125,
   "flowRange": "[0.0625, 0.0703125]",
   "flow": 0.0664062,
   "flowExponent": 0.0742188,

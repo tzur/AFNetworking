@@ -1,7 +1,7 @@
 {
   "version": "1",
   "scale": 1,
-  "scaleRange": "[1, 500]",
+  "scaleRange": "[0.0001, 500]",
 
   "randomInitialSeed": false,
   "initialSeed": 0,

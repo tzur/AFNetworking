@@ -2,7 +2,7 @@
 // Created by Rouven Strauss.
 
 #import <LTEngine/LTParameterizedObjectType.h>
-#import <LTEngine/LTSplineControlPoint.h>
+#import <LTEngine/LTSplineControlPoint+AttributeKeys.h>
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "DVNBrushModel+Deserialization.h"
@@ -21,8 +21,10 @@ NSDictionary *DVNBrushModelJSONDictionaryFromFileWithName(NSBundle *bundle, NSSt
   return [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:nil];
 }
 
-DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDictionary *updatedValues,
-                                             CGSize renderTargetSize) {
+DVNBrushRenderModel *DVNTestBrushRenderModelWithConversionFactor(NSDictionary *dictionary,
+                                                                 NSDictionary *updatedValues,
+                                                                 CGSize renderTargetSize,
+                                                                 CGFloat conversionFactor) {
   NSMutableDictionary *mutableDictionary = [dictionary mutableCopy];
   [mutableDictionary addEntriesFromDictionary:updatedValues];
   DVNBrushModel *brushModel = [DVNBrushModel modelFromJSONDictionary:mutableDictionary error:nil];
@@ -33,7 +35,13 @@ DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDiction
                                          renderTargetIsNonPremultiplied:NO
                                            renderTargetHasBytePrecision:YES];
   return [DVNBrushRenderModel instanceWithBrushModel:brushModel renderTargetInfo:info
-                                    conversionFactor:1];
+                                    conversionFactor:conversionFactor];
+}
+
+DVNBrushRenderModel *DVNTestBrushRenderModel(NSDictionary *dictionary, NSDictionary *updatedValues,
+                                             CGSize renderTargetSize) {
+  return DVNTestBrushRenderModelWithConversionFactor(dictionary, updatedValues, renderTargetSize,
+                                                     1);
 }
 
 @interface DVNTestBrushStrokePainter : NSObject <DVNBrushRenderInfoProvider, DVNPainterDelegate>
@@ -82,15 +90,30 @@ context(@"version 1", ^{
       DVNBrushModelJSONDictionaryFromFileWithName([NSBundle bundleForClass:[self class]],
                                                   @"DVNDefaultTestBrushModelV1");
 
+  static NSDictionary<NSString *, NSNumber *> *kHighSpeedAttributes = @{
+    [LTSplineControlPoint keyForSpeedInScreenCoordinates]: @2000
+  };
+
+  static NSDictionary<NSString *, NSNumber *> *kMiddleSpeedAttributes = @{
+    [LTSplineControlPoint keyForSpeedInScreenCoordinates]: @1000
+  };
+
+  static NSDictionary<NSString *, NSNumber *> *kLowSpeedAttributes = @{
+    [LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0
+  };
+
   static NSArray<LTSplineControlPoint *> * const kStartControlPoints = @[
     [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(3.5,
-                                                                           kSize.height / 2)],
-    [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointFromSize(kSize / 2)]
+                                                                           kSize.height / 2)
+                                         attributes:kLowSpeedAttributes],
+    [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointFromSize(kSize / 2)
+                                         attributes:kMiddleSpeedAttributes]
   ];
 
   static NSArray<LTSplineControlPoint *> * const kEndControlPoints = @[
     [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.width - 3.5,
-                                                                           kSize.height / 2)]
+                                                                           kSize.height / 2)
+                                         attributes:kHighSpeedAttributes]
   ];
 
   __block LTTexture *sourceTexture;
@@ -176,9 +199,11 @@ context(@"version 1", ^{
 
     painter.startControlPoints = @[
       [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.height / 2 - 0.5,
-                                                                             3)],
+                                                                             3)
+                                           attributes:kLowSpeedAttributes],
       [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(kSize.height / 2 - 0.5,
-                                                                             kSize.width - 3)]
+                                                                             kSize.width - 3)
+                                           attributes:kHighSpeedAttributes]
     ];
     painter.endControlPoints = @[];
 
@@ -303,13 +328,40 @@ context(@"version 1", ^{
         DVNTestBrushRenderModel(kDictionary,
                                 @{@instanceKeypath(DVNBrushModelV1, scale): @5,
                                   @instanceKeypath(DVNBrushModelV1, taperingLengths): @"(3, 2)",
-                                  @instanceKeypath(DVNBrushModelV1, taperingFactors):
-                                      @"(0, 0.5)"},
+                                  @instanceKeypath(DVNBrushModelV1, taperingFactors): @"(0, 0.5)"},
                                 kSize);
 
     [painter paint];
 
     cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_TaperingExponent.png");
+    expect($(painter.canvas.image)).to.equalMat($(expected));
+  });
+
+  it(@"should render according to positive speed-based tapering factor", ^{
+    NSDictionary<NSString *, NSNumber *> *dictionary = @{
+      @instanceKeypath(DVNBrushModelV1, scale): @0.0005,
+      @instanceKeypath(DVNBrushModelV1, speedBasedTaperingFactor): @1
+    };
+    painter.model =
+        DVNTestBrushRenderModelWithConversionFactor(kDictionary, dictionary, kSize, 10000);
+
+    [painter paint];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_PositiveSpeedBasedTapering.png");
+    expect($(painter.canvas.image)).to.equalMat($(expected));
+  });
+
+  it(@"should render according to negative speed-based tapering factor", ^{
+    NSDictionary<NSString *, NSNumber *> *dictionary = @{
+      @instanceKeypath(DVNBrushModelV1, scale): @0.0005,
+      @instanceKeypath(DVNBrushModelV1, speedBasedTaperingFactor): @(-1)
+    };
+    painter.model =
+        DVNTestBrushRenderModelWithConversionFactor(kDictionary, dictionary, kSize, 10000);
+
+    [painter paint];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"DVNBrushModelV1_NegativeSpeedBasedTapering.png");
     expect($(painter.canvas.image)).to.equalMat($(expected));
   });
 

@@ -56,6 +56,7 @@ LTEnumImplement(NSUInteger, DVNSourceSamplingMode,
       @instanceKeypath(DVNBrushModelV1, taperingLengths): @"taperingLengths",
       @instanceKeypath(DVNBrushModelV1, minimumTaperingScaleFactor): @"minimumTaperingScaleFactor",
       @instanceKeypath(DVNBrushModelV1, taperingFactors): @"taperingFactors",
+      @instanceKeypath(DVNBrushModelV1, speedBasedTaperingFactor): @"speedBasedTaperingFactor",
       @instanceKeypath(DVNBrushModelV1, flow): @"flow",
       @instanceKeypath(DVNBrushModelV1, flowRange): @"flowRange",
       @instanceKeypath(DVNBrushModelV1, flowExponent): @"flowExponent",
@@ -233,6 +234,12 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 - (instancetype)copyWithTaperingFactors:(LTVector2)taperingFactors {
   DVNBrushModelV1 *model = [self copy];
   [model setValue:$(taperingFactors) forKey:@keypath(model, taperingFactors)];
+  return model;
+}
+
+- (instancetype)copyWithSpeedBasedTaperingFactor:(CGFloat)speedBasedTaperingFactor {
+  DVNBrushModelV1 *model = [self copy];
+  [model setValue:@(speedBasedTaperingFactor) forKey:@keypath(model, speedBasedTaperingFactor)];
   return model;
 }
 
@@ -421,6 +428,14 @@ DVNClosedRangeClassProperty(float, allowedTaperingFactor, AllowedTaperingFactor,
 - (void)setTaperingFactors:(LTVector2)taperingFactors {
   lt::Interval<float> range = [[self class] allowedTaperingFactorRange];
   _taperingFactors = std::clamp(taperingFactors, *range.min(), *range.max());
+}
+
+DVNClosedRangeClassProperty(float, allowedSpeedBasedTaperingFactor, AllowedSpeedBasedTaperingFactor,
+                            -1, 1);
+
+- (void)setSpeedBasedTaperingFactor:(float)speedBasedTaperingFactor {
+  lt::Interval<float> range = [[self class] allowedSpeedBasedTaperingFactorRange];
+  _speedBasedTaperingFactor = std::clamp(speedBasedTaperingFactor, *range.min(), *range.max());
 }
 
 DVNClosedRangeClassProperty(CGFloat, allowedFlow, AllowedFlow, 0, 1);

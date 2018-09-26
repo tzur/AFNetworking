@@ -156,6 +156,8 @@
 		50B57D1320223EF700397AA6 /* DVNBrushV1.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50B57CEE2022354700397AA6 /* DVNBrushV1.fsh */; };
 		50B57D1420223EF700397AA6 /* DVNBrushV1.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50B57D1120223EA200397AA6 /* DVNBrushV1.vsh */; };
 		50CDE7BC1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CDE7BB1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm */; };
+		50F1DE2821513D1400EA9E4A /* DVNBrushModelV1_PositiveSpeedBasedTapering.png in Resources */ = {isa = PBXBuildFile; fileRef = 50F1DE0621513D1300EA9E4A /* DVNBrushModelV1_PositiveSpeedBasedTapering.png */; };
+		50F1DE2A21513D7800EA9E4A /* DVNBrushModelV1_NegativeSpeedBasedTapering.png in Resources */ = {isa = PBXBuildFile; fileRef = 50F1DE2921513D7800EA9E4A /* DVNBrushModelV1_NegativeSpeedBasedTapering.png */; };
 		50F7631A20347AFD0085B984 /* DVNBrushRenderConfigurationProviderV1Spec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50F762F820347AFC0085B984 /* DVNBrushRenderConfigurationProviderV1Spec.mm */; };
 		50F763BA20347ED00085B984 /* DVNDefaultTestBrushModelV1.json in Resources */ = {isa = PBXBuildFile; fileRef = 50F7639820347ECF0085B984 /* DVNDefaultTestBrushModelV1.json */; };
 		6543581E1D463C3A002140A8 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6543580A1D463B64002140A8 /* libLTKit.a */; };
@@ -720,6 +722,8 @@
 		50CD96B61FFBE1F000F93209 /* DVNBrushRenderInfoProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNBrushRenderInfoProvider.h; sourceTree = "<group>"; };
 		50CDE7BA1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNQuadCenterAttributeProvider.h; sourceTree = "<group>"; };
 		50CDE7BB1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNQuadCenterAttributeProvider.mm; sourceTree = "<group>"; };
+		50F1DE0621513D1300EA9E4A /* DVNBrushModelV1_PositiveSpeedBasedTapering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_PositiveSpeedBasedTapering.png; path = Resources/DVNBrushModelV1_PositiveSpeedBasedTapering.png; sourceTree = "<group>"; };
+		50F1DE2921513D7800EA9E4A /* DVNBrushModelV1_NegativeSpeedBasedTapering.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_NegativeSpeedBasedTapering.png; path = Resources/DVNBrushModelV1_NegativeSpeedBasedTapering.png; sourceTree = "<group>"; };
 		50F762F820347AFC0085B984 /* DVNBrushRenderConfigurationProviderV1Spec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushRenderConfigurationProviderV1Spec.mm; sourceTree = "<group>"; };
 		50F7639820347ECF0085B984 /* DVNDefaultTestBrushModelV1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DVNDefaultTestBrushModelV1.json; path = Resources/DVNDefaultTestBrushModelV1.json; sourceTree = "<group>"; };
 		50F763BB20347F090085B984 /* DVNDefaultTestBrushModelV1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = DVNDefaultTestBrushModelV1.json; path = DaVinciTests/Resources/DVNDefaultTestBrushModelV1.json; sourceTree = "<group>"; };
@@ -1054,6 +1058,8 @@
 				501A42602044212A00F80073 /* DVNBrushModelV1_HueJitter.png */,
 				501A425F2044212A00F80073 /* DVNBrushModelV1_InitialSeed.png */,
 				501A42612044212B00F80073 /* DVNBrushModelV1_Mask.png */,
+				50F1DE2921513D7800EA9E4A /* DVNBrushModelV1_NegativeSpeedBasedTapering.png */,
+				50F1DE0621513D1300EA9E4A /* DVNBrushModelV1_PositiveSpeedBasedTapering.png */,
 				501A42622044212B00F80073 /* DVNBrushModelV1_SamplingMode_Center.png */,
 				501A424F2044212700F80073 /* DVNBrushModelV1_SamplingMode_Fixed.png */,
 				501A42582044212900F80073 /* DVNBrushModelV1_SamplingMode_Subimage.png */,
@@ -2043,6 +2049,7 @@
 				500FCE11201893D70005D295 /* DVNTestBrushModelV1.json in Resources */,
 				5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */,
 				501A42682044212B00F80073 /* DVNBrushModelV1_Default.png in Resources */,
+				50F1DE2A21513D7800EA9E4A /* DVNBrushModelV1_NegativeSpeedBasedTapering.png in Resources */,
 				501A42722044212B00F80073 /* DVNBrushModelV1_TaperingLengths.png in Resources */,
 				501A42762044212B00F80073 /* DVNBrushModelV1_EdgeAvoidance.png in Resources */,
 				501A426D2044212B00F80073 /* DVNBrushModelV1_BrightnessJitter.png in Resources */,
@@ -2065,6 +2072,7 @@
 				501A427B2044212B00F80073 /* DVNBrushModelV1_Scale.png in Resources */,
 				5088146F1FA8942A001C2BDD /* DVNBrushOverlayTextureWithTransform.png in Resources */,
 				501A42652044212B00F80073 /* DVNBrushModelV1_DistanceJitter.png in Resources */,
+				50F1DE2821513D1400EA9E4A /* DVNBrushModelV1_PositiveSpeedBasedTapering.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

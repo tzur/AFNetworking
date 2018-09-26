@@ -25,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// scaling yielding the desired tapering effect. Every quad is assigned with the index of the quad
 /// it was duplicated from. The \c samples of the \c dvn::GeometryValues returned by the
 /// aforementioned internal \c id<DVNGeometryProvider> are left unchanged.
+///
+/// @important The \c mappingOfSampledValues of the \c id<LTSampleValues> objects used as argument
+/// of the \c valuesFromSamples:end: method must have values for the key
+/// <tt>[LTSplineControlPoint keyForSpeedInScreenCoordinates]</tt>.
 @interface DVNScatteredGeometryProviderModel : NSObject <DVNGeometryProviderModel>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -75,6 +79,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// <tt>[0, 1]</tt>.
 /// @param minimumTaperingScaleFactor Minimum scale factor used for tapering. Must be in range
 /// <tt>(0, 1]</tt>.
+/// @param speedBasedTaperingFactor Factor determining the intensity and the behavior of the
+/// speed-based tapering. Must be in range <tt>[-1, 1]</tt>. A value of \c 0 results in no tapering
+/// due to speed. A value of \c 1 yields smaller quads with higher speed, while a value of \c -1
+/// results in smaller quads with lower speed.
+/// @param conversionFactor Factor for scaling units of the sampled parametric object. Can be used
+/// to ensure similar speed-based behaviors across different render target resolutions.
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
                                   randomState:(LTRandomState *)randomState
                                         count:(lt::Interval<NSUInteger>)count
@@ -86,6 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
                           startTaperingFactor:(CGFloat)startTaperingFactor
                             endTaperingFactor:(CGFloat)endTaperingFactor
                    minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor
+                     speedBasedTaperingFactor:(CGFloat)speedBasedTaperingFactor
+                             conversionFactor:(CGFloat)conversionFactor
     NS_DESIGNATED_INITIALIZER;
 
 /// Underlying geometry model of this instance.
@@ -135,6 +147,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Minimum scale factor used for tapering. Is in range <tt>(0, 1]</tt>.
 @property (readonly, nonatomic) CGFloat minimumTaperingScaleFactor;
+
+/// Factor determining the intensity and the behavior of the speed-based tapering.
+@property (readonly, nonatomic) CGFloat speedBasedTaperingFactor;
+
+/// Factor for scaling units of the sampled parametric object.
+@property (readonly, nonatomic) CGFloat conversionFactor;
 
 @end
 

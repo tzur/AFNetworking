@@ -5,7 +5,7 @@
 
 #import <LTEngine/LTParameterizationKeyToValues.h>
 #import <LTEngine/LTSampleValues.h>
-#import <LTEngine/LTSplineControlPoint.h>
+#import <LTEngine/LTSplineControlPoint+AttributeKeys.h>
 #import <LTEngineTests/LTEasyVectorBoxing.h>
 #import <LTKit/LTRandom.h>
 #import <LTKit/NSArray+Functional.h>
@@ -82,6 +82,10 @@
 
 SpecBegin(DVNScatteredGeometryProviderModel)
 
+static NSOrderedSet<NSString *> * const kKeys =
+    [NSOrderedSet orderedSetWithArray:@[@"xKey", @"yKey",
+                                        [LTSplineControlPoint keyForSpeedInScreenCoordinates]]];
+
 __block id<LTSampleValues> samples;
 __block DVNTestGeometryProviderModel *underlyingProviderModel;
 __block LTRandomState *randomState;
@@ -94,6 +98,8 @@ __block CGFloat lengthOfEndTapering;
 __block CGFloat startTaperingFactor;
 __block CGFloat endTaperingFactor;
 __block CGFloat minimumTaperingScaleFactor;
+__block CGFloat speedBasedTaperingFactor;
+__block CGFloat conversionFactor;
 __block DVNScatteredGeometryProviderModel *model;
 
 beforeEach(^{
@@ -110,11 +116,12 @@ beforeEach(^{
   startTaperingFactor = 0.5;
   endTaperingFactor = 0.6;
   minimumTaperingScaleFactor = 0.1;
+  speedBasedTaperingFactor = 0.7;
+  conversionFactor = 0.8;
 
-  NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[@"xKey", @"yKey"]];
   LTParameterizationKeyToValues *mapping =
-      [[LTParameterizationKeyToValues alloc] initWithKeys:keys
-                                             valuesPerKey:(cv::Mat1g(2, 2) << 1, 2, 3, 4)];
+      [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys
+                                             valuesPerKey:(cv::Mat1g(3, 2) << 1, 2, 3, 4, 5, 6)];
   samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 1} mapping:mapping];
 
   model = [[DVNScatteredGeometryProviderModel alloc]
@@ -122,7 +129,9 @@ beforeEach(^{
            count:count distance:distance angle:angle scale:scale
            lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
            startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-           minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+           minimumTaperingScaleFactor:minimumTaperingScaleFactor
+           speedBasedTaperingFactor:speedBasedTaperingFactor
+           conversionFactor:conversionFactor];
 });
 
 afterEach(^{
@@ -147,6 +156,7 @@ context(@"initialization", ^{
     expect(model.startTaperingFactor).to.equal(1);
     expect(model.endTaperingFactor).to.equal(1);
     expect(model.minimumTaperingScaleFactor).to.equal(1);
+    expect(model.speedBasedTaperingFactor).to.equal(0);
   });
 
   it(@"should initialize correctly with angle range values smaller than 4 PI", ^{
@@ -170,6 +180,8 @@ context(@"initialization", ^{
     expect(model.startTaperingFactor).to.equal(startTaperingFactor);
     expect(model.endTaperingFactor).to.equal(endTaperingFactor);
     expect(model.minimumTaperingScaleFactor).to.equal(minimumTaperingScaleFactor);
+    expect(model.speedBasedTaperingFactor).to.equal(speedBasedTaperingFactor);
+    expect(model.conversionFactor).to.equal(conversionFactor);
   });
 });
 
@@ -180,14 +192,16 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
        distance:distance angle:angle scale:scale
        lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
        startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-       minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+       minimumTaperingScaleFactor:minimumTaperingScaleFactor speedBasedTaperingFactor:0
+       conversionFactor:1];
   DVNScatteredGeometryProviderModel *equalModel =
       [[DVNScatteredGeometryProviderModel alloc]
        initWithGeometryProviderModel:underlyingProviderModel randomState:randomState count:count
        distance:distance angle:angle scale:scale
        lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
        startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-       minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+       minimumTaperingScaleFactor:minimumTaperingScaleFactor speedBasedTaperingFactor:0
+       conversionFactor:1];
   DVNScatteredGeometryProviderModel *differentModel =
       [[DVNScatteredGeometryProviderModel alloc]
        initWithGeometryProviderModel:underlyingProviderModel randomState:randomState count:count
@@ -335,7 +349,7 @@ context(@"provider", ^{
           lt::Quad(CGRectMake(1, 1, 2, 2))
         };
 
-        it(@"should provide quads with correctly bounded scale, when tapering lenghts overlap", ^{
+        it(@"should provide quads with correctly bounded scale, when tapering lengths overlap", ^{
           auto underlyingProviderModel = [[DVNTestGeometryProviderModel alloc]
                                           initWithState:0 quads:kQuads];
           auto model = [[DVNScatteredGeometryProviderModel alloc]
@@ -344,7 +358,8 @@ context(@"provider", ^{
                         count:lt::Interval<NSUInteger>(2) distance:lt::Interval<CGFloat>(0)
                         angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
                         lengthOfStartTapering:10 lengthOfEndTapering:10 startTaperingFactor:1
-                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1];
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1
+                        speedBasedTaperingFactor:0 conversionFactor:1];
           dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:YES];
           auto quads = values.quads();
 
@@ -364,7 +379,8 @@ context(@"provider", ^{
                         count:lt::Interval<NSUInteger>(2) distance:lt::Interval<CGFloat>(0)
                         angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
                         lengthOfStartTapering:0.5 lengthOfEndTapering:0 startTaperingFactor:1
-                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1];
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.1
+                        speedBasedTaperingFactor:0 conversionFactor:1];
           dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:YES];
           auto quads = values.quads();
 
@@ -373,6 +389,147 @@ context(@"provider", ^{
             maxDimension = std::max(maxDimension, std::max(quads[i].boundingRect().size));
           }
           expect(maxDimension).to.beGreaterThan(0.15);
+        });
+      });
+
+      context(@"speed-based tapering", ^{
+        static const std::vector<lt::Quad> kQuads = {
+          lt::Quad(CGRectMake(0, 0, 1, 1)),
+          lt::Quad(CGRectMake(0, 0, 1, 1)),
+          lt::Quad(CGRectMake(0, 0, 1, 1))
+        };
+
+        __block DVNTestGeometryProviderModel *underlyingProviderModel;
+        __block LTParameterizationKeyToValues *mapping;
+
+        beforeEach(^{
+          underlyingProviderModel = [[DVNTestGeometryProviderModel alloc] initWithState:0
+                                                                                  quads:kQuads];
+          cv::Mat1g valuesPerKey = (cv::Mat1g(3, 3) << 1, 2, 3, 4, 5, 6, 0, 10000, 5000);
+          mapping = [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys
+                                                           valuesPerKey:valuesPerKey];
+          samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 1, 2}
+                                                                    mapping:mapping];
+        });
+
+        it(@"should provide quads with correct sizes for positive speed-based tapering factor", ^{
+          auto model = [[DVNScatteredGeometryProviderModel alloc]
+                        initWithGeometryProviderModel:underlyingProviderModel
+                        randomState:randomState
+                        count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                        angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                        lengthOfStartTapering:0 lengthOfEndTapering:0 startTaperingFactor:1
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                        speedBasedTaperingFactor:1 conversionFactor:1];
+          dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+          auto quads = values.quads();
+
+          expect(quads[0].maximumEdgeLength()).to.equal(1);
+          expect(quads[1].maximumEdgeLength()).to.beLessThan(quads[0].maximumEdgeLength());
+          expect(quads[2].maximumEdgeLength()).to.beLessThan(quads[1].maximumEdgeLength());
+        });
+
+        it(@"should provide quads with correct sizes for negative speed-based tapering factor", ^{
+          auto model = [[DVNScatteredGeometryProviderModel alloc]
+                        initWithGeometryProviderModel:underlyingProviderModel
+                        randomState:randomState
+                        count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                        angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                        lengthOfStartTapering:0 lengthOfEndTapering:0 startTaperingFactor:1
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                        speedBasedTaperingFactor:-1 conversionFactor:1];
+          dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+          auto quads = values.quads();
+
+          expect(quads[0].maximumEdgeLength()).to.beLessThan(0.02);
+          expect(quads[1].maximumEdgeLength()).to.beGreaterThan(quads[0].maximumEdgeLength());
+          expect(quads[1].maximumEdgeLength()).to.beLessThan(0.03);
+          expect(quads[2].maximumEdgeLength()).to.beGreaterThan(quads[1].maximumEdgeLength());
+          expect(quads[2].maximumEdgeLength()).to.beLessThan(0.04);
+        });
+
+        it(@"should provide quads with correct sizes for non-trivial conversion factor", ^{
+          samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 0.1, 0.2}
+                                                                    mapping:mapping];
+          auto model = [[DVNScatteredGeometryProviderModel alloc]
+                        initWithGeometryProviderModel:underlyingProviderModel
+                        randomState:randomState
+                        count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                        angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                        lengthOfStartTapering:0 lengthOfEndTapering:0 startTaperingFactor:1
+                        endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                        speedBasedTaperingFactor:-1 conversionFactor:10];
+          dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+          auto quads = values.quads();
+
+          expect(quads[0].maximumEdgeLength()).to.beLessThan(0.02);
+          expect(quads[1].maximumEdgeLength()).to.beGreaterThan(quads[0].maximumEdgeLength());
+          expect(quads[1].maximumEdgeLength()).to.beLessThan(0.03);
+          expect(quads[2].maximumEdgeLength()).to.beGreaterThan(quads[1].maximumEdgeLength());
+          expect(quads[2].maximumEdgeLength()).to.beLessThan(0.04);
+        });
+
+        context(@"speed-based tapering and regular tapering", ^{
+          static CGFloat kEpsilon = 1e-8;
+
+          it(@"should provide quads with correct sizes for positive speed-based tapering factor", ^{
+            auto model = [[DVNScatteredGeometryProviderModel alloc]
+                          initWithGeometryProviderModel:underlyingProviderModel
+                          randomState:randomState
+                          count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                          angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                          lengthOfStartTapering:0.5 lengthOfEndTapering:0 startTaperingFactor:1
+                          endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                          speedBasedTaperingFactor:1 conversionFactor:1];
+            dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+            auto quads = values.quads();
+
+            expect(quads[0].maximumEdgeLength()).to.beCloseToWithin(0.01, kEpsilon);
+            expect(quads[1].maximumEdgeLength()).to.beLessThan(1);
+            expect(quads[1].maximumEdgeLength()).to.beGreaterThan(0.995);
+            expect(quads[2].maximumEdgeLength()).to.beLessThan(quads[1].maximumEdgeLength());
+            expect(quads[2].maximumEdgeLength()).to.beGreaterThan(0.99);
+          });
+
+          it(@"should provide quads with correct sizes for negative speed-based tapering factor", ^{
+            auto model = [[DVNScatteredGeometryProviderModel alloc]
+                          initWithGeometryProviderModel:underlyingProviderModel
+                          randomState:randomState
+                          count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                          angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                          lengthOfStartTapering:1 lengthOfEndTapering:0 startTaperingFactor:1
+                          endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                          speedBasedTaperingFactor:-1 conversionFactor:1];
+            dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+            auto quads = values.quads();
+
+            expect(quads[0].maximumEdgeLength()).to.beCloseToWithin(0.01, kEpsilon);
+            expect(quads[1].maximumEdgeLength()).to.beGreaterThan(quads[0].maximumEdgeLength());
+            expect(quads[1].maximumEdgeLength()).to.beLessThan(0.025);
+            expect(quads[2].maximumEdgeLength()).to.beGreaterThan(quads[1].maximumEdgeLength());
+            expect(quads[2].maximumEdgeLength()).to.beLessThan(0.03);
+          });
+
+          it(@"should provide quads with correct sizes for non-trivial conversion factor", ^{
+            samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 0.1, 0.2}
+                                                                      mapping:mapping];
+            auto model = [[DVNScatteredGeometryProviderModel alloc]
+                          initWithGeometryProviderModel:underlyingProviderModel
+                          randomState:randomState
+                          count:lt::Interval<NSUInteger>(1) distance:lt::Interval<CGFloat>(0)
+                          angle:lt::Interval<CGFloat>(0) scale:lt::Interval<CGFloat>(1)
+                          lengthOfStartTapering:1 lengthOfEndTapering:0 startTaperingFactor:1
+                          endTaperingFactor:1 minimumTaperingScaleFactor:0.01
+                          speedBasedTaperingFactor:-1 conversionFactor:10];
+            dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
+            auto quads = values.quads();
+
+            expect(quads[0].maximumEdgeLength()).to.beCloseToWithin(0.01, kEpsilon);
+            expect(quads[1].maximumEdgeLength()).to.beGreaterThan(quads[0].maximumEdgeLength());
+            expect(quads[1].maximumEdgeLength()).to.beLessThan(0.015);
+            expect(quads[2].maximumEdgeLength()).to.beGreaterThan(quads[1].maximumEdgeLength());
+            expect(quads[2].maximumEdgeLength()).to.beLessThan(0.02);
+          });
         });
       });
     });
@@ -387,7 +544,8 @@ context(@"provider", ^{
                count:count distance:distance angle:angle scale:scale
                lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
                startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor
+               speedBasedTaperingFactor:0 conversionFactor:1];
       id<DVNGeometryProvider> provider = [model provider];
 
       dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
@@ -403,7 +561,8 @@ context(@"provider", ^{
                count:count distance:distance angle:angle scale:scale
                lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
                startTaperingFactor:startTaperingFactor endTaperingFactor:endTaperingFactor
-               minimumTaperingScaleFactor:minimumTaperingScaleFactor];
+               minimumTaperingScaleFactor:minimumTaperingScaleFactor
+               speedBasedTaperingFactor:0 conversionFactor:1];
       id<DVNGeometryProvider> provider = [model provider];
 
       dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
