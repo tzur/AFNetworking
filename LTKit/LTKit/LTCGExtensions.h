@@ -103,11 +103,6 @@ CG_INLINE CGPoint CGPointFromSize(const CGSize &size) {
   return CGPointMake(size.width, size.height);
 }
 
-/// Returns size from the given point.
-CG_INLINE CGSize CGSizeFromPoint(const CGPoint &point) {
-  return CGSizeMake(point.x, point.y);
-}
-
 /// Returns whether two points are equal.
 CG_INLINE BOOL operator==(const CGPoint &lhs, const CGPoint &rhs) {
   return CGPointEqualToPoint(lhs, rhs);
@@ -269,6 +264,11 @@ CG_INLINE CGSize operator*(const CGSize &lhs, const CGSize &rhs) {
 /// Divide a size by another size, component-wise.
 CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
+}
+
+/// Returns size from the given point.
+CG_INLINE CGSize CGSizeFromPoint(const CGPoint &point) {
+  return CGSizeMake(point.x, point.y);
 }
 
 /// Returns a uniform size with the given length at each dimension.
