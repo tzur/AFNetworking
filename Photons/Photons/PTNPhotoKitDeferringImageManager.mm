@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitDeferringImageManager
 
+@synthesize imageManager = _imageManager;
+
 - (instancetype)initWithAuthorizationManager:(id<PTNAuthorizationManager>)authorizationManager
               deferredImageManager:(PTNPhotoKitImageManagerBlock)deferredImageManager {
   LTParameterAssert(deferredImageManager, @"deferredImageManager block cannot be nil");
@@ -44,9 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (void)instantiateImageManagerIfNeeded {
-  if (!self.imageManager) {
-    _imageManager = self.deferredImageManager();
+- (PHImageManager *)imageManager {
+  @synchronized(self) {
+    if (!_imageManager) {
+      _imageManager = self.deferredImageManager();
+    }
+    return _imageManager;
   }
 }
 
@@ -65,7 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
     return 0;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestImageForAsset:asset targetSize:targetSize
                                      contentMode:contentMode options:options
                                    resultHandler:resultHandler];
@@ -77,7 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager cancelImageRequest:requestID];
 }
 
@@ -92,7 +95,6 @@ NS_ASSUME_NONNULL_BEGIN
     return 0;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestAVAssetForVideo:asset options:options
                                      resultHandler:resultHandler];
 }
@@ -108,7 +110,6 @@ NS_ASSUME_NONNULL_BEGIN
     return 0;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestImageDataForAsset:asset options:options
                                        resultHandler:resultHandler];
 }
@@ -123,7 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
     return 0;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestPlayerItemForVideo:asset options:options
                                         resultHandler:resultHandler];
 }
@@ -139,7 +139,6 @@ NS_ASSUME_NONNULL_BEGIN
     return 0;
   }
 
-  [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestLivePhotoForAsset:asset targetSize:targetSize
                                          contentMode:contentMode options:options
                                        resultHandler:resultHandler];
