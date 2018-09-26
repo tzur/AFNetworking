@@ -172,6 +172,16 @@ struct LTVector2 {
     return clockwise ? LTVector2(y, -x) : LTVector2(-y, x);
   }
 
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector2 clamp(LTVector2 a, LTVector2 b) {
+    return LTVector2(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector2 clamp(float a, float b) {
+    return clamp(LTVector2(a), LTVector2(b));
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
@@ -258,22 +268,6 @@ inline LTVector2 operator/(CGFloat lhs, LTVector2 rhs) {
 }
 
 namespace std {
-  /// Constrains point elements to lie between two points elements.
-  inline LTVector2 clamp(LTVector2 point, LTVector2 a, LTVector2 b) {
-    return LTVector2(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
-  }
-
-  /// Constrains point elements to lie between two scalars.
-  inline LTVector2 clamp(LTVector2 point, float a, float b) {
-    return clamp(point, LTVector2(a), LTVector2(b));
-  }
-
-  /// Constrains point to lie inside the given rect.
-  inline LTVector2 clamp(LTVector2 point, CGRect rect) {
-    return LTVector2(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
-                     clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
-  }
-
   /// Round the elements.
   inline LTVector2 round(LTVector2 v) {
     return LTVector2(round(v.x), round(v.y));
@@ -512,6 +506,16 @@ struct LTVector3 {
     return *this / length();
   }
 
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector3 clamp(LTVector3 a, LTVector3 b) {
+    return LTVector3(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y), std::clamp(z, a.z, b.z));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector3 clamp(float a, float b) {
+    return clamp(LTVector3(a), LTVector3(b));
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
@@ -643,16 +647,6 @@ namespace std {
   /// Returns element-wise raised to the power vector.
   inline LTVector3 pow(LTVector3 base, LTVector3 power) {
     return LTVector3(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z));
-  }
-
-  /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector3 clamp(LTVector3 point, LTVector3 a, LTVector3 b) {
-    return LTVector3(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z));
-  }
-
-  /// Constrains vector elements to lie between two scalars.
-  inline LTVector3 clamp(LTVector3 v, float a, float b) {
-    return clamp(v, LTVector3(a), LTVector3(b));
   }
 
   /// Returns a linear interpolation between two values using a scalar.
@@ -898,6 +892,17 @@ struct LTVector4 {
     return *this / length();
   }
 
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector4 clamp(LTVector4 a, LTVector4 b) {
+    return LTVector4(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y),
+                     std::clamp(z, a.z, b.z), std::clamp(w, a.w, b.w));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector4 clamp(float a, float b) {
+    return clamp(LTVector4(a), LTVector4(b));
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
@@ -1037,17 +1042,6 @@ namespace std {
   inline LTVector4 pow(LTVector4 base, LTVector4 power) {
     return LTVector4(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z),
                      pow(base.w, power.w));
-  }
-
-  /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector4 clamp(LTVector4 point, LTVector4 a, LTVector4 b) {
-    return LTVector4(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z),
-                     clamp(point.w, a.w, b.w));
-  }
-
-  /// Constrains vector elements to lie between two scalars.
-  inline LTVector4 clamp(LTVector4 v, float a, float b) {
-    return clamp(v, LTVector4(a), LTVector4(b));
   }
 
   /// Returns a linear interpolation between two values using a scalar.

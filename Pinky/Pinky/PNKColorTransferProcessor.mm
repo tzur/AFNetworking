@@ -412,7 +412,7 @@ static const NSUInteger kLatticeGridSize = 16;
   int latticeDims[] = {kLatticeGridSize, kLatticeGridSize, kLatticeGridSize};
   cv::Mat4b byteLattice(3, latticeDims);
   std::transform(lattice.begin(), lattice.end(), byteLattice.begin(), [](const cv::Vec3f &v) {
-    return (cv::Vec4b)std::clamp(LTVector4(v[0], v[1], v[2], 1), 0, 1);
+    return (cv::Vec4b)LTVector4(v[0], v[1], v[2], 1).clamp(0, 1);
   });
   return byteLattice;
 }

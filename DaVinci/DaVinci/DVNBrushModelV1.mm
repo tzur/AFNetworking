@@ -258,7 +258,7 @@ static NSDictionary<id<LTEnum>, NSString *> * const kBlendModeMapping = @{
 
 - (instancetype)copyWithColor:(LTVector3)color {
   DVNBrushModelV1 *model = [self copy];
-  [model setValue:$(std::clamp(color, 0, 1)) forKey:@keypath(model, color)];
+  [model setValue:$(color.clamp(0, 1)) forKey:@keypath(model, color)];
   return model;
 }
 
@@ -412,7 +412,7 @@ DVNClosedRangeClassProperty(float, allowedTaperingLength, AllowedTaperingLength,
 
 - (void)setTaperingLengths:(LTVector2)taperingLengths {
   lt::Interval<float> range = [[self class] allowedTaperingLengthRange];
-  _taperingLengths = std::clamp(taperingLengths, *range.min(), *range.max());
+  _taperingLengths = taperingLengths.clamp(*range.min(), *range.max());
 }
 
 DVNLeftOpenRangeClassProperty(CGFloat, allowedMinimumTaperingScaleFactor,
@@ -427,7 +427,7 @@ DVNClosedRangeClassProperty(float, allowedTaperingFactor, AllowedTaperingFactor,
 
 - (void)setTaperingFactors:(LTVector2)taperingFactors {
   lt::Interval<float> range = [[self class] allowedTaperingFactorRange];
-  _taperingFactors = std::clamp(taperingFactors, *range.min(), *range.max());
+  _taperingFactors = taperingFactors.clamp(*range.min(), *range.max());
 }
 
 DVNClosedRangeClassProperty(float, allowedSpeedBasedTaperingFactor, AllowedSpeedBasedTaperingFactor,

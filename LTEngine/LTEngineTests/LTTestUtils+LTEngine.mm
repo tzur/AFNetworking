@@ -381,7 +381,7 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool pre
         LTVector4::zeros();
   }
   blended = std::round(blended * UCHAR_MAX) / UCHAR_MAX;
-  blended = std::clamp(blended, LTVector4::zeros(), LTVector4::ones());
+  blended = blended.clamp(0, 1);
 
   return LTLTVector4ToVec4b(blended);
 }

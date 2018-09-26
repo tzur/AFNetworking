@@ -161,6 +161,20 @@ context(@"LTVector2", ^{
     });
   });
 
+  it(@"should clamp point elements between two points elements", ^{
+    expect(LTVector2(0.5, -0.5).clamp(LTVector2(0, 0), LTVector2(1, 1)))
+        .to.equal(LTVector2(0.5, 0));
+    expect(LTVector2(0.5, -0.5).clamp(LTVector2(-1, 0), LTVector2(1, 1)))
+        .to.equal(LTVector2(0.5, 0));
+    expect(LTVector2(0.5, -0.5).clamp(LTVector2(-1, -1), LTVector2(0, 1)))
+        .to.equal(LTVector2(0, -0.5));
+  });
+
+  it(@"should clamp point elements between two scalars", ^{
+    expect(LTVector2(0.5, -0.5).clamp(0, 1)).to.equal(LTVector2(0.5, 0));
+    expect(LTVector2(0.5, -0.5).clamp(-1, 0)).to.equal(LTVector2(0, -0.5));
+  });
+
   it(@"should access data correctly", ^{
     LTVector2 v(1, 2);
     expect(v.data()[0]).to.equal(1);
@@ -168,33 +182,6 @@ context(@"LTVector2", ^{
   });
 
   context(@"std", ^{
-    it(@"should clamp point elements between two points elements", ^{
-      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(0, 0),
-                        LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, 0),
-                        LTVector2(1, 1))).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), LTVector2(-1, -1),
-                        LTVector2(0, 1))).to.equal(LTVector2(0, -0.5));
-    });
-
-    it(@"should clamp point elements between two scalars", ^{
-      expect(std::clamp(LTVector2(0.5, -0.5), 0, 1)).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), 1, 0)).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5), -1, 0)).to.equal(LTVector2(0, -0.5));
-      expect(std::clamp(LTVector2(0.5, -0.5), 0, -1)).to.equal(LTVector2(0, -0.5));
-    });
-
-    it(@"should clamp point in a given rect", ^{
-      expect(std::clamp(LTVector2(0.5, -0.5),
-                        CGRectMake(0, 0, 1, 1))).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5),
-                        CGRectMake(0, 0, 1, 1))).to.equal(LTVector2(0.5, 0));
-      expect(std::clamp(LTVector2(0.5, -0.5),
-                        CGRectMake(0, 0, -1, -1))).to.equal(LTVector2(0, -0.5));
-      expect(std::clamp(LTVector2(0.5, -0.5),
-                        CGRectMake(0, 0, -1, -1))).to.equal(LTVector2(0, -0.5));
-    });
-
     it(@"should return rounded vector", ^{
       LTVector2 v(1.3, 2.7);
       expect(std::round(v)).to.equal(LTVector2(1, 3));
@@ -402,6 +389,22 @@ context(@"LTVector3", ^{
     expect(v.sum()).to.equal(6);
   });
 
+  it(@"should clamp vector elements between two vectors elements", ^{
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(LTVector3(0, 0, 0), LTVector3(1, 1, 1)))
+        .to.equal(LTVector3(0.5, 0, 1));
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(LTVector3(0, -1, 0), LTVector3(1, 1, 1)))
+        .to.equal(LTVector3(0.5, -0.5, 1));
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(LTVector3(-1, -1, 0), LTVector3(0, 1, 1)))
+        .to.equal(LTVector3(0, -0.5, 1));
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(LTVector3(-1, -1, 0), LTVector3(0, 1, 1.5)))
+        .to.equal(LTVector3(0, -0.5, 1.1));
+  });
+
+  it(@"should clamp vector elements between two scalars", ^{
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(0, 1)).to.equal(LTVector3(0.5, 0, 1));
+    expect(LTVector3(0.5, -0.5, 1.1).clamp(-1, 0)).to.equal(LTVector3(0, -0.5, 0));
+  });
+
   it(@"should access data correctly", ^{
     LTVector3 v(1, 2, 3);
     expect(v.data()[0]).to.equal(1);
@@ -452,24 +455,6 @@ context(@"LTVector3", ^{
     it(@"should return each element raised to the power element-wise", ^{
       expect(std::pow(LTVector3(1, 2, 4), LTVector3(0, 2, 0.5)))
           .to.equal(LTVector3(1, 4, 2));
-    });
-
-    it(@"should clamp vector elements between two vectors elements", ^{
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(0, 0, 0),
-                        LTVector3(1, 1, 1))).to.equal(LTVector3(0.5, 0, 1));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(0, -1, 0),
-                        LTVector3(1, 1, 1))).to.equal(LTVector3(0.5, -0.5, 1));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(-1, -1, 0),
-                        LTVector3(0, 1, 1))).to.equal(LTVector3(0, -0.5, 1));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), LTVector3(-1, -1, 0),
-                        LTVector3(0, 1, 1.5))).to.equal(LTVector3(0, -0.5, 1.1));
-    });
-
-    it(@"should clamp vector elements between two scalars", ^{
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, 1)).to.equal(LTVector3(0.5, 0, 1));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 1, 0)).to.equal(LTVector3(0.5, 0, 1));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), -1, 0)).to.equal(LTVector3(0, -0.5, 0));
-      expect(std::clamp(LTVector3(0.5, -0.5, 1.1), 0, -1)).to.equal(LTVector3(0, -0.5, 0));
     });
 
     it(@"should mix using a given scalar", ^{
@@ -734,6 +719,25 @@ context(@"LTVector4", ^{
     expect(v.sum()).to.equal(10);
   });
 
+  it(@"should clamp vector elements between two vectors elements", ^{
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(LTVector4(0, 0, 0, 0), LTVector4(1, 1, 1, 1)))
+        .to.equal(LTVector4(0.5, 0, 1, 0));
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(LTVector4(0, -1, 0 ,0), LTVector4(1, 1, 1, 1)))
+        .to.equal(LTVector4(0.5, -0.5, 1, 0));
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(LTVector4(-1, -1, 0, 0), LTVector4(0, 1, 1, 1)))
+        .to.equal(LTVector4(0, -0.5, 1, 0));
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(LTVector4(-1, -1, 0, 0), LTVector4(0, 1, 1.5, 1)))
+         .to.equal(LTVector4(0, -0.5, 1.1, 0));
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(LTVector4(-1, -1, 0, -1.5),
+                                                 LTVector4(0, 1, 1.5, 1)))
+        .to.equal(LTVector4(0, -0.5, 1.1, -1.1));
+  });
+
+  it(@"should clamp vector elements between two scalars", ^{
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(0, 1)).to.equal(LTVector4(0.5, 0, 1, 0));
+    expect(LTVector4(0.5, -0.5, 1.1, -1.1).clamp(-1, 0)).to.equal(LTVector4(0, -0.5, 0, -1));
+  });
+
   it(@"should access data correctly", ^{
     LTVector4 v(1, 2, 3, 4);
     expect(v.data()[0]).to.equal(1);
@@ -785,28 +789,6 @@ context(@"LTVector4", ^{
     it(@"should return each element raised to the power element-wise", ^{
       expect(std::pow(LTVector4(0, 4, 9, 16), LTVector4(0, 1, 2, 0.5)))
           .to.equal(LTVector4(1, 4, 81, 4));
-    });
-
-    it(@"should clamp vector elements between two vectors elements", ^{
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(0, 0, 0, 0),
-                        LTVector4(1, 1, 1, 1))).to.equal(LTVector4(0.5, 0, 1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(0, -1, 0 ,0),
-                        LTVector4(1, 1, 1, 1))).to.equal(LTVector4(0.5, -0.5, 1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, 0),
-                        LTVector4(0, 1, 1, 1))).to.equal(LTVector4(0, -0.5, 1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, 0),
-                        LTVector4(0, 1, 1.5, 1))).to.equal(LTVector4(0, -0.5, 1.1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), LTVector4(-1, -1, 0, -1.5),
-                        LTVector4(0, 1, 1.5, 1))).to.equal(LTVector4(0, -0.5, 1.1, -1.1));
-    });
-
-    it(@"should clamp vector elements between two scalars", ^{
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, 1)).to.equal(LTVector4(0.5, 0, 1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 1, 0)).to.equal(LTVector4(0.5, 0, 1, 0));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), -1, 0))
-          .to.equal(LTVector4(0, -0.5, 0, -1));
-      expect(std::clamp(LTVector4(0.5, -0.5, 1.1, -1.1), 0, -1))
-          .to.equal(LTVector4(0, -0.5, 0, -1));
     });
 
     it(@"should mix using a given scalar", ^{
