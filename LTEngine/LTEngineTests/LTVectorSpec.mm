@@ -82,10 +82,6 @@ context(@"LTVector2", ^{
     expect(LTVector2(1, 3) == LTVector2(1, 2)).to.beFalsy();
     expect(LTVector2(1, 2) != LTVector2(1, 2)).to.beFalsy();
     expect(LTVector2(1, 3) != LTVector2(1, 2)).to.beTruthy();
-    expect(LTVector2(1, 2) >= LTVector2(1, 2)).to.beTruthy();
-    expect(LTVector2(1, 1) >= LTVector2(1, 2)).to.beFalsy();
-    expect(LTVector2(1, 2) <= LTVector2(1, 2)).to.beTruthy();
-    expect(LTVector2(1, 3) <= LTVector2(1, 2)).to.beFalsy();
   });
 
   it(@"should return true from isNull if the vector is the null vector", ^{
@@ -382,10 +378,6 @@ context(@"LTVector3", ^{
     expect(LTVector3(1, 3, 3) == LTVector3(1, 2, 3)).to.beFalsy();
     expect(LTVector3(1, 2, 3) != LTVector3(1, 2, 3)).to.beFalsy();
     expect(LTVector3(1, 3, 3) != LTVector3(1, 2, 3)).to.beTruthy();
-    expect(LTVector3(1, 2, 3) >= LTVector3(1, 2, 4)).to.beFalsy();
-    expect(LTVector3(1, 2, 3) >= LTVector3(1, 2, 3)).to.beTruthy();
-    expect(LTVector3(1, 2, 3) <= LTVector3(1, 2, 3)).to.beTruthy();
-    expect(LTVector3(1, 3, 3) <= LTVector3(1, 2, 3)).to.beFalsy();
   });
 
   it(@"should return true from isNull if the vector is the null vector", ^{

@@ -210,14 +210,6 @@ constexpr bool operator==(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
-constexpr bool operator>=(LTVector2 lhs, LTVector2 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y;
-}
-
-constexpr bool operator<=(LTVector2 lhs, LTVector2 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y;
-}
-
 constexpr bool operator!=(LTVector2 lhs, LTVector2 rhs) {
   return !(lhs == rhs);
 }
@@ -558,14 +550,6 @@ struct LTVector3 {
 
 constexpr bool operator==(LTVector3 lhs, LTVector3 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
-}
-
-constexpr bool operator>=(LTVector3 lhs, LTVector3 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z;
-}
-
-constexpr bool operator<=(LTVector3 lhs, LTVector3 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z;
 }
 
 constexpr bool operator!=(LTVector3 lhs, LTVector3 rhs) {
@@ -963,14 +947,6 @@ constexpr LTVector4 operator-(LTVector4 vector) {
   return LTVector4(-vector.x, -vector.y, -vector.z, -vector.w);
 }
 
-constexpr bool operator>=(LTVector4 lhs, LTVector4 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z && lhs.w >= rhs.w;
-}
-
-constexpr bool operator<=(LTVector4 lhs, LTVector4 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z && lhs.w <= rhs.w;
-}
-
 inline LTVector4 operator+(LTVector4 lhs, LTVector4 rhs) {
   lhs += rhs;
   return lhs;
@@ -1098,6 +1074,33 @@ namespace std {
     return step(LTVector4(edge), v);
   }
 }
+
+namespace lt::detail {
+
+template<>
+struct RangeValidator<LTVector2> {
+  bool operator()(const LTVector2 &value, const LTVector2 &low, const LTVector2 &high) {
+    return low.x <= value.x && low.y <= value.y && value.x <= high.x && value.y <= high.y;
+  }
+};
+
+template<>
+struct RangeValidator<LTVector3> {
+  bool operator()(const LTVector3 &value, const LTVector3 &low, const LTVector3 &high) {
+    return low.x <= value.x && low.y <= value.y && low.z <= value.z &&
+        value.x <= high.x && value.y <= high.y && value.z <= high.z;
+  }
+};
+
+template<>
+struct RangeValidator<LTVector4> {
+  bool operator()(const LTVector4 &value, const LTVector4 &low, const LTVector4 &high) {
+    return low.x <= value.x && low.y <= value.y && low.z <= value.z && low.w <= value.w &&
+        value.x <= high.x && value.y <= high.y && value.z <= high.z && value.w <= high.w;
+  }
+};
+
+} // namespace lt::detail
 
 /// Returns an \c NSString representation of the given \c vector. The returned \c NSString is
 /// <tt>@"(x, y, z, w)"</tt>, where \c x, \c y, \c z, and \c w are the string representations of
