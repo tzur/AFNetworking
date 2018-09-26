@@ -212,7 +212,7 @@ static const CGFloat kBoundaryAlpha = 0.1;
   for (NSUInteger level = self.model.numberOfVertexLevels - 1; level > 0; --level) {
     CGFloat t = (level - featheringNonOpaqueVertex) /
         (self.model.numberOfVertexLevels - 1 - featheringNonOpaqueVertex);
-    t = 1 - std::clamp(t, 0, 1);
+    t = 1 - std::clamp(t, 0., 1.);
     CGFloat alpha = 3 * std::pow(t, 2) - 2 * std::pow(t, 3);
     alpha = alpha * (1 - kBoundaryAlpha) + kBoundaryAlpha;
 

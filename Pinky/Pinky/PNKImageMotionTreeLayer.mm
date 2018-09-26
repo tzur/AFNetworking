@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
       auto xRelativeDisplacement = (half_float::half)(-xDisplacement * inverseWidth);
       auto yRelativeDisplacement = (half_float::half)(-yDisplacement * inverseHeight);
 
-      int newRow = std::clamp(row + std::round(yDisplacement), 0, _treesWithLabels.rows - 1);
+      int newRow = std::clamp(row + int(std::round(yDisplacement)), 0, _treesWithLabels.rows - 1);
       auto pointerToNewRow = (half_float::half *)displacements->ptr(newRow);
 
       for (int col = left; col < left + width; ++col) {
@@ -124,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
           continue;
         }
 
-        int newCol = std::clamp(col + std::round(xDisplacement), 0, _treesWithLabels.cols - 1);
+        int newCol = std::clamp(col + int(std::round(xDisplacement)), 0, _treesWithLabels.cols - 1);
 
         pointerToNewRow[2 * newCol] = xRelativeDisplacement;
         pointerToNewRow[2 * newCol + 1] = yRelativeDisplacement;

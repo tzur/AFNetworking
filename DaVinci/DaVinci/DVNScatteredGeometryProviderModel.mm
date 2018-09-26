@@ -188,7 +188,7 @@ static CGFloat DVNSpeedBasedTaperingScaleRangeFactor(CGFloat speedValue, CGFloat
   NSUInteger additiveFactor = taperingFactor < 0 ? 1 : 0;
   CGFloat taperingIntensity = taperingFactor;
   CGFloat speedFactor =
-      pow(std::clamp((speedValue - kMinSpeedForTapering) / kSpeedRangeForTapering, 0, 1),
+      pow(std::clamp((speedValue - kMinSpeedForTapering) / kSpeedRangeForTapering, 0., 1.),
           kSpeedBasedTaperingExponent);
   CGFloat scaleRangeFactor = 1 - (taperingIntensity * (speedFactor - additiveFactor));
 

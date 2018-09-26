@@ -211,12 +211,12 @@ typedef std::vector<vImagePixelCount> PixelCounts;
                  [inverseReferenceCDF, inputCDF, range, rangeLength](float v) {
     // Sample the lookup table with linear interpolation when the offset is not an integer.
     // see https://developer.apple.com/documentation/accelerate/1450762-vdsp_vtabi.
-    float srcCDFBin = std::clamp((v - range.first) / rangeLength, 0, 1) * (inputCDF.size() - 1);
+    float srcCDFBin = std::clamp((v - range.first) / rangeLength, 0.f, 1.f) * (inputCDF.size() - 1);
     float alpha = srcCDFBin - std::floor(srcCDFBin);
     float srcCDFValue = (1 - alpha) * inputCDF[std::floor(srcCDFBin)] +
         alpha * inputCDF[std::ceil(srcCDFBin)];
 
-    float inverseRefCDFBin = std::clamp(srcCDFValue, 0, 1) * (inverseReferenceCDF.size() - 1);
+    float inverseRefCDFBin = std::clamp(srcCDFValue, 0.f, 1.f) * (inverseReferenceCDF.size() - 1);
     alpha = inverseRefCDFBin - std::floor(inverseRefCDFBin);
     return (1 - alpha) * inverseReferenceCDF[std::floor(inverseRefCDFBin)] +
         alpha * inverseReferenceCDF[std::ceil(inverseRefCDFBin)];

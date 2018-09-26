@@ -48,19 +48,6 @@ context(@"uiedgeinsets operations", ^{
   });
 });
 
-context(@"cgfloat operations", ^{
-  it(@"clamping", ^{
-    expect(std::clamp(-1, 0, 1)).to.equal(0);
-    expect(std::clamp(-1, 1, 0)).to.equal(0);
-    expect(std::clamp(2, 0, 1)).to.equal(1);
-    expect(std::clamp(2, 1, 0)).to.equal(1);
-    expect(std::clamp(0.5, 0, 1)).to.equal(0.5);
-    expect(std::clamp(0.5, 1, 0)).to.equal(0.5);
-    expect(std::clamp(0.5, 0, 0)).to.equal(0);
-    expect(std::clamp(0.5, 1, 1)).to.equal(1);
-  });
-});
-
 context(@"cgpoint operations", ^{
   it(@"construction", ^{
     expect(CGPointFromSize(CGSizeZero)).to.equal(CGPointZero);
@@ -102,28 +89,34 @@ context(@"cgpoint operations", ^{
     expect(point.x).to.beCloseTo(2);
     expect(point.y).to.beCloseTo(-1);
   });
-  
-  it(@"clamping", ^{
-    expect(std::clamp(CGPointMake(0.5, -0.5), 0, 1)).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5), 1, 0)).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5), -1, 0)).to.equal(CGPointMake(0, -0.5));
-    expect(std::clamp(CGPointMake(0.5, -0.5), 0, -1)).to.equal(CGPointMake(0, -0.5));
 
-    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(0, 0),
-                      CGPointMake(1, 1))).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(-1, 0),
-                      CGPointMake(1, 1))).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5), CGPointMake(-1, -1),
-                      CGPointMake(0, 1))).to.equal(CGPointMake(0, -0.5));
+  it(@"should clamp to rect", ^{
+    expect(CGPointClampToRect(CGPointMake(1, 2), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(1, 2));
+    expect(CGPointClampToRect(CGPointMake(4, 6), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(4, 6));
+    expect(CGPointClampToRect(CGPointMake(3, 3), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(3, 3));
+    expect(CGPointClampToRect(CGPointMake(0, 0), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(1, 2));
+    expect(CGPointClampToRect(CGPointMake(2, 100), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(2, 6));
+    expect(CGPointClampToRect(CGPointMake(100, 2), CGRectMake(1, 2, 3, 4)))
+        .to.equal(CGPointMake(4, 2));
 
-    expect(std::clamp(CGPointMake(0.5, -0.5),
-                      CGRectMake(0, 0, 1, 1))).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5),
-                      CGRectMake(0, 0, 1, 1))).to.equal(CGPointMake(0.5, 0));
-    expect(std::clamp(CGPointMake(0.5, -0.5),
-                      CGRectMake(0, 0, -1, -1))).to.equal(CGPointMake(0, -0.5));
-    expect(std::clamp(CGPointMake(0.5, -0.5),
-                      CGRectMake(0, 0, -1, -1))).to.equal(CGPointMake(0, -0.5));
+    // Non-standard rect.
+    expect(CGPointClampToRect(CGPointMake(1, 2), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(1, 2));
+    expect(CGPointClampToRect(CGPointMake(4, 6), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(4, 6));
+    expect(CGPointClampToRect(CGPointMake(3, 3), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(3, 3));
+    expect(CGPointClampToRect(CGPointMake(0, 0), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(1, 2));
+    expect(CGPointClampToRect(CGPointMake(2, 100), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(2, 6));
+    expect(CGPointClampToRect(CGPointMake(100, 2), CGRectMake(4, 6, -3, -4)))
+        .to.equal(CGPointMake(4, 2));
   });
 });
 

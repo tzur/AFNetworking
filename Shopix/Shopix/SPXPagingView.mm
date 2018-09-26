@@ -147,8 +147,8 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 
 - (void)updateFocusedPage {
   if (self.pageViews.count) {
-    auto scrollPosition = round([self calculateScrollPositionByOffset]);
-    NSUInteger focusedPageIndex = std::clamp(scrollPosition, 0, self.pageViews.count - 1);
+    auto scrollPosition = NSUInteger(std::round([self calculateScrollPositionByOffset]));
+    NSUInteger focusedPageIndex = std::clamp(scrollPosition, 0LU, self.pageViews.count - 1);
     auto targetFocusedPage = self.pageViews[focusedPageIndex];
     if (targetFocusedPage != self.focusedPage) {
       [self notifyFocusedPageOnFocusLose];
@@ -202,7 +202,7 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
   } else {
     targetPageIndex = velocity.x > 0 ? std::ceil(targetPageIndex) : std::floor(targetPageIndex);
   }
-  targetPageIndex = std::clamp(targetPageIndex, 0, self.pageViews.count - 1);
+  targetPageIndex = std::clamp(targetPageIndex, 0., self.pageViews.count - 1.);
 
   CGFloat marginWidth = (scrollViewSize.width - pageSize.width) / 2;
   targetContentOffset->x = self.pageViews[(NSUInteger)targetPageIndex].frame.origin.x - marginWidth;
@@ -304,14 +304,14 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 }
 
 - (void)setSpacingRatio:(CGFloat)spacingRatio {
-  _spacingRatio = std::clamp(spacingRatio, 0, 1);
+  _spacingRatio = std::clamp(spacingRatio, 0., 1.);
   [self updatePaddingViewsConstraints];
   if (self.focusedPage) {
     [self scrollToPage:[self.pageViews indexOfObject:self.focusedPage] animated:NO];
   }}
 
 - (void)setPageViewWidthRatio:(CGFloat)pageViewWidthRatio {
-  _pageViewWidthRatio = std::clamp(pageViewWidthRatio, 0, 1);
+  _pageViewWidthRatio = std::clamp(pageViewWidthRatio, 0., 1.);
   [self updatePageViewsConstraints];
   [self updatePaddingViewConstraints:nn(self.paddingViews.firstObject) nextToView:nil isMargin:YES];
   [self updatePaddingViewConstraints:nn(self.paddingViews.lastObject)

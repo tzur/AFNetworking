@@ -219,8 +219,8 @@ half_float::half PNKActivatedValue(half_float::half value, int channel,
     case pnk::ActivationTypeSigmoidHard:
       alphaParameter = (half_float::half)alpha(0);
       betaParameter = (half_float::half)beta(0);
-      return (half_float::half)std::clamp(alphaParameter * value + betaParameter,
-                                          (half_float::half)0.0, (half_float::half)1.0);
+      return std::clamp<half_float::half>(alphaParameter * value + betaParameter,
+                                          half_float::half(0), half_float::half(1));
     case pnk::ActivationTypeLinear:
       alphaParameter = (half_float::half)alpha(0);
       betaParameter = (half_float::half)beta(0);

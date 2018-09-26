@@ -50,8 +50,8 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   // Hue should be cyclic, while saturation and brightness are clamped in [0,1].
   CGFloat newHue = h + randomHueJitter;
   return [UIColor colorWithHue:(newHue >= 0) ? newHue - std::floor(newHue) : 1.0 + newHue
-                    saturation:std::clamp(s + randomSaturationJitter, 0, 1)
-                    brightness:std::clamp(b + randomBrightnessJitter, 0, 1)
+                    saturation:std::clamp(s + randomSaturationJitter, 0., 1.)
+                    brightness:std::clamp(b + randomBrightnessJitter, 0., 1.)
                          alpha:a];
 }
 
@@ -64,7 +64,7 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   CGPoints targets;
   CGSize textureSize = self.baseColorTexture.size - CGSizeMakeUniform(1);
   for (LTRotatedRect *rect in rects) {
-    targets.push_back(std::round(std::clamp(rect.center, kNormalRect) * textureSize));
+    targets.push_back(std::round(CGPointClampToRect(rect.center, kNormalRect) * textureSize));
   }
   return [self colorsFromGLKColors:[self.baseColorTexture pixelValues:targets]];
 }

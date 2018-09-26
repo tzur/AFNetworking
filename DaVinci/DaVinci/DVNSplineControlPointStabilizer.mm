@@ -134,7 +134,7 @@ static const CGFloat kFactorPreventingStagnancy = 0.99;
       [point.attributes[[LTSplineControlPoint keyForSpeedInScreenCoordinates]] CGFloatValue];
   CGFloat parametricValue =
       std::clamp(DVNParametricValue(speed, kMinSpeedForSmoothingFactorInterpolation,
-                                    kSpeedIntervalLengthForSmoothingFactorInterpolation), 0, 1);
+                                    kSpeedIntervalLengthForSmoothingFactorInterpolation), 0., 1.);
   /// In order to achieve a spline fitting to the actual points more closely, the smoothing factor
   /// is decreased for lower speed values.
   CGFloat minSmoothingFactor = kSmoothingIntensityLowSpeedFactor * smoothingIntensity;

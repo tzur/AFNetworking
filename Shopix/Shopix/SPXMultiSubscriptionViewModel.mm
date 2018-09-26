@@ -224,7 +224,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)scrolledToPosition:(CGFloat)position {
-  NSUInteger newPageIndex = round(std::clamp(position, 0, self.pageViewModels.count - 1));
+  NSUInteger newPageIndex = std::round(std::clamp(position, 0., self.pageViewModels.count - 1.));
 
   if (self.activePageIndex != newPageIndex) {
     [self.pageViewModels[self.activePageIndex] stopVideo];
