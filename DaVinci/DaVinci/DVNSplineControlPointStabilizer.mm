@@ -41,17 +41,29 @@ typedef std::vector<CGPoint>::size_type CGPointVectorType;
 }
 
 - (NSArray<LTSplineControlPoint *> *)pointsForPoints:(NSArray<LTSplineControlPoint *> *)points
-                               smoothedWithIntensity:(CGFloat)smoothingIntensity end:(BOOL)end {
-  LTParameterAssert(points.count);
+                               smoothedWithIntensity:(CGFloat)smoothingIntensity
+                                       preserveState:(BOOL)preserveState
+                                    fadeOutSmoothing:(BOOL)fadeOutSmoothing {
   LTParameterAssert(smoothingIntensity > 0 && smoothingIntensity <= 1,
                     @"Smoothing intensity (%g) must be in range (0, 1]", smoothingIntensity);
+  if (!points.count) {
+    return points;
+  }
+
+  CGFloat preservedSmoothingFactor = self.previousSmoothingFactor;
+  CGPoint preservedLocation = self.previousLocation;
+  NSDictionary<NSString *, NSNumber *> *preservedAttributes = self.previousAttributes;
 
   NSMutableArray<LTSplineControlPoint *> *smoothedPoints =
       [NSMutableArray arrayWithCapacity:points.count];
 
-  for (LTSplineControlPoint *controlPoint in points) {
+  for (NSUInteger i = 0; i < points.count ; ++i) {
+    LTSplineControlPoint *controlPoint = points[i];
     self.previousSmoothingFactor = [self smoothingFactorFromPoint:controlPoint
                                                smoothingIntensity:smoothingIntensity];
+    if (fadeOutSmoothing) {
+      self.previousSmoothingFactor *= points.count > 1 ? 1 - (CGFloat)i / (points.count - 1) : 0;
+    }
     self.previousLocation = [self locationFromLocation:controlPoint.location
                                     smoothedWithFactor:self.previousSmoothingFactor];
     self.previousAttributes = [self attributesFromAttributes:controlPoint.attributes
@@ -62,8 +74,10 @@ typedef std::vector<CGPoint>::size_type CGPointVectorType;
                                attributes:self.previousAttributes]];
   }
 
-  if (end) {
-    [self reset];
+  if (preserveState) {
+    self.previousSmoothingFactor = preservedSmoothingFactor;
+    self.previousLocation = preservedLocation;
+    self.previousAttributes = preservedAttributes;
   }
 
   return smoothedPoints;
