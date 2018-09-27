@@ -1,8 +1,6 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTGLEnums.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Components of a pixel format.
@@ -61,16 +59,13 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 /// format is supported.
 @interface LTGLPixelFormat (Additions)
 
-/// Initializes a new \c LTGLPixelFormat from a texture \c internalFormat and an OpenGL \c version.
-/// If no pixel format can be derived from the \c internalFormat and the \c version, an assert will
-/// be raised.
-- (instancetype)initWithTextureInternalFormat:(GLenum)internalFormat version:(LTGLVersion)version;
+/// Initializes a new \c LTGLPixelFormat from a texture \c internalFormat. If no pixel format can be
+/// derived from the \c internalFormat, an assert will be raised.
+- (instancetype)initWithTextureInternalFormat:(GLenum)internalFormat;
 
-/// Initializes a new \c LTGLPixelFormat from a renderbuffer \c internalFormat and an OpenGL
-/// \c version. If no pixel format can be derived from the \c internalFormat and the \c version, an
-/// assert will be raised.
-- (instancetype)initWithRenderbufferInternalFormat:(GLenum)internalFormat
-                                           version:(LTGLVersion)version;
+/// Initializes a new \c LTGLPixelFormat from a renderbuffer \c internalFormat. If no pixel format
+/// can be derived from the \c internalFormat, an assert will be raised.
+- (instancetype)initWithRenderbufferInternalFormat:(GLenum)internalFormat;
 
 /// Initializes a new \c LTGLPixelFormat from an \c cv::Mat type. If no pixel format can be derived
 /// from \c matType, an assert will be raised.
@@ -101,21 +96,18 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 /// \c -[LTGLPixelFormat initWithCVPixelFormatType:planeIndex:].
 + (LTGLPixelFormatSupportedCVPixelFormatTypes)supportedPlanarCVPixelFormatTypes;
 
-/// OpenGL format for the given OpenGL \c version, or \c LTGLInvalidEnum if no such format is
+/// OpenGL format, or \c LTGLInvalidEnum if no such format is available.
+@property (readonly, nonatomic) GLenum format;
+
+/// OpenGL precision, or \c LTGLInvalidEnum if no such precision is available.
+@property (readonly, nonatomic) GLenum precision;
+
+/// OpenGL texture internal format, or \c LTGLInvalidEnum if no such internal format is available.
+@property (readonly, nonatomic) GLenum textureInternalFormat;
+
+/// OpenGL renderbuffer internal format, or \c LTGLInvalidEnum if no such internal format is
 /// available.
-- (GLenum)formatForVersion:(LTGLVersion)version;
-
-/// OpenGL precision for the given OpenGL \c version, or \c LTGLInvalidEnum if no such precision is
-/// available.
-- (GLenum)precisionForVersion:(LTGLVersion)version;
-
-/// OpenGL texture internal format for the given OpenGL \c version, or \c LTGLInvalidEnum if no such
-/// internal format is available.
-- (GLenum)textureInternalFormatForVersion:(LTGLVersion)version;
-
-/// OpenGL renderbuffer internal format for the given OpenGL \c version, or \c LTGLInvalidEnum if no
-/// such internal format is available.
-- (GLenum)renderbufferInternalFormatForVersion:(LTGLVersion)version;
+@property (readonly, nonatomic) GLenum renderbufferInternalFormat;
 
 /// Components of the pixel format.
 @property (readonly, nonatomic) LTGLPixelComponents components;

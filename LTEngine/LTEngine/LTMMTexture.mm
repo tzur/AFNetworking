@@ -134,10 +134,9 @@
 
 #ifdef LTMMTEXTURE_USE_IOSURFACE
 - (void)setupSurfaceBackedTexture {
-  LTGLVersion version = self.context.version;
-  auto internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
-  auto format = [self.pixelFormat formatForVersion:version];
-  auto precision = [self.pixelFormat precisionForVersion:version];
+  auto internalFormat = self.pixelFormat.textureInternalFormat;
+  auto format = self.pixelFormat.format;
+  auto precision = self.pixelFormat.precision;
   auto eaglContext = self.context.context;
   auto _Nullable surface = CVPixelBufferGetIOSurface(_pixelBuffer.get());
   LTParameterAssert(surface, @"Pixel buffer must be backed by IOSurface");
@@ -200,10 +199,9 @@
 }
 
 - (void)allocateTextureCacheBackedTexture {
-  LTGLVersion version = self.context.version;
-  GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
-  GLenum format = [self.pixelFormat formatForVersion:version];
-  GLenum precision = [self.pixelFormat precisionForVersion:version];
+  GLenum internalFormat = self.pixelFormat.textureInternalFormat;
+  GLenum format = self.pixelFormat.format;
+  GLenum precision = self.pixelFormat.precision;
 
   CVOpenGLESTextureRef textureRef;
   CVReturn result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
@@ -345,13 +343,7 @@
 }
 
 - (GLsync)createAndPushSyncObject {
-  __block GLsync syncObject;
-  [self.context executeForOpenGLES2:^{
-    syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
-  } openGLES3:^{
-    syncObject = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-  }];
-  return syncObject;
+  return glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 }
 
 - (lt::Ref<CVPixelBufferRef>)pixelBuffer {
@@ -464,13 +456,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     return;
   }
 
-  __block GLboolean isSync;
-  [self.context executeForOpenGLES2:^{
-    isSync = glIsSyncAPPLE(sync);
-  } openGLES3:^{
-    isSync = glIsSync(sync);
-  }];
-  if (!isSync) {
+  if (!glIsSync(sync)) {
     return;
   }
 
@@ -480,13 +466,8 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   // flushing.
   glFlush();
 
-  __block GLenum waitResult;
   static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
-  [self.context executeForOpenGLES2:^{
-    waitResult = glClientWaitSyncAPPLE(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
-  } openGLES3:^{
-    waitResult = glClientWaitSync(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
-  }];
+  GLenum waitResult = glClientWaitSync(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
 
   LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");
   LTAssert(waitResult != GL_WAIT_FAILED_APPLE, @"Failed waiting on sync object");
@@ -503,15 +484,9 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 }
 
 - (void)deleteSyncObjectIfExists:(nullable GLsync)sync {
-  [self.context executeForOpenGLES2:^{
-    if (glIsSyncAPPLE(sync)) {
-      glDeleteSyncAPPLE(sync);
-    }
-  } openGLES3:^{
-    if (glIsSync(sync)) {
-      glDeleteSync(sync);
-    }
-  }];
+  if (glIsSync(sync)) {
+    glDeleteSync(sync);
+  }
 }
 
 - (void)mappedCIImage:(NS_NOESCAPE LTTextureMappedCIImageBlock)block {

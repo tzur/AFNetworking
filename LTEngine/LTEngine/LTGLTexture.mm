@@ -23,11 +23,6 @@ static void LTVerifyMipmapImages(const Matrices &images) {
   const cv::Mat &baseImage = images.front();
   CGSize currentLevelSize = CGSizeMake(baseImage.cols, baseImage.rows);
 
-  if ([LTGLContext currentContext].version == LTGLVersion2) {
-    LTParameterAssert(LTIsPowerOfTwo(currentLevelSize), @"Base image must be a power of two, "
-                      "got: %@", NSStringFromCGSize(currentLevelSize));
-  }
-
   for (Matrices::size_type i = 1; i < images.size(); ++i) {
     LTParameterAssert(images[i].type() == baseImage.type(), @"Image type for level %zu (%d) "
                       "doesn't match base level type (%d)", i, images[i].type(), baseImage.type());
@@ -102,10 +97,9 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (void)loadMipmapImages:(const Matrices &)images {
   [self bindAndExecute:^{
     [self writeWithBlock:^{
-      LTGLVersion version = self.context.version;
-      GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
-      GLenum precision = [self.pixelFormat precisionForVersion:version];
-      GLenum format = [self.pixelFormat formatForVersion:version];
+      GLenum internalFormat = self.pixelFormat.textureInternalFormat;
+      GLenum precision = self.pixelFormat.precision;
+      GLenum format = self.pixelFormat.format;
 
       for (Matrices::size_type i = 0; i < images.size(); ++i) {
         glTexImage2D(GL_TEXTURE_2D, (GLint)i, internalFormat, images[i].cols, images[i].rows, 0,
@@ -141,10 +135,9 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 
 - (void)allocateMemoryForAllLevels {
   [self writeWithBlock:^{
-    LTGLVersion version = self.context.version;
-    GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
-    GLenum precision = [self.pixelFormat precisionForVersion:version];
-    GLenum format = [self.pixelFormat formatForVersion:version];
+    GLenum internalFormat = self.pixelFormat.textureInternalFormat;
+    GLenum precision = self.pixelFormat.precision;
+    GLenum format = self.pixelFormat.format;
     CGSize size = self.size;
 
     for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
@@ -219,8 +212,8 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     // per row % 4 != 0.
     context.packAlignment = 1;
 
-    GLenum format = [readingPixelFormat formatForVersion:context.version];
-    GLenum precision = [readingPixelFormat precisionForVersion:context.version];
+    GLenum format = readingPixelFormat.format;
+    GLenum precision = readingPixelFormat.precision;
 
     // Read pixels into the mutable data, according to the texture precision.
     glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
@@ -268,9 +261,9 @@ static void LTVerifyMipmapImages(const Matrices &images) {
       // per row % 4 != 0.
       context.unpackAlignment = 1;
 
-      GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:context.version];
-      GLenum precision = [self.pixelFormat precisionForVersion:context.version];
-      GLenum format = [self.pixelFormat formatForVersion:context.version];
+      GLenum internalFormat = self.pixelFormat.textureInternalFormat;
+      GLenum precision = self.pixelFormat.precision;
+      GLenum format = self.pixelFormat.format;
 
       // If the rect occupies the entire image, use glTexImage2D, otherwise use glTexSubImage2D.
       if (CGRectEqualToRect(rect, CGRectMake(0, 0, self.size.width, self.size.height))) {
@@ -394,8 +387,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     // GL_HALF_FLOAT is only supported on device.
     GLint type;
     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
-    if ((self.context.version == LTGLVersion2 && type == GL_HALF_FLOAT_OES) ||
-        (self.context.version == LTGLVersion3 && type == GL_HALF_FLOAT)) {
+    if (type == GL_HALF_FLOAT) {
       return CV_16F;
     } else {
       return CV_32F;
@@ -449,11 +441,6 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     case LTGLPixelComponentsR:
     case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
-      if (self.context.supportsRGTextures) {
-        return [self matType];
-      } else {
-        return CV_MAKETYPE(CV_MAT_DEPTH([self matType]), 4);
-      }
     case LTGLPixelComponentsRGBA:
       return [self matType];
   }

@@ -130,12 +130,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)verifyPixelFormat:(LTGLPixelFormat *)pixelFormat {
   LTParameterAssert(pixelFormat);
 
-  LTGLVersion version = self.context.version;
-  LTParameterAssert([pixelFormat formatForVersion:version] != LTGLInvalidEnum,
+  LTParameterAssert(pixelFormat.format != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL format", pixelFormat);
-  LTParameterAssert([pixelFormat textureInternalFormatForVersion:version] != LTGLInvalidEnum,
+  LTParameterAssert(pixelFormat.textureInternalFormat != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL internal format", pixelFormat);
-  LTParameterAssert([pixelFormat precisionForVersion:version] != LTGLInvalidEnum,
+  LTParameterAssert(pixelFormat.precision != LTGLInvalidEnum,
                     @"Pixel format %@ doesn't have a matching GL precision", pixelFormat);
 }
 
@@ -644,11 +643,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   [self bindAndExecute:^{
-    [self.context executeForOpenGLES2:^{
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL_APPLE, maxMipmapLevel);
-    } openGLES3:^{
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, maxMipmapLevel);
-    }];
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, maxMipmapLevel);
   }];
 
   _maxMipmapLevel = maxMipmapLevel;

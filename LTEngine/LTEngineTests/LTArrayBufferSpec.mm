@@ -26,8 +26,6 @@ static NSString * const kLTArrayBufferInitializationExamples =
 
 static NSString * const kLTArrayBufferModificationExamples = @"LTArrayBufferModification";
 
-static NSString * const kLTArrayBufferExamples = @"LTArrayBufferExamples";
-
 sharedExamplesFor(kLTArrayBufferInitializationExamples, ^(NSDictionary *dict) {
   it(@"should add initial data with a single buffer", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
@@ -103,226 +101,215 @@ sharedExamplesFor(kLTArrayBufferModificationExamples, ^(NSDictionary *dict) {
   });
 });
 
-sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
-  beforeEach(^{
-    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
-    [LTGLContext setCurrentContext:context];
+it(@"should set properties after initialization", ^{
+  LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                        usage:LTArrayBufferUsageStaticDraw];
+
+  expect(buffer.type).to.equal(LTArrayBufferTypeElement);
+  expect(buffer.usage).to.equal(LTArrayBufferUsageStaticDraw);
+  expect(buffer.size).to.equal(0);
+});
+
+context(@"binding", ^{
+  __block LTArrayBuffer *buffer;
+
+  context(@"element array", ^{
+    beforeEach(^{
+      buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                             usage:LTArrayBufferUsageStaticDraw];
+    });
+
+    afterEach(^{
+      buffer = nil;
+    });
+
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{
+        kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+        kLTResourceExamplesOpenGLParameterName: @GL_ELEMENT_ARRAY_BUFFER_BINDING,
+        kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
+      };
+    });
   });
 
-  it(@"should set properties after initialization", ^{
-    LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+  context(@"generic array", ^{
+    beforeEach(^{
+      buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                             usage:LTArrayBufferUsageStaticDraw];
+    });
+
+    afterEach(^{
+      buffer = nil;
+    });
+
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{
+        kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+        kLTResourceExamplesOpenGLParameterName: @GL_ARRAY_BUFFER_BINDING,
+        kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
+      };
+    });
+  });
+
+  it(@"should conform binding scope of bindAndExecute", ^{
+    LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
                                                           usage:LTArrayBufferUsageStaticDraw];
 
-    expect(buffer.type).to.equal(LTArrayBufferTypeElement);
-    expect(buffer.usage).to.equal(LTArrayBufferUsageStaticDraw);
-    expect(buffer.size).to.equal(0);
+    __block GLint boundBuffer;
+    [buffer bindAndExecute:^{
+      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
+      expect(boundBuffer).to.equal(buffer.name);
+    }];
+
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
+    expect(boundBuffer).to.equal(0);
   });
 
-  context(@"binding", ^{
+  context(@"updating data", ^{
     __block LTArrayBuffer *buffer;
+    __block NSData *data;
+    __block NSData *reversedData;
+    __block NSData *otherData;
 
-    context(@"element array", ^{
-      beforeEach(^{
-        buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
-                                               usage:LTArrayBufferUsageStaticDraw];
-      });
-
-      afterEach(^{
-        buffer = nil;
-      });
-
-      itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{
-          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
-          kLTResourceExamplesOpenGLParameterName: @GL_ELEMENT_ARRAY_BUFFER_BINDING,
-          kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
-        };
-      });
+    beforeAll(^{
+      data = [@"0123456789" dataUsingEncoding:NSUTF8StringEncoding];
+      reversedData = [@"9876543210" dataUsingEncoding:NSUTF8StringEncoding];
+      otherData = [@"my_data_foo_bar" dataUsingEncoding:NSUTF8StringEncoding];
     });
 
     context(@"generic array", ^{
-      beforeEach(^{
-        buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                               usage:LTArrayBufferUsageStaticDraw];
+      context(@"static buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageStaticDraw];
+        });
+
+        afterEach(^{
+          buffer = nil;
+        });
+
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
+
+        it(@"should not allow second update", ^{
+          [buffer setData:data];
+
+          expect(^{
+            NSData *nonIdenticalData = [data mutableCopy];
+            [buffer setData:nonIdenticalData];
+          }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
+        });
       });
 
-      afterEach(^{
-        buffer = nil;
+      context(@"dynamic buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageDynamicDraw];
+        });
+
+        afterEach(^{
+          buffer = nil;
+        });
+
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
+
+        itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
+          return @{@"buffer": buffer, @"data": data,
+                   @"reversedData": reversedData, @"otherData": otherData};
+        });
       });
 
-      itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{
-          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
-          kLTResourceExamplesOpenGLParameterName: @GL_ARRAY_BUFFER_BINDING,
-          kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
-        };
+      context(@"stream buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
+                                                 usage:LTArrayBufferUsageStreamDraw];
+        });
+
+        afterEach(^{
+          buffer = nil;
+        });
+
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
+
+        itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
+          return @{@"buffer": buffer, @"data": data,
+                   @"reversedData": reversedData, @"otherData": otherData};
+        });
       });
     });
 
-    it(@"should conform binding scope of bindAndExecute", ^{
-      LTArrayBuffer *buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                            usage:LTArrayBufferUsageStaticDraw];
-
-      __block GLint boundBuffer;
-      [buffer bindAndExecute:^{
-        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
-        expect(boundBuffer).to.equal(buffer.name);
-      }];
-
-      glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
-      expect(boundBuffer).to.equal(0);
-    });
-
-    context(@"updating data", ^{
-      __block LTArrayBuffer *buffer;
-      __block NSData *data;
-      __block NSData *reversedData;
-      __block NSData *otherData;
-
-      beforeAll(^{
-        data = [@"0123456789" dataUsingEncoding:NSUTF8StringEncoding];
-        reversedData = [@"9876543210" dataUsingEncoding:NSUTF8StringEncoding];
-        otherData = [@"my_data_foo_bar" dataUsingEncoding:NSUTF8StringEncoding];
-      });
-
-      context(@"generic array", ^{
-        context(@"static buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                   usage:LTArrayBufferUsageStaticDraw];
-          });
-
-          afterEach(^{
-            buffer = nil;
-          });
-
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
-
-          it(@"should not allow second update", ^{
-            [buffer setData:data];
-
-            expect(^{
-              NSData *nonIdenticalData = [data mutableCopy];
-              [buffer setData:nonIdenticalData];
-            }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
-          });
+    context(@"element array", ^{
+      context(@"static buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageStaticDraw];
         });
 
-        context(@"dynamic buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                   usage:LTArrayBufferUsageDynamicDraw];
-          });
-
-          afterEach(^{
-            buffer = nil;
-          });
-
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
-
-          itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
-            return @{@"buffer": buffer, @"data": data,
-                     @"reversedData": reversedData, @"otherData": otherData};
-          });
+        afterEach(^{
+          buffer = nil;
         });
 
-        context(@"stream buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
-                                                   usage:LTArrayBufferUsageStreamDraw];
-          });
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
 
-          afterEach(^{
-            buffer = nil;
-          });
+        it(@"should not allow second update", ^{
+          [buffer setData:data];
 
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
-
-          itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
-            return @{@"buffer": buffer, @"data": data,
-                     @"reversedData": reversedData, @"otherData": otherData};
-          });
+          expect(^{
+            NSData *nonIdenticalData = [data mutableCopy];
+            [buffer setData:nonIdenticalData];
+          }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
         });
       });
 
-      context(@"element array", ^{
-        context(@"static buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
-                                                   usage:LTArrayBufferUsageStaticDraw];
-          });
-
-          afterEach(^{
-            buffer = nil;
-          });
-
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
-
-          it(@"should not allow second update", ^{
-            [buffer setData:data];
-
-            expect(^{
-              NSData *nonIdenticalData = [data mutableCopy];
-              [buffer setData:nonIdenticalData];
-            }).to.raise(kLTArrayBufferDisallowsStaticBufferUpdateException);
-          });
+      context(@"dynamic buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageDynamicDraw];
         });
 
-        context(@"dynamic buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
-                                                   usage:LTArrayBufferUsageDynamicDraw];
-          });
-
-          afterEach(^{
-            buffer = nil;
-          });
-
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
-
-          itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
-            return @{@"buffer": buffer, @"data": data,
-                     @"reversedData": reversedData, @"otherData": otherData};
-          });
+        afterEach(^{
+          buffer = nil;
         });
 
-        context(@"stream buffer", ^{
-          beforeEach(^{
-            buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
-                                                   usage:LTArrayBufferUsageStreamDraw];
-          });
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
 
-          afterEach(^{
-            buffer = nil;
-          });
+        itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
+          return @{@"buffer": buffer, @"data": data,
+                   @"reversedData": reversedData, @"otherData": otherData};
+        });
+      });
 
-          itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
-            return @{@"buffer": buffer, @"data": data};
-          });
+      context(@"stream buffer", ^{
+        beforeEach(^{
+          buffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
+                                                 usage:LTArrayBufferUsageStreamDraw];
+        });
 
-          itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
-            return @{@"buffer": buffer, @"data": data,
-                     @"reversedData": reversedData, @"otherData": otherData};
-          });
+        afterEach(^{
+          buffer = nil;
+        });
+
+        itShouldBehaveLike(kLTArrayBufferInitializationExamples, ^{
+          return @{@"buffer": buffer, @"data": data};
+        });
+
+        itShouldBehaveLike(kLTArrayBufferModificationExamples, ^{
+          return @{@"buffer": buffer, @"data": data,
+                   @"reversedData": reversedData, @"otherData": otherData};
         });
       });
     });
   });
 });
-
-itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion2)});
-itShouldBehaveLike(kLTArrayBufferExamples, @{@"version": @(LTGLVersion3)});
 
 context(@"caching", ^{
   __block NSData *data;

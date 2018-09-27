@@ -87,8 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)allocateRenderbufferStorageWithSize:(CGSize)size {
   [self bindAndExecute:^{
-    auto contextVersion = self.context.version;
-    auto internalFormat = [self.pixelFormat renderbufferInternalFormatForVersion:contextVersion];
+    auto internalFormat = self.pixelFormat.renderbufferInternalFormat;
     glRenderbufferStorage(GL_RENDERBUFFER, internalFormat, size.width, size.height);
     LTGLCheckDbg(@"Error when allocating renderbuffer storage with size: %@, format: %@",
                  NSStringFromCGSize(size), self.pixelFormat);
@@ -101,8 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT, &internalFormat);
   }];
 
-  _pixelFormat = [[LTGLPixelFormat alloc]
-                  initWithRenderbufferInternalFormat:internalFormat version:self.context.version];
+  _pixelFormat = [[LTGLPixelFormat alloc] initWithRenderbufferInternalFormat:internalFormat];
 }
 
 - (void)dealloc {

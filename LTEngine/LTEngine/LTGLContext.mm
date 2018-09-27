@@ -118,37 +118,17 @@ typedef struct {
 }
 
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup {
-  return [self initWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]
-                      targetQueue:dispatch_get_main_queue()];
+  return [self initWithSharegroup:sharegroup targetQueue:dispatch_get_main_queue()];
 }
 
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                       targetQueue:(dispatch_queue_t)targetQueue {
-  return [self initWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]
-                      targetQueue:targetQueue];
-}
-
-- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                           version:(LTGLVersion)version {
-  return [self initWithSharegroup:sharegroup versions:@[@(version)]
-                      targetQueue:dispatch_get_main_queue()];
-}
-
-- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                          versions:(NSArray<NSNumber *> *)versions
                        targetQueue:(dispatch_queue_t)targetQueue {
   if (self = [super init]) {
-    for (NSNumber *version in versions) {
-      EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
-      if (sharegroup) {
-        _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
-      } else {
-        _context = [[EAGLContext alloc] initWithAPI:api];
-      }
-
-      if (_context) {
-        break;
-      }
+    if (sharegroup) {
+      _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3
+                                       sharegroup:sharegroup];
+    } else {
+      _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
     }
     LTAssert(self.context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
 
@@ -232,17 +212,6 @@ typedef struct {
 
 - (BOOL)isSetAsCurrentContext {
   return [[self class] currentContext] == self;
-}
-
-- (LTGLVersion)version {
-  switch (self.context.API) {
-    case kEAGLRenderingAPIOpenGLES2:
-      return LTGLVersion2;
-    case kEAGLRenderingAPIOpenGLES3:
-      return LTGLVersion3;
-    default:
-      LTAssert(NO, @"Unknown API version being used: %lu", (unsigned long)self.context.API);
-  }
 }
 
 #pragma mark -
@@ -369,21 +338,6 @@ typedef struct {
   execute(self);
   [self setCurrentStateFromValues:self.contextStack.top()];
   self.contextStack.pop();
-}
-
-- (void)executeForOpenGLES2:(NS_NOESCAPE LTVoidBlock)openGLES2
-                  openGLES3:(NS_NOESCAPE LTVoidBlock)openGLES3 {
-  LTParameterAssert(openGLES2);
-  LTParameterAssert(openGLES3);
-
-  switch (self.version) {
-    case LTGLVersion2:
-      openGLES2();
-      break;
-    case LTGLVersion3:
-      openGLES3();
-      break;
-  }
 }
 
 - (void)executeAsyncBlock:(LTVoidBlock)block {
@@ -703,11 +657,6 @@ typedef struct {
 
 - (BOOL)canRenderToFloatColorBuffers {
   return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_float"];
-}
-
-- (BOOL)supportsRGTextures {
-  return self.version == LTGLVersion3 ||
-      [self.supportedExtensions containsObject:@"GL_EXT_texture_rg"];
 }
 
 @end
