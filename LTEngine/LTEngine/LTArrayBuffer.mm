@@ -144,12 +144,7 @@
   [self bindAndExecute:^{
     // This is the only way to read a buffer object, since OpenGL ES doesn't support the
     // \c GL_READ_ONLY flag with \c glMapBuffer().
-    __block GLvoid *mappedBuffer;
-    [self.context executeForOpenGLES2:^{
-      mappedBuffer = glMapBufferRangeEXT(self.type, 0, self.size, GL_MAP_READ_BIT_EXT);
-    } openGLES3:^{
-      mappedBuffer = glMapBufferRange(self.type, 0, self.size, GL_MAP_READ_BIT);
-    }];
+    GLvoid *mappedBuffer = glMapBufferRange(self.type, 0, self.size, GL_MAP_READ_BIT);
     if (!mappedBuffer) {
       // OpenGL's documentation says: "If an error occurs, glMapBufferRange returns a NULL
       // pointer.". Throwing another exception for safety.
@@ -181,13 +176,8 @@
 }
 
 - (void)updateBufferWithMapping:(NSArray<NSData *> *)dataArray {
-  __block char *mappedBuffer;
-  [self.context executeForOpenGLES2:^{
-    mappedBuffer = (char *)glMapBufferOES(self.type, GL_WRITE_ONLY_OES);
-  } openGLES3:^{
-    mappedBuffer = (char *)glMapBufferRange(self.type, 0, self.size,
-                                            GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
-  }];
+  char *mappedBuffer = (char *)glMapBufferRange(self.type, 0, self.size,
+                                                GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
   if (!mappedBuffer) {
     // OpenGL's documentation says: "If an error is generated, glMapBuffer returns NULL, and
     // glUnmapBuffer returns GL_FALSE.". Throwing another exception for safety.
@@ -222,12 +212,7 @@
 }
 
 - (void)unmapBuffer {
-  __block GLboolean unmapped;
-  [self.context executeForOpenGLES2:^{
-    unmapped = glUnmapBufferOES(self.type);
-  } openGLES3:^{
-    unmapped = glUnmapBuffer(self.type);
-  }];
+  GLboolean unmapped = glUnmapBuffer(self.type);
   if (!unmapped) {
     // From OpenGL's documentation: "...In such situations, GL_FALSE is returned and the data store
     // contents are undefined. An application must detect this rare condition and reinitialize the

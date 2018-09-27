@@ -3,8 +3,6 @@
 
 #import <OpenGLES/ES2/glext.h>
 
-#import "LTGLEnums.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class LTFboPool, LTGLContext, LTProgramPool;
@@ -92,6 +90,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// dispatch queue which serves as a target queue to perform tasks on this context. This class
 /// guarantees that \c LTGPUResource deallocation will occur on the right dispatch queue and
 /// context.
+///
+/// @note this object creates an underlying \c EAGLContext with GLES API version 3.0. Other versions
+/// are not supported.
 @interface LTGLContext : NSObject
 
 /// Returns the current rendering context for the calling thread.
@@ -101,39 +102,25 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// \c context is \c nil, the rendering context will be unbound from any context.
 + (void)setCurrentContext:(nullable LTGLContext *)context;
 
-/// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup. On supported
-/// devices, the API version will be ES3, otherwise it will be ES2. The \c targetQueue will be set
-/// to main dispatch queue.
+/// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup. The \c targetQueue
+/// will be set to main dispatch queue.
 - (instancetype)init;
 
-/// Initializes a context with a new \c EAGLContext and the given \c sharegroup. On supported
-/// devices, the API version will be ES3, otherwise it will be ES2. The \c targetQueue will be set
-/// to main dispatch queue.
+/// Initializes a context with a new \c EAGLContext and the given \c sharegroup. The \c targetQueue
+/// will be set to main dispatch queue.
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup;
 
-/// Initializes with the given \c sharegroup and the given \c targetQueue. On supported devices, the
-/// API version will be ES3, otherwise it will be ES2. The context is bound to the \c targetQueue,
-/// which will be used to dispatch all context's executed tasks.
+/// Initializes with the given \c sharegroup and the given \c targetQueue. The context is bound to
+/// the \c targetQueue, which will be used to dispatch all context's executed tasks.
 ///
 /// @note if in-order task's execution is required, i.e. the next task get executed only after the
 /// previous has completed, then the \c targetQueue must be a serial dispatch queue.
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                        targetQueue:(dispatch_queue_t)targetQueue;
 
-/// Initializes a context with a new \c EAGLContext of version \c version using the given \c
-/// sharegroup. If \c version is not supported, this initializer will return \c nil. The
-/// \c targetQueue will be set to main dispatch queue.
-- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                           version:(LTGLVersion)version;
-
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
 - (void)executeAndPreserveState:(NS_NOESCAPE LTGLContextBlock)execute;
-
-/// Executes either \c openGLES2 or \c openGLES3, depending on the current API version. Both blocks
-/// must not be \c nil.
-- (void)executeForOpenGLES2:(NS_NOESCAPE LTVoidBlock)openGLES2
-                  openGLES3:(NS_NOESCAPE LTVoidBlock)openGLES3;
 
 /// Switches to the receiver's context, if needed, and asynchronously executes the given \c block on
 /// its dispatch \c targetQueue. Restores the original context afterwards.
@@ -160,9 +147,6 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// them from being deallocated. Because of that, one should avoid storing a strong reference to the
 /// array or to one of the resources inside it.
 @property (readonly, nonatomic) NSArray<id<LTGPUResource>> *resources;
-
-/// Current version of this context.
-@property (readonly, nonatomic) LTGLVersion version;
 
 /// Underlying \c EAGLContext.
 @property (readonly, nonatomic) EAGLContext *context;
@@ -258,9 +242,6 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// \c YES if rednering to float color buffers is supported.
 @property (readonly, nonatomic) BOOL canRenderToFloatColorBuffers;
-
-/// \c YES if creating and rendering \c RED or \c RG textures is supported.
-@property (readonly, nonatomic) BOOL supportsRGTextures;
 
 @end
 

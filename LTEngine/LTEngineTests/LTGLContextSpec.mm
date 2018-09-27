@@ -125,18 +125,6 @@ context(@"initialization", ^{
     LTGLContext *contextWithNilSharegrop = [[LTGLContext alloc] initWithSharegroup:nil];
     expect(contextWithNilSharegrop.context).toNot.beNil();
   });
-
-  it(@"should initialize with API version 2", ^{
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion2];
-    expect(context.version).to.equal(LTGLVersion2);
-    expect(context.context.API).to.equal(kEAGLRenderingAPIOpenGLES2);
-  });
-
-  it(@"should initialize with API version 3", ^{
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion3];
-    expect(context.version).to.equal(LTGLVersion3);
-    expect(context.context.API).to.equal(kEAGLRenderingAPIOpenGLES3);
-  });
 });
 
 context(@"setting context", ^{
@@ -513,38 +501,6 @@ context(@"execution", ^{
 
     glGetFloatv(GL_DEPTH_CLEAR_VALUE, &clearValue);
     expect(clearValue).to.equal(kValue1);
-  });
-});
-
-context(@"OpenGL ES version execution", ^{
-  it(@"should execute version 2 block if version 2 is set", ^{
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion2];
-
-    __block BOOL version2 = NO;
-    __block BOOL version3 = NO;
-    [context executeForOpenGLES2:^{
-      version2 = YES;
-    } openGLES3:^{
-      version3 = YES;
-    }];
-
-    expect(version2).to.beTruthy();
-    expect(version3).to.beFalsy();
-  });
-
-  it(@"should execute version 2 block if version 3 is set", ^{
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion3];
-
-    __block BOOL version2 = NO;
-    __block BOOL version3 = NO;
-    [context executeForOpenGLES2:^{
-      version2 = YES;
-    } openGLES3:^{
-      version3 = YES;
-    }];
-
-    expect(version2).to.beFalsy();
-    expect(version3).to.beTruthy();
   });
 });
 

@@ -266,11 +266,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // We don't need the \c LTEAGLView buffers for the next draw, so hint that they can be discarded.
   // (Since we clear the buffers at the beginning of each draw cycle).
   const std::array<GLenum, 2> discards{{GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT}};
-  [self.context executeForOpenGLES2:^{
-    glDiscardFramebufferEXT(GL_FRAMEBUFFER, discards.size(), discards.data());
-  } openGLES3:^{
-    glInvalidateFramebuffer(GL_FRAMEBUFFER, discards.size(), discards.data());
-  }];
+  glInvalidateFramebuffer(GL_FRAMEBUFFER, discards.size(), discards.data());
 }
 
 - (void)informAboutFramebufferChangesIfRequired {

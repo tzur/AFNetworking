@@ -97,11 +97,7 @@
     [self validateElements:elements];
     [self setupWithElements:elements];
 
-    [self.context executeForOpenGLES2:^{
-      glGenVertexArraysOES(1, &self->_name);
-    } openGLES3:^{
-      glGenVertexArrays(1, &self->_name);
-    }];
+    glGenVertexArrays(1, &_name);
     LTGLCheck(@"Failed generating vertex array");
     proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
     [self.context addResource:nn((typeof(self))proxy)];
@@ -120,11 +116,7 @@
 
   [self.context removeResource:self];
   [self unbind];
-  [self.context executeForOpenGLES2:^{
-    glDeleteVertexArraysOES(1, &self->_name);
-  } openGLES3:^{
-    glDeleteVertexArrays(1, &self->_name);
-  }];
+  glDeleteVertexArrays(1, &_name);
   LTGLCheck(@"Failed deleting vertex array");
   _name = 0;
 }
@@ -180,13 +172,8 @@
     return;
   }
 
-  [self.context executeForOpenGLES2:^{
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &self->_previousVertexArray);
-    glBindVertexArrayOES(self.name);
-  } openGLES3:^{
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &self->_previousVertexArray);
-    glBindVertexArray(self.name);
-  }];
+  glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &_previousVertexArray);
+  glBindVertexArray(self.name);
 
   self.bound = YES;
 }
@@ -196,11 +183,7 @@
     return;
   }
 
-  [self.context executeForOpenGLES2:^{
-    glBindVertexArrayOES(self.previousVertexArray);
-  } openGLES3:^{
-    glBindVertexArray(self.previousVertexArray);
-  }];
+  glBindVertexArray(self.previousVertexArray);
   self.previousVertexArray = 0;
 
   self.bound = NO;

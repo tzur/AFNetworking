@@ -149,254 +149,230 @@ SpecEnd
 
 SpecBegin(LTVertexArray)
 
-static NSString * const kLTVertexArrayExamples = @"LTVertexArrayExamples";
-
-sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
-  beforeEach(^{
-    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
-    [LTGLContext setCurrentContext:context];
+context(@"initialization", ^{
+  it(@"should fail initializing with empty attribute", ^{
+    expect(^{
+      __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet set]];
+    }).to.raise(NSInvalidArgumentException);
   });
 
-  context(@"initialization", ^{
-    it(@"should fail initializing with empty attribute", ^{
-      expect(^{
-        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet set]];
-      }).to.raise(NSInvalidArgumentException);
-    });
+  it(@"should fail initializing with elements with identical gpu struct names", ^{
+    LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+    NSDictionary<NSString *, NSString *> *attributeMap =
+        @{@"anotherAttribute": @"intensity"};
+    LTVertexArrayElement *anotherElement =
+        [[LTVertexArrayElement alloc] initWithStructName:element.gpuStruct.name
+                                             arrayBuffer:LTDummyArrayBuffer()
+                                            attributeMap:attributeMap];
+    NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
 
-    it(@"should fail initializing with elements with identical gpu struct names", ^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      NSDictionary<NSString *, NSString *> *attributeMap =
-          @{@"anotherAttribute": @"intensity"};
-      LTVertexArrayElement *anotherElement =
-          [[LTVertexArrayElement alloc] initWithStructName:element.gpuStruct.name
-                                               arrayBuffer:LTDummyArrayBuffer()
-                                              attributeMap:attributeMap];
-      NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
-
-      expect(^{
-        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should fail initializing with elements with overlapping attributes", ^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      LTVertexArrayElement *anotherElement =
-          [[LTVertexArrayElement alloc] initWithStructName:@"AnotherSingleFieldStruct"
-                                               arrayBuffer:LTDummyArrayBuffer()
-                                              attributeMap:@{@"intensity": @"color"}];
-      NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
-
-      expect(^{
-        __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
-      }).to.raise(NSInvalidArgumentException);
-    });
+    expect(^{
+      __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
+    }).to.raise(NSInvalidArgumentException);
   });
 
-  context(@"binding", ^{
-    __block LTVertexArray *vertexArray;
+  it(@"should fail initializing with elements with overlapping attributes", ^{
+    LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+    LTVertexArrayElement *anotherElement =
+        [[LTVertexArrayElement alloc] initWithStructName:@"AnotherSingleFieldStruct"
+                                             arrayBuffer:LTDummyArrayBuffer()
+                                            attributeMap:@{@"intensity": @"color"}];
+    NSSet<LTVertexArrayElement *> *elements = [NSSet setWithArray:@[element, anotherElement]];
 
-    beforeEach(^{
-      LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
-      vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
-    });
-
-    afterEach(^{
-      vertexArray = nil;
-    });
-
-    itShouldBehaveLike(kLTResourceExamples, ^{
-      __block NSDictionary *data;
-      [[LTGLContext currentContext] executeForOpenGLES2:^{
-        data = @{
-          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
-          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING_OES,
-          kLTResourceExamplesIsResourceFunction:
-            [NSValue valueWithPointer:(const void *)glIsVertexArray]
-        };
-      } openGLES3:^{
-        data = @{
-          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
-          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING,
-          kLTResourceExamplesIsResourceFunction:
-              [NSValue valueWithPointer:(const void *)glIsVertexArray]
-        };
-      }];
-      return data;
-    });
-  });
-
-  context(@"retrieving elements", ^{
-    __block LTVertexArray *vertexArray;
-    __block LTVertexArrayElement *element;
-
-    beforeEach(^{
-      element = LTArrayElementForSingleFieldsStruct();
-      vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
-    });
-
-    it(@"should retrieve element with correct struct name", ^{
-      expect(vertexArray[@"SingleFieldStruct"]).to.equal(element);
-    });
-
-    it(@"should return nil with invalid struct name", ^{
-      expect(vertexArray[@"Foo"]).to.beNil();
-    });
-
-    it(@"should retrieve element list", ^{
-      expect(vertexArray.elements)
-          .to.equal([NSSet setWithObject:vertexArray[@"SingleFieldStruct"]]);
-    });
-  });
-
-  context(@"element count", ^{
-    const NSUInteger kElementCount = 4;
-
-    __block LTVertexArray *vertexArray;
-
-    beforeEach(^{
-      vertexArray = LTVertexArrayWithTwoStructs();
-    });
-
-    afterEach(^{
-      vertexArray = nil;
-    });
-
-    it(@"should return correct element count", ^{
-      NSMutableData *singleFieldData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct)];
-      [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
-
-      NSMutableData *multipleFieldsData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
-      [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
-
-      expect(vertexArray.count).to.equal(kElementCount);
-    });
-
-    it(@"should raise when array buffer size is not aligned with struct size", ^{
-      NSMutableData *singleFieldData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct) - 1];
-      [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
-
-      NSMutableData *multipleFieldsData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
-      [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
-
-      expect(^{
-        [vertexArray count];
-      }).to.raise(NSInternalInconsistencyException);
-    });
-
-    it(@"should raise when array buffers element count are not equal", ^{
-      NSMutableData *singleFieldData =
-          [NSMutableData dataWithLength:(kElementCount - 1) * sizeof(SingleFieldStruct)];
-      [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
-
-      NSMutableData *multipleFieldsData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
-      [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
-
-      expect(^{
-        [vertexArray count];
-      }).to.raise(NSInternalInconsistencyException);
-    });
-  });
-
-  context(@"vertex attrib configuration", ^{
-    const NSUInteger kElementCount = 4;
-    NSDictionary * const kAttributeToIndex = @{
-      @"position": @(0),
-      @"texcoord": @(1),
-      @"byteValue": @(2),
-      @"unsignedByteValue": @(3),
-      @"intensity": @(4)
-    };
-
-    __block LTVertexArray *vertexArray;
-
-    beforeEach(^{
-      vertexArray = LTVertexArrayWithTwoStructs();
-
-      NSMutableData *singleFieldData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct)];
-      [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
-
-      NSMutableData *multipleFieldsData =
-          [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
-      [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
-
-      [vertexArray attachAttributesToIndices:kAttributeToIndex];
-    });
-
-    afterEach(^{
-      vertexArray = nil;
-    });
-
-    it(@"should enable all shader attributes", ^{
-      [vertexArray bindAndExecute:^{
-        for (NSString *attribute in kAttributeToIndex) {
-          GLint vertexAttribArrayEnabled = 0;
-          glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
-                              GL_VERTEX_ATTRIB_ARRAY_ENABLED, &vertexAttribArrayEnabled);
-
-          expect(vertexAttribArrayEnabled).toNot.equal(0);
-        }
-      }];
-    });
-
-    it(@"should set correct element size", ^{
-      LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
-        ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
-         GLint arraySize = 0;
-         glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
-                             GL_VERTEX_ATTRIB_ARRAY_SIZE, &arraySize);
-
-         expect(arraySize).to.equal(field.componentCount);
-      });
-    });
-
-    it(@"should set correct type", ^{
-      LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
-        ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
-         GLint arrayStride = 0;
-         glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
-                             GL_VERTEX_ATTRIB_ARRAY_TYPE, &arrayStride);
-
-         expect(arrayStride).to.equal(field.componentType);
-      });
-    });
-
-    it(@"should set correct stride", ^{
-      LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
-        ^(NSString *attribute, LTGPUStruct *gpuStruct, LTGPUStructField *) {
-         GLint arrayStride = 0;
-         glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
-                             GL_VERTEX_ATTRIB_ARRAY_STRIDE, &arrayStride);
-
-         expect(arrayStride).to.equal(gpuStruct.size);
-      });
-    });
-
-    it(@"should correctly require or not require field normalization", ^{
-      LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
-        ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
-         GLint arrayNormalize = 0;
-
-         glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
-                             GL_VERTEX_ATTRIB_ARRAY_NORMALIZED, &arrayNormalize);
-
-          GLint expectedValue =
-              [field.name isEqualToString:@"unsignedByteValue"] ? GL_TRUE : GL_FALSE;
-
-         expect(arrayNormalize).to.equal(expectedValue);
-      });
-    });
+    expect(^{
+      __unused LTVertexArray *vertexArray = [[LTVertexArray alloc] initWithElements:elements];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 
-itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLVersion2)});
-itShouldBehaveLike(kLTVertexArrayExamples, @{@"version": @(LTGLVersion3)});
+context(@"binding", ^{
+  __block LTVertexArray *vertexArray;
+
+  beforeEach(^{
+    LTVertexArrayElement *element = LTArrayElementForSingleFieldsStruct();
+    vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
+  });
+
+  afterEach(^{
+    vertexArray = nil;
+  });
+
+  itShouldBehaveLike(kLTResourceExamples, ^{
+    return @{
+      kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
+      kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING,
+      kLTResourceExamplesIsResourceFunction:
+          [NSValue valueWithPointer:(const void *)glIsVertexArray]
+    };
+  });
+});
+
+context(@"retrieving elements", ^{
+  __block LTVertexArray *vertexArray;
+  __block LTVertexArrayElement *element;
+
+  beforeEach(^{
+    element = LTArrayElementForSingleFieldsStruct();
+    vertexArray = [[LTVertexArray alloc] initWithElements:[NSSet setWithObject:element]];
+  });
+
+  it(@"should retrieve element with correct struct name", ^{
+    expect(vertexArray[@"SingleFieldStruct"]).to.equal(element);
+  });
+
+  it(@"should return nil with invalid struct name", ^{
+    expect(vertexArray[@"Foo"]).to.beNil();
+  });
+
+  it(@"should retrieve element list", ^{
+    expect(vertexArray.elements)
+        .to.equal([NSSet setWithObject:vertexArray[@"SingleFieldStruct"]]);
+  });
+});
+
+context(@"element count", ^{
+  const NSUInteger kElementCount = 4;
+
+  __block LTVertexArray *vertexArray;
+
+  beforeEach(^{
+    vertexArray = LTVertexArrayWithTwoStructs();
+  });
+
+  afterEach(^{
+    vertexArray = nil;
+  });
+
+  it(@"should return correct element count", ^{
+    NSMutableData *singleFieldData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct)];
+    [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
+
+    NSMutableData *multipleFieldsData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
+    [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
+
+    expect(vertexArray.count).to.equal(kElementCount);
+  });
+
+  it(@"should raise when array buffer size is not aligned with struct size", ^{
+    NSMutableData *singleFieldData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct) - 1];
+    [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
+
+    NSMutableData *multipleFieldsData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
+    [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
+
+    expect(^{
+      [vertexArray count];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+  it(@"should raise when array buffers element count are not equal", ^{
+    NSMutableData *singleFieldData =
+        [NSMutableData dataWithLength:(kElementCount - 1) * sizeof(SingleFieldStruct)];
+    [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
+
+    NSMutableData *multipleFieldsData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
+    [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
+
+    expect(^{
+      [vertexArray count];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+});
+
+context(@"vertex attrib configuration", ^{
+  const NSUInteger kElementCount = 4;
+  NSDictionary * const kAttributeToIndex = @{
+    @"position": @(0),
+    @"texcoord": @(1),
+    @"byteValue": @(2),
+    @"unsignedByteValue": @(3),
+    @"intensity": @(4)
+  };
+
+  __block LTVertexArray *vertexArray;
+
+  beforeEach(^{
+    vertexArray = LTVertexArrayWithTwoStructs();
+
+    NSMutableData *singleFieldData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(SingleFieldStruct)];
+    [[vertexArray[@"SingleFieldStruct"] arrayBuffer] setData:singleFieldData];
+
+    NSMutableData *multipleFieldsData =
+        [NSMutableData dataWithLength:kElementCount * sizeof(MultipleFieldsStruct)];
+    [[vertexArray[@"MultipleFieldsStruct"] arrayBuffer] setData:multipleFieldsData];
+
+    [vertexArray attachAttributesToIndices:kAttributeToIndex];
+  });
+
+  afterEach(^{
+    vertexArray = nil;
+  });
+
+  it(@"should enable all shader attributes", ^{
+    [vertexArray bindAndExecute:^{
+      for (NSString *attribute in kAttributeToIndex) {
+        GLint vertexAttribArrayEnabled = 0;
+        glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                            GL_VERTEX_ATTRIB_ARRAY_ENABLED, &vertexAttribArrayEnabled);
+
+        expect(vertexAttribArrayEnabled).toNot.equal(0);
+      }
+    }];
+  });
+
+  it(@"should set correct element size", ^{
+    LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
+      ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
+       GLint arraySize = 0;
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_SIZE, &arraySize);
+
+       expect(arraySize).to.equal(field.componentCount);
+    });
+  });
+
+  it(@"should set correct type", ^{
+    LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
+      ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
+       GLint arrayStride = 0;
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_TYPE, &arrayStride);
+
+       expect(arrayStride).to.equal(field.componentType);
+    });
+  });
+
+  it(@"should set correct stride", ^{
+    LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
+      ^(NSString *attribute, LTGPUStruct *gpuStruct, LTGPUStructField *) {
+       GLint arrayStride = 0;
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_STRIDE, &arrayStride);
+
+       expect(arrayStride).to.equal(gpuStruct.size);
+    });
+  });
+
+  it(@"should correctly require or not require field normalization", ^{
+    LTEnumerateVertexArray(vertexArray, @[@"SingleFieldStruct", @"MultipleFieldsStruct"],
+      ^(NSString *attribute, LTGPUStruct *, LTGPUStructField *field) {
+       GLint arrayNormalize = 0;
+
+       glGetVertexAttribiv([kAttributeToIndex[attribute] unsignedIntValue],
+                           GL_VERTEX_ATTRIB_ARRAY_NORMALIZED, &arrayNormalize);
+
+        GLint expectedValue =
+            [field.name isEqualToString:@"unsignedByteValue"] ? GL_TRUE : GL_FALSE;
+
+       expect(arrayNormalize).to.equal(expectedValue);
+    });
+  });
+});
 
 SpecEnd

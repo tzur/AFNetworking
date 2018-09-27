@@ -15,137 +15,124 @@
 
 SpecBegin(LTTexture)
 
-static NSString * const kLTTextureExamples = @"LTTextureExamples";
+context(@"properties", ^{
+  it(@"will not set wrap to repeat on NPOT texture", ^{
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 3)];
+    texture.wrap = LTTextureWrapRepeat;
 
-sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
-  beforeEach(^{
-    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
-    [LTGLContext setCurrentContext:context];
+    expect(texture.wrap).toNot.equal(LTTextureWrapRepeat);
   });
 
-  context(@"properties", ^{
-    it(@"will not set wrap to repeat on NPOT texture", ^{
-      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 3)];
-      texture.wrap = LTTextureWrapRepeat;
+  it(@"will set the warp to repeat on POT texture", ^{
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
+    texture.wrap = LTTextureWrapRepeat;
 
-      expect(texture.wrap).toNot.equal(LTTextureWrapRepeat);
-    });
-
-    it(@"will set the warp to repeat on POT texture", ^{
-      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
-      texture.wrap = LTTextureWrapRepeat;
-
-      expect(texture.wrap).to.equal(LTTextureWrapRepeat);
-    });
-
-    it(@"will set min and mag filters", ^{
-      LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
-
-      texture.minFilterInterpolation = LTTextureInterpolationNearest;
-      texture.magFilterInterpolation = LTTextureInterpolationNearest;
-
-      expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationNearest);
-      expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationNearest);
-    });
+    expect(texture.wrap).to.equal(LTTextureWrapRepeat);
   });
 
-  context(@"binding and execution", ^{
-    __block LTTexture *texture;
+  it(@"will set min and mag filters", ^{
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
 
-    beforeEach(^{
-      texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
-    });
+    texture.minFilterInterpolation = LTTextureInterpolationNearest;
+    texture.magFilterInterpolation = LTTextureInterpolationNearest;
 
-    afterEach(^{
-      texture = nil;
-    });
-
-    context(@"binding", ^{
-      itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{
-          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
-          kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D,
-          kLTResourceExamplesIsResourceFunction:
-              [NSValue valueWithPointer:(const void *)glIsTexture]
-        };
-      });
-
-      it(@"should bind and unbind from the same texture unit", ^{
-        glActiveTexture(GL_TEXTURE0);
-        [texture bind];
-        glActiveTexture(GL_TEXTURE1);
-        [texture unbind];
-
-        glActiveTexture(GL_TEXTURE0);
-        GLint currentTexture;
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-        expect(currentTexture).to.equal(0);
-      });
-
-      it(@"should bind and execute block", ^{
-        __block GLint currentTexture;
-        __block BOOL didExecute = NO;
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-        expect(currentTexture).to.equal(0);
-        [texture bindAndExecute:^{
-          glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-          expect(currentTexture).toNot.equal(0);
-          didExecute = YES;
-        }];
-        expect(didExecute).to.beTruthy();
-      });
-
-      it(@"should bind to two texture units at the same time", ^{
-        glActiveTexture(GL_TEXTURE0);
-        [texture bind];
-        glActiveTexture(GL_TEXTURE1);
-        [texture bind];
-
-        GLint currentTexture;
-
-        glActiveTexture(GL_TEXTURE0);
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-        expect(currentTexture).to.equal(texture.name);
-
-        glActiveTexture(GL_TEXTURE1);
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
-        expect(currentTexture).to.equal(texture.name);
-      });
-    });
-
-    context(@"execution", ^{
-      it(@"should execute a block", ^{
-        __block BOOL didExecute = NO;
-        [texture executeAndPreserveParameters:^{
-          didExecute = YES;
-        }];
-        expect(didExecute).to.beTruthy();
-      });
-
-      it(@"should raise exception when trying to execute a nil block", ^{
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wnonnull"
-        expect(^{
-          [texture executeAndPreserveParameters:nil];
-        }).to.raise(NSInvalidArgumentException);
-  #pragma clang diagnostic pop
-      });
-
-      itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
-        [texture executeAndPreserveParameters:^{
-          texture.minFilterInterpolation = LTTextureInterpolationNearest;
-          texture.magFilterInterpolation = LTTextureInterpolationNearest;
-          texture.wrap = LTTextureWrapRepeat;
-        }];
-        return @{kLTTextureDefaultValuesTexture:
-                   [NSValue valueWithNonretainedObject:texture]};
-      });
-    });
+    expect(texture.minFilterInterpolation).to.equal(LTTextureInterpolationNearest);
+    expect(texture.magFilterInterpolation).to.equal(LTTextureInterpolationNearest);
   });
 });
 
-itShouldBehaveLike(kLTTextureExamples, @{@"version": @(LTGLVersion2)});
-itShouldBehaveLike(kLTTextureExamples, @{@"version": @(LTGLVersion3)});
+context(@"binding and execution", ^{
+  __block LTTexture *texture;
+
+  beforeEach(^{
+    texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+  });
+
+  afterEach(^{
+    texture = nil;
+  });
+
+  context(@"binding", ^{
+    itShouldBehaveLike(kLTResourceExamples, ^{
+      return @{
+        kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
+        kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D,
+        kLTResourceExamplesIsResourceFunction:
+            [NSValue valueWithPointer:(const void *)glIsTexture]
+      };
+    });
+
+    it(@"should bind and unbind from the same texture unit", ^{
+      glActiveTexture(GL_TEXTURE0);
+      [texture bind];
+      glActiveTexture(GL_TEXTURE1);
+      [texture unbind];
+
+      glActiveTexture(GL_TEXTURE0);
+      GLint currentTexture;
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(0);
+    });
+
+    it(@"should bind and execute block", ^{
+      __block GLint currentTexture;
+      __block BOOL didExecute = NO;
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(0);
+      [texture bindAndExecute:^{
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+        expect(currentTexture).toNot.equal(0);
+        didExecute = YES;
+      }];
+      expect(didExecute).to.beTruthy();
+    });
+
+    it(@"should bind to two texture units at the same time", ^{
+      glActiveTexture(GL_TEXTURE0);
+      [texture bind];
+      glActiveTexture(GL_TEXTURE1);
+      [texture bind];
+
+      GLint currentTexture;
+
+      glActiveTexture(GL_TEXTURE0);
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(texture.name);
+
+      glActiveTexture(GL_TEXTURE1);
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
+      expect(currentTexture).to.equal(texture.name);
+    });
+  });
+
+  context(@"execution", ^{
+    it(@"should execute a block", ^{
+      __block BOOL didExecute = NO;
+      [texture executeAndPreserveParameters:^{
+        didExecute = YES;
+      }];
+      expect(didExecute).to.beTruthy();
+    });
+
+    it(@"should raise exception when trying to execute a nil block", ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+      expect(^{
+        [texture executeAndPreserveParameters:nil];
+      }).to.raise(NSInvalidArgumentException);
+#pragma clang diagnostic pop
+    });
+
+    itShouldBehaveLike(kLTTextureDefaultValuesExamples, ^{
+      [texture executeAndPreserveParameters:^{
+        texture.minFilterInterpolation = LTTextureInterpolationNearest;
+        texture.magFilterInterpolation = LTTextureInterpolationNearest;
+        texture.wrap = LTTextureWrapRepeat;
+      }];
+      return @{kLTTextureDefaultValuesTexture:
+                 [NSValue valueWithNonretainedObject:texture]};
+    });
+  });
+});
 
 SpecEnd
