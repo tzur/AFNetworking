@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
   CGFloat endAlpha = CGColorGetAlpha(end.CGColor);
 
   t = std::clamp(t, 0., 1.);
-  
+
   CGFloat r = startComponent[0] + (endComponent[0] - startComponent[0]) * t;
   CGFloat g = startComponent[1] + (endComponent[1] - startComponent[1]) * t;
   CGFloat b = startComponent[2] + (endComponent[2] - startComponent[2]) * t;

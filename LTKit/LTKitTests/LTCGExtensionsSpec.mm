@@ -13,19 +13,19 @@ context(@"null values", ^{
     expect(CGPointIsNull(CGPointZero)).to.beFalsy();
     expect(CGPointIsNull(CGPointMake(INFINITY, INFINITY))).to.beFalsy();
   });
-  
+
   it(@"null point should not be equal to any point (including other null point)", ^{
     expect(CGPointEqualToPoint(CGPointNull, CGPointNull)).to.beFalsy();
     expect(CGPointEqualToPoint(CGPointNull, CGPointZero)).to.beFalsy();
     expect(CGPointEqualToPoint(CGPointNull, CGPointMake(1, 1))).to.beFalsy();
   });
-  
+
   it(@"should identify null size", ^{
     expect(CGSizeIsNull(CGSizeNull)).to.beTruthy();
     expect(CGSizeIsNull(CGSizeZero)).to.beFalsy();
     expect(CGSizeIsNull(CGSizeMake(INFINITY, INFINITY))).to.beFalsy();
   });
-  
+
   it(@"null size should not be equal to any size (including other null size)", ^{
     expect(CGSizeEqualToSize(CGSizeNull, CGSizeNull)).to.beFalsy();
     expect(CGSizeEqualToSize(CGSizeNull, CGSizeZero)).to.beFalsy();
@@ -40,7 +40,7 @@ context(@"uiedgeinsets operations", ^{
     expect(UIEdgeInsetsMake(1, 2, 3, 4) == UIEdgeInsetsMake(2, 1, 3, 4)).to.beFalsy();
     expect(UIEdgeInsetsMake(1, 2, 3, 4) != UIEdgeInsetsMake(1, 2, 4, 3)).to.beTruthy();
   });
-  
+
   it(@"arithemtic", ^{
     expect(UIEdgeInsetsMake(1, 2, 3, 4) * 2).to.equal(UIEdgeInsetsMake(2, 4, 6, 8));
     expect(0.5 * UIEdgeInsetsMake(1, 2, 3, 4)).to.equal(UIEdgeInsetsMake(0.5, 1, 1.5, 2));
@@ -54,7 +54,7 @@ context(@"cgpoint operations", ^{
     expect(CGPointIsNull(CGPointFromSize(CGSizeNull))).to.beTruthy();
     expect(CGPointFromSize(CGSizeMake(1, 2))).to.equal(CGPointMake(1, 2));
   });
-  
+
   it(@"comparison", ^{
     expect(CGPointMake(1, 2) == CGPointMake(1, 2)).to.beTruthy();
     expect(CGPointMake(1, 2) != CGPointMake(1, 2)).to.beFalsy();
@@ -65,7 +65,7 @@ context(@"cgpoint operations", ^{
     expect(CGPointMake(NAN, NAN) == CGPointMake(NAN, NAN)).to.beFalsy();
     expect(CGPointMake(NAN, NAN) != CGPointMake(NAN, NAN)).to.beTruthy();
   });
-  
+
   it(@"arithmetic", ^{
     expect(CGPointMake(1, 2) + CGPointMake(3, 4)).to.equal(CGPointMake(4, 6));
     expect(CGPointMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGPointMake(4, 6));
@@ -126,7 +126,7 @@ context(@"cgsize operations", ^{
     expect(CGSizeMakeUniform(1)).to.equal(CGSizeMake(1, 1));
     expect(CGSizeMakeUniform(-1)).to.equal(CGSizeMake(-1, -1));
   });
-  
+
   it(@"comparison", ^{
     expect(CGSizeMake(1, 2) == CGSizeMake(1, 2)).to.beTruthy();
     expect(CGSizeMake(1, 2) != CGSizeMake(1, 2)).to.beFalsy();
@@ -137,7 +137,7 @@ context(@"cgsize operations", ^{
     expect(CGSizeMake(NAN, NAN) == CGSizeMake(NAN, NAN)).to.beFalsy();
     expect(CGSizeMake(NAN, NAN) != CGSizeMake(NAN, NAN)).to.beTruthy();
   });
-  
+
   it(@"arithmetic", ^{
     expect(CGSizeMake(1, 2) + CGSizeMake(3, 4)).to.equal(CGSizeMake(4, 6));
     expect(CGSizeMake(1, 2) + 1).to.equal(CGSizeMake(2, 3));
@@ -149,7 +149,7 @@ context(@"cgsize operations", ^{
     expect(CGSizeMake(3, 4) / CGSizeMake(2, 3)).to.equal(CGSizeMake(3 / 2.0, 4 / 3.0));
     expect(CGSizeMake(3, 4) * CGSizeMake(2, 3)).to.equal(CGSizeMake(3 * 2, 4 * 3));
   });
-  
+
   it(@"min/max", ^{
     expect(std::min(CGSizeMake(1, 2))).to.equal(1);
     expect(std::min(CGSizeMake(2, 1))).to.equal(1);
@@ -186,7 +186,7 @@ context(@"cgrect operations", ^{
     expect(CGRectCenteredAt(CGPointMake(3, 4),
                             CGSizeMake(-1, -2))).to.equal(CGRectMake(3.5, 5, -1, -2));
   });
-  
+
   it(@"center", ^{
     expect(CGRectCenter(CGRectMake(1, 2, 3, 4))).to.equal(CGPointMake(2.5, 4));
   });
@@ -205,26 +205,26 @@ context(@"cgrect operations", ^{
     expect(CGRectOverlap(CGRectMake(1, 1, 1, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.25);
     expect(CGRectOverlap(CGRectMake(0, 1, 2, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.5);
   });
-  
+
   context(@"CGRectRegularGrid", ^{
     __block CGRect rect;
-    
+
     beforeEach(^{
       rect = CGRectMake(1, 2, 3, 4);
     });
-    
+
     it(@"should return the given rect if verticalCount is equal to 0", ^{
       expect(CGRectRegularGrid(rect, 2, 0) == CGRects{rect}).to.beTruthy();
     });
-    
+
     it(@"should return the given rect if horizontalCount is equal to 0", ^{
       expect(CGRectRegularGrid(rect, 0, 2) == CGRects{rect}).to.beTruthy();
     });
-    
+
     it(@"should return the correct rects for non-zero verticalCount and horizontalCount", ^{
       CGRects rects = CGRectRegularGrid(rect, 2, 4);
       CGSize size = CGSizeMake(1.5, 1);
-      
+
       expect(rects[0] == CGRectFromOriginAndSize(CGPointMake(0, 0), size)).to.beTruthy();
       expect(rects[1] == CGRectFromOriginAndSize(CGPointMake(0, 1), size)).to.beTruthy();
       expect(rects[2] == CGRectFromOriginAndSize(CGPointMake(0, 2), size)).to.beTruthy();
@@ -247,7 +247,7 @@ context(@"cgtriangle operations", ^{
     expect(triangle.b).to.equal(b);
     expect(triangle.c).to.equal(c);
   });
-  
+
   it(@"triangle edge mask make", ^{
     expect(CGTriangleEdgeMaskMake(NO, NO, NO)).to.equal(CGTriangleEdgeNone);
     expect(CGTriangleEdgeMaskMake(YES, NO, NO)).to.equal(CGTriangleEdgeAB);
@@ -280,7 +280,7 @@ context(@"rounding cgstructs", ^{
     expect(std::ceil(-1 * point)).to.equal(CGPointMake(0, 0));
     expect(std::round(-1 * point)).to.equal(CGPointMake(0, -1));
   });
-  
+
   it(@"rounding cgsizes", ^{
     const CGSize size = CGSizeMake(0.4, 0.6);
     expect(std::floor(size)).to.equal(CGSizeMake(0, 0));
@@ -331,19 +331,19 @@ context(@"scaling down cgsizes", ^{
     CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
     expect(outputSize).to.equal(CGSizeMake(10, 5));
   });
-  
+
   it(@"should scale down correctly with rounding", ^{
     CGSize inputSize = CGSizeMake(201, 100);
     CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
     expect(outputSize).to.equal(CGSizeMake(10, 5));
   });
-  
+
   it(@"should scale down, without setting any side below 1", ^{
     CGSize inputSize = CGSizeMake(100, 2);
     CGSize outputSize = CGScaleDownToDimension(inputSize, 10);
     expect(outputSize).to.equal(CGSizeMake(10, 1));
   });
-  
+
   it(@"should not scale up and return the original size", ^{
     CGSize inputSize = CGSizeMake(10, 10);
     CGSize outputSize = CGScaleDownToDimension(inputSize, 100);
@@ -358,7 +358,7 @@ context(@"fitting cgsizes", ^{
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
       expect(outputSize).to.equal(CGSizeMake(10, 5));
-      
+
       CGSize fillSize = CGSizeMake(10, 2);
       outputSize = CGSizeAspectFill(inputSize, fillSize);
       expect(outputSize).to.equal(CGSizeMake(10, 5));
@@ -413,7 +413,7 @@ context(@"fitting cgsizes", ^{
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
-      
+
       CGSize fillSize = CGSizeMake(10, 2);
       outputSize = CGSizeAspectFillWithoutRounding(inputSize, fillSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
