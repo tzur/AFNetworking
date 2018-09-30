@@ -44,6 +44,12 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
     });
   });
 
+  context(@"type", ^{
+    it(@"should return the type of the parameterized object", ^{
+      expect(constructor.type).to.equal(type);
+    });
+  });
+
   context(@"parameterized object", ^{
     it(@"should not provide parameterized object after adding insufficient number of points", ^{
       [constructor pushControlPoints:insufficientControlPoints];

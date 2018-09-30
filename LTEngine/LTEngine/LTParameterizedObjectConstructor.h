@@ -56,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// this object in the future.
 @property (readonly, nonatomic, nullable) id<LTParameterizedObject>parameterizedObject;
 
+/// Type of the factory used for spline construction.
+@property (readonly, nonatomic) LTParameterizedObjectType *type;
+
 @end
 
 NS_ASSUME_NONNULL_END

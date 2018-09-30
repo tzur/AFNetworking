@@ -50,9 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTParameterizedObjectConstructor ()
 
-/// Type of the factory used for spline construction.
-@property (readonly, nonatomic) LTParameterizedObjectType *type;
-
 /// Factory of primitive parameterized objects used as spline segments of the spline.
 @property (readonly, nonatomic) id<LTBasicParameterizedObjectFactory> factory;
 
