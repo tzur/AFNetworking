@@ -72,6 +72,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)processControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints
                preserveState:(BOOL)preserveState end:(BOOL)end;
 
+/// Number of control points already processed by this instance.
+@property (readonly, nonatomic) NSUInteger numberOfControlPoints;
+
+/// Control points already processed by this instance.
+///
+/// @important For retrieval of the number of control points, use the more efficient
+/// \c numberOfControlPoints method.
+@property (readonly, nonatomic) NSArray<LTSplineControlPoint *> *controlPoints;
+
 /// Processes the given \c model. The effect of this method is identical to creating a
 /// \c DVNSplineRenderer and performing a process sequence with the information provided by the
 /// given \c model. It is the responsibility of the user to ensure the usage of an appropriate
