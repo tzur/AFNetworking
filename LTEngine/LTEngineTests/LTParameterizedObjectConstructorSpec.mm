@@ -50,6 +50,34 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
     });
   });
 
+  context(@"number of control points", ^{
+    it(@"should provide number of control points after adding insufficient number of points", ^{
+      [constructor pushControlPoints:insufficientControlPoints];
+      expect(constructor.numberOfControlPoints).to.equal(insufficientControlPoints.count);
+    });
+
+    it(@"should provide number of control points after adding sufficient number of points", ^{
+      [constructor pushControlPoints:sufficientControlPoints];
+      expect(constructor.numberOfControlPoints).to.equal(sufficientControlPoints.count);
+    });
+  });
+
+  context(@"control points", ^{
+    it(@"should provide empty control points array initially", ^{
+      expect(constructor.controlPoints).to.equal(@[]);
+    });
+
+    it(@"should provide control points after adding insufficient number of points", ^{
+      [constructor pushControlPoints:insufficientControlPoints];
+      expect(constructor.controlPoints).to.equal(insufficientControlPoints);
+    });
+
+    it(@"should provide control points after adding sufficient number of points", ^{
+      [constructor pushControlPoints:sufficientControlPoints];
+      expect(constructor.controlPoints).to.equal(sufficientControlPoints);
+    });
+  });
+
   context(@"parameterized object", ^{
     it(@"should not provide parameterized object after adding insufficient number of points", ^{
       [constructor pushControlPoints:insufficientControlPoints];

@@ -56,6 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// this object in the future.
 @property (readonly, nonatomic, nullable) id<LTParameterizedObject>parameterizedObject;
 
+/// Number of control points currently held by this instance.
+@property (readonly, nonatomic) NSUInteger numberOfControlPoints;
+
+/// Control points held by this instance.
+///
+/// @important For retrieval of the number of control points, use the more efficient
+/// \c numberOfControlPoints method.
+@property (readonly, nonatomic) NSArray<LTSplineControlPoint *> *controlPoints;
+
 /// Type of the factory used for spline construction.
 @property (readonly, nonatomic) LTParameterizedObjectType *type;
 

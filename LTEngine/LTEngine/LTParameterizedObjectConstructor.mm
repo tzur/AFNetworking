@@ -154,6 +154,15 @@ NS_ASSUME_NONNULL_BEGIN
   return self.spline;
 }
 
+- (NSUInteger)numberOfControlPoints {
+  return self.buffer.count ?: self.spline.numberOfControlPoints;
+}
+
+- (NSArray<LTSplineControlPoint *> *)controlPoints {
+  return self.buffer.count || !self.spline.controlPoints ?
+      [self.buffer copy] : self.spline.controlPoints;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
