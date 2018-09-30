@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self.splineConstructor pushControlPoints:controlPoints];
 
   NSUInteger numberOfControlPointsToPopIfNecessary = controlPoints.count;
+  NSArray<LTSplineControlPoint *> *storedControlPoints = @[];
 
   if (!self.parameterizedObject) {
     if (!end) {
@@ -92,9 +93,10 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    LTControlPointModel *controlPointModel = [self.splineConstructor reset];
+    storedControlPoints = self.splineConstructor.controlPoints;
+    [self.splineConstructor popControlPoints:NSUIntegerMax];
 
-    if (!controlPointModel.controlPoints.count) {
+    if (!storedControlPoints.count) {
       DVNPipelineConfiguration *pipelineConfiguration = [self.pipeline currentConfiguration];
       LTAssert([pipelineConfiguration isEqual:self.sequenceStartConfiguration],
                @"Configuration %@ of pipeline should not be different than configuration at "
@@ -109,8 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
     // construct a spline but is greater than zero and the current state represents the end of a
     // control point sequence, a single point should be rendered.
     numberOfControlPointsToPopIfNecessary =
-        [self setupForRenderingOfSinglePoint:controlPointModel.controlPoints.firstObject
-                 withParameterizedObjectType:controlPointModel.type];
+        [self setupForRenderingOfSinglePoint:storedControlPoints.firstObject
+                 withParameterizedObjectType:self.splineConstructor.type];
   }
 
   if (self.firstRenderCallOfSequence) {
@@ -122,6 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (preserveState) {
     [self.splineConstructor popControlPoints:numberOfControlPointsToPopIfNecessary];
+    [self.splineConstructor pushControlPoints:storedControlPoints];
   } else if (end) {
     [self handleEnd];
   }
@@ -213,6 +216,14 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (NSUInteger)numberOfControlPoints {
+  return self.splineConstructor.numberOfControlPoints;
+}
+
+- (NSArray<LTSplineControlPoint *> *)controlPoints {
+  return self.splineConstructor.controlPoints;
+}
 
 - (id<LTParameterizedObject>)parameterizedObject {
   return self.splineConstructor.parameterizedObject;

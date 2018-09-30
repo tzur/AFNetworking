@@ -42,6 +42,86 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *values) {
     initialConfiguration = values[kDVNSplineRenderingExamplesPipelineConfiguration];
   });
 
+  context(@"control points and number of control points", ^{
+    __block DVNSplineRenderer *renderer;
+    __block LTTexture *renderTarget;
+    __block LTFbo *fbo;
+
+    beforeEach(^{
+      renderer = values[kDVNSplineRenderingExamplesRendererWithoutDelegate];
+      renderTarget = values[kDVNSplineRenderingExamplesTexture];
+      fbo = [[LTFbo alloc] initWithTexture:renderTarget];
+    });
+
+    context(@"non-state-preserving", ^{
+      context(@"without end indication", ^{
+        it(@"should provide control points after adding insufficient number of points", ^{
+          [renderer processControlPoints:insufficientControlPointsForRendering preserveState:NO
+                                     end:NO];
+          expect(renderer.controlPoints).to.equal(insufficientControlPointsForRendering);
+          expect(renderer.numberOfControlPoints)
+              .to.equal(insufficientControlPointsForRendering.count);
+        });
+
+        it(@"should provide control points after adding sufficient number of points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints preserveState:NO end:NO];
+          }];
+          expect(renderer.controlPoints).to.equal(controlPoints);
+          expect(renderer.numberOfControlPoints).to.equal(controlPoints.count);
+        });
+      });
+
+      context(@"with end indication", ^{
+        it(@"should provide control points after adding insufficient number of points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:insufficientControlPointsForRendering preserveState:NO
+                                       end:YES];
+          }];
+          expect(renderer.controlPoints).to.equal(@[]);
+          expect(renderer.numberOfControlPoints).to.equal(0);
+        });
+
+        it(@"should provide control points after adding sufficient number of points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints preserveState:NO end:YES];
+          }];
+          expect(renderer.controlPoints).to.equal(@[]);
+          expect(renderer.numberOfControlPoints).to.equal(0);
+        });
+      });
+    });
+
+    context(@"state-preserving", ^{
+      beforeEach(^{
+        [renderer processControlPoints:insufficientControlPointsForRendering preserveState:NO
+                                   end:NO];
+      });
+
+      context(@"without end indication", ^{
+        it(@"should provide control points after adding additional number of points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints preserveState:YES end:NO];
+          }];
+          expect(renderer.controlPoints).to.equal(insufficientControlPointsForRendering);
+          expect(renderer.numberOfControlPoints)
+              .to.equal(insufficientControlPointsForRendering.count);
+        });
+      });
+
+      context(@"with end indication", ^{
+        it(@"should provide control points after adding additional number of points", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:controlPoints preserveState:YES end:YES];
+          }];
+          expect(renderer.controlPoints).to.equal(insufficientControlPointsForRendering);
+          expect(renderer.numberOfControlPoints)
+              .to.equal(insufficientControlPointsForRendering.count);
+        });
+      });
+    });
+  });
+
   context(@"state-preserving processing", ^{
     __block id<LTParameterizedObject> parameterizedObject;
     __block DVNSplineRenderer *renderer;

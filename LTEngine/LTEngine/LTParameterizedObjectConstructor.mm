@@ -50,9 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTParameterizedObjectConstructor ()
 
-/// Type of the factory used for spline construction.
-@property (readonly, nonatomic) LTParameterizedObjectType *type;
-
 /// Factory of primitive parameterized objects used as spline segments of the spline.
 @property (readonly, nonatomic) id<LTBasicParameterizedObjectFactory> factory;
 
@@ -113,6 +110,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
+  if (!controlPoints.count) {
+    return;
+  }
+
   if (self.spline) {
     [self.spline pushControlPoints:controlPoints];
     return;
@@ -155,6 +156,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<LTParameterizedObject>)parameterizedObject {
   return self.spline;
+}
+
+- (NSUInteger)numberOfControlPoints {
+  return self.buffer.count ?: self.spline.numberOfControlPoints;
+}
+
+- (NSArray<LTSplineControlPoint *> *)controlPoints {
+  return self.buffer.count || !self.spline.controlPoints ?
+      [self.buffer copy] : self.spline.controlPoints;
 }
 
 @end
