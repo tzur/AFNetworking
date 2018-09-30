@@ -78,6 +78,21 @@ sharedExamplesFor(kLTParameterizedObjectConstructorExamples, ^(NSDictionary *dat
     });
   });
 
+  context(@"pushing empty control point array", ^{
+    it(@"should silently ignore empty control point arrays", ^{
+      expect(^{
+        [constructor pushControlPoints:@[]];
+      }).toNot.raiseAny();
+      expect(constructor.numberOfControlPoints).to.equal(0);
+    });
+
+    it (@"should silently ignore empty control point arrays for consecutive calls", ^{
+      [constructor pushControlPoints:sufficientControlPoints];
+      [constructor pushControlPoints:@[]];
+      expect(constructor.controlPoints).to.equal(sufficientControlPoints);
+    });
+  });
+
   context(@"parameterized object", ^{
     it(@"should not provide parameterized object after adding insufficient number of points", ^{
       [constructor pushControlPoints:insufficientControlPoints];

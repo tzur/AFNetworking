@@ -110,6 +110,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)pushControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints {
+  if (!controlPoints.count) {
+    return;
+  }
+
   if (self.spline) {
     [self.spline pushControlPoints:controlPoints];
     return;
