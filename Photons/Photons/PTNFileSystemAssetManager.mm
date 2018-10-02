@@ -128,18 +128,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSArray<NSString *> *)supportedUTIs {
-  static NSArray<NSString *> *supportedUTIs;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    supportedUTIs = [[AVURLAsset audiovisualTypes] arrayByAddingObjectsFromArray:@[
-      (NSString *)kUTTypeJPEG,
-      (NSString *)kUTTypeTIFF,
-      (NSString *)kUTTypePNG,
-      (NSString *)kUTTypeGIF,
-    ]];
-  });
-
+  static NSArray<NSString *> * const supportedUTIs =
+      [[AVURLAsset audiovisualTypes] arrayByAddingObjectsFromArray:@[
+        (NSString *)kUTTypeJPEG,
+        (NSString *)kUTTypeTIFF,
+        (NSString *)kUTTypePNG,
+        (NSString *)kUTTypeGIF,
+      ]];
   return supportedUTIs;
 }
 
