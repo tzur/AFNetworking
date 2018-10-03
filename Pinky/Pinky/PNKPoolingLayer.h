@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,7 +10,7 @@ namespace pnk {
 }
 
 /// Layer performing a pooling operation.
-@interface PNKPoolingLayer : NSObject <PNKUnaryNeuralKernel>
+@interface PNKPoolingLayer : NSObject <PNKUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs a pooling operation described by
 /// \c poolingModel. Currently supports Max and Average pooling.

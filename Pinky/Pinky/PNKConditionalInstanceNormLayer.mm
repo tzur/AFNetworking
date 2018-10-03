@@ -27,13 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKConditionalInstanceNormLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
 @synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
 
 #pragma mark -
 #pragma mark Initialization
@@ -66,13 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Normalization model shift parameters must be a multiply of the number of "
                     "input features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
                     (unsigned long)model.shift.cols);
-  _kernelWidth = 1;
-  _kernelHeight = 1;
   _inputFeatureChannels = model.inputFeatureChannels;
-  _outputFeatureChannels = model.inputFeatureChannels;
-  _strideX = 1;
-  _strideY = 1;
-  _groups = 1;
 
   _conditionsCount = model.scale.cols / model.inputFeatureChannels;
   _scaleMatrix = model.scale.reshape(0, (int)self.conditionsCount).clone();

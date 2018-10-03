@@ -1,12 +1,12 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Layer performing the elementwise SoftMax operation.
-@interface PNKSoftMaxLayer : NSObject <PNKUnaryNeuralKernel>
+@interface PNKSoftMaxLayer : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
 

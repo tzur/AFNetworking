@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ namespace pnk {
 }
 
 /// Layer performing an instance normalization operation.
-@interface PNKInstanceNormLayer : NSObject <PNKUnaryNeuralKernel>
+@interface PNKInstanceNormLayer : NSObject <PNKUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs an instance normalization operation
 /// described by \c normalizationModel followed by an activation function described by

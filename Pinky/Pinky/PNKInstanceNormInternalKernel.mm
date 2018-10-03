@@ -127,7 +127,7 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryNeuralKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer

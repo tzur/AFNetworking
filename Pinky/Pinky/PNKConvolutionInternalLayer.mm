@@ -32,13 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKConvolutionInternalLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
 @synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
               convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
@@ -77,15 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
                       @"PNKConvolutionInternalLayer class cannot perform dilated convolution. "
                       "Please use PNKDilatedConvolutionInternalLayer instead.");
   }
-  _kernelWidth = convolutionModel.kernelWidth;
-  _kernelHeight = convolutionModel.kernelHeight;
-  _inputFeatureChannels = convolutionModel.inputFeatureChannels;
-  _outputFeatureChannels = convolutionModel.outputFeatureChannels;
-  _strideX = convolutionModel.strideX;
-  _strideY = convolutionModel.strideY;
   _dilationX = convolutionModel.dilationX;
   _dilationY = convolutionModel.dilationY;
-  _groups = convolutionModel.groups;
   _padding = convolutionModel.padding;
 }
 
@@ -96,9 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   self.convolutionKernel.offset = PNKConvolutionOffset(inputImage.width, inputImage.height,
-                                                       self.kernelWidth, self.kernelHeight,
-                                                       self.dilationX, self.dilationY, self.strideX,
-                                                       self.strideY, self.padding);
+                                                       self.convolutionKernel.kernelWidth,
+                                                       self.convolutionKernel.kernelHeight,
+                                                       self.dilationX, self.dilationY,
+                                                       self.convolutionKernel.strideInPixelsX,
+                                                       self.convolutionKernel.strideInPixelsY,
+                                                       self.padding);
   if (self.activationKernel) {
     auto intermediateImage =
         [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
@@ -118,16 +108,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
   return {
     .origin = {0, 0, 0},
-    .size = PNKConvolutionInputSize(outputSize, self.kernelWidth, self.kernelHeight, self.dilationX,
-                                    self.dilationY, self.strideX, self.strideY, self.padding,
-                                    self.inputFeatureChannels)
+    .size = PNKConvolutionInputSize(outputSize, self.convolutionKernel.kernelWidth,
+                                    self.convolutionKernel.kernelHeight, self.dilationX,
+                                    self.dilationY, self.convolutionKernel.strideInPixelsX,
+                                    self.convolutionKernel.strideInPixelsY, self.padding,
+                                    self.convolutionKernel.inputFeatureChannels)
   };
 }
 
 - (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
-  return PNKConvolutionOutputSize(inputSize, self.kernelWidth, self.kernelHeight, self.dilationX,
-                                  self.dilationY, self.strideX, self.strideY, self.padding,
-                                  self.outputFeatureChannels);
+  return PNKConvolutionOutputSize(inputSize, self.convolutionKernel.kernelWidth,
+                                  self.convolutionKernel.kernelHeight, self.dilationX,
+                                  self.dilationY, self.convolutionKernel.strideInPixelsX,
+                                  self.convolutionKernel.strideInPixelsY, self.padding,
+                                  self.convolutionKernel.outputFeatureChannels);
 }
 
 @end

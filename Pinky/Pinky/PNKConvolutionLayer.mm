@@ -12,11 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PNKConvolutionLayer ()
 
 /// Underlying internal convolution layer.
-@property (readonly, nonatomic) id<PNKUnaryNeuralKernel> internalConvolutionLayer;
+@property (readonly, nonatomic) id<PNKUnaryKernel> internalConvolutionLayer;
 
 @end
 
 @implementation PNKConvolutionLayer
+
+@synthesize inputFeatureChannels = _inputFeatureChannels;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
               convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
@@ -64,38 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
   return [self.internalConvolutionLayer outputSizeForInputSize:inputSize];
-}
-
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
-
-- (NSUInteger)kernelWidth {
-  return self.internalConvolutionLayer.kernelHeight;
-}
-
-- (NSUInteger)kernelHeight {
-  return self.internalConvolutionLayer.kernelHeight;
-}
-
-- (NSUInteger)inputFeatureChannels {
-  return self.internalConvolutionLayer.inputFeatureChannels;
-}
-
-- (NSUInteger)outputFeatureChannels {
-  return self.internalConvolutionLayer.outputFeatureChannels;
-}
-
-- (NSUInteger)strideX {
-  return self.internalConvolutionLayer.strideX;
-}
-
-- (NSUInteger)strideY {
-  return self.internalConvolutionLayer.strideY;
-}
-
-- (NSUInteger)groups {
-  return self.internalConvolutionLayer.groups;
 }
 
 @end

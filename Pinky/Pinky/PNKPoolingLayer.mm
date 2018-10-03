@@ -19,13 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKPoolingLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
 @synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
                   poolingModel:(const pnk::PoolingKernelModel &)poolingModel {
@@ -40,13 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(poolingModel.padding == pnk::PaddingTypeSame ||
                     poolingModel.padding == pnk::PaddingTypeValid, @"Invalid padding type: %lu",
                     (unsigned long)poolingModel.padding);
-  _kernelWidth = poolingModel.kernelWidth;
-  _kernelHeight = poolingModel.kernelHeight;
-  _inputFeatureChannels = 0;
-  _outputFeatureChannels = 0;
-  _strideX = poolingModel.strideX;
-  _strideY = poolingModel.strideY;
-  _groups = 1;
   _padding = poolingModel.padding;
 }
 
@@ -81,10 +68,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   MTLSize inputSize = {inputImage.width, inputImage.height, inputImage.featureChannels};
-  MTLSize expectedOutputSize = PNKConvolutionOutputSize(inputSize, self.kernelWidth,
-                                                        self.kernelHeight, 1, 1, self.strideX,
-                                                        self.strideY, self.padding,
-                                                        inputImage.featureChannels);
+  MTLSize expectedOutputSize = PNKConvolutionOutputSize(inputSize, self.poolingKernel.kernelWidth,
+                                                        self.poolingKernel.kernelHeight, 1, 1,
+                                                        self.poolingKernel.strideInPixelsX,
+                                                        self.poolingKernel.strideInPixelsY,
+                                                        self.padding, inputImage.featureChannels);
   LTParameterAssert(outputImage.width == expectedOutputSize.width &&
                     outputImage.height == expectedOutputSize.height &&
                     outputImage.featureChannels == expectedOutputSize.depth,
@@ -95,8 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
                     (unsigned long)outputImage.height, (unsigned long)outputImage.featureChannels);
 
   self.poolingKernel.offset = PNKConvolutionOffset(inputImage.width, inputImage.height,
-                                                   self.kernelWidth, self.kernelHeight, 1, 1,
-                                                   self.strideX, self.strideY, self.padding);
+                                                   self.poolingKernel.kernelWidth,
+                                                   self.poolingKernel.kernelHeight, 1, 1,
+                                                   self.poolingKernel.strideInPixelsX,
+                                                   self.poolingKernel.strideInPixelsY,
+                                                   self.padding);
 
   [self.poolingKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
                            destinationImage:outputImage];
@@ -105,14 +96,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
   return {
     .origin = {0, 0, 0},
-    .size = PNKConvolutionInputSize(outputSize, self.kernelWidth, self.kernelHeight, 1, 1,
-                                    self.strideX, self.strideY, self.padding, outputSize.depth)
+    .size = PNKConvolutionInputSize(outputSize, self.poolingKernel.kernelWidth,
+                                    self.poolingKernel.kernelHeight, 1, 1,
+                                    self.poolingKernel.strideInPixelsX,
+                                    self.poolingKernel.strideInPixelsY, self.padding,
+                                    outputSize.depth)
   };
 }
 
 - (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
-  return  PNKConvolutionOutputSize(inputSize, self.kernelWidth, self.kernelHeight, 1, 1,
-                                   self.strideX, self.strideY, self.padding, inputSize.depth);
+  return  PNKConvolutionOutputSize(inputSize, self.poolingKernel.kernelHeight,
+                                   self.poolingKernel.kernelHeight, 1, 1,
+                                   self.poolingKernel.strideInPixelsX,
+                                   self.poolingKernel.strideInPixelsY, self.padding,
+                                   inputSize.depth);
 }
 
 @end
