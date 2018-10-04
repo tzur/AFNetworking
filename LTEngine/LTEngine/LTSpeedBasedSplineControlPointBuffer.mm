@@ -9,8 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTSpeedBasedSplineControlPointBuffer ()
 
-/// Control points currently buffered by this instance. Is empty in idle state or if no control
-/// points are currently buffered.
+/// Control points currently buffered by this instance. Is empty if no control points are currently
+/// buffered.
 @property (strong, nonatomic) NSArray<LTSplineControlPoint *> *bufferedControlPoints;
 
 @end
