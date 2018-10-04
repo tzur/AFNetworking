@@ -50,8 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Control points currently buffered by this instance.
 @property (readonly, nonatomic) NSArray<LTSplineControlPoint *> *bufferedControlPoints;
 
-/// Maximum speed used for determining whether an incoming control point is buffered. Is
-/// non-negative.
+/// Non-negative maximum speed, in view coordinates, used for determining whether an incoming
+/// control point is buffered.
 @property (nonatomic) CGFloat maxSpeed;
 
 /// Interval of time intervals used for determining how long an incoming control point is buffered.

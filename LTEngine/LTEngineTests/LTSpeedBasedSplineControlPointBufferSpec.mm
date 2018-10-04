@@ -5,29 +5,24 @@
 
 #import "LTSplineControlPoint+AttributeKeys.h"
 
-static NSArray<LTSplineControlPoint *> *LTFakeControlPoints(CGPoints locations,
-                                                            std::vector<NSTimeInterval> times) {
-  NSMutableArray<LTSplineControlPoint *> *controlPoints = [NSMutableArray array];
+static NSArray<LTSplineControlPoint *> *
+    LTTestControlPoints(std::vector<std::pair<CGPoint, NSTimeInterval>> values) {
+  auto controlPoints = [NSMutableArray<LTSplineControlPoint *> array];
 
-  for (CGPoints::size_type i = 0; i < locations.size(); ++i) {
-    LTSplineControlPoint *mock = OCMClassMock([LTSplineControlPoint class]);
-
-    CGPoint location = locations[i];
-    CGPoint previousLocation = i > 0 ? locations[i - 1] : CGPointNull;
-    NSTimeInterval timestamp = times[i];
-
-    OCMStub([mock timestamp]).andReturn(timestamp);
+  for (CGPoints::size_type i = 0; i < values.size(); ++i) {
+    CGPoint location = values[i].first;
+    NSTimeInterval timestamp = values[i].second;
+    auto attributes = @{[LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0};
     if (i > 0) {
-      NSTimeInterval previousTimestamp = times[i - 1];
+      CGPoint previousLocation = values[i - 1].first;
+      NSTimeInterval previousTimestamp = values[i - 1].second;
       CGFloat speed = CGPointDistance(location, previousLocation) / (timestamp - previousTimestamp);
-      auto attributes = @{[LTSplineControlPoint keyForSpeedInScreenCoordinates]: @(speed)};
-      OCMStub([mock attributes]).andReturn(attributes);
-    } else {
-      auto attributes = @{[LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0};
-      OCMStub([mock attributes]).andReturn(attributes);
+      attributes = @{[LTSplineControlPoint keyForSpeedInScreenCoordinates]: @(speed)};
     }
-    OCMStub([mock copy]).andReturn(mock);
-    [controlPoints addObject:mock];
+
+    [controlPoints addObject:[[LTSplineControlPoint alloc] initWithTimestamp:timestamp
+                                                                    location:location
+                                                                  attributes:attributes]];
   }
 
   return controlPoints;
@@ -72,7 +67,7 @@ context(@"initialization", ^{
 
 context(@"buffering", ^{
   it(@"should buffer single control point", ^{
-    NSArray<LTSplineControlPoint *> *controlPoints = LTFakeControlPoints({CGPointZero}, {7});
+    NSArray<LTSplineControlPoint *> *controlPoints = LTTestControlPoints({{CGPointZero, 7}});
     expect([buffer processAndPossiblyBufferControlPoints:controlPoints
                                                    flush:NO]).to.haveACountOf(0);
     expect(buffer.bufferedControlPoints).to.equal(controlPoints);
@@ -80,8 +75,7 @@ context(@"buffering", ^{
 
   it(@"should buffer multiple control points", ^{
     NSArray<LTSplineControlPoint *> *controlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2)},
-                            {7, 7.5, 8});
+        LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.5}, {CGPointMake(0, 2), 8}});
     expect([buffer processAndPossiblyBufferControlPoints:controlPoints
                                                    flush:NO]).to.haveACountOf(0);
     expect(buffer.bufferedControlPoints).to.equal(controlPoints);
@@ -89,7 +83,7 @@ context(@"buffering", ^{
 
   it(@"should buffer multiple control points with speed greater than maximum speed", ^{
     NSArray<LTSplineControlPoint *> *controlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1)}, {7, 7.01});
+        LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.01}});
     expect([buffer processAndPossiblyBufferControlPoints:controlPoints
                                                    flush:NO]).to.haveACountOf(0);
     expect(buffer.bufferedControlPoints).to.equal(controlPoints);
@@ -97,8 +91,8 @@ context(@"buffering", ^{
 
   it(@"should buffer control points fulfilling condition", ^{
     NSArray<LTSplineControlPoint *> *controlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2), CGPointMake(0, 3)},
-                            {7, 7.5, 8, 8.5});
+        LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.5}, {CGPointMake(0, 2), 8},
+                             {CGPointMake(0, 3), 8.5}});
     expect([buffer processAndPossiblyBufferControlPoints:controlPoints flush:NO])
         .to.equal(@[controlPoints[0]]);
     expect(buffer.bufferedControlPoints).to.equal(@[controlPoints[1], controlPoints[2],
@@ -107,8 +101,8 @@ context(@"buffering", ^{
 
   it(@"should maintain buffered control points after processing empty array", ^{
     NSArray<LTSplineControlPoint *> *controlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2), CGPointMake(0, 3)},
-                            {7, 7.5, 8, 8.5});
+        LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.5}, {CGPointMake(0, 2), 8},
+                             {CGPointMake(0, 3), 8.5}});
     [buffer processAndPossiblyBufferControlPoints:controlPoints flush:NO];
     expect(buffer.bufferedControlPoints).to.equal(@[controlPoints[1], controlPoints[2],
                                                     controlPoints[3]]);
@@ -120,8 +114,8 @@ context(@"buffering", ^{
   context(@"iterative calls", ^{
     it(@"should buffer multiple control points", ^{
       NSArray<LTSplineControlPoint *> *allControlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2), CGPointMake(0, 3),
-                             CGPointMake(0, 4)}, {7, 7.5, 8, 8.5});
+          LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.1}, {CGPointMake(0, 2), 7.2},
+                               {CGPointMake(0, 3), 7.3}, {CGPointMake(0, 4), 7.4}});
       NSArray<LTSplineControlPoint *> *controlPoints =
           [allControlPoints subarrayWithRange:NSMakeRange(0, 3)];
       expect([buffer processAndPossiblyBufferControlPoints:controlPoints flush:NO])
@@ -136,9 +130,9 @@ context(@"buffering", ^{
 
     it(@"should buffer control points fulfilling condition", ^{
       NSArray<LTSplineControlPoint *> *allControlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2), CGPointMake(0, 3),
-                             CGPointMake(0, 4), CGPointMake(0, 5)},
-                            {7, 7.1, 7.2, 9, 10, 11});
+          LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.1}, {CGPointMake(0, 2), 7.2},
+                               {CGPointMake(0, 3), 9}, {CGPointMake(0, 4), 10},
+                               {CGPointMake(0, 5), 11}});
 
       NSArray<LTSplineControlPoint *> *controlPoints =
           [allControlPoints subarrayWithRange:NSMakeRange(0, 4)];
@@ -160,8 +154,8 @@ context(@"flushing", ^{
 
   beforeEach(^{
     controlPoints =
-        LTFakeControlPoints({CGPointZero, CGPointMake(0, 1), CGPointMake(0, 2), CGPointMake(0, 3)},
-                            {7, 7.25, 7.5, 7.75});
+        LTTestControlPoints({{CGPointZero, 7}, {CGPointMake(0, 1), 7.25}, {CGPointMake(0, 2), 7.5},
+                             {CGPointMake(0, 3), 7.75}});
   });
 
   it(@"should return all provided control points upon flushing", ^{
@@ -182,7 +176,7 @@ context(@"flushing", ^{
   it(@"should return all buffered and provided control points upon flushing", ^{
     [buffer processAndPossiblyBufferControlPoints:controlPoints flush:NO];
     NSArray<LTSplineControlPoint *> *additionalControlPoints =
-        LTFakeControlPoints({CGPointMake(0, 4), CGPointMake(0, 5)}, {7.004, 7.005});
+        LTTestControlPoints({{CGPointMake(0, 4), 7.004}, {CGPointMake(0, 5), 7.005}});
     NSArray<LTSplineControlPoint *> *flushedPoints =
         [buffer processAndPossiblyBufferControlPoints:additionalControlPoints flush:YES];
     expect(flushedPoints)
