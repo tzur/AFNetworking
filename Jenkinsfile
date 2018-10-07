@@ -1,5 +1,9 @@
 #!/usr/bin/env groovy
 
+def xcodeVersion() {
+  return "Xcode10"
+}
+
 properties([
   buildDiscarder(logRotator(numToKeepStr: '30'))
 ])
@@ -89,7 +93,7 @@ def simulatorTestsStages() {
 def buildAndTestSimulatorsStage() {
   return {
     stage("Build for simulator") {
-      node("Xcode9") {
+      node(xcodeVersion()) {
         ws("${workspaceBasePath()}/Repo") {
           try {
             setCommitStatus("PENDING", env.STAGE_NAME, "Build started")
@@ -118,7 +122,7 @@ def buildAndTestSimulatorsStage() {
 def buildAndTestDevicesStage() {
   return {
     stage("Build for device") {
-      node("Xcode9") {
+      node(xcodeVersion()) {
         ws("${workspaceBasePath()}/Repo") {
           try {
             setCommitStatus("PENDING", env.STAGE_NAME, "Build started")
@@ -173,7 +177,7 @@ def deviceTestStageWithLabel(label) {
 def simulatorTestStageWithLabel(simulatorName) {
   return {
     stage("Test simulator ${simulatorName}") {
-      node("Xcode9") {
+      node(xcodeVersion()) {
         ws("${workspaceBasePath()}/Tests") {
           try {
             setCommitStatus("PENDING", env.STAGE_NAME, "Test started")
@@ -199,7 +203,7 @@ def simulatorTestStageWithLabel(simulatorName) {
 def ltDangerStage(dangerRepoDir, dangerfile) {
   return  {
     stage("Danger") {
-      node("Xcode9") {
+      node(xcodeVersion()) {
         ws("${workspaceBasePath()}/Repo") {
           try {
             ltCheckoutStage()
@@ -229,7 +233,7 @@ def ltDangerStage(dangerRepoDir, dangerfile) {
 def ltApplyLabelsStage() {
   return  {
     stage("Apply labels") {
-      node("Xcode9") {
+      node(xcodeVersion()) {
         ws("${workspaceBasePath()}/Repo") {
           try {
             ltCheckoutStage()
