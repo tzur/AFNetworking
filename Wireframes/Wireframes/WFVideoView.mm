@@ -84,13 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)observePlayerItemStatus {
   @weakify(self);
-  [[[RACObserve(self, player.currentItem.status)
+  [[[[RACObserve(self, player.currentItem.status)
+      ignore:nil]
       distinctUntilChanged]
       deliverOnMainThread]
-      subscribeNext:^(NSNumber * _Nullable status) {
-        if (!status) {
-          return;
-        }
+      subscribeNext:^(NSNumber *status) {
         auto itemStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
         @strongify(self);
         if (itemStatus == AVPlayerItemStatusReadyToPlay) {
