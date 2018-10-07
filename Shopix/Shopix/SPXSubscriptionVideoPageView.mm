@@ -125,7 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable NSURL *)videoURL {
-  return self.videoView.currentVideoURL;
+  return self.videoView.currentItem ? ((AVURLAsset *)(self.videoView.currentItem.asset)).URL : nil;
 }
 
 - (void)setTitle:(nullable NSAttributedString *)title {
