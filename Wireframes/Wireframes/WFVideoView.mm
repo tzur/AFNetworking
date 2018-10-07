@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
           return;
         }
         auto itemStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
-        @strongify(self)
+        @strongify(self);
         if (itemStatus == AVPlayerItemStatusReadyToPlay) {
           [self addPlaybackFinishedObservation];
           [self addProgressObservation];
