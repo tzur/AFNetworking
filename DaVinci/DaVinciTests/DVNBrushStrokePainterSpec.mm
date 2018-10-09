@@ -23,9 +23,11 @@
 @property (strong, nonatomic) DVNBrushRenderModel *brushRenderModel;
 @property (strong, nonatomic) NSDictionary<NSString *, LTTexture *> *textureMapping;
 @property (strong, nonatomic, nullable) LTTexture *canvas;
+@property (strong, nonatomic, nullable) LTTexture *helpCanvas;
 
 @property (readonly, nonatomic) NSUInteger numberOfInfoRetrievals;
 @property (readonly, nonatomic) NSUInteger numberOfCanvasRetrievals;
+@property (readonly, nonatomic) NSUInteger numberOfAuxiliaryCanvasRetrievals;
 @property (readonly, nonatomic) NSUInteger numberOfTypeRetrievals;
 
 @property (readonly, nonatomic) NSUInteger numberOfBrushStrokePaintingStartEvents;
@@ -44,6 +46,11 @@
 - (nullable LTTexture *)brushStrokeCanvas {
   ++_numberOfCanvasRetrievals;
   return self.canvas;
+}
+
+- (LTTexture *)auxiliaryCanvas {
+  ++_numberOfAuxiliaryCanvasRetrievals;
+  return self.helpCanvas;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector {
@@ -123,9 +130,9 @@ afterEach(^{
 });
 
 context(@"initialization", ^{
-   it(@"should initialize with delegate", ^{
-     expect(painter).toNot.beNil();
-     expect(painter.delegate).to.equal(delegate);
+  it(@"should initialize with delegate", ^{
+    expect(painter).toNot.beNil();
+    expect(painter.delegate).to.equal(delegate);
   });
 
   it(@"should weakly hold its delegate", ^{
@@ -201,12 +208,12 @@ context(@"information retrieval at beginning and continuation of process sequenc
     });
 
     it(@"should retrieve spline type from delegate at beginning of process sequence", ^{
-         expect(delegate.numberOfTypeRetrievals).to.equal(0);
-         [painter processControlPoints:@[] end:YES];
-         expect(delegate.numberOfTypeRetrievals).to.equal(1);
-         [painter processControlPoints:@[] end:NO];
-         expect(delegate.numberOfTypeRetrievals).to.equal(2);
-       });
+      expect(delegate.numberOfTypeRetrievals).to.equal(0);
+      [painter processControlPoints:@[] end:YES];
+      expect(delegate.numberOfTypeRetrievals).to.equal(1);
+      [painter processControlPoints:@[] end:NO];
+      expect(delegate.numberOfTypeRetrievals).to.equal(2);
+    });
 
     it(@"should retrieve spline type from delegate only at beginning of process sequence", ^{
       expect(delegate.numberOfTypeRetrievals).to.equal(0);
@@ -365,7 +372,6 @@ context(@"brush stroke painting", ^{
   it(@"should correctly paint brush stroke previously created by painter", ^{
     [painter processControlPoints:kControlPoints end:YES];
     DVNBrushStrokeSpecification *brushStrokeSpecification = delegate.brushStroke;
-    [delegate.canvas clearColor:LTVector4::zeros()];
 
     DVNBrushStrokeData *data =
         [DVNBrushStrokeData dataWithSpecification:brushStrokeSpecification
@@ -376,6 +382,41 @@ context(@"brush stroke painting", ^{
 
     expect($(delegate.canvas.image)).to.equalMat($(expected));
   });
+
+  context(@"smoothing", ^{
+    __block NSArray<LTSplineControlPoint *> *points;
+
+    beforeEach(^{
+      points = @[
+        [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(1.5, 1.5)
+                                             attributes:kAttributes],
+        [[LTSplineControlPoint alloc] initWithTimestamp:1
+                                               location:CGPointMake(kSize.width - 1.5, 1.5)
+                                             attributes:kAttributes],
+        [[LTSplineControlPoint alloc] initWithTimestamp:2
+                                               location:CGPointMake(kSize.width - 1.5,
+                                                                    kSize.height - 1.5)
+                                             attributes:kAttributes],
+        [[LTSplineControlPoint alloc] initWithTimestamp:3
+                                               location:CGPointMake(1.5, kSize.height - 1.5)
+                                             attributes:kAttributes],
+        [[LTSplineControlPoint alloc] initWithTimestamp:4 location:CGPointMake(1.5, 1.5)
+                                             attributes:kAttributes]
+      ];
+      brushModel = [brushModel copyWithSplineSmoothness:0.75];
+      delegate.brushRenderModel = [delegate.brushRenderModel copyWithBrushModel:brushModel];
+      delegate.helpCanvas = [delegate.canvas clone];
+      expected = LTLoadMat([self class], @"DVNBrushModelV1_Smoothing.png");
+    });
+
+    it(@"should correctly paint a smoothed stroke", ^{
+      expect(delegate.numberOfAuxiliaryCanvasRetrievals).to.equal(0);
+      [painter processControlPoints:points end:YES];
+      expect(delegate.numberOfAuxiliaryCanvasRetrievals).to.equal(1);
+      expect($(delegate.canvas.image)).to.equalMat($(expected));
+    });
+  });
+
 });
 
 SpecEnd

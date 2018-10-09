@@ -173,6 +173,7 @@
 		8861FDAB1E5A2AE500CA1436 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAA1E5A2AE500CA1436 /* CoreText.framework */; };
 		8861FDAD1E5A2AEA00CA1436 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */; };
 		8BF68AD51D82E9510093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AD41D82E9510093910D /* libcompression.tbd */; };
+		B4DD1B18216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png in Resources */ = {isa = PBXBuildFile; fileRef = B4DD1B17216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png */; };
 		E4829F631E49D069009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829F621E49D069009F3355 /* libOpenEXR.a */; };
 /* End PBXBuildFile section */
 
@@ -748,6 +749,7 @@
 		8861FDAA1E5A2AE500CA1436 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8BF68AD41D82E9510093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		B4DD1B17216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_Smoothing.png; path = Resources/DVNBrushModelV1_Smoothing.png; sourceTree = "<group>"; };
 		E4829F621E49D069009F3355 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1067,6 +1069,7 @@
 				501A42632044212B00F80073 /* DVNBrushModelV1_Scale.png */,
 				501A42642044212B00F80073 /* DVNBrushModelV1_ScaleJitter.png */,
 				501A424E2044212700F80073 /* DVNBrushModelV1_SequenceDistance.png */,
+				B4DD1B17216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png */,
 				501A42592044212900F80073 /* DVNBrushModelV1_Spacing.png */,
 				504BA803213707C600D9F1A5 /* DVNBrushModelV1_SplineDirection.png */,
 				501A42542044212800F80073 /* DVNBrushModelV1_TaperingExponent.png */,
@@ -2041,6 +2044,7 @@
 				501A426E2044212B00F80073 /* DVNBrushModelV1_GridSize.png in Resources */,
 				501A42792044212B00F80073 /* DVNBrushModelV1_Mask.png in Resources */,
 				500EF5771F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png in Resources */,
+				B4DD1B18216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png in Resources */,
 				285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */,
 				501A426B2044212B00F80073 /* DVNBrushModelV1_SaturationJitter.png in Resources */,
 				285A79091DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png in Resources */,
