@@ -61,7 +61,7 @@ def notifyFailed() {
     body: """<p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
     Logs:<br>${log}
     """,
-    recipientProviders: [culprits()],
+    recipientProviders: [developers()],
 
     mimeType: 'text/html'
   )
@@ -73,7 +73,7 @@ def notifyBackToNormal() {
     to: to,
     subject: "Back to normal: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
     body: """<p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-    recipientProviders: [culprits()],
+    recipientProviders: [developers()],
     mimeType: 'text/html'
   )
 }
