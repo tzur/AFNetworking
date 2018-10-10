@@ -57,7 +57,6 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
 
   PNKSizeCollection temporaryImageSizes = [self temporaryImageSizesWithInputImages:inputImages
                                                                       outputImages:outputImages];
-  [self prefetchStorageWithTemporaryImageSizes:temporaryImageSizes commandBuffer:commandBuffer];
   PNKImageCollection *temporaryImages = [self temporaryImagesWithSizes:temporaryImageSizes
                                                          commandBuffer:commandBuffer];
 
@@ -102,23 +101,6 @@ typedef std::unordered_map<std::string, MTLSize> PNKSizeCollection;
   }];
 
   return temporaryImageSizes;
-}
-
-- (void)prefetchStorageWithTemporaryImageSizes:(const PNKSizeCollection &)temporaryImageSizes
-                                 commandBuffer:(id<MTLCommandBuffer>)commandBuffer {
-  NSMutableArray<MPSImageDescriptor *> *descriptorList =
-      [NSMutableArray arrayWithCapacity:temporaryImageSizes.size()];
-  for (auto pair: temporaryImageSizes) {
-    auto size = pair.second;
-    auto descriptor =
-        [MPSImageDescriptor imageDescriptorWithChannelFormat:MPSImageFeatureChannelFormatFloat16
-                                                       width:size.width height:size.height
-                                             featureChannels:size.depth];
-    descriptor.storageMode = MTLStorageModePrivate;
-    [descriptorList addObject:descriptor];
-  }
-  [MPSTemporaryImage prefetchStorageWithCommandBuffer:commandBuffer
-                                  imageDescriptorList:descriptorList];
 }
 
 - (PNKImageCollection *)temporaryImagesWithSizes:(const PNKSizeCollection &)temporaryImageSizes
