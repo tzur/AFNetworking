@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ namespace pnk {
 }
 
 /// Layer performing a conditional instance normalization operation.
-@interface PNKConditionalInstanceNormLayer : NSObject <PNKNeuralKernel, PNKParametricUnaryKernel>
+@interface PNKConditionalInstanceNormLayer : NSObject <PNKParametricUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs a conditional instance normalization
 /// operation such that each condition parameters are described by their index in

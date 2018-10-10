@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ namespace pnk {
 }
 
 /// Layer performing a convolution operation.
-@interface PNKConvolutionLayer : NSObject <PNKUnaryNeuralKernel>
+@interface PNKConvolutionLayer : NSObject <PNKUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs a convolution operation described by
 /// \c convolutionModel followed by an activation function described by \c activationModel.

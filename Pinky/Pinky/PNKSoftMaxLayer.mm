@@ -19,13 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKSoftMaxLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
 @synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
 
 #pragma mark -
 #pragma mark Initialization
@@ -35,14 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _device = device;
     _softMaxKernel = [[MPSCNNSoftMax alloc] initWithDevice:device];
-
-    _kernelWidth = 1;
-    _kernelHeight = 1;
-    _inputFeatureChannels = 0;
-    _outputFeatureChannels = 0;
-    _strideX = 1;
-    _strideY = 1;
-    _groups = 1;
   }
   return self;
 }

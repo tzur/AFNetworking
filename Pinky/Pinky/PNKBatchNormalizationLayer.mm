@@ -42,13 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKBatchNormalizationLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
 @synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
 
 /// Texture input kernel function name.
 static NSString * const kKernelSingleFunctionName = @"batchNormSingle";
@@ -92,13 +86,7 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
                     "features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
                     (unsigned long)model.variance.total());
 
-  _kernelWidth = 1;
-  _kernelHeight = 1;
   _inputFeatureChannels = model.inputFeatureChannels;
-  _outputFeatureChannels = model.inputFeatureChannels;
-  _strideX = 1;
-  _strideY = 1;
-  _groups = 1;
 }
 
 - (void)setupBuffersAndStateWithActivationModel:(const pnk::ActivationKernelModel &)model {
@@ -137,7 +125,7 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryNeuralKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer

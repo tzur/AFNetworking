@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKNeuralKernel.h"
+#import "PNKKernel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,8 +10,8 @@ namespace pnk {
   struct ConvolutionKernelModel;
 }
 
-/// Wrapper for \c MPSCNNConvolution object implementing \c PNKUnaryNeuralKernel protocol.
-@interface PNKConvolutionInternalLayer : NSObject <PNKUnaryNeuralKernel>
+/// Wrapper for \c MPSCNNConvolution object implementing \c PNKUnaryKernel protocol.
+@interface PNKConvolutionInternalLayer : NSObject <PNKUnaryKernel>
 
 - (instancetype)init NS_UNAVAILABLE;
 
