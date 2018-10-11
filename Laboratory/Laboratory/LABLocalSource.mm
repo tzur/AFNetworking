@@ -8,6 +8,7 @@
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
+#import <LTKit/NSSet+Operations.h>
 
 #import "LABExperimentsTokenProvider.h"
 #import "NSError+Laboratory.h"
@@ -126,23 +127,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id)objectForKeyedSubscript:(NSString *)key {
   return self.variants[key];
-}
-
-@end
-
-@interface NSSet<ObjectType> (Subtract)
-
-/// Returns the set created by subtracting the \c other set from this set.
-- (instancetype)lab_setBySubtractingObjectsFromSet:(NSSet<ObjectType> *)other;
-
-@end
-
-@implementation NSSet (Subtract)
-
-- (instancetype)lab_setBySubtractingObjectsFromSet:(NSSet *)other {
-  auto newSet = [NSMutableSet setWithSet:self];
-  [newSet minusSet:other];
-  return newSet;
 }
 
 @end
@@ -280,8 +264,7 @@ static auto const kStoredAssignmentsLockedKey = @"LABLocalSourceAssignmentsLocke
 
   auto storedExperiments = [storedExperimentsAndVariants.allKeys lt_set];
   if (![self assignmentsLocked]) {
-    auto newExperiments =
-        [[self.experiments.allKeys lt_set] lab_setBySubtractingObjectsFromSet:storedExperiments];
+    auto newExperiments = [[self.experiments.allKeys lt_set] lt_minus:storedExperiments];
     [experimentsToChooseVariants unionSet:newExperiments];
   }
   return experimentsToChooseVariants;
