@@ -118,6 +118,9 @@
 		8892CB921FF8C20C009A8897 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 8892CB901FF8C20C009A8897 /* NSData+Base64.h */; };
 		8892CB931FF8C20C009A8897 /* NSData+Base64.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8892CB911FF8C20C009A8897 /* NSData+Base64.mm */; };
 		8892CBAF1FF8EAB4009A8897 /* NSData+Base64Spec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8892CBAE1FF8EAB4009A8897 /* NSData+Base64Spec.mm */; };
+		88C04106216F965E00824FE8 /* NSSet+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C04104216F965E00824FE8 /* NSSet+Operations.h */; };
+		88C04107216F965E00824FE8 /* NSSet+Operations.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C04105216F965E00824FE8 /* NSSet+Operations.mm */; };
+		88C0411F216F997800824FE8 /* NSSet+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C0411E216F997800824FE8 /* NSSet+OperationsSpec.mm */; };
 		88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */; };
 		88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */; };
 		88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */; };
@@ -589,6 +592,9 @@
 		8892CB901FF8C20C009A8897 /* NSData+Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		8892CB911FF8C20C009A8897 /* NSData+Base64.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Base64.mm"; sourceTree = "<group>"; };
 		8892CBAE1FF8EAB4009A8897 /* NSData+Base64Spec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Base64Spec.mm"; sourceTree = "<group>"; };
+		88C04104216F965E00824FE8 /* NSSet+Operations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSSet+Operations.h"; sourceTree = "<group>"; };
+		88C04105216F965E00824FE8 /* NSSet+Operations.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+Operations.mm"; sourceTree = "<group>"; };
+		88C0411E216F997800824FE8 /* NSSet+OperationsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+OperationsSpec.mm"; sourceTree = "<group>"; };
 		88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLocalizationTable.h; sourceTree = "<group>"; };
 		88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTable.mm; sourceTree = "<group>"; };
 		88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTableSpec.mm; sourceTree = "<group>"; };
@@ -1110,6 +1116,8 @@
 				8B4495821CE3209C008402D0 /* NSObject+PropertyAccessors.m */,
 				888258D91EEECDB000A90675 /* NSSet+Functional.h */,
 				888258DA1EEECDB000A90675 /* NSSet+Functional.mm */,
+				88C04104216F965E00824FE8 /* NSSet+Operations.h */,
+				88C04105216F965E00824FE8 /* NSSet+Operations.mm */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
 				8BA5D6A3199250240093A4FD /* NSString+Hashing.mm */,
 				BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */,
@@ -1159,6 +1167,7 @@
 				8B6BE9611F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm */,
 				8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */,
 				888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */,
+				88C0411E216F997800824FE8 /* NSSet+OperationsSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 				BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */,
 			);
@@ -1414,6 +1423,7 @@
 				6AB5182E1CC2993D00540CC6 /* NSURL+Query.h in Headers */,
 				85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */,
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
+				88C04106216F965E00824FE8 /* NSSet+Operations.h in Headers */,
 				835204EC1D2A43B300000EEC /* LTEventBus.h in Headers */,
 				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
 				8BB236C21CDCD5C500057F11 /* NSObject+DynamicDispatch.h in Headers */,
@@ -1833,6 +1843,7 @@
 				A1A1C8721F164828004A4CBF /* NSDictionary+Operations.mm in Sources */,
 				88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */,
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
+				88C04107216F965E00824FE8 /* NSSet+Operations.mm in Sources */,
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
@@ -1919,6 +1930,7 @@
 				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				881335B91FEA4D1E00E83C1D /* NSData+HashingSpec.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
+				88C0411F216F997800824FE8 /* NSSet+OperationsSpec.mm in Sources */,
 				CDA09B981E8136B900753A41 /* NSData+EncryptionSpec.mm in Sources */,
 				658CD3E11D50AC0C00FF7FD6 /* LTProgressSpec.mm in Sources */,
 				8892CBAF1FF8EAB4009A8897 /* NSData+Base64Spec.mm in Sources */,
