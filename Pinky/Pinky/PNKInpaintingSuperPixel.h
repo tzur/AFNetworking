@@ -14,7 +14,7 @@ public:
 
   /// Creates a new superpixel with an alternative \c center and the same \c offsets as for the
   /// current superpixel.
-  SuperPixel centeredAt(const cv::Point &center);
+  SuperPixel centeredAt(const cv::Point &center) const;
 
   /// Point such that set of the \c offsets applied to it define the set of points associated with
   /// superpixel.

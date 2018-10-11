@@ -172,6 +172,12 @@
 		E43BF18620614B2000CE1C3A /* argmax_output_15x16x1.tensor in Resources */ = {isa = PBXBuildFile; fileRef = E43BF18420614B2000CE1C3A /* argmax_output_15x16x1.tensor */; };
 		E43BF18820614B3600CE1C3A /* PNKArgmaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43BF18720614B3600CE1C3A /* PNKArgmaxSpec.mm */; };
 		E43E384B2133D17C00D4CF62 /* PNKInpaintingImageResize.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43E38432133D17B00D4CF62 /* PNKInpaintingImageResize.mm */; };
+		E43E384C2133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43E38452133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm */; };
+		E43E38582133D1CC00D4CF62 /* PNKInpaintingHighFrequencyTransferSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43E38552133D1CC00D4CF62 /* PNKInpaintingHighFrequencyTransferSpec.mm */; };
+		E43E38612133D20500D4CF62 /* bayOutput.png in Resources */ = {isa = PBXBuildFile; fileRef = E43E385A2133D20400D4CF62 /* bayOutput.png */; };
+		E43E38622133D20500D4CF62 /* bayLowFrequency.png in Resources */ = {isa = PBXBuildFile; fileRef = E43E385B2133D20400D4CF62 /* bayLowFrequency.png */; };
+		E43E38662133D20500D4CF62 /* bayMask.png in Resources */ = {isa = PBXBuildFile; fileRef = E43E385F2133D20500D4CF62 /* bayMask.png */; };
+		E43E38672133D20500D4CF62 /* bayInput.png in Resources */ = {isa = PBXBuildFile; fileRef = E43E38602133D20500D4CF62 /* bayInput.png */; };
 		E43F3D99207B9CBA0017AE3A /* PNKTestComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43F3D98207B9CB90017AE3A /* PNKTestComputeState.mm */; };
 		E43F3D9D207B9D060017AE3A /* PNKFillWithZeroesKernel.metal in Sources */ = {isa = PBXBuildFile; fileRef = E43F3D9B207B9D050017AE3A /* PNKFillWithZeroesKernel.metal */; };
 		E43F3D9E207B9D060017AE3A /* PNKFillWithZeroesKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43F3D9C207B9D050017AE3A /* PNKFillWithZeroesKernel.mm */; };
@@ -882,6 +888,13 @@
 		E43BF18720614B3600CE1C3A /* PNKArgmaxSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKArgmaxSpec.mm; sourceTree = "<group>"; };
 		E43E38392133D17B00D4CF62 /* PNKInpaintingImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKInpaintingImageResize.h; sourceTree = "<group>"; };
 		E43E38432133D17B00D4CF62 /* PNKInpaintingImageResize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInpaintingImageResize.mm; sourceTree = "<group>"; };
+		E43E38442133D17B00D4CF62 /* PNKInpaintingHighFrequencyTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKInpaintingHighFrequencyTransfer.h; sourceTree = "<group>"; };
+		E43E38452133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInpaintingHighFrequencyTransfer.mm; sourceTree = "<group>"; };
+		E43E38552133D1CC00D4CF62 /* PNKInpaintingHighFrequencyTransferSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInpaintingHighFrequencyTransferSpec.mm; sourceTree = "<group>"; };
+		E43E385A2133D20400D4CF62 /* bayOutput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bayOutput.png; path = Resources/bayOutput.png; sourceTree = "<group>"; };
+		E43E385B2133D20400D4CF62 /* bayLowFrequency.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bayLowFrequency.png; path = Resources/bayLowFrequency.png; sourceTree = "<group>"; };
+		E43E385F2133D20500D4CF62 /* bayMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bayMask.png; path = Resources/bayMask.png; sourceTree = "<group>"; };
+		E43E38602133D20500D4CF62 /* bayInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bayInput.png; path = Resources/bayInput.png; sourceTree = "<group>"; };
 		E43F3D97207B9CB90017AE3A /* PNKTestComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKTestComputeState.h; sourceTree = "<group>"; };
 		E43F3D98207B9CB90017AE3A /* PNKTestComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTestComputeState.mm; sourceTree = "<group>"; };
 		E43F3D9A207B9D050017AE3A /* PNKFillWithZeroesKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKFillWithZeroesKernel.h; sourceTree = "<group>"; };
@@ -1207,6 +1220,10 @@
 				E48E48072018C235002B6D55 /* batch_normalization_gamma_32.weights */,
 				E48E48082018C235002B6D55 /* batch_normalization_input_15x16x32.tensor */,
 				E48E48092018C235002B6D55 /* batch_normalization_output_15x16x32.tensor */,
+				E43E38602133D20500D4CF62 /* bayInput.png */,
+				E43E385B2133D20400D4CF62 /* bayLowFrequency.png */,
+				E43E385F2133D20500D4CF62 /* bayMask.png */,
+				E43E385A2133D20400D4CF62 /* bayOutput.png */,
 				E47754A9213E8FD20008BEE7 /* building.png */,
 				E47754AD213E916D0008BEE7 /* building384.png */,
 				E47754AA213E8FD30008BEE7 /* buildingMask.png */,
@@ -1838,6 +1855,8 @@
 		E4404324213C1D940092539A /* Post-Processing */ = {
 			isa = PBXGroup;
 			children = (
+				E43E38442133D17B00D4CF62 /* PNKInpaintingHighFrequencyTransfer.h */,
+				E43E38452133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm */,
 				E43E38392133D17B00D4CF62 /* PNKInpaintingImageResize.h */,
 				E43E38432133D17B00D4CF62 /* PNKInpaintingImageResize.mm */,
 				E4404326213C1DA70092539A /* PNKInpaintingSuperPixel.h */,
@@ -1857,6 +1876,7 @@
 		E4404329213C1DC00092539A /* Post-Processing */ = {
 			isa = PBXGroup;
 			children = (
+				E43E38552133D1CC00D4CF62 /* PNKInpaintingHighFrequencyTransferSpec.mm */,
 				E4775485213E81FD0008BEE7 /* PNKInpaintingImageResizeSpec.mm */,
 				E440432A213C1DD20092539A /* PNKInpaintingSuperPixelSpec.mm */,
 			);
@@ -2396,6 +2416,7 @@
 				2856897120065B660053FDD8 /* ColorTransferReference.png in Resources */,
 				E487772E202C6134009753EF /* pooling_basic_output_15x16x32.tensor in Resources */,
 				E4A781CF20CCFB7F005C6EF1 /* tree_segmentation.png in Resources */,
+				E43E38672133D20500D4CF62 /* bayInput.png in Resources */,
 				E41718A620565768009FEF14 /* add_secondary_input_15x16x32.tensor in Resources */,
 				E41718A920565768009FEF14 /* reflection_padding_input_15x16x32.tensor in Resources */,
 				E4A781CB20CA76F6005C6EF1 /* tree.png in Resources */,
@@ -2435,8 +2456,11 @@
 				E41718B120565768009FEF14 /* gather_output_15x16x5.tensor in Resources */,
 				E48E480B2018C235002B6D55 /* batch_normalization_gamma_32.weights in Resources */,
 				061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */,
+				E43E38622133D20500D4CF62 /* bayLowFrequency.png in Resources */,
+				E43E38612133D20500D4CF62 /* bayOutput.png in Resources */,
 				E4AA52C620F393BD007F5835 /* multiclass_segmentation_moved.png in Resources */,
 				E470C006200BAB4A007573C9 /* upsample_bilinear_aligned_input_15x16x32.tensor in Resources */,
+				E43E38662133D20500D4CF62 /* bayMask.png in Resources */,
 				061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */,
 				E4C11CB620318041002CC63E /* sketch.nnmodel in Resources */,
 				E4352E7B1FFCFC200052C4D7 /* person_mask.png in Resources */,
@@ -2567,6 +2591,7 @@
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
 				E46995231FE6A8E600B944C9 /* PNKImageBilinearScaleSpec.mm in Sources */,
 				E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */,
+				E43E38582133D1CC00D4CF62 /* PNKInpaintingHighFrequencyTransferSpec.mm in Sources */,
 				E46F4C2720DBA6BF0028D62E /* PNKImageMotionLayerFusionSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				E4BED1471FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm in Sources */,
@@ -2643,6 +2668,7 @@
 				06AB67C91FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm in Sources */,
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				2835A95F1FEAA41B0000F2EA /* PNKColorTransferHistogram.mm in Sources */,
+				E43E384C2133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm in Sources */,
 				E485990A20D91A75007E9F6D /* PNKImageMotionLayerFusion.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				E4D719F21FE2C9740047E620 /* PNKSoftMaxLayer.mm in Sources */,

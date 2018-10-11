@@ -17,32 +17,23 @@ static cv::Size nextLevelSize(const cv::Size &currentLevelSize, const cv::Size &
   }
 }
 
-static void blurImageIfNeeded(cv::Mat &image, float sizeRatio, BOOL doGaussianBlur) {
-  if (doGaussianBlur && sizeRatio > 1) {
-    double sigma = (sizeRatio - 1) / 2;
-    cv::GaussianBlur(image, image, cv::Size(0, 0), sigma);
-  }
-}
-
 static cv::Mat resizeImageByPyramid(const cv::Mat &source, cv::Size size, int interpolation,
                                     BOOL doGaussianBlur) {
-  if (source.size() == size) {
-    return source;
-  }
+  BOOL blurBeforeResize = doGaussianBlur && (source.cols > size.width);
 
-  cv::Mat currentImage = source.clone();
+  cv::Mat currentImage = blurBeforeResize ? source.clone() : source;
   while (currentImage.size() != size) {
     cv::Size nextSize = nextLevelSize(currentImage.size(), size);
 
-    float sizeRatio = std::max((float)nextSize.width / currentImage.cols,
-                               (float)nextSize.height / currentImage.rows);
-
-    blurImageIfNeeded(currentImage, 1 / sizeRatio, doGaussianBlur);
+    if (blurBeforeResize) {
+      float sizeRatio = std::max((float)nextSize.width / currentImage.cols,
+                                 (float)nextSize.height / currentImage.rows);
+      double sigma = (1 / sizeRatio - 1) / 2;
+      cv::GaussianBlur(currentImage, currentImage, cv::Size(0, 0), sigma);
+    }
 
     cv::Mat nextImage;
     cv::resize(currentImage, nextImage, nextSize, 0, 0, interpolation);
-
-    blurImageIfNeeded(nextImage, sizeRatio, doGaussianBlur);
 
     currentImage = nextImage;
   }
