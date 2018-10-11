@@ -21,7 +21,7 @@ SuperPixel::SuperPixel(const std::vector<cv::Point> &coordinates) {
   _boundingBox = cv::boundingRect(coordinates);
 }
 
-SuperPixel SuperPixel::centeredAt(const cv::Point &center) {
+SuperPixel SuperPixel::centeredAt(const cv::Point &center) const {
   auto newBoundingBox = cv::Rect(this->boundingBox().tl() + (center - this->center()),
                                  this->boundingBox().size());
   return SuperPixel(center, this->_offsets, newBoundingBox);
