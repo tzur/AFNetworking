@@ -1,19 +1,19 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 
 #import <LTEngine/LTImage.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 
-DeviceSpecBegin(PNKImageBilinearScale)
+DeviceSpecBegin(PNKImageScale)
 
 __block id<MTLDevice> device;
-__block PNKImageBilinearScale *scale;
+__block PNKImageScale *scale;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
+  scale = [[PNKImageScale alloc] initWithDevice:device];
 });
 
 afterEach(^{

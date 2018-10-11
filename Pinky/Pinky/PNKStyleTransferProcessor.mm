@@ -10,7 +10,7 @@
 #import "PNKAvailability.h"
 #import "PNKConstantAlpha.h"
 #import "PNKDeviceAndCommandQueue.h"
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 #import "PNKPixelBufferUtils.h"
 #import "PNKRunnableNeuralNetwork.h"
 #import "PNKStyleTransferState.h"
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<MTLCommandQueue> commandQueue;
 
 /// Pinky kernel used to resize and color transform the input of the processor.
-@property (readonly, nonatomic) PNKImageBilinearScale *inputResizer;
+@property (readonly, nonatomic) PNKImageScale *inputResizer;
 
 /// Pinky kernel used to set the alpha channel of the output to 1.
 @property (readonly, nonatomic) PNKConstantAlpha *alphaCorrect;
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
     _stylizedOutputSmallSide = 1024;
     _stylizedOutputLargeSide = 3072;
 
-    _inputResizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
+    _inputResizer = [[PNKImageScale alloc] initWithDevice:self.device];
     _alphaCorrect = [[PNKConstantAlpha alloc] initWithDevice:self.device alpha:1.];
 
     _stylesCount = (NSUInteger)[self.network.metadata[@"NumberOfStyles"] integerValue];

@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 using namespace pnk_simd;
 
-@interface PNKImageBilinearScale ()
+@interface PNKImageScale ()
 
 /// Device to encode this kernel operation.
 @property (readonly, nonatomic) id<MTLDevice> device;
@@ -32,7 +32,7 @@ using namespace pnk_simd;
 
 @end
 
-@implementation PNKImageBilinearScale
+@implementation PNKImageScale
 
 /// Name of kernel function for scaling a texture.
 static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
