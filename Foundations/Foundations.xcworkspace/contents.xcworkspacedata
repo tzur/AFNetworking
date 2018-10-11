@@ -17,6 +17,9 @@
       location = "group:../DaVinci/DaVinci.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../EnlightUI/EnlightUI.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Fiber/Fiber.xcodeproj">
    </FileRef>
    <FileRef
