@@ -175,7 +175,7 @@ context(@"initial receipt validation", ^{
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
-
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
     OCMVerifyAll((id)receiptValidationStatusProvider);
   });
 
@@ -189,6 +189,7 @@ context(@"initial receipt validation", ^{
   it(@"should not fetch receipt on initialization if receipt validation status is not nil and "
      "App Store locale was fetched", ^{
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
     OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
@@ -199,6 +200,7 @@ context(@"initial receipt validation", ^{
 
   it(@"should send error event if background receipt validation failed", ^{
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal error:error]);
@@ -206,7 +208,7 @@ context(@"initial receipt validation", ^{
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     LLSignalTestRecorder *eventsRecorder = [[store eventsSignal] testRecorder];
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
-
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
     expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeCriticalError)] && event.eventError == error;
     });
@@ -611,6 +613,7 @@ context(@"purchasing products", ^{
     BZRStubProductDictionaryToReturnProduct(nonRenewingSubscriptionProduct, productsProvider);
 
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
@@ -2037,6 +2040,7 @@ context(@"handling unfinished completed transactions", ^{
 
   it(@"should call fetch receipt validation status once for each transactions array", ^{
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+    appStoreLocaleProvider.localeFetchedFromProductList = YES;
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -2057,6 +2061,7 @@ context(@"handling unfinished completed transactions", ^{
 
     beforeEach(^{
       appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
+      appStoreLocaleProvider.localeFetchedFromProductList = YES;
       transaction = BZRMockedSKPaymentTransaction(productIdentifier, @"foo");
     });
 
