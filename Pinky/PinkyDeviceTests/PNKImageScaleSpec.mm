@@ -1,19 +1,18 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 
-#import <LTEngine/LTImage.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 
-DeviceSpecBegin(PNKImageBilinearScale)
+DeviceSpecBegin(PNKImageScale)
 
 __block id<MTLDevice> device;
-__block PNKImageBilinearScale *scale;
+__block PNKImageScale *scale;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  scale = [[PNKImageBilinearScale alloc] initWithDevice:device];
+  scale = [[PNKImageScale alloc] initWithDevice:device];
 });
 
 afterEach(^{
@@ -225,6 +224,72 @@ context(@"resize", ^{
     cv::cvtColor(resizedInputMat, expectedMat, cv::COLOR_RGBA2GRAY);
 
     expect($(outputMat)).to.beCloseToMat($(expectedMat));
+  });
+
+  it(@"should upscale with nearest neighbor interpolation correctly", ^{
+    static const CGFloat kScaleFactor = 1.43;
+
+    auto nearestNeighborScale = [[PNKImageScale alloc] initWithDevice:device
+                                 interpolation:PNKInterpolationTypeNearestNeighbor];
+
+    auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
+                                                   height:inputMat.rows
+                                                 channels:inputMat.channels()];
+
+    int outputWidth = inputImage.width * kScaleFactor;
+    int outputHeight = inputImage.height * kScaleFactor;
+
+    PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
+
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:outputWidth
+                                                    height:outputHeight channels:4];
+
+    [nearestNeighborScale encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                    outputImage:outputImage];
+
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+
+    auto outputMat = PNKMatFromMTLTexture(outputImage.texture);
+
+    cv::Mat expectedMat;
+    cv::resize(inputMat, expectedMat, cv::Size(outputWidth, outputHeight), 0, 0, cv::INTER_NEAREST);
+
+    expect($(outputMat)).to.equalMat($(expectedMat));
+  });
+
+  it(@"should downscale with nearest neighbor interpolation correctly", ^{
+    static const CGFloat kScaleFactor = 0.37;
+
+    auto nearestNeighborScale = [[PNKImageScale alloc] initWithDevice:device
+                                 interpolation:PNKInterpolationTypeNearestNeighbor];
+
+    auto inputMat = LTLoadMat([self class], @"ResizeInput.png");
+    auto inputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputMat.cols
+                                                   height:inputMat.rows
+                                                 channels:inputMat.channels()];
+
+    int outputWidth = inputImage.width * kScaleFactor;
+    int outputHeight = inputImage.height * kScaleFactor;
+
+    PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
+
+    auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:outputWidth
+                                                    height:outputHeight channels:4];
+
+    [nearestNeighborScale encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                    outputImage:outputImage];
+
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+
+    auto outputMat = PNKMatFromMTLTexture(outputImage.texture);
+
+    cv::Mat expectedMat;
+    cv::resize(inputMat, expectedMat, cv::Size(outputWidth, outputHeight), 0, 0, cv::INTER_NEAREST);
+
+    expect($(outputMat)).to.equalMat($(expectedMat));
   });
 });
 

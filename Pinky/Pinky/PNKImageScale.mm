@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 using namespace pnk_simd;
 
-@interface PNKImageBilinearScale ()
+@interface PNKImageScale ()
 
 /// Device to encode this kernel operation.
 @property (readonly, nonatomic) id<MTLDevice> device;
@@ -21,9 +21,6 @@ using namespace pnk_simd;
 /// Buffer for passing output rectangle.
 @property (readonly, nonatomic) id<MTLBuffer> bufferForOutputRectangle;
 
-/// Buffer for passing the inverse of input texture size.
-@property (readonly, nonatomic) id<MTLBuffer> bufferForInputTextureInverseSize;
-
 /// Buffer for passing the inverse of output rectangle size.
 @property (readonly, nonatomic) id<MTLBuffer> bufferForOutputRectangleInverseSize;
 
@@ -32,23 +29,34 @@ using namespace pnk_simd;
 
 @end
 
-@implementation PNKImageBilinearScale
+@implementation PNKImageScale
 
-/// Name of kernel function for scaling a texture.
+/// Name of kernel function for scaling a texture using bilinear interpolation.
 static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device {
+/// Name of kernel function for scaling a texture using nearest neighbor interpolation.
+static NSString * const kKernelFunctionNearestNeighborScale = @"nearestNeighborScale";
+
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+                 interpolation:(PNKInterpolationType)interpolation {
   if (self = [super init]) {
     _device = device;
 
-    [self createState];
+    [self createStateWithInterpolation:interpolation];
     [self createBuffers];
   }
   return self;
 }
 
-- (void)createState {
-  _state = PNKCreateComputeState(self.device, kKernelFunctionBilinearScale);
+- (void)createStateWithInterpolation:(PNKInterpolationType)interpolation {
+  switch (interpolation) {
+    case PNKInterpolationTypeNearestNeighbor:
+      _state = PNKCreateComputeState(self.device, kKernelFunctionNearestNeighborScale);
+      break;
+    case PNKInterpolationTypeBilinear:
+      _state = PNKCreateComputeState(self.device, kKernelFunctionBilinearScale);
+      break;
+  }
 }
 
 - (void)createBuffers {
@@ -59,12 +67,14 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
                                                       options:kResourceOptions];
   _bufferForOutputRectangle = [self.device newBufferWithLength:sizeof(pnk::Rect2ui)
                                                        options:kResourceOptions];
-  _bufferForInputTextureInverseSize = [self.device newBufferWithLength:sizeof(float2)
-                                                               options:kResourceOptions];
   _bufferForOutputRectangleInverseSize = [self.device newBufferWithLength:sizeof(float2)
                                                                   options:kResourceOptions];
   _bufferForColorTransformType = [self.device newBufferWithLength:sizeof(pnk::ColorTransformType)
                                                           options:kResourceOptions];
+}
+
+- (instancetype)initWithDevice:(id<MTLDevice>)device {
+  return [self initWithDevice:device interpolation:PNKInterpolationTypeBilinear];
 }
 
 #pragma mark -
@@ -89,7 +99,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   NSArray<id<MTLBuffer>> *buffers = @[
     self.bufferForInputRectangle,
     self.bufferForOutputRectangle,
-    self.bufferForInputTextureInverseSize,
     self.bufferForOutputRectangleInverseSize,
     self.bufferForColorTransformType
   ];
@@ -132,9 +141,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
     make_uint2((unsigned int)outputRegion.origin.x, (unsigned int)outputRegion.origin.y),
     make_uint2((unsigned int)outputRegion.size.width, (unsigned int)outputRegion.size.height)
   };
-
-  auto inputTextureInverseSize = (float2 *)self.bufferForInputTextureInverseSize.contents;
-  *inputTextureInverseSize = make_float2(1.0f / inputImage.width, 1.0f / inputImage.height);
 
   auto outputRectangleInverseSize = (float2 *)self.bufferForOutputRectangleInverseSize.contents;
   *outputRectangleInverseSize = make_float2(1.0f / outputRegion.size.width,

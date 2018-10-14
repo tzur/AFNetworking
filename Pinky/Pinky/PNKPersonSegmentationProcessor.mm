@@ -9,7 +9,7 @@
 #import "PNKCrop.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 #import "PNKNetworkSchemeFactory.h"
 #import "PNKPixelBufferUtils.h"
 #import "PNKReflectionPadding.h"
@@ -36,7 +36,7 @@ static const pnk::PaddingSize kPadding = {
 @property (readonly, nonatomic) id<MTLCommandQueue> commandQueue;
 
 /// Pinky kernel used to resize the input image in the pre-processing stage.
-@property (readonly, nonatomic) PNKImageBilinearScale *resizer;
+@property (readonly, nonatomic) PNKImageScale *resizer;
 
 /// Pinky kernel used to pad the resized input image.
 @property (readonly, nonatomic) PNKReflectionPadding *padder;
@@ -79,7 +79,7 @@ static const pnk::PaddingSize kPadding = {
 
     _network = [[PNKRunnableNeuralNetwork alloc] initWithNetworkScheme:*scheme];
 
-    _resizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
+    _resizer = [[PNKImageScale alloc] initWithDevice:self.device];
     _padder = [[PNKReflectionPadding alloc] initWithDevice:self.device paddingSize:kPadding];
     _cropper = [[PNKCrop alloc] initWithDevice:self.device margins:kPadding];
     _gatherer = [[PNKGather alloc] initWithDevice:self.device inputFeatureChannels:2

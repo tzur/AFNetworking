@@ -8,7 +8,7 @@
 #import "PNKAvailability.h"
 #import "PNKDeviceAndCommandQueue.h"
 #import "PNKGather.h"
-#import "PNKImageBilinearScale.h"
+#import "PNKImageScale.h"
 #import "PNKNetworkSchemeFactory.h"
 #import "PNKPixelBufferUtils.h"
 #import "PNKRunnableNeuralNetwork.h"
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<MTLCommandQueue> commandQueue;
 
 /// Pinky kernel used to resize the input image in the pre-processing stage.
-@property (readonly, nonatomic) PNKImageBilinearScale *resizer;
+@property (readonly, nonatomic) PNKImageScale *resizer;
 
 /// Pinky kernel used to separate the first channel of the output image in the post-processing
 /// stage.
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     _network = [[PNKRunnableNeuralNetwork alloc] initWithNetworkScheme:*scheme];
 
-    _resizer = [[PNKImageBilinearScale alloc] initWithDevice:self.device];
+    _resizer = [[PNKImageScale alloc] initWithDevice:self.device];
     _gatherer = [[PNKGather alloc] initWithDevice:self.device inputFeatureChannels:2
                       outputFeatureChannelIndices:{0}];
     _dispatchQueue = dispatch_queue_create("com.lightricks.Pinky.SkySegmentationProcessor",
