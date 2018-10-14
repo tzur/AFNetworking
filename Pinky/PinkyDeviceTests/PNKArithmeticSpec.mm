@@ -232,22 +232,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    return @{
-      kPNKTemporaryImageExamplesKernel: additionOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
-    };
-  });
-
-  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    return @{
-      kPNKTemporaryImageExamplesKernel: additionOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

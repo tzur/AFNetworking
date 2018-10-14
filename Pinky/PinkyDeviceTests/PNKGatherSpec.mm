@@ -208,16 +208,4 @@ context(@"gather", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    PNKGather *gather = [[PNKGather alloc] initWithDevice:device inputFeatureChannels:4
-                              outputFeatureChannelIndices:{0, 1}];
-    return @{
-      kPNKTemporaryImageExamplesKernel: gather,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @4
-    };
-  });
-});
-
 DeviceSpecEnd

@@ -214,24 +214,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];
-    return @{
-      kPNKTemporaryImageExamplesKernel: concatenationOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(2)
-    };
-  });
-
-  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];
-    return @{
-      kPNKTemporaryImageExamplesKernel: concatenationOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(16)
-    };
-  });
-});
-
 DeviceSpecEnd

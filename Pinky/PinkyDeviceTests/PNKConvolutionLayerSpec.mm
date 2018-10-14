@@ -244,66 +244,6 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    pnk::ConvolutionKernelModel convolutionModel = {
-      .kernelWidth = kKernelSide,
-      .kernelHeight = kKernelSide,
-      .kernelChannels = kInputRGBFeatureChannels,
-      .groups = 1,
-      .inputFeatureChannels = kInputRGBFeatureChannels,
-      .outputFeatureChannels = kInputRGBFeatureChannels,
-      .strideX = kNoStride,
-      .strideY = kNoStride,
-      .dilationX = 1,
-      .dilationY = 1,
-      .padding = pnk::PaddingTypeSame,
-      .isDeconvolution = NO,
-      .hasBias = NO,
-      .deconvolutionOutputSize = CGSizeNull,
-      .kernelWeights = cv::Mat1f(1, (int)(kKernelSide * kKernelSide * kInputRGBFeatureChannels *
-                                          kInputRGBFeatureChannels))
-    };
-    convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
-                                               convolutionModel:convolutionModel];
-
-    return @{
-      kPNKTemporaryImageExamplesKernel: convolutionOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
-    };
-  });
-
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    pnk::ConvolutionKernelModel convolutionModel = {
-      .kernelWidth = kKernelSide,
-      .kernelHeight = kKernelSide,
-      .kernelChannels = kInputArrayFeatureChannels,
-      .groups = 1,
-      .inputFeatureChannels = kInputArrayFeatureChannels,
-      .outputFeatureChannels = kInputArrayFeatureChannels,
-      .strideX = kNoStride,
-      .strideY = kNoStride,
-      .dilationX = 1,
-      .dilationY = 1,
-      .padding = pnk::PaddingTypeSame,
-      .isDeconvolution = NO,
-      .hasBias = NO,
-      .deconvolutionOutputSize = CGSizeNull,
-      .kernelWeights = cv::Mat1f(1, (int)(kKernelSide * kKernelSide * kInputArrayFeatureChannels *
-                                          kInputArrayFeatureChannels))
-    };
-    convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
-                                               convolutionModel:convolutionModel];
-
-    return @{
-      kPNKTemporaryImageExamplesKernel: convolutionOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
-    };
-  });
-});
-
 context(@"convolution", ^{
   for (ushort paddingType = pnk::PaddingTypeValid; paddingType <= pnk::PaddingTypeSame;
        ++paddingType) {

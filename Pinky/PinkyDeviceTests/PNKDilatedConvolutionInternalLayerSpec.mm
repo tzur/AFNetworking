@@ -287,20 +287,4 @@ context(@"dilated convolution", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    pnk::ConvolutionKernelModel convolutionKernelModel =
-        PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, 1, 1, pnk::PaddingTypeSame);
-
-    auto convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                              initWithDevice:device
-                              convolutionModel:convolutionKernelModel];
-    return @{
-      kPNKTemporaryImageExamplesKernel: convolutionKernel,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(convolutionKernelModel.outputFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd
