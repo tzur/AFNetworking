@@ -31,21 +31,32 @@ using namespace pnk_simd;
 
 @implementation PNKImageScale
 
-/// Name of kernel function for scaling a texture.
+/// Name of kernel function for scaling a texture using bilinear interpolation.
 static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device {
+/// Name of kernel function for scaling a texture using nearest neighbor interpolation.
+static NSString * const kKernelFunctionNearestNeighborScale = @"nearestNeighborScale";
+
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+                 interpolation:(PNKInterpolationType)interpolation {
   if (self = [super init]) {
     _device = device;
 
-    [self createState];
+    [self createStateWithInterpolation:interpolation];
     [self createBuffers];
   }
   return self;
 }
 
-- (void)createState {
-  _state = PNKCreateComputeState(self.device, kKernelFunctionBilinearScale);
+- (void)createStateWithInterpolation:(PNKInterpolationType)interpolation {
+  switch (interpolation) {
+    case PNKInterpolationTypeNearestNeighbor:
+      _state = PNKCreateComputeState(self.device, kKernelFunctionNearestNeighborScale);
+      break;
+    case PNKInterpolationTypeBilinear:
+      _state = PNKCreateComputeState(self.device, kKernelFunctionBilinearScale);
+      break;
+  }
 }
 
 - (void)createBuffers {
@@ -60,6 +71,10 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
                                                                   options:kResourceOptions];
   _bufferForColorTransformType = [self.device newBufferWithLength:sizeof(pnk::ColorTransformType)
                                                           options:kResourceOptions];
+}
+
+- (instancetype)initWithDevice:(id<MTLDevice>)device {
+  return [self initWithDevice:device interpolation:PNKInterpolationTypeBilinear];
 }
 
 #pragma mark -

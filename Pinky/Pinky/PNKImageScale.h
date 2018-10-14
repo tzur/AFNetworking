@@ -5,17 +5,31 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Kernel that resamples (upsamples or downsamples) the input image using bilinear interpolation.
-/// When called with appropriate channels count it performs Y->RGBA transformation (with alpha
-/// channel being set to 1) or RGB->Y transformation alongside the resampling.
+/// Interpolation type.
+typedef NS_ENUM(NSUInteger, PNKInterpolationType) {
+  /// Nearest neighbor interpolation.
+  PNKInterpolationTypeNearestNeighbor,
+  /// Bilinear interpolation.
+  PNKInterpolationTypeBilinear
+};
+
+/// Kernel that resamples (upsamples or downsamples) the input. When called with appropriate
+/// channels count it performs Y->RGBA transformation (with alpha channel being set to 1) or RGB->Y
+/// transformation alongside the resampling.
 @interface PNKImageScale : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Initializes a new kernel that runs on \c device and scales images using \c interpolation. The
+/// actual scale is defined by input and output image sizes and does not necessarily preserve the
+/// aspect ratio.
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+                 interpolation:(PNKInterpolationType)interpolation NS_DESIGNATED_INITIALIZER;
+
 /// Initializes a new kernel that runs on \c device and scales images using bilinear interpolation.
 /// The actual scale is defined by input and output image sizes and does not necessarily preserve
 /// the aspect ratio.
-- (instancetype)initWithDevice:(id<MTLDevice>)device NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDevice:(id<MTLDevice>)device;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
 /// Output is written asynchronously to \c outputImage. The feature channels for both \c inputImage
