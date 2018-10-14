@@ -7,6 +7,7 @@
 
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRPaymentQueue.h"
+#import "SKPaymentTransaction+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// will be passed to the appropriate delegate.
 @property (nonatomic) BOOL shouldSendTransactionsAsUnfinished;
 
-/// Subject used to send promoted IAP events with.
-@property (readonly, nonatomic) RACReplaySubject<BZREvent *> *promotedIAPEventsSubject;
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACReplaySubject<BZREvent *> *eventsSubject;
 
 @end
 
@@ -54,8 +55,8 @@ static NSString * const kRestorationLabel = @"Restoration";
     _unfinishedTransactionsSubject = [RACSubject subject];
     _unfinishedTransactionsSignal =
         [[self.unfinishedTransactionsSubject replay] takeUntil:[self rac_willDeallocSignal]];
-    _promotedIAPEventsSubject = [RACReplaySubject subject];
-    _eventsSignal = [self.promotedIAPEventsSubject takeUntil:[self rac_willDeallocSignal]];
+    _eventsSubject = [RACReplaySubject subject];
+    _eventsSignal = [self.eventsSubject takeUntil:[self rac_willDeallocSignal]];
     [self.underlyingPaymentQueue addTransactionObserver:self];
     self.shouldSendTransactionsAsUnfinished = YES;
   }
@@ -122,6 +123,8 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
  updatedTransactions:(BZRPaymentTransactionList *)transactions {
+  [self sendTransactionsEvents:transactions removedTransactions:NO];
+
   if (self.shouldSendTransactionsAsUnfinished) {
     [self.unfinishedTransactionsSubject sendNext:transactions];
     return;
@@ -143,6 +146,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
  removedTransactions:(BZRPaymentTransactionList *)transactions {
+  [self sendTransactionsEvents:transactions removedTransactions:YES];
   BZRClassifiedTransactions *classifiedTransactions =
       [[self class] classifyTransactions:transactions];
 
@@ -158,6 +162,14 @@ static NSString * const kRestorationLabel = @"Restoration";
        respondsToSelector:@selector(paymentQueue:restoredTransactionsRemoved:)]) {
     [self.restorationDelegate paymentQueue:self
                restoredTransactionsRemoved:classifiedTransactions[kRestorationLabel]];
+  }
+}
+
+- (void)sendTransactionsEvents:(BZRPaymentTransactionList *)transactions
+           removedTransactions:(BOOL)removedTransactions {
+  for (SKPaymentTransaction *transaction in transactions) {
+    [self.eventsSubject sendNext:
+     [BZREvent transactionReceivedEvent:transaction removedTransaction:removedTransactions]];
   }
 }
 
@@ -193,10 +205,10 @@ static NSString * const kRestorationLabel = @"Restoration";
       [self.paymentsDelegate shouldProceedWithPromotedIAP:product payment:payment];
   auto event = [[BZREvent alloc] initWithType:$(BZREventTypePromotedIAPInitiated)
       eventInfo:@{
-        BZREventProductIdentifierKey: product.productIdentifier,
-        BZREventPromotedIAPAbortedKey: @(!shouldProceedWithPurchase)
+        kBZREventProductIdentifierKey: product.productIdentifier,
+        kBZREventPromotedIAPAbortedKey: @(!shouldProceedWithPurchase)
       }];
-  [self.promotedIAPEventsSubject sendNext:event];
+  [self.eventsSubject sendNext:event];
   return shouldProceedWithPurchase;
 }
 

@@ -5,6 +5,7 @@
 
 #import "BZRContentFetcherParameters.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "SKPaymentTransaction+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,38 +26,6 @@ NSString * const kBZRErrorKeychainStorageValueDescriptionKey =
     @"BZRKeychainStorageValueDescription";
 NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
 NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
-
-/// Category that adds method for getting a description of the transaction.
-@interface SKPaymentTransaction (Bazaar)
-
-/// Returns a description of the transaction with some of its proerties.
-- (NSString *)bzr_description;
-
-@end
-
-#define BZREnumToStringMapping(enum_value) @(enum_value): @#enum_value
-
-@implementation SKPaymentTransaction (Bazaar)
-
-- (NSString *)bzr_description {
-  static const NSDictionary<NSNumber *, NSString *> *transactionStateStringMapping = @{
-    BZREnumToStringMapping(SKPaymentTransactionStatePurchasing),
-    BZREnumToStringMapping(SKPaymentTransactionStatePurchased),
-    BZREnumToStringMapping(SKPaymentTransactionStateFailed),
-    BZREnumToStringMapping(SKPaymentTransactionStateRestored),
-    BZREnumToStringMapping(SKPaymentTransactionStateDeferred)
-  };
-
-  return @{
-    @keypath(self.payment, productIdentifier): self.payment.productIdentifier,
-    @keypath(self, transactionDate): self.transactionDate ?: [NSNull null],
-    @keypath(self, transactionIdentifier): self.transactionIdentifier ?: [NSNull null],
-    @keypath(self, transactionState): transactionStateStringMapping[@(self.transactionState)],
-    @keypath(self, originalTransaction): self.originalTransaction.bzr_description ? : [NSNull null]
-  }.description;
-}
-
-@end
 
 @implementation NSError (Bazaar)
 
@@ -85,7 +54,7 @@ NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
            failingArchiveItemPath:(nullable NSString *)failingItemPath
                   underlyingError:(nullable NSError *)underlyingError
                       description:(nullable NSString *)description {
-  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  auto userInfo = [NSMutableDictionary dictionary];
   userInfo[kBZRErrorArchivePathKey] = archivePath;
   if (failingItemPath) {
     userInfo[kBZRErrorFailingItemPathKey] = [failingItemPath copy];
@@ -102,10 +71,10 @@ NSString * const kBZRValidatricksErrorInfoKey = @"BZRValidatricksErrorInfo";
 
 + (instancetype)bzr_errorWithCode:(NSInteger)code
                       transaction:(SKPaymentTransaction *)transaction {
-  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  auto userInfo = [NSMutableDictionary dictionary];
   userInfo[kBZRErrorTransactionKey] = transaction;
   userInfo[kBZRErrorTransactionIdentifierKey] = transaction.transactionIdentifier;
-  userInfo[kLTErrorDescriptionKey] = transaction.bzr_description;
+  userInfo[kLTErrorDescriptionKey] = transaction.bzr_transactionInfo.description;
   if (transaction.transactionState == SKPaymentTransactionStateFailed) {
     userInfo[NSUnderlyingErrorKey] = transaction.error;
   }

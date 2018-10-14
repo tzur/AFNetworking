@@ -267,12 +267,12 @@ context(@"App Store locale", ^{
 
     expect(eventsRecorder).to.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
-          [event.eventInfo[BZREventAppStoreLocaleKey]
+          [event.eventInfo[kBZREventAppStoreLocaleKey]
            isEqual:[NSLocale currentLocale].localeIdentifier];
     });
     expect(eventsRecorder).to.matchValue(1, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
-          [event.eventInfo[BZREventAppStoreLocaleKey] isEqual:[NSNull null]];
+          [event.eventInfo[kBZREventAppStoreLocaleKey] isEqual:[NSNull null]];
     });
   });
 });
