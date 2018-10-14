@@ -1055,6 +1055,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = WarehouseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.WarehouseTests;
@@ -1074,6 +1075,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = WarehouseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.WarehouseTests;
