@@ -21,9 +21,6 @@ using namespace pnk_simd;
 /// Buffer for passing output rectangle.
 @property (readonly, nonatomic) id<MTLBuffer> bufferForOutputRectangle;
 
-/// Buffer for passing the inverse of input texture size.
-@property (readonly, nonatomic) id<MTLBuffer> bufferForInputTextureInverseSize;
-
 /// Buffer for passing the inverse of output rectangle size.
 @property (readonly, nonatomic) id<MTLBuffer> bufferForOutputRectangleInverseSize;
 
@@ -59,8 +56,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
                                                       options:kResourceOptions];
   _bufferForOutputRectangle = [self.device newBufferWithLength:sizeof(pnk::Rect2ui)
                                                        options:kResourceOptions];
-  _bufferForInputTextureInverseSize = [self.device newBufferWithLength:sizeof(float2)
-                                                               options:kResourceOptions];
   _bufferForOutputRectangleInverseSize = [self.device newBufferWithLength:sizeof(float2)
                                                                   options:kResourceOptions];
   _bufferForColorTransformType = [self.device newBufferWithLength:sizeof(pnk::ColorTransformType)
@@ -89,7 +84,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   NSArray<id<MTLBuffer>> *buffers = @[
     self.bufferForInputRectangle,
     self.bufferForOutputRectangle,
-    self.bufferForInputTextureInverseSize,
     self.bufferForOutputRectangleInverseSize,
     self.bufferForColorTransformType
   ];
@@ -132,9 +126,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
     make_uint2((unsigned int)outputRegion.origin.x, (unsigned int)outputRegion.origin.y),
     make_uint2((unsigned int)outputRegion.size.width, (unsigned int)outputRegion.size.height)
   };
-
-  auto inputTextureInverseSize = (float2 *)self.bufferForInputTextureInverseSize.contents;
-  *inputTextureInverseSize = make_float2(1.0f / inputImage.width, 1.0f / inputImage.height);
 
   auto outputRectangleInverseSize = (float2 *)self.bufferForOutputRectangleInverseSize.contents;
   *outputRectangleInverseSize = make_float2(1.0f / outputRegion.size.width,
