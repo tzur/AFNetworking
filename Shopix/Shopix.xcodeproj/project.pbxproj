@@ -2087,11 +2087,11 @@
 				GCC_PREFIX_HEADER = "ShopixTests/ShopixTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../third_party/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
-					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
-					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = ShopixTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2110,11 +2110,11 @@
 				GCC_PREFIX_HEADER = "ShopixTests/ShopixTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../third_party/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers\"",
-					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
-					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
-					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = ShopixTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
