@@ -169,16 +169,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    crop = [[PNKCrop alloc] initWithDevice:device margins:{0, 0, 0, 0}];
-
-    return @{
-      kPNKTemporaryImageExamplesKernel: crop,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

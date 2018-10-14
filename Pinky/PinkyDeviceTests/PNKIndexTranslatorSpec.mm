@@ -128,13 +128,4 @@ context(@"kernel output size", ^{
   });
 });
 
-context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    return @{
-      kPNKTemporaryImageExamplesKernel: translator,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kSingleChannel)
-    };
-  });
-});
 DeviceSpecEnd

@@ -167,14 +167,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    return @{
-      kPNKTemporaryImageExamplesKernel: argmaxOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

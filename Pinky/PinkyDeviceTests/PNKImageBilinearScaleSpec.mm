@@ -228,22 +228,4 @@ context(@"resize", ^{
   });
 });
 
-context(@"temporary image read count", ^{
-  it(@"should decrement read count of an input image of class MPSTemporaryImage", ^{
-    auto commandQueue = [device newCommandQueue];
-    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
-
-    auto outputSize = MTLSizeMake(32, 32, 4);
-    auto outputImage = [MPSImage mtb_float16ImageWithDevice:device size:outputSize];
-
-    auto inputSize = MTLSizeMake(64, 64, 4);
-    auto inputImage = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
-                                                                               size:inputSize];
-    expect(inputImage.readCount == 1);
-
-    [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
-    expect(inputImage.readCount == 0);
-  });
-});
-
 DeviceSpecEnd

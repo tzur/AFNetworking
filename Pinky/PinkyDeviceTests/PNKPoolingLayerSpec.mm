@@ -425,26 +425,4 @@ context(@"pooling", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    pnk::PoolingKernelModel poolingModel = {
-      .pooling = pnk::PoolingTypeAverage,
-      .kernelWidth = 3,
-      .kernelHeight = 3,
-      .strideX = 1,
-      .strideY = 1,
-      .padding = pnk::PaddingTypeSame,
-      .averagePoolExcludePadding = YES,
-      .globalPooling = NO
-    };
-
-    auto poolingKernel = [[PNKPoolingLayer alloc] initWithDevice:device poolingModel:poolingModel];
-    return @{
-      kPNKTemporaryImageExamplesKernel: poolingKernel,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @1
-    };
-  });
-});
-
 DeviceSpecEnd

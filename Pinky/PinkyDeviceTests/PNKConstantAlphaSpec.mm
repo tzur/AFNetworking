@@ -153,14 +153,4 @@ context(@"processing", ^{
   });
 });
 
-context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    return @{
-      kPNKTemporaryImageExamplesKernel: alphaLayer,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

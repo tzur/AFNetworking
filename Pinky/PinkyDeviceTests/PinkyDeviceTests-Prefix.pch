@@ -44,6 +44,5 @@ extern "C" {
 #import "LTEasyBoxing+Pinky.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKKernelExamples.h"
-#import "PNKTemporaryImageExamples.h"
 #import "PNKTestUtils.h"
 #import "PNKTestUtils+MTLRegion.h"

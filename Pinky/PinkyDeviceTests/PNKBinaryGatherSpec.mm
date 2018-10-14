@@ -299,22 +299,4 @@ context(@"gather", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  static const NSUInteger kInputFeatureChannels = 4;
-  static const std::vector<ushort> kFeatureChannelIndices = {0, 1};
-
-  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    PNKBinaryGather *gather = [[PNKBinaryGather alloc] initWithDevice:device
-                                          primaryInputFeatureChannels:kInputFeatureChannels
-                                         primaryFeatureChannelIndices:kFeatureChannelIndices
-                                        secondaryInputFeatureChannels:kInputFeatureChannels
-                                       secondaryFeatureChannelIndices:kFeatureChannelIndices];
-    return @{
-      kPNKTemporaryImageExamplesKernel: gather,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

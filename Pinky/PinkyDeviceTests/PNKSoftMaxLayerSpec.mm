@@ -115,15 +115,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    softMaxOp = [[PNKSoftMaxLayer alloc] initWithDevice:device];
-    return @{
-      kPNKTemporaryImageExamplesKernel: softMaxOp,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

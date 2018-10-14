@@ -20,7 +20,6 @@
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
 		060FB4641F0104EB00506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
-		061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */; };
 		061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = 061C65791FD6881900F1BF1B /* PNKSkySegmentation.nnmodel */; };
 		061C659D1FD6DA6400F1BF1B /* PNKSkyShape512.model in Resources */ = {isa = PBXBuildFile; fileRef = 061C659C1FD6DA6400F1BF1B /* PNKSkyShape512.model */; };
 		061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 061C66351FD6E7D800F1BF1B /* Bicycles1200.jpg */; };
@@ -645,8 +644,6 @@
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
-		061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKTemporaryImageExamples.h; sourceTree = "<group>"; };
-		061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTemporaryImageExamples.mm; sourceTree = "<group>"; };
 		061C65791FD6881900F1BF1B /* PNKSkySegmentation.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = PNKSkySegmentation.nnmodel; path = Resources/PNKSkySegmentation.nnmodel; sourceTree = "<group>"; };
 		061C659C1FD6DA6400F1BF1B /* PNKSkyShape512.model */ = {isa = PBXFileReference; lastKnownFileType = file; name = PNKSkyShape512.model; path = Resources/PNKSkyShape512.model; sourceTree = "<group>"; };
 		061C66351FD6E7D800F1BF1B /* Bicycles1200.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Bicycles1200.jpg; path = Resources/Bicycles1200.jpg; sourceTree = "<group>"; };
@@ -1164,8 +1161,6 @@
 				E45E1B0020B3F39900EC0B60 /* PNKImageMotionLayerExamples.mm */,
 				06D357E81FA5B8C3003CFDCF /* PNKKernelExamples.h */,
 				06D357E91FA5B8C3003CFDCF /* PNKKernelExamples.mm */,
-				061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */,
-				061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */,
 				E43F3D97207B9CB90017AE3A /* PNKTestComputeState.h */,
 				E43F3D98207B9CB90017AE3A /* PNKTestComputeState.mm */,
 				068D90A61F1F60A90012F472 /* PNKTestUtils.h */,
@@ -2553,7 +2548,6 @@
 				E440432B213C1DD20092539A /* PNKInpaintingSuperPixelSpec.mm in Sources */,
 				062EEA4F1F25315400AB4958 /* PNKUpsamplingSpec.mm in Sources */,
 				E45E1BCA20B3F56E00EC0B60 /* PNKImageMotionSkyLayerSpec.mm in Sources */,
-				061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */,
 				2817F8F71FFBBC4800AF1DDC /* PNKColorTransferHistogramSpecificationSpec.mm in Sources */,
 				E4D71A191FE658990047E620 /* PNKSoftMaxLayerSpec.mm in Sources */,
 				06C2F3B9202B4E20004B7F86 /* PNKStyleTransferProcessorSpec.mm in Sources */,

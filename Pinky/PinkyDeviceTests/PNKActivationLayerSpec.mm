@@ -121,19 +121,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    auto activationModel = PNKBuildActivationModel(4, pnk::ActivationTypeIdentity);
-
-    auto neuron = [[PNKActivationLayer alloc] initWithDevice:device
-                                             activationModel:activationModel];
-
-    return @{
-      kPNKTemporaryImageExamplesKernel: neuron,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd

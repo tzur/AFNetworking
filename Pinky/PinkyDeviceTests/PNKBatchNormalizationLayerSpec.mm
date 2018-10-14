@@ -359,22 +359,4 @@ context(@"tensorflow golden standard", ^{
   });
 });
 
-context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    auto normalizationModel = PNKBuildNormalizationModel(kFeatureChannels);
-    auto activationModel = pnk::ActivationKernelModel{
-      .activationType = pnk::ActivationTypeIdentity
-    };
-
-    auto batchNormKernel = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
-                                                           normalizationModel:normalizationModel
-                                                              activationModel:activationModel];
-    return @{
-      kPNKTemporaryImageExamplesKernel: batchNormKernel,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(normalizationModel.inputFeatureChannels)
-    };
-  });
-});
-
 DeviceSpecEnd
