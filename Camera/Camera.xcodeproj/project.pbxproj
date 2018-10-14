@@ -1792,6 +1792,7 @@
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/EXpecta",
 				);
 				INFOPLIST_FILE = CameraTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1817,6 +1818,7 @@
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/EXpecta",
 				);
 				INFOPLIST_FILE = CameraTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
