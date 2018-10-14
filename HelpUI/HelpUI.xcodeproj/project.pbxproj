@@ -1516,6 +1516,7 @@
 					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = HelpUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.HelpUITests;
@@ -1540,6 +1541,7 @@
 					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = HelpUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.HelpUITests;
