@@ -1,0 +1,795 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */; };
+		19F4946E216F4B720011CFF6 /* EUSMYourPlanCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */; };
+		19F49473216F4D2F0011CFF6 /* EUSMYourCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */; };
+		19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F49475216F4F3A0011CFF6 /* UIKit.framework */; };
+		19F494BE216F5DDD0011CFF6 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F494B7216F5DBD0011CFF6 /* libOCMock.a */; };
+		19F494BF216F5DEA0011CFF6 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F494A8216F5D7F0011CFF6 /* libSpecta.a */; };
+		19F494C0216F5DF60011CFF6 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4948F216F5D6F0011CFF6 /* libExpecta.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		19F491E5216F283D0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49192216F24E60011CFF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 19F49199216F24E60011CFF6;
+			remoteInfo = EnlightUI;
+		};
+		19F49484216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		19F49486216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		19F49488216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		19F4948A216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		19F4948C216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		19F4948E216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		19F49490216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		19F49492216F5D6F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		19F4949D216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		19F4949F216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		19F494A1216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		19F494A3216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		19F494A5216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		19F494A7216F5D7F0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		19F494B2216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		19F494B4216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		19F494B6216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		19F494B8216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		19F494BA216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
+		19F494BC216F5DBD0011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 817EB1621BD765130047E85A;
+			remoteInfo = "OCMock tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		19F49198216F24E60011CFF6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		19F4919A216F24E60011CFF6 /* libEnlightUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEnlightUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F491D2216F274C0011CFF6 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		19F491D4216F274C0011CFF6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		19F491D5216F274C0011CFF6 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		19F491D7216F276F0011CFF6 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		19F491D8216F276F0011CFF6 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		19F491D9216F276F0011CFF6 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		19F491DA216F276F0011CFF6 /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		19F491DF216F283D0011CFF6 /* EnlightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnlightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F491E3216F283D0011CFF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19F4946A216F48520011CFF6 /* EnlightUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EnlightUI-Prefix.pch"; sourceTree = "<group>"; };
+		19F4946B216F48B70011CFF6 /* EnlightUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EnlightUITests-Prefix.pch"; sourceTree = "<group>"; };
+		19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUSMYourPlanCell.mm; sourceTree = "<group>"; };
+		19F4946D216F4B720011CFF6 /* EUSMYourPlanCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUSMYourPlanCell.h; sourceTree = "<group>"; };
+		19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUSMYourCellSpec.mm; sourceTree = "<group>"; };
+		19F49475216F4F3A0011CFF6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		19F49197216F24E60011CFF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19F491DC216F283D0011CFF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */,
+				19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */,
+				19F494C0216F5DF60011CFF6 /* libExpecta.a in Frameworks */,
+				19F494BE216F5DDD0011CFF6 /* libOCMock.a in Frameworks */,
+				19F494BF216F5DEA0011CFF6 /* libSpecta.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19F49191216F24E60011CFF6 = {
+			isa = PBXGroup;
+			children = (
+				19F491D1216F271C0011CFF6 /* Configuration */,
+				19F4919C216F24E60011CFF6 /* EnlightUI */,
+				19F491E0216F283D0011CFF6 /* EnlightUITests */,
+				19F49477216F4FC20011CFF6 /* Libraries */,
+				19F4919B216F24E60011CFF6 /* Products */,
+				19F49474216F4F3A0011CFF6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		19F4919B216F24E60011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F491DF216F283D0011CFF6 /* EnlightUITests.xctest */,
+				19F4919A216F24E60011CFF6 /* libEnlightUI.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		19F4919C216F24E60011CFF6 /* EnlightUI */ = {
+			isa = PBXGroup;
+			children = (
+				19F4946F216F4B870011CFF6 /* SubscriptionManagement */,
+				19F49469216F48030011CFF6 /* Supporting Files */,
+			);
+			path = EnlightUI;
+			sourceTree = "<group>";
+		};
+		19F491D1216F271C0011CFF6 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				19F491D3216F274C0011CFF6 /* Configurations */,
+				19F491D6216F276F0011CFF6 /* Targets */,
+				19F491D2216F274C0011CFF6 /* Common.xcconfig */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		19F491D3216F274C0011CFF6 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				19F491D4216F274C0011CFF6 /* Debug.xcconfig */,
+				19F491D5216F274C0011CFF6 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			path = ../Configuration/Configurations;
+			sourceTree = "<group>";
+		};
+		19F491D6216F276F0011CFF6 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				19F491D8216F276F0011CFF6 /* Application.xcconfig */,
+				19F491DA216F276F0011CFF6 /* Bundle.xcconfig */,
+				19F491D9216F276F0011CFF6 /* Framework.xcconfig */,
+				19F491D7216F276F0011CFF6 /* StaticLibrary.xcconfig */,
+			);
+			name = Targets;
+			path = ../Configuration/Targets;
+			sourceTree = "<group>";
+		};
+		19F491E0216F283D0011CFF6 /* EnlightUITests */ = {
+			isa = PBXGroup;
+			children = (
+				19F49478216F5D080011CFF6 /* SubscriptionManagement */,
+				19F49468216F47DD0011CFF6 /* Supporting Files */,
+			);
+			path = EnlightUITests;
+			sourceTree = "<group>";
+		};
+		19F49468216F47DD0011CFF6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				19F4946B216F48B70011CFF6 /* EnlightUITests-Prefix.pch */,
+				19F491E3216F283D0011CFF6 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		19F49469216F48030011CFF6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				19F4946A216F48520011CFF6 /* EnlightUI-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		19F4946F216F4B870011CFF6 /* SubscriptionManagement */ = {
+			isa = PBXGroup;
+			children = (
+				19F49470216F4BA10011CFF6 /* Views */,
+			);
+			name = SubscriptionManagement;
+			sourceTree = "<group>";
+		};
+		19F49470216F4BA10011CFF6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19F4946D216F4B720011CFF6 /* EUSMYourPlanCell.h */,
+				19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		19F49474216F4F3A0011CFF6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19F49475216F4F3A0011CFF6 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		19F49477216F4FC20011CFF6 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */,
+				19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */,
+				19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		19F49478216F5D080011CFF6 /* SubscriptionManagement */ = {
+			isa = PBXGroup;
+			children = (
+				19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */,
+			);
+			name = SubscriptionManagement;
+			sourceTree = "<group>";
+		};
+		19F4947A216F5D6F0011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F49485216F5D6F0011CFF6 /* Expecta.framework */,
+				19F49487216F5D6F0011CFF6 /* Expecta.framework */,
+				19F49489216F5D6F0011CFF6 /* ExpectaTests.xctest */,
+				19F4948B216F5D6F0011CFF6 /* Expecta-iOSTests.xctest */,
+				19F4948D216F5D6F0011CFF6 /* libExpecta.a */,
+				19F4948F216F5D6F0011CFF6 /* libExpecta.a */,
+				19F49491216F5D6F0011CFF6 /* libExpectaTests.xctest */,
+				19F49493216F5D6F0011CFF6 /* libExpecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		19F49495216F5D7F0011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F4949E216F5D7F0011CFF6 /* Specta.framework */,
+				19F494A0216F5D7F0011CFF6 /* SpectaTests.xctest */,
+				19F494A2216F5D7F0011CFF6 /* Specta.framework */,
+				19F494A4216F5D7F0011CFF6 /* Specta-iOSTests.xctest */,
+				19F494A6216F5D7F0011CFF6 /* libSpecta.a */,
+				19F494A8216F5D7F0011CFF6 /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		19F494AA216F5DBD0011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F494B3216F5DBD0011CFF6 /* OCMock.framework */,
+				19F494B5216F5DBD0011CFF6 /* OCMockTests.xctest */,
+				19F494B7216F5DBD0011CFF6 /* libOCMock.a */,
+				19F494B9216F5DBD0011CFF6 /* OCMockLibTests.xctest */,
+				19F494BB216F5DBD0011CFF6 /* OCMock.framework */,
+				19F494BD216F5DBD0011CFF6 /* OCMock.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		19F49199216F24E60011CFF6 /* EnlightUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19F491A3216F24E60011CFF6 /* Build configuration list for PBXNativeTarget "EnlightUI" */;
+			buildPhases = (
+				19F49196216F24E60011CFF6 /* Sources */,
+				19F49197216F24E60011CFF6 /* Frameworks */,
+				19F49198216F24E60011CFF6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EnlightUI;
+			productName = EnlightUI;
+			productReference = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		19F491DE216F283D0011CFF6 /* EnlightUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19F491E7216F283D0011CFF6 /* Build configuration list for PBXNativeTarget "EnlightUITests" */;
+			buildPhases = (
+				19F491DB216F283D0011CFF6 /* Sources */,
+				19F491DC216F283D0011CFF6 /* Frameworks */,
+				19F491DD216F283D0011CFF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				19F491E6216F283D0011CFF6 /* PBXTargetDependency */,
+			);
+			name = EnlightUITests;
+			productName = EnlightUITests;
+			productReference = 19F491DF216F283D0011CFF6 /* EnlightUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		19F49192216F24E60011CFF6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					19F49199216F24E60011CFF6 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					19F491DE216F283D0011CFF6 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = 19F49195216F24E60011CFF6 /* Build configuration list for PBXProject "EnlightUI" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 19F49191216F24E60011CFF6;
+			productRefGroup = 19F4919B216F24E60011CFF6 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 19F4947A216F5D6F0011CFF6 /* Products */;
+					ProjectRef = 19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = 19F494AA216F5DBD0011CFF6 /* Products */;
+					ProjectRef = 19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = 19F49495216F5D7F0011CFF6 /* Products */;
+					ProjectRef = 19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				19F49199216F24E60011CFF6 /* EnlightUI */,
+				19F491DE216F283D0011CFF6 /* EnlightUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		19F49485216F5D6F0011CFF6 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 19F49484216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F49487216F5D6F0011CFF6 /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 19F49486216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F49489216F5D6F0011CFF6 /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 19F49488216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F4948B216F5D6F0011CFF6 /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 19F4948A216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F4948D216F5D6F0011CFF6 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 19F4948C216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F4948F216F5D6F0011CFF6 /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 19F4948E216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F49491216F5D6F0011CFF6 /* libExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = libExpectaTests.xctest;
+			remoteRef = 19F49490216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F49493216F5D6F0011CFF6 /* libExpecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 19F49492216F5D6F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F4949E216F5D7F0011CFF6 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 19F4949D216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494A0216F5D7F0011CFF6 /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 19F4949F216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494A2216F5D7F0011CFF6 /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 19F494A1216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494A4216F5D7F0011CFF6 /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 19F494A3216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494A6216F5D7F0011CFF6 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 19F494A5216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494A8216F5D7F0011CFF6 /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 19F494A7216F5D7F0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494B3216F5DBD0011CFF6 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 19F494B2216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494B5216F5DBD0011CFF6 /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 19F494B4216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494B7216F5DBD0011CFF6 /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 19F494B6216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494B9216F5DBD0011CFF6 /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 19F494B8216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494BB216F5DBD0011CFF6 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 19F494BA216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F494BD216F5DBD0011CFF6 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 19F494BC216F5DBD0011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		19F491DD216F283D0011CFF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		19F49196216F24E60011CFF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19F4946E216F4B720011CFF6 /* EUSMYourPlanCell.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19F491DB216F283D0011CFF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19F49473216F4D2F0011CFF6 /* EUSMYourCellSpec.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		19F491E6216F283D0011CFF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 19F49199216F24E60011CFF6 /* EnlightUI */;
+			targetProxy = 19F491E5216F283D0011CFF6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		19F491A1216F24E60011CFF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D4216F274C0011CFF6 /* Debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
+			};
+			name = Debug;
+		};
+		19F491A2216F24E60011CFF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D5216F274C0011CFF6 /* Release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
+			};
+			name = Release;
+		};
+		19F491A4216F24E60011CFF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D7216F276F0011CFF6 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "EnlightUI/EnlightUI-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		19F491A5216F24E60011CFF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D7216F276F0011CFF6 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "EnlightUI/EnlightUI-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		19F491E8216F283D0011CFF6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D8216F276F0011CFF6 /* Application.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "EnlightUITests/EnlightUITests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/Expecta/src",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = EnlightUITests/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		19F491E9216F283D0011CFF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491D8216F276F0011CFF6 /* Application.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "EnlightUITests/EnlightUITests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/Expecta/src",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				INFOPLIST_FILE = EnlightUITests/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		19F49195216F24E60011CFF6 /* Build configuration list for PBXProject "EnlightUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19F491A1216F24E60011CFF6 /* Debug */,
+				19F491A2216F24E60011CFF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		19F491A3216F24E60011CFF6 /* Build configuration list for PBXNativeTarget "EnlightUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19F491A4216F24E60011CFF6 /* Debug */,
+				19F491A5216F24E60011CFF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		19F491E7216F283D0011CFF6 /* Build configuration list for PBXNativeTarget "EnlightUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19F491E8216F283D0011CFF6 /* Debug */,
+				19F491E9216F283D0011CFF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 19F49192216F24E60011CFF6 /* Project object */;
+}

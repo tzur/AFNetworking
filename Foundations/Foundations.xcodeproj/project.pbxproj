@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				19F491EB216F2F650011CFF6 /* PBXTargetDependency */,
 				198CE84620A41CF0000E70BF /* PBXTargetDependency */,
 				198CE82620A41CCD000E70BF /* PBXTargetDependency */,
 				190965C81FBC39E200AD5B91 /* PBXTargetDependency */,
@@ -45,13 +46,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
 			remoteInfo = Pinky;
-		};
-		062776441ED586D50006024E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
-			remoteInfo = PinkyTests;
 		};
 		062776471ED586DE0006024E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -122,6 +116,55 @@
 			proxyType = 2;
 			remoteGlobalIDString = 19E1533020A314E100F0F438;
 			remoteInfo = Warehouse;
+		};
+		19F491AB216F24E70011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B94C46B920B9937500C8B65B;
+			remoteInfo = BazaarTestUtils;
+		};
+		19F491B2216F24E70011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19F4919A216F24E60011CFF6;
+			remoteInfo = EnlightUI;
+		};
+		19F491B6216F24E70011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6381F1BE20B44B0D006D7B57;
+			remoteInfo = FiberTestUtils;
+		};
+		19F491C0216F24E70011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = MetalToolbox;
+		};
+		19F491C2216F24E70011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E407FB4F20B4228900FDFAC8;
+			remoteInfo = MetalToolboxDeviceTests;
+		};
+		19F491EA216F2F650011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 19F49199216F24E60011CFF6;
+			remoteInfo = EnlightUI;
+		};
+		19F491ED216F2F650011CFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19F491DF216F283D0011CFF6;
+			remoteInfo = EnlightUITests;
 		};
 		65BAF1031D47F99C009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -494,6 +537,7 @@
 		1984CF221FF3A8CE00873DA0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HelpUI.xcodeproj; path = ../HelpUI/HelpUI.xcodeproj; sourceTree = "<group>"; };
 		19E1533C20A314E100F0F438 /* Warehouse.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Warehouse.xcodeproj; path = ../Warehouse/Warehouse.xcodeproj; sourceTree = "<group>"; };
+		19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EnlightUI.xcodeproj; path = ../EnlightUI/EnlightUI.xcodeproj; sourceTree = "<group>"; };
 		65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
 		65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
 		65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUI.xcodeproj; path = ../CameraUI/CameraUI.xcodeproj; sourceTree = "<group>"; };
@@ -520,7 +564,6 @@
 				062776431ED586D50006024E /* libPinky.a */,
 				8B029FE41F696B5300B3CF25 /* Pinky.bundle */,
 				8B029FE61F696B5300B3CF25 /* PinkyDeviceTests.xctest */,
-				062776451ED586D50006024E /* PinkyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -551,6 +594,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		19F490CD216F24BB0011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F491C1216F24E70011CFF6 /* libMetalToolbox.a */,
+				19F491C3216F24E70011CFF6 /* MetalToolboxDeviceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		19F491A7216F24E60011CFF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F491B3216F24E70011CFF6 /* libEnlightUI.a */,
+				19F491EE216F2F650011CFF6 /* EnlightUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		652397371D47F69F00222BCB = {
 			isa = PBXGroup;
 			children = (
@@ -566,6 +627,7 @@
 				65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */,
 				65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */,
 				65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */,
+				19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */,
 				65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */,
 				19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */,
 				A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */,
@@ -591,6 +653,7 @@
 			children = (
 				65BAF1041D47F99C009BBB6F /* libBazaar.a */,
 				65BAF1061D47F99C009BBB6F /* BazaarTests.xctest */,
+				19F491AC216F24E70011CFF6 /* libBazaarTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -627,6 +690,7 @@
 			children = (
 				65BAF1281D47F9B9009BBB6F /* libFiber.a */,
 				65BAF12A1D47F9B9009BBB6F /* FiberTests.xctest */,
+				19F491B7216F24E70011CFF6 /* libFiberTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -780,6 +844,10 @@
 					ProjectRef = 65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */;
 				},
 				{
+					ProductGroup = 19F491A7216F24E60011CFF6 /* Products */;
+					ProjectRef = 19F491A6216F24E60011CFF6 /* EnlightUI.xcodeproj */;
+				},
+				{
 					ProductGroup = 65BAF1231D47F9B9009BBB6F /* Products */;
 					ProjectRef = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
 				},
@@ -804,7 +872,7 @@
 					ProjectRef = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
 				},
 				{
-					ProductGroup = E4D6C6D420ECECB000C94476 /* Products */;
+					ProductGroup = 19F490CD216F24BB0011CFF6 /* Products */;
 					ProjectRef = E4D6C6D320ECECB000C94476 /* MetalToolbox.xcodeproj */;
 				},
 				{
@@ -859,13 +927,6 @@
 			remoteRef = 062776421ED586D50006024E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		062776451ED586D50006024E /* PinkyTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PinkyTests.xctest;
-			remoteRef = 062776441ED586D50006024E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		190965CC1FBC39E300AD5B91 /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -899,6 +960,48 @@
 			fileType = archive.ar;
 			path = libWarehouse.a;
 			remoteRef = 19E1535920A314EF00F0F438 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491AC216F24E70011CFF6 /* libBazaarTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBazaarTestUtils.a;
+			remoteRef = 19F491AB216F24E70011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491B3216F24E70011CFF6 /* libEnlightUI.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEnlightUI.a;
+			remoteRef = 19F491B2216F24E70011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491B7216F24E70011CFF6 /* libFiberTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFiberTestUtils.a;
+			remoteRef = 19F491B6216F24E70011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491C1216F24E70011CFF6 /* libMetalToolbox.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMetalToolbox.a;
+			remoteRef = 19F491C0216F24E70011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491C3216F24E70011CFF6 /* MetalToolboxDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MetalToolboxDeviceTests.xctest;
+			remoteRef = 19F491C2216F24E70011CFF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F491EE216F2F650011CFF6 /* EnlightUITests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = EnlightUITests.xctest;
+			remoteRef = 19F491ED216F2F650011CFF6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BAF1041D47F99C009BBB6F /* libBazaar.a */ = {
@@ -1194,6 +1297,11 @@
 			isa = PBXTargetDependency;
 			name = HelpUI;
 			targetProxy = 198CE84520A41CF0000E70BF /* PBXContainerItemProxy */;
+		};
+		19F491EB216F2F650011CFF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EnlightUI;
+			targetProxy = 19F491EA216F2F650011CFF6 /* PBXContainerItemProxy */;
 		};
 		65BAF4281D48B1C5009BBB6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

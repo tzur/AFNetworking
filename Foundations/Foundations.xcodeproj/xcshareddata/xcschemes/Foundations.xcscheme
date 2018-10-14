@@ -202,6 +202,20 @@
                ReferencedContainer = "container:../Warehouse/Warehouse.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19F491DE216F283D0011CFF6"
+               BuildableName = "EnlightUITests.xctest"
+               BlueprintName = "EnlightUITests"
+               ReferencedContainer = "container:../EnlightUI/EnlightUI.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -398,6 +412,16 @@
                BuildableName = "WarehouseTests.xctest"
                BlueprintName = "WarehouseTests"
                ReferencedContainer = "container:../Warehouse/Warehouse.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19F491DE216F283D0011CFF6"
+               BuildableName = "EnlightUITests.xctest"
+               BlueprintName = "EnlightUITests"
+               ReferencedContainer = "container:../EnlightUI/EnlightUI.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
