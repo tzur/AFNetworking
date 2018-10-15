@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIFont *)spx_fontWithSizeRatio:(CGFloat)ratio minSize:(NSUInteger)minSize
                           maxSize:(NSUInteger)maxSize weight:(UIFontWeight)weight {
   auto windowHeight = [UIApplication sharedApplication].keyWindow.bounds.size.height;
-  return [UIFont systemFontOfSize:std::clamp(ratio * windowHeight, minSize, maxSize)
+  return [UIFont systemFontOfSize:std::clamp<CGFloat>(ratio * windowHeight, minSize, maxSize)
                            weight:weight];
 }
 

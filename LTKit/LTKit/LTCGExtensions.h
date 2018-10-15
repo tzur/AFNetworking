@@ -103,9 +103,11 @@ CG_INLINE CGPoint CGPointFromSize(const CGSize &size) {
   return CGPointMake(size.width, size.height);
 }
 
-/// Returns size from the given point.
-CG_INLINE CGSize CGSizeFromPoint(const CGPoint &point) {
-  return CGSizeMake(point.x, point.y);
+/// Returns the closest point to \c point, in Euclidean distance, that's contained inside the bounds
+/// of \c rect. If \c point is already contained in \c rect, is it returned without change.
+CG_INLINE CGPoint CGPointClampToRect(const CGPoint &point, const CGRect &rect) {
+  return CGPointMake(std::clamp(point.x, CGRectGetMinX(rect), CGRectGetMaxX(rect)),
+                     std::clamp(point.y, CGRectGetMinY(rect), CGRectGetMaxY(rect)));
 }
 
 /// Returns whether two points are equal.
@@ -188,30 +190,6 @@ CG_INLINE NSUInteger CGPointHash(const CGPoint &point) {
   return 31 * [@(point.x) hash] + [@(point.y) hash];
 }
 
-namespace std {
-  /// Constrains a value to lie between two values.
-  CG_INLINE CGFloat clamp(const CGFloat &value, const CGFloat &a, const CGFloat &b) {
-    return (a <= b) ?
-        min(max(value, a), b) : min(max(value, b), a);
-  }
-
-  /// Constrains a point to lie between two values (for both axes).
-  CG_INLINE CGPoint clamp(const CGPoint &point, const CGFloat &a, const CGFloat &b) {
-    return CGPointMake(clamp(point.x, a, b), clamp(point.y, a, b));
-  }
-
-  /// Constrains a point to lie between two points.
-  CG_INLINE CGPoint clamp(const CGPoint &point, const CGPoint &a, const CGPoint &b) {
-    return CGPointMake(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
-  }
-
-  /// Constrains a point to lie inside the given rect.
-  CG_INLINE CGPoint clamp(const CGPoint &point, const CGRect &rect) {
-    return CGPointMake(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
-                       clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
-  }
-}
-
 #pragma mark -
 #pragma mark CGSize Operations
 #pragma mark -
@@ -269,6 +247,11 @@ CG_INLINE CGSize operator*(const CGSize &lhs, const CGSize &rhs) {
 /// Divide a size by another size, component-wise.
 CG_INLINE CGSize operator/(const CGSize &lhs, const CGSize &rhs) {
   return CGSizeMake(lhs.width / rhs.width, lhs.height / rhs.height);
+}
+
+/// Returns size from the given point.
+CG_INLINE CGSize CGSizeFromPoint(const CGPoint &point) {
+  return CGSizeMake(point.x, point.y);
 }
 
 /// Returns a uniform size with the given length at each dimension.
@@ -459,7 +442,7 @@ CG_INLINE CGRect CGRoundRect(const CGRect &rect, CGFloat scale = 1) {
 /// @note the returned rectangle is standardized, that is, has nonnegative size.
 CG_INLINE CGRect CGRoundRectInside(const CGRect rect, CGFloat scale = 1) {
   CGRect standardized = CGRectStandardize(rect);
-  CGPoint origin = std::clamp(std::ceil(standardized.origin * scale) / scale, standardized);
+  CGPoint origin = CGPointClampToRect(std::ceil(standardized.origin * scale) / scale, standardized);
   CGSize size = CGSizeFromPoint(std::floor((standardized.origin + standardized.size) * scale) /
                                 scale) - CGSizeFromPoint(origin);
   return CGRectMake(origin.x, origin.y, MAX(size.width, 0), MAX(size.height, 0));
@@ -526,9 +509,9 @@ CG_INLINE CGSize CGSizeAspectFill(CGSize size, CGSize sizeToFit) {
 
 /// Returns the given \c angle normalized to the canonical range [0, 2 * PI).
 CG_INLINE CGFloat CGNormalizedAngle(CGFloat angle) {
-  CGFloat pi2 = (CGFloat)M_PI * (CGFloat)2;
-  angle = std::fmod(angle, pi2);
-  return std::clamp(angle + ((angle < 0) ? 2 * M_PI : 0), 0, std::nextafter(pi2, (CGFloat)M_PI));
+  static const CGFloat k2Pi = 2 * M_PI;
+  angle = std::fmod(angle, k2Pi);
+  return std::clamp(angle + (angle < 0 ? k2Pi : 0), 0., std::nextafter(k2Pi, 0.));
 }
 
 #endif

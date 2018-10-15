@@ -2,7 +2,7 @@
 // Created by Rouven Strauss.
 
 #import <LTKit/LTHashExtensions.h>
-#import <experimental/optional>
+#import <optional>
 
 #import "LTGeometry.h"
 
@@ -471,7 +471,7 @@ private:
   Type type() const noexcept;
 
   Corners _v;
-  mutable std::experimental::optional<Type> _quadType;
+  mutable std::optional<Type> _quadType;
 };
 
 #pragma mark -

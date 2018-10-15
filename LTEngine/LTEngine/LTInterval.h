@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import <experimental/optional>
+#import <optional>
 
 namespace lt {
 
@@ -148,9 +148,9 @@ public:
   /// Returns the minimum value of this interval. Note that the minimum value equals the value
   /// returned by the \c inf() method iff the interval is closed w.r.t the infimum. If this interval
   /// is empty, an empty optional is returned.
-  std::experimental::optional<T> min() const {
+  std::optional<T> min() const {
     if (isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
     if (infIncluded()) {
       return _inf;
@@ -163,9 +163,9 @@ public:
   /// Returns the maximum value of this interval. Note that the maximum value equals the value
   /// returned by the \c sup() method iff the interval is closed w.r.t the supremum. If this
   /// interval is empty, an empty optional is returned.
-  std::experimental::optional<T> max() const {
+  std::optional<T> max() const {
     if (isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
     if (supIncluded()) {
       return _sup;
@@ -178,9 +178,9 @@ public:
   /// Returns the linearly interpolated value for parametric value \c t. In particular, the minimum
   /// of this interval is returned for \c t equalling \c 0 and the maximum of this interval is
   /// returned for \c t equalling \c 1. If this interval is empty, an empty optional is returned.
-  std::experimental::optional<double> valueAt(double t) const {
+  std::optional<double> valueAt(double t) const {
     if (isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
     // No overflow possible since non-empty intervals always allow incrementing (/decrementing) of
     // their infimum (/supremum) by a single step.
@@ -190,14 +190,14 @@ public:
   /// Returns the parametric value for the given value \c x, i.e. the value \c t s.t.
   /// <tt>valueAt(t)</tt> equals \c x (up to deviations caused by numeric imprecisions). If this
   /// interval is empty or the interval contains only a single value, an empty optional is returned.
-  std::experimental::optional<double> parametricValue(T x) const {
+  std::optional<double> parametricValue(T x) const {
     if (isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
     CGFloat minimum = *min();
     CGFloat maximum = *max();
     if (minimum == maximum) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     } else {
       return ((double)x - minimum) / (maximum - minimum);
     }
@@ -211,9 +211,9 @@ public:
   /// Returns the given value \c x clamped to this interval, i.e. the returned value is \c x if this
   /// interval contains \c x, and the value contained by this interval closest to \c x, otherwise.
   /// If this interval is empty, an empty optional is returned.
-  std::experimental::optional<T> clamp(T x) const {
+  std::optional<T> clamp(T x) const {
     if (isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
     if (contains(x)) {
       return x;
@@ -229,9 +229,9 @@ public:
   /// b) The intersection of the two involved intervals, if the intersection is non-empty.
   /// c) The non-empty closed interval consisting of the single value \c a, s.t. \c a is an
   ///    arbitrary value contained by this interval clamped to the given \c interval.
-  std::experimental::optional<lt::Interval<T>> clampedTo(lt::Interval<T> interval) const {
+  std::optional<lt::Interval<T>> clampedTo(lt::Interval<T> interval) const {
     if (interval.isEmpty()) {
-      return std::experimental::nullopt;
+      return std::nullopt;
     }
 
     lt::Interval<T> intersection = intersectionWith(interval);

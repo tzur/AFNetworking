@@ -199,7 +199,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)pagingViewScrolledToPosition:(CGFloat)position {
-  self.activePageIndex = round(std::clamp(position, 0, self.pageViewModels.count - 1));
+  self.activePageIndex = std::round(std::clamp(position, 0., self.pageViewModels.count - 1.));
 }
 
 - (void)requestDismiss {

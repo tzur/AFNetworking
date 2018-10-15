@@ -36,13 +36,13 @@ extern "C" {
 #import "LTDefines.h"
 #import "LTEnum.h"
 #import "LTLogger.h"
-#import "LTPropertyMacros.h"
 #import "LTTypedefs.h"
 #import "NSError+LTKit.h"
 
 #ifdef __cplusplus
   #import "LTEasyBoxing.h"
   #import "LTNullability.h"
+  #import "LTPropertyMacros.h"
   #import "LTRef.h"
   #import "LTStructBoxing.h"
 

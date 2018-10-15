@@ -22,11 +22,11 @@ static CGPointPair LTPointOnEdgeNearestToPointOnEdgeTest(CGPoint p0, CGPoint p1,
   CGFloat q0q1Length = CGPointDistance(q0, q1);
 
   CGPoints pCandidates{p0, p1,
-      p0 + std::clamp(LTScalarProjection(q0, p1, p0), 0, p0p1Length) * p0p1Normalized,
-      p0 + std::clamp(LTScalarProjection(q1, p1, p0), 0, p0p1Length) * p0p1Normalized};
+    p0 + std::clamp(LTScalarProjection(q0, p1, p0), 0., p0p1Length) * p0p1Normalized,
+    p0 + std::clamp(LTScalarProjection(q1, p1, p0), 0., p0p1Length) * p0p1Normalized};
   CGPoints qCandidates{q0, q1,
-    q0 + std::clamp(LTScalarProjection(p0, q1, q0), 0, q0q1Length) * q0q1Normalized,
-    q0 + std::clamp(LTScalarProjection(p1, q1, q0), 0, q0q1Length) * q0q1Normalized};
+    q0 + std::clamp(LTScalarProjection(p0, q1, q0), 0., q0q1Length) * q0q1Normalized,
+    q0 + std::clamp(LTScalarProjection(p1, q1, q0), 0., q0q1Length) * q0q1Normalized};
 
   CGFloat minDistance = CGFLOAT_MAX;
 

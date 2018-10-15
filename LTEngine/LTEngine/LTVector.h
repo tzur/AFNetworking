@@ -149,13 +149,13 @@ struct LTVector2 {
 
   /// Returns the determinant of this vector and the given \c vector.
   inline float determinant(LTVector2 vector) const {
-    return this->x * vector.y - this->y * vector.x;
+    return x * vector.y - y * vector.x;
   }
 
   /// Returns the counter-clockwise angle (in bottom-left origin coordinate system) between this
   /// vector and the given \c vector. The result is guaranteed to be in the range [0, 2 * PI).
   inline CGFloat angle(LTVector2 vector) const {
-    return CGNormalizedAngle(std::atan2(this->determinant(vector), this->dot(vector)));
+    return CGNormalizedAngle(std::atan2(determinant(vector), dot(vector)));
   }
 
   /// Returns a new vector which is a normalized copy of this vector.
@@ -169,7 +169,17 @@ struct LTVector2 {
   /// origin coordinate system), otherwise it reflects a counter-clockwise one. By default
   /// \c clockwise is set to \c YES.
   inline LTVector2 perpendicular(BOOL clockwise = YES) const {
-    return clockwise ? LTVector2(this->y, -this->x) : LTVector2(-this->y, this->x);
+    return clockwise ? LTVector2(y, -x) : LTVector2(-y, x);
+  }
+
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector2 clamp(LTVector2 a, LTVector2 b) {
+    return LTVector2(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector2 clamp(float a, float b) {
+    return clamp(LTVector2(a), LTVector2(b));
   }
 
   /// Returns pointer to the first element of the vector.
@@ -208,14 +218,6 @@ struct LTVector2 {
 
 constexpr bool operator==(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
-constexpr bool operator>=(LTVector2 lhs, LTVector2 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y;
-}
-
-constexpr bool operator<=(LTVector2 lhs, LTVector2 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y;
 }
 
 constexpr bool operator!=(LTVector2 lhs, LTVector2 rhs) {
@@ -266,22 +268,6 @@ inline LTVector2 operator/(CGFloat lhs, LTVector2 rhs) {
 }
 
 namespace std {
-  /// Constrains point elements to lie between two points elements.
-  inline LTVector2 clamp(LTVector2 point, LTVector2 a, LTVector2 b) {
-    return LTVector2(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
-  }
-
-  /// Constrains point elements to lie between two scalars.
-  inline LTVector2 clamp(LTVector2 point, float a, float b) {
-    return clamp(point, LTVector2(a), LTVector2(b));
-  }
-
-  /// Constrains point to lie inside the given rect.
-  inline LTVector2 clamp(LTVector2 point, CGRect rect) {
-    return LTVector2(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
-                     clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
-  }
-
   /// Round the elements.
   inline LTVector2 round(LTVector2 v) {
     return LTVector2(round(v.x), round(v.y));
@@ -520,6 +506,16 @@ struct LTVector3 {
     return *this / length();
   }
 
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector3 clamp(LTVector3 a, LTVector3 b) {
+    return LTVector3(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y), std::clamp(z, a.z, b.z));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector3 clamp(float a, float b) {
+    return clamp(LTVector3(a), LTVector3(b));
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
@@ -558,14 +554,6 @@ struct LTVector3 {
 
 constexpr bool operator==(LTVector3 lhs, LTVector3 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
-}
-
-constexpr bool operator>=(LTVector3 lhs, LTVector3 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z;
-}
-
-constexpr bool operator<=(LTVector3 lhs, LTVector3 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z;
 }
 
 constexpr bool operator!=(LTVector3 lhs, LTVector3 rhs) {
@@ -659,16 +647,6 @@ namespace std {
   /// Returns element-wise raised to the power vector.
   inline LTVector3 pow(LTVector3 base, LTVector3 power) {
     return LTVector3(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z));
-  }
-
-  /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector3 clamp(LTVector3 point, LTVector3 a, LTVector3 b) {
-    return LTVector3(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z));
-  }
-
-  /// Constrains vector elements to lie between two scalars.
-  inline LTVector3 clamp(LTVector3 v, float a, float b) {
-    return clamp(v, LTVector3(a), LTVector3(b));
   }
 
   /// Returns a linear interpolation between two values using a scalar.
@@ -914,6 +892,17 @@ struct LTVector4 {
     return *this / length();
   }
 
+  /// Returns a new vector clamped element-wise to the elements in the vectors \c a and \c b.
+  inline LTVector4 clamp(LTVector4 a, LTVector4 b) {
+    return LTVector4(std::clamp(x, a.x, b.x), std::clamp(y, a.y, b.y),
+                     std::clamp(z, a.z, b.z), std::clamp(w, a.w, b.w));
+  }
+
+  /// Returns a new vector clamped element-wise to the values \c a and \c b.
+  inline LTVector4 clamp(float a, float b) {
+    return clamp(LTVector4(a), LTVector4(b));
+  }
+
   /// Returns pointer to the first element of the vector.
   inline float *data() {
     return reinterpret_cast<float *>(this);
@@ -961,14 +950,6 @@ constexpr bool operator!=(LTVector4 lhs, LTVector4 rhs) {
 
 constexpr LTVector4 operator-(LTVector4 vector) {
   return LTVector4(-vector.x, -vector.y, -vector.z, -vector.w);
-}
-
-constexpr bool operator>=(LTVector4 lhs, LTVector4 rhs) {
-  return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z && lhs.w >= rhs.w;
-}
-
-constexpr bool operator<=(LTVector4 lhs, LTVector4 rhs) {
-  return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z && lhs.w <= rhs.w;
 }
 
 inline LTVector4 operator+(LTVector4 lhs, LTVector4 rhs) {
@@ -1063,17 +1044,6 @@ namespace std {
                      pow(base.w, power.w));
   }
 
-  /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector4 clamp(LTVector4 point, LTVector4 a, LTVector4 b) {
-    return LTVector4(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z),
-                     clamp(point.w, a.w, b.w));
-  }
-
-  /// Constrains vector elements to lie between two scalars.
-  inline LTVector4 clamp(LTVector4 v, float a, float b) {
-    return clamp(v, LTVector4(a), LTVector4(b));
-  }
-
   /// Returns a linear interpolation between two values using a scalar.
   inline LTVector4 mix(LTVector4 a, LTVector4 b, float alpha) {
     return (1 - alpha) * a + alpha * b;
@@ -1098,6 +1068,33 @@ namespace std {
     return step(LTVector4(edge), v);
   }
 }
+
+namespace lt::detail {
+
+template<>
+struct RangeValidator<LTVector2> {
+  bool operator()(const LTVector2 &value, const LTVector2 &low, const LTVector2 &high) {
+    return low.x <= value.x && low.y <= value.y && value.x <= high.x && value.y <= high.y;
+  }
+};
+
+template<>
+struct RangeValidator<LTVector3> {
+  bool operator()(const LTVector3 &value, const LTVector3 &low, const LTVector3 &high) {
+    return low.x <= value.x && low.y <= value.y && low.z <= value.z &&
+        value.x <= high.x && value.y <= high.y && value.z <= high.z;
+  }
+};
+
+template<>
+struct RangeValidator<LTVector4> {
+  bool operator()(const LTVector4 &value, const LTVector4 &low, const LTVector4 &high) {
+    return low.x <= value.x && low.y <= value.y && low.z <= value.z && low.w <= value.w &&
+        value.x <= high.x && value.y <= high.y && value.z <= high.z && value.w <= high.w;
+  }
+};
+
+} // namespace lt::detail
 
 /// Returns an \c NSString representation of the given \c vector. The returned \c NSString is
 /// <tt>@"(x, y, z, w)"</tt>, where \c x, \c y, \c z, and \c w are the string representations of

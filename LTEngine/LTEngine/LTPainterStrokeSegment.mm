@@ -99,7 +99,7 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
         // TODO:(amit) find out why the unclamped value might be negative in certain scenarios for
         // brushes with very small scale and spacing.
         LTPainterPoint *point =
-            [self.interpolant valueAtKey:std::clamp(key / self.distances.size(), 0, 1)];
+            [self.interpolant valueAtKey:std::clamp(key / self.distances.size(), 0., 1.)];
         point.distanceFromStart = self.distanceFromStart + nextDistance;
         [points addObject:point];
         nextDistance = nextDistance + interval;

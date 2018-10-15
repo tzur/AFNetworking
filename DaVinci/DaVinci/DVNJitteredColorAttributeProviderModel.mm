@@ -78,8 +78,7 @@ static DVNJitteredColorAttributeProviderStruct DVNColorStructFromVector(LTVector
   CGFloat brightness =
       [self.random randomDoubleBetweenMin:hsvVector.b() - self.model.brightnessJitter
                                       max:hsvVector.b() + self.model.brightnessJitter];
-  return std::clamp(LTVector3(hue, saturation, brightness).hsvToRgb(), LTVector3::zeros(),
-                    LTVector3::ones());
+  return LTVector3(hue, saturation, brightness).hsvToRgb().clamp(0, 1);
 }
 
 - (id<DVNAttributeProviderModel>)currentModel {

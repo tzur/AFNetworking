@@ -6,6 +6,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+namespace lt::detail {
+
+/// Checks whether a value lies in a given range. The default implementation uses the lower than or
+/// equal to operator (<tt><=</tt>), but specializations of this struct may use a different operator
+/// that may have weaker guarantees than it.
+template<typename T>
+struct RangeValidator {
+  /// Returns \c YES if \c value lies between the range defined by \c low and \c high.
+  bool operator()(const T &value, const T &low, const T &high) {
+    return low <= value && value <= high;
+  }
+};
+
+} // namespace lt::detail
+
 /// Useful property declaration and implementation macros.
 
 #pragma mark -
@@ -130,8 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     ___##name##Set = YES; \
   }\
   - (void)_verify##Name:(type)name { \
-    LTParameterAssert(name >= self.min##Name); \
-    LTParameterAssert(name <= self.max##Name); \
+    LTParameterAssert(lt::detail::RangeValidator<type>()(name, self.min##Name, self.max##Name)); \
   }
 
 #pragma mark -

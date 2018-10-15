@@ -12,9 +12,9 @@ static LT3DLUT *LTCreateLinearLUT(int rSize, float rCoeff, float rBias, int gSiz
   for (int b = 0; b < bSize; ++b) {
     for (int g = 0; g < gSize; ++g) {
       for (int r = 0; r < rSize; ++r) {
-        rgbaColor[0] = (uchar)std::clamp(rBias + rCoeff * (r * 255.0 / (rSize - 1)), 0, 255);
-        rgbaColor[1] = (uchar)std::clamp(gBias + gCoeff * (g * 255.0 / (gSize - 1)), 0, 255);
-        rgbaColor[2] = (uchar)std::clamp(bBias + bCoeff * (b * 255.0 / (bSize - 1)), 0, 255);
+        rgbaColor[0] = std::clamp<uchar>(rBias + rCoeff * (r * 255.0 / (rSize - 1)), 0, 255);
+        rgbaColor[1] = std::clamp<uchar>(gBias + gCoeff * (g * 255.0 / (gSize - 1)), 0, 255);
+        rgbaColor[2] = std::clamp<uchar>(bBias + bCoeff * (b * 255.0 / (bSize - 1)), 0, 255);
         rgbaColor[3] = 255;
 
         rgbaColor += 4;

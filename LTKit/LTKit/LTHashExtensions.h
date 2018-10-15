@@ -225,8 +225,7 @@ struct ::std::hash<std::pair<T, U>> {
 #pragma mark std::tuple
 #pragma mark -
 
-namespace lt {
-namespace detail {
+namespace lt::detail {
 
 /// Recursive template for performing hash on \c std::tuple.
 template <class T, size_t Index = std::tuple_size<T>::value - 1>
@@ -245,8 +244,7 @@ struct TupleHash<T, 0> {
   }
 };
 
-} // namespace detail
-} // namespace lt
+} // namespace lt::detail
 
 /// Hash specialization for \c std::tuple.
 template <typename ... T>
@@ -276,8 +274,7 @@ struct ::std::hash<std::vector<T>> {
 #pragma mark std::array
 #pragma mark -
 
-namespace lt {
-namespace detail {
+namespace lt::detail {
 
 /// Recursive template for performing hash on \c std::array.
 template <class T, size_t Index>
@@ -296,8 +293,7 @@ struct ArrayHash<T, 1> {
   }
 };
 
-} // namespace detail
-} // namespace lt
+} // namespace lt::detail
 
 /// Hash specialization for \c std::array.
 template <typename T, size_t N>

@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setProgress:(CGFloat)progress {
-  _progress = std::clamp(progress, 0, 1);
+  _progress = std::clamp(progress, 0., 1.);
   [self updateProgress];
 }
 
