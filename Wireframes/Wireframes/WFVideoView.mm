@@ -10,9 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if \c play was called and no calls to \c stop or \c pause were done after it.
 @property (readwrite, nonatomic) BOOL playbackRequested;
 
-/// URL of the current video of this view.
-@property (readwrite, nonatomic, nullable) NSURL *currentVideoURL;
-
 /// Video player for playing the video.
 @property (strong, nonatomic, nullable) AVPlayer *player;
 
@@ -26,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// information on the token's role.
 @property (strong, nonatomic, nullable) id progressObserverToken;
 
-/// Size of the current displayed video. If \c currentVideoURL is \c nil, \c CGSizeZero is returned.
+/// Size of the current displayed video. If \c currentItem is \c nil, \c CGSizeZero is returned.
 @property (readwrite, nonatomic) CGSize videoSize;
 
 /// View's layer.
@@ -87,15 +84,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)observePlayerItemStatus {
   @weakify(self);
-  [[[RACObserve(self, player.currentItem.status)
+  [[[[RACObserve(self, player.currentItem.status)
+      ignore:nil]
       distinctUntilChanged]
       deliverOnMainThread]
-      subscribeNext:^(NSNumber * _Nullable status) {
-        if (!status) {
-          return;
-        }
+      subscribeNext:^(NSNumber *status) {
         auto itemStatus = (AVPlayerItemStatus)status.unsignedIntegerValue;
-        @strongify(self)
+        @strongify(self);
         if (itemStatus == AVPlayerItemStatusReadyToPlay) {
           [self addPlaybackFinishedObservation];
           [self addProgressObservation];
@@ -176,8 +171,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)loadVideoFromURL:(nullable NSURL *)videoURL {
-  if (!videoURL) {
-    [self setPlayer:nil videoSize:CGSizeZero videoURL:nil];
+  auto _Nullable playerItem = videoURL ? [AVPlayerItem playerItemWithURL:videoURL] : nil;
+  [self loadVideoWithPlayerItem:playerItem];
+}
+
+- (void)loadVideoWithPlayerItem:(nullable AVPlayerItem *)playerItem {
+  if (!playerItem) {
+    [self setPlayer:nil videoSize:CGSizeZero];
     return;
   }
 
@@ -188,20 +188,18 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    auto player = [AVPlayer playerWithURL:nn(videoURL)];
+    auto player = [AVPlayer playerWithPlayerItem:nn(playerItem)];
     auto videoSize = [self.class videoSizeWithPlayer:player];
 
     dispatch_async(dispatch_get_main_queue(), ^{
       @strongify(self);
-      [self setPlayer:player videoSize:videoSize videoURL:videoURL];
+      [self setPlayer:player videoSize:videoSize];
     });
   });
 }
 
-- (void)setPlayer:(nullable AVPlayer *)player videoSize:(CGSize)videoSize
-         videoURL:(nullable NSURL *)videoURL {
+- (void)setPlayer:(nullable AVPlayer *)player videoSize:(CGSize)videoSize {
   self.videoSize = videoSize;
-  self.currentVideoURL = videoURL;
   self.player = player;
 }
 
@@ -315,6 +313,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable AVPlayer *)player {
   return self.layer.player;
+}
+
+- (nullable AVPlayerItem *)currentItem {
+  return self.player ? self.player.currentItem : nil;
 }
 
 @end

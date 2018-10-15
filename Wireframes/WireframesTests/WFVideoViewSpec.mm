@@ -55,9 +55,10 @@ it(@"should initialize properties correctly before video was loaded", ^{
   expect(videoView.videoDuration).to.equal(0);
   expect(videoView.currentTime).to.equal(0);
   expect(videoView.videoSize).to.equal(CGSizeZero);
+  expect(videoView.currentItem).to.beNil();
 });
 
-it(@"should return correct video size", ^{
+it(@"should return correct video size when loading with URL", ^{
   [videoView loadVideoFromURL:zeroLengthVideoURL];
   expect(videoView.videoSize).will.equal(CGSizeMake(20, 16));
 
@@ -66,6 +67,35 @@ it(@"should return correct video size", ^{
 
   [videoView loadVideoFromURL:nil];
   expect(videoView.videoSize).will.equal(CGSizeZero);
+});
+
+it(@"should return correct video size when loading with player item", ^ {
+  auto playerItem = [[AVPlayerItem alloc] initWithURL:zeroLengthVideoURL];
+  [videoView loadVideoWithPlayerItem:playerItem];
+  expect(videoView.videoSize).will.equal(CGSizeMake(20, 16));
+
+  playerItem = [[AVPlayerItem alloc] initWithURL:halfSecondVideoURL];
+  [videoView loadVideoWithPlayerItem:playerItem];
+  expect(videoView.videoSize).will.equal(CGSizeMake(640, 360));
+
+  [videoView loadVideoWithPlayerItem:nil];
+  expect(videoView.videoSize).will.equal(CGSizeZero);
+});
+
+it(@"should set currentItem to playerItem with URL the video was loaded with", ^{
+  [videoView loadVideoFromURL:zeroLengthVideoURL];
+
+  expect(videoView.currentItem).willNot.beNil();
+  expect(videoView.currentItem.asset).to.beKindOf(AVURLAsset.class);
+  expect(((AVURLAsset *)videoView.currentItem.asset).URL).will.equal(zeroLengthVideoURL);
+});
+
+it(@"should set currentItem to playerItem the video loaded with", ^{
+  auto playerItem = [[AVPlayerItem alloc] initWithURL:zeroLengthVideoURL];
+
+  [videoView loadVideoWithPlayerItem:playerItem];
+
+  expect(videoView.currentItem).will.equal(playerItem);
 });
 
 it(@"should proxy video gravity to layer", ^{
@@ -78,8 +108,16 @@ it(@"should proxy video gravity to layer", ^{
 });
 
 context(@"delegate", ^{
-  it(@"should call delegate when video loads", ^{
+  it(@"should call delegate when video loads with URL", ^{
     [videoView loadVideoFromURL:zeroLengthVideoURL];
+
+    expect(delegate.numberOfVideoLoads).will.equal(1);
+  });
+
+  it(@"should call delegate when video loads with player item", ^{
+    auto playerItem = [[AVPlayerItem alloc] initWithURL:zeroLengthVideoURL];
+
+    [videoView loadVideoWithPlayerItem:playerItem];
 
     expect(delegate.numberOfVideoLoads).will.equal(1);
   });
@@ -121,13 +159,26 @@ context(@"delegate", ^{
     expect(delegate.numberOfPlaybacksFinished).will.beGreaterThan(playbacksFinished);
   });
 
-  it(@"should dealloc the delegate despite a video is being loaded from URL", ^{
+  it(@"should dealloc the delegate despite a video is being loaded with URL", ^{
     __weak WFFakeVideoViewDelegate *weakDelegate;
     @autoreleasepool {
       auto view = [[WFVideoView alloc] initWithFrame:CGRectZero];
       auto delegate = [[WFFakeVideoViewDelegate alloc] init];
       view.delegate = delegate;
       [view loadVideoFromURL:halfSecondVideoURL];
+      weakDelegate = delegate;
+    }
+    expect(weakDelegate).to.beNil();
+  });
+
+  it(@"should dealloc the delegate despite a video is being loaded with player item", ^{
+    __weak WFFakeVideoViewDelegate *weakDelegate;
+    @autoreleasepool {
+      auto view = [[WFVideoView alloc] initWithFrame:CGRectZero];
+      auto delegate = [[WFFakeVideoViewDelegate alloc] init];
+      view.delegate = delegate;
+      auto playerItem = [[AVPlayerItem alloc] initWithURL:zeroLengthVideoURL];
+      [view loadVideoWithPlayerItem:playerItem];
       weakDelegate = delegate;
     }
     expect(weakDelegate).to.beNil();
