@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     self.path = path;
 
-    self.fd = open([path UTF8String], O_RDWR | O_CREAT, mode);
+    self.fd = open(path.fileSystemRepresentation, O_RDWR | O_CREAT, mode);
     if (self.fd < 0) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path
