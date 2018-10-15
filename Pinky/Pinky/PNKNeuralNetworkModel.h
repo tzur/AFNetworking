@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import <experimental/optional>
+#import <optional>
 
 #import "PNKNeuralNetworkOperationsModel.h"
 
@@ -19,7 +19,7 @@ namespace pnk {
 /// them not only within operation type but also between operation types.
 struct NeuralNetworkModel {
   /// Model for scaling and biasing the image, if needed.
-  std::experimental::optional<ImageScaleBiasModel> scaleBiasModel;
+  std::optional<ImageScaleBiasModel> scaleBiasModel;
 
   /// Models of convolution kernels in the network, mapped by name.
   std::unordered_map<std::string, ConvolutionKernelModel> convolutionKernels;

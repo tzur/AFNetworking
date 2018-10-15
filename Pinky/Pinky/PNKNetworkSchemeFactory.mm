@@ -76,9 +76,9 @@ struct GraphTraversalData {
 
 @implementation PNKNetworkSchemeFactory
 
-+ (std::experimental::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
-    coreMLModel:(NSURL *)modelURL
-    error:(NSError *__autoreleasing *)error {
++ (std::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
+                                          coreMLModel:(NSURL *)modelURL
+                                                error:(NSError *__autoreleasing *)error {
   auto _Nullable modelPath = modelURL.path;
   LTParameterAssert(modelPath, @"%@ path is nil", modelURL);
   auto _Nullable inputFile = [[LTMMInputFile alloc] initWithPath:modelPath error:error];
@@ -86,7 +86,7 @@ struct GraphTraversalData {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed url:modelURL];
     }
-    return std::experimental::nullopt;
+    return std::nullopt;
   }
 
   NSData *inputData = [NSData dataWithBytes:inputFile.data length:inputFile.size];
@@ -97,7 +97,7 @@ struct GraphTraversalData {
       *error = [NSError lt_errorWithCode:LTErrorCodeCompressionFailed path:modelPath
                              description:@"Failed to decompress data of model file"];
     }
-    return std::experimental::nullopt;
+    return std::nullopt;
   }
 
   cms::Model networkModel;
@@ -107,7 +107,7 @@ struct GraphTraversalData {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:modelPath
                              description:@"Failed to deserialize data from protobuf model"];
     }
-    return std::experimental::nullopt;
+    return std::nullopt;
   }
 
   LTParameterAssert(networkModel.has_neuralnetwork(), @"Incorrect model type, expected neural "
@@ -117,7 +117,7 @@ struct GraphTraversalData {
                   neuralNetwork:networkModel.neuralnetwork() error:error];
 }
 
-+ (std::experimental::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
++ (std::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
     modelDescription:(const cms::ModelDescription &)modelDescription
     neuralNetwork:(const cms::NeuralNetwork &)neuralNetwork
     error:(NSError *__autoreleasing *)error {
@@ -128,7 +128,7 @@ struct GraphTraversalData {
                                                       error:error];
 
   if (orderedLayers.size() == 0) {
-    return std::experimental::nullopt;
+    return std::nullopt;
   }
 
   auto orderedNodeKits = [self orderedNodeKitsFromOrderedLayers:orderedLayers metadata:metadata];

@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Gershon Hochman.
 
-#import <experimental/optional>
+#import <optional>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,9 +54,9 @@ struct NetworkScheme {
 ///
 /// \c LTErrorCodeInvalidArgument - the graph represented by \c coreMLModel is either not a fully
 /// connected graph or not a DAG (directed acyclic graph).
-+ (std::experimental::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
-                                                        coreMLModel:(NSURL *)modelURL
-                                                              error:(NSError **)error;
++ (std::optional<pnk::NetworkScheme>)schemeWithDevice:(id<MTLDevice>)device
+                                          coreMLModel:(NSURL *)modelURL
+                                                error:(NSError **)error;
 
 @end
 

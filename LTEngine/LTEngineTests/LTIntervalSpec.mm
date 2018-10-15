@@ -147,13 +147,13 @@ public:
 
       it(@"should return empty optional when trying to retrieve minimum of empty interval", ^{
         Interval<T> interval = Interval<T>();
-        std::experimental::optional<T> value = interval.min();
+        std::optional<T> value = interval.min();
         expect(bool(value)).to.beFalsy();
       });
 
       it(@"should return empty optional when trying to retrieve maximum of empty interval", ^{
         Interval<T> interval = Interval<T>();
-        std::experimental::optional<T> value = interval.max();
+        std::optional<T> value = interval.max();
         expect(bool(value)).to.beFalsy();
       });
     });
@@ -306,7 +306,7 @@ public:
 
       it(@"should return empty optional when trying to interpolate value of empty interval", ^{
         Interval<T> interval = Interval<T>();
-        std::experimental::optional<double> value = interval.valueAt(0);
+        std::optional<double> value = interval.valueAt(0);
         expect(bool(value)).to.beFalsy();
       });
     });
@@ -343,13 +343,13 @@ public:
 
       it(@"should return empty optional when computing parametric factor of degenerate interval", ^{
         Interval<T> interval = Interval<T>({0, 0});
-        std::experimental::optional<double> value = interval.parametricValue(0);
+        std::optional<double> value = interval.parametricValue(0);
         expect(bool(value)).to.beFalsy();
       });
 
       it(@"should return empty optional when computing parametric factor of empty interval", ^{
         Interval<T> interval = Interval<T>();
-        std::experimental::optional<double> value = interval.parametricValue(0);
+        std::optional<double> value = interval.parametricValue(0);
         expect(bool(value)).to.beFalsy();
       });
     });
@@ -422,7 +422,7 @@ public:
 
       it(@"should return empty optional when computing clamped value for empty interval", ^{
         Interval<T> interval = Interval<T>();
-        std::experimental::optional<T> value = interval.clamp(0);
+        std::optional<T> value = interval.clamp(0);
         expect(bool(value)).to.beFalsy();
       });
     });
