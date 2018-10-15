@@ -7,6 +7,7 @@
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
 #import <LTKit/NSSet+Functional.h>
+#import <LTKit/NSSet+Operations.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
@@ -709,9 +710,9 @@ NS_ASSUME_NONNULL_BEGIN
       getPricesInCreditType:creditType forConsumableTypes:consumableTypes.allObjects]
       tryMap:^NSDictionary<NSString *, NSNumber *> *
           (BZRConsumableTypesPriceInfo *consumableTypesPriceInfo, NSError *__autoreleasing *error) {
-        auto consumableTypesWithoutPrice = [consumableTypes mutableCopy];
-        [consumableTypesWithoutPrice
-            minusSet:consumableTypesPriceInfo.consumableTypesPrices.allKeys.lt_set];
+        auto consumableTypesWithPrice = consumableTypesPriceInfo.consumableTypesPrices.allKeys;
+        auto consumableTypesWithoutPrice = [consumableTypes
+                                            lt_minus:[consumableTypesWithPrice lt_set]];
 
         if (consumableTypesWithoutPrice.count) {
           if (error) {

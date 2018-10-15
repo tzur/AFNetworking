@@ -7,6 +7,7 @@
 #import <LTKit/LTKeyValuePersistentStorage.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSSet+Operations.h>
 
 #import "LABAssignmentsSource.h"
 
@@ -202,16 +203,14 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
   auto currentAssignments = [self.activeAssignments.allValues lt_set];
   auto newAssignments = [assignments.allValues lt_set];
 
-  NSMutableSet<LABAssignment *> *activatedAssignments = [newAssignments mutableCopy];
-  [activatedAssignments minusSet:currentAssignments];
+  auto activatedAssignments = [newAssignments lt_minus:currentAssignments];
 
   for (LABAssignment *assignment in activatedAssignments) {
     [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment
                                reason:kLABAssignmentAffectedUserReasonActivatedForDevice];
   }
 
-  NSMutableSet<LABAssignment *> *deactivatedAssignments = [currentAssignments mutableCopy];
-  [deactivatedAssignments minusSet:newAssignments];
+  auto deactivatedAssignments = [currentAssignments lt_minus:newAssignments];
 
   for (LABAssignment *assignment in deactivatedAssignments) {
     [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment

@@ -3,6 +3,9 @@
 
 #import "LTContentInteractionManagerExamples.h"
 
+#import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSSet+Operations.h>
+
 #import "LTContentInteraction.h"
 #import "LTContentTouchEvent.h"
 #import "LTContentTouchEventDelegate.h"
@@ -59,9 +62,8 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
       it(@"should attach new custom gesture recognizers to view", ^{
         manager.customGestureRecognizers = @[recognizer];
 
-        NSMutableSet<UIGestureRecognizer *> *gestureRecognizers =
-            [[NSSet setWithArray:view.gestureRecognizers] mutableCopy];
-        [gestureRecognizers minusSet:initialGestureRecognizers];
+        auto gestureRecognizers = [[view.gestureRecognizers lt_set]
+                                   lt_minus:initialGestureRecognizers];
         expect(gestureRecognizers).to.haveACountOf(1);
         expect([gestureRecognizers anyObject]).to.beIdenticalTo(recognizer);
       });
@@ -82,9 +84,8 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
 
         manager.customGestureRecognizers = @[anotherRecognizer];
 
-        NSMutableSet<UIGestureRecognizer *> *gestureRecognizers =
-            [[NSSet setWithArray:view.gestureRecognizers] mutableCopy];
-        [gestureRecognizers minusSet:initialGestureRecognizers];
+        auto gestureRecognizers = [[view.gestureRecognizers lt_set]
+                                   lt_minus:initialGestureRecognizers];
         expect(gestureRecognizers).to.haveACountOf(1);
         expect([gestureRecognizers anyObject]).to.beIdenticalTo(anotherRecognizer);
       });

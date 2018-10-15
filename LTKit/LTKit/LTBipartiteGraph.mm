@@ -3,6 +3,8 @@
 
 #import "LTBipartiteGraph.h"
 
+#import <LTKit/NSSet+Operations.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Type definition for vertices of this graph.
@@ -169,8 +171,7 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
   NSSet *verticesInPartition = [NSSet setWithArray:[self.edgeMaps[partition] allKeys]];
 
   if (![vertices isSubsetOfSet:verticesInPartition]) {
-    NSMutableSet<LTVertex> *minusSet = [vertices mutableCopy];
-    [minusSet minusSet:verticesInPartition];
+    auto minusSet = [vertices lt_minus:verticesInPartition];
     LTParameterAssert(NO, @"Certain vertices (%@) of given vertices (%@) are not among vertices "
                       "(%@) of partition (%ld)", minusSet, vertices, verticesInPartition,
                      (long)partition);
@@ -180,8 +181,7 @@ typedef NSMutableDictionary<LTVertex, NSMutableSet<LTVertex> *> LTBipartiteGraph
 - (void)addEdgesFromVertex:(LTVertex)vertex inPartition:(LTBipartiteGraphPartition)partition
                 toVertices:(NSSet<LTVertex> *)vertices {
   NSMutableSet<LTVertex> *adjacentVertices = self.edgeMaps[partition][vertex];
-  NSMutableSet<LTVertex> *intersectionSet = [adjacentVertices mutableCopy];
-  [intersectionSet intersectSet:vertices];
+  auto intersectionSet = [adjacentVertices lt_intersect:vertices];
 
   LTParameterAssert(!intersectionSet.count,
                     @"Attempting to add already existing edge from (%@) to vertex (%@)", vertex,

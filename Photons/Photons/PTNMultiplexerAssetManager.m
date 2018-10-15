@@ -3,6 +3,9 @@
 
 #import "PTNMultiplexerAssetManager.h"
 
+#import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSSet+Operations.h>
+
 #import "NSError+Photons.h"
 #import "PTNDescriptor.h"
 
@@ -254,11 +257,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSArray<NSString *> *)unsupportedSchemesWithSchemes:(NSArray<NSString *> *)schemes {
-  NSMutableSet *schemeSet = [NSMutableSet setWithArray:schemes];
-  NSSet *supportedSchemeSet = [NSSet setWithArray:self.mapping.allKeys];
-  [schemeSet minusSet:supportedSchemeSet];
-
-  return schemeSet.allObjects;
+  NSSet *supportedSchemeSet = [self.mapping.allKeys lt_set];
+  return [[schemes lt_set] lt_minus:supportedSchemeSet].allObjects;
 }
 
 @end

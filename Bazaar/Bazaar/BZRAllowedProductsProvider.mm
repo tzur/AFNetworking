@@ -4,6 +4,7 @@
 #import "BZRAllowedProductsProvider.h"
 
 #import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSSet+Operations.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
@@ -101,18 +102,16 @@ NS_ASSUME_NONNULL_BEGIN
       return purchasedProductsIdentifiers;
     }
 
-    NSMutableSet<NSString *> *enabledProducts =
-        [self enabledProducts:receipt productList:productList];
-    [enabledProducts intersectSet:productsAcquiredViaSubscription];
-    [enabledProducts unionSet:purchasedProductsIdentifiers];
-    return [enabledProducts copy];
+    return [[[self enabledProducts:receipt productList:productList]
+        lt_intersect:productsAcquiredViaSubscription]
+        lt_union:purchasedProductsIdentifiers];
   }];
 }
 
-- (NSMutableSet<NSString *> *)enabledProducts:(nullable BZRReceiptInfo *)receipt
-                                  productList:(BZRProductList *)productList {
+- (NSSet<NSString *> *)enabledProducts:(nullable BZRReceiptInfo *)receipt
+                           productList:(BZRProductList *)productList {
   if (![self hasActiveSubscription:receipt]) {
-    return [NSMutableSet set];
+    return [NSSet set];
   }
 
   NSString *subscriptionIdentifier = receipt.subscription.productId;
@@ -125,11 +124,10 @@ NS_ASSUME_NONNULL_BEGIN
         [[productList lt_filter:^BOOL(BZRProduct *product) {
           return ![self isSubscriptionProduct:product];
         }] valueForKey:@instanceKeypath(BZRProduct, identifier)];
-    return [NSMutableSet setWithArray:allNonSubscriptionProducts];
+    return [allNonSubscriptionProducts lt_set];
   }
 
-  return [NSMutableSet setWithArray:
-          [self productsEnabledBySubscription:subscriptionProduct productList:productList]];
+  return [[self productsEnabledBySubscription:subscriptionProduct productList:productList] lt_set];
 }
 
 - (NSArray<NSString *> *)productsEnabledBySubscription:(BZRProduct *)subscriptionProduct

@@ -3,6 +3,9 @@
 
 #import "LTErrorCodesRegistry.h"
 
+#import "NSArray+NSSet.h"
+#import "NSSet+Operations.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTErrorCodesRegistry ()
@@ -33,12 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)registerErrorCodes:(LTErrorCodeToDescription *)errorCodes {
-  NSMutableSet *keys = [NSMutableSet setWithArray:errorCodes.allKeys];
-  [keys intersectSet:[NSSet setWithArray:self.mapping.allKeys]];
+  NSSet *keys = [[errorCodes.allKeys lt_set]
+                 lt_intersect:[self.mapping.allKeys lt_set]];
   LTParameterAssert(!keys.count, @"The error codes %@ already exist in the registry", keys);
 
-  NSMutableSet *values = [NSMutableSet setWithArray:errorCodes.allValues];
-  [values intersectSet:[NSSet setWithArray:self.mapping.allValues]];
+  NSSet<NSString *> *values = [[errorCodes.allValues lt_set]
+                               lt_intersect:[self.mapping.allValues lt_set]];
   LTParameterAssert(!values.count, @"The error descriptions %@ already exist in the registry",
                     values);
 
