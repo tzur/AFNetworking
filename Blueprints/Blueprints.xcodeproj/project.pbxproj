@@ -1270,7 +1270,7 @@
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
@@ -1292,7 +1292,7 @@
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",

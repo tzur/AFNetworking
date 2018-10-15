@@ -279,13 +279,6 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		190971D61FBD80F300AD5B91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = E93067CD13B2E6D100EA26FF;
-			remoteInfo = "libExpecta-iOS";
-		};
 		19611C3B1FA9EC00004093D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
@@ -1499,7 +1492,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				190971D71FBD80F300AD5B91 /* PBXTargetDependency */,
 				19611C3C1FA9EC00004093D8 /* PBXTargetDependency */,
 			);
 			name = LTKitTestUtils;
@@ -1941,11 +1933,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		190971D71FBD80F300AD5B91 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libExpecta-iOS";
-			targetProxy = 190971D61FBD80F300AD5B91 /* PBXContainerItemProxy */;
-		};
 		19611C3C1FA9EC00004093D8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "libSpecta-iOS";
@@ -1990,6 +1977,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2018,6 +2006,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Expecta",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2094,7 +2083,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
@@ -2115,7 +2104,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);

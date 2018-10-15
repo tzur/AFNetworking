@@ -1620,7 +1620,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
@@ -1645,7 +1645,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Expecta/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
