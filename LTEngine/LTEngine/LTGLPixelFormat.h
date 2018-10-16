@@ -85,6 +85,10 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 - (instancetype)initWithComponents:(LTGLPixelComponents)components
                           dataType:(LTGLPixelDataType)dataType;
 
+/// Initializes with the given \c mtlPixelFormat. Raises if no pixel format can be derived from the
+/// \c mtlPixelFormat.
+- (instancetype)initWithMTLPixelFormat:(MTLPixelFormat)mtlPixelFormat;
+
 /// Returns a vector of the supported \c cv::Mat types via \c -[LTGLPixelFormat initWithMatType:].
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes;
 
@@ -125,6 +129,10 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 /// Core Video type of pixel format type that is compatible with the pixel format or \c kUnknownType
 /// if no compatible type is found.
 @property (readonly, nonatomic) OSType cvPixelFormatType;
+
+/// Metal pixel format that is compatible with the pixel format or \c MTLPixelFormatInvalid
+/// if no compatible format is found.
+@property (readonly, nonatomic) MTLPixelFormat mtlPixelFormat;
 
 /// Core Image format that is compatible with \c matType or \c kUnknownType if no compatible type is
 /// found.
