@@ -3,12 +3,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if !COREVIDEO_SUPPORTS_IOSURFACE
+  typedef void *IOSurfaceRef;
+#endif
+
 /// Creates a new pixel buffer with the given \c width, \c height, and pixel format. The pixel
 /// buffer is compatible with \c LTMMTexture and could be used to create the latter.
 ///
 /// Raises \c LTGLException if creation fails.
 lt::Ref<CVPixelBufferRef> LTCVPixelBufferCreate(size_t width, size_t height,
                                                 OSType pixelFormatType);
+
+/// Creates a new pixel buffer backed by the given \c iosurface with the given \c attributes, whose
+/// keys are \c kCVPixelBuffer*Key, with corresponding values.
+///
+/// Raises \c LTGLException if creation fails.
+lt::Ref<CVPixelBufferRef>
+    LTCVPixelBufferCreateWithIOSurface(IOSurfaceRef iosurface,
+                                       NSDictionary<NSString *, id> *attributes);
 
 /// Locks the given \c pixelBuffer with \c lockFlags, and executes the given \c block.
 /// \c pixelBuffer is unlocked before this function returns.
