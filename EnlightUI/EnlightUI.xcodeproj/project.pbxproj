@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */; };
-		19F4946E216F4B720011CFF6 /* EUSMYourPlanCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */; };
-		19F49473216F4D2F0011CFF6 /* EUSMYourCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */; };
+		19F4946E216F4B720011CFF6 /* EUISMYourPlanCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F4946C216F4B720011CFF6 /* EUISMYourPlanCell.mm */; };
+		19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */; };
 		19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F49475216F4F3A0011CFF6 /* UIKit.framework */; };
 		19F494BE216F5DDD0011CFF6 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F494B7216F5DBD0011CFF6 /* libOCMock.a */; };
 		19F494BF216F5DEA0011CFF6 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F494A8216F5D7F0011CFF6 /* libSpecta.a */; };
@@ -191,9 +191,9 @@
 		19F491E3216F283D0011CFF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19F4946A216F48520011CFF6 /* EnlightUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EnlightUI-Prefix.pch"; sourceTree = "<group>"; };
 		19F4946B216F48B70011CFF6 /* EnlightUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EnlightUITests-Prefix.pch"; sourceTree = "<group>"; };
-		19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUSMYourPlanCell.mm; sourceTree = "<group>"; };
-		19F4946D216F4B720011CFF6 /* EUSMYourPlanCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUSMYourPlanCell.h; sourceTree = "<group>"; };
-		19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUSMYourCellSpec.mm; sourceTree = "<group>"; };
+		19F4946C216F4B720011CFF6 /* EUISMYourPlanCell.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanCell.mm; sourceTree = "<group>"; };
+		19F4946D216F4B720011CFF6 /* EUISMYourPlanCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUISMYourPlanCell.h; sourceTree = "<group>"; };
+		19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanCellSpec.mm; sourceTree = "<group>"; };
 		19F49475216F4F3A0011CFF6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -322,8 +322,8 @@
 		19F49470216F4BA10011CFF6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				19F4946D216F4B720011CFF6 /* EUSMYourPlanCell.h */,
-				19F4946C216F4B720011CFF6 /* EUSMYourPlanCell.mm */,
+				19F4946D216F4B720011CFF6 /* EUISMYourPlanCell.h */,
+				19F4946C216F4B720011CFF6 /* EUISMYourPlanCell.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -349,7 +349,7 @@
 		19F49478216F5D080011CFF6 /* SubscriptionManagement */ = {
 			isa = PBXGroup;
 			children = (
-				19F49472216F4D2F0011CFF6 /* EUSMYourCellSpec.mm */,
+				19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */,
 			);
 			name = SubscriptionManagement;
 			sourceTree = "<group>";
@@ -640,7 +640,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19F4946E216F4B720011CFF6 /* EUSMYourPlanCell.mm in Sources */,
+				19F4946E216F4B720011CFF6 /* EUISMYourPlanCell.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,7 +648,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19F49473216F4D2F0011CFF6 /* EUSMYourCellSpec.mm in Sources */,
+				19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
