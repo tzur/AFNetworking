@@ -1,8 +1,11 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <Metal/Metal.h>
+
 #import "LTGLContext.h"
 #import "LTGLException.h"
+#import "LTGLTexture.h"
 #import "LTGPUResourceExamples.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureBasicExamples.h"
@@ -124,6 +127,46 @@ context(@"binding and execution", ^{
                  [NSValue valueWithNonretainedObject:texture]};
     });
   });
+});
+
+dcontext(@"metal texture from opengl texture", ^{
+  __block id<MTLDevice> device;
+  __block CGSize size;
+
+  beforeEach(^{
+    device = MTLCreateSystemDefaultDevice();
+    size = CGSizeMake(39, 47);
+  });
+
+  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+    if ((pixelFormat.dataType == LTGLPixelDataType32Float &&
+         ![LTGLContext currentContext].canRenderToFloatColorBuffers) ||
+        pixelFormat.value == LTGLPixelFormatDepth16Unorm) {
+      // Pixel format isn't supported, return.
+      return;
+    }
+
+    it(@"should return non mipmap texture", ^{
+      auto image = cv::Mat(size.height, size.width, pixelFormat.matType);
+      auto ltTexture = [[LTGLTexture alloc] initWithImage:image];
+      auto mtlTexture = [ltTexture mtlTextureWithDevice:device];
+      expect(mtlTexture.width).to.equal(ltTexture.size.width);
+      expect(mtlTexture.height).to.equal(ltTexture.size.height);
+      expect(mtlTexture.pixelFormat).to.equal(ltTexture.pixelFormat.mtlPixelFormat);
+      expect(mtlTexture.mipmapLevelCount).to.equal(1);
+    });
+
+    it(@"should return mipmap texture", ^{
+      auto image = cv::Mat(size.height, size.width, pixelFormat.matType);
+      auto image1 = cv::Mat(size.height / 2, size.width / 2, pixelFormat.matType);
+      auto ltTexture = [[LTGLTexture alloc] initWithMipmapImages:{image, image1}];
+      auto mtlTexture = [ltTexture mtlTextureWithDevice:device];
+      expect(mtlTexture.width).to.equal(ltTexture.size.width);
+      expect(mtlTexture.height).to.equal(ltTexture.size.height);
+      expect(mtlTexture.pixelFormat).to.equal(ltTexture.pixelFormat.mtlPixelFormat);
+      expect(mtlTexture.mipmapLevelCount).to.equal(2);
+    });
+  }];
 });
 
 SpecEnd

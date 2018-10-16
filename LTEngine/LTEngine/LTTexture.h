@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol MTLDevice, MTLTexture;
+
 /// Type of interpolation used by the sampler on the GPU.
 typedef NS_ENUM(GLenum, LTTextureInterpolation) {
   /// Nearest neighbor interpolation.
@@ -65,7 +67,7 @@ struct LTVector4;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Creates an empty texture on the GPU. Throws \c LTGLException with
+/// Initializes an empty texture on the GPU. Throws \c LTGLException with
 /// \c kLTOpenGLRuntimeErrorException if texture creation failed.
 ///
 /// @param size size of the texture. Must be integral.
@@ -94,7 +96,7 @@ struct LTVector4;
               maxMipmapLevel:(GLint)maxMipmapLevel
               allocateMemory:(BOOL)allocateMemory NS_DESIGNATED_INITIALIZER;
 
-/// Creates an empty texture on the GPU without mipmap. Throws \c LTGLException with
+/// Initializes an empty texture on the GPU without mipmap. Throws \c LTGLException with
 /// \c kLTOpenGLRuntimeErrorException if texture creation failed. This is a convenience method which
 /// is similar to calling:
 ///
@@ -104,14 +106,14 @@ struct LTVector4;
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
               allocateMemory:(BOOL)allocateMemory;
 
-/// Allocates a texture with the \c size and \c pixelFormat properties suitable for the given
-/// \c image, and loads the \c image to the texture. Throws \c LTGLException with
+/// Initializes with the \c size and \c pixelFormat properties suitable for the given \c image, and
+/// loads the \c image to the texture. Throws \c LTGLException with
 /// \c kLTOpenGLRuntimeErrorException if the texture cannot be created or if image loading has
 /// failed.
 - (instancetype)initWithImage:(const cv::Mat &)image;
 
-/// Creates a new, allocated texture with \c size, \c pixelFormat and \c maxMipmapLevel similar to
-/// the given \c texture. This is a convenience method which is similar to calling:
+/// Initialized with \c size, \c pixelFormat and \c maxMipmapLevel similar to the given \c texture.
+/// This is a convenience method which is similar to calling:
 ///
 /// @code
 /// initWithSize:texture.size pixelFormat:texture.pixelFormat maxMipmapLevel:texture.maxMipmapLevel
@@ -122,6 +124,31 @@ struct LTVector4;
 #pragma mark -
 #pragma mark Abstract methods
 #pragma mark -
+
+/// Initializes a texture from the given Metal \c texture. When possible the created texture shares
+/// the same memory as the \c texture, otherwise \c texture's content is copied.
+/// The \c storageMode of the \c texture must be \c MTLStorageModeShared.
+///
+/// Throws \c LTGLException if the texture cannot be created, or if the build target doesn't support
+/// Metal.
+///
+/// @note take extra care when referencing the \c texture outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
+///
+/// @note the content produced by the commited \c MTBCommandBuffers, which renders to the
+/// \c texture, is reflected in initialized texture. This happens automatically without any explicit
+/// synchronization.
+- (instancetype)initWithMTLTexture:(id<MTLTexture>)texture;
+
+/// Initializes a texture using the given \c pixelBuffer as its underlying storage, when possible or
+/// with its copied content. You must take extra care when referencing this pixel buffer outside of
+/// this object. GPU - CPU synchronization falls into your responsibility.
+///
+/// Throws \c LTGLException if the texture cannot be created or if the \c pixelBuffer is not backed
+/// by \c IOSurface, \c NSInvalidArgumentException if \c pixelBuffer is a planar pixel buffer.
+///
+/// @note \c pixelBuffer is retained by this texture.
+- (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 /// Stores the texture's data in the given \c rect to the given \c image. The image will be created
 /// with the same precision and size of the given \c rect. The given \c rect must be contained in
@@ -162,6 +189,22 @@ struct LTVector4;
 /// @note you <b>MUST NOT</b> write to the texture while holding the returned pixel buffer. The best
 /// approach is to avoid using the texture at all after calling this function.
 - (lt::Ref<CVPixelBufferRef>)pixelBuffer;
+
+/// Returns a Metal texture with the content of this texture. The returned Metal texture might be a
+/// copy of the texture's content, or it might share the same memory with the texture.
+///
+/// It is guaranteed that all previous GPU operations involving writes to the texture complete
+/// before the Metal texture is returned. On the other hand, future operations MUST be synchronized
+/// manually.
+///
+/// The format of the Metal texture is implementation dependent.
+///
+/// Raises if the Metal texture cannot be returned, either because of an allocation failure,
+/// unsupported texture format, or if Metal isn't supported for the build target.
+///
+/// @note you <b>MUST NOT</b> write to the texture while holding the returned texture. The best
+/// approach is to avoid using the texture at all after calling this function.
+- (id<MTLTexture>)mtlTextureWithDevice:(id<MTLDevice>)device;
 
 #pragma mark -
 #pragma mark LTTexture implemented methods

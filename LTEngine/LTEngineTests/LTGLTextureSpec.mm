@@ -3,6 +3,8 @@
 
 #import "LTGLTexture.h"
 
+#import <Metal/Metal.h>
+
 #import "CVPixelBuffer+LTEngine.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
@@ -20,6 +22,10 @@ SpecBegin(LTGLTexture)
 
 itShouldBehaveLike(kLTTextureBasicExamples, @{
   kLTTextureBasicExamplesTextureClass: [LTGLTexture class]
+});
+
+itShouldBehaveLike(kLTTextureMetalExamples, @{
+  kLTTextureMetalExamplesTextureClass: [LTGLTexture class]
 });
 
 context(@"mipmapping", ^{
@@ -254,6 +260,35 @@ context(@"mipmapping", ^{
 });
 
 context(@"pixel buffer", ^{
+  __block cv::Mat mat;
+  __block lt::Ref<CVPixelBufferRef> pixelBuffer;
+  static const CGSize size = CGSizeMake(31, 71);
+
+  beforeEach(^{
+    static const auto pixelFormat = $(LTGLPixelFormatR8Unorm);
+    mat = cv::Mat(size.height, size.width, pixelFormat.matType, cv::Scalar(128));
+    for (int i = 0; i < mat.rows; ++i) {
+      for (int j = 0; j < mat.rows; ++j) {
+        mat.at<uchar>(i, j) = (i + j) % UCHAR_MAX;
+      }
+    }
+    pixelBuffer = LTCVPixelBufferCreate(mat.cols, mat.rows, pixelFormat.cvPixelFormatType);
+    LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+      mat.copyTo(*image);
+    });
+  });
+
+  it(@"should initialize with pixel buffer's content", ^{
+    auto texture = [[LTGLTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+    expect($(texture.image)).to.equalMat($(mat));
+  });
+
+  it(@"should copy content on initialization", ^{
+    auto texture = [[LTGLTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+    mat.setTo(0);
+    expect($(texture.image)).notTo.equalMat($(mat));
+  });
+
   it(@"should return pixel buffer with texture's content", ^{
     cv::Mat4b originalImage = cv::Mat4b(2, 1, cv::Vec4b(1, 2, 3, 4));
     LTGLTexture *texture = [[LTGLTexture alloc] initWithImage:originalImage];
@@ -311,6 +346,107 @@ context(@"non power of two mipmapping", ^{
     })).notTo.raiseAny();
     expect(texture).notTo.beNil();
   });
+});
+
+dcontext(@"metal", ^{
+  __block id<MTLDevice> device;
+
+  beforeEach(^{
+    device = MTLCreateSystemDefaultDevice();
+  });
+
+  if (@available(iOS 11.0, *)) {
+    it(@"should initialize with buffer backed metal texture", ^{
+      // -[MTLDevice newTextureWithDescriptor:offset:bytesPerRow:] rquires offset & bytesPerRow to
+      // be aligned with -minimumLinearTextureAlignmentForPixelFormat. It derives the content sizes.
+      auto bytesPerRow = [device minimumLinearTextureAlignmentForPixelFormat:MTLPixelFormatR8Unorm];
+      auto pixelFormat = $(LTGLPixelFormatR8Unorm);
+      cv::Mat image(19, 2 * (int)bytesPerRow, pixelFormat.matType);
+      for (int i = 0; i < image.rows; ++i) {
+        for (int j = 0; j < image.rows; ++j) {
+          image.at<uchar>(i, j) = (i + j) % UCHAR_MAX;
+        }
+      }
+      id<MTLBuffer> buffer = [device newBufferWithLength:image.step[0] * image.rows
+                                                 options:MTLResourceStorageModeShared];
+      cv::Mat bufferImage = cv::Mat(image.rows, image.cols, image.type(), buffer.contents);
+      image.copyTo(bufferImage);
+
+      auto textureSize = CGSizeMake(5, image.rows);
+      auto textureDescriptor = [MTLTextureDescriptor
+                                texture2DDescriptorWithPixelFormat:pixelFormat.mtlPixelFormat
+                                width:textureSize.width height:textureSize.height mipmapped:NO];
+      auto mtlTexture = [buffer newTextureWithDescriptor:textureDescriptor offset:bytesPerRow
+                                             bytesPerRow:image.step[0]];
+
+      auto ltTexture = [[LTGLTexture alloc] initWithMTLTexture:mtlTexture];
+
+      cv::Mat subImage(image, cv::Rect((int)bytesPerRow, 0, textureSize.width, textureSize.height));
+      expect($(ltTexture.image)).to.equalMat($(subImage));
+    });
+  }
+
+  it(@"should initialize with mipmap metal texture", ^{
+    auto size = CGSizeMake(31, 71);
+    auto descriptor =
+        [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Unorm
+                                                           width:size.width height:size.height
+                                                       mipmapped:YES];
+    descriptor.mipmapLevelCount = 3;
+    std::vector<cv::Mat> images;
+    auto mtlTexture = [MTLCreateSystemDefaultDevice() newTextureWithDescriptor:descriptor];
+    auto pixelFormat = [[LTGLPixelFormat alloc] initWithMTLPixelFormat:mtlTexture.pixelFormat];
+    for (NSUInteger i = 0; i < descriptor.mipmapLevelCount; ++i) {
+      cv::Mat image(size.height, size.width, pixelFormat.matType, cv::Scalar(255));
+      [mtlTexture replaceRegion:MTLRegionMake2D(0, 0, size.width, size.height)
+                    mipmapLevel:i withBytes:image.data bytesPerRow:image.step[0]];
+      size = size / 2;
+      images.push_back(image);
+    }
+
+    auto ltTexture = [[LTGLTexture alloc] initWithMTLTexture:mtlTexture];
+    // maxMipmapLevel is 0 based, while mipmapLevelCount is 1 based.
+    expect(ltTexture.maxMipmapLevel).to.equal(mtlTexture.mipmapLevelCount - 1);
+    for (NSUInteger i = 0; i < mtlTexture.mipmapLevelCount; ++i) {
+      auto imageMTLTexture = LTCVMatByCopyingFromMTLTexture(mtlTexture, i);
+      expect($(imageMTLTexture)).to.equalMat($(images[i]));
+    }
+  });
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  it(@"should copy textures content", ^{
+    auto size = CGSizeMake(31, 19);
+    auto pixelFormat = $(LTGLPixelFormatR8Unorm);
+    auto pixelBuffer = LTCVPixelBufferCreate(size.width, size.height,
+                                             pixelFormat.cvPixelFormatType);
+    LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+      for (int i = 0; i < image->rows; ++i) {
+        for (int j = 0; j < image->rows; ++j) {
+          image->at<uchar>(i, j) = (i + j) % UCHAR_MAX;
+        }
+      }
+    });
+    auto descriptor =
+        [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:pixelFormat.mtlPixelFormat
+                                                           width:size.width height:size.height
+                                                       mipmapped:NO];
+    auto iosurface = CVPixelBufferGetIOSurface(pixelBuffer.get());
+    // Creating an MTLTexture from IOSurface is available from iOS 10 as a private API.
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    auto mtlTexture = [device newTextureWithDescriptor:descriptor iosurface:iosurface plane:0];
+    #pragma clang diagnostic pop
+
+    auto ltTexture = [[LTGLTexture alloc] initWithMTLTexture:mtlTexture];
+    __block cv::Mat originalImage;
+    LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+      image->copyTo(originalImage);
+      image->setTo(0);
+    });
+
+    expect($(ltTexture.image)).to.equalMat($(originalImage));
+  });
+#endif
 });
 
 SpecEnd
