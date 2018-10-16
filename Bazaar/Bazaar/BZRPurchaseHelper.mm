@@ -3,7 +3,7 @@
 
 #import "BZRPurchaseHelper.h"
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 #import "BZRReceiptModel+HelperProperties.h"
 #import "BZRReceiptValidationStatus.h"
 
@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRPurchaseHelper
 
 - (BOOL)shouldProceedWithPurchase:(SKPayment __unused *)payment {
-  return !self.aggregatedReceiptProvider.receiptValidationStatus.receipt.subscription.isActive;
+  return !self.multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus.receipt
+      .subscription.isActive;
 }
 
 @end

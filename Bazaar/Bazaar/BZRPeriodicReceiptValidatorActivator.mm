@@ -28,13 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithAggregatedValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
+- (instancetype)initWithMultiAppValidationStatusProvider:
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppReceiptValidationStatusProvider
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
     timeProvider:(BZRTimeProvider *)timeProvider {
   BZRExternalTriggerReceiptValidator *receiptValidator =
       [[BZRExternalTriggerReceiptValidator alloc]
-       initWithValidationStatusProvider:aggregatedValidationStatusProvider];
+       initWithValidationStatusProvider:multiAppReceiptValidationStatusProvider];
 
    return [self initWithReceiptValidator:receiptValidator
                   validationDateProvider:validationDateProvider

@@ -1,20 +1,25 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Fake provider that provides a \c BZRReceiptValidationStatus manually injected to its
 /// \c receiptValidationStatus property.
-@interface BZRFakeAggregatedReceiptValidationStatusProvider :
-    BZRAggregatedReceiptValidationStatusProvider
+@interface BZRFakeMultiAppReceiptValidationStatusProvider :
+    BZRMultiAppReceiptValidationStatusProvider
 
 /// Initializes with mock arguments.
 - (instancetype)init;
 
 /// A replaceable receipt validation status.
-@property (readwrite, atomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+@property (readwrite, atomic, nullable) BZRReceiptValidationStatus
+    *aggregatedReceiptValidationStatus;
+
+/// A replaceable multi-app receipt validation status.
+@property (readwrite, atomic, nullable) NSDictionary<NSString *, BZRReceiptValidationStatus *>
+    *multiAppReceiptValidationStatus;
 
 /// \c YES if \c fetchReceiptValidationStatus was called, \c NO otherwise.
 @property (readonly, nonatomic) BOOL wasFetchReceiptValidationStatusCalled;

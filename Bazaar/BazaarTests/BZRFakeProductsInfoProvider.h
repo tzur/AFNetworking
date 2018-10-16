@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic, nullable) NSLocale *appStoreLocale;
 @property (readwrite, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *
     productsJSONDictionary;
+@property (readwrite, nonatomic, nullable) NSDictionary<NSString *, BZRReceiptValidationStatus *>
+    *multiAppReceiptValidationStatus;
 
 @end
 

@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize receiptValidationStatus = _receiptValidationStatus;
 @synthesize appStoreLocale = _appStoreLocale;
 @synthesize productsJSONDictionary = _productsJSONDictionary;
+@synthesize multiAppReceiptValidationStatus = _multiAppReceiptValidationStatus;
 
 - (instancetype)initWithProductInfoProvider:(id<BZRProductsInfoProvider>)underlyingProvider
     subscriptionCollectionsProvider:(id<BZRTweakCollectionsProvider>)subscriptionCollectionsProvider
@@ -90,6 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
       RACObserve(self, originalProductInfoProvider.productsJSONDictionary);
   RAC(self, subscriptionInfo) = [self subscriptionInfoSignal];
   RAC(self, receiptValidationStatus) = [self receiptValidationStatusSignal];
+  RAC(self, multiAppReceiptValidationStatus) =
+      RACObserve(self, originalProductInfoProvider.multiAppReceiptValidationStatus);
 }
 
 - (RACSignal<NSSet<NSString *> *> *)allowedProductsSignal {

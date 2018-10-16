@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationDateProvider.h"
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRReceiptValidationDateProvider ()
 
 /// Provider used to provide the aggregated receipt validation status.
-@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
-    receiptValidationStatusProvider;
+@property (readonly, nonatomic) BZRMultiAppReceiptValidationStatusProvider *
+    multiAppReceiptValidationStatusProvider;
 
 /// Seconds until the cache is invalidated, starting from the date it was cached.
 @property (readonly, nonatomic) NSTimeInterval validationInterval;
@@ -30,10 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize nextValidationDate = _nextValidationDate;
 
 - (instancetype)initWithReceiptValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)receiptValidationStatusProvider
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppReceiptValidationStatusProvider
     validationIntervalDays:(NSUInteger)validationIntervalDays {
   if (self = [super init]) {
-    _receiptValidationStatusProvider = receiptValidationStatusProvider;
+    _multiAppReceiptValidationStatusProvider = multiAppReceiptValidationStatusProvider;
     _validationInterval = [BZRTimeConversion numberOfSecondsInDays:validationIntervalDays];
 
     [self setupNextValidationDateUpdates];
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupNextValidationDateUpdates {
   @weakify(self);
   RAC(self, nextValidationDate) =
-      [RACObserve(self.receiptValidationStatusProvider, receiptValidationStatus)
+      [RACObserve(self.multiAppReceiptValidationStatusProvider, aggregatedReceiptValidationStatus)
        map:^NSDate * _Nullable(BZRReceiptValidationStatus * _Nullable receiptValidationStatus) {
          @strongify(self);
          if (![self shouldValidateReceiptForValidationStatus:receiptValidationStatus]) {
@@ -84,8 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSTimeInterval)intervalBetweenValidations {
   static const NSTimeInterval kIntervalBetweenValidationsInSandbox = 150.0;
 
-  if ([self.receiptValidationStatusProvider.receiptValidationStatus.receipt.environment
-      isEqual:$(BZRReceiptEnvironmentSandbox)]) {
+  if ([self.multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus.receipt
+       .environment isEqual:$(BZRReceiptEnvironmentSandbox)]) {
     return kIntervalBetweenValidationsInSandbox;
   }
 

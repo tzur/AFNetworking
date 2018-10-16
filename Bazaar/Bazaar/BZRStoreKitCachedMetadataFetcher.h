@@ -2,7 +2,6 @@
 // Created by Neria Saada.
 
 #import "BZREventEmitter.h"
-#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

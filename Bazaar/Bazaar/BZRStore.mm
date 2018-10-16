@@ -10,18 +10,17 @@
 #import <LTKit/NSSet+Operations.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRAppStoreLocaleProvider.h"
 #import "BZRCachedContentFetcher.h"
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRKeychainStorage.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -50,9 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to provide products' content.
 @property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
-/// Provider used to provide the latest \c BZRReceiptValidationStatus.
-@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
-    validationStatusProvider;
+/// Provider used to provide all of the latest \c BZRReceiptValidationStatuses.
+@property (readonly, nonatomic) BZRMultiAppReceiptValidationStatusProvider
+    *multiAppValidationStatusProvider;
 
 /// Object used to check which subscription products are multi-app subscriptions.
 @property (readonly, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
@@ -139,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
     _productsProvider = configuration.productsProvider;
     _contentManager = configuration.contentManager;
     _contentFetcher = configuration.contentFetcher;
-    _validationStatusProvider = configuration.validationStatusProvider;
+    _multiAppValidationStatusProvider = configuration.multiAppValidationStatusProvider;
     _multiAppSubscriptionClassifier = configuration.multiAppSubscriptionClassifier;
     _acquiredViaSubscriptionProvider = configuration.acquiredViaSubscriptionProvider;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
@@ -172,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   _eventsSignal = [[[RACSignal merge:@[
     [self.eventsSubject replay],
-    self.validationStatusProvider.eventsSignal,
+    self.multiAppValidationStatusProvider.eventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
@@ -388,8 +387,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)purchasedProducts {
-  NSArray<BZRReceiptInAppPurchaseInfo *> *inAppPurchases =
-      self.validationStatusProvider.receiptValidationStatus.receipt.inAppPurchases;
+  auto inAppPurchases = self.multiAppValidationStatusProvider.aggregatedReceiptValidationStatus
+      .receipt.inAppPurchases;
   if (!inAppPurchases) {
     return [NSSet set];
   }
@@ -423,11 +422,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable BZRReceiptSubscriptionInfo *)subscriptionInfo {
-  return self.validationStatusProvider.receiptValidationStatus.receipt.subscription;
+  return
+      self.multiAppValidationStatusProvider.aggregatedReceiptValidationStatus.receipt.subscription;
 }
 
 - (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
-  return self.validationStatusProvider.receiptValidationStatus;
+  return self.multiAppValidationStatusProvider.aggregatedReceiptValidationStatus;
+}
+
+- (nullable NSDictionary<NSString *, BZRReceiptValidationStatus *> *)
+    multiAppReceiptValidationStatus {
+  return self.multiAppValidationStatusProvider.multiAppReceiptValidationStatus;
 }
 
 - (nullable NSLocale *)appStoreLocale {
@@ -899,7 +904,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[RACSignal
       defer:^{
         @strongify(self);
-        return [self.validationStatusProvider fetchReceiptValidationStatus];
+        return [self.multiAppValidationStatusProvider fetchReceiptValidationStatus];
       }]
       doError:^(NSError *error) {
         @strongify(self);
@@ -1015,7 +1020,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet *)keyPathsForValuesAffectingPurchasedProducts {
   return [NSSet setWithObject:
-      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
+      @instanceKeypath(BZRStore,
+                       multiAppValidationStatusProvider.aggregatedReceiptValidationStatus)];
 }
 
 + (NSSet *)keyPathsForValuesAffectingAcquiredViaSubscriptionProducts {
@@ -1025,19 +1031,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet *)keyPathsForValuesAffectingAcquiredProducts {
   return [NSSet setWithObjects:
-      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
+      @instanceKeypath(BZRStore,
+                       multiAppValidationStatusProvider.aggregatedReceiptValidationStatus),
       @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
       nil];
 }
 
 + (NSSet *)keyPathsForValuesAffectingSubscriptionInfo {
   return [NSSet setWithObject:
-      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
+      @instanceKeypath(BZRStore,
+                       multiAppValidationStatusProvider.aggregatedReceiptValidationStatus)];
 }
 
 + (NSSet *)keyPathsForValuesAffectingReceiptValidationStatus {
   return [NSSet setWithObject:
-      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
+      @instanceKeypath(BZRStore,
+                       multiAppValidationStatusProvider.aggregatedReceiptValidationStatus)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingMultiAppReceiptValidationStatus {
+  return [NSSet setWithObject:
+      @instanceKeypath(BZRStore,
+                       multiAppValidationStatusProvider.multiAppReceiptValidationStatus)];
 }
 
 + (NSSet *)keyPathsForValuesAffectingAppStoreLocale {

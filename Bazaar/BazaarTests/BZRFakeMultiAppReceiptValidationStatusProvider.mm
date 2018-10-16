@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
+#import "BZRFakeMultiAppReceiptValidationStatusProvider.h"
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRMultiAppReceiptValidationStatusAggregator.h"
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRFakeAggregatedReceiptValidationStatusProvider ()
+@interface BZRFakeMultiAppReceiptValidationStatusProvider ()
 
 /// \c YES if \c fetchReceiptValidationStatus was called, \c NO otherwise.
 @property (readwrite, nonatomic) BOOL wasFetchReceiptValidationStatusCalled;
@@ -19,9 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation BZRFakeAggregatedReceiptValidationStatusProvider
+@implementation BZRFakeMultiAppReceiptValidationStatusProvider
 
-@synthesize receiptValidationStatus = _receiptValidationStatus;
+@synthesize aggregatedReceiptValidationStatus = _aggregatedReceiptValidationStatus;
+@synthesize multiAppReceiptValidationStatus = _multiAppReceiptValidationStatus;
 
 - (instancetype)init {
   BZRCachedReceiptValidationStatusProvider *provider =

@@ -10,14 +10,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRMultiAppSubscriptionClassifier;
 
-/// Provides an aggregated receipt validation status from receipt validation statuses of multiple
-/// applications. The aggregation occurs at two points: after performing receipt validation of
+/// Provides the receipt validation statuses of multiple applications and an aggregated receipt
+/// validation status extracted from them.
+/// The aggregation occurs at two points: after performing receipt validation of
 /// multiple applications, and when loading receipt validation status of multiple applications from
 /// cache.
 ///
 /// @see \c BZRMultiAppReceiptValidationStatusAggregator for more information about how the receipt
 /// validation statuses are aggregated.
-@interface BZRAggregatedReceiptValidationStatusProvider : NSObject <BZREventEmitter>
+@interface BZRMultiAppReceiptValidationStatusProvider : NSObject <BZREventEmitter>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -50,7 +51,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// successfully for the first time this property holds the value loaded from cache. If no value
 /// exists in the cache or there was an error while loading from cache, this property will be
 /// \c nil. KVO compliant. Changes may be delivered on an arbitrary thread.
-@property (readonly, atomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+@property (readonly, atomic, nullable) BZRReceiptValidationStatus
+    *aggregatedReceiptValidationStatus;
+
+/// Holds the most recent dictionary mapping application bundle ID to receipt validation status.
+/// Before fetching has completed successfully for the first time this property holds the
+/// values loaded from cache. If no value exists in the cache or there was an error while
+/// loading from cache, this property will be \c nil. KVO compliant. Changes may be delivered
+/// on an arbitrary thread.
+@property (readonly, atomic, nullable) NSDictionary<NSString *, BZRReceiptValidationStatus *>
+    *multiAppReceiptValidationStatus;
 
 @end
 

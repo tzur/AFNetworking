@@ -7,9 +7,9 @@
 #import "BZRCachedContentFetcher.h"
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
-#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
 #import "BZRFakeAppStoreLocaleProvider.h"
+#import "BZRFakeMultiAppReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -65,7 +65,7 @@ SpecBegin(BZRStore)
 
 __block id<BZRProductsProvider> productsProvider;
 __block BZRProductContentManager *contentManager;
-__block BZRFakeAggregatedReceiptValidationStatusProvider *
+__block BZRFakeMultiAppReceiptValidationStatusProvider *
     receiptValidationStatusProvider;
 __block BZRCachedContentFetcher *contentFetcher;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
@@ -99,7 +99,7 @@ beforeEach(^{
   productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   contentManager = OCMClassMock([BZRProductContentManager class]);
   receiptValidationStatusProvider =
-      OCMClassMock([BZRFakeAggregatedReceiptValidationStatusProvider class]);
+      OCMClassMock([BZRFakeMultiAppReceiptValidationStatusProvider class]);
   contentFetcher = OCMClassMock([BZRCachedContentFetcher class]);
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
@@ -147,7 +147,8 @@ beforeEach(^{
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
   OCMStub([configuration contentManager]).andReturn(contentManager);
-  OCMStub([configuration validationStatusProvider]).andReturn(receiptValidationStatusProvider);
+  OCMStub([configuration multiAppValidationStatusProvider])
+      .andReturn(receiptValidationStatusProvider);
   OCMStub([configuration contentFetcher]).andReturn(contentFetcher);
   OCMStub([configuration acquiredViaSubscriptionProvider])
       .andReturn(acquiredViaSubscriptionProvider);
@@ -189,7 +190,7 @@ context(@"initial receipt validation", ^{
      "App Store locale was fetched", ^{
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
     OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -306,7 +307,7 @@ context(@"purhcased products", ^{
   it(@"should return product identifier from in-app purchases", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
 
     expect([store purchasedProducts]).to.equal([NSSet setWithObject:productIdentifier]);
@@ -354,7 +355,7 @@ context(@"acquired products", ^{
   it(@"should return in-app purchases unified with acquired via subscription", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     NSSet *acquiredViaSubscription = [NSSet setWithObject:@"bar"];
     OCMStub([acquiredViaSubscriptionProvider productsAcquiredViaSubscription])
@@ -396,7 +397,7 @@ context(@"allowed products", ^{
     it(@"should include pre acquired products when subscription exists", ^{
       BZRReceiptValidationStatus *receiptValidationStatus =
           BZRReceiptValidationStatusWithExpiry(NO, NO);
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
       NSSet *expectedAllowedProducts = [NSSet setWithObject:preAcquiredProduct.identifier];
@@ -406,7 +407,7 @@ context(@"allowed products", ^{
     it(@"should include pre acquired products when subscription exists and is expired", ^{
       BZRReceiptValidationStatus *receiptValidationStatus =
           BZRReceiptValidationStatusWithExpiry(YES, NO);
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
       NSSet *expectedAllowedProducts = [NSSet setWithObject:preAcquiredProduct.identifier];
@@ -419,7 +420,7 @@ context(@"subscription information", ^{
   it(@"should return subscription from receipt validation status", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
 
     expect(store.subscriptionInfo).to.equal(receiptValidationStatus.receipt.subscription);
@@ -549,7 +550,7 @@ context(@"purchasing products", ^{
         BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
     BZRStubProductDictionaryToReturnProduct(subscriptionProduct, productsProvider);
 
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
@@ -571,7 +572,7 @@ context(@"purchasing products", ^{
         BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
     BZRStubProductDictionaryToReturnProduct(nonRenewingSubscriptionProduct, productsProvider);
 
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
@@ -602,7 +603,7 @@ context(@"purchasing products", ^{
        withValue:
        @[BZRTransactionWithTransactionIdentifier(successfulTransaction.transactionIdentifier)]];
 
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
@@ -639,7 +640,7 @@ context(@"purchasing products", ^{
         BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
     auto productList = @[product, subscriptionProduct];
 
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
     OCMStub([storeKitFacade purchaseProduct:underlyingProduct quantity:1])
@@ -659,7 +660,7 @@ context(@"purchasing products", ^{
       "exist in the product list", ^{
     auto receiptValidationStatus =
         BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -686,7 +687,7 @@ context(@"purchasing products", ^{
     auto receiptValidationStatus =
         BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscriptionProduct");
     NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(receiptValidationStatus);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
 
@@ -714,7 +715,7 @@ context(@"purchasing products", ^{
       auto productList = @[subscriptionProduct, BZRProductWithIdentifier(productIdentifier)];
       [netherProductsProviderSubject sendNext:productList];
 
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
       expect([store purchaseProduct:productIdentifier]).will.complete();
@@ -728,7 +729,7 @@ context(@"purchasing products", ^{
       beforeEach(^{
         receiptValidationStatus =
             BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
-        OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
             .andReturn(receiptValidationStatus);
 
         BZRStubProductDictionaryToReturnProduct(product, productsProvider);
@@ -1050,7 +1051,7 @@ context(@"getting user credit status", ^{
 
   context(@"receipt validation status exists", ^{
     beforeEach(^{
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
     });
 
@@ -1236,7 +1237,7 @@ context(@"redeeming consumable items", ^{
 
   context(@"receipt validation status exists", ^{
     beforeEach(^{
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
       });
 
@@ -1351,7 +1352,7 @@ context(@"redeeming consumable items", ^{
     __block NSString *userCreditCacheKey;
 
     beforeEach(^{
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
       consumableItemDescriptor = [[BZRConsumableItemDescriptor alloc] initWithDictionary:@{
@@ -1845,7 +1846,7 @@ context(@"validating receipt", ^{
 
 context(@"acquiring all enabled products", ^{
   it(@"should send error when user doesn't have an active subscription", ^{
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(BZRReceiptValidationStatusWithExpiry(YES));
 
     NSError *error = [NSError lt_errorWithCode:BZRErrorCodeAcquireAllRequestedForNonSubscriber];
@@ -1854,7 +1855,7 @@ context(@"acquiring all enabled products", ^{
   });
 
   it(@"should add all non subscription products to acquired via subscription", ^{
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription"));
 
     BZRProduct *purchasedSubscriptionProduct =
@@ -1886,7 +1887,7 @@ context(@"acquiring all enabled products", ^{
 
   it(@"should not add products that the subscription doesn't enable to acquired via "
      "subscription", ^{
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+    OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
         .andReturn(BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription"));
 
     BZRProduct *purchasedSubscriptionProduct =
@@ -2109,7 +2110,7 @@ context(@"handling unfinished completed transactions", ^{
            withValue:@[BZRTransactionWithTransactionIdentifier(transactionID)]];
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
-      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider aggregatedReceiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
       auto eventRecorder = [store.eventsSignal testRecorder];
@@ -2225,17 +2226,17 @@ context(@"events signal", ^{
 });
 
 context(@"KVO-compliance", ^{
-  __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeMultiAppReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 
   beforeEach(^{
-    validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
+    validationStatusProvider = [[BZRFakeMultiAppReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
 
     configuration = OCMClassMock([BZRStoreConfiguration class]);
     OCMStub([configuration productsProvider]).andReturn(productsProvider);
     OCMStub([configuration contentManager]).andReturn(contentManager);
-    OCMStub([configuration validationStatusProvider]).andReturn(validationStatusProvider);
+    OCMStub([configuration multiAppValidationStatusProvider]).andReturn(validationStatusProvider);
     OCMStub([configuration contentFetcher]).andReturn(contentFetcher);
     OCMStub([configuration acquiredViaSubscriptionProvider])
         .andReturn(acquiredViaSubscriptionProvider);
@@ -2253,7 +2254,7 @@ context(@"KVO-compliance", ^{
   context(@"purchased products", ^{
     it(@"should update when receipt validation status changes", ^{
       RACSignal *productsSignal = [RACObserve(store, purchasedProducts) testRecorder];
-      validationStatusProvider.receiptValidationStatus =
+      validationStatusProvider.aggregatedReceiptValidationStatus =
           BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
 
       expect(productsSignal).to.sendValues(@[
@@ -2279,7 +2280,8 @@ context(@"KVO-compliance", ^{
 
   context(@"acquired products", ^{
     it(@"should update when acquired via subscription list changes", ^{
-      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      validationStatusProvider.aggregatedReceiptValidationStatus =
+          BZRReceiptValidationStatusWithExpiry(NO);
       RACSignal *productsSignal = [RACObserve(store, acquiredProducts) testRecorder];
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
           [NSSet setWithObject:@"foo"];
@@ -2292,7 +2294,7 @@ context(@"KVO-compliance", ^{
 
     it(@"should update when receipt validation status changes", ^{
       RACSignal *productsSignal = [RACObserve(store, acquiredProducts) testRecorder];
-      validationStatusProvider.receiptValidationStatus =
+      validationStatusProvider.aggregatedReceiptValidationStatus =
           BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
 
       expect(productsSignal).to.sendValues(@[
@@ -2361,8 +2363,8 @@ context(@"KVO-compliance", ^{
           BZRReceiptValidationStatusWithExpiry(NO);
       BZRReceiptValidationStatus *inactiveSubscriptionStatus =
           BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", YES);
-      validationStatusProvider.receiptValidationStatus = activeSubscriptionStatus;
-      validationStatusProvider.receiptValidationStatus = inactiveSubscriptionStatus;
+      validationStatusProvider.aggregatedReceiptValidationStatus = activeSubscriptionStatus;
+      validationStatusProvider.aggregatedReceiptValidationStatus = inactiveSubscriptionStatus;
 
       expect(subscriptionSignal).to.sendValues(@[
         [NSNull null],
@@ -2380,13 +2382,32 @@ context(@"KVO-compliance", ^{
           BZRReceiptValidationStatusWithExpiry(NO);
       BZRReceiptValidationStatus *inactiveSubscriptionStatus =
           BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", YES);
-      validationStatusProvider.receiptValidationStatus = activeSubscriptionStatus;
-      validationStatusProvider.receiptValidationStatus = inactiveSubscriptionStatus;
+      validationStatusProvider.aggregatedReceiptValidationStatus = activeSubscriptionStatus;
+      validationStatusProvider.aggregatedReceiptValidationStatus = inactiveSubscriptionStatus;
 
       expect(receiptValidationStatusSignal).to.sendValues(@[
         [NSNull null],
         activeSubscriptionStatus,
         inactiveSubscriptionStatus
+      ]);
+    });
+  });
+
+  context(@"multi-app receipt validation statuses", ^{
+    it(@"should update when multi-app receipt validation status is changed", ^{
+      auto multiAppReceiptValidationStatusSignal =
+          [RACObserve(store, multiAppReceiptValidationStatus) testRecorder];
+      auto activeSubscriptionStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      auto firstMultiAppStatus = @{@"foo.bundle.id": activeSubscriptionStatus};
+      auto secondMultiAppStatus = @{@"bar.bundle.id": activeSubscriptionStatus};
+
+      validationStatusProvider.multiAppReceiptValidationStatus = firstMultiAppStatus;
+      validationStatusProvider.multiAppReceiptValidationStatus = secondMultiAppStatus;
+
+      expect(multiAppReceiptValidationStatusSignal).to.sendValues(@[
+        [NSNull null],
+        firstMultiAppStatus,
+        secondMultiAppStatus
       ]);
     });
   });

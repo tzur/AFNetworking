@@ -3,16 +3,16 @@
 
 #import "BZRExternalTriggerReceiptValidator.h"
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRExternalTriggerReceiptValidator ()
 
 /// Provider used to fetch the aggregated receipt validation status.
-@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
-    validationStatusProvider;
+@property (readonly, nonatomic) BZRMultiAppReceiptValidationStatusProvider
+    *multiAppValidationStatusProvider;
 
 /// Subscription to the trigger signal. Will be \c nil while deactivated and non-nil when activated.
 @property (strong, nonatomic, nullable) RACDisposable *triggerSignalSubscription;
@@ -29,9 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithValidationStatusProvider:
-    (BZRAggregatedReceiptValidationStatusProvider *)validationStatusProvider {
+    (BZRMultiAppReceiptValidationStatusProvider *)multiAppValidationStatusProvider {
   if (self = [super init]) {
-    _validationStatusProvider = validationStatusProvider;
+    _multiAppValidationStatusProvider = multiAppValidationStatusProvider;
     _errorsSubject = [RACSubject subject];
   }
   return self;
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)fetchReceiptValidationStatus {
   @weakify(self);
-  [[[self.validationStatusProvider fetchReceiptValidationStatus]
+  [[[self.multiAppValidationStatusProvider fetchReceiptValidationStatus]
       takeUntil:self.rac_willDeallocSignal]
       subscribeError:^(NSError *error) {
         @strongify(self);

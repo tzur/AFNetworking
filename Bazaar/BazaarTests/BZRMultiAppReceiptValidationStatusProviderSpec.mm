@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRAggregatedReceiptValidationStatusProvider.h"
+#import "BZRMultiAppReceiptValidationStatusProvider.h"
 
 #import <LTKit/NSDictionary+Functional.h>
 
@@ -17,14 +17,14 @@
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
 
-SpecBegin(BZRAggregatedReceiptValidationStatusProvider)
+SpecBegin(BZRMultiAppReceiptValidationStatusProvider)
 
 __block BZRCachedReceiptValidationStatusProvider *underlyingProvider;
 __block RACSubject *underlyingProviderEventsSubject;
 __block BZRMultiAppReceiptValidationStatusAggregator *aggregator;
 __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block NSSet<NSString *> *bundleIDsForValidation;
-__block BZRAggregatedReceiptValidationStatusProvider *receiptValidationStatusAggregator;
+__block BZRMultiAppReceiptValidationStatusProvider *multiAppReceiptValidationStatusProvider;
 
 beforeEach(^{
   underlyingProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
@@ -35,7 +35,7 @@ beforeEach(^{
 
   aggregator = OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
   bundleIDsForValidation = @[@"com.lt.otherApp", @"com.lt.anotherApp"].lt_set;
-  receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
+  multiAppReceiptValidationStatusProvider = [[BZRMultiAppReceiptValidationStatusProvider alloc]
       initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
       bundleIDsForValidation:bundleIDsForValidation];
 });
@@ -47,7 +47,7 @@ context(@"fetching receipt validation status", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatuses:OCMOCK_ANY])
         .andReturn([RACSignal return:bundleIDToReceiptValidationStatus]);
 
-    expect([receiptValidationStatusAggregator fetchReceiptValidationStatus]).to
+    expect([multiAppReceiptValidationStatusProvider fetchReceiptValidationStatus]).to
         .matchError(^BOOL(NSError *error) {
           return error.code == BZRErrorCodeReceiptValidationFailed;
         });
@@ -61,7 +61,8 @@ context(@"fetching receipt validation status", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatuses:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
-    expect([receiptValidationStatusAggregator fetchReceiptValidationStatus]).to.sendError(error);
+    expect([multiAppReceiptValidationStatusProvider fetchReceiptValidationStatus]).to
+        .sendError(error);
   });
 
   it(@"should send the value returned by the aggregator on the receipt validation statuses", ^{
@@ -71,17 +72,32 @@ context(@"fetching receipt validation status", ^{
     OCMStub([aggregator aggregateMultiAppReceiptValidationStatuses:OCMOCK_ANY])
         .andReturn(receiptValidationStatus);
 
-    auto recorder = [[receiptValidationStatusAggregator fetchReceiptValidationStatus] testRecorder];
+    auto recorder =
+        [[multiAppReceiptValidationStatusProvider fetchReceiptValidationStatus] testRecorder];
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[receiptValidationStatus]);
   });
 });
 
+it(@"should set the multi-app receipt validation status dictionary to be the one returned by the "
+   "underlying provider", ^{
+  auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+  auto multiAppReceiptValidationStatues = @{@"foo": receiptValidationStatus};
+  OCMStub([underlyingProvider fetchReceiptValidationStatuses:bundleIDsForValidation])
+      .andReturn([RACSignal return:multiAppReceiptValidationStatues]);
+  OCMStub([aggregator aggregateMultiAppReceiptValidationStatuses:OCMOCK_ANY])
+      .andReturn(receiptValidationStatus);
+
+  expect([multiAppReceiptValidationStatusProvider fetchReceiptValidationStatus]).to.complete();
+  expect(multiAppReceiptValidationStatusProvider.multiAppReceiptValidationStatus).to
+      .equal(multiAppReceiptValidationStatues);
+});
+
 context(@"aggregated receipt validation status property", ^{
   context(@"loading aggregated receipt validation status from cache", ^{
     it(@"should be nil if couldn't load any receipt validation status", ^{
-      expect(receiptValidationStatusAggregator.receiptValidationStatus).to.beNil();
+      expect(multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus).to.beNil();
     });
 
     it(@"should be nil if aggregator returned nil on the receipt validation statuses from cache", ^{
@@ -90,11 +106,11 @@ context(@"aggregated receipt validation status property", ^{
       OCMStub([receiptValidationStatusCache loadReceiptValidationStatusCacheEntries:OCMOCK_ANY])
           .andReturn(@{});
 
-      receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
+      multiAppReceiptValidationStatusProvider = [[BZRMultiAppReceiptValidationStatusProvider alloc]
           initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
           bundleIDsForValidation:bundleIDsForValidation];
 
-      expect(receiptValidationStatusAggregator.receiptValidationStatus).to.beNil();
+      expect(multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus).to.beNil();
       OCMVerify([aggregator aggregateMultiAppReceiptValidationStatuses:@{}]);
     });
 
@@ -110,11 +126,11 @@ context(@"aggregated receipt validation status property", ^{
       OCMStub([aggregator aggregateMultiAppReceiptValidationStatuses:OCMOCK_ANY])
           .andReturn(receiptValidationStatus);
 
-      receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
+      multiAppReceiptValidationStatusProvider = [[BZRMultiAppReceiptValidationStatusProvider alloc]
           initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
           bundleIDsForValidation:bundleIDsForValidation];
 
-      expect(receiptValidationStatusAggregator.receiptValidationStatus).to
+      expect(multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus).to
           .equal(receiptValidationStatus);
     });
   });
@@ -123,12 +139,13 @@ context(@"aggregated receipt validation status property", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatuses:OCMOCK_ANY])
         .andReturn([RACSignal return:@{}]);
 
-    expect(receiptValidationStatusAggregator.receiptValidationStatus).to.beNil();
+    expect(multiAppReceiptValidationStatusProvider.aggregatedReceiptValidationStatus).to.beNil();
   });
 
   it(@"should update if aggregated receipt validation status was fetched successfully", ^{
     auto recorder =
-        [RACObserve(receiptValidationStatusAggregator, receiptValidationStatus) testRecorder];
+        [RACObserve(multiAppReceiptValidationStatusProvider, aggregatedReceiptValidationStatus)
+         testRecorder];
 
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
     OCMStub([underlyingProvider fetchReceiptValidationStatuses:bundleIDsForValidation])
@@ -137,14 +154,14 @@ context(@"aggregated receipt validation status property", ^{
         aggregateMultiAppReceiptValidationStatuses:@{@"com.lt.otherApp": receiptValidationStatus}])
         .andReturn(receiptValidationStatus);
 
-    expect([receiptValidationStatusAggregator fetchReceiptValidationStatus]).to.complete();
+    expect([multiAppReceiptValidationStatusProvider fetchReceiptValidationStatus]).to.complete();
     expect(recorder).to.sendValues(@[[NSNull null], receiptValidationStatus]);
   });
 });
 
 context(@"sending events", ^{
   it(@"should send events sent by the underlyingProvider", ^{
-    auto recorder = [receiptValidationStatusAggregator.eventsSignal testRecorder];
+    auto recorder = [multiAppReceiptValidationStatusProvider.eventsSignal testRecorder];
 
     auto event = [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError)
                                      eventError:[NSError lt_errorWithCode:1337]];

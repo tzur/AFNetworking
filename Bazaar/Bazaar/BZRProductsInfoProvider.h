@@ -58,6 +58,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// thread.
 @property (readonly, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
 
+/// Dictionary mapping application bundle ID to receipt validation status.
+/// The keys here are derived from the list of applications relevant to the currently running
+/// application (including the currently running one).
+/// KVO-compliant. Changes may be delivered on an arbitrary thread.
+@property (readonly, nonatomic, nullable)
+    NSDictionary<NSString *, BZRReceiptValidationStatus *> *multiAppReceiptValidationStatus;
+
 /// App Store locale. KVO-compliant. Changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) NSLocale *appStoreLocale;
 

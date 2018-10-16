@@ -39,9 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRCachedReceiptValidationStatusProvider+MultiApp
 #pragma mark -
 
-/// Maps product application bundle ID to receipt validation status.
-typedef NSDictionary<NSString *, BZRReceiptValidationStatus *> BZRMultiAppReceiptValidationStatus;
-
 /// Adds convenience methods for fetching receipt validation statuses of multiple applications.
 @interface BZRCachedReceiptValidationStatusProvider (MultiApp)
 
