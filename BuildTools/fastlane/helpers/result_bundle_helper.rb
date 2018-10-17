@@ -11,6 +11,10 @@ module Fastlane
         SUPPORTED_FORMAT_VERSIONS = ["1.2"].freeze
 
         def self.result_bundle_to_junit(result_bundle_path, junit_file_path)
+          unless Dir.exist?(result_bundle_path)
+            UI.abort_with_message!("Result bundle directory not found, Xcode probably failed early")
+          end
+
           test_summaries = Dir.glob(File.join(result_bundle_path, "*",
                                               "action_TestSummaries.plist"))
           all_test_suites = test_summaries.map do |test_summaries_file_path|
