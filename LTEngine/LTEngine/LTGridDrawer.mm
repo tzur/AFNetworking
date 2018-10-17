@@ -111,7 +111,7 @@ static const CGFloat kDefaultWidth = 1.0;
 /// modelview and projection transformations.
 - (std::vector<LTGridDrawerVertex>)verticesForGridLines {
   // Spacing, in content pixels, between each grid.
-  static const CGFloat kGridSpacing = 1;
+  static const int kGridSpacing = 1;
 
   GLfloat height = self.size.height;
   GLfloat width = self.size.width;
@@ -123,7 +123,7 @@ static const CGFloat kDefaultWidth = 1.0;
   std::vector<LTGridDrawerVertex> vertexData;
   vertexData.reserve((widthRects + heightRects) * kVerticesPerGridLine);
 
-  for (GLfloat x = 0; x <= width; x += kGridSpacing) {
+  for (int x = 0; x <= width; x += kGridSpacing) {
     LTGridDrawerVertex topLeft = {
       .position = LTVector2(x - 1, 0), .offset = LTVector2(-1, 0)
     };
@@ -144,7 +144,7 @@ static const CGFloat kDefaultWidth = 1.0;
     vertexData.push_back(bottomLeft);
   }
 
-  for (GLfloat y = 0; y <= height; y += kGridSpacing) {
+  for (int y = 0; y <= height; y += kGridSpacing) {
     LTGridDrawerVertex topLeft = {
       .position = LTVector2(0, y - 1), .offset = LTVector2(0, -1)
     };
