@@ -44,6 +44,14 @@ module Fastlane
             type: String
           ),
           FastlaneCore::ConfigItem.new(
+            key: :other_flags,
+            env_name: "LT_DISTRIBUTION_OTHER_FLAGS",
+            description: "Additional flags to pass to xcodebuild",
+            type: String,
+            optional: true,
+            default_value: ""
+          ),
+          FastlaneCore::ConfigItem.new(
             key: :technical_version,
             env_name: "LT_DISTRIBUTION_TECHNICAL_VERSION",
             description: "Build number to use for this build",
@@ -233,7 +241,8 @@ module Fastlane
         xcargs = ["VALID_ARCHS=arm64",
                   "TREAT_WARNINGS_AS_ERRORS=YES",
                   "LT_BASE_PRODUCT_IDENTIFIER=#{bundle_identifier}",
-                  "GCC_PREPROCESSOR_DEFINITIONS=\"#{preprocessor_flags}\""].join(" ")
+                  "GCC_PREPROCESSOR_DEFINITIONS=\"#{preprocessor_flags}\"",
+                  params[:other_flags]].join(" ")
 
         build_type = applestore_demo ? "apple-store" : "standard"
         output_prefix = [scheme, build_type, marketing_version, technical_version].join("-")
