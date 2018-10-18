@@ -6,6 +6,7 @@
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPRequest.h>
 #import <Fiber/FBRHTTPResponse.h>
+#import <LTKit/NSFileManager+LTKit.h>
 
 #import "BZRProduct.h"
 #import "BZRProductContentManager.h"
@@ -119,8 +120,9 @@ NS_ASSUME_NONNULL_BEGIN
        }
 
        NSError *error;
-       [[NSData dataWithData:progress.result.content] writeToFile:targetPath.path options:0
-                                                            error:&error];
+       [self.fileManager lt_writeData:[NSData dataWithData:progress.result.content]
+                               toFile:targetPath.path options:NSDataWritingAtomic
+                                error:&error];
        if (error) {
          [subscriber sendError:error];
        } else {
