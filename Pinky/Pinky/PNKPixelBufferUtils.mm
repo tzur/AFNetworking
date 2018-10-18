@@ -11,7 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if COREVIDEO_SUPPORTS_METAL
+#if !defined(__OBJC__) || !COREVIDEO_SUPPORTS_METAL
+  #define PNK_UNUSED __unused
+#else
+  #define PNK_UNUSED
+#endif
+
+#if defined(__OBJC__) && COREVIDEO_SUPPORTS_METAL
 
 static CVMetalTextureCacheRef PNKMetalTextureCacheForDevice(id<MTLDevice> device) {
   static auto mapTable =
@@ -40,23 +46,20 @@ static CVMetalTextureCacheRef PNKMetalTextureCacheForDevice(id<MTLDevice> device
   return textureCache;
 }
 
-MPSImage *PNKImageFromPixelBuffer(CVPixelBufferRef pixelBuffer, id<MTLDevice> device,
-                                  NSUInteger featureChannels) {
+#endif
+
+MPSImage *PNKImageFromPixelBuffer(PNK_UNUSED CVPixelBufferRef pixelBuffer,
+                                  PNK_UNUSED id<MTLDevice> device,
+                                  PNK_UNUSED NSUInteger featureChannels) {
+#if !defined(__OBJC__) || !COREVIDEO_SUPPORTS_METAL
+  LTAssert(NO, @"Core Video does not support Metal on simulator");
+#else
   auto textureCache = PNKMetalTextureCacheForDevice(device);
   auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer, textureCache, featureChannels);
   CVMetalTextureCacheFlush(textureCache, 0);
 
   return mpsImage;
-}
-
-#else
-
-MPSImage *PNKImageFromPixelBuffer(__unused CVPixelBufferRef pixelBuffer,
-                                  __unused id<MTLDevice> device,
-                                  __unused NSUInteger featureChannels) {
-  return nil;
-}
-
 #endif
+}
 
 NS_ASSUME_NONNULL_END
