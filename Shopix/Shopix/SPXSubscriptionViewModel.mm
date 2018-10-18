@@ -123,6 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
         for (SPXSubscriptionDescriptor *subscriptionDescriptor in self.subscriptionDescriptors) {
           subscriptionDescriptor.priceInfo =
               products[subscriptionDescriptor.productIdentifier].priceInfo;
+          subscriptionDescriptor.introductoryDiscount =
+              products[subscriptionDescriptor.productIdentifier].introductoryDiscount;
         }
         self.shouldShowActivityIndicator = NO;
       };

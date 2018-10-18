@@ -7,6 +7,7 @@
 #import <Bazaar/BZRProductPriceInfo.h>
 #import <Bazaar/BZRProductsInfoProvider.h>
 #import <Bazaar/BZRReceiptModel.h>
+#import <Bazaar/BZRSubscriptionIntroductoryDiscount.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 #import <LTKit/NSArray+Functional.h>
 
@@ -112,6 +113,30 @@ context(@"products fetching", ^{
        expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
        expect(descriptor.priceInfo).to
           .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
+     }];
+  });
+
+  it(@"should set the subscription descriptors introductory discounts when fetch is finished", ^{
+    BZRProduct *product1 = OCMClassMock([BZRProduct class]);
+    BZRProduct *product2 = OCMClassMock([BZRProduct class]);
+    OCMStub([product1 introductoryDiscount])
+        .andReturn(OCMClassMock([BZRSubscriptionIntroductoryDiscount class]));
+    OCMStub([product2 introductoryDiscount])
+        .andReturn(OCMClassMock([BZRSubscriptionIntroductoryDiscount class]));
+    NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
+      @"foo1": product1,
+      @"foo2": product2
+    };
+    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+        completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
+
+    [viewModel fetchProductsInfo];
+
+    [viewModel.subscriptionDescriptors
+     enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index, BOOL *) {
+       expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
+       expect(descriptor.introductoryDiscount).to
+          .equal(returnedProducts[descriptor.productIdentifier].introductoryDiscount);
      }];
   });
 });
