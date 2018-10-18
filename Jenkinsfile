@@ -48,7 +48,8 @@ def simulatorsTestNames() {
 
 def baseStages() {
   return ["Build for simulators": buildAndTestSimulatorsStage(),
-          "Build for devices": buildAndTestDevicesStage()]
+          "Build for devices": buildAndTestDevicesStage(),
+          "Static Analysis": staticAnalysisStage()]
 }
 
 def notifyFailed() {
@@ -87,6 +88,30 @@ def deviceTestsStages() {
 def simulatorTestsStages() {
   return simulatorsTestNames().collectEntries {
     ["Run tests on simulator ${it}" : simulatorTestStageWithLabel(it)]
+  }
+}
+
+def staticAnalysisStage() {
+	return {
+    stage("Static Analysis") {
+      node(xcodeVersion()) {
+        ws("${workspaceBasePath()}/Repo") {
+          try {
+            setCommitStatus("PENDING", env.STAGE_NAME, "Build started")
+            ltCheckoutStage()
+            sh "fastlane static_analysis"
+            setCommitStatus("SUCCESS", env.STAGE_NAME, "Build successful")
+          } catch(e) {
+            setCommitStatus("FAILED", env.STAGE_NAME, "Build failed")
+            detectInterruption(e)
+            notifyFailed()
+            throw new LtStageFailedException(e)
+          } finally {
+            archiveArtifacts artifacts: "output/**", allowEmptyArchive: true
+          }
+        }
+      }    
+    }
   }
 }
 
