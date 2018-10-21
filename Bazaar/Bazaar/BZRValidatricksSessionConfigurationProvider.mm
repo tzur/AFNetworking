@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRValidatricksSessionConfigurationProvider ()
 
-/// API key used for identification with Validatricks server.
-@property (readonly, nonatomic, nullable) NSString *APIKey;
-
 /// Certificates used to validate the Validatricks server's certificates against.
 @property (readonly, nonatomic, nullable) NSSet<NSData *> *pinnedCertificates;
 
