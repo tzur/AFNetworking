@@ -20,6 +20,10 @@
           "description": "@see -[INTDeviceInfo advertisingTrackingEnabled]",
           "type": "boolean"
         },
+        "device_model": {
+          "description": "@see -[INTDeviceInfo deviceModel]",
+          "type": "string"
+        },
         "device_kind": {
           "description": "@see -[INTDeviceInfo deviceKind]",
           "type": "string"
@@ -77,6 +81,7 @@
         "id_for_vendor",
         "advertising_id",
         "is_advertising_tracking_enabled",
+        "device_model",
         "device_kind",
         "ios_version",
         "app_version",

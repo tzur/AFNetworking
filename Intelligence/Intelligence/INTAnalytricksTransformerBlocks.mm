@@ -325,10 +325,10 @@ NSString * const kINTEnrichmentAppRunCountKey = @"app_run_count";
           [[INTAnalytricksDeviceInfoChanged alloc]
            initWithIdForVendor:deviceInfo.identifierForVendor advertisingID:deviceInfo.advertisingID
            isAdvertisingTrackingEnabled:deviceInfo.advertisingTrackingEnabled
-           deviceKind:deviceInfo.deviceKind iosVersion:deviceInfo.iosVersion
-           appVersion:deviceInfo.appVersion appVersionShort:deviceInfo.appVersionShort
-           timezone:deviceInfo.timeZone country:deviceInfo.country
-           preferredLanguage:deviceInfo.preferredLanguage
+           deviceModel:deviceInfo.deviceModel deviceKind:deviceInfo.deviceKind
+           iosVersion:deviceInfo.iosVersion appVersion:deviceInfo.appVersion
+           appVersionShort:deviceInfo.appVersionShort timezone:deviceInfo.timeZone
+           country:deviceInfo.country preferredLanguage:deviceInfo.preferredLanguage
            currentAppLanguage:deviceInfo.currentAppLanguage purchaseReceipt:purchaseReceipt
            appStoreCountry:deviceInfo.appStoreCountry inLowPowerMode:deviceInfo.inLowPowerMode
            firmwareID:deviceInfo.firmwareID

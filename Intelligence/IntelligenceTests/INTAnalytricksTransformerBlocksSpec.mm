@@ -716,10 +716,11 @@ context(@"analytricks device info changed event transformer", ^{
     auto expectedEvent =
         [[INTAnalytricksDeviceInfoChanged alloc]
          initWithIdForVendor:deviceInfo.identifierForVendor advertisingID:deviceInfo.advertisingID
-         isAdvertisingTrackingEnabled:YES deviceKind:@"fooBar" iosVersion:@"10.2" appVersion:@"1"
-         appVersionShort:@"1.2" timezone:@"foo" country:@"bar" preferredLanguage:@"barFoo"
-         currentAppLanguage:@"que" purchaseReceipt:@"thud" appStoreCountry:@"bar"
-         inLowPowerMode:@YES firmwareID:@"baz" usageEventsDisabled:@YES].properties;
+         isAdvertisingTrackingEnabled:YES deviceModel:@"bar" deviceKind:@"fooBar"
+         iosVersion:@"10.2" appVersion:@"1" appVersionShort:@"1.2" timezone:@"foo" country:@"bar"
+         preferredLanguage:@"barFoo" currentAppLanguage:@"que" purchaseReceipt:@"thud"
+         appStoreCountry:@"bar" inLowPowerMode:@YES firmwareID:@"baz"
+         usageEventsDisabled:@YES].properties;
 
     return @{
       kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
