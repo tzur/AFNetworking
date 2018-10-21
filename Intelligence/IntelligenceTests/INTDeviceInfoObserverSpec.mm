@@ -49,7 +49,8 @@
 INTDeviceInfo *INTFakeDeviceInfo() {
   return [[INTDeviceInfo alloc] initWithIdentifierForVendor:[NSUUID UUID]
                                               advertisingID:[NSUUID UUID]
-                                 advertisingTrackingEnabled:YES deviceKind:@"foo" iosVersion:@"foo"
+                                 advertisingTrackingEnabled:YES deviceModel:@"foo"
+                                                 deviceKind:@"foo" iosVersion:@"foo"
                                                  appVersion:@"foo" appVersionShort:@"foo"
                                                    timeZone:@"foo" country:@"foo"
                                           preferredLanguage:@"foo" currentAppLanguage:@"foo"

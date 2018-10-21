@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[INTDeviceInfo alloc] initWithIdentifierForVendor:identifierForVendor
                                               advertisingID:advertisingID
                                  advertisingTrackingEnabled:advertisingTrackingEnabled
+                                                deviceModel:device.lt_platformName
                                                  deviceKind:device.lt_deviceKindString
                                                  iosVersion:device.systemVersion
                                                  appVersion:appVersion
