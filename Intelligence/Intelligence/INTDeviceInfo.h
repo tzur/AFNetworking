@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifierForVendor:(NSUUID *)identifierForVendor
                               advertisingID:(NSUUID *)advertisingID
                  advertisingTrackingEnabled:(BOOL)advertisingTrackingEnabled
+                                deviceModel:(NSString *)deviceModel
                                  deviceKind:(NSString *)deviceKind
                                  iosVersion:(NSString *)iosVersion appVersion:(NSString *)appVersion
                             appVersionShort:(NSString *)appVersionShort
@@ -51,8 +52,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see -[ASIdentifierManager isAdvertisingTrackingEnabled]
 @property (readonly, nonatomic) BOOL advertisingTrackingEnabled;
 
-/// String representation of the device kind the app runs on.
+/// String representation of the device model the app runs on.
+///
+/// @example "iPhone10,3", "iPad6,7"
+///
+/// @see -[UIDevice lt_platformName]
+@property (readonly, nonatomic) NSString *deviceModel;
 
+/// Human readable form of \c deviceModel. Note that different \c deviceModel string may have the
+/// same value.
+///
+/// @example "UIDeviceKindIPhoneX", "UIDeviceKindIPadPro12_9"
+///
 /// @see -[UIDevice lt_deviceKindString]
 @property (readonly, nonatomic) NSString *deviceKind;
 

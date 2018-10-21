@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifierForVendor:(NSUUID *)identifierForVendor
                               advertisingID:(NSUUID *)advertisingID
                  advertisingTrackingEnabled:(BOOL)advertisingTrackingEnabled
+                                deviceModel:(NSString *)deviceModel
                                  deviceKind:(NSString *)deviceKind
                                  iosVersion:(NSString *)iosVersion appVersion:(NSString *)appVersion
                             appVersionShort:(NSString *)appVersionShort
@@ -26,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
     _identifierForVendor = identifierForVendor;
     _advertisingID = advertisingID;
     _advertisingTrackingEnabled = advertisingTrackingEnabled;
+    _deviceModel = deviceModel;
     _deviceKind = deviceKind;
     _iosVersion = iosVersion;
     _appVersion = appVersion;
@@ -48,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[INTDeviceInfo alloc] initWithIdentifierForVendor:identifierForVendor
                                               advertisingID:self.advertisingID
                                  advertisingTrackingEnabled:self.advertisingTrackingEnabled
+                                                deviceModel:self.deviceModel
                                                  deviceKind:self.deviceKind
                                                  iosVersion:self.iosVersion
                                                  appVersion:self.appVersion
