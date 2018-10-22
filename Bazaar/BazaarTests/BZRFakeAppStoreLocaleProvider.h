@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mutable App Store locale. KVO-compliant.
 @property (strong, readwrite, atomic, nullable) NSLocale *appStoreLocale;
 
+/// Mutable flag for locale fetching.
+@property (readwrite, atomic) BOOL localeFetchedFromProductList;
+
 @end
 
 NS_ASSUME_NONNULL_END

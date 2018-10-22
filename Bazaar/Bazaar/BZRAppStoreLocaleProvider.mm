@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Bundle ID of the current application.
 @property (readonly, nonatomic) NSString *currentApplicationBundleID;
 
+/// Redeclare as readwrite.
+@property (readwrite, atomic) BOOL localeFetchedFromProductList;
+
 @end
 
 @implementation BZRAppStoreLocaleProvider
@@ -42,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     _productsProvider = productsProvider;
     _metadataFetcher = metadataFetcher;
     _currentApplicationBundleID = [currentApplicationBundleID copy];
-
+    _localeFetchedFromProductList = NO;
     _appStoreLocale = [self.appStoreLocaleCache
                        appStoreLocaleForBundleID:self.currentApplicationBundleID error:nil];
     [self refreshAppStoreLocale];
@@ -68,6 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeNext:^(NSLocale *appStoreLocale) {
         @strongify(self);
         self.appStoreLocale = appStoreLocale;
+        self.localeFetchedFromProductList = YES;
         [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
                                              bundleID:self.currentApplicationBundleID
                                                 error:nil];

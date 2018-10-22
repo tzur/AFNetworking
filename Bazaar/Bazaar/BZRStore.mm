@@ -209,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
   // We want to wait for the first value of the App Store locale that is fetched from the products'
   // metadata before doing validation that is triggered from the completed transactions signal.
   auto appStoreLocaleFetchedSignal =
-      [[RACObserve(self.appStoreLocaleProvider, appStoreLocale) skip:1] take:1];
+      [[RACObserve(self, appStoreLocaleProvider.localeFetchedFromProductList) ignore:@NO] take:1];
 
   @weakify(self);
   auto triggerSignal = [appStoreLocaleFetchedSignal then:^{

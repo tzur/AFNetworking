@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// App Store locale of the currently running application. KVO-compliant.
 @property (readonly, atomic, nullable) NSLocale *appStoreLocale;
 
+/// Flag indicating whether \c appStoreLocale was already fetched using StoreKit for this run.
+@property (readonly, atomic) BOOL localeFetchedFromProductList;
+
 @end
 
 NS_ASSUME_NONNULL_END

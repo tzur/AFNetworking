@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRFakeAppStoreLocaleProvider
 
 @synthesize appStoreLocale = _appStoreLocale;
+@synthesize localeFetchedFromProductList = _localeFetchedFromProductList;
 
 - (instancetype)init {
   return [super initWithCache:OCMClassMock([BZRAppStoreLocaleCache class])
