@@ -105,7 +105,8 @@ context(@"products fetching", ^{
     };
     OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
         completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
-
+    OCMStub([subscriptionManager eligibleForIntroductoryDiscountOnSubscription:OCMOCK_ANY])
+        .andReturn(YES);
     [viewModel fetchProductsInfo];
 
     [viewModel.subscriptionDescriptors
@@ -129,14 +130,33 @@ context(@"products fetching", ^{
     };
     OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
         completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
+    OCMStub([subscriptionManager eligibleForIntroductoryDiscountOnSubscription:OCMOCK_ANY])
+        .andReturn(YES);
 
     [viewModel fetchProductsInfo];
-
     [viewModel.subscriptionDescriptors
      enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index, BOOL *) {
        expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
        expect(descriptor.introductoryDiscount).to
           .equal(returnedProducts[descriptor.productIdentifier].introductoryDiscount);
+     }];
+  });
+
+  it(@"should set the subscription descriptors introductory discounts to nil when not eligible", ^{
+    BZRProduct *product1 = OCMClassMock([BZRProduct class]);
+    OCMStub([product1 introductoryDiscount])
+        .andReturn(OCMClassMock([BZRSubscriptionIntroductoryDiscount class]));
+    auto returnedProducts = @{@"foo1": product1};
+    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+        completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
+    OCMStub([subscriptionManager eligibleForIntroductoryDiscountOnSubscription:OCMOCK_ANY])
+        .andReturn(NO);
+
+    [viewModel fetchProductsInfo];
+    [viewModel.subscriptionDescriptors
+     enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index, BOOL *) {
+       expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
+       expect(descriptor.introductoryDiscount).to.beNil();
      }];
   });
 });

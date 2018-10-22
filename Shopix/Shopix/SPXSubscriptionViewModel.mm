@@ -121,10 +121,10 @@ NS_ASSUME_NONNULL_BEGIN
           return;
         }
         for (SPXSubscriptionDescriptor *subscriptionDescriptor in self.subscriptionDescriptors) {
-          subscriptionDescriptor.priceInfo =
-              products[subscriptionDescriptor.productIdentifier].priceInfo;
+          auto subscriptionProduct = products[subscriptionDescriptor.productIdentifier];
+          subscriptionDescriptor.priceInfo = subscriptionProduct.priceInfo;
           subscriptionDescriptor.introductoryDiscount =
-              products[subscriptionDescriptor.productIdentifier].introductoryDiscount;
+              [self getDiscountOnProductIfEligible:subscriptionProduct];
         }
         self.shouldShowActivityIndicator = NO;
       };
@@ -135,6 +135,14 @@ NS_ASSUME_NONNULL_BEGIN
       }].lt_set;
   [self.subscriptionManager fetchProductsInfo:requestedProductIdentifiers
                             completionHandler:fetchCompletionHandler];
+}
+
+- (nullable BZRSubscriptionIntroductoryDiscount *)
+    getDiscountOnProductIfEligible:(BZRProduct *)product {
+  if ([self.subscriptionManager eligibleForIntroductoryDiscountOnSubscription:product]) {
+    return product.introductoryDiscount;
+  }
+  return nil;
 }
 
 - (void)subscriptionButtonPressed:(NSUInteger)buttonIndex {

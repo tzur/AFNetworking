@@ -3,6 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Generic group for malformed product IDs.
+static NSString *const kBZRGenericGroup = @"GenericGroupForMalformedProductID";
+
 @class BZRProduct, BZRReceiptInfo, BZRReceiptSubscriptionInfo;
 
 @protocol BZRProductsInfoProvider, BZRProductsManager, BZRUserIDProvider, SPXAlertViewModel;
@@ -96,6 +99,10 @@ typedef void (^SPXRestorationCompletionBlock)
 /// authentication dialog) then \c completionHandler is invoked with \c subscriptionInfo set to
 /// \c nil and \c error.code will be \c BZRErrorCodeOperationCancelled.
 - (void)restorePurchasesWithCompletionHandler:(SPXRestorationCompletionBlock)completionHandler;
+
+/// Returns \c YES if user is eligible for a discount on the subscription product
+/// \c subscriptionProduct, \c NO otherwise.
+- (BOOL)eligibleForIntroductoryDiscountOnSubscription:(BZRProduct *)subscriptionProduct;
 
 /// Specifies a unique identifier of the user. \c nil signifies that the user ID is currently
 /// unavailable.
