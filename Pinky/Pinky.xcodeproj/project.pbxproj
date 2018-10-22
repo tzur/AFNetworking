@@ -110,6 +110,9 @@
 		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
 		28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */; };
 		64333A42212DBB8700E37691 /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 642A5E792121A0BE004C0288 /* libMetalToolbox.a */; };
+		64633877217F120600945494 /* batch_normalization_variance_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633853217F120500945494 /* batch_normalization_variance_32.weights */; };
+		64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633876217F120600945494 /* batch_normalization_mean_32.weights */; };
+		6463399721806A0500945494 /* batch_normalization_epsilon_1.weights in Resources */ = {isa = PBXBuildFile; fileRef = 6463397421806A0500945494 /* batch_normalization_epsilon_1.weights */; };
 		881332A41FE932A200E83C1D /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
 		8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
 		C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
@@ -775,6 +778,9 @@
 		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
 		28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferCDFConstants.h; sourceTree = "<group>"; };
 		642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MetalToolbox.xcodeproj; path = ../MetalToolbox/MetalToolbox.xcodeproj; sourceTree = "<group>"; };
+		64633853217F120500945494 /* batch_normalization_variance_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_variance_32.weights; path = Resources/batch_normalization_variance_32.weights; sourceTree = "<group>"; };
+		64633876217F120600945494 /* batch_normalization_mean_32.weights */ = {isa = PBXFileReference; lastKnownFileType = text; name = batch_normalization_mean_32.weights; path = Resources/batch_normalization_mean_32.weights; sourceTree = "<group>"; };
+		6463397421806A0500945494 /* batch_normalization_epsilon_1.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_epsilon_1.weights; path = Resources/batch_normalization_epsilon_1.weights; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1212,9 +1218,12 @@
 				E4BE102D2058126C00C7EE66 /* baby.jpg */,
 				E4BE100B2058126C00C7EE66 /* baby_echo0.png */,
 				E48E48062018C235002B6D55 /* batch_normalization_beta_32.weights */,
+				6463397421806A0500945494 /* batch_normalization_epsilon_1.weights */,
 				E48E48072018C235002B6D55 /* batch_normalization_gamma_32.weights */,
 				E48E48082018C235002B6D55 /* batch_normalization_input_15x16x32.tensor */,
+				64633876217F120600945494 /* batch_normalization_mean_32.weights */,
 				E48E48092018C235002B6D55 /* batch_normalization_output_15x16x32.tensor */,
+				64633853217F120500945494 /* batch_normalization_variance_32.weights */,
 				E43E38602133D20500D4CF62 /* bayInput.png */,
 				E43E385B2133D20400D4CF62 /* bayLowFrequency.png */,
 				E43E385F2133D20500D4CF62 /* bayMask.png */,
@@ -2401,6 +2410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E41718AB20565768009FEF14 /* gather_input_15x16x32.tensor in Resources */,
+				64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */,
 				E43BF18620614B2000CE1C3A /* argmax_output_15x16x1.tensor in Resources */,
 				E483D41920517CF5000D4809 /* instance_normalization_basic_gamma_32.weights in Resources */,
 				E41718AD20565768009FEF14 /* add_primary_input_15x16x32.tensor in Resources */,
@@ -2430,6 +2440,7 @@
 				E43BF18520614B2000CE1C3A /* argmax_input_15x16x32.tensor in Resources */,
 				E41718B020565768009FEF14 /* add_output_15x16x32.tensor in Resources */,
 				E4877731202C6134009753EF /* pooling_basic_input_15x16x32.tensor in Resources */,
+				6463399721806A0500945494 /* batch_normalization_epsilon_1.weights in Resources */,
 				E4BC7612201DE057000477B4 /* conv_stride_bias_8.weights in Resources */,
 				E483D41E20517CF5000D4809 /* instance_normalization_single_texture_beta_3.weights in Resources */,
 				2841032E20172EAC00C51053 /* ColorTransferResult.png in Resources */,
@@ -2476,6 +2487,7 @@
 				E48AD8AA2030479600F52328 /* pooling_max_output_15x16x32.tensor in Resources */,
 				E4BC7617201DE057000477B4 /* conv_basic_bias_8.weights in Resources */,
 				E4877733202C6134009753EF /* pooling_valid_output_13x14x32.tensor in Resources */,
+				64633877217F120600945494 /* batch_normalization_variance_32.weights in Resources */,
 				E4C11CB720318041002CC63E /* sky.nnmodel in Resources */,
 				E48E480C2018C235002B6D55 /* batch_normalization_input_15x16x32.tensor in Resources */,
 				E47754AC213E8FD30008BEE7 /* buildingMask.png in Resources */,
