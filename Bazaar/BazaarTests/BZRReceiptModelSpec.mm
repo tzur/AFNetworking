@@ -22,7 +22,9 @@ it(@"should correctly build model with JSON dictionary", ^{
     @"purchaseDateTime": @1000,
     @"originalTransactionId": @"baz",
     @"originalPurchaseDateTime": @2000,
-    @"quantity": @2
+    @"quantity": @2,
+    @"isTrialPeriod": @NO,
+    @"isIntroOfferPeriod": @NO
   };
   NSError *error;
 

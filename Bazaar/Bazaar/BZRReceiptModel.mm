@@ -37,7 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
         @"originalPurchaseDateTime",
     @instanceKeypath(BZRReceiptTransactionInfo, quantity): @"quantity",
     @instanceKeypath(BZRReceiptTransactionInfo, expirationDateTime): @"expiresDateTime",
-    @instanceKeypath(BZRReceiptTransactionInfo, cancellationDateTime): @"cancellationDateTime"
+    @instanceKeypath(BZRReceiptTransactionInfo, cancellationDateTime): @"cancellationDateTime",
+    @instanceKeypath(BZRReceiptTransactionInfo, isTrialPeriod): @"isTrialPeriod",
+    @instanceKeypath(BZRReceiptTransactionInfo, isIntroOfferPeriod): @"isIntroOfferPeriod"
   };
 }
 
