@@ -3,8 +3,13 @@
 
 #import "LTTextureBasicExamples.h"
 
+#import <Metal/Metal.h>
+
 #import "CVPixelBuffer+LTEngine.h"
+#import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
+#import "LTTexture.h"
+#import "LTTexture+Factory.h"
 #import "LTTexture+Protected.h"
 
 NSString * const kLTTextureBasicExamples = @"LTTextureBasicExamples";
@@ -14,6 +19,57 @@ NSString * const kLTTextureDefaultValuesExamples = @"LTTextureDefaultValuesExamp
 NSString * const kLTTextureDefaultValuesTexture = @"Texture";
 
 NSString * const kLTTextureBasicExamplesPrecisionAndFormat = @"PrecisionAndFormat";
+
+NSString * const kLTTextureMetalExamples = @"LTTextureMetalExamples";
+NSString * const kLTTextureMetalExamplesTextureClass = @"TextureClass";
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+
+/// Copies the content of \c source to the \c target texture using the GPU.
+static void LTGPUCopyMTLTexture(id<MTLTexture> source, id<MTLTexture> target) {
+  auto commandQueue = [source.device newCommandQueue];
+  auto commandBuffer = [commandQueue commandBuffer];
+  auto blitEncoder = [commandBuffer blitCommandEncoder];
+  [blitEncoder copyFromTexture:source sourceSlice:0 sourceLevel:0
+                  sourceOrigin:MTLOriginMake(0, 0, 0)
+                    sourceSize:MTLSizeMake(source.width, source.height, 0)
+                     toTexture:target destinationSlice:0 destinationLevel:0
+             destinationOrigin:MTLOriginMake(0, 0, 0)];
+  [blitEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+}
+
+static id<MTLTexture> LTMTLTextureFromPixelBuffer(CVPixelBufferRef pixelBuffer,
+                                                  id<MTLDevice> device,
+                                                  MTLTextureDescriptor *descriptor) {
+  auto _Nullable iosurface = CVPixelBufferGetIOSurface(pixelBuffer);
+  LTAssert(iosurface, @"PixelBuffer must be backed by IOSurface");
+
+  // Creating an MTLTexture from IOSurface is available from iOS 10 as a private API.
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+  return [device newTextureWithDescriptor:descriptor iosurface:iosurface plane:0];
+  #pragma clang diagnostic pop
+}
+
+/// Returns \c IOSurface backed \c MTLTexture with content of the \c source texture. The copy
+/// operation is performed on GPU.
+static id<MTLTexture> LTGPUCloneMTLTexture(id<MTLTexture> source) {
+  auto descriptor =
+      [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:source.pixelFormat width:source.width
+                                                        height:source.height
+                                                     mipmapped:source.mipmapLevelCount > 0];
+  descriptor.mipmapLevelCount = source.mipmapLevelCount;
+  auto ltPixelFormat = [[LTGLPixelFormat alloc] initWithMTLPixelFormat:source.pixelFormat];
+  auto pixelBuffer = LTCVPixelBufferCreate(source.width, source.height,
+                                           ltPixelFormat.cvPixelFormatType);
+  auto target = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), source.device, descriptor);
+  LTGPUCopyMTLTexture(source, target);
+  return target;
+}
+
+#endif
 
 SharedExamplesBegin(LTTextureExamples)
 
@@ -953,6 +1009,169 @@ sharedExamplesFor(kLTTextureDefaultValuesExamples, ^(NSDictionary *data) {
 
     expect(maxMipmapLevels).to.equal(texture.maxMipmapLevel);
   });
+});
+
+sharedExamplesFor(kLTTextureMetalExamples, ^(NSDictionary *values) {
+  __block id<MTLDevice> device;
+  __block MTLTextureDescriptor *descriptor;
+  __block lt::Ref<CVImageBufferRef> pixelBuffer;
+  __block Class textureClass;
+
+  beforeEach(^{
+    textureClass = values[kLTTextureMetalExamplesTextureClass];
+    device = MTLCreateSystemDefaultDevice();
+    auto size = CGSizeMake(37, 19);
+    auto pixelFormat = $(LTGLPixelFormatR8Unorm);
+    pixelBuffer = LTCVPixelBufferCreate(size.width, size.height, pixelFormat.cvPixelFormatType);
+    LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+      for (int i = 0; i < image->rows; ++i) {
+        for (int j = 0; j < image->rows; ++j) {
+          image->at<uchar>(i, j) = (i + j) % UCHAR_MAX;
+        }
+      }
+    });
+
+    descriptor = [MTLTextureDescriptor
+                  texture2DDescriptorWithPixelFormat:pixelFormat.mtlPixelFormat
+                  width:size.width height:size.height mipmapped:NO];
+  });
+
+  afterEach(^{
+    pixelBuffer = nil;
+    device = nil;
+  });
+
+  sit(@"should raise when initializing on simulator", ^{
+    expect(^{
+      auto _Nullable mtlTexture = [device newTextureWithDescriptor:descriptor];
+      __unused LTTexture *ltTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  it(@"should raise when initializing with non shared metal texture", ^{
+    descriptor.storageMode = MTLStorageModePrivate;
+    auto mtlTexture = [device newTextureWithDescriptor:descriptor];
+    expect(^{
+      __unused LTTexture *ltTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should initialize with iosurface backed metal texture", ^{
+    auto mtlTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+    LTTexture *ltTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture];
+    LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+      expect($(ltTexture.image)).to.equalMat($(image));
+    });
+  });
+
+  it(@"should initialize with parent texture", ^{
+    descriptor.pixelFormat = MTLPixelFormatR8Snorm;
+    auto mtlTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+    auto mtlTexture2 = [mtlTexture newTextureViewWithPixelFormat:MTLPixelFormatR8Unorm];
+    LTTexture *ltTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture2];
+    LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+      expect($(ltTexture.image)).to.equalMat($(image));
+    });
+  });
+
+  context(@"cpu", ^{
+    it(@"should write opengl texture and read as metal texture", ^{
+      LTTexture *ltTexture = [[textureClass alloc] initWithPixelBuffer:pixelBuffer.get()];
+      auto mtlTexture = [ltTexture mtlTextureWithDevice:device];
+      expect($(ltTexture.image)).to.equalMat($(LTCVMatByCopyingFromMTLTexture(mtlTexture)));
+    });
+
+    it(@"should write metal texture and read as opengl texture", ^{
+      auto mtlTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+      LTTexture *ltTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture];
+      expect($(LTCVMatByCopyingFromMTLTexture(mtlTexture))).to.equalMat($(ltTexture.image));
+    });
+  });
+
+  context(@"cpu gpu", ^{
+    beforeEach(^{
+      LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+        for (int i = 0; i < image->rows; ++i) {
+          for (int j = 0; j < image->rows; ++j) {
+            image->at<uchar>(i, j) = (i + j) % UCHAR_MAX;
+          }
+        }
+      });
+    });
+
+    it(@"should write opengl texture with cpu and read as metal texture with gpu", ^{
+      LTTexture *sourceLTTexture = [[textureClass alloc] initWithPixelBuffer:pixelBuffer.get()];
+      auto sourceMTLTexture = [sourceLTTexture mtlTextureWithDevice:device];
+      auto targetMTLTexture = LTGPUCloneMTLTexture(sourceMTLTexture);
+      expect($(sourceLTTexture.image))
+          .to.equalMat($(LTCVMatByCopyingFromMTLTexture(targetMTLTexture)));
+    });
+
+    it(@"should write metal texture with gpu and read as opengl texture with cpu", ^{
+      auto sourceMTLTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+      auto targetMTLTexture = LTGPUCloneMTLTexture(sourceMTLTexture);
+      LTTexture *targetLTTexture = [[textureClass alloc] initWithMTLTexture:targetMTLTexture];
+      expect($(LTCVMatByCopyingFromMTLTexture(targetMTLTexture)))
+          .to.equalMat($(targetLTTexture.image));
+    });
+
+    it(@"should write metal texture with cpu and read as opengl texture with gpu", ^{
+      auto mtlTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+      LTTexture *sourceLTTexture = [[textureClass alloc] initWithMTLTexture:mtlTexture];
+      LTTexture *targetLTTexture = [sourceLTTexture clone];
+      expect($(LTCVMatByCopyingFromMTLTexture(mtlTexture))).to.equalMat($(targetLTTexture.image));
+    });
+
+    it(@"should write openlg texture with gpu and read as metal texture with cpu", ^{
+      LTTexture *sourceLTTexture = [[textureClass alloc] initWithPixelBuffer:pixelBuffer.get()];
+      LTTexture *targetLTTexture = [sourceLTTexture clone];
+      auto mtlTexture = [targetLTTexture mtlTextureWithDevice:device];
+      expect($(LTCVMatByCopyingFromMTLTexture(mtlTexture))).to.equalMat($(targetLTTexture.image));
+    });
+  });
+
+  context(@"gpu", ^{
+    it(@"should write metal texture and read as opengl texture", ^{
+      auto sourceMTLTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+      auto targetMTLTexture = LTGPUCloneMTLTexture(sourceMTLTexture);
+      LTTexture *sourceLTTexture = [[textureClass alloc] initWithMTLTexture:targetMTLTexture];
+      LTTexture *targetLTTexture = [sourceLTTexture clone];
+
+      expect($(LTCVMatByCopyingFromMTLTexture(targetMTLTexture)))
+          .to.equalMat($(targetLTTexture.image));
+    });
+
+    it(@"should write opengl texture and read as metal texture", ^{
+      LTTexture *sourceLTTexture = [[textureClass alloc] initWithPixelBuffer:pixelBuffer.get()];
+      LTTexture *targetLTTexture = [sourceLTTexture clone];
+      auto sourceMTLTexture = LTMTLTextureFromPixelBuffer(pixelBuffer.get(), device, descriptor);
+      auto targetMTLTexture = LTGPUCloneMTLTexture(sourceMTLTexture);
+
+      expect($(targetLTTexture.image))
+          .to.equalMat($(LTCVMatByCopyingFromMTLTexture(targetMTLTexture)));
+    });
+  });
+
+  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+    if ((pixelFormat.dataType == LTGLPixelDataType32Float &&
+         ![LTGLContext currentContext].canRenderToFloatColorBuffers) ||
+        pixelFormat.value == LTGLPixelFormatDepth16Unorm) {
+      // Pixel format isn't supported, return.
+      return;
+    }
+
+    it(@"should return metal texture from memory mapped texture", ^{
+      auto size = CGSizeMake(23, 13);
+      auto image = cv::Mat(size.height, size.width, pixelFormat.matType);
+      auto ltTexture = [(LTTexture *)[textureClass alloc] initWithImage:image];
+      auto mtlTexture = [ltTexture mtlTextureWithDevice:device];
+      expect(mtlTexture.width).to.equal(ltTexture.size.width);
+      expect(mtlTexture.height).to.equal(ltTexture.size.height);
+      expect(mtlTexture.pixelFormat).to.equal(ltTexture.pixelFormat.mtlPixelFormat);
+    });
+  }];
+#endif
 });
 
 SharedExamplesEnd
