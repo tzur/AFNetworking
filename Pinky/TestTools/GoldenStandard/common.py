@@ -26,7 +26,7 @@ def evaluate_and_save(tensor, file_name="output_res", feed_dict=None):
         session.run(tf.global_variables_initializer())
         res = session.run(fetches=tensor, feed_dict=feed_dict)
         save_array(res.astype(np.float16), file_name)
-        weights = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
+        weights = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES)
         for tensorWeight in weights:
             array = tensorWeight.eval()
             name = re.sub(r"[/:]", "_", tensorWeight.name)
