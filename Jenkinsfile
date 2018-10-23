@@ -39,7 +39,8 @@ def maintainersEmails() {
 }
 
 def deviceTestLabels() {
-  return ["iOS10", "iOS11"]
+  return ["iOS10 && GpuFamily3", "iOS11 && GpuFamily2" , "iOS11 && GpuFamily3",
+          "iOS11 && GpuFamily4"]
 }
 
 def simulatorsTestNames() {
