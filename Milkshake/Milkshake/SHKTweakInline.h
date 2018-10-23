@@ -46,7 +46,7 @@
 #define SHKTweakValue(category, collection, name, ...) \
     _FBTweakValue(category, collection, name, __VA_ARGS__)
 
-/// Deines a Tweak with \c name and binds its value to the given \c object \c property. The new
+/// Defines a Tweak with \c name and binds its value to the given \c object \c property. The new
 /// Tweak will reside in \c collection inside \c category. Binds the default value (4th parameter)
 /// if Tweaks are disabled.
 ///
