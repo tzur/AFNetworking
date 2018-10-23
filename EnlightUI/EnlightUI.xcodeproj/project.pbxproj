@@ -35,6 +35,9 @@
 		1983A8FA2178DC6D004C632A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1983A8F92178DC6D004C632A /* Security.framework */; };
 		1983A8FC2178DE6B004C632A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1983A8FB2178DE6B004C632A /* MessageUI.framework */; };
 		1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983AB16217DAB44004C632A /* EUISMModel.mm */; };
+		1983ABF1217DF54C004C632A /* EUILocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983ABEF217DF54C004C632A /* EUILocalization.mm */; };
+		1983ACC6217E0446004C632A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1983ACC8217E0446004C632A /* Localizable.strings */; };
+		1983ACE4217E0A2A004C632A /* EnlightUIBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1983ACBC217E0171004C632A /* EnlightUIBundle.bundle */; };
 		19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */; };
 		19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */; };
 		19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F49475216F4F3A0011CFF6 /* UIKit.framework */; };
@@ -387,6 +390,13 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		1983ACE2217E0A1C004C632A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F49192216F24E60011CFF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1983ACBB217E0171004C632A;
+			remoteInfo = EnlightUIBundle;
+		};
 		19F491E5216F283D0011CFF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 19F49192216F24E60011CFF6 /* Project object */;
@@ -579,6 +589,11 @@
 		1983A8FB2178DE6B004C632A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		1983AB15217DAB43004C632A /* EUISMModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMModel.h; sourceTree = "<group>"; };
 		1983AB16217DAB44004C632A /* EUISMModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMModel.mm; sourceTree = "<group>"; };
+		1983ABEF217DF54C004C632A /* EUILocalization.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUILocalization.mm; sourceTree = "<group>"; };
+		1983ABF0217DF54C004C632A /* EUILocalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUILocalization.h; sourceTree = "<group>"; };
+		1983ACBC217E0171004C632A /* EnlightUIBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnlightUIBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		1983ACBE217E0171004C632A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1983ACC7217E0446004C632A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		19F4919A216F24E60011CFF6 /* libEnlightUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEnlightUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F491D2216F274C0011CFF6 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		19F491D4216F274C0011CFF6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -599,6 +614,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1983ACB9217E0171004C632A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19F49197216F24E60011CFF6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -820,11 +842,30 @@
 			name = "Test Utils";
 			sourceTree = "<group>";
 		};
+		1983ABEE217DF516004C632A /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				1983ABF0217DF54C004C632A /* EUILocalization.h */,
+				1983ABEF217DF54C004C632A /* EUILocalization.mm */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
+		1983ACBD217E0171004C632A /* EnlightUIBundle */ = {
+			isa = PBXGroup;
+			children = (
+				1983ACBE217E0171004C632A /* Info.plist */,
+				1983ACC8217E0446004C632A /* Localizable.strings */,
+			);
+			path = EnlightUIBundle;
+			sourceTree = "<group>";
+		};
 		19F49191216F24E60011CFF6 = {
 			isa = PBXGroup;
 			children = (
 				19F491D1216F271C0011CFF6 /* Configuration */,
 				19F4919C216F24E60011CFF6 /* EnlightUI */,
+				1983ACBD217E0171004C632A /* EnlightUIBundle */,
 				19F491E0216F283D0011CFF6 /* EnlightUITests */,
 				19F49477216F4FC20011CFF6 /* Libraries */,
 				19F4919B216F24E60011CFF6 /* Products */,
@@ -835,6 +876,7 @@
 		19F4919B216F24E60011CFF6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				1983ACBC217E0171004C632A /* EnlightUIBundle.bundle */,
 				19F491DF216F283D0011CFF6 /* EnlightUITests.xctest */,
 				19F4919A216F24E60011CFF6 /* libEnlightUI.a */,
 			);
@@ -845,6 +887,7 @@
 			isa = PBXGroup;
 			children = (
 				1983A78F217626B5004C632A /* Extensions */,
+				1983ABEE217DF516004C632A /* Localization */,
 				19F4946F216F4B870011CFF6 /* SubscriptionManagement */,
 				19F49469216F48030011CFF6 /* Supporting Files */,
 			);
@@ -1043,6 +1086,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1983ACBB217E0171004C632A /* EnlightUIBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1983ACBF217E0171004C632A /* Build configuration list for PBXNativeTarget "EnlightUIBundle" */;
+			buildPhases = (
+				1983ACB8217E0171004C632A /* Sources */,
+				1983ACB9217E0171004C632A /* Frameworks */,
+				1983ACBA217E0171004C632A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EnlightUIBundle;
+			productName = EnlightUIBundle;
+			productReference = 1983ACBC217E0171004C632A /* EnlightUIBundle.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		19F49199216F24E60011CFF6 /* EnlightUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19F491A3216F24E60011CFF6 /* Build configuration list for PBXNativeTarget "EnlightUI" */;
@@ -1054,6 +1114,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1983ACE3217E0A1C004C632A /* PBXTargetDependency */,
 				192A8F2C2174C41E00EA27B4 /* PBXTargetDependency */,
 				192A8F052174C22D00EA27B4 /* PBXTargetDependency */,
 				1983A8F82178D821004C632A /* PBXTargetDependency */,
@@ -1090,6 +1151,9 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
+					1983ACBB217E0171004C632A = {
+						CreatedOnToolsVersion = 10.0;
+					};
 					19F49199216F24E60011CFF6 = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -1177,6 +1241,7 @@
 			projectRoot = "";
 			targets = (
 				19F49199216F24E60011CFF6 /* EnlightUI */,
+				1983ACBB217E0171004C632A /* EnlightUIBundle */,
 				19F491DE216F283D0011CFF6 /* EnlightUITests */,
 			);
 		};
@@ -1648,21 +1713,38 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1983ACBA217E0171004C632A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1983ACC6217E0446004C632A /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19F491DD216F283D0011CFF6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1983ACE4217E0A2A004C632A /* EnlightUIBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1983ACB8217E0171004C632A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		19F49196216F24E60011CFF6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1983A8972178D24D004C632A /* EUISMYourPlanCell.mm in Sources */,
+				1983ABF1217DF54C004C632A /* EUILocalization.mm in Sources */,
 				1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1693,6 +1775,11 @@
 			name = "ReactiveObjC-iOS";
 			targetProxy = 1983A8F72178D821004C632A /* PBXContainerItemProxy */;
 		};
+		1983ACE3217E0A1C004C632A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1983ACBB217E0171004C632A /* EnlightUIBundle */;
+			targetProxy = 1983ACE2217E0A1C004C632A /* PBXContainerItemProxy */;
+		};
 		19F491E6216F283D0011CFF6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 19F49199216F24E60011CFF6 /* EnlightUI */;
@@ -1700,7 +1787,48 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		1983ACC8217E0446004C632A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1983ACC7217E0446004C632A /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		1983ACC0217E0171004C632A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491DA216F276F0011CFF6 /* Bundle.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = EnlightUIBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUIBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		1983ACC1217E0171004C632A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19F491DA216F276F0011CFF6 /* Bundle.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = EnlightUIBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUIBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		19F491A1216F24E60011CFF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 19F491D4216F274C0011CFF6 /* Debug.xcconfig */;
@@ -1814,6 +1942,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1983ACBF217E0171004C632A /* Build configuration list for PBXNativeTarget "EnlightUIBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1983ACC0217E0171004C632A /* Debug */,
+				1983ACC1217E0171004C632A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		19F49195216F24E60011CFF6 /* Build configuration list for PBXProject "EnlightUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
