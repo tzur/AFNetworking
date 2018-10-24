@@ -41,6 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// transaction is not associated with a subscription product.
 @property (readonly, nonatomic, nullable) NSDate *cancellationDateTime;
 
+/// \c YES if transaction is of a trial period, \c NO otherwise.
+@property (readonly, nonatomic) BOOL isTrialPeriod;
+
+/// \c YES if transaction is of an intro offer period, \c NO otherwise.
+@property (readonly, nonatomic) BOOL isIntroOfferPeriod;
+
 @end
 
 #pragma mark -

@@ -66,7 +66,9 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
     @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"000000",
     @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
         [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
+    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13,
+    @instanceKeypath(BZRReceiptTransactionInfo, isTrialPeriod): @NO,
+    @instanceKeypath(BZRReceiptTransactionInfo, isIntroOfferPeriod): @NO
   } error:nil];
   auto receipt = [BZRReceiptInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
@@ -146,7 +148,9 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
     @instanceKeypath(BZRReceiptTransactionInfo, originalTransactionId): @"00000",
     @instanceKeypath(BZRReceiptTransactionInfo, originalPurchaseDateTime):
         [NSDate dateWithTimeIntervalSince1970:1337],
-    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13
+    @instanceKeypath(BZRReceiptTransactionInfo, quantity): @13,
+    @instanceKeypath(BZRReceiptTransactionInfo, isTrialPeriod): @NO,
+    @instanceKeypath(BZRReceiptTransactionInfo, isIntroOfferPeriod): @NO
   } error:nil];
 }
 
