@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object used to construct the parameterized object used by the render pipeline.
 @property (readonly, nonatomic) LTParameterizedObjectConstructor *splineConstructor;
 
+/// Parameterized object type of the \c splineConstructor.
+@property (readonly, nonatomic) LTParameterizedObjectType *type;
+
 /// Configuration of the \c pipeline at the beginning of the current processing sequence. Is updated
 /// in every call to the \c reset method.
 @property (strong, nonatomic) DVNPipelineConfiguration *sequenceStartConfiguration;
@@ -54,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _delegate = delegate;
     _pipeline = [[DVNPipeline alloc] initWithConfiguration:configuration];
+    _type = type;
     _splineConstructor = [[LTParameterizedObjectConstructor alloc] initWithType:type];
     self.pipeline.delegate = self;
     [self reset];
@@ -80,54 +84,53 @@ NS_ASSUME_NONNULL_BEGIN
                preserveState:(BOOL)preserveState end:(BOOL)end {
   [self.splineConstructor pushControlPoints:controlPoints];
 
-  NSUInteger numberOfControlPointsToPopIfNecessary = controlPoints.count;
-  NSArray<LTSplineControlPoint *> *storedControlPoints = @[];
-
-  if (!self.parameterizedObject) {
-    if (!end) {
-      // If the spline could not be constructed yet and the current state does not represent the end
-      // of a control point sequence, bail out since there is nothing to render yet.
-      if (preserveState) {
-        [self.splineConstructor popControlPoints:numberOfControlPointsToPopIfNecessary];
-      }
-      return;
-    }
-
-    storedControlPoints = self.splineConstructor.controlPoints;
-    [self.splineConstructor popControlPoints:NSUIntegerMax];
-
-    if (!storedControlPoints.count) {
-      DVNPipelineConfiguration *pipelineConfiguration = [self.pipeline currentConfiguration];
-      LTAssert([pipelineConfiguration isEqual:self.sequenceStartConfiguration],
-               @"Configuration %@ of pipeline should not be different than configuration at "
-               "start of control point sequence", pipelineConfiguration);
-      LTAssert(self.lastIntervalUsedInLastSequence == lt::Interval<CGFloat>(),
-               @"Last interval %@ used in most recent control point sequence must equal "
-               "the empty (0, 0) interval", self.lastIntervalUsedInLastSequence.description());
-      return;
-    }
-
-    // If the number of control points received in the current sequence is insufficient to
-    // construct a spline but is greater than zero and the current state represents the end of a
-    // control point sequence, a single point should be rendered.
-    numberOfControlPointsToPopIfNecessary =
-        [self setupForRenderingOfSinglePoint:storedControlPoints.firstObject
-                 withParameterizedObjectType:self.splineConstructor.type];
+  if (!self.splineConstructor.parameterizedObject && !preserveState && !end) {
+    // Didn't collect enough points for valid parameterizedObject and the rendering isn't required.
+    return;
   }
 
-  if (self.firstRenderCallOfSequence) {
-    [self.delegate renderingOfSplineRendererWillStart:self];
-    self.firstRenderCallOfSequence = NO;
+  // Pad the parameterized object till it's valid, when there's an end indication.
+  NSUInteger numberOfPaddedPoints = 0;
+  if (!self.splineConstructor.parameterizedObject && end) {
+    numberOfPaddedPoints = [self padParameterizedObjectUntilItIsValid];
   }
 
-  [self processUnprocessedPartOfSpline:end preserveState:preserveState];
+  // Render the parameterized object, only if it's valid.
+  if (self.splineConstructor.parameterizedObject) {
+    if (self.firstRenderCallOfSequence) {
+      [self.delegate renderingOfSplineRendererWillStart:self];
+      self.firstRenderCallOfSequence = NO;
+    }
+    [self processUnprocessedPartOfSpline:end preserveState:preserveState];
+  }
 
+  // Remove added points to restore the original state, when should preserve state.
   if (preserveState) {
-    [self.splineConstructor popControlPoints:numberOfControlPointsToPopIfNecessary];
-    [self.splineConstructor pushControlPoints:storedControlPoints];
-  } else if (end) {
+    [self.splineConstructor popControlPoints:controlPoints.count + numberOfPaddedPoints];
+  }
+
+  // Handle end indication, only if state preservation isn't required.
+  if (end && !preserveState) {
     [self handleEnd];
   }
+}
+
+- (NSUInteger)padParameterizedObjectUntilItIsValid {
+  LTParameterAssert(!self.splineConstructor.parameterizedObject);
+
+  if (!self.numberOfControlPoints) {
+    return 0;
+  }
+
+  NSUInteger numberOfRequiredPoints = [self.type.factory.class numberOfRequiredValues];
+  NSUInteger addedPointsCount = numberOfRequiredPoints - self.numberOfControlPoints;
+  auto addedPoints = [NSMutableArray<LTSplineControlPoint *> arrayWithCapacity:addedPointsCount];
+  LTSplineControlPoint *paddingPoint = self.splineConstructor.controlPoints.lastObject;
+  for (NSUInteger i = 0; i < addedPointsCount; ++i) {
+    [addedPoints addObject:paddingPoint];
+  }
+  [self.splineConstructor pushControlPoints:addedPoints];
+  return addedPointsCount;
 }
 
 - (void)handleEnd {
@@ -155,12 +158,12 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
 - (void)processUnprocessedPartOfSpline:(BOOL)end preserveState:(BOOL)preserveState {
   lt::Interval<CGFloat> interval({
     self.lastIntervalUsedInLastSequence.sup(),
-    self.parameterizedObject.maxParametricValue
+    self.splineConstructor.parameterizedObject.maxParametricValue
   }, self.lastIntervalUsedInLastSequence == lt::Interval<CGFloat>() ? kClosed : kOpen, kClosed);
 
   DVNPipelineConfiguration * _Nullable configuration =
       preserveState ? self.pipeline.currentConfiguration : nil;
-  [self.pipeline processParameterizedObject:self.parameterizedObject
+  [self.pipeline processParameterizedObject:self.splineConstructor.parameterizedObject
                                  inInterval:interval end:end];
   if (preserveState) {
     [self.pipeline setConfiguration:configuration];
@@ -170,21 +173,6 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
   LTAssert(interval != lt::Interval<CGFloat>(),
            @"Internal inconsistency: intervals used for rendering are supposed to contain at least "
            "one value");
-}
-
-- (NSUInteger)setupForRenderingOfSinglePoint:(LTSplineControlPoint *)point
-                 withParameterizedObjectType:(LTParameterizedObjectType *)type {
-  id<LTBasicParameterizedObjectFactory> factory = [type factory];
-  NSUInteger numberOfControlPoints = [[factory class] numberOfRequiredValues];
-  NSMutableArray<LTSplineControlPoint *> *mutableControlPoints =
-      [NSMutableArray arrayWithCapacity:numberOfControlPoints];
-
-  for (NSUInteger i = 0; i < numberOfControlPoints; ++i) {
-    [mutableControlPoints addObject:point];
-  }
-
-  [self.splineConstructor pushControlPoints:mutableControlPoints];
-  return numberOfControlPoints;
 }
 
 - (void)cancel {
@@ -223,10 +211,6 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
 
 - (NSArray<LTSplineControlPoint *> *)controlPoints {
   return self.splineConstructor.controlPoints;
-}
-
-- (id<LTParameterizedObject>)parameterizedObject {
-  return self.splineConstructor.parameterizedObject;
 }
 
 @end

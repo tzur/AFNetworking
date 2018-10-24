@@ -376,6 +376,40 @@ sharedExamples(kDVNSplineRendererExamples, ^(NSDictionary *values) {
       });
 
       context(@"no rendering", ^{
+        __block LTSplineControlPoint *p;
+        __block LTSplineControlPoint *p1;
+
+        beforeEach(^{
+          p = [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0, 0)];
+          p1 = [[LTSplineControlPoint alloc] initWithTimestamp:1 location:CGPointMake(1, 1)];
+        });
+
+        it(@"should preserve state correctly when not enough points with end indication", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[p] preserveState:YES end:YES];
+          }];
+          expect(renderer.controlPoints).to.equal(@[]);
+        });
+
+        it(@"should preserve state correctly when not enough points without end indication", ^{
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[p] preserveState:YES end:NO];
+          }];
+          expect(renderer.controlPoints).to.equal(@[]);
+        });
+
+        it(@"should preserve state correctly when not enough points with multiple calls", ^{
+          if ([[[type factory] class] numberOfRequiredValues] < 2) {
+            return;
+          }
+
+          [fbo bindAndDraw:^{
+            [renderer processControlPoints:@[p] preserveState:NO end:NO];
+            [renderer processControlPoints:@[p1] preserveState:YES end:YES];
+          }];
+          expect(renderer.controlPoints).to.equal(@[p]);
+        });
+
         it(@"should preserve state when not rendering due to lack of control points", ^{
           [fbo bindAndDraw:^{
             [renderer processControlPoints:@[] preserveState:YES end:YES];
