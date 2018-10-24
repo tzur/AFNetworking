@@ -288,4 +288,8 @@ context(@"path operations", ^{
   });
 });
 
+it(@"should not standardize a path", ^{
+  expect([LTPath pathWithPath:@"/foo/./bar"].path).to.equal(@"/foo/./bar");
+});
+
 SpecEnd
