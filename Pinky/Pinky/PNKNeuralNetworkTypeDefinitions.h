@@ -56,5 +56,10 @@ enum ActivationType : unsigned short {
   ActivationTypeParametricSoftplus
 };
 
-} // namespace pnk
+/// Valid unary function types for \c UnaryFunctionKernelModel.
+enum UnaryType : unsigned short {
+  /// max(alpha, x)
+  UnaryTypeThreshold
+};
 
+} // namespace pnk
