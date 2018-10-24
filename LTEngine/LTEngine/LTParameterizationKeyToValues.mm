@@ -83,7 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (CGFloats)valuesForKey:(NSString *)key {
-  LTParameterAssert([self.keys containsObject:key]);
+  LTParameterAssert([self.keys containsObject:key], @"Key (%@) not found in keys (%@)", key,
+                    self.keys);
   cv::Mat1g row(_valuesPerKey.row((int)[self.keys indexOfObject:key]));
   return CGFloats(row.begin(), row.end());
 }
