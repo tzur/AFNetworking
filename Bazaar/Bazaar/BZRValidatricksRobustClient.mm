@@ -5,6 +5,7 @@
 
 #import <Fiber/FBRHTTPClient.h>
 #import <LTKit/NSArray+Functional.h>
+#import <Milkshake/SHKTweakInline.h>
 
 #import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
@@ -69,6 +70,15 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
   @"sydney-api.lightricks.com"
 ];
 
+/// Validatricks staging servers host names.
+static NSArray<NSString *> * const kStagingValidatricksHostNames = @[
+  @"oregon-api.stg.lightricks.com",
+  @"frankfurt-api.stg.lightricks.com",
+  @"ireland-api.stg.lightricks.com",
+  @"tokyo-api.stg.lightricks.com",
+  @"sydney-api.stg.lightricks.com"
+];
+
 - (instancetype)init {
   return [self initWithHostNames:kDefaultValidatricksHostNames delayedRetries:2
              initialBackoffDelay:0.25 immediateRetries:kDefaultValidatricksHostNames.count - 1];
@@ -80,17 +90,23 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
                  immediateRetries:(NSUInteger)immediateRetries {
   auto sessionConfigurationProvider = [[BZRValidatricksSessionConfigurationProvider alloc] init];
   auto sessionConfiguration = [sessionConfigurationProvider HTTPSessionConfiguration];
-  auto clients  =
-      [hostNames lt_map:^id<BZRValidatricksClient>(NSString *hostName) {
-        auto HTTPClient =
-            [FBRHTTPClient clientWithSessionConfiguration:sessionConfiguration
-                                                  baseURL:[self serverURLFromHostName:hostName]];
-        return [[BZRValidatricksClient alloc] initWithHTTPClient:HTTPClient];
-      }];
+  auto clients =
+      [self clientsArrayFromHostNames:hostNames sessionConfiguration:sessionConfiguration];
   return [self initWithClients:clients
                 delayedRetries:delayedRetries
            initialBackoffDelay:initialBackoffDelay
               immediateRetries:immediateRetries];
+}
+
+- (NSArray<id<BZRValidatricksClient>> *)
+    clientsArrayFromHostNames:(NSArray<NSString *> *)hostNames
+         sessionConfiguration:(FBRHTTPSessionConfiguration *)sessionConfiguration {
+  return [hostNames lt_map:^id<BZRValidatricksClient>(NSString *hostName) {
+    auto HTTPClient =
+        [FBRHTTPClient clientWithSessionConfiguration:sessionConfiguration
+                                              baseURL:[self serverURLFromHostName:hostName]];
+    return [[BZRValidatricksClient alloc] initWithHTTPClient:HTTPClient];
+  }];
 }
 
 - (NSURL *)serverURLFromHostName:(NSString *)hostName {
@@ -103,7 +119,20 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
             initialBackoffDelay:(NSTimeInterval)initialBackoffDelay
                immediateRetries:(NSUInteger)immediateRetries {
   if (self = [super init]) {
+
+#ifdef DEBUG
+    auto useStagingTweakSignal =
+        SHKTweakSignal(@"Validatricks", @"Validatricks Client", @"Use Staging endpoint", @NO);
+    auto stagingClients =
+        [self clientsArrayFromHostNames:kStagingValidatricksHostNames
+                   sessionConfiguration:[self sessionConfigurationWithoutCertificates]];
+    RAC(self, underlyingClients) = [RACSignal if:useStagingTweakSignal
+                                            then:[RACSignal return:stagingClients]
+                                            else:[RACSignal return:clients]];
+#else
     _underlyingClients = clients;
+#endif
+
     _delayedRetries = delayedRetries;
     _initialBackoffDelay = initialBackoffDelay;
     _immediateRetries = immediateRetries;
@@ -111,6 +140,16 @@ static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
     _eventsSubject = [[RACSubject alloc] init];
   }
   return self;
+}
+
+- (FBRHTTPSessionConfiguration *)sessionConfigurationWithoutCertificates {
+  auto defaultSessionConfigurationProvider =
+      [[BZRValidatricksSessionConfigurationProvider alloc] init];
+  auto sessionWithoutPinningConfigurationProvider =
+      [[BZRValidatricksSessionConfigurationProvider alloc]
+       initWithAPIKey:defaultSessionConfigurationProvider.APIKey
+       pinnedCertificates:nil];
+  return [sessionWithoutPinningConfigurationProvider HTTPSessionConfiguration];
 }
 
 - (RACSignal<BZREvent *> *)eventsSignal {

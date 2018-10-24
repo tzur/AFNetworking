@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
             pinnedCertificates:(nullable NSSet<NSData *> *)pinnedCertificates
     NS_DESIGNATED_INITIALIZER;
 
+/// API key used for identification with Validatricks server.
+@property (readonly, nonatomic, nullable) NSString *APIKey;
+
 @end
 
 NS_ASSUME_NONNULL_END
