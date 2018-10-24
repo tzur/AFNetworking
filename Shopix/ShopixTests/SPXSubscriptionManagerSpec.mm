@@ -283,6 +283,20 @@ context(@"purchasing subscription", ^{
     expect(completionBlockError).to.equal(cancellationError);
   });
 
+  it(@"should invoke the completion block with error immediately and not present an alert if "
+     "operation is not allowed", ^{
+       auto notAllowedError = [NSError lt_errorWithCode:BZRErrorCodePurchaseNotAllowed];
+       OCMStub([productsManager purchaseProduct:@"foo"])
+           .andReturn([RACSignal error:notAllowedError]);
+       OCMReject([delegate presentAlertWithViewModel:OCMOCK_ANY]);
+
+       [subscriptionManager purchaseSubscription:@"foo" completionHandler:completionBlock];
+
+       expect(completionBlockInvoked).will.beTruthy();
+       expect(completionBlockSubscriptionInfo).to.beNil();
+       expect(completionBlockError).to.equal(notAllowedError);
+     });
+
   it(@"should invoke the completion block with result if purchase succeeded", ^{
     OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal empty]);
     BZRReceiptSubscriptionInfo *subscriptionInfo = OCMClassMock([BZRReceiptSubscriptionInfo class]);

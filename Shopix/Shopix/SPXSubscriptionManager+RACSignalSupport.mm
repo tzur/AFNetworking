@@ -52,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
     [self purchaseSubscription:productIdentifier
              completionHandler:^(BZRReceiptSubscriptionInfo * _Nullable subscriptionInfo,
                                  NSError * _Nullable error) {
-               if (error && error.code != BZRErrorCodeOperationCancelled) {
+               if (error && error.code != BZRErrorCodeOperationCancelled &&
+                   error.code != BZRErrorCodePurchaseNotAllowed) {
                  [subscriber sendError:error];
                  return;
                } else if (subscriptionInfo) {

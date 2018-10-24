@@ -88,7 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
       deliverOnMainThread]
       subscribeError:^(NSError *error) {
         @strongify(self);
-        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled) {
+        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled ||
+            error.code == BZRErrorCodePurchaseNotAllowed) {
           completionHandler(nil, error);
           return;
         }

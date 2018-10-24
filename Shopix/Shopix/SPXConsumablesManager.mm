@@ -149,7 +149,8 @@ NS_ASSUME_NONNULL_BEGIN
                        withProductIdentifier:(NSString *)productIdentifier {
   return [[self placeOrderInternal:orderSummary withProductIdentifier:productIdentifier]
       catch:^(NSError *error) {
-        if (error.code == BZRErrorCodeOperationCancelled) {
+        if (error.code == BZRErrorCodeOperationCancelled ||
+            error.code == BZRErrorCodePurchaseNotAllowed) {
           return [RACSignal error:error];
         }
         return [self presentPlaceOrderFailedWithError:error orderSummary:orderSummary
