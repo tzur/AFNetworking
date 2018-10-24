@@ -238,6 +238,22 @@ context(@"payment update forwarding", ^{
       expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
     });
 
+    it(@"should send purchase not allowed for transaction with not allowed error code", ^{
+      transaction.transactionState = SKPaymentTransactionStateFailed;
+      transaction.error = [NSError errorWithDomain:SKErrorDomain code:SKErrorPaymentNotAllowed
+                                          userInfo:@{}];
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+
+      expect(recorder).will.matchError(^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseNotAllowed &&
+            [error.bzr_transaction isEqual:transaction] &&
+            error.lt_underlyingError == transaction.error;
+      });
+      purchaseManager = nil;
+      expect(unhandledTransactionsRecorder).will.complete();
+      expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
+    });
+
     it(@"should forward restored purchased and deferred transactions to unhandled transaction if "
        "purchasing transaction wasn't called before", ^{
       transaction.transactionState = SKPaymentTransactionStateRestored;

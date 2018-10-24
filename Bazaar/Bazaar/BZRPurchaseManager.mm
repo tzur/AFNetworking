@@ -137,9 +137,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSError *)failedTransactionError:(SKPaymentTransaction *)transaction {
-  if ([transaction.error.domain isEqualToString:SKErrorDomain] &&
-      transaction.error.code == SKErrorPaymentCancelled) {
-    return [NSError bzr_errorWithCode:BZRErrorCodeOperationCancelled transaction:transaction];
+  if ([transaction.error.domain isEqualToString:SKErrorDomain]) {
+    if (transaction.error.code == SKErrorPaymentCancelled) {
+      return [NSError bzr_errorWithCode:BZRErrorCodeOperationCancelled transaction:transaction];
+    } else if (transaction.error.code == SKErrorPaymentNotAllowed) {
+      return [NSError bzr_errorWithCode:BZRErrorCodePurchaseNotAllowed transaction:transaction];
+    }
   }
 
   return [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction];
