@@ -117,7 +117,9 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 }
 
 - (void)setupBuffersWithNormalizationModel:(const pnk::NormalizationKernelModel &)model {
-  cv::Mat correctedScale = model.scale / (model.variance + model.epsilon);
+  cv::Mat denominator;
+  cv::sqrt(model.variance + model.epsilon, denominator);
+  cv::Mat correctedScale = model.scale / denominator;
   cv::Mat correctedShift = model.shift - model.mean.mul(correctedScale);
 
   _scaleBuffer = PNKHalfBufferFromFloatVector(self.device, correctedScale, YES);

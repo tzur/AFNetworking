@@ -15,7 +15,9 @@ static cv::Mat PNKCalculateBatchNorm(const cv::Mat &inputMatrix, const cv::Mat &
   int rows = inputMatrix.rows;
   int columns = inputMatrix.cols;
 
-  cv::Mat correctedScale = scale / (variance + epsilon);
+  cv::Mat denominator;
+  cv::sqrt(variance + epsilon, denominator);
+  cv::Mat correctedScale = scale / denominator;
   cv::Mat correctedShift = shift - mean.mul(correctedScale);
 
   cv::Mat input = inputMatrix.reshape(1, rows * columns);
@@ -327,14 +329,19 @@ context(@"tensorflow golden standard", ^{
 
     NSBundle *bundle = NSBundle.lt_testBundle;
 
+    auto epsilonMat =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_epsilon_1.weights");
+
     pnk::NormalizationKernelModel normalizationModel = {
       .inputFeatureChannels = kInputChannels,
       .computeMeanVar = NO,
       .scale = PNKLoadFloatTensorFromBundleResource(bundle,
                                                     @"batch_normalization_gamma_32.weights"),
       .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_beta_32.weights"),
-      .mean = cv::Mat1f::zeros(1, kInputChannels),
-      .variance = cv::Mat1f::ones(1, kInputChannels)
+      .mean = PNKLoadFloatTensorFromBundleResource(bundle, @"batch_normalization_mean_32.weights"),
+      .variance = PNKLoadFloatTensorFromBundleResource(bundle,
+                                                       @"batch_normalization_variance_32.weights"),
+      .epsilon = epsilonMat(0)
     };
 
     auto batchNormOp = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
