@@ -69,23 +69,23 @@ LTEnumImplement(NSUInteger, EUISMApplication,
   }
 }
 
-- (NSURL *)iconURL {
-  NSString *iconName;
+- (NSURL *)thumbnailURL {
+  NSString *thumbnailName;
   switch (self.value) {
     case EUISMApplicationPhotofox:
-      iconName = @"PF";
+      thumbnailName = @"PF";
       break;
     case EUISMApplicationVideoleap:
-      iconName = @"VL";
+      thumbnailName = @"VL";
       break;
     case EUISMApplicationQuickshot:
-      iconName = @"QS";
+      thumbnailName = @"QS";
       break;
     case EUISMApplicationPixaloop:
-      iconName = @"PX";
+      thumbnailName = @"PX";
       break;
   }
-  return nn([NSURL URLWithString:iconName]);
+  return nn([NSURL URLWithString:thumbnailName]);
 }
 
 @end
@@ -108,16 +108,13 @@ LTEnumImplement(NSUInteger, EUISMApplication,
 - (instancetype)initWithCurrentApplication:(EUISMApplication *)currentApplication
     currentSubscriptionInfo:(nullable BZRReceiptSubscriptionInfo *)currentSubscriptionInfo
     currentProductInfo:(nullable EUISMProductInfo *)currentProductInfo
+    pendingProductInfo:(nullable EUISMProductInfo *)pendingProductInfo
     subscriptionGroupProductsInfo:(NSSet<EUISMProductInfo *> *)subscriptionGroupProductsInfo {
   if (self = [super init]) {
-    if (currentProductInfo) {
-      LTAssert(![subscriptionGroupProductsInfo containsObject:nn(currentProductInfo)],
-               @"The given subscriptionGroupProductsInfo must not include the given "
-               "currentProductInfo");
-    }
     _currentApplication = currentApplication;
     _currentSubscriptionInfo = currentSubscriptionInfo;
     _currentProductInfo = currentProductInfo;
+    _pendingProductInfo = pendingProductInfo;
     _subscriptionGroupProductsInfo = subscriptionGroupProductsInfo;
   }
   return self;
