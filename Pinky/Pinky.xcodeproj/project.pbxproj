@@ -109,6 +109,9 @@
 		285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
 		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
 		28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */; };
+		6418BF9D2180ACC800615CCB /* PNKUnaryFunctionLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418BF782180ACC800615CCB /* PNKUnaryFunctionLayer.mm */; };
+		6418BFBC2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418BFBB2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm */; };
+		6418BFBD2180BC5D00615CCB /* PNKUnaryFunctionKernel.metal in Sources */ = {isa = PBXBuildFile; fileRef = 6418BF9B2180ACC800615CCB /* PNKUnaryFunctionKernel.metal */; };
 		64333A42212DBB8700E37691 /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 642A5E792121A0BE004C0288 /* libMetalToolbox.a */; };
 		64633877217F120600945494 /* batch_normalization_variance_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633853217F120500945494 /* batch_normalization_variance_32.weights */; };
 		64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633876217F120600945494 /* batch_normalization_mean_32.weights */; };
@@ -777,6 +780,10 @@
 		28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferTestUtils.h; sourceTree = "<group>"; };
 		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
 		28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferCDFConstants.h; sourceTree = "<group>"; };
+		6418BF782180ACC800615CCB /* PNKUnaryFunctionLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKUnaryFunctionLayer.mm; sourceTree = "<group>"; };
+		6418BF9B2180ACC800615CCB /* PNKUnaryFunctionKernel.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKUnaryFunctionKernel.metal; sourceTree = "<group>"; };
+		6418BF9C2180ACC800615CCB /* PNKUnaryFunctionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKUnaryFunctionLayer.h; sourceTree = "<group>"; };
+		6418BFBB2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKUnaryFunctionLayerSpec.mm; sourceTree = "<group>"; };
 		642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MetalToolbox.xcodeproj; path = ../MetalToolbox/MetalToolbox.xcodeproj; sourceTree = "<group>"; };
 		64633853217F120500945494 /* batch_normalization_variance_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_variance_32.weights; path = Resources/batch_normalization_variance_32.weights; sourceTree = "<group>"; };
 		64633876217F120600945494 /* batch_normalization_mean_32.weights */ = {isa = PBXFileReference; lastKnownFileType = text; name = batch_normalization_mean_32.weights; path = Resources/batch_normalization_mean_32.weights; sourceTree = "<group>"; };
@@ -1311,6 +1318,7 @@
 				06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */,
 				064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */,
 				E4D71A181FE658990047E620 /* PNKSoftMaxLayerSpec.mm */,
+				6418BFBB2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm */,
 			);
 			name = "Network Layers";
 			sourceTree = "<group>";
@@ -1365,6 +1373,9 @@
 				064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */,
 				E4D719F01FE2C9740047E620 /* PNKSoftMaxLayer.h */,
 				E4D719F11FE2C9740047E620 /* PNKSoftMaxLayer.mm */,
+				6418BF9B2180ACC800615CCB /* PNKUnaryFunctionKernel.metal */,
+				6418BF9C2180ACC800615CCB /* PNKUnaryFunctionLayer.h */,
+				6418BF782180ACC800615CCB /* PNKUnaryFunctionLayer.mm */,
 			);
 			name = "Network Layers";
 			sourceTree = "<group>";
@@ -2523,6 +2534,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6418BFBD2180BC5D00615CCB /* PNKUnaryFunctionKernel.metal in Sources */,
 				E4D719571FE1491E0047E620 /* PNKGather.metal in Sources */,
 				E4606D78202341CC00CFBE3A /* PNKBinaryGather.metal in Sources */,
 				E41D726A1FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal in Sources */,
@@ -2576,6 +2588,7 @@
 				068D90A41F1F5D000012F472 /* PNKArithmeticSpec.mm in Sources */,
 				E45E1B2320B3F39900EC0B60 /* PNKImageMotionLayerExamples.mm in Sources */,
 				064160C51FD57CF300F9F70C /* PNKPoolingLayerSpec.mm in Sources */,
+				6418BFBC2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm in Sources */,
 				283A4B8F1FE9058D009608E6 /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
 				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
 				06C6BC321F7003E6005F57D4 /* PNKConvolutionLayerSpec.mm in Sources */,
@@ -2674,6 +2687,7 @@
 				06AB67C91FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm in Sources */,
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				2835A95F1FEAA41B0000F2EA /* PNKColorTransferHistogram.mm in Sources */,
+				6418BF9D2180ACC800615CCB /* PNKUnaryFunctionLayer.mm in Sources */,
 				E43E384C2133D17C00D4CF62 /* PNKInpaintingHighFrequencyTransfer.mm in Sources */,
 				E485990A20D91A75007E9F6D /* PNKImageMotionLayerFusion.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
