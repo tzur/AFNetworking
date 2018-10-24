@@ -6,7 +6,10 @@
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTFboPool.h>
 #import <LTEngine/LTParameterizedObjectType.h>
+#import <LTEngine/LTSpeedBasedSplineControlPointBuffer.h>
+#import <LTEngine/LTSplineControlPoint.h>
 #import <LTEngine/LTTexture.h>
+#import <LTEngine/LTTextureBlitter.h>
 #import <LTKit/LTRandom.h>
 #import <LTKit/NSArray+Functional.h>
 
@@ -16,6 +19,7 @@
 #import "DVNBrushRenderTargetInformation.h"
 #import "DVNBrushStroke.h"
 #import "DVNPainter.h"
+#import "DVNSplineControlPointStabilizer.h"
 #import "DVNSplineRenderModel.h"
 #import "DVNSplineRenderer.h"
 
@@ -35,6 +39,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// painted.
 @property (strong, nonatomic, nullable) DVNBrushRenderModel *brushRenderModel;
 
+/// Used for copying content between auxiliary and the canvas texture, when smoothing the rendered
+/// spline.
+@property (readonly, nonatomic) LTTextureBlitter *blitter;
+
+/// Maps the processed control points to obtain a smoother spline when it's rendered.
+@property (readonly, nonatomic) DVNSplineControlPointStabilizer *stabilizer;
+
+/// Buffers spline's trailing control points for fade-out smoothing when rendering its ending.
+@property (readonly, nonatomic) LTSpeedBasedSplineControlPointBuffer *tailBuffer;
+
 @end
 
 @implementation DVNBrushStrokePainter
@@ -43,12 +57,24 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
+/// Defines the maximum speed, in view coordinates, of points which will be buffered for the maximal
+/// amount of time.
+static const CGFloat kBufferingMaxSpeed = 5000;
+
+/// Time intervals defining the minimal (maximal) buffering timeout for the slowest (fastest)
+/// control point.
+static const auto kBufferingIntervals = lt::Interval<NSTimeInterval>({0, 0.1});
+
 - (instancetype)initWithDelegate:(id<DVNBrushStrokePainterDelegate>)delegate {
   LTParameterAssert(delegate);
 
   if (self = [super init]) {
     _delegate = delegate;
     _provider = [[DVNBrushRenderConfigurationProvider alloc] init];
+    _blitter = [[LTTextureBlitter alloc] init];
+    _stabilizer = [[DVNSplineControlPointStabilizer alloc] init];
+    _tailBuffer = [[LTSpeedBasedSplineControlPointBuffer alloc]
+                   initWithMaxSpeed:kBufferingMaxSpeed timeIntervals:kBufferingIntervals];
   }
   return self;
 }
@@ -64,42 +90,101 @@ NS_ASSUME_NONNULL_BEGIN
     [self createRenderer];
   }
 
-  LTAssert(self.renderer);
-
   LTTexture * _Nullable canvas = [self.delegate brushStrokeCanvas];
+  LTTexture * _Nullable auxiliaryCanvas =
+      [self.delegate respondsToSelector:@selector(auxiliaryCanvas)] ?
+      [self.delegate auxiliaryCanvas] : nil;
+  CGFloat splineSmoothness = self.brushRenderModel.brushModel.splineSmoothness;
+  CGFloat splineSmoothnessThreshold = *[self.brushRenderModel.brushModel.class
+                                        allowedSplineSmoothnessRange].min();
+  BOOL applySmoothing = canvas && auxiliaryCanvas && canvas != auxiliaryCanvas &&
+      splineSmoothness > splineSmoothnessThreshold;
 
-  if (canvas) {
-    [self validateCanvas:canvas];
-
-    [[[LTFboPool currentPool] fboWithTexture:canvas] bindAndDraw:^{
-      [self.renderer processControlPoints:controlPoints end:end];
-    }];
+  if (applySmoothing) {
+    [self renderBrushStrokeAccordingToControlPoints:controlPoints
+                              smoothedWithIntensity:splineSmoothness
+                                         ontoCanvas:canvas withAuxiliaryCanvas:auxiliaryCanvas
+                                                end:end];
   } else {
-    [self.renderer processControlPoints:controlPoints end:end];
+    [self renderBrushStrokeAccordingToControlPoints:controlPoints ontoCanvas:canvas end:end];
   }
 
   if (end) {
-    self.renderer = nil;
-    self.brushRenderModel = nil;
+    [self reset];
   }
 }
 
 - (void)cancel {
   [self.renderer cancel];
-  self.renderer = nil;
-  self.brushRenderModel = nil;
+  [self reset];
 }
 
 #pragma mark -
 #pragma mark DVNSplineRendering - Auxiliary Methods
 #pragma mark -
 
+- (void)reset {
+  self.renderer = nil;
+  self.brushRenderModel = nil;
+  [self.stabilizer reset];
+  [self.tailBuffer processAndPossiblyBufferControlPoints:@[] flush:YES];
+}
+
+- (void)renderBrushStrokeAccordingToControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints
+                                       ontoCanvas:(nullable LTTexture *)canvas end:(BOOL)end {
+  if (!controlPoints.count) {
+    return;
+  }
+
+  if (canvas) {
+    [self validateCanvas:canvas];
+    [[[LTFboPool currentPool] fboWithTexture:canvas] bindAndDraw:^{
+      [self.renderer processControlPoints:controlPoints end:end];
+    }];
+  } else {
+    [self.renderer processControlPoints:controlPoints end:end];
+  }
+}
+
+- (void)renderBrushStrokeAccordingToControlPoints:(NSArray<LTSplineControlPoint *> *)points
+                            smoothedWithIntensity:(CGFloat)smoothingIntensity
+                                       ontoCanvas:(LTTexture *)canvas
+                              withAuxiliaryCanvas:(LTTexture *)auxiliaryCanvas end:(BOOL)end {
+  if (!points.count) {
+    return;
+  }
+
+  auto pointsToSmooth = [self.tailBuffer processAndPossiblyBufferControlPoints:points flush:NO];
+  auto smoothedPoints = [self.stabilizer pointsForPoints:pointsToSmooth
+                                   smoothedWithIntensity:smoothingIntensity preserveState:NO
+                                        fadeOutSmoothing:NO];
+  LTAssert(self.renderer);
+
+  [self validateCanvas:auxiliaryCanvas];
+  [[[LTFboPool currentPool] fboWithTexture:auxiliaryCanvas] bindAndDraw:^{
+    [self.renderer processControlPoints:smoothedPoints preserveState:NO end:NO];
+  }];
+
+  [self.blitter copyTexture:auxiliaryCanvas toRect:CGRectFromSize(canvas.size)
+                  ofTexture:canvas];
+
+  [self validateCanvas:canvas];
+  auto tailPoints = [self.stabilizer pointsForPoints:self.tailBuffer.bufferedControlPoints
+                               smoothedWithIntensity:smoothingIntensity preserveState:YES
+                                    fadeOutSmoothing:YES];
+  [[[LTFboPool currentPool] fboWithTexture:canvas] bindAndDraw:^{
+    [self.renderer processControlPoints:tailPoints preserveState:!end end:YES];
+  }];
+
+  if (end) {
+    [self.blitter copyTexture:canvas toRect:CGRectFromSize(auxiliaryCanvas.size)
+                    ofTexture:auxiliaryCanvas];
+  }
+}
+
 - (void)createRenderer {
   LTAssert(!self.renderer);
   LTAssert(!self.brushRenderModel);
-
-  LTParameterizedObjectType *type = [self.delegate respondsToSelector:@selector(brushSplineType)] ?
-      [self.delegate brushSplineType] : $(LTParameterizedObjectTypeBSpline);
 
   std::pair<DVNBrushRenderModel *, NSDictionary<NSString *, LTTexture *> *>brushStrokeData =
       [self.delegate brushStrokeData];
@@ -115,6 +200,8 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   self.brushRenderModel = brushRenderModel;
+
+  LTParameterizedObjectType *type = self.brushSplineType;
 
   DVNPipelineConfiguration *configuration =
       [self.provider configurationForModel:self.brushRenderModel
@@ -211,6 +298,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet<NSString *> *)keyPathsForValuesAffectingCurrentlyProcessingContentTouchEventSequence {
   return [NSSet setWithObject:@instanceKeypath(DVNBrushStrokePainter, renderer)];
+}
+
+- (LTParameterizedObjectType *)brushSplineType {
+  return [self.delegate respondsToSelector:@selector(brushSplineType)] ?
+      [self.delegate brushSplineType] : $(LTParameterizedObjectTypeBSpline);
 }
 
 @end

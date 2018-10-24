@@ -36,6 +36,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c LTParameterizedObjectTypeBSpline as spline type.
 - (LTParameterizedObjectType *)brushSplineType;
 
+/// Returns a texture which is used as auxiliary texture for rendering.
+///
+/// Used as a texture to onto which all stationary control points of a brush stroke are painted,
+/// namely the portion of the stroke which doesn't change during the stroke. It should be provided
+/// when \c DVNBrushModel specifies \c splineSmoothness greater than \c 0, otherwise spline
+/// smoothness won't take effect.
+///
+/// @important when provided, it's assumed that this canvas have an identical content as
+/// \c brushStrokeCanvas for the first process call. Additionally its assumed that
+/// \c auxiliaryCanvas and \c brushStrokeCanvas aren't being modified externally during the process
+/// sequence.
+- (nullable LTTexture *)auxiliaryCanvas;
+
 /// Called just before the given \c painter will start painting a brush stroke.
 - (void)renderingOfPainterWillStart:(DVNBrushStrokePainter *)painter;
 
