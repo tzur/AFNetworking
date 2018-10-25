@@ -151,6 +151,20 @@ struct NormalizationKernelModel {
   cv::Mat1f variance;
 };
 
+/// Parameters defining the behaviour of a unary function layer in a neural network.
+struct UnaryFunctionKernelModel {
+  /// Parameter of applied unary function.
+  float alpha;
+  /// Value used to avoid division by zero.
+  float epsilon;
+  ///  Bias added to each element of input.
+  float shift;
+  /// Scale factor applied to each element of input.
+  float scale;
+  // Unary function to apply.
+  UnaryType type;
+};
+
 } // namespace pnk
 
 NS_ASSUME_NONNULL_END
