@@ -71,8 +71,10 @@ typedef void (^SPXPurchaseSubscriptionCompletionBlock)
 /// feedback mail composer.
 ///
 /// @note If the user has actively cancelled the purchase (e.g. by pressing the cancel button of the
-/// authentication dialog) then \c completionHandler is invoked with \c subscriptionInfo set to
-/// \c nil and \c error.code will be \c BZRErrorCodeOperationCancelled.
+/// authentication dialog) or the user is not allowed to do the purchase then \c completionHandler
+/// is invoked with \c subscriptionInfo set to \c nil and \c error.code will be
+/// \c BZRErrorCodeOperationCancelled in the former case and \c BZRErrorCodePurchaseNotAllowed in
+/// the latter one.
 - (void)purchaseSubscription:(NSString *)productIdentifier
            completionHandler:(SPXPurchaseSubscriptionCompletionBlock)completionHandler;
 

@@ -103,6 +103,18 @@ context(@"purchasing subscription product", ^{
     expect(recorder).to.sendValuesWithCount(0);
   });
 
+  it(@"should complete without sending value if error indicates not allowed purchase", ^{
+    auto error = [NSError lt_errorWithCode:BZRErrorCodePurchaseNotAllowed];
+    OCMExpect([manager purchaseSubscription:@"foo" completionHandler:
+               ([OCMArg invokeBlockWithArgs:[NSNull null], error, nil])]);
+
+    auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
+
+    OCMVerifyAll((id)manager);
+    expect(recorder).will.complete();
+    expect(recorder).to.sendValuesWithCount(0);
+  });
+
   it(@"should complete without sending value if subscription info was not provided", ^{
     OCMExpect([manager purchaseSubscription:@"foo" completionHandler:
                ([OCMArg invokeBlockWithArgs:[NSNull null], [NSNull null], nil])]);

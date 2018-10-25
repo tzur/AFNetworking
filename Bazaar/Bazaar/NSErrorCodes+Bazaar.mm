@@ -41,8 +41,6 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeProductContentFetcherNotRegistered,
   /// Failure due to invalid content fetcher parameters.
   BZRErrorCodeInvalidContentFetcherParameters,
-  /// Failure due to unexpected content fetcher parameters class.
-  BZRErrorCodeUnexpectedContentFetcherParametersClass,
   /// Copy product's content to temporary directory has failed.
   BZRErrorCodeCopyProductContentFailed,
   /// Creation of directory has failed.
@@ -69,8 +67,6 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeAcquireAllRequestedForNonSubscriber,
   /// Failure while moving a file or a directory.
   BZRErrorCodeMoveItemFailed,
-  /// The subscription that the user owns does not appear in the product list
-  BZRErrorCodeSubscriptionNotFoundInProductList,
   /// Fetching of product content has failed.
   BZRErrorCodeFetchingProductContentFailed,
   /// Fetching content has failed due to a version mismatch between a product and its downloaded
@@ -78,6 +74,8 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeFetchedContentMismatch,
   /// Error that is caused by an operation that was cancelled.
   BZRErrorCodeOperationCancelled,
+  /// Error that is caused by a purchase that is not allowed.
+  BZRErrorCodePurchaseNotAllowed,
   /// Restoring purchases operation has failed.
   BZRErrorCodeRestorePurchasesFailed,
   /// Service name was not found while trying to store/retrieve data from storage.
