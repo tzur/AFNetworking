@@ -47,8 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<NSSecureCoding>)valueForKey:(NSString *)key
                                      error:(NSError * __autoreleasing *)error {
-  NSError *underlyingError;
-  NSData *data = [self.keychainStore dataForKey:key error:&underlyingError];
+  NSError * _Nullable underlyingError;
+  NSData * _Nullable data = [self.keychainStore dataForKey:key error:&underlyingError];
   if (!data) {
     if (underlyingError) {
       NSString *description =
@@ -69,14 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  id<NSSecureCoding> value;
+  id<NSSecureCoding> _Nullable value;
   try {
     value = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if (!value) {
       NSString *description =
-          [NSString stringWithFormat:@"Failed to load value for key \"%@\" during unarchiving. "
-           "Reason: %@.", key,
-           [BZRKeychainStorage descriptionForKeychainStoreError:underlyingError]];
+          [NSString stringWithFormat:@"Failed to load value for key \"%@\" during unarchiving. ",
+           key];
       auto storageError =
           [NSError bzr_storageErrorWithCode:BZRErrorCodeKeychainStorageArchivingError
                             underlyingError:nil description:description
@@ -88,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
       if (error) {
         *error = storageError;
       }
+      return nil;
     }
   } catch (NSException *exception) {
     NSString *description =
@@ -119,14 +119,14 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *underlyingError;
   BOOL success = [self.keychainStore setData:data forKey:key error:&underlyingError];
   if (!success) {
-      NSString *description =
-          [NSString stringWithFormat:@"Failed to store value \"%@\" for key \"%@\". Reason: %@.",
-           value, key, [BZRKeychainStorage descriptionForKeychainStoreError:underlyingError]];
-      auto storageError =
-          [NSError bzr_storageErrorWithCode:BZRErrorCodeStoringToKeychainStorageFailed
-                            underlyingError:underlyingError description:description
-                 keychainStorageServiceName:self.service keychainStorageKey:key
-                       keychainStorageValue:value];
+    NSString *description =
+        [NSString stringWithFormat:@"Failed to store value \"%@\" for key \"%@\". Reason: %@.",
+         value, key, [BZRKeychainStorage descriptionForKeychainStoreError:underlyingError]];
+    auto storageError =
+        [NSError bzr_storageErrorWithCode:BZRErrorCodeStoringToKeychainStorageFailed
+                          underlyingError:underlyingError description:description
+               keychainStorageServiceName:self.service keychainStorageKey:key
+                     keychainStorageValue:value];
 
     [self.storageErrorsSubject sendNext:
      [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:storageError]];
@@ -138,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
   return success;
 }
 
-+ (NSString *)descriptionForKeychainStoreError:(NSError *)keychainStoreError {
++ (NSString *)descriptionForKeychainStoreError:(nullable NSError *)keychainStoreError {
   const NSInteger kUICKeyChainStoreConversionErrorCode = -67594;
   const NSInteger kUICKeyChainStoreUnexpectedErrorCode = -99999;
 
