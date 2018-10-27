@@ -30,13 +30,6 @@ context(@"unarchiving", ^{
                                          archivingQueue:nil];
   });
 
-  it(@"should raise exception if completion block is nil", ^{
-    expect(^{
-      LTSuccessOrErrorBlock completion;
-      [unarchiver unarchiveFilesToPath:targetPath progress:nil completion:completion];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should invoke the unarchiving method of the underlying class with correct parameters", ^{
     OCMExpect([underlyingArchive unzipFileAtPath:archivePath toDestination:targetPath
                               preserveAttributes:YES overwrite:YES password:password

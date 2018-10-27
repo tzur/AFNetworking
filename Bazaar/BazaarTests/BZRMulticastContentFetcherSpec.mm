@@ -18,6 +18,8 @@ beforeEach(^{
 
 it(@"should use the underlying fetcher to get the bundle of the product content", ^{
   BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
+  OCMStub([underlyingContentFetcher contentBundleForProduct:OCMOCK_ANY])
+      .andReturn([RACSignal never]);
 
   [contentFetcher contentBundleForProduct:product];
 

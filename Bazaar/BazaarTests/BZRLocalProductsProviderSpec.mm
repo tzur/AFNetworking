@@ -115,7 +115,7 @@ context(@"fetching decrypted product list", ^{
     OCMStub([fileManager lt_dataWithContentsOfFile:OCMOCK_ANY options:0
                                              error:[OCMArg anyObjectRef]]).andReturn(JSONData);
     auto decryptionKey = @"123456789A123456789B123456789CDE";
-    auto provider = [[BZRLocalProductsProvider alloc] initWithPath:OCMClassMock([LTPath class])
+    auto provider = [[BZRLocalProductsProvider alloc] initWithPath:[LTPath pathWithPath:@"foo"]
                                                      decryptionKey:decryptionKey
                                                        fileManager:fileManager];
 
@@ -136,7 +136,7 @@ context(@"fetching decrypted product list", ^{
     OCMStub([fileManager lt_dataWithContentsOfFile:OCMOCK_ANY options:0
                                              error:[OCMArg setTo:nil]]).andReturn(JSONData);
     auto decryptionKey = @"123456789A123456789B123456789CDE";
-    auto provider = [[BZRLocalProductsProvider alloc] initWithPath:OCMClassMock([LTPath class])
+    auto provider = [[BZRLocalProductsProvider alloc] initWithPath:[LTPath pathWithPath:@"foo"]
                                                      decryptionKey:decryptionKey
                                                        fileManager:fileManager];
 

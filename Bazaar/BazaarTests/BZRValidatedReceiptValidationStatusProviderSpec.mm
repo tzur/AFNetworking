@@ -71,6 +71,7 @@ context(@"deallocating object", ^{
 
     OCMStub([validatricksClient validateReceipt:OCMOCK_ANY])
         .andReturn([RACSignal return:BZRValidReceiptValidationStatus()]);
+    OCMStub([validatricksClient eventsSignal]).andReturn([RACSignal empty]);
     OCMStub([receiptValidationParametersProvider
         receiptValidationParametersForApplication:OCMOCK_ANY userID:OCMOCK_ANY])
         .andReturn(receiptValidationParameters);

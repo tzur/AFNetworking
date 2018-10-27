@@ -105,13 +105,14 @@ context(@"getting product list", ^{
     it(@"should not fetch metadata for subscribers only products", ^{
       OCMStub([underlyingProvider fetchProductList])
           .andReturn([RACSignal return:@[subscribersOnlyProduct]]);
+      OCMExpect([storeKitMetadataFetcher fetchProductsMetadata:
+                 [OCMArg checkWithBlock:^BOOL(BZRProductList *productList) {
+                   return ![productList containsObject:subscribersOnlyProduct];
+      }]]).andReturn([RACSignal empty]);
 
       expect([productsProvider fetchProductList]).will.complete();
 
-      OCMVerify([storeKitMetadataFetcher fetchProductsMetadata:
-                 [OCMArg checkWithBlock:^BOOL(BZRProductList *productList) {
-                   return ![productList containsObject:subscribersOnlyProduct];
-      }]]);
+      OCMVerifyAll((id)storeKitMetadataFetcher);
     });
 
     it(@"should merge subscribers only products with products with price info", ^{

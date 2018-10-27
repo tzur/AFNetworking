@@ -115,8 +115,7 @@ context(@"fetching product", ^{
                                        andRelativePath:contentFilename];
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager copyItemAtURL:OCMOCK_ANY toURL:OCMOCK_ANY error:nil]);
-    LTPath *extractedContentPath = [LTPath pathWithPath:@"bar"];
-    NSBundle *contentBundle = [NSBundle bundleWithPath:extractedContentPath.path];
+    NSBundle *contentBundle = [NSBundle mainBundle];
     OCMStub([contentManager extractContentOfProduct:product.identifier fromArchive:targetPath
                                       intoDirectory:OCMOCK_ANY])
         .andReturn([RACSignal return:contentBundle]);
