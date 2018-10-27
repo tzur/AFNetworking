@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
       continue;
     }
 
-    id value = dictionaryValue[key];
+    id _Nullable value = dictionaryValue[key];
     if (!value || value == [NSNull null]) {
       if (error) {
         *error = [self integrityValidationErrorWithFailingKey:key];
@@ -96,8 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError * __autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError * __autoreleasing *)error {
   NSDictionary<NSString *, id> *dictionaryWithDefaults = [[[self class] defaultPropertyValues]
        mtl_dictionaryByAddingEntriesFromDictionary:dictionaryValue];
   if (![[self class] validateDictionaryValue:dictionaryWithDefaults
@@ -145,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)modelByOverridingPropertyAtKeypathInternal:(NSArray<NSString *> *)keypath
-                                                 withValue:(id)value {
+                                                 withValue:(nullable id)value {
   if (keypath.count == 1 && ![self isFirstKeyPathComponentAnArrayElement:keypath]) {
     return [self modelByOverridingProperty:keypath.firstObject withValue:value];
   }
@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSDictionary<NSString *, id> *)dictionaryWithModifiedObjectAtKeyPath:
-    (NSArray<NSString *> *)keypath withValue:(id)value {
+    (NSArray<NSString *> *)keypath withValue:(nullable id)value {
   NSString *propertyName = keypath.firstObject;
   NSArray<NSString *> *remainingKeypath =
       [keypath subarrayWithRange:NSMakeRange(1, keypath.count - 1)];
@@ -175,7 +175,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSDictionary<NSString *, id> *)dictionaryWithModifiedArrayAtKeypath:
-    (NSArray<NSString *> *)keypath withValue:(id)value {
+    (NSArray<NSString *> *)keypath withValue:(nullable id)value {
   NSString *propertyName = keypath.firstObject;
 
   NSArray *arrayPropertyWithReplacedElement =
@@ -186,7 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSArray<NSString *> *)arrayPropertyWithReplacedElement:(NSString *)propertyName
-    keypath:(NSArray<NSString *> *)keypath withValue:(id)value {
+    keypath:(NSArray<NSString *> *)keypath withValue:(nullable id)value {
   NSUInteger elementIndex = [self indexFromPropertyName:propertyName];
   NSArray *arrayProperty = [self arrayFromPropertyName:propertyName];
   LTParameterAssert(elementIndex < arrayProperty.count, @"Got index %lu that is out of bounds for "
