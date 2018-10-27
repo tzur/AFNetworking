@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c accessGroup, used to access a particular group in keychain storage.
 /// \c serviceNames specify the partitions that will be available for storing and retrieving data.
-- (instancetype)initWithAccessGroup:(NSString *)accessGroup
+- (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup
                        serviceNames:(NSSet<NSString *> *)serviceNames;
 
 @end

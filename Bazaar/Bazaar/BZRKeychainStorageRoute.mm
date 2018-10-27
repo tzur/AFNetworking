@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRKeychainStorageRoute (MultiplePartitions)
 
-- (instancetype)initWithAccessGroup:(NSString *)accessGroup
+- (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup
                        serviceNames:(NSSet<NSString *> *)serviceNames {
   auto multiKeychainStorage = [serviceNames lt_map:^BZRKeychainStorage *(NSString *serviceName) {
     if ([serviceName isEqual:[NSNull null]]) {
