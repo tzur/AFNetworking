@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     multiAppSubscriptionClassifier:(nullable id<BZRMultiAppSubscriptionClassifier>)
     multiAppSubscriptionClassifier;
 
-/// Returns the aggregated reeipt validation status from the given
+/// Returns the aggregated receipt validation status from the given
 /// \c bundleIDToReceiptValidationStatus. \c nil if no relevant subscription amongst
 /// \c bundleIDToReceiptValidationStatus was found.
 - (nullable BZRReceiptValidationStatus *)aggregateMultiAppReceiptValidationStatuses:
