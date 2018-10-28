@@ -200,7 +200,8 @@ context(@"processing", ^{
     [processor process];
     expected =
         LTLoadMat([self class], @"LTAnisotropicDiffusion_non_guided_kernel_5_sigma_0_8.png");
-    expect($([output image])).to.equalMat($(expected));
+
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should apply guided diffusion with different sigams and kernel sizes correctly", ^{
@@ -214,13 +215,13 @@ context(@"processing", ^{
     [processor process];
     cv::Mat4b expected =
         LTLoadMat([self class], @"LTAnisotropicDiffusion_guided_kernel_3_sigma_0_1.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
 
     processor.rangeSigma = 0.8;
     processor.kernelSize = 3;
     [processor process];
     expected = LTLoadMat([self class], @"LTAnisotropicDiffusion_guided_kernel_3_sigma_0_8.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
 
     processor.rangeSigma = 0.8;
     processor.kernelSize = 5;

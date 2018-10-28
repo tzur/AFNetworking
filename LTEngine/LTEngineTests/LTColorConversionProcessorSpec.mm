@@ -241,7 +241,7 @@ context(@"YCbCr video range to RGB", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(229, 37, 192, 255));
-    expect($([outputTexture image])).to.equalMat($(expected));
+    expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
   });
 });
 

@@ -118,7 +118,7 @@ context(@"processing", ^{
 
     [processor process];
 
-    expect($(output.image)).to.beCloseToMatWithin($(image), 1);
+    expect($(output.image)).to.beCloseToMatPSNR($(image), 50);
   });
 
   it(@"should create tilted linear mask correctly", ^{

@@ -65,7 +65,7 @@ context(@"tests", ^{
         [processor process];
 
         cv::Mat expected = LTLoadMat([self class], @"BlurIntensityMax.png");
-        expect($(output.image)).to.beCloseToMat($(expected));
+        expect($(output.image)).to.beCloseToMatPSNR($(expected), 45);
       });
     });
 
@@ -84,7 +84,7 @@ context(@"tests", ^{
       [processor process];
 
       cv::Mat expected = LTLoadMat([self class], @"BlurIntensity1.png");
-      expect($(output.image)).to.beCloseToMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should apply blur correctly with half intencity", ^{
@@ -92,7 +92,7 @@ context(@"tests", ^{
       [processor process];
 
       cv::Mat expected = LTLoadMat([self class], @"BlurIntensity0.5.png");
-      expect($(output.image)).to.beCloseToMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should apply blur with user mask", ^{
@@ -109,7 +109,7 @@ context(@"tests", ^{
 
       [processor process];
       cv::Mat expected = LTLoadMat([self class], @"BlurWithUserMaskIntensity1.png");
-      expect($(output.image)).to.beCloseToMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should apply blur correctly after input changes", ^{

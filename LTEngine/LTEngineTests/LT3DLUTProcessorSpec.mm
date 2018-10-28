@@ -112,7 +112,7 @@ context(@"shader tests", ^{
     lutProcessor.lookupTable = [LT3DLUT identity];
 
     [lutProcessor process];
-    expect($(outputTexture.image)).to.equalMat($(colorsTexture.image));
+    expect($(outputTexture.image)).to.beCloseToMatPSNR($(colorsTexture.image), 50);
   });
 
   it(@"should take a precise value from the LUT when no interpolation is needed", ^{
@@ -143,7 +143,7 @@ context(@"shader tests", ^{
     lutProcessor.lookupTable = lut;
     [lutProcessor process];
 
-    expect($(output.image)).to.equalMat($(grayPixelMat));
+    expect($(output.image)).to.beCloseToMatPSNR($(grayPixelMat), 48);
   });
 
   it(@"should interpolate on the g channel correctly", ^{
@@ -159,7 +159,7 @@ context(@"shader tests", ^{
     lutProcessor.lookupTable = lut;
     [lutProcessor process];
 
-    expect($(output.image)).to.equalMat($(grayPixelMat));
+    expect($(output.image)).to.beCloseToMatPSNR($(grayPixelMat), 48);
   });
 
   it(@"should interpolate on the b channel correctly", ^{

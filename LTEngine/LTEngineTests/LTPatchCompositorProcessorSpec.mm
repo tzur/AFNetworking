@@ -177,7 +177,7 @@ context(@"processing", ^{
 
     cv::Mat4b expected = LTLoadMat([self class], @"LTPatchCompositorProcessorSolution.png");
 
-    expect($([output image])).to.beCloseToMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 49);
   });
 
   it(@"should not composite when source alpha is zero", ^{
