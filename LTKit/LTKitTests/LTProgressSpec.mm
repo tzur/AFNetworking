@@ -74,6 +74,28 @@ context(@"initialization with result", ^{
   });
 });
 
+context(@"map", ^{
+  it(@"should return object with the same progress value if result is nil", ^{
+    LTProgress<NSString *> *progress = [LTProgress progressWithProgress:0.5];
+    LTProgress *mappedProgress = [progress map:^NSNumber *(NSString * __unused object) {
+      return @5;
+    }];
+
+    expect(mappedProgress.progress).to.equal(0.5);
+    expect(mappedProgress.result).to.beNil();
+  });
+
+  it(@"should return object with result of block if result is not nil", ^{
+    LTProgress<NSString *> *progress = [LTProgress progressWithResult:@"A"];
+    LTProgress *mappedProgress = [progress map:^NSString *(NSString *string) {
+      return [string stringByAppendingString:@"B"];
+    }];
+
+    expect(mappedProgress.progress).to.equal(1);
+    expect(mappedProgress.result).to.equal(@"AB");
+  });
+});
+
 context(@"equality", ^{
   __block LTDummyResult *result;
 

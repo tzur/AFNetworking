@@ -28,6 +28,22 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
++ (instancetype)progressWithProgress:(double)progress {
+  return [[LTProgress alloc] initWithProgress:progress];
+}
+
++ (instancetype)progressWithResult:(id<NSObject>)result {
+  return [[LTProgress alloc] initWithResult:result];
+}
+
+- (LTProgress *)map:(NS_NOESCAPE id(^)(id<NSObject> _Nonnull object))block {
+  if (!self.result) {
+    return self;
+  }
+
+  return [LTProgress progressWithResult:block(nn(self.result))];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -
