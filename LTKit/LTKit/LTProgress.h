@@ -1,12 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
+#import "LTValueObject.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Represents an instantaneous progress information about some task that eventually yields some
 /// result. The type of the result produced by the task and carried by the progress object is
 /// generic and is determined by the \c ResultType template variable.
-@interface LTProgress<__covariant ResultType : id<NSObject>> : NSObject <NSCopying>
+@interface LTProgress<__covariant ResultType : id<NSObject>> : LTValueObject <NSCopying>
 
 /// Initialize a progress object with \c progress set to \c 0.
 - (instancetype)init;

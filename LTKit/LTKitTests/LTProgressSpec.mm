@@ -96,42 +96,6 @@ context(@"map", ^{
   });
 });
 
-context(@"equality", ^{
-  __block LTDummyResult *result;
-
-  beforeEach(^{
-    result = [[LTDummyResult alloc] initWithValue:@"foo"];
-  });
-
-  it(@"should indicate that two objects with same progress value and no result are equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:1];
-
-    expect([progress isEqual:anotherProgress]).to.beTruthy();
-  });
-
-    it(@"should indicate that two objects with same progress value and result are equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithResult:result];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithResult:result];
-
-    expect([progress isEqual:anotherProgress]).to.beTruthy();
-  });
-
-  it(@"should return the same hash for identical objects", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:1];
-
-    expect(progress.hash).to.equal(anotherProgress.hash);
-  });
-
-  it(@"should indicate that two non identical objects are not equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:0.5];
-
-    expect([progress isEqual:anotherProgress]).to.beFalsy();
-  });
-});
-
 context(@"copying", ^{
   it(@"should return a progress identical to the copied progress", ^{
     LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];

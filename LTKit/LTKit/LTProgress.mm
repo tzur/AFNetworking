@@ -45,30 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (BOOL)isEqual:(LTProgress *)object {
-  if (object == self) {
-    return YES;
-  } else if (![object isKindOfClass:[self class]]) {
-    return NO;
-  }
-
-  return self.progress == object.progress &&
-      (self.result == object.result || [self.result isEqual:object.result]);
-}
-
-- (NSUInteger)hash {
-  return @(self.progress).hash ^ self.result.hash;
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, progress: %g, result: %@>", [self class], self,
-          self.progress, self.result];
-}
-
-#pragma mark -
 #pragma mark NSCopying
 #pragma mark -
 
