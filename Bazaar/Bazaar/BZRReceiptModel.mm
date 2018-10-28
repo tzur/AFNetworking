@@ -27,6 +27,18 @@ NS_ASSUME_NONNULL_BEGIN
   return optionalPropertyKeys;
 }
 
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{
+      @instanceKeypath(BZRReceiptTransactionInfo, isTrialPeriod): @NO,
+      @instanceKeypath(BZRReceiptTransactionInfo, isIntroOfferPeriod): @NO
+    };
+  });
+  return defaultPropertyValues;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
     @instanceKeypath(BZRReceiptTransactionInfo, productId): @"productId",
