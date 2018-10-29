@@ -44,9 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns the aggregated receipt validation status from the given
 /// \c bundleIDToReceiptValidationStatus. \c nil if no relevant subscription amongst
-/// \c bundleIDToReceiptValidationStatus was found.
+/// \c bundleIDToReceiptValidationStatus was found or if \c bundleIDToReceiptValidationStatus is
+/// \c nil.
 - (nullable BZRReceiptValidationStatus *)aggregateMultiAppReceiptValidationStatuses:
-    (BZRMultiAppReceiptValidationStatus *)bundleIDToReceiptValidationStatus;
+    (nullable BZRMultiAppReceiptValidationStatus *)bundleIDToReceiptValidationStatus;
 
 @end
 
