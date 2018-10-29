@@ -3,8 +3,6 @@
 
 #import "PTNPhotoKitFakeImageManager.h"
 
-@class PTNProgress;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Block used for sending progress updates to various asset request operations.

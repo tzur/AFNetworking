@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+Functional.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -23,7 +24,6 @@
 #import "PTNMediaLibraryAuthorizer.h"
 #import "PTNMediaLibraryCollectionDescriptor.h"
 #import "PTNMediaQueryProvider.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
 #import "RACSignal+Photons.h"
@@ -316,7 +316,7 @@ NS_ASSUME_NONNULL_BEGIN
   auto image = [item.artwork imageWithSize:size];
   auto imageAsset = [[PTNStaticImageAsset alloc] initWithImage:image];
 
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+  return [RACSignal return:[[LTProgress alloc] initWithResult:imageAsset]];
 }
 
 - (MPMediaItem * _Nullable)itemForDescriptor:(id<PTNDescriptor>)descriptor {
@@ -339,10 +339,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
   }
 
-  return [[self fetchAssetURLWithDescriptor:descriptor] map:^PTNProgress *(NSURL *url) {
+  return [[self fetchAssetURLWithDescriptor:descriptor] map:^LTProgress *(NSURL *url) {
     auto asset = [AVURLAsset URLAssetWithURL:url options:nil];
     auto result = [[PTNAudiovisualAsset alloc] initWithAVAsset:asset];
-    return [[PTNProgress alloc] initWithResult:result];
+    return [[LTProgress alloc] initWithResult:result];
   }];
 }
 
@@ -382,9 +382,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
   }
 
-  return [[self fetchAssetURLWithDescriptor:descriptor] map:^PTNProgress *(NSURL *url) {
+  return [[self fetchAssetURLWithDescriptor:descriptor] map:^LTProgress *(NSURL *url) {
     auto playerItem = [AVPlayerItem playerItemWithURL:url];
-    return [[PTNProgress alloc] initWithResult:playerItem];
+    return [[LTProgress alloc] initWithResult:playerItem];
   }];
 }
 
@@ -392,14 +392,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   if (![descriptor isKindOfClass:[MPMediaItem class]]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor]];
   }
 
   return [[self fetchAssetURLWithDescriptor:descriptor]
-    tryMap:^PTNProgress<id<PTNAVDataAsset>> * _Nullable(NSURL *url,
+    tryMap:^LTProgress<id<PTNAVDataAsset>> * _Nullable(NSURL *url,
                                                         NSError *__autoreleasing *error) {
       auto _Nullable path = [LTPath pathWithFileURL:url];
       if (!path) {
@@ -412,7 +412,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
       }
       auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
-      return [[PTNProgress alloc] initWithResult:asset];
+      return [[LTProgress alloc] initWithResult:asset];
   }];
 }
 

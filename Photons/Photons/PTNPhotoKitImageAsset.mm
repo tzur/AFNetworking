@@ -7,7 +7,6 @@
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
-#import "PTNProgress.h"
 #import "PhotoKit+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN

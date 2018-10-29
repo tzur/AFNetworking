@@ -28,7 +28,6 @@
 #import "PTNOceanAssetSearchResponse.h"
 #import "PTNOceanClient.h"
 #import "PTNOceanEnums.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "RACSignal+Photons.h"
 
@@ -276,10 +275,10 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
   }
 
   return [[self.client downloadDataWithURL:url]
-      map:^PTNProgress<id<PTNImageAsset>> *
-          (PTNProgress<RACTwoTuple<NSData *, NSString *> *> *progress) {
+      map:^LTProgress<id<PTNImageAsset>> *
+          (LTProgress<RACTwoTuple<NSData *, NSString *> *> *progress) {
         if (!progress.result) {
-          return [PTNProgress progressWithProgress:progress.progress];
+          return [LTProgress progressWithProgress:progress.progress];
         }
 
         RACTupleUnpack(NSData *data, NSString * _Nullable uti) = progress.result;
@@ -291,7 +290,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
                                                     entityTag:nil];
         auto cacheProxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:result
                                                                 cacheInfo:cacheInfo];
-        return [[PTNProgress alloc] initWithResult:cacheProxy];
+        return [[LTProgress alloc] initWithResult:cacheProxy];
       }];
 }
 
@@ -335,7 +334,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
 #pragma mark AV Preview fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<AVPlayerItem *> *> *)
+- (RACSignal<LTProgress<AVPlayerItem *> *> *)
     fetchAVPreviewWithDescriptor:(id<PTNDescriptor>)descriptor
                          options:(PTNAVAssetFetchOptions *)options {
   if (![descriptor isKindOfClass:[PTNOceanAssetDescriptor class]]) {
@@ -361,7 +360,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
   }
 
   AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:nn(videoAssetInfo.streamURL)];
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
+  return [RACSignal return:[[LTProgress alloc] initWithResult:playerItem]];
 }
 
 /// Returns a comparator that compares video assets by how close their pixel count is to a given
@@ -398,7 +397,7 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   if (![descriptor isKindOfClass:[PTNOceanAssetDescriptor class]]) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
@@ -430,13 +429,13 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
   }
 
   return [[self.client downloadFileWithURL:nn(preferredVideo.url)]
-          map:^PTNProgress<id<PTNAVDataAsset>> *(PTNProgress<LTPath *> *progress) {
+          map:^LTProgress<id<PTNAVDataAsset>> *(LTProgress<LTPath *> *progress) {
             if (!progress.result) {
-              return [PTNProgress progressWithProgress:progress.progress];
+              return [LTProgress progressWithProgress:progress.progress];
             }
 
             auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:progress.result];
-            return [[PTNProgress alloc] initWithResult:asset];
+            return [[LTProgress alloc] initWithResult:asset];
           }];
 }
 

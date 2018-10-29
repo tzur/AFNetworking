@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbum, PTNAudiovisualAsset, PTNImageAsset, PTNImageDataAsset;
 
-@class AVPlayerItem, PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress;
+@class AVPlayerItem, PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions, LTProgress;
 
 /// Value object representing an image request with all of the required parameters for it.
 @interface PTNImageRequest : NSObject
@@ -103,37 +103,37 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Serves the given \c imageRequest by sending the given \c progress reports (array of \c NSNumber
-/// values), followed by the given \c imageAsset, all wrapped in a \c PTNProgress objects and then
+/// values), followed by the given \c imageAsset, all wrapped in a \c LTProgress objects and then
 /// completes. If any properties of \c imageRequest are \c nil, that property will be treated as a
 /// wildcard, matching all values from that property.
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
              withProgress:(NSArray<NSNumber *> *)progress imageAsset:(id<PTNImageAsset>)imageAsset;
 
 /// Serves the given \c imageRequest by sending the given \c progress reports (array of \c NSNumber
-/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// values) all wrapped in a \c LTProgress objects, and finally the given \c error. If any
 /// properties of \c imageRequest are \c nil, that property will be treated as a wildcard, matching
 /// all values from that property.
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
              withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
 
 /// Serves the given \c imageRequest by sending the given \c progress reports (array of
-/// \c PTNProgress objects) and completes. If any properties of \c imageRequest are \c nil, that
+/// \c LTProgress objects) and completes. If any properties of \c imageRequest are \c nil, that
 /// property will be treated as a wildcard, matching all values from that property.
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress;
+      withProgressObjects:(NSArray<LTProgress *> *)progress;
 
 /// Serves the given \c imageRequest by sending the given \c progress reports (array of
-/// \c PTNProgress objects) and finally the given \c error. If any properties of \c imageRequest are
+/// \c LTProgress objects) and finally the given \c error. If any properties of \c imageRequest are
 /// \c nil, that property will be treated as a wildcard, matching all values of that property.
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress finallyError:(NSError *)error;
+      withProgressObjects:(NSArray<LTProgress *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -
 #pragma mark AVAsset Serving
 #pragma mark -
 
 /// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
-/// values), followed by the given \c asset, all wrapped in a \c PTNProgress objects and then
+/// values), followed by the given \c asset, all wrapped in a \c LTProgress objects and then
 /// completes. If any properties of \c request are \c nil, that property will be treated as a
 /// wildcard, matching all values from that property.
 - (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
                  videoAsset:(id<PTNAudiovisualAsset>)asset;
 
 /// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
-/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// values) all wrapped in a \c LTProgress objects, and finally the given \c error. If any
 /// properties of \c request are \c nil, that property will be treated as a wildcard, matching
 /// all values from that property.
 - (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
@@ -152,7 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Serves the given \c imageDataRequest by sending the given \c progress reports (array of
-/// \c NSNumber values), followed by the given \c imageDataRequest, all wrapped in a \c PTNProgress
+/// \c NSNumber values), followed by the given \c imageDataRequest, all wrapped in a \c LTProgress
 /// objects and then completes. If any properties of \c imageDataRequest are \c nil, that property
 /// will be treated as a wildcard, matching all values from that property.
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
                imageDataAsset:(id<PTNImageDataAsset>)imageDataAsset;
 
 /// Serves the given \c imageDataRequest by sending the given \c progress reports (array of
-/// \c NSNumber values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If
+/// \c NSNumber values) all wrapped in a \c LTProgress objects, and finally the given \c error. If
 /// any properties of \c imageDataRequest are \c nil, that property will be treated as a wildcard,
 /// matching all values from that property.
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
-/// values), followed by the given \c playerItem, all wrapped in a \c PTNProgress objects and then
+/// values), followed by the given \c playerItem, all wrapped in a \c LTProgress objects and then
 /// completes. If any properties of \c request are \c nil, that property will be treated as a
 /// wildcard, matching all values from that property.
 - (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
@@ -179,7 +179,7 @@ NS_ASSUME_NONNULL_BEGIN
                    playerItem:(AVPlayerItem *)playerItem;
 
 /// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
-/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// values) all wrapped in a \c LTProgress objects, and finally the given \c error. If any
 /// properties of \c request are \c nil, that property will be treated as a wildcard, matching
 /// all values from that property.
 - (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
@@ -190,7 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Serves the given \c avDataRequest by sending the given \c progress reports (array of \c NSNumber
-/// values), followed by the given \c avDataRequest, all wrapped in a \c PTNProgress objects and
+/// values), followed by the given \c avDataRequest, all wrapped in a \c LTProgress objects and
 /// then completes. If any properties of \c avDataRequest are \c nil, that property will be treated
 /// as a wildcard, matching all values from that property.
 - (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
@@ -198,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
                avDataAsset:(id<PTNAVDataAsset>)avDataAsset;
 
 /// Serves the given \c avDataRequest by sending the given \c progress reports (array of \c NSNumber
-/// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
+/// values) all wrapped in a \c LTProgress objects, and finally the given \c error. If any
 /// properties of \c avDataRequest are \c nil, that property will be treated as a wildcard, matching
 /// all values from that property.
 - (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest

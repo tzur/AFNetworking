@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
   if (!assetManager) {

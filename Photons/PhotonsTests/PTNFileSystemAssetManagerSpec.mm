@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSBundle+Path.h>
 
@@ -23,7 +24,6 @@
 #import "PTNFileSystemTestUtils.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNImageResizer.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestResources.h"
 
@@ -225,7 +225,7 @@ context(@"image fetching", ^{
       RACSignal *values = [manager fetchImageWithDescriptor:asset
                                            resizingStrategy:resizingStrategy
                                                     options:options];
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should complete after fetching an image", ^{
@@ -274,7 +274,7 @@ context(@"image fetching", ^{
       RACSignal *values = [manager fetchImageWithDescriptor:directoryDesc
                                            resizingStrategy:resizingStrategy
                                                     options:options];
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should error on non-existing key assets", ^{
@@ -327,7 +327,7 @@ context(@"image fetching", ^{
     PTNAVImageAsset *expectedImage = [[PTNAVImageAsset alloc]
                                       initWithAsset:videoAsset
                                       resizingStrategy:resizing];
-    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedImage]]);
+    expect(values).to.sendValues(@[[[LTProgress alloc] initWithResult:expectedImage]]);
   });
 });
 
@@ -347,7 +347,7 @@ context(@"AVAsset fetching", ^{
 
   it(@"should fetch AVAsset", ^{
     RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
-    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    expect(values).to.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
   });
 
   it(@"should complete after fetching an AVAsset", ^{
@@ -430,7 +430,7 @@ context(@"image data fetching", ^{
                                            imageResizer:imageResizer
                                            resizingStrategy:[PTNResizingStrategy identity]];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     expect(values).to.complete();
   });
 
@@ -444,7 +444,7 @@ context(@"image data fetching", ^{
     PTNAVImageAsset *expectedImage = [[PTNAVImageAsset alloc]
                                       initWithAsset:videoAsset
                                       resizingStrategy:[PTNResizingStrategy identity]];
-    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedImage]]);
+    expect(values).to.sendValues(@[[[LTProgress alloc] initWithResult:expectedImage]]);
     expect(values).to.complete();
   });
 });
@@ -465,7 +465,7 @@ context(@"AVPreview fetching", ^{
     LLSignalTestRecorder *values = [[manager fetchAVPreviewWithDescriptor:descriptor
                                                                   options:options] testRecorder];
 
-    expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+    expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
       AVPlayerItem *playerItem = progress.result;
       if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
         return NO;
@@ -526,7 +526,7 @@ context(@"AV data fetching", ^{
     PTNFileBackedAVAsset *expectedAsset =
         [[PTNFileBackedAVAsset alloc] initWithFilePath:[LTPath pathWithFileURL:assetURL]];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
     expect(values).will.complete();
   });
 

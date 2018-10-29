@@ -2,9 +2,8 @@
 // Created by Barak Weiss.
 
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTValueObject.h>
-
-#import "PTNProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -102,20 +101,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Downloads the contents of the given \c URL and returns it as \c NSData and UTI string.
 ///
-/// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
+/// The returned signal sends \c LTProgress objects on an arbitrary thread, completes once the
 /// final result is sent and errs if an error occurred while downloading.
 ///
 /// @note The UTI string is nullable.
-- (RACSignal<PTNProgress<RACTwoTuple<NSData *, NSString *> *> *> *)downloadDataWithURL:(NSURL *)url;
+- (RACSignal<LTProgress<RACTwoTuple<NSData *, NSString *> *> *> *)downloadDataWithURL:(NSURL *)url;
 
 /// Downloads the contents of the given \c URL to a temporary file and returns its path. The
 /// temporary file guaranteed to exist until the app exits.
 ///
-/// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
+/// The returned signal sends \c LTProgress objects on an arbitrary thread, completes once the
 /// final result is sent and errs if an error occurred while downloading.
 ///
 /// The returned path is in the temporary directory.
-- (RACSignal<PTNProgress<LTPath *> *> *)downloadFileWithURL:(NSURL *)url;
+- (RACSignal<LTProgress<LTPath *> *> *)downloadFileWithURL:(NSURL *)url;
 
 @end
 

@@ -3,6 +3,8 @@
 
 #import "PTNCachingAssetManager.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "NSURL+PTNCache.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
@@ -16,7 +18,6 @@
 #import "PTNImageAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNIncrementalChanges.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
 
@@ -524,8 +525,8 @@ context(@"image fetching", ^{
 
   __block id<PTNImageAsset, PTNDataAsset> imageAsset;
   __block id<PTNImageAsset, PTNDataAsset> cachedImageAsset;
-  __block PTNProgress<id<PTNImageAsset>> *imageAssetProgress;
-  __block PTNProgress<id<PTNImageAsset>> *cachedImageAssetProgress;
+  __block LTProgress<id<PTNImageAsset>> *imageAssetProgress;
+  __block LTProgress<id<PTNImageAsset>> *cachedImageAssetProgress;
 
   beforeEach(^{
     descriptor = PTNCreateDescriptor(url, nil, 0, nil);
@@ -536,8 +537,8 @@ context(@"image fetching", ^{
 
     imageAsset = OCMProtocolMock(@protocol(PTNDataAsset));
     cachedImageAsset = OCMProtocolMock(@protocol(PTNDataAsset));
-    imageAssetProgress = [[PTNProgress alloc] initWithResult:imageAsset];
-    cachedImageAssetProgress = [[PTNProgress alloc] initWithResult:cachedImageAsset];
+    imageAssetProgress = [[LTProgress alloc] initWithResult:imageAsset];
+    cachedImageAssetProgress = [[LTProgress alloc] initWithResult:cachedImageAsset];
   });
 
   it(@"should return values from underlying asset manager when no cached value is available", ^{
@@ -551,9 +552,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -569,9 +570,9 @@ context(@"image fetching", ^{
                                  finallyError:[NSError lt_errorWithCode:1337]];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1]
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1]
     ]);
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == 1337;
@@ -600,9 +601,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -622,9 +623,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -641,7 +642,7 @@ context(@"image fetching", ^{
     [underlyingAssetManager serveValidateImageWithRequest:request entityTag:staleCacheInfo.entityTag
                                              withValidity:YES];
 
-    expect(values).will.matchValue(0, ^BOOL(PTNProgress<PTNCacheProxy *> *progress) {
+    expect(values).will.matchValue(0, ^BOOL(LTProgress<PTNCacheProxy *> *progress) {
       PTNCacheProxy<id<PTNImageAsset>> *proxy = progress.result;
       return proxy.underlyingObject == cachedImageAsset &&
           proxy.cacheInfo.entityTag == staleCacheInfo.entityTag &&
@@ -663,7 +664,7 @@ context(@"image fetching", ^{
     [underlyingAssetManager serveValidateImageWithRequest:request entityTag:staleCacheInfo.entityTag
                                              withValidity:YES];
 
-    expect(values).will.matchValue(0, ^BOOL(PTNProgress<PTNCacheProxy *> *progress) {
+    expect(values).will.matchValue(0, ^BOOL(LTProgress<PTNCacheProxy *> *progress) {
       PTNCacheProxy<id<PTNImageAsset>> *proxy = progress.result;
       return proxy.underlyingObject == cachedImageAsset &&
       proxy.cacheInfo.entityTag == staleCacheInfo.entityTag &&
@@ -721,9 +722,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -750,9 +751,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -777,9 +778,9 @@ context(@"image fetching", ^{
                                    imageAsset:imageAsset];
 
     expect(values).will.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1],
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1],
       imageAssetProgress
     ]);
   });
@@ -817,10 +818,10 @@ context(@"image fetching", ^{
 
       expect(values).will.sendValues(@[
         cachedImageAssetProgress,
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:imageAssetWithInfo]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
+        [[LTProgress alloc] initWithResult:imageAssetWithInfo]
       ]);
       OCMVerify([cache storeImageAsset:imageAsset withCacheInfo:freshCacheInfo forURL:OCMOCK_ANY]);
     });
@@ -861,9 +862,9 @@ context(@"image fetching", ^{
 
       expect(values).will.sendValues(@[
         cachedImageAssetProgress,
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
         cachedImageAssetProgress
       ]);
     });
@@ -925,7 +926,7 @@ context(@"AVAsset fetching", ^{
 
     [underlyingAssetManager serveAVAssetRequest:request withProgress:@[] videoAsset:videoAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:videoAsset]]);
     expect(values).will.complete();
   });
 
@@ -937,7 +938,7 @@ context(@"AVAsset fetching", ^{
 
     [underlyingAssetManager serveAVAssetRequest:request withProgress:@[@0.666] finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.666]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -961,7 +962,7 @@ context(@"image data fetching", ^{
     [underlyingAssetManager serveImageDataRequest:request withProgress:@[]
                                    imageDataAsset:imageDataAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageDataAsset]]);
     expect(values).will.complete();
   });
 
@@ -973,7 +974,7 @@ context(@"image data fetching", ^{
     [underlyingAssetManager serveImageDataRequest:request withProgress:@[@0.123]
                                      finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.123]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -997,7 +998,7 @@ context(@"AV preview fetching", ^{
 
     [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[] playerItem:playerItem];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:playerItem]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:playerItem]]);
     expect(values).will.complete();
   });
 
@@ -1010,7 +1011,7 @@ context(@"AV preview fetching", ^{
     [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[@0.666]
                                      finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.666]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -1032,7 +1033,7 @@ context(@"av data fetching", ^{
 
     [underlyingAssetManager serveAVDataRequest:request withProgress:@[] avDataAsset:avDataAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:avDataAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:avDataAsset]]);
     expect(values).will.complete();
   });
 
@@ -1043,7 +1044,7 @@ context(@"av data fetching", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     [underlyingAssetManager serveAVDataRequest:request withProgress:@[@0.123] finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.123]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });

@@ -13,7 +13,6 @@
 #import <Photons/PTNDescriptor.h>
 #import <Photons/PTNImageAsset.h>
 #import <Photons/PTNImageFetchOptions.h>
-#import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
 #import <Photons/RACSignal+Photons.h>
 

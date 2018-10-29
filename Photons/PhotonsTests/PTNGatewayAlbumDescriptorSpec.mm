@@ -3,9 +3,10 @@
 
 #import "PTNGatewayAlbumDescriptor.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "NSURL+Gateway.h"
 #import "PTNImageFetchOptions.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
 
@@ -77,7 +78,7 @@ it(@"should initialize a gateway album descriptor with a static image", ^{
   expect(descriptor.ptn_identifier).to.equal(identifier);
   expect(descriptor.localizedTitle).to.equal(@"foo");
   id<PTNImageAsset> asset = [[PTNStaticImageAsset alloc] initWithImage:image];
-  PTNProgress *progress = [[PTNProgress alloc] initWithResult:asset];
+  LTProgress *progress = [[LTProgress alloc] initWithResult:asset];
   expect(descriptor.imageSignalBlock(resizingStrategy, fetchOptions)).to.sendValues(@[progress]);
   expect(descriptor.albumSignal).to.equal(albumSignal);
   expect(descriptor.assetCount).to.equal(PTNNotFound);

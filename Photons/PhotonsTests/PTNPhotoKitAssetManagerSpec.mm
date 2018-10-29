@@ -3,6 +3,7 @@
 
 #import "PTNPhotoKitAssetManager.h"
 
+#import <LTKit/LTProgress.h>
 #import <Photos/Photos.h>
 
 #import "NSError+Photons.h"
@@ -29,7 +30,6 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
 #import "PhotoKit+Photons.h"
@@ -1039,7 +1039,7 @@ context(@"image fetching", ^{
                                            resizingStrategy:resizingStrategy
                                                     options:options];
 
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should complete after fetching an image", ^{
@@ -1057,10 +1057,10 @@ context(@"image fetching", ^{
 
       expect([manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                        options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:imageAsset]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
+        [[LTProgress alloc] initWithResult:imageAsset]
       ]);
     });
 
@@ -1082,9 +1082,9 @@ context(@"image fetching", ^{
                                                     options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1112,8 +1112,8 @@ context(@"image fetching", ^{
                                                     options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1138,7 +1138,7 @@ context(@"image fetching", ^{
                                            resizingStrategy:resizingStrategy
                                                     options:options];
 
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should error on non-existing key assets", ^{
@@ -1290,7 +1290,7 @@ context(@"fetch image with metadata", ^{
                                                                 options:options] testRecorder];
 
     expect(recorder.valuesSentCount).will.equal(1);
-    PTNProgress<PTNStaticImageAsset *> *imageAsset = (PTNProgress *)recorder.values[0];
+    LTProgress<PTNStaticImageAsset *> *imageAsset = (LTProgress *)recorder.values[0];
     expect(imageAsset.result.image).to.equal(image);
     expect(imageAsset.result.imageMetadata).notTo.beNil();
   });
@@ -1314,7 +1314,7 @@ context(@"fetch image with metadata", ^{
                                                                 options:options] testRecorder];
 
     expect(recorder.valuesSentCount).will.equal(1);
-    PTNProgress<PTNStaticImageAsset *> *imageAsset = (PTNProgress *)recorder.values[0];
+    LTProgress<PTNStaticImageAsset *> *imageAsset = (LTProgress *)recorder.values[0];
     expect(imageAsset.result.image).to.equal(image);
     expect(imageAsset.result.imageMetadata).notTo.beNil();
   });
@@ -1330,7 +1330,7 @@ context(@"fetch image with metadata", ^{
                                          resizingStrategy:resizingStrategy
                                                   options:options];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
   });
 
   it(@"should err when requesting metadata fails", ^{
@@ -1462,7 +1462,7 @@ context(@"AVAsset fetching", ^{
 
         RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
-        expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+        expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:videoAsset]]);
       });
 
       it(@"should complete after fetching an AVAsset", ^{
@@ -1478,10 +1478,10 @@ context(@"AVAsset fetching", ^{
         [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] livePhoto:livePhoto];
 
         expect([manager fetchAVAssetWithDescriptor:asset options:options]).will.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5],
-          [[PTNProgress alloc] initWithProgress:@1],
-          [[PTNProgress alloc] initWithResult:videoAsset]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5],
+          [[LTProgress alloc] initWithProgress:1],
+          [[LTProgress alloc] initWithResult:videoAsset]
         ]);
       });
 
@@ -1501,9 +1501,9 @@ context(@"AVAsset fetching", ^{
         RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
         expect(values).will.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5],
-          [[PTNProgress alloc] initWithProgress:@1],
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5],
+          [[LTProgress alloc] initWithProgress:1],
         ]);
 
         expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1518,8 +1518,8 @@ context(@"AVAsset fetching", ^{
         RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
         expect(values).will.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5]
         ]);
 
         expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1546,7 +1546,7 @@ context(@"AVAsset fetching", ^{
 
       RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:videoAsset]]);
     });
 
     it(@"should complete after fetching an AVAsset", ^{
@@ -1563,10 +1563,10 @@ context(@"AVAsset fetching", ^{
                       audioMix:audioMix];
 
       expect([manager fetchAVAssetWithDescriptor:asset options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:videoAsset]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
+        [[LTProgress alloc] initWithResult:videoAsset]
       ]);
     });
 
@@ -1586,9 +1586,9 @@ context(@"AVAsset fetching", ^{
       RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1602,8 +1602,8 @@ context(@"AVAsset fetching", ^{
       RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1677,7 +1677,7 @@ context(@"image data fetching", ^{
 
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageDataAsset]]);
     });
 
     it(@"should complete after fetching image data", ^{
@@ -1694,10 +1694,10 @@ context(@"image data fetching", ^{
                                      data:imageData];
 
       expect([manager fetchImageDataWithDescriptor:asset]).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:imageDataAsset]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
+        [[LTProgress alloc] initWithResult:imageDataAsset]
       ]);
     });
 
@@ -1720,9 +1720,9 @@ context(@"image data fetching", ^{
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1738,8 +1738,8 @@ context(@"image data fetching", ^{
       RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1766,7 +1766,7 @@ context(@"image data fetching", ^{
       auto fullSizeImageDataAsset = [[PTNImageDataAsset alloc]
                                      initWithData:imageData
                                      uniformTypeIdentifier:kFullSizeUniformTypeIdentifier];
-      expect(values).will.sendValues(@[[[PTNProgress alloc]
+      expect(values).will.sendValues(@[[[LTProgress alloc]
                                         initWithResult:fullSizeImageDataAsset]]);
     });
 
@@ -1872,7 +1872,7 @@ context(@"AV preview fetching", ^{
 
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           return [progress.result.asset isEqual:avasset];
         });
       });
@@ -1891,10 +1891,10 @@ context(@"AV preview fetching", ^{
 
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
-        expect(values).will.sendValue(0, [[PTNProgress alloc] initWithProgress:@0.25]);
-        expect(values).will.sendValue(1, [[PTNProgress alloc] initWithProgress:@0.5]);
-        expect(values).will.sendValue(2, [[PTNProgress alloc] initWithProgress:@1]);
-        expect(values).will.matchValue(3, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.sendValue(0, [[LTProgress alloc] initWithProgress:0.25]);
+        expect(values).will.sendValue(1, [[LTProgress alloc] initWithProgress:0.5]);
+        expect(values).will.sendValue(2, [[LTProgress alloc] initWithProgress:1]);
+        expect(values).will.matchValue(3, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           return [progress.result.asset isEqual:avasset];
         });
       });
@@ -1915,9 +1915,9 @@ context(@"AV preview fetching", ^{
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
         expect(values).will.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5],
-          [[PTNProgress alloc] initWithProgress:@1],
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5],
+          [[LTProgress alloc] initWithProgress:1],
         ]);
 
         expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1932,8 +1932,8 @@ context(@"AV preview fetching", ^{
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
         expect(values).will.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5]
         ]);
 
         expect(values).will.matchError(^BOOL(NSError *error) {
@@ -1960,7 +1960,7 @@ context(@"AV preview fetching", ^{
 
       RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
-      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:playerItem]]);
+      expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:playerItem]]);
     });
 
     it(@"should complete after fetching player item", ^{
@@ -1976,10 +1976,10 @@ context(@"AV preview fetching", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] playerItem:playerItem];
 
       expect([manager fetchAVPreviewWithDescriptor:asset options:options]).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
-        [[PTNProgress alloc] initWithResult:playerItem]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
+        [[LTProgress alloc] initWithResult:playerItem]
       ]);
     });
 
@@ -1999,9 +1999,9 @@ context(@"AV preview fetching", ^{
       RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5],
-        [[PTNProgress alloc] initWithProgress:@1],
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5],
+        [[LTProgress alloc] initWithProgress:1],
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {
@@ -2015,8 +2015,8 @@ context(@"AV preview fetching", ^{
       RACSignal *values = [manager fetchAVPreviewWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
-        [[PTNProgress alloc] initWithProgress:@0.25],
-        [[PTNProgress alloc] initWithProgress:@0.5]
+        [[LTProgress alloc] initWithProgress:0.25],
+        [[LTProgress alloc] initWithProgress:0.5]
       ]);
 
       expect(values).will.matchError(^BOOL(NSError *error) {

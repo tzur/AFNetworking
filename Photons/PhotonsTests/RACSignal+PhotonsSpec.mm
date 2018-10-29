@@ -3,9 +3,10 @@
 
 #import "RACSignal+Photons.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "PTNImageAsset.h"
 #import "PTNImageMetadata.h"
-#import "PTNProgress.h"
 
 SpecBegin(RACSignal_Photons)
 
@@ -231,8 +232,8 @@ context(@"ptn_imageAndMetadata", ^{
   });
 
   it(@"should ignore incomplete progress values", ^{
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@1]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:1]];
 
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -241,9 +242,9 @@ context(@"ptn_imageAndMetadata", ^{
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
     OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendValues(@[RACTuplePack(image, metadata), RACTuplePack(image, metadata)]);
     expect(recorder).toNot.complete();
@@ -258,8 +259,8 @@ context(@"ptn_imageAndMetadata", ^{
     OCMStub([latestAsset fetchImage]).andReturn([RACSignal return:image]);
     OCMStub([latestAsset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
 
-    [subject sendNext:[PTNProgress progressWithResult:asset]];
-    [subject sendNext:[PTNProgress progressWithResult:latestAsset]];
+    [subject sendNext:[LTProgress progressWithResult:asset]];
+    [subject sendNext:[LTProgress progressWithResult:latestAsset]];
     [previousAssetImageSubject sendNext:[[UIImage alloc] init]];
     [previousAssetMetadataSubject sendNext:[[PTNImageMetadata alloc] init]];
 
@@ -275,7 +276,7 @@ context(@"ptn_imageAndMetadata", ^{
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
     OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
     expect(recorder).toNot.complete();
 
     [subject sendCompleted];
@@ -294,7 +295,7 @@ context(@"ptn_imageAndMetadata", ^{
     OCMStub([asset fetchImage]).andReturn([RACSignal error:error]);
     OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendError(error);
   });
@@ -304,7 +305,7 @@ context(@"ptn_imageAndMetadata", ^{
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
     OCMStub([asset fetchImageMetadata]).andReturn([RACSignal error:error]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendError(error);
   });
@@ -334,8 +335,8 @@ context(@"ptn_image", ^{
   });
 
   it(@"should ignore incomplete progress values", ^{
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@1]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:1]];
 
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -344,9 +345,9 @@ context(@"ptn_image", ^{
     UIImage *image = [[UIImage alloc] init];
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendValues(@[image, image]);
     expect(recorder).toNot.complete();
@@ -359,8 +360,8 @@ context(@"ptn_image", ^{
     id<PTNImageAsset> latestAsset = OCMProtocolMock(@protocol(PTNImageAsset));
     OCMStub([latestAsset fetchImage]).andReturn([RACSignal return:image]);
 
-    [subject sendNext:[PTNProgress progressWithResult:asset]];
-    [subject sendNext:[PTNProgress progressWithResult:latestAsset]];
+    [subject sendNext:[LTProgress progressWithResult:asset]];
+    [subject sendNext:[LTProgress progressWithResult:latestAsset]];
     [previousAssetSubject sendNext:[[UIImage alloc] init]];
 
     expect(recorder).to.sendValues(@[image]);
@@ -375,7 +376,7 @@ context(@"ptn_image", ^{
     UIImage *image = [[UIImage alloc] init];
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
     expect(recorder).toNot.complete();
 
     [subject sendCompleted];
@@ -393,7 +394,7 @@ context(@"ptn_image", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([asset fetchImage]).andReturn([RACSignal error:error]);
 
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendError(error);
   });
@@ -415,18 +416,18 @@ context(@"ptn_skipProgress", ^{
   });
 
   it(@"should ignore incomplete progress values", ^{
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.1]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.1]];
 
     expect(recorder).to.sendValuesWithCount(0);
   });
 
   it(@"should send the asset embedded in the completed progress value", ^{
     id<PTNImageAsset> asset = OCMProtocolMock(@protocol(PTNImageAsset));
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.25]];
-    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.25]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:asset]];
 
     expect(recorder).to.sendValues(@[asset, asset]);
     expect(recorder).toNot.complete();

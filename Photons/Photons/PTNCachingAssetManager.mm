@@ -3,6 +3,8 @@
 
 #import "PTNCachingAssetManager.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "NSURL+PTNCache.h"
 #import "NSURL+PTNResizingStrategy.h"
 #import "NSURLCache+Photons.h"
@@ -16,7 +18,6 @@
 #import "PTNDataCache.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
-#import "PTNProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -167,9 +168,9 @@ typedef RACSignal<NSNumber *> *(^PTNValidationBlock)(NSString *entityTag);
                                                     entityTag:etag];
       }
       mapCachedResult:^id(id<PTNDataAsset> result) {
-        return [[PTNProgress alloc] initWithResult:result];
+        return [[LTProgress alloc] initWithResult:result];
       }
-      storeResult:^(PTNProgress *progress) {
+      storeResult:^(LTProgress *progress) {
         if (![progress.result isKindOfClass:[PTNCacheProxy class]]) {
           return;
         }
@@ -183,7 +184,7 @@ typedef RACSignal<NSNumber *> *(^PTNValidationBlock)(NSString *entityTag);
                       withCacheInfo:proxyImageAsset.cacheInfo
                              forURL:url];
       }]
-      scanWithStart:nil reduce:^id(PTNProgress *running, PTNProgress *next) {
+      scanWithStart:nil reduce:^id(LTProgress *running, LTProgress *next) {
         if (running.result && PTNIsCacheEqual(running.result, next.result)) {
           return running;
         }
@@ -222,7 +223,7 @@ typedef RACSignal<NSNumber *> *(^PTNValidationBlock)(NSString *entityTag);
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   return [self.assetManager fetchAVDataWithDescriptor:descriptor];
 }
@@ -252,7 +253,7 @@ typedef RACSignal<NSNumber *> *(^PTNValidationBlock)(NSString *entityTag);
 // \c cacheFetch is a signal returning the cached response or \c nil if no cached response is
 // available, \c originFetch is a signal sending the first hand response from the origin server.
 // \c mapCachedResult is used to convert minimal cached data to what's expected from the
-// corresponding method to return. E.g. Wrapping a \c PTNImageAsset with a \c PTNProgress object
+// corresponding method to return. E.g. Wrapping a \c PTNImageAsset with a \c LTProgress object
 // wrapping it.
 - (RACSignal *)fetchThroughCache:(RACSignal<PTNCacheResponse *> *)cacheFetch
                      originFetch:(RACSignal *)originFetch

@@ -3,10 +3,10 @@
 
 #import "RACSignal+Photons.h"
 
+#import <LTKit/LTProgress.h>
 #import <LTKit/NSError+LTKit.h>
 
 #import "PTNImageAsset.h"
-#import "PTNProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -122,12 +122,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)ptn_skipProgress {
   return [[[self
-      filter:^BOOL(PTNProgress *progress) {
-        LTAssert([progress isKindOfClass:[PTNProgress class]], @"Expected PTNProgress object, got: "
+      filter:^BOOL(LTProgress *progress) {
+        LTAssert([progress isKindOfClass:[LTProgress class]], @"Expected LTProgress object, got: "
                  "%@", NSStringFromClass([progress class]));
         return progress.result != nil;
       }]
-      map:^id(PTNProgress *progress) {
+      map:^id(LTProgress *progress) {
         return progress.result;
       }]
       setNameWithFormat:@"[%@] -ptn_skipProgress", self.name];;

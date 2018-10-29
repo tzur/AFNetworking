@@ -3,6 +3,7 @@
 
 #import "PTNPhotoKitAssetManager.h"
 
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <map>
 
@@ -27,7 +28,6 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitObserver.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNSignalCache.h"
 #import "PTNStaticImageAsset.h"
@@ -617,7 +617,7 @@ NS_ASSUME_NONNULL_BEGIN
         [[PHContentEditingInputRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
     options.progressHandler = ^(double value, BOOL *) {
-      PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+      LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
       [subscriber sendNext:progress];
     };
 
@@ -646,9 +646,9 @@ NS_ASSUME_NONNULL_BEGIN
 
       [[[self.imageResizer resizeImageAtURL:contentEditingInput.fullSizeImageURL
                            resizingStrategy:resizingStrategy]
-        map:^PTNProgress<PTNStaticImageAsset *> *(UIImage *image) {
+        map:^LTProgress<PTNStaticImageAsset *> *(UIImage *image) {
           auto asset = [[PTNStaticImageAsset alloc] initWithImage:image imageMetadata:metadata];
-          return [[PTNProgress alloc] initWithResult:asset];
+          return [[LTProgress alloc] initWithResult:asset];
       }] subscribe:subscriber];
     };
 
@@ -677,7 +677,7 @@ NS_ASSUME_NONNULL_BEGIN
     options.progressHandler = ^(double value, NSError *error,
                                 BOOL __unused *stop, NSDictionary __unused *info) {
       if (!error) {
-        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
         [subscriber sendNext:progress];
       }
     };
@@ -701,7 +701,7 @@ NS_ASSUME_NONNULL_BEGIN
       } else {
         PTNPhotoKitImageAsset *imageAsset = [[PTNPhotoKitImageAsset alloc] initWithImage:result
                                                                                    asset:asset];
-        PTNProgress *progress = [[PTNProgress alloc] initWithResult:imageAsset];
+        LTProgress *progress = [[LTProgress alloc] initWithResult:imageAsset];
         [subscriber sendNext:progress];
       }
 
@@ -749,7 +749,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)videoAssetForLivePhotoAsset:(PHAsset *)asset {
   return [[self fetchAVAssetForLivePhotoAsset:asset]
-          map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
+          map:^LTProgress<AVPlayerItem *> *(LTProgress<AVAsset *> *progress) {
             return [progress map:^PTNAudiovisualAsset *(AVAsset *avasset) {
               return [[PTNAudiovisualAsset alloc] initWithAVAsset:avasset];
             }];
@@ -761,7 +761,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
       if (!error) {
-        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
         [subscriber sendNext:progress];
       }
     };
@@ -775,7 +775,7 @@ NS_ASSUME_NONNULL_BEGIN
         [subscriber sendError:wrappedError];
       } else {
         PTNAudiovisualAsset *videoAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:result];
-        PTNProgress *progress = [[PTNProgress alloc] initWithResult:videoAsset];
+        LTProgress *progress = [[LTProgress alloc] initWithResult:videoAsset];
         [subscriber sendNext:progress];
         [subscriber sendCompleted];
       }
@@ -819,7 +819,7 @@ NS_ASSUME_NONNULL_BEGIN
     PHAssetResourceRequestOptions *options = [[PHAssetResourceRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
     options.progressHandler = ^(double value) {
-      PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+      LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
       [subscriber sendNext:progress];
     };
 
@@ -841,7 +841,7 @@ NS_ASSUME_NONNULL_BEGIN
       id<PTNImageDataAsset> dataAsset = [[PTNImageDataAsset alloc]
                                          initWithData:mutableData
                                          uniformTypeIdentifier:resource.uniformTypeIdentifier];
-      [subscriber sendNext:[[PTNProgress alloc] initWithResult:dataAsset]];
+      [subscriber sendNext:[[LTProgress alloc] initWithResult:dataAsset]];
       [subscriber sendCompleted];
     };
 
@@ -893,7 +893,7 @@ NS_ASSUME_NONNULL_BEGIN
     options.networkAccessAllowed = YES;
     options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
       if (!error) {
-        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
         [subscriber sendNext:progress];
       }
     };
@@ -912,7 +912,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                       url:asset.ptn_identifier]];
           LogError(@"Live photo asset does not contain a video asset");
         } else {
-          [subscriber sendNext:[PTNProgress progressWithResult:nn(avasset)]];
+          [subscriber sendNext:[LTProgress progressWithResult:nn(avasset)]];
           [subscriber sendCompleted];
         }
       }
@@ -952,7 +952,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)playerItemForLivePhotoAsset:(PHAsset *)asset {
   return [[self fetchAVAssetForLivePhotoAsset:asset]
-    map:^PTNProgress<AVPlayerItem *> *(PTNProgress<AVAsset *> *progress) {
+    map:^LTProgress<AVPlayerItem *> *(LTProgress<AVAsset *> *progress) {
       return [progress map:^AVPlayerItem *(AVAsset *avasset) {
         return [[AVPlayerItem alloc] initWithAsset:avasset];
       }];
@@ -964,7 +964,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
       if (!error) {
-        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        LTProgress *progress = [[LTProgress alloc] initWithProgress:value];
         [subscriber sendNext:progress];
       }
     };
@@ -976,7 +976,7 @@ NS_ASSUME_NONNULL_BEGIN
                                           underlyingError:info[PHImageErrorKey]];
         [subscriber sendError:wrappedError];
       } else {
-        PTNProgress *progress = [[PTNProgress alloc] initWithResult:playerItem];
+        LTProgress *progress = [[LTProgress alloc] initWithResult:playerItem];
         [subscriber sendNext:progress];
         [subscriber sendCompleted];
       }
@@ -995,7 +995,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                 associatedDescriptor:descriptor]];
