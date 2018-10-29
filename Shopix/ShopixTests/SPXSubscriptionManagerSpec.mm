@@ -10,8 +10,16 @@
 #import <Bazaar/BZRReceiptValidationStatus.h>
 #import <Bazaar/NSError+Bazaar.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
+#import <BazaarTestUtils/BZRTestUtils.h>
 
 #import "SPXAlertViewModel.h"
+
+/// Expose \c spx_subscriptionGroup for testing of productID parsing.
+@interface NSString (SubscriptionGroup)
+
+- (NSString *)spx_subscriptionGroup;
+
+@end
 
 SpecBegin(SPXSubscriptionManager)
 
@@ -196,6 +204,61 @@ context(@"fetching products information", ^{
         expect(completionBlockError).to.equal(fetchError);
       });
     });
+  });
+});
+
+context(@"checking parsing of product groups", ^{
+  it(@"should return the group in the old format", ^{
+    expect(@"foo.bar".spx_subscriptionGroup).to.equal(@"foo");
+    expect(@"foo.bar.faz.bog.lit".spx_subscriptionGroup).to.equal(@"foo.bar.faz.bog");
+  });
+  it(@"should return the group in the new format", ^{
+    expect(@"foo_bar_zar".spx_subscriptionGroup).to.equal(@"bar");
+    expect(@"foo_bar.faz.bog_lit".spx_subscriptionGroup).to.equal(@"bar.faz.bog");
+  });
+  it(@"should return the default group if the format is bad", ^{
+    expect(@"foo".spx_subscriptionGroup).to.equal(kBZRGenericGroup);
+    expect(@"foo_bar_zar_dor".spx_subscriptionGroup).to.equal(kBZRGenericGroup);
+    expect(@"".spx_subscriptionGroup).to.equal(kBZRGenericGroup);
+  });
+});
+
+context(@"checking introductory pricing eligibility", ^{
+  beforeEach(^{
+    auto transactionWithNoIntroInGroupWithNoIntro =
+        [BZRTransactionWithTransactionIdentifier(@"")
+         modelByOverridingProperty:@instanceKeypath(BZRReceiptTransactionInfo, productId)
+         withValue:@"foo_groupWithNoIntro_noIntro"];
+    auto transactionWithIntroInGroupWithIntro =
+        [[BZRTransactionWithTransactionIdentifier(@"")
+          modelByOverridingProperty:@instanceKeypath(BZRReceiptTransactionInfo, productId)
+          withValue:@"foo_groupWithIntro_withIntro"]
+          modelByOverridingProperty:@instanceKeypath(BZRReceiptTransactionInfo, isTrialPeriod)
+          withValue:@YES];
+
+    auto validationStatusWithTransactions =
+        [BZREmptyReceiptValidationStatus()
+         modelByOverridingPropertyAtKeypath:
+         @instanceKeypath(BZRReceiptValidationStatus, receipt.transactions) withValue:(@[
+           transactionWithNoIntroInGroupWithNoIntro,
+           transactionWithIntroInGroupWithIntro
+        ])];
+
+    OCMStub(productsInfoProvider.receiptValidationStatus)
+        .andReturn(validationStatusWithTransactions);
+  });
+
+  it(@"should be eligible for introductory pricing", ^{
+    auto productInGroupWithNoIntro = BZRProductWithIdentifier(@"bar_groupWithNoIntro_bar");
+    expect([subscriptionManager
+            eligibleForIntroductoryDiscountOnSubscription:productInGroupWithNoIntro]).to.beTruthy();
+  });
+
+  it(@"should not be eligible for introductory pricing if a product with introductory pricing"
+      "in the same group was previously purchased",^{
+    auto productInGroupWithIntro = BZRProductWithIdentifier(@"bar_groupWithIntro_bar");
+    expect([subscriptionManager
+            eligibleForIntroductoryDiscountOnSubscription:productInGroupWithIntro]).to.beFalsy();
   });
 });
 

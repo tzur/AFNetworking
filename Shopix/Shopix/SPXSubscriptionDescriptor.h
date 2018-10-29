@@ -48,11 +48,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Price information of the subscription product. KVO Compliant.
 @property (strong, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 
-/// Introductory discount of the product. \c nil if product is not a renewable subscription, the
-/// product offers no introductory discount or if the information is not available. KVO Compliant.
+/// Introductory discount of the product. \c nil if one of the following is true:
+///  - The Product is not a renewable subscription.
+///  - The product offers no introductory discount.
+///  - The user is not eligible for such discount (see bellow Apple docs).
+///  - The information is not available.
+/// KVO Compliant.
 ///
 /// @note For introductory discount offering guidelines read this document by Apple:
-/// https://developer.apple.com/documentation/storekit/in_app_purchase/offering_introductory_prices_in_your_app?language=objc.
+/// https://developer.apple.com/documentation/storekit/in-app_purchase/offering_introductory_pricing_in_your_app?language=objc
 @property (strong, nonatomic, nullable) BZRSubscriptionIntroductoryDiscount *introductoryDiscount;
 
 /// Discount percentage in range <tt>[0, 100)</tt> defines a desired fictive discount percentage for

@@ -11,10 +11,47 @@
 #import <Bazaar/BZRiCloudUserIDProvider.h>
 #import <Bazaar/NSError+Bazaar.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
+#import <LTKit/NSArray+Functional.h>
 
 #import "SPXAlertViewModel+ShopixPresets.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@implementation NSString (SubscriptionGroup)
+
+- (NSString *)spx_subscriptionGroup {
+  if ([self spx_isNewFormat]) {
+    return [self spx_subscriptionGroupFromNewFormat];
+  } else if([self spx_isOldFormat]) {
+    return [self spx_subscriptionGroupFromOldFormat];
+  }
+  return kBZRGenericGroup;
+}
+
+- (BOOL)spx_isOldFormat {
+  return [self containsString:@"."];
+}
+
+- (NSString *)spx_subscriptionGroupFromOldFormat {
+  // Old format is <groupId>.<bar> where <groupId> is a variable length string composed of
+  // letters, numbers and dots. or as a regexp - find the first match group in the pattern
+  // ([A-z0-9\.]+)\.[A-z0-9]+
+  auto productIDSeparatedComponents = [self componentsSeparatedByString:@"."];
+  auto rangeOfGroupID = NSMakeRange(0, productIDSeparatedComponents.count - 1);
+  auto groupIDSeparatedComponents = [productIDSeparatedComponents subarrayWithRange:rangeOfGroupID];
+  return [groupIDSeparatedComponents componentsJoinedByString:@"."];
+}
+
+- (BOOL)spx_isNewFormat {
+  return [self componentsSeparatedByString:@"_"].count == 3;
+}
+
+- (NSString *)spx_subscriptionGroupFromNewFormat {
+  // New format is <foo>_<groupId>_<bar>.
+  return [self componentsSeparatedByString:@"_"][1];
+}
+
+@end
 
 @interface SPXSubscriptionManager ()
 
@@ -150,6 +187,21 @@ NS_ASSUME_NONNULL_BEGIN
         } subscriptionRestored:subscriptionRestored];
         [self.delegate presentAlertWithViewModel:alertViewModel];
       }];
+}
+
+- (BOOL)eligibleForIntroductoryDiscountOnSubscription:(BZRProduct *)subscriptionProduct {
+  auto subscriptionsubscriptionGroup = subscriptionProduct.identifier.spx_subscriptionGroup;
+  auto transactionsWithDiscount =
+      [self.productsInfoProvider.receiptValidationStatus.receipt.transactions
+       lt_filter:^BOOL(BZRReceiptTransactionInfo *transactionInfo) {
+           return transactionInfo.isIntroOfferPeriod || transactionInfo.isTrialPeriod;
+       }];
+  auto transactionsWithDiscountInSameGroup = [transactionsWithDiscount
+      lt_filter:^BOOL(BZRReceiptTransactionInfo *transactionInfo) {
+        return [transactionInfo.productId.spx_subscriptionGroup
+                isEqualToString:subscriptionsubscriptionGroup];
+      }];
+  return (transactionsWithDiscountInSameGroup.count == 0);
 }
 
 #pragma mark -
