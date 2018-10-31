@@ -8,6 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRReceiptSubscriptionInfo (HelperProperties)
 
 - (NSDate *)effectiveExpirationDate {
+  if (!self.cancellationDateTime) {
+    return self.expirationDateTime;
+  }
+
   return [self.expirationDateTime earlierDate:self.cancellationDateTime];
 }
 

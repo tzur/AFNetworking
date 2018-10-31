@@ -188,28 +188,33 @@ context(@"purchasing products", ^{
 
   it(@"should delegate purchase product call to purchase manager", ^{
     NSUInteger quantity = 1337;
+    OCMExpect([purchaseManager purchaseProduct:product quantity:quantity])
+        .andReturn([RACSignal empty]);
 
     [storeKitFacade purchaseProduct:product quantity:quantity];
 
-    OCMVerify([purchaseManager purchaseProduct:product quantity:quantity]);
+    OCMVerifyAll((id)purchaseManager);
   });
 });
 
 context(@"downloading content", ^{
   it(@"should delegate content download call to download manager", ^{
     SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMExpect([downloadManager downloadContentForTransaction:transaction]).andReturn(@[]);
 
     [storeKitFacade downloadContentForTransaction:transaction];
 
-    OCMVerify([downloadManager downloadContentForTransaction:transaction]);
+    OCMVerifyAll((id)downloadManager);
   });
 });
 
 context(@"restoring completed transactions", ^{
   it(@"should delegate restore completed transactions call to restoration manager", ^{
+    OCMExpect([restorationManager restoreCompletedTransactions]).andReturn([RACSignal empty]);
+
     [storeKitFacade restoreCompletedTransactions];
 
-    OCMVerify([restorationManager restoreCompletedTransactions]);
+    OCMVerifyAll((id)restorationManager);
   });
 });
 

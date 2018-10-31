@@ -49,6 +49,8 @@ it(@"should load the current application's App Store locale from cache on initia
   OCMExpect([appStoreLocaleCache appStoreLocaleForBundleID:@"foo" error:nil])
       .andReturn(appStoreLocale);
 
+  OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY]).andReturn([RACSignal never]);
+
   localeProvider = [[BZRAppStoreLocaleProvider alloc]
                     initWithCache:appStoreLocaleCache productsProvider:productsProvider
                     metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];
@@ -167,6 +169,8 @@ it(@"should dealloc successfully", ^{
 
 context(@"storing and loading App Store locale from cache", ^{
   beforeEach(^{
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
+        .andReturn([RACSignal never]);
     localeProvider = [[BZRAppStoreLocaleProvider alloc]
                       initWithCache:appStoreLocaleCache productsProvider:productsProvider
                       metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];

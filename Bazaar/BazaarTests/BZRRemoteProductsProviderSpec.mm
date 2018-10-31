@@ -27,9 +27,12 @@ context(@"fetching JSON products list", ^{
   });
 
   it(@"should call GET method of HTTPClient", ^{
+    OCMExpect([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
+
     [provider fetchProductList];
 
-    OCMVerify([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY]);
+    OCMVerifyAll((id)client);
   });
 
   it(@"should send error when GET failed", ^{

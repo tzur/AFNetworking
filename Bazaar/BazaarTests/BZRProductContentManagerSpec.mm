@@ -140,6 +140,7 @@ context(@"extracting content file", ^{
     });
 
     it(@"should extract to the product temporary directory path", ^{
+      OCMStub([manager bundleWithPath:OCMOCK_ANY]).andReturn(bundle);
       [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath] testRecorder];
 
       auto tempDirectoryName = [@"_" stringByAppendingString:productIdentifier];
@@ -148,6 +149,7 @@ context(@"extracting content file", ^{
     });
 
     it(@"should extract to the product directory path concatenated with a temp directory", ^{
+      OCMStub([manager bundleWithPath:OCMOCK_ANY]).andReturn(bundle);
       [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath
                           intoDirectory:@"versionDirectory"] testRecorder];
 

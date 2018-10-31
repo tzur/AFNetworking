@@ -21,8 +21,11 @@ beforeEach(^{
 
 it(@"should use the underlying fetcher to get the bundle of the product content", ^{
   BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
+  OCMExpect([underlyingContentFetcher contentBundleForProduct:product])
+      .andReturn([RACSignal empty]);
+
   [contentFetcher contentBundleForProduct:product];
-  OCMVerify([underlyingContentFetcher contentBundleForProduct:product]);
+  OCMVerifyAll((id)underlyingContentFetcher);
 });
 
 context(@"content fetching", ^{
@@ -73,4 +76,3 @@ context(@"content fetching", ^{
 });
 
 SpecEnd
-

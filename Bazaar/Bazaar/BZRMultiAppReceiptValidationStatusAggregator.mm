@@ -37,9 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable BZRReceiptValidationStatus *)aggregateMultiAppReceiptValidationStatuses:
-    (BZRMultiAppReceiptValidationStatus *)bundleIDToReceiptValidationStatus {
+    (nullable BZRMultiAppReceiptValidationStatus *)bundleIDToReceiptValidationStatus {
   static NSString * const kSubscriptionKeypath =
       @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription);
+
+  if (!bundleIDToReceiptValidationStatus) {
+    return nil;
+  }
 
   if (![self relevantReceiptValidationStatuses:bundleIDToReceiptValidationStatus].count) {
     return nil;

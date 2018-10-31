@@ -69,11 +69,11 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
         }
 
         RACSignal<BZRProductList *> *appStoreProductsMapper =
-            [self appStoreProductsList:classifiedProducts[kAppStoreProductsLabel]];
+            [self appStoreProductsList:classifiedProducts[kAppStoreProductsLabel] ?: @[]];
         return [appStoreProductsMapper
             map:^BZRProductList *(BZRProductList *appStoreProducts) {
               return [appStoreProducts arrayByAddingObjectsFromArray:
-                      classifiedProducts[kNonAppStoreProductsLabel]];
+                      classifiedProducts[kNonAppStoreProductsLabel] ?: @[]];
             }];
       }];
 }

@@ -77,14 +77,6 @@ context(@"archiving", ^{
     OCMStub([fileManager bzr_retrieveFilesSizes:filesToArchive]).andReturn(fileSizesSignal);
   });
 
-  it(@"should raise exception if completion block is nil", ^{
-    expect(^{
-      LTSuccessOrErrorBlock completion;
-      [archiver archiveFilesAtPaths:filesToArchive withArchivedNames:filesToArchive
-                        fileManager:fileManager progress:nil completion:completion];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should raise exception if count of files to archive and archived names does not match", ^{
     NSArray<NSString *> *archivedNames = [filesToArchive arrayByAddingObject:@"foobar"];
     expect(^{

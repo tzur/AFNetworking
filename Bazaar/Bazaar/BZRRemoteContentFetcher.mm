@@ -146,12 +146,13 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal return:nil];
   }
 
-  auto contentPath = [self contentDirectoryPathOfProduct:product];
+  auto _Nullable contentPath = [self contentDirectoryPathOfProduct:product];
   return [RACSignal return:(contentPath ? [self bundleWithPath:contentPath] : nil)];
 }
 
-- (LTPath *)contentDirectoryPathOfProduct:(BZRProduct *)product {
-  auto productDirectory = [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
+- (nullable LTPath *)contentDirectoryPathOfProduct:(BZRProduct *)product {
+  auto _Nullable productDirectory =
+      [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
   return [productDirectory pathByAppendingPathComponent:
           [self contentDirectoryNameForProduct:product]];
 }
