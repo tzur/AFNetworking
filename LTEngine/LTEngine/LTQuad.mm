@@ -36,11 +36,11 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
   return [[[self class] alloc] initWithQuad:quad];
 }
 
-+ (instancetype)quadFromRect:(CGRect)rect {
++ (nullable instancetype)quadFromRect:(CGRect)rect {
   return [[self class] quadFromRectWithOrigin:rect.origin andSize:rect.size];
 }
 
-+ (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size {
++ (nullable instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size {
   CGPoint v0 = origin;
   CGPoint v1 = origin + CGPointMake(size.width, 0);
   CGPoint v2 = v1 + CGPointMake(0, size.height);
@@ -50,19 +50,19 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
   return [[self class] safeQuadWithCorners:corners];
 }
 
-+ (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect {
++ (nullable instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect {
   LTParameterAssert(rotatedRect);
   LTQuadCorners corners{{rotatedRect.v0, rotatedRect.v1, rotatedRect.v2, rotatedRect.v3}};
   return [[self class] safeQuadWithCorners:corners];
 }
 
-+ (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad {
++ (nullable instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad {
   LTParameterAssert(quad);
   lt::Quad transformedQuad = quad->_quad.quadFromTransformedRect(rect);
   return [[self class] safeQuadWithCorners:transformedQuad.corners()];
 }
 
-+ (instancetype)safeQuadWithCorners:(LTQuadCorners)corners {
++ (nullable instancetype)safeQuadWithCorners:(LTQuadCorners)corners {
   return [LTQuad validityOfCorners:corners] == LTQuadCornersValidityValid ?
       [[[self class] alloc] initWithCorners:corners] : nil;
 }
@@ -119,28 +119,30 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
   return copy;
 }
 
-- (instancetype)safelyCopyWithQuad:(const lt::Quad &)quad {
+- (nullable instancetype)safelyCopyWithQuad:(const lt::Quad &)quad {
   return [LTQuad validityOfCorners:quad.corners()] == LTQuadCornersValidityValid ?
       [self copyWithCorners:quad.corners()] : nil;
 }
 
-- (instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint {
+- (nullable instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint {
   return [self safelyCopyWithQuad:_quad.rotatedAroundPoint(angle, anchorPoint)];
 }
 
-- (instancetype)copyWithScaling:(CGFloat)scaleFactor {
+- (nullable instancetype)copyWithScaling:(CGFloat)scaleFactor {
   return [self copyWithScaling:scaleFactor aroundPoint:self.center];
 }
 
-- (instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint {
+- (nullable nullable instancetype)copyWithScaling:(CGFloat)scaleFactor
+                                      aroundPoint:(CGPoint)anchorPoint {
   return [self safelyCopyWithQuad:_quad.scaledAround(scaleFactor, anchorPoint)];
 }
 
-- (instancetype)copyWithTranslation:(CGPoint)translation ofCorners:(LTQuadCornerRegion)corners {
+- (nullable instancetype)copyWithTranslation:(CGPoint)translation
+                                   ofCorners:(LTQuadCornerRegion)corners {
   return [self safelyCopyWithQuad:_quad.translatedBy(translation, corners)];
 }
 
-- (instancetype)copyWithTranslation:(CGPoint)translation {
+- (nullable instancetype)copyWithTranslation:(CGPoint)translation {
   return [self copyWithTranslation:translation ofCorners:LTQuadCornerRegionAll];
 }
 
