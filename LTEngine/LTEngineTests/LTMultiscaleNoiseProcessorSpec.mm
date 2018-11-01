@@ -18,15 +18,6 @@ afterEach(^{
   output = nil;
 });
 
-context(@"intialization", ^{
-  it(@"should fail if texture is nil", ^{
-    expect(^{
-      __unused LTMultiscaleNoiseProcessor *noise = [[LTMultiscaleNoiseProcessor alloc]
-                                                    initWithOutput:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
 context(@"processing", ^{
   sit(@"should create noise", ^{
     LTMultiscaleNoiseProcessor *noise = [[LTMultiscaleNoiseProcessor alloc]

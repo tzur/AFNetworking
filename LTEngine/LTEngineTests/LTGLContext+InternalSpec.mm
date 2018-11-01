@@ -105,12 +105,10 @@ it(@"should do nothing when trying to remove non existing resource", ^{
   auto resource1 = [LTGPUTestResource resourceWithName:5];
   auto resource2 = [LTGPUTestResource resourceWithName:6];
   auto resource3 = [LTGPUTestResource resourceWithName:7];
-  LTGPUTestResource * _Nullable nilResource = nil;
 
   [glContext addResource:resource1];
   [glContext addResource:resource2];
   [glContext removeResource:resource3];
-  [glContext removeResource:nilResource];
 
   expect(glContext.resources).to.haveCountOf(2);
   expect(glContext.resources).to.contain(resource1);

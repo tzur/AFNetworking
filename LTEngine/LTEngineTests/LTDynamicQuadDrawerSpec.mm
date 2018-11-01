@@ -59,7 +59,7 @@ context(@"initialization", ^{
     });
 
     it(@"should raise when attempting to initialize with gpu structs with same name", ^{
-      LTGPUStruct *gpuStruct =[[LTGPUStruct alloc] initWithName:@"name" size:1 andFields:@[]];
+      LTGPUStruct *gpuStruct = [[LTGPUStruct alloc] initWithName:@"name" size:1 andFields:@[]];
       LTGPUStruct *gpuStructWithSameName = [[LTGPUStruct alloc] initWithName:gpuStruct.name size:1
                                                                    andFields:@[]];
       NSOrderedSet<LTGPUStruct *> *gpuStructs =
