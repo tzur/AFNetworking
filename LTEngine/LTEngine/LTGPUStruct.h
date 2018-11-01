@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns struct field information for the given struct name. If the struct doesn't exist in the
 /// repository, \c nil is returned.
-- (LTGPUStruct *)structForName:(NSString *)name;
+- (nullable LTGPUStruct *)structForName:(NSString *)name;
 
 @end
 
