@@ -129,30 +129,31 @@ context(@"drawing", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size
                   fromRect:kLargeForegroundRect];
-          expect($([output image])).to.equalMat($(expectedLargeForeground));
         }];
+        expect($([output image])).to.equalMat($(expectedLargeForeground));
       });
 
       it(@"should draw strictly contained foreground source rect correctly", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:CGRectMake(0, 0, 1, 1) inFramebufferWithSize:outputFbo.size
                   fromRect:kSmallForegroundRect];
-          expect($([output image](cv::Rect(0, 0, 1, 1)))).to.equalMat($(expectedSmallForeground));
         }];
+        expect($([output image](cv::Rect(0, 0, 1, 1)))).to.equalMat($(expectedSmallForeground));
       });
 
       it(@"should draw a mix of foreground and background source rect correctly", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size fromRect:kMixedRect];
-          expect($([output image])).to.equalMat($(expectedMixed));
         }];
+        expect($([output image])).to.equalMat($(expectedMixed));
       });
 
       it(@"shoud draw background source rect correctly", ^{
         [outputFbo bindAndDraw:^{
-          [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size fromRect:kBackgroundRect];
-          expect($([output image])).to.equalMat($(expectedBackground));
+          [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size
+                  fromRect:kBackgroundRect];
         }];
+        expect($([output image])).to.equalMat($(expectedBackground));
       });
     });
   });
@@ -216,30 +217,31 @@ context(@"drawing", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size
                   fromRect:kLargeForegroundRect];
-          expect($([output image])).to.equalMat($(expectedLargeForeground));
         }];
+        expect($([output image])).to.equalMat($(expectedLargeForeground));
       });
 
       it(@"should draw strictly contained foreground source rect correctly", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:CGRectMake(0, 0, 2, 2) inFramebufferWithSize:outputFbo.size
                   fromRect:kSmallForegroundRect];
-          expect($([output image](cv::Rect(0, 0, 2, 2)))).to.equalMat($(expectedSmallForeground));
         }];
+        expect($([output image](cv::Rect(0, 0, 2, 2)))).to.equalMat($(expectedSmallForeground));
       });
 
       it(@"should draw a mix of foreground and background source rect correctly", ^{
         [outputFbo bindAndDraw:^{
           [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size fromRect:kMixedRect];
-          expect($([output image])).to.equalMat($(expectedMixed));
         }];
+        expect($([output image])).to.equalMat($(expectedMixed));
       });
 
       it(@"shoud draw background source rect correctly", ^{
         [outputFbo bindAndDraw:^{
-          [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size fromRect:kBackgroundRect];
-          expect($([output image])).to.equalMat($(expectedBackground));
+          [drawer drawRect:kTargetRect inFramebufferWithSize:outputFbo.size
+                  fromRect:kBackgroundRect];
         }];
+        expect($([output image])).to.equalMat($(expectedBackground));
       });
     });
   });
