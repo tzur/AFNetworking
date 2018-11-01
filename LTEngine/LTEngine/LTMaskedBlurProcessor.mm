@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)userMask
-                     blurMask:(LTTexture *)blurMask output:(LTTexture *)output {
+                     blurMask:(nullable LTTexture *)blurMask output:(LTTexture *)output {
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTTiltShiftFsh source] input:input
                                andOutput:output]) {
