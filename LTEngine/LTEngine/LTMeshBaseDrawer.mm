@@ -163,9 +163,9 @@ LTGPUStructMake(LTMeshDrawerVertex,
 
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
                                                              usage:LTArrayBufferUsageStaticDraw];
-  NSData *data = [NSData dataWithBytesNoCopy:&indicesData[0]
-                                      length:indicesData.size() * sizeof(GLuint)
-                                freeWhenDone:NO];
+  NSData *data = indicesData.size() == 0 ? [NSData data] :
+      [NSData dataWithBytesNoCopy:indicesData.data() length:indicesData.size() * sizeof(GLuint)
+                     freeWhenDone:NO];
   [arrayBuffer setData:data];
   return [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeInteger arrayBuffer:arrayBuffer];
 }
