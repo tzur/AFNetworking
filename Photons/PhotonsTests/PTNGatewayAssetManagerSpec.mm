@@ -214,11 +214,7 @@ it(@"should err when fetching image data", ^{
 });
 
 it(@"should err when fetching AV preview", ^{
-  __block PTNAVAssetFetchOptions *options;
-
-  beforeEach(^{
-    options = OCMClassMock([PTNAVAssetFetchOptions class]);
-  });
+  auto options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
 
   RACSignal *values = [manager fetchAVPreviewWithDescriptor:fooDescriptor options:options];
 

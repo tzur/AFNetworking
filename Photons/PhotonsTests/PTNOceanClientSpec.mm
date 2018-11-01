@@ -63,7 +63,7 @@ context(@"asset search", ^{
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
     OCMExpect([oceanClient GET:@"image/search"
-               withParameters:OCMOCK_ANY headers:nil]);
+               withParameters:OCMOCK_ANY headers:nil]).andReturn([RACSignal empty]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
@@ -75,7 +75,7 @@ context(@"asset search", ^{
                                                               source:$(PTNOceanAssetSourcePixabay)
                                                               phrase:@"foo" page:3];
     OCMExpect([oceanClient GET:@"video/search"
-               withParameters:OCMOCK_ANY headers:nil]);
+               withParameters:OCMOCK_ANY headers:nil]).andReturn([RACSignal empty]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
@@ -91,7 +91,8 @@ context(@"asset search", ^{
       @"page": @"3",
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
-    OCMExpect([oceanClient GET:OCMOCK_ANY withParameters:expectedParameters headers:nil]);
+    OCMExpect([oceanClient GET:OCMOCK_ANY withParameters:expectedParameters headers:nil])
+        .andReturn([RACSignal empty]);
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
@@ -148,7 +149,7 @@ context(@"asset descriptor fetch", ^{
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
     OCMExpect([oceanClient GET:@"image/asset/bar"
-               withParameters:expectedParameters headers:nil]);
+               withParameters:expectedParameters headers:nil]).andReturn([RACSignal empty]);
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
@@ -164,7 +165,7 @@ context(@"asset descriptor fetch", ^{
       @"source_id": @"pixabay"
     } mtl_dictionaryByAddingEntriesFromDictionary:PTNFakeBaseRequestParameters()];
     OCMExpect([oceanClient GET:@"video/asset/bar"
-               withParameters:expectedParameters headers:nil]);
+               withParameters:expectedParameters headers:nil]).andReturn([RACSignal empty]);
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
