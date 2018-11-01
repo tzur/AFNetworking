@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options];
+  NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options ?: @{}];
   CGImageDestinationAddImage(destination.get(), image.CGImage,
                              (__bridge CFDictionaryRef)combinedOptions);
 
@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options];
+  NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options ?: @{}];
   CGImageDestinationAddImage(destination.get(), image.CGImage,
                              (__bridge CFDictionaryRef)combinedOptions);
 
@@ -107,8 +107,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Deep merge of two dictionaries. If the same key appears in both and the object is not a
 /// dictionary, object of target will be taken. Assumes that if target contains a dictionary for a
 /// certain key, the source either does not have this key, or it also contains a dictionary for that
-/// key.
-- (NSDictionary *)optionsByMerging:(NSDictionary *)source to:(NSDictionary *)target {
+/// key. \c nil values will be treated as empty containers.
+- (NSDictionary *)optionsByMerging:(nullable NSDictionary *)source to:(NSDictionary *)target {
   NSMutableDictionary *result = [source mutableCopy] ?: [NSMutableDictionary dictionary];
 
   [target enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *) {
