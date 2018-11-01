@@ -17,7 +17,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
                       andRelativePath:(NSString *)relativePath {
   if (self = [super init]) {
     _baseDirectory = baseDirectory;
-    _relativePath = [self absolutePathWithPath:relativePath].stringByStandardizingPath;
+    _relativePath = [self absolutePathWithPath:relativePath];
   }
   return self;
 }
