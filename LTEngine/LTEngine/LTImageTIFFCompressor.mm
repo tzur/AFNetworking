@@ -39,13 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
-  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata];
+  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata ?: @{}];
   return [self.compressor compressImage:image metadata:metadataWithoutTiling error:error];
 }
 
 - (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata toURL:(NSURL *)url
                 error:(NSError * __autoreleasing *)error {
-  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata];
+  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata ?: @{}];
   return [self.compressor compressImage:image metadata:metadataWithoutTiling toURL:url error:error];
 }
 
