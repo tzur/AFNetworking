@@ -22,17 +22,6 @@ context(@"initialization", ^{
     output = nil;
   });
 
-  it(@"should fail initialization on nil input", ^{
-    expect(^{
-      LTTexture *nilInput = nil;
-      LTGuidedFilterProcessor __unused *guidedFilter =
-          [[LTGuidedFilterProcessor alloc] initWithInput:nilInput
-                                                   guide:nilInput
-                                         downscaleFactor:1 kernelSize:3
-                                                  output:output];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should fail initialization on zero scale factor", ^{
     expect(^{
       LTGuidedFilterProcessor __unused *guidedFilter =
@@ -40,17 +29,6 @@ context(@"initialization", ^{
                                                    guide:input
                                          downscaleFactor:0 kernelSize:3
                                                   output:output];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should fail initialization on nil output", ^{
-    expect(^{
-      LTTexture *nilOutput = nil;
-      LTGuidedFilterProcessor __unused *guidedFilter =
-          [[LTGuidedFilterProcessor alloc] initWithInput:input
-                                                   guide:input
-                                         downscaleFactor:4 kernelSize:3
-                                                  output:nilOutput];
     }).to.raise(NSInvalidArgumentException);
   });
 

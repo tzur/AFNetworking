@@ -327,7 +327,7 @@ context(@"execution", ^{
         expect(^{
           [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
                                uniforms:@{@"nonExistingUniform": @0}];
-        }).to.raise(NSInvalidArgumentException);
+        }).to.raise(NSInternalInconsistencyException);
       });
     });
   });
@@ -541,7 +541,7 @@ context(@"execution", ^{
         expect(^{
           [drawer drawWithAttributeData:@[attributeData] indices:triangularIndices
               samplerUniformsToTextures:mapping uniforms:@{@"nonExistingUniform": @0}];
-        }).to.raise(NSInvalidArgumentException);
+        }).to.raise(NSInternalInconsistencyException);
       });
     });
   });

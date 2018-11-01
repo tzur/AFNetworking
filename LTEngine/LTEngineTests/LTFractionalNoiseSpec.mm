@@ -18,20 +18,6 @@ afterEach(^{
   output = nil;
 });
 
-context(@"intialization", ^{
-  it(@"should fail if texture is nil", ^{
-    expect(^{
-      __unused LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:nil];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should initialize on correct input", ^{
-    expect(^{
-      __unused LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
-    }).toNot.raiseAny();
-  });
-});
-
 context(@"processing", ^{
   it(@"should fail on incorrect input", ^{
     expect(^{

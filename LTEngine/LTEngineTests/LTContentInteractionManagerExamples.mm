@@ -51,7 +51,7 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
 
       beforeEach(^{
         recognizer = [[UITapGestureRecognizer alloc] init];
-        initialGestureRecognizers = [NSSet setWithArray:view.gestureRecognizers];
+        initialGestureRecognizers = [NSSet setWithArray:view.gestureRecognizers ?: @[]];
       });
 
       afterEach(^{

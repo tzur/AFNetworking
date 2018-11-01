@@ -341,7 +341,10 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
 }
 
 - (void)setUniform:(NSString *)name withValue:(id)value {
-  LTProgramObject *object = self.uniformToObject[name];
+  LTProgramObject * _Nullable object = self.uniformToObject[name];
+  if (!object) {
+    LTAssert(object, @"Uniform with name %@ does not exist", name);
+  }
   [self verifyUniform:object value:value];
 
   [self bindAndExecute:^{

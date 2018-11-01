@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// final value of blur amount. \c blurMask values should be in \c [0,0.5] where \c 0 indicates
 /// maximal blur. Default is \c nil - no blur applied.
 - (instancetype)initWithInput:(LTTexture *)input mask:(LTTexture *)mask
-                     blurMask:(LTTexture *)blurMask output:(LTTexture *)output
+                     blurMask:(nullable LTTexture *)blurMask output:(LTTexture *)output
     NS_DESIGNATED_INITIALIZER;
 
 #pragma mark -

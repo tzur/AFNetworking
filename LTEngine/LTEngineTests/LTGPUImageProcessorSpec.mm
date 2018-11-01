@@ -3,6 +3,7 @@
 
 #import "LTGPUImageProcessor.h"
 
+#import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTNextIterationPlacement.h"
 #import "LTTexture.h"
@@ -34,8 +35,9 @@ context(@"drawer", ^{
     [[[strategy expect] andReturnValue:@(YES)] hasMoreIterations];
     [[[strategy expect] andReturnValue:@(NO)] hasMoreIterations];
 
+    LTFbo *targetFBO = OCMClassMock([LTFbo class]);
     LTNextIterationPlacement *placement = [[LTNextIterationPlacement alloc]
-                                           initWithSourceTexture:texture andTargetFbo:nil];
+                                           initWithSourceTexture:texture andTargetFbo:targetFBO];
     [[[strategy stub] andReturn:placement] iterationStarted];
 
     [[drawer expect] setSourceTexture:texture];
@@ -134,6 +136,10 @@ context(@"strategy", ^{
   });
 
   it(@"should run the desired number of iterations", ^{
+    LTFbo *targetFBO = OCMClassMock([LTFbo class]);
+    LTNextIterationPlacement *placement = [[LTNextIterationPlacement alloc]
+                                           initWithSourceTexture:texture andTargetFbo:targetFBO];
+
     const NSUInteger kNumberOfIterations = 4;
 
     for (NSUInteger i = 0; i < kNumberOfIterations; ++i) {
@@ -142,7 +148,7 @@ context(@"strategy", ^{
     [[[strategy expect] andReturnValue:@(NO)] hasMoreIterations];
 
     for (NSUInteger i = 0; i < kNumberOfIterations; ++i) {
-      [[strategy expect] iterationStarted];
+      [[[strategy expect] andReturn:placement] iterationStarted];
       [[strategy expect] iterationEnded];
     }
 

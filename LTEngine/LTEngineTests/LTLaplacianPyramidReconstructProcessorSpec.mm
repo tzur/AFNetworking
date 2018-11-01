@@ -44,24 +44,6 @@ context(@"initialization", ^{
                                                                  inPlaceProcessing:YES];
     }).to.raise(NSInvalidArgumentException);
   });
-
-  it(@"should not initialize with nil boostingFunction", ^{
-    cv::Mat4b image(16, 16);
-    LTTexture *output = [LTTexture textureWithImage:image];
-    output.minFilterInterpolation = LTTextureInterpolationNearest;
-    output.magFilterInterpolation = LTTextureInterpolationNearest;
-
-    NSArray<LTTexture *> *inputs = [LTLaplacianPyramidProcessor levelsForInput:output];
-    LTLaplacianLevelBoostBlock nilBlock = nil;
-
-    expect(^{
-      __unused LTLaplacianPyramidReconstructProcessor *processor =
-          [[LTLaplacianPyramidReconstructProcessor alloc] initWithLaplacianPyramid:inputs
-                                                                     outputTexture:output
-                                                                 inPlaceProcessing:YES
-                                                                  boostingFunction:nilBlock];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 static NSString * const kLaplacianPyramidReconstructionExamples =

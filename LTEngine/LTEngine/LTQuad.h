@@ -70,26 +70,26 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// would be invalid (refer to \c LTQuadCornersValidity for more details). You may call this method
 /// using a subclass of \c LTQuad to receive an instance of the desired type, however, only if the
 /// subclass has the same designated initializer as \c LTQuad.
-+ (instancetype)quadFromRect:(CGRect)rect;
++ (nullable instancetype)quadFromRect:(CGRect)rect;
 
 /// Returns a rectangular quad with the given \c origin and the given \c size. Returns \c nil if the
 /// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details). You may
 /// call this method using a subclass of \c LTQuad to receive an instance of the desired type,
 /// however, only if the subclass has the same designated initializer as \c LTQuad.
-+ (instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size;
++ (nullable instancetype)quadFromRectWithOrigin:(CGPoint)origin andSize:(CGSize)size;
 
 /// Returns a rectangular rotated quad defined by the given \c rotatedRect. Returns \c nil if the
 /// resulting quad would be invalid (refer to \c LTQuadCornersValidity for more details). You may
 /// call this method using a subclass of \c LTQuad to receive an instance of the desired type,
 /// however, only if the subclass has the same designated initializer as \c LTQuad.
-+ (instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
++ (nullable instancetype)quadFromRotatedRect:(LTRotatedRect *)rotatedRect;
 
 /// Returns a quad whose corners correspond to those of the given \c rect after transforming them
 /// using the \c transform of the given \c quad. The given \c quad must not be \c nil. Returns
 /// \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for more
 /// details). You may call this method using a subclass of \c LTQuad to receive an instance of the
 /// desired type, however, only if the subclass has the same designated initializer as \c LTQuad.
-+ (instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
++ (nullable instancetype)quadFromRect:(CGRect)rect transformedByTransformOfQuad:(LTQuad *)quad;
 
 #pragma mark -
 #pragma mark Initialization
@@ -124,26 +124,27 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// by the given \c angle, which is to be provided in radians, around the given \c anchorPoint.
 /// Returns \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for
 /// more details).
-- (instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint;
+- (nullable instancetype)copyWithRotation:(CGFloat)angle aroundPoint:(CGPoint)anchorPoint;
 
 /// Returns a copy of this instance with identical properties with the exception that the corners of
 /// the returned instance correspond to the corners of this instance scaled by the given
 /// \c scaleFactor around the center of this instance. Returns \c nil if the resulting quad would
 /// be invalid (refer to \c LTQuadCornersValidity for more details).
-- (instancetype)copyWithScaling:(CGFloat)scaleFactor;
+- (nullable instancetype)copyWithScaling:(CGFloat)scaleFactor;
 
 /// Returns a copy of this instance with identical properties with the exception that the corners of
 /// the returned instance correspond to the corners of this instance scaled by the given
 /// \c scaleFactor around the given \c anchorPoint. Returns \c nil if the resulting quad would be
 /// invalid (refer to \c LTQuadCornersValidity for more details).
-- (instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint;
+- (nullable instancetype)copyWithScaling:(CGFloat)scaleFactor aroundPoint:(CGPoint)anchorPoint;
 
 /// Returns a copy of this instance with identical properties with the exception that the \c corners
 /// of the returned instance correspond to the \c corners of this instance translated by the given
 /// \c translation. The quad corners not among the given \c corners are copied without translation.
 /// Returns \c nil if the resulting quad would be invalid (refer to \c LTQuadCornersValidity for
 /// more details).
-- (instancetype)copyWithTranslation:(CGPoint)translation ofCorners:(LTQuadCornerRegion)corners;
+- (nullable instancetype)copyWithTranslation:(CGPoint)translation
+                                   ofCorners:(LTQuadCornerRegion)corners;
 
 /// Returns a copy of this instance with identical properties with the exception that the corners of
 /// the returned instance correspond to the corners of this instance translated by the given
@@ -152,7 +153,7 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// @code
 /// [quad copyWithTranslation:translation ofCorners:LTQuadCornerRegionAll]
 /// @endcode
-- (instancetype)copyWithTranslation:(CGPoint)translation;
+- (nullable instancetype)copyWithTranslation:(CGPoint)translation;
 
 #pragma mark -
 #pragma mark Corner validity

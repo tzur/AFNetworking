@@ -50,17 +50,6 @@ context(@"initialization", ^{
                                                         rangeSigma:0.1];
     }).to.raise(NSInvalidArgumentException);
   });
-
-  it(@"should not initialize with null rangeFunction", ^{
-    NSArray<LTTexture *> *levels = [LTBilateralFilterPyramidProcessor levelsForInput:base];
-    LTBilateralPyramidRangeSigmaBlock nilRangeFunction = nil;
-
-    expect(^{
-      LTBilateralFilterPyramidProcessor __unused *processor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels guides:nil
-                                                     rangeFunction:nilRangeFunction];
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 static NSString * const kPyramidGenerationExamples =

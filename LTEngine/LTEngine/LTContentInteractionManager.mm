@@ -72,12 +72,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupGestureRecognizers {
-  [self enableRecognizer:self.defaultGestureRecognizers.tapGestureRecognizer
-                 forMode:LTInteractionModeTap];
-  [self enableRecognizer:self.defaultGestureRecognizers.panGestureRecognizer
-                 forMode:LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches];
-  [self enableRecognizer:self.defaultGestureRecognizers.pinchGestureRecognizer
-                 forMode:LTInteractionModePinch];
+  if (self.defaultGestureRecognizers.tapGestureRecognizer) {
+    [self enableRecognizer:self.defaultGestureRecognizers.tapGestureRecognizer
+                   forMode:LTInteractionModeTap];
+  }
+  if (self.defaultGestureRecognizers.panGestureRecognizer) {
+    [self enableRecognizer:self.defaultGestureRecognizers.panGestureRecognizer
+                   forMode:LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches];
+  }
+  if (self.defaultGestureRecognizers.pinchGestureRecognizer) {
+    [self enableRecognizer:self.defaultGestureRecognizers.pinchGestureRecognizer
+                   forMode:LTInteractionModePinch];
+  }
 
   if (!self.defaultGestureRecognizers.panGestureRecognizer ||
       !(self.interactionMode & (LTInteractionModePanOneTouch | LTInteractionModePanTwoTouches))) {

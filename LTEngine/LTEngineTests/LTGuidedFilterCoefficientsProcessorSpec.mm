@@ -46,42 +46,6 @@ context(@"initialization", ^{
     shiftCoefficients = nil;
   });
 
-  it(@"should fail initialization on nil input", ^{
-    LTTexture *nilInput = nil;
-    expect(^{
-      LTGuidedFilterCoefficientsProcessor __unused *guidedFilterCoefficientsProcessor =
-          [[LTGuidedFilterCoefficientsProcessor alloc] initWithInput:nilInput
-                                                               guide:nilInput
-                                                   scaleCoefficients:@[scaleCoefficients]
-                                                   shiftCoefficients:@[shiftCoefficients]
-                                                         kernelSizes:{3}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should fail initialization on nil scaleCoefficients", ^{
-    NSArray *nilScaleCoefficients = nil;
-    expect(^{
-      LTGuidedFilterCoefficientsProcessor __unused *guidedFilterCoefficientsProcessor =
-          [[LTGuidedFilterCoefficientsProcessor alloc] initWithInput:input
-                                                               guide:input
-                                                   scaleCoefficients:nilScaleCoefficients
-                                                   shiftCoefficients:@[shiftCoefficients]
-                                                         kernelSizes:{3}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should fail initialization on nil shiftCoefficients", ^{
-    NSArray *nilShiftCoefficients = nil;
-    expect(^{
-      LTGuidedFilterCoefficientsProcessor __unused *guidedFilterCoefficientsProcessor =
-          [[LTGuidedFilterCoefficientsProcessor alloc] initWithInput:input
-                                                               guide:input
-                                                   scaleCoefficients:@[scaleCoefficients]
-                                                   shiftCoefficients:nilShiftCoefficients
-                                                         kernelSizes:{3}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should fail initialization on even kernelSize", ^{
     expect(^{
       LTGuidedFilterCoefficientsProcessor __unused *guidedFilterCoefficientsProcessor =

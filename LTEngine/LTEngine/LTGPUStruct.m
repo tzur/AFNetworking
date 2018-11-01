@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.structs[gpuStruct.name] = gpuStruct;
 }
 
-- (LTGPUStruct *)structForName:(NSString *)name {
+- (nullable LTGPUStruct *)structForName:(NSString *)name {
   return self.structs[name];
 }
 

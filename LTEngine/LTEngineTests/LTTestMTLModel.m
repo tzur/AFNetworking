@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
     if (!self.name || !self.value) {
       return nil;

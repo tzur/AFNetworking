@@ -254,6 +254,8 @@ void LTPremultiplyMat(const cv::Mat &input, cv::Mat *output) {
 
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
   NSString *path = [NSBundle lt_pathForResource:name nearClass:classInBundle];
+  LTParameterAssert(path, @"Image with name %@ in bundle of class %@ does not exist", name,
+                    classInBundle);
   UIImage *image = [UIImage imageWithContentsOfFile:path];
   LTParameterAssert(image, @"Given image name '%@' cannot be loaded", name);
 
