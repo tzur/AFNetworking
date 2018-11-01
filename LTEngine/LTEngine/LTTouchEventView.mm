@@ -335,7 +335,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   NSArray<UITouch *> *sortedPredictedTouches =
-      [self sortedTouches:[event predictedTouchesForTouch:mainTouch]];
+      [self sortedTouches:[event predictedTouchesForTouch:mainTouch] ?: @[]];
 
   return [sortedPredictedTouches lt_map:^LTTouchEvent *(UITouch *touch) {
     return [LTTouchEvent touchEventWithPropertiesOfTouch:touch sequenceID:sequenceID];
