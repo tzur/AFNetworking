@@ -507,7 +507,7 @@
 		6542A5251D46364400450B46 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = "../../../../Library/Developer/Xcode/DerivedData/Camera-bezwrftftsoxergwngycwphyuedj/Build/Products/Debug-iphonesimulator/libOCMock.a"; sourceTree = "<group>"; };
 		6542A5261D46364400450B46 /* libSpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSpecta.a; path = "../../../../Library/Developer/Xcode/DerivedData/Camera-bezwrftftsoxergwngycwphyuedj/Build/Products/Debug-iphonesimulator/libSpecta.a"; sourceTree = "<group>"; };
 		6542A52B1D46369F00450B46 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		6542A5461D4636AE00450B46 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		6542A5461D4636AE00450B46 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsControllerSpec.mm; sourceTree = "<group>"; };
@@ -1789,7 +1789,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/EXpecta",
@@ -1815,7 +1815,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/LTKit",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/EXpecta",

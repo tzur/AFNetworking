@@ -467,7 +467,7 @@
 		195B382E1FFE215100F8DAB4 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		195B383D1FFE216700F8DAB4 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		195B384C1FFE218D00F8DAB4 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		195B38671FFE219A00F8DAB4 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		195B38671FFE219A00F8DAB4 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		195B387C1FFE21AB00F8DAB4 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		195B38911FFE21BE00F8DAB4 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		195B389D1FFE21C500F8DAB4 /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
@@ -1514,7 +1514,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../LTEngine",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
@@ -1539,7 +1539,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../LTEngine",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/Expecta",
 				);

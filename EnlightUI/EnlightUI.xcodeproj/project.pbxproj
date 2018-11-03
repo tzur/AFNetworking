@@ -594,7 +594,7 @@
 		19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanCellSpec.mm; sourceTree = "<group>"; };
 		19F49475216F4F3A0011CFF6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		19F49479216F5D6F0011CFF6 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		19F49494216F5D7F0011CFF6 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		19F494A9216F5DBD0011CFF6 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1780,7 +1780,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = EnlightUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUITests;
@@ -1803,7 +1803,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = EnlightUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.EnlightUITests;

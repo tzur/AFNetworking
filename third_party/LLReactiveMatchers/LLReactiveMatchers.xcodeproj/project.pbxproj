@@ -306,7 +306,7 @@
 		84FBFD5A1C0DDEB600DD2C25 /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
 		84FBFD5D1C0DE1E800DD2C25 /* EXPMatchers+deliverValuesOnThreadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "EXPMatchers+deliverValuesOnThreadTests.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8B6869031F3B2DC700F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
-		8B68691B1F3B2DD700F0EF4C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8B68691B1F3B2DD700F0EF4C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B6869411F3B2E3F00F0EF4C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8B6869431F3B2F1900F0EF4C /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		8B686A371F3B321B00F0EF4C /* EXPExpect+Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+Test.h"; sourceTree = "<group>"; };
@@ -940,7 +940,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Expecta",
-					"$(SRCROOT)/../Specta/Specta",
+					"$(SRCROOT)/../Specta",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -996,7 +996,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Expecta",
-					"$(SRCROOT)/../Specta/Specta",
+					"$(SRCROOT)/../Specta",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";

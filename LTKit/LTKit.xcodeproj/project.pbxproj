@@ -639,7 +639,7 @@
 		8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+PropertyAccessorsSpec.mm"; sourceTree = "<group>"; };
 		8B451F39202C7F7E0022A997 /* LTAppIntegrityInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTAppIntegrityInternal.h; sourceTree = "<group>"; };
 		8B4AD2761C20375E00E3CBD3 /* LTHashExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTHashExtensions.h; sourceTree = "<group>"; };
-		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusLoggerTarget.h; sourceTree = "<group>"; };
@@ -1988,7 +1988,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2017,7 +2017,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -2097,7 +2097,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
@@ -2118,7 +2118,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = "LTKitTests/LTKitTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
