@@ -12,9 +12,7 @@ namespace pnk_inpainting {
 ///
 /// @param input Input high-resolution image.
 ///
-/// @param mask Mask of the hole to be filled. Must have the same resolution as \c input. The hole
-/// cannot be too small: after resizing \c mask to the size of \c lowFrequency the bounding box of
-/// all non-zero (mask) pixels must have both height and width of at least 5.
+/// @param mask Mask of the hole to be filled. Must have the same resolution as \c input.
 ///
 /// @param lowFrequency low resolution copy of \c input with hole already filled (normally by a CNN
 /// pass).
