@@ -290,6 +290,8 @@
 		E4C11CB520318041002CC63E /* person.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB120318040002CC63E /* person.nnmodel */; };
 		E4C11CB620318041002CC63E /* sketch.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB220318040002CC63E /* sketch.nnmodel */; };
 		E4C11CB720318041002CC63E /* sky.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB320318041002CC63E /* sky.nnmodel */; };
+		E4C1E8362181E0B900B169C0 /* PNKInpaintingRegionOfInterest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4C1E8342181E0B900B169C0 /* PNKInpaintingRegionOfInterest.mm */; };
+		E4C1E8392182012100B169C0 /* PNKInpaintingRegionOfInterestSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4C1E8382182012100B169C0 /* PNKInpaintingRegionOfInterestSpec.mm */; };
 		E4C2FCFB2021E51F002EF963 /* person_grayscale_processor_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = E4C2FCD92021E51F002EF963 /* person_grayscale_processor_mask.png */; };
 		E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */; };
 		E4D1BD0220CEA73100377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D1BD0120CEA73100377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm */; };
@@ -1039,6 +1041,9 @@
 		E4C11CB120318040002CC63E /* person.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = person.nnmodel; path = Models/segmentation/person.nnmodel; sourceTree = SOURCE_ROOT; };
 		E4C11CB220318040002CC63E /* sketch.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sketch.nnmodel; path = Models/style_transfer/sketch.nnmodel; sourceTree = SOURCE_ROOT; };
 		E4C11CB320318041002CC63E /* sky.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sky.nnmodel; path = Models/segmentation/sky.nnmodel; sourceTree = SOURCE_ROOT; };
+		E4C1E8342181E0B900B169C0 /* PNKInpaintingRegionOfInterest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInpaintingRegionOfInterest.mm; sourceTree = "<group>"; };
+		E4C1E8352181E0B900B169C0 /* PNKInpaintingRegionOfInterest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKInpaintingRegionOfInterest.h; sourceTree = "<group>"; };
+		E4C1E8382182012100B169C0 /* PNKInpaintingRegionOfInterestSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInpaintingRegionOfInterestSpec.mm; sourceTree = "<group>"; };
 		E4C2FCD92021E51F002EF963 /* person_grayscale_processor_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person_grayscale_processor_mask.png; path = Resources/person_grayscale_processor_mask.png; sourceTree = "<group>"; };
 		E4CF590420B3F345009F63D6 /* PNKImageMotionLayerUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionLayerUtils.mm; sourceTree = "<group>"; };
 		E4CF592620B3F345009F63D6 /* PNKImageMotionLayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayerUtils.h; sourceTree = "<group>"; };
@@ -1863,6 +1868,7 @@
 			isa = PBXGroup;
 			children = (
 				E4404324213C1D940092539A /* Post-Processing */,
+				E4C1E8112181E06100B169C0 /* Pre-Processing */,
 			);
 			name = Inpainting;
 			sourceTree = "<group>";
@@ -1884,6 +1890,7 @@
 			isa = PBXGroup;
 			children = (
 				E4404329213C1DC00092539A /* Post-Processing */,
+				E4C1E837218200F300B169C0 /* Pre-Processing */,
 			);
 			name = Inpainting;
 			sourceTree = "<group>";
@@ -1999,6 +2006,23 @@
 				E4BED1461FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm */,
 			);
 			name = "Neural Networks";
+			sourceTree = "<group>";
+		};
+		E4C1E8112181E06100B169C0 /* Pre-Processing */ = {
+			isa = PBXGroup;
+			children = (
+				E4C1E8352181E0B900B169C0 /* PNKInpaintingRegionOfInterest.h */,
+				E4C1E8342181E0B900B169C0 /* PNKInpaintingRegionOfInterest.mm */,
+			);
+			name = "Pre-Processing";
+			sourceTree = "<group>";
+		};
+		E4C1E837218200F300B169C0 /* Pre-Processing */ = {
+			isa = PBXGroup;
+			children = (
+				E4C1E8382182012100B169C0 /* PNKInpaintingRegionOfInterestSpec.mm */,
+			);
+			name = "Pre-Processing";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2591,6 +2615,7 @@
 				6418BFBC2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm in Sources */,
 				283A4B8F1FE9058D009608E6 /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
 				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
+				E4C1E8392182012100B169C0 /* PNKInpaintingRegionOfInterestSpec.mm in Sources */,
 				06C6BC321F7003E6005F57D4 /* PNKConvolutionLayerSpec.mm in Sources */,
 				2856896D200657110053FDD8 /* PNKColorTransferProcessorSpec.mm in Sources */,
 				E42D67A71FD84CF60020F4D8 /* PNKConvolutionTestUtils.mm in Sources */,
@@ -2657,6 +2682,7 @@
 				06D36EE91F6ACA6D00090584 /* Model.proto in Sources */,
 				E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */,
 				06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */,
+				E4C1E8362181E0B900B169C0 /* PNKInpaintingRegionOfInterest.mm in Sources */,
 				E4CF592720B3F345009F63D6 /* PNKImageMotionLayerUtils.mm in Sources */,
 				E4543CAF20C672F3004E2663 /* PNKIndexTranslator.mm in Sources */,
 				E461C81D20173DB700261FCD /* PNKCrop.mm in Sources */,
