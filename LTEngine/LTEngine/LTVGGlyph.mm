@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithPath:(CGPathRef)path glyphIndex:(CGGlyph)glyphIndex font:(UIFont *)font
-              baselineOrigin:(CGPoint)baselineOrigin {
+- (instancetype)initWithPath:(nullable CGPathRef)path glyphIndex:(CGGlyph)glyphIndex
+                        font:(UIFont *)font baselineOrigin:(CGPoint)baselineOrigin {
   LTParameterAssert(font);
 
   if (self = [super init]) {
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (CGPathRef)path {
+- (nullable CGPathRef)path {
   return _pathPointer.get();
 }
 

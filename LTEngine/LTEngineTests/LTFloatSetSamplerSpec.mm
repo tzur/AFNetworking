@@ -113,10 +113,9 @@ context(@"sampling", ^{
   });
 
   it(@"should consecutively sample a given parameterized object, using closed interval", ^{
-    CGFloats values = {1};
-    floatSet.values = values;
+    floatSet.values = {1};
+    parameterizedObject.expectedParametricValues = floatSet.values;
 
-    parameterizedObject.expectedParametricValues = values;
     cv::Mat1g matrix(1, 1, 7);
     LTParameterizationKeyToValues *mapping =
         [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
@@ -128,23 +127,29 @@ context(@"sampling", ^{
     id<LTSampleValues> sampleValues =
         [sampler nextSamplesFromParameterizedObject:parameterizedObject
                               constrainedToInterval:firstInterval];
-    expect($(sampleValues.sampledParametricValues)).to.equal($(values));
+    expect($(sampleValues.sampledParametricValues)).to.equal($(floatSet.values));
     expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
 
-    values = {};
-    floatSet.values = values;
+    floatSet.values = {0};
+    parameterizedObject.expectedParametricValues = floatSet.values;
 
     lt::Interval<CGFloat> secondInterval({1, 2}, lt::Interval<CGFloat>::EndpointInclusion::Open,
                                          lt::Interval<CGFloat>::EndpointInclusion::Open);
 
     sampleValues = [sampler nextSamplesFromParameterizedObject:parameterizedObject
                                          constrainedToInterval:secondInterval];
-    expect(sampleValues.sampledParametricValues.size()).to.equal(0);
-    expect(sampleValues.mappingOfSampledValues).to.beNil();
+    expect($(sampleValues.sampledParametricValues)).to.equal($(floatSet.values));
+    expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
   });
 
   it(@"should consecutively sample a given parameterized object, using open interval", ^{
-    floatSet.values = {};
+    floatSet.values = {0};
+    parameterizedObject.expectedParametricValues = floatSet.values;
+
+    cv::Mat1g matrix(1, 1, 1);
+    LTParameterizationKeyToValues *mapping =
+        [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
+    parameterizedObject.returnedMapping = mapping;
 
     lt::Interval<CGFloat> firstInterval({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                         lt::Interval<CGFloat>::EndpointInclusion::Open);
@@ -152,32 +157,34 @@ context(@"sampling", ^{
     id<LTSampleValues> sampleValues =
         [sampler nextSamplesFromParameterizedObject:parameterizedObject
                               constrainedToInterval:firstInterval];
-    expect(sampleValues.sampledParametricValues.size()).to.equal(0);
-    expect(sampleValues.mappingOfSampledValues).to.beNil();
+    expect($(sampleValues.sampledParametricValues)).to.equal($(floatSet.values));
+    expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
 
-    CGFloats values = {1};
-    floatSet.values = values;
-
-    parameterizedObject.expectedParametricValues = values;
-    cv::Mat1g matrix(1, 1, 1);
-    LTParameterizationKeyToValues *mapping =
-    [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
-    parameterizedObject.returnedMapping = mapping;
+    floatSet.values = {1};
+    parameterizedObject.expectedParametricValues = floatSet.values;
 
     lt::Interval<CGFloat> secondInterval({1, 2}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                          lt::Interval<CGFloat>::EndpointInclusion::Open);
 
     sampleValues = [sampler nextSamplesFromParameterizedObject:parameterizedObject
                                          constrainedToInterval:secondInterval];
-    expect($(sampleValues.sampledParametricValues)).to.equal($(values));
+    expect($(sampleValues.sampledParametricValues)).to.equal($(floatSet.values));
     expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
   });
 });
 
 context(@"model", ^{
-  it(@"should provide a correct model after a single sample of a given parameterized object", ^{
-    floatSet.values = {};
+  beforeEach(^{
+    floatSet.values = {0};
+    parameterizedObject.expectedParametricValues = floatSet.values;
 
+    cv::Mat1g matrix(1, 1, 1);
+    LTParameterizationKeyToValues *mapping =
+        [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
+    parameterizedObject.returnedMapping = mapping;
+  });
+
+  it(@"should provide a correct model after a single sample of a given parameterized object", ^{
     lt::Interval<CGFloat> sampleInterval({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                          lt::Interval<CGFloat>::EndpointInclusion::Open);
 
@@ -193,8 +200,6 @@ context(@"model", ^{
   });
 
   it(@"should provide correct model after consecutive samples of a given parameterized object", ^{
-    floatSet.values = {};
-
     lt::Interval<CGFloat> firstInterval({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                         lt::Interval<CGFloat>::EndpointInclusion::Open);
     lt::Interval<CGFloat> secondInterval({1, 2}, lt::Interval<CGFloat>::EndpointInclusion::Closed,

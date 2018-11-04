@@ -13,15 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
-#pragma push_macro("equal")
-#undef equal
-  if (std::equal(values.begin(), values.end(), _expectedParametricValues.begin(),
-                 _expectedParametricValues.end())) {
-    return self.returnedMapping;
-  }
-  return nil;
-#pragma pop_macro("equal")
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats __unused &)values {
+  return self.returnedMapping;
 }
 
 - (CGFloat)floatForParametricValue:(__unused CGFloat)value key:(NSString __unused *)key {
