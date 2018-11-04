@@ -8,16 +8,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const kBZREventReceiptValidationStatusKey = @"BZREventReceiptValidationStatus";
-NSString * const kBZREventReceiptValidationRequestIdKey = @"BZREventReceiptValidationRequestId";
-NSString * const kBZREventProductIdentifierKey = @"BZREventProductIdentifier";
-NSString * const kBZREventPromotedIAPAbortedKey = @"BZREventPromotedIAPAborted";
-NSString * const kBZREventAppStoreLocaleKey = @"BZREventAppStoreLocale";
+NSString * const kBZREventAppStoreLocale = @"BZREventAppStoreLocale";
+NSString * const kBZREventApplicationBundleID = @"BZREventApplicationBundleID";
+NSString * const kBZREventCachingDate = @"BZREventCachingDate";
+NSString * const kBZREventFirstErrorDate = @"BZREventFirstErrorDate";
+NSString * const kBZREventReceiptValidationStatus = @"BZREventReceiptValidationStatus";
+NSString * const kBZREventReceiptValidationRequestId = @"BZREventReceiptValidationRequestId";
 NSString * const kBZREventProductIdentifier = @"BZREventProductIdentifier";
+NSString * const kBZREventPromotedIAPAborted = @"BZREventPromotedIAPAborted";
+NSString * const kBZREventPurchaseDate = @"BZREventPurchaseDate";
 NSString * const kBZREventTransactionQuantity = @"BZREventTransactionQuantity";
 NSString * const kBZREventTransactionDate = @"BZREventTransactionDate";
 NSString * const kBZREventTransactionIdentifier = @"BZREventTransactionIdentifier";
 NSString * const kBZREventTransactionState = @"BZREventTransactionState";
+NSString * const kBZREventValidatricksRequestID = @"BZREventValidatricksRequestID";
 NSString * const kBZREventOriginalTransactionIdentifier = @"BZREventOriginalTransactionIdentifier";
 NSString * const kBZREventTransactionRemoved = @"BZREventTransactionRemoved";
 
@@ -28,8 +32,8 @@ NSString * const kBZREventTransactionRemoved = @"BZREventTransactionRemoved";
     requestId:(nullable NSString *)requestId {
   return [[BZREvent alloc] initWithType:$(BZREventTypeReceiptValidationStatusReceived)
       eventInfo:@{
-        kBZREventReceiptValidationRequestIdKey: requestId,
-        kBZREventReceiptValidationStatusKey: receiptValidationStatus
+        kBZREventReceiptValidationRequestId: requestId,
+        kBZREventReceiptValidationStatus: receiptValidationStatus
       }];
 }
 
@@ -49,11 +53,11 @@ return [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
 }
 
 - (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
-  return self.eventInfo[kBZREventReceiptValidationStatusKey];
+  return self.eventInfo[kBZREventReceiptValidationStatus];
 }
 
 - (nullable NSString *)receiptValidationRequestId {
-  return self.eventInfo[kBZREventReceiptValidationRequestIdKey];
+  return self.eventInfo[kBZREventReceiptValidationRequestId];
 }
 
 @end
