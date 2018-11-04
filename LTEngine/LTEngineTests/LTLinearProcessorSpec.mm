@@ -67,7 +67,7 @@ context(@"processing", ^{
       processor.constant = kConstant;
       [processor process];
 
-      expect($(output.image)).to.equalMat($(expectedResult));
+      expect($(output.image)).to.beCloseToMatPSNR($(expectedResult), 49);
     });
 
     it(@"should multiply pixels of input texture with a matrix", ^{
@@ -119,7 +119,7 @@ context(@"processing", ^{
       processor.constant = kConstant;
       [processor process];
 
-      expect($(input.image)).to.equalMat($(expectedResult));
+      expect($(input.image)).to.beCloseToMatPSNR($(expectedResult), 49);
     });
 
     it(@"should multiply pixels of input texture with a matrix", ^{

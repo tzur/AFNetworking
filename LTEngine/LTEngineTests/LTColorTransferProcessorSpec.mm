@@ -115,7 +115,7 @@ context(@"creating lookup table mapping input palette to reference palette", ^{
     testProcessor.iterations = processor.iterations;
     auto lut = [testProcessor lutForInputTexture:input referenceTexture:reference progress:nil];
     auto output = LTApplyLUT(input, lut);
-    expect($(output.image)).to.equalMat($(expected));
+    expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should compute correct lut for given matrices", ^{

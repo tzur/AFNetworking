@@ -31,7 +31,7 @@ context(@"properties", ^{
       cv::Mat expected = LTLoadMat([self class],
                                    [NSString stringWithFormat:@"SmoothPyramidUpsampleGrid%lu.png",
                                     (unsigned long)6 - i]);
-      expect($([(LTTexture *)outputs[i] image])).to.equalMat($(expected));
+      expect($([(LTTexture *)outputs[i] image])).to.beCloseToMatPSNR($(expected), 50);
     }
   });
 
@@ -49,7 +49,7 @@ context(@"properties", ^{
           LTLoadMat([self class],
                     [NSString stringWithFormat:@"SmoothPyramidUpsampleUpdateGrid%lu.png",
                      (unsigned long)6 - i]);
-      expect($([(LTTexture *)outputs[i] image])).to.equalMat($(expected));
+      expect($([(LTTexture *)outputs[i] image])).to.beCloseToMatPSNR($(expected), 50);
     }
   });
 
@@ -61,7 +61,7 @@ context(@"properties", ^{
 
     cv::Mat expected =
         LTLoadMat([self class], [NSString stringWithFormat:@"SmoothPyramidUpsampleToOddGrid.png"]);
-    expect($([(LTTexture *)[outputs firstObject] image])).to.equalMat($(expected));
+    expect($([(LTTexture *)[outputs firstObject] image])).to.beCloseToMatPSNR($(expected), 50);
   });
 });
 

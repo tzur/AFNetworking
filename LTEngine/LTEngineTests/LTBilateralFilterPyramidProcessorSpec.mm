@@ -113,7 +113,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
       input = nil;
     });
 
-    it(@"Should create correct bilateral pyramid when downsampling", ^{
+    it(@"should create correct bilateral pyramid when downsampling", ^{
       NSArray<LTTexture *> *outputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
                                                                               upToLevel:3];
       LTBilateralFilterPyramidProcessor *pyramidProcessor =
@@ -123,10 +123,10 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
 
       NSString *fileName = data[kPyramidCreationExamplesDownsampleResultKey];
       cv::Mat expected = LTLoadMat([self class], fileName);
-      expect($([outputs.lastObject image])).to.equalMat($(expected));
+      expect($([outputs.lastObject image])).to.beCloseToMatPSNR($(expected), 50);
     });
 
-    it(@"Should upsample with rising range sigma between levels of the pyramid correctly", ^{
+    it(@"should upsample with rising range sigma between levels of the pyramid correctly", ^{
       NSArray<LTTexture *> *outputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
                                                                               upToLevel:3];
       LTBilateralFilterPyramidProcessor *downPyramidProcessor =
@@ -148,10 +148,10 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
 
       NSString *fileName = data[kPyramidCreationExamplesUpsampleResultKey];
       cv::Mat expected = LTLoadMat([self class], fileName);
-      expect($([finalOutput image])).to.equalMat($(expected));
+      expect($([finalOutput image])).to.beCloseToMatPSNR($(expected), 50);
     });
 
-    it(@"Should upsample correctly with guides the same size as the outputs", ^{
+    it(@"should upsample correctly with guides the same size as the outputs", ^{
       NSArray<LTTexture *> *downOutputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
                                                                                   upToLevel:3];
       LTBilateralFilterPyramidProcessor *downPyramidProcessor =
@@ -179,7 +179,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
 
       NSString *fileName = data[kPyramidCreationExamplesUpsampleGuidedResultKey];
       cv::Mat expected = LTLoadMat([self class], fileName);
-      expect($([upOutputs.lastObject image])).to.equalMat($(expected));
+      expect($([upOutputs.lastObject image])).to.beCloseToMatPSNR($(expected), 50);
     });
   });
 });

@@ -343,7 +343,7 @@ context(@"processing", ^{
     [guidedFilterCoefficientsProcessor process];
     auto combinedOutput = LTGuidedFilterCombine(input, scaleCoefficients, shiftCoefficients);
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna128_R9S1.png");
-    expect($([combinedOutput image])).to.beCloseToMatPSNR($(expected), 100);
+    expect($([combinedOutput image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should process correctly with downscaled coefficients", ^{
