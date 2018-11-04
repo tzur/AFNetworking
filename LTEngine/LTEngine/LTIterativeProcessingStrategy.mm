@@ -39,9 +39,6 @@
 /// Target texture to write processed data to.
 @property (strong, nonatomic) LTTexture *targetTexture;
 
-/// Previous texture that was set as a target.
-@property (strong, nonatomic) LTTexture *previousTargetTexture;
-
 /// Next index of output texture to generate.
 @property (nonatomic) NSUInteger nextOutputIndex;
 
@@ -122,19 +119,11 @@
 }
 
 - (void)setSourceTextureAndTargetFboForIteration:(NSUInteger)iteration {
-  self.previousTargetTexture = self.targetTexture ?: self.input;
+  auto previousTargetTexture = self.targetTexture ?: self.input;
 
-  // Toggle between source -> intermediate, intermediate -> output and output -> intermediate.
-  if (iteration == 0) {
-    if (self.totalNumberOfIterations > 1 && ![self shouldProduceOutputs]) {
-      self.targetFbo = self.intermediateFbo;
-      self.targetTexture = self.intermediateTexture;
-    } else {
-      // For a single iteration, no intermediate texture or framebuffer are needed.
-      self.targetFbo = self.outputFbo;
-      self.targetTexture = self.outputTexture;
-    }
-  } else if (iteration % 2 || [self shouldProduceOutputs]) {
+  /// If the number of remaining iterations to generate the next output is odd, set targetFbo to
+  /// outputFbo, otherwise set targetFbo to intermedaiteFbo. Same holds for Texture.
+  if ((self.iterationsForNextOutput - iteration) % 2) {
     self.targetFbo = self.outputFbo;
     self.targetTexture = self.outputTexture;
   } else {
@@ -142,7 +131,7 @@
     self.targetTexture = self.intermediateTexture;
   }
 
-  self.sourceTexture = self.previousTargetTexture;
+  self.sourceTexture = previousTargetTexture;
 }
 
 - (BOOL)shouldProduceOutputs {
@@ -150,11 +139,6 @@
 }
 
 - (void)produceOutputs {
-  // If the intermediate buffer was the current target, it needs to be cloned to the output.
-  // Otherwise, the output already contains the desired result.
-  if (self.targetFbo == self.intermediateFbo) {
-    [self.intermediateTexture cloneTo:self.outputTexture];
-  }
   ++self.nextOutputIndex;
 
   // Clone to all output textures that has the same iteration count.
@@ -183,7 +167,6 @@
   self.sourceTexture = nil;
   self.targetTexture = nil;
   self.targetFbo = nil;
-  self.previousTargetTexture = nil;
 }
 
 #pragma mark -
