@@ -512,7 +512,7 @@
 		848E00221C591F58001D8368 /* ShopixTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShopixTests-Prefix.pch"; sourceTree = "<group>"; };
 		848E00251C5920C1001D8368 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		848E00371C5920CB001D8368 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		848E0A421C5921AD001D8368 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		848E0A421C5921AD001D8368 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		848EFFAE1C591B91001D8368 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		848EFFB01C591B91001D8368 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		848EFFB11C591B91001D8368 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -2090,7 +2090,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = ShopixTests/Info.plist;
@@ -2113,7 +2113,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = ShopixTests/Info.plist;

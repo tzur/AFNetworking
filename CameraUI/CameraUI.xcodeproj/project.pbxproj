@@ -542,7 +542,7 @@
 		83B7290E1CD8D2900090C0BF /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		83B7293C1CD8D5610090C0BF /* CameraUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraUI-Prefix.pch"; sourceTree = "<group>"; };
 		83B7293D1CD8D5780090C0BF /* CameraUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CameraUITests-Prefix.pch"; sourceTree = "<group>"; };
-		83B729701CD8D6890090C0BF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		83B729701CD8D6890090C0BF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		83B729A01CD8D6930090C0BF /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
@@ -1919,7 +1919,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/EXpecta",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
@@ -1949,7 +1949,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/EXpecta",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;

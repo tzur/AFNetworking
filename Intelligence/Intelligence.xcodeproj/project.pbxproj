@@ -481,7 +481,7 @@
 		A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		A14172BB1E6EB07E005DBEFF /* Intelligence-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Intelligence-Prefix.pch"; sourceTree = "<group>"; };
 		A14172BC1E6EB0CA005DBEFF /* IntelligenceTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntelligenceTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
@@ -1747,7 +1747,7 @@
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = IntelligenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1771,7 +1771,7 @@
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 				);
 				INFOPLIST_FILE = IntelligenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

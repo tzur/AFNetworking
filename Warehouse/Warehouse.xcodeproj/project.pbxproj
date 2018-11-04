@@ -332,7 +332,7 @@
 		1964BF6620A322D000FF28F5 /* WarehouseTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WarehouseTests-Prefix.pch"; sourceTree = "<group>"; };
 		1964BF6C20A3243700FF28F5 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		1964BF8720A3244C00FF28F5 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		1964BF9C20A3245C00FF28F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		1964BF9C20A3245C00FF28F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		198CE4A720A327DA000E70BF /* WHSProjectSnapshotSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectSnapshotSpec.mm; sourceTree = "<group>"; };
 		198CE4A920A32989000E70BF /* WHSProjectSnapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WHSProjectSnapshot.mm; sourceTree = "<group>"; };
 		198CE4AA20A32989000E70BF /* WHSProjectSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHSProjectSnapshot.h; sourceTree = "<group>"; };
@@ -1054,7 +1054,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = WarehouseTests/Info.plist;
@@ -1074,7 +1074,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = WarehouseTests/Info.plist;

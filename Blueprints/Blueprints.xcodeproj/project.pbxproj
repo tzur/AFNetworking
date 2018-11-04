@@ -419,7 +419,7 @@
 		8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blueprints-Prefix.pch"; sourceTree = "<group>"; };
 		8BED80E91C3A6B930001C6F1 /* BlueprintsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlueprintsTests-Prefix.pch"; sourceTree = "<group>"; };
 		8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8BED82C11C3BEDB00001C6F1 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		8BED82C31C3D32F80001C6F1 /* BLUNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNode.h; sourceTree = "<group>"; };

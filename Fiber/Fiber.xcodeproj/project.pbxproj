@@ -480,7 +480,7 @@
 		65C62B921D047507000FCE99 /* FiberTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FiberTests-Prefix.pch"; sourceTree = "<group>"; };
 		65C62B951D0476F6000FCE99 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		65C62BB01D0476FE000FCE99 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		65C62BC51D047711000FCE99 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		65C62BC51D047711000FCE99 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		65F5139D1D1C19FC000687A7 /* FBRCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRCompare.h; sourceTree = "<group>"; };
 		65F5139E1D1C19FC000687A7 /* FBRCompare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompare.mm; sourceTree = "<group>"; };
 		65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompareSpec.mm; sourceTree = "<group>"; };
@@ -1632,7 +1632,7 @@
 					"$(SRCROOT)/Fiber",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 				);
 				INFOPLIST_FILE = FiberTests/Info.plist;
@@ -1655,7 +1655,7 @@
 					"$(SRCROOT)/Fiber",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 				);
 				INFOPLIST_FILE = FiberTests/Info.plist;

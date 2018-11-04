@@ -952,7 +952,7 @@
 		8BAFDC971B0DED4C003FB8F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BAFDC981B0DED4C003FB8F5 /* Photons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photons.h; sourceTree = "<group>"; };
 		8BAFE2681B0E0BB0003FB8F5 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = SOURCE_ROOT; };
-		8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8BAFE2831B0E0BBE003FB8F5 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8BAFE29A1B0E0C7F003FB8F5 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8BAFE36A1B1476C9003FB8F5 /* PTNProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNProgress.h; sourceTree = "<group>"; };
 		8BAFE36B1B1476C9003FB8F5 /* PTNProgress.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNProgress.mm; sourceTree = "<group>"; };
@@ -2676,7 +2676,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
@@ -2701,7 +2701,7 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
-					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/Specta",
 					"$(SRCROOT)/../third_party/Expecta",
 				);
 				INFOPLIST_FILE = PhotonsTests/Info.plist;
