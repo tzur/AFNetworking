@@ -6,8 +6,11 @@
 /// DTO for specifying the next source texture and target framebuffer for the next iteration.
 @interface LTNextIterationPlacement : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initialize a new iteration placement with a source texture and a target framebuffer.
-- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture andTargetFbo:(LTFbo *)targetFbo;
+- (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture andTargetFbo:(LTFbo *)targetFbo
+    NS_DESIGNATED_INITIALIZER;
 
 /// The source texture to use in the next iteration.
 @property (readonly, nonatomic) LTTexture *sourceTexture;
