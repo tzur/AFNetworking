@@ -282,13 +282,6 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		19611C3B1FA9EC00004093D8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = E917140819DF07D700921712;
-			remoteInfo = "libSpecta-iOS";
-		};
 		8B0B99291CA6BA8300ED2334 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */;
@@ -1502,7 +1495,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				19611C3C1FA9EC00004093D8 /* PBXTargetDependency */,
 			);
 			name = LTKitTestUtils;
 			productName = LTKitTestUtils;
@@ -1945,11 +1937,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		19611C3C1FA9EC00004093D8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libSpecta-iOS";
-			targetProxy = 19611C3B1FA9EC00004093D8 /* PBXContainerItemProxy */;
-		};
 		8B3DEBFB18296B6100EA0C1A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B3DEBE318296B6100EA0C1A /* LTKit */;
