@@ -5,7 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
-#import "BZREvent.h"
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
@@ -153,10 +153,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendInvalidationEventForCacheEntry:(BZRReceiptValidationStatusCacheEntry *)cacheEntry
                        applicationBundleID:(NSString *)applicationBundleID {
   auto invalidationEventData = @{
-    @"ApplicationBundleID": applicationBundleID,
-    @"FirstErrorDate":
+    kBZREventApplicationBundleID: applicationBundleID,
+    kBZREventFirstErrorDate:
         [self.cache firstErrorDateTimeForApplicationBundleID:applicationBundleID] ?: [NSNull null],
-    @"CachingDate": cacheEntry.cachingDateTime
+    kBZREventCachingDate: cacheEntry.cachingDateTime
   };
   auto invalidationEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
                                              eventSubtype:@"InvalidatedSubscription"

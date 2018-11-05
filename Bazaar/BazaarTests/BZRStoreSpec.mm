@@ -270,12 +270,12 @@ context(@"App Store locale", ^{
 
     expect(eventsRecorder).to.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
-          [event.eventInfo[kBZREventAppStoreLocaleKey]
+          [event.eventInfo[kBZREventAppStoreLocale]
            isEqual:[NSLocale currentLocale].localeIdentifier];
     });
     expect(eventsRecorder).to.matchValue(1, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
-          [event.eventInfo[kBZREventAppStoreLocaleKey] isEqual:[NSNull null]];
+          [event.eventInfo[kBZREventAppStoreLocale] isEqual:[NSNull null]];
     });
   });
 });
@@ -623,10 +623,10 @@ context(@"purchasing products", ^{
     expect(purchaseSignal).will.complete();
 
     auto successfulPurchaseEventInfo = @{
-      @"ProductID": productIdentifier,
-      @"PurchaseDate": successfulTransaction.transactionDate,
-      @"ValidatricksRequestID": receiptValidationStatus.requestId,
-      @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
+      kBZREventProductIdentifier: productIdentifier,
+      kBZREventPurchaseDate: successfulTransaction.transactionDate,
+      kBZREventValidatricksRequestID: receiptValidationStatus.requestId,
+      kBZREventAppStoreLocale: appStoreLocaleProvider.appStoreLocale
     };
     auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
                                            eventSubtype:@"PurchaseSuccessful"
@@ -2123,10 +2123,10 @@ context(@"handling unfinished completed transactions", ^{
       [unhandledSuccessfulTransactionsSubject sendNext:@[purchasedTransaction]];
 
       auto successfulPurchaseEventInfo = @{
-        @"ProductID": productIdentifier,
-        @"PurchaseDate": purchasedTransaction.transactionDate,
-        @"ValidatricksRequestID": receiptValidationStatus.requestId,
-        @"AppStoreLocale": appStoreLocaleProvider.appStoreLocale
+        kBZREventProductIdentifier: productIdentifier,
+        kBZREventPurchaseDate: purchasedTransaction.transactionDate,
+        kBZREventValidatricksRequestID: receiptValidationStatus.requestId,
+        kBZREventAppStoreLocale: appStoreLocaleProvider.appStoreLocale
       };
       auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
                                              eventSubtype:@"PurchaseSuccessful"

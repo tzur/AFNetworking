@@ -196,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
       skip:1]
       map:^BZREvent *(NSLocale * _Nullable appStoreLocale) {
         return [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:@{
-            kBZREventAppStoreLocaleKey: appStoreLocale.localeIdentifier ?: [NSNull null]
+            kBZREventAppStoreLocale: appStoreLocale.localeIdentifier ?: [NSNull null]
         }];
       }];
 }
@@ -572,10 +572,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendPurchaseSuccessEventForTransaction:(SKPaymentTransaction *)transaction {
   auto successfulPurchaseEventInfo = @{
-    @"ProductID": transaction.payment.productIdentifier,
-    @"PurchaseDate": transaction.transactionDate ?: [NSNull null],
-    @"ValidatricksRequestID": self.receiptValidationStatus.requestId ?: [NSNull null],
-    @"AppStoreLocale": self.appStoreLocale ?: [NSNull null]
+    kBZREventProductIdentifier: transaction.payment.productIdentifier,
+    kBZREventPurchaseDate: transaction.transactionDate ?: [NSNull null],
+    kBZREventValidatricksRequestID: self.receiptValidationStatus.requestId ?: [NSNull null],
+    kBZREventAppStoreLocale: self.appStoreLocale ?: [NSNull null]
   };
   auto purchaseEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
                                          eventSubtype:@"PurchaseSuccessful"

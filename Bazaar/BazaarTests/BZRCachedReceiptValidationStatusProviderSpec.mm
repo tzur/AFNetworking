@@ -3,7 +3,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 
-#import "BZREvent.h"
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -288,9 +288,9 @@ context(@"invalidating cache", ^{
           .to.finish();
 
       auto invalidationEventData = @{
-        @"ApplicationBundleID": applicationBundleID,
-        @"FirstErrorDate": dateFarFromCurrentTime,
-        @"CachingDate": dateFarFromCurrentTime
+        kBZREventApplicationBundleID: applicationBundleID,
+        kBZREventFirstErrorDate: dateFarFromCurrentTime,
+        kBZREventCachingDate: dateFarFromCurrentTime
       };
       auto invalidationEvent = [[BZREvent alloc] initWithType:$(BZREventTypeInformational)
                                                  eventSubtype:@"InvalidatedSubscription"

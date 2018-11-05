@@ -342,8 +342,8 @@ if (@available(iOS 11.0, *)) {
 
         expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
           return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
-              [event.eventInfo[kBZREventProductIdentifierKey] isEqualToString:@"foo"] &&
-              [event.eventInfo[kBZREventPromotedIAPAbortedKey] boolValue];
+              [event.eventInfo[kBZREventProductIdentifier] isEqualToString:@"foo"] &&
+              [event.eventInfo[kBZREventPromotedIAPAborted] boolValue];
         });
       });
     });
@@ -370,8 +370,8 @@ if (@available(iOS 11.0, *)) {
 
         expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
           return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
-              [event.eventInfo[kBZREventProductIdentifierKey] isEqualToString:@"foo"] &&
-              ![event.eventInfo[kBZREventPromotedIAPAbortedKey] boolValue];
+              [event.eventInfo[kBZREventProductIdentifier] isEqualToString:@"foo"] &&
+              ![event.eventInfo[kBZREventPromotedIAPAborted] boolValue];
         });
       });
 

@@ -7,19 +7,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRReceiptValidationStatus, SKPaymentTransaction;
 
-/// Key in the event info dictionary mapping to a product's identifier.
-extern NSString * const kBZREventProductIdentifierKey;
-
 /// Key in the event info dictionary mapping to a boolean flag indicating whether a purchase that
 /// was intiated through the App Store is aborted.
-extern NSString * const kBZREventPromotedIAPAbortedKey;
+extern NSString * const kBZREventPromotedIAPAborted;
 
 /// Key in the event info dictionary mapping to the App Store locale.
-extern NSString * const kBZREventAppStoreLocaleKey;
+extern NSString * const kBZREventAppStoreLocale;
+
+/// Key in the event info dictionary mapping to bundle ID of an application.
+extern NSString * const kBZREventApplicationBundleID;
+
+/// Key in the event info dictionary mapping to caching date of a receipt validation status.
+extern NSString * const kBZREventCachingDate;
+
+/// Key in the event info dictionary mapping to the first error date in receipt validation.
+extern NSString * const kBZREventFirstErrorDate;
 
 /// Key in the event info dictionary mapping to a product's identifier. The product identifier may
 /// be sent as additional information in another event, e.g. transaction event.
 extern NSString * const kBZREventProductIdentifier;
+
+/// Key in the event info dictionary mapping to the purchase date of a product.
+extern NSString * const kBZREventPurchaseDate;
 
 /// Key in the event info dictionary mapping to a transaction's quantity.
 extern NSString * const kBZREventTransactionQuantity;
@@ -32,6 +41,9 @@ extern NSString * const kBZREventTransactionIdentifier;
 
 /// Key in the event info dictionary mapping to a transaction's state.
 extern NSString * const kBZREventTransactionState;
+
+/// Key in the event info dictionary mapping to Validatricks Request ID.
+extern NSString * const kBZREventValidatricksRequestID;
 
 /// Key in the event info dictionary mapping to an original transaction's identifier.
 extern NSString * const kBZREventOriginalTransactionIdentifier;

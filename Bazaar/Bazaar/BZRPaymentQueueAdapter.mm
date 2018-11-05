@@ -205,8 +205,8 @@ static NSString * const kRestorationLabel = @"Restoration";
       [self.paymentsDelegate shouldProceedWithPromotedIAP:product payment:payment];
   auto event = [[BZREvent alloc] initWithType:$(BZREventTypePromotedIAPInitiated)
       eventInfo:@{
-        kBZREventProductIdentifierKey: product.productIdentifier,
-        kBZREventPromotedIAPAbortedKey: @(!shouldProceedWithPurchase)
+        kBZREventProductIdentifier: product.productIdentifier,
+        kBZREventPromotedIAPAborted: @(!shouldProceedWithPurchase)
       }];
   [self.eventsSubject sendNext:event];
   return shouldProceedWithPurchase;
