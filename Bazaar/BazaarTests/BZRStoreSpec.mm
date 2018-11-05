@@ -270,8 +270,7 @@ context(@"App Store locale", ^{
 
     expect(eventsRecorder).to.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
-          [event.eventInfo[kBZREventAppStoreLocale]
-           isEqual:[NSLocale currentLocale].localeIdentifier];
+          [event.eventInfo[kBZREventAppStoreLocale] isEqual:[NSLocale currentLocale]];
     });
     expect(eventsRecorder).to.matchValue(1, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeInformational)] &&
