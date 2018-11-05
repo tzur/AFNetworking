@@ -51,31 +51,23 @@ static NSString * const kDebugGroupName = @"unary";
                     unaryModel:(const pnk::UnaryFunctionKernelModel &)unaryModel {
   if (self = [super init]) {
     _device = device;
-    [self createStatesWithUnaryType:unaryModel.type];
-    [self setupBuffersWithUnaryModel:unaryModel];
+    [self createStatesWithUnaryModel:unaryModel];
   }
   return self;
 }
 
-- (void)createStatesWithUnaryType:(pnk::UnaryType)unaryType {
-  ushort unaryTypeAsUshort = (ushort)unaryType;
+- (void)createStatesWithUnaryModel:(const pnk::UnaryFunctionKernelModel &)unaryModel {
   auto functionConstants = @[
-    [MTBFunctionConstant ushortConstantWithValue:unaryTypeAsUshort name:@"unaryType"],
+    [MTBFunctionConstant ushortConstantWithValue:(ushort)unaryModel.type name:@"unaryType"],
+    [MTBFunctionConstant halfConstantWithValue:(half_float::half)unaryModel.alpha name:@"alpha"],
+    [MTBFunctionConstant halfConstantWithValue:(half_float::half)unaryModel.scale name:@"scale"],
+    [MTBFunctionConstant halfConstantWithValue:(half_float::half)unaryModel.shift name:@"shift"],
+    [MTBFunctionConstant halfConstantWithValue:(half_float::half)unaryModel.epsilon
+                                          name:@"epsilon"],
   ];
 
   _stateSingle = PNKCreateComputeState(self.device, kKernelSingleFunctionName, functionConstants);
   _stateArray = PNKCreateComputeState(self.device, kKernelArrayFunctionName, functionConstants);
-}
-
-- (void)setupBuffersWithUnaryModel:(const pnk::UnaryFunctionKernelModel &)model {
-  cv::Mat1f alpha(1, 1, model.alpha);
-  _alphaBuffer = PNKHalfBufferFromFloatVector(self.device, alpha, YES);
-
-  cv::Mat1f shift(1, 1, model.shift);
-  _shiftBuffer = PNKHalfBufferFromFloatVector(self.device, shift, YES);
-
-  cv::Mat1f scale(1, 1, model.scale);
-  _scaleBuffer = PNKHalfBufferFromFloatVector(self.device, scale, YES);
 }
 
 #pragma mark -
@@ -88,15 +80,9 @@ static NSString * const kDebugGroupName = @"unary";
 
   auto state = outputImage.pnk_isSingleTexture ? self.stateSingle : self.stateArray;
 
-  NSArray<id<MTLBuffer>> *kernelBuffers = @[
-    self.alphaBuffer,
-    self.shiftBuffer,
-    self.scaleBuffer
-  ];
-
   MTLSize workingSpaceSize = inputImage.pnk_textureArraySize;
-  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, kernelBuffers, @[inputImage],
-                                       @[outputImage], kDebugGroupName, workingSpaceSize);
+  MTBComputeDispatchWithDefaultThreads(state, commandBuffer, @[inputImage], @[outputImage],
+                                       kDebugGroupName, workingSpaceSize);
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage

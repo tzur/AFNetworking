@@ -240,4 +240,53 @@ half_float::half PNKActivatedValue(half_float::half value, int channel,
   }
 }
 
+cv::Mat PNKCalculateUnary(const cv::Mat &inputMatrix, pnk::UnaryType unaryType, float alpha,
+                          float scale, float shift, float epsilon) {
+  int rows = inputMatrix.rows;
+  int columns = inputMatrix.cols;
+  int channels = inputMatrix.channels();
+  cv::Mat input = inputMatrix.reshape(1, rows * columns);
+  cv::Mat1hf output = cv::Mat1hf::zeros(rows * columns, channels);
+
+  for (int row = 0; row < rows; ++row) {
+    for (int column = 0; column < columns; ++column) {
+      for (int channel = 0; channel < channels; ++channel) {
+        half_float::half value = input.at<half_float::half>(row * columns + column, channel);
+        half_float::half result = PNKUnaryFunction(value, unaryType, alpha, scale, shift, epsilon);
+        output.at<half_float::half>(row * columns + column, channel) = result;
+      }
+    }
+  }
+
+  cv::Mat outputMat = output.reshape(channels, rows);
+  return outputMat;
+}
+
+half_float::half PNKUnaryFunction(half_float::half value, pnk::UnaryType unaryType, float alpha,
+                                  float scale, float shift, float epsilon) {
+  float floatValue = (float)value;
+  floatValue = scale * floatValue + shift;
+
+  switch (unaryType) {
+    case pnk::UnaryTypeSqrt:
+      return (half_float::half)sqrt(floatValue);
+    case pnk::UnaryTypeRsqrt:
+      return (half_float::half)(1. / sqrt(floatValue + epsilon));
+    case pnk::UnaryTypeInverse:
+      return (half_float::half)(1. / (floatValue + epsilon));
+    case pnk::UnaryTypePower:
+      return (half_float::half)std::pow(floatValue, alpha);
+    case pnk::UnaryTypeExp:
+      return (half_float::half)std::exp(floatValue);
+    case pnk::UnaryTypeLog:
+      return (half_float::half)std::log(floatValue);
+    case pnk::UnaryTypeAbs:
+      return (half_float::half)std::abs(floatValue);
+    case pnk::UnaryTypeThreshold:
+      return (half_float::half)std::max(alpha, floatValue);
+    default:
+      return value;
+  }
+}
+
 NS_ASSUME_NONNULL_END
