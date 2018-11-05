@@ -64,11 +64,13 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
 
 /// Returns a mock of \c SKPaymentTransaction with an underlying mocked \c SKPayment with productID
 /// set to \c productID, transaction identifier set to \c transactionID, transaction state set to
-/// \c state and transaction Date set to \c transactionDate, the two latter arguments have default
-/// values.
-SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
-     SKPaymentTransactionState state = SKPaymentTransactionStatePurchased,
-     NSDate *transactionDate = [NSDate date]);
+/// \c state and transaction date set to \c transactionDate and transcation payment set to
+/// \c payment.
+SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID,
+    NSString *transactionID,
+    SKPaymentTransactionState state = SKPaymentTransactionStatePurchased,
+    NSDate *transactionDate = [NSDate date],
+    SKPayment *payment = OCMClassMock(SKPayment.class));
 
 /// Returns a \c BZRReceiptSubscriptionInfo with identifier set to \c subscriptionIdentifier.
  BZRReceiptSubscriptionInfo *BZRSubscriptionWithIdentifier(NSString *subscriptionIdentifier,

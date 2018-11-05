@@ -49,4 +49,33 @@ void BZRStubHTTPClientToReturnReceiptValidationStatus
                       withStubResponse:responseWithReceiptValidationStatus];
 }
 
+NSData *BZRPopNextValidationStatusData
+    (NSMutableArray<BZRReceiptValidationStatus *> *receiptValidationStatusArray) {
+  auto receiptValidationStatus = receiptValidationStatusArray.firstObject;
+  if (receiptValidationStatusArray.count > 1) {
+    [receiptValidationStatusArray removeObjectAtIndex:0];
+  }
+  auto JSONObject = [MTLJSONAdapter JSONDictionaryFromModel:receiptValidationStatus];
+  auto receiptValidationStatusData =
+      [NSJSONSerialization dataWithJSONObject:JSONObject options:0 error:nil];
+  return receiptValidationStatusData;
+}
+
+void BZRStubHTTPClientToReturnReceiptValidationStatusesInOrder(
+    NSArray<BZRReceiptValidationStatus *> *receiptValidationStatusArray) {
+  __block auto mutableStatusArray = [receiptValidationStatusArray mutableCopy];
+  auto isValidateReceiptRequest = ^BOOL(NSURLRequest *request) {
+    return [request.URL.absoluteString containsString:@"validateReceipt"];
+  };
+  auto responseWithReceiptValidationStatus = ^OHHTTPStubsResponse *(NSURLRequest *) {
+    @synchronized (mutableStatusArray) {
+      auto receiptValidationStatusData = BZRPopNextValidationStatusData(mutableStatusArray);
+      return [OHHTTPStubsResponse responseWithData:receiptValidationStatusData statusCode:200
+                                           headers:nil];
+    }
+  };
+  [OHHTTPStubs stubRequestsPassingTest:isValidateReceiptRequest
+                      withStubResponse:responseWithReceiptValidationStatus];
+}
+
 NS_ASSUME_NONNULL_END

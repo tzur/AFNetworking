@@ -10,6 +10,7 @@
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "SKPaymentTransaction+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -154,15 +155,21 @@ BZRReceiptTransactionInfo *BZRTransactionWithTransactionIdentifier(NSString *tra
   } error:nil];
 }
 
-SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID, NSString *transactionID,
-     SKPaymentTransactionState state, NSDate *transactionDate) {
-  SKPayment *payment = OCMClassMock(SKPayment.class);
-  OCMStub([payment productIdentifier]).andReturn(productID);
+SKPaymentTransaction *BZRMockedSKPaymentTransaction(NSString *productID,
+    NSString *transactionID,
+    SKPaymentTransactionState state,
+    NSDate *transactionDate,
+    SKPayment *payment) {
+  // If called with default payment, stub its \c productIdentifier.
+  if (!payment.productIdentifier) {
+    OCMStub([payment productIdentifier]).andReturn(productID);
+  }
 
   SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
 
   OCMStub([transaction transactionDate]).andReturn(transactionDate);
   OCMStub([transaction transactionState]).andReturn(state);
+  OCMStub([transaction transactionStateString]).andReturn(@"foo transaction state");
   OCMStub([transaction transactionIdentifier]).andReturn(transactionID);
   OCMStub([transaction payment]).andReturn(payment);
   return transaction;
