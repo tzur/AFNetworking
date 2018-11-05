@@ -234,7 +234,10 @@ context(@"drawing on the entire source texture", ^{
       expect($([output image])).to.equalMat($(expected));
     });
 
-    it(@"should draw displaced wireframe", ^{
+    // Setting \c drawWireframe generates a draw call with \c LTDrawingContextDrawModeLines mode,
+    // which is loosely defined. To prevent this test falling on devices it's restricted to run on
+    // simulator. This feature is used only for debug purposes and never in production.
+    sit(@"should draw displaced wireframe", ^{
       drawer.drawWireframe = YES;
       [meshTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         mapped->setTo(cv::Vec2hf(half(0)));
