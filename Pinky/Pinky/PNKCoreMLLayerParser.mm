@@ -255,6 +255,17 @@ ActivationKernelModel createActivationKernelModel(const cms::ActivationParams &a
   }
 }
 
+UnaryFunctionKernelModel createUnaryFunctionKernelModel
+    (const cms::UnaryFunctionLayerParams &unaryFunctionParams) {
+  return {
+    .alpha = unaryFunctionParams.alpha(),
+    .epsilon = unaryFunctionParams.epsilon(),
+    .type = (UnaryType)unaryFunctionParams.type(),
+    .scale = unaryFunctionParams.scale(),
+    .shift = unaryFunctionParams.shift()
+  };
+}
+
 NormalizationKernelModel createNormalizationKernelModel
     (const cms::BatchnormLayerParams &batchnormParams) {
   LTParameterAssert(batchnormParams.has_gamma(), @"Normalization model has no gamma");

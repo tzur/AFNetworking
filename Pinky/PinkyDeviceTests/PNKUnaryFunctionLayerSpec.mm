@@ -5,12 +5,58 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
+#import "PNKConvolutionTestUtils.h"
 #import "PNKNeuralNetworkModel.h"
+
+static cv::Mat PNKFillMatrix(int rows, int columns, int channels, float minValue, float maxValue) {
+  cv::Mat1hf matrix(rows * columns, channels);
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < columns; ++j) {
+      for (int k = 0; k < channels; ++k) {
+        matrix.at<half_float::half>(i * columns + j, k) =
+            (half_float::half)(minValue + ((i + j + k) % 5) * (maxValue - minValue) / 4);
+      }
+    }
+  }
+  return matrix.reshape(channels, rows);
+}
+
+static NSDictionary *PNKBuildDataForExamples(id<MTLDevice> device, NSUInteger imageWidth,
+                                             NSUInteger imageHeight, NSUInteger featureChannels,
+                                             pnk::UnaryType unaryType, float alpha, float scale,
+                                             float shift, float epsilon) {
+  pnk::UnaryFunctionKernelModel unaryModel = {
+    .type = unaryType,
+    .alpha = alpha,
+    .scale = scale,
+    .shift = shift,
+    .epsilon = epsilon
+  };
+
+  auto kernel = [[PNKUnaryFunctionLayer alloc] initWithDevice:device unaryModel:unaryModel];
+
+  auto inputMat = PNKFillMatrix((int)imageHeight, (int)imageWidth, (int)featureChannels, 1, 2);
+
+  auto expectedMat = PNKCalculateUnary(inputMat, unaryType, alpha, scale, shift, epsilon);
+
+  return @{
+    kPNKKernelExamplesKernel: kernel,
+    kPNKKernelExamplesDevice: device,
+    kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+    kPNKKernelExamplesOutputChannels: @(featureChannels),
+    kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+    kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+    kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+    kPNKKernelExamplesExpectedMat: $(expectedMat),
+    kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+  };
+}
 
 DeviceSpecBegin(PNKUnaryFunctionLayer)
 
 static const NSUInteger kInputWidth = 15;
 static const NSUInteger kInputHeight = 16;
+static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
 
 __block id<MTLDevice> device;
@@ -58,6 +104,31 @@ context(@"kernel input region", ^{
 
     expect($(outputSize)).to.equalMTLSize($(inputSize));
   });
+});
+
+context(@"unary function", ^{
+  for (ushort unaryType = pnk::UnaryTypeSqrt; unaryType <= pnk::UnaryTypeThreshold; ++unaryType) {
+    itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+      return PNKBuildDataForExamples(device, kInputWidth, kInputHeight, kInputRGBFeatureChannels,
+                                     (pnk::UnaryType)unaryType, 1, 1, 0, 1.e-4);
+    });
+    itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+      return PNKBuildDataForExamples(device, kInputWidth, kInputHeight, kInputRGBFeatureChannels,
+                                     (pnk::UnaryType)unaryType, 2, 1, 0, 1.e-4);
+    });
+    itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+      return PNKBuildDataForExamples(device, kInputWidth, kInputHeight, kInputRGBFeatureChannels,
+                                     (pnk::UnaryType)unaryType, 1, 1, 1, 1.e-4);
+    });
+    itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+      return PNKBuildDataForExamples(device, kInputWidth, kInputHeight, kInputRGBFeatureChannels,
+                                     (pnk::UnaryType)unaryType, 1, -0.5, 3, 1.e-4);
+    });
+    itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+      return PNKBuildDataForExamples(device, kInputWidth, kInputHeight, kInputRGBFeatureChannels,
+                                     (pnk::UnaryType)unaryType, 1, 0.5, 0, 1.e-4);
+    });
+  }
 });
 
 context(@"tensorflow golden standard", ^{

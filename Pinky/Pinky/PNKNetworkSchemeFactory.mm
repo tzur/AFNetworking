@@ -22,6 +22,7 @@
 #import "PNKProtobufMacros.h"
 #import "PNKReflectionPadding.h"
 #import "PNKSoftMaxLayer.h"
+#import "PNKUnaryFunctionLayer.h"
 #import "PNKUpsampling.h"
 
 PNK_PROTOBUF_INCLUDE_BEGIN
@@ -426,6 +427,11 @@ struct GraphTraversalData {
     case cms::NeuralNetworkLayer::kUpsample: {
       kernel = [[PNKUpsampling alloc] initWithDevice:device
                                       upsamplingType:PNKUpsamplingTypeNearestNeighbor];
+    } break;
+    case cms::NeuralNetworkLayer::kUnary: {
+      auto unaryFunctionKernelModel = pnk::createUnaryFunctionKernelModel(layer->unary());
+      kernel = [[PNKUnaryFunctionLayer alloc] initWithDevice:device
+                                                  unaryModel:unaryFunctionKernelModel];
     } break;
     case cms::NeuralNetworkLayer::kAdd:
       kernel = [[PNKArithmetic alloc] initWithDevice:device

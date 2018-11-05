@@ -58,7 +58,21 @@ enum ActivationType : unsigned short {
 
 /// Valid unary function types for \c UnaryFunctionKernelModel.
 enum UnaryType : unsigned short {
-  /// max(alpha, x)
+  /// Square root. <tt>f(x) = sqrt(x)</tt>.
+  UnaryTypeSqrt,
+  /// Inverse square root. <tt>f(x) = 1 / sqrt(x + epsilon)</tt>.
+  UnaryTypeRsqrt,
+  /// Inverse. <tt>f(x) = 1 / (x + epsilon)</tt>.
+  UnaryTypeInverse,
+  /// Power. <tt>f(x) = pow(x, alpha)</tt>.
+  UnaryTypePower,
+  /// Exponent. <tt>f(x) = exp(x)</tt>.
+  UnaryTypeExp,
+  /// Logarithm. <tt>f(x) = log(x)</tt>.
+  UnaryTypeLog,
+  /// Absolute vaue. <tt>f(x) = abs(x)</tt>.
+  UnaryTypeAbs,
+  /// Threshold. <tt>f(x) = max(alpha, x)</tt>.
   UnaryTypeThreshold
 };
 

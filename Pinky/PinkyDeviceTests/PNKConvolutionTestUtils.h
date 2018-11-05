@@ -46,4 +46,13 @@ half_float::half PNKActivatedValue(half_float::half value, int channel,
                                    pnk::ActivationType activationType, const cv::Mat1f &alpha,
                                    const cv::Mat1f &beta);
 
+/// Calculates a unary function on half-float \c inputMatrix with the given parameters.
+cv::Mat PNKCalculateUnary(const cv::Mat &inputMatrix, pnk::UnaryType unaryType, float alpha,
+                          float scale, float shift, float epsilon);
+
+/// Calculates a unary function of \c value with the given \c unaryType, \c alpha parameter,
+/// \c scale and \c shift.
+half_float::half PNKUnaryFunction(half_float::half value, pnk::UnaryType unaryType, float alpha,
+                                  float scale, float shift, float epsilon);
+
 NS_ASSUME_NONNULL_END
