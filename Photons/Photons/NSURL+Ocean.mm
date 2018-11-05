@@ -144,7 +144,8 @@ NSNumberFormatter *PTNLocaleNeutralNumberFormatter() {
     return nil;
   }
   auto formatter = PTNLocaleNeutralNumberFormatter();
-  return [formatter numberFromString:[self lt_queryDictionary][kPTNOceanURLQueryItemPageKey]];
+  auto _Nullable page = [self lt_queryDictionary][kPTNOceanURLQueryItemPageKey];
+  return page ? [formatter numberFromString:page] : nil;
 }
 
 - (nullable NSString *)ptn_oceanAssetIdentifier {

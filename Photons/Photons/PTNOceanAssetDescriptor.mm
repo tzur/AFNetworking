@@ -118,8 +118,8 @@ static NSString * const kUnmatchedKeysDescription =
 #pragma mark MTLJSONSerializing
 #pragma mark -
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
-                             error:(NSError *__autoreleasing *)error {
+- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
+                                      error:(NSError *__autoreleasing *)error {
   if (self = [super initWithDictionary:dictionaryValue error:error]) {
     if (![self validateDictionary:dictionaryValue error:error]) {
       return nil;
