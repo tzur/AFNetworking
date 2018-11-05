@@ -50,18 +50,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID
     purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper {
-  BZRPaymentQueueAdapter *paymentQueueAdapter =
+  auto paymentQueueAdapter =
       [[BZRPaymentQueueAdapter alloc] initWithPaymentQueue:[SKPaymentQueue defaultQueue]];
-  BZRPurchaseManager *purchaseManager =
+  auto purchaseManager =
       [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueueAdapter
                                      applicationUserID:applicationUserID
                                         purchaseHelper:purchaseHelper];
-  BZRTransactionRestorationManager *restorationManager =
+  auto restorationManager =
       [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueueAdapter
                                                    applicationUserID:applicationUserID];
-  BZRProductDownloadManager *downloadManager =
+  auto downloadManager =
       [[BZRProductDownloadManager alloc] initWithPaymentQueue:paymentQueueAdapter];
-  BZRStoreKitRequestsFactory *storeKitRequestsFactory = [[BZRStoreKitRequestsFactory alloc] init];
+  auto storeKitRequestsFactory = [BZRStoreKitRequestsFactory defaultFactory];
 
   return [self initWithPaymentQueueAdapter:paymentQueueAdapter purchaseManager:purchaseManager
                         restorationManager:restorationManager downloadManager:downloadManager
