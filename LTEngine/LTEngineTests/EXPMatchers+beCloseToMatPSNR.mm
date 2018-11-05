@@ -6,6 +6,8 @@
 #import <Expecta/NSValue+Expecta.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 
+#import "LTTestUtils+LTEngine.h"
+
 static double LTPSNRScore(const cv::Mat &first, const cv::Mat &second) {
   cv::Mat error;
   cv::Mat firstFloat, secondFloat;
@@ -60,7 +62,11 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
     }
   });
 
-  failureMessageForTo(^NSString *(id) {
+  failureMessageForTo(^NSString *(id actual) {
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
@@ -69,7 +75,11 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
             actualPSNR, [psnr doubleValue]];
   });
 
-  failureMessageForNotTo(^NSString *(id) {
+  failureMessageForNotTo(^NSString *(id actual) {
+    if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
+      LTWriteMatrices([expected matValue], [actual matValue]);
+    }
+
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
