@@ -10,7 +10,7 @@ typedef std::list<CGFloat> CGFloatList;
 
 @interface LTSlidingWindowFilter () {
   CGFloatList _values;
-  CGFloats _weights;
+  std::vector<CGFloat> _weights;
 }
 
 @end
@@ -25,7 +25,7 @@ typedef std::list<CGFloat> CGFloatList;
   return nil;
 }
 
-- (instancetype)initWithKernel:(const CGFloats &)kernel {
+- (instancetype)initWithKernel:(const std::vector<CGFloat> &)kernel {
   if (self = [super init]) {
     _weights = kernel;
   }

@@ -13,7 +13,7 @@ namespace cv {
   typedef Vec<CGFloat, 3> Vec3g;
   typedef Vec<CGFloat, 4> Vec4g;
 
-  /// Matrix of \c CGFloats.
+  /// Matrix of \c std::vector<CGFloat>.
   ///
   /// @note Since \c CGFloat is \c float or \c double depending on the target architecture, this
   /// type definition is \c cv::Mat1f if \c CGFloat is \c float, and \c cv::Mat1g otherwise.

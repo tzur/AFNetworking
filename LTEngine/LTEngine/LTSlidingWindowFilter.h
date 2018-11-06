@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes sliding window filter with the given \c kernel, where the first element is the
 /// weight of the oldest value in the sliding window, and the last element is the weight of the most
 /// recent value in the window.
-- (instancetype)initWithKernel:(const CGFloats &)kernel NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithKernel:(const std::vector<CGFloat> &)kernel NS_DESIGNATED_INITIALIZER;
 
 /// Removes all elements currently in the window. Subsequent filter operations will use the first
 /// inserted element instead of missing values (clamp boundary condition).

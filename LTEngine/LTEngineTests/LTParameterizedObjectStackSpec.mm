@@ -244,8 +244,8 @@ context(@"LTParameterizedObject protocol", ^{
 
         LTParameterizationKeyToValues *result = [object mappingForParametricValues:{3.5, 5.5}];
 
-        CGFloats values0 = [result valuesForKey:@"key0"];
-        CGFloats values1 = [result valuesForKey:@"key1"];
+        std::vector<CGFloat> values0 = [result valuesForKey:@"key0"];
+        std::vector<CGFloat> values1 = [result valuesForKey:@"key1"];
 
         expect(result.keys).to.equal(parameterizationKeys);
         expect(values0.size()).to.equal(2);
@@ -290,7 +290,7 @@ context(@"LTParameterizedObject protocol", ^{
       OCMExpect([anotherParameterizedObjectMock floatForParametricValue:5.5 key:@"key0"])
           .andReturn(1);
 
-      CGFloats values = [object floatsForParametricValues:{3.5, 5.5} key:@"key0"];
+      std::vector<CGFloat> values = [object floatsForParametricValues:{3.5, 5.5} key:@"key0"];
 
       expect(values.size()).to.equal(2);
       expect(values[0]).to.equal(0);

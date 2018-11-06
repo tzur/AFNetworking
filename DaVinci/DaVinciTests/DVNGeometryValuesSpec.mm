@@ -17,7 +17,7 @@ __block id<LTSampleValues> samples;
 beforeEach(^{
   quads = {lt::Quad(CGRectZero)};
   indices = {0};
-  CGFloats sampledParametricValues = {0};
+  std::vector<CGFloat> sampledParametricValues = {0};
   cv::Mat1g values(1, 1, 7);
   LTParameterizationKeyToValues *mapping =
       [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys valuesPerKey:values];

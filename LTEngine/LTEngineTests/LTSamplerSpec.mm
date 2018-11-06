@@ -15,7 +15,7 @@
 
 @implementation LTTestFloatSet
 
-- (CGFloats)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval {
+- (std::vector<CGFloat>)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval {
   self.receivedInterval = interval;
   return {1, 2, 3};
 }

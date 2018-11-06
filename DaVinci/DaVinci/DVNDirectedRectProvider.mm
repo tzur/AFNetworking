@@ -137,12 +137,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(BOOL)end {
   LTParameterizationKeyToValues *mapping = samples.mappingOfSampledValues;
-  CGFloats sampledParametricValues = samples.sampledParametricValues;
+  std::vector<CGFloat> sampledParametricValues = samples.sampledParametricValues;
 
   [self validateMapping:mapping];
 
-  CGFloats xCoordinates = [mapping valuesForKey:self.model.xCoordinateKey];
-  CGFloats yCoordinates = [mapping valuesForKey:self.model.yCoordinateKey];
+  std::vector<CGFloat> xCoordinates = [mapping valuesForKey:self.model.xCoordinateKey];
+  std::vector<CGFloat> yCoordinates = [mapping valuesForKey:self.model.yCoordinateKey];
 
   LTAssert(xCoordinates.size() == yCoordinates.size(),
            @"Number (%lu) of x-coordinates does not match number (%lu) of y-coordinates",
@@ -198,8 +198,8 @@ NS_ASSUME_NONNULL_BEGIN
   return dvn::GeometryValues(quads, indices, samples);
 }
 
-- (lt::Quad)firstQuadForXCoordinates:(const CGFloats &)xCoordinates
-                        yCoordinates:(const CGFloats &)yCoordinates end:(BOOL)end {
+- (lt::Quad)firstQuadForXCoordinates:(const std::vector<CGFloat> &)xCoordinates
+                        yCoordinates:(const std::vector<CGFloat> &)yCoordinates end:(BOOL)end {
   if (xCoordinates.size() == 1) {
     LTParameterAssert(end);
     // If this is the first and only sample, no direction can be computed, so provide a quad of

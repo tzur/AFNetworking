@@ -64,12 +64,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public API
 #pragma mark -
 
-- (CGFloats)valuesForKey:(NSString *)key atIndices:(const std::vector<NSUInteger> &)indices {
+- (std::vector<CGFloat>)valuesForKey:(NSString *)key
+                           atIndices:(const std::vector<NSUInteger> &)indices {
   NSUInteger keyIndex = [self.keys indexOfObject:key];
   LTParameterAssert(keyIndex != NSNotFound, @"Object does not provide mapping for given key (%@)",
                     key);
 
-  CGFloats values;
+  std::vector<CGFloat> values;
   values.reserve(indices.size());
   size_t numberOfValues = self.numberOfValuesPerKey;
 
@@ -82,11 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
   return values;
 }
 
-- (CGFloats)valuesForKey:(NSString *)key {
+- (std::vector<CGFloat>)valuesForKey:(NSString *)key {
   LTParameterAssert([self.keys containsObject:key], @"Key (%@) not found in keys (%@)", key,
                     self.keys);
   cv::Mat1g row(_valuesPerKey.row((int)[self.keys indexOfObject:key]));
-  return CGFloats(row.begin(), row.end());
+  return std::vector<CGFloat>(row.begin(), row.end());
 }
 
 @end

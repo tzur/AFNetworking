@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTParameterizedObjectStack () {
   /// Mapping used to compute the reparameterization.
-  CGFloats _mapping;
+  std::vector<CGFloat> _mapping;
 }
 
 /// Reparameterization used to delegate queries to the corresponding parameterized object.
@@ -121,7 +121,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.mutableObjects[index] mappingForParametricValue:value];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)parametricValues {
+- (LTParameterizationKeyToValues *)
+    mappingForParametricValues:(const std::vector<CGFloat> &)parametricValues {
   LTParameterAssert(parametricValues.size() <= INT_MAX,
                     @"Number (%lu) of parametric values must not exceed INT_MAX",
                     (unsigned long)parametricValues.size());
@@ -132,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
   __block cv::Mat1g valuesPerKey((int)self.parameterizationKeys.count, numberOfParametricValues);
 
   for (int i = 0; i < numberOfParametricValues; ++i) {
-    CGFloats values = {parametricValues[i]};
+    std::vector<CGFloat> values = {parametricValues[i]};
     while (i + 1 < numberOfParametricValues && indices[i + 1] == indices[i]) {
       ++i;
       values.push_back(parametricValues[i]);
@@ -155,10 +156,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.mutableObjects[index] floatForParametricValue:value key:key];
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   std::vector<NSUInteger> indices = [self indicesOfObjectsForParametricValues:values];
-  CGFloats floats(values.size());
-  for (CGFloats::size_type i = 0; i < values.size(); ++i) {
+  std::vector<CGFloat> floats(values.size());
+  for (std::vector<CGFloat>::size_type i = 0; i < values.size(); ++i) {
     floats[i] = [self.mutableObjects[indices[i]] floatForParametricValue:values[i] key:key];
   }
   return floats;
@@ -190,7 +192,8 @@ NS_ASSUME_NONNULL_BEGIN
   return std::clamp(std::floor(value * numberOfSplineSegments), 0., numberOfSplineSegments - 1.);
 }
 
-- (std::vector<NSUInteger>)indicesOfObjectsForParametricValues:(const CGFloats &)parametricValues {
+- (std::vector<NSUInteger>)
+    indicesOfObjectsForParametricValues:(const std::vector<CGFloat> &)parametricValues {
   std::vector<NSUInteger> indices(parametricValues.size());
   std::transform(parametricValues.cbegin(), parametricValues.cend(), indices.begin(),
                  [self](const CGFloat parametricValue) {

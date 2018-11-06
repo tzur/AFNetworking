@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c minParametricValue are linearly mapped according to the first interval of the given
 /// \c mapping. Analogously, parametric values greater than \c maxParametricValue are linearly
 /// mapped according to the last interval.
-- (instancetype)initWithMapping:(CGFloats)mapping NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithMapping:(std::vector<CGFloat>)mapping NS_DESIGNATED_INITIALIZER;
 
 /// Returns a new instance with a shifted version of the \c mapping of the receiver. All values of
 /// the \c mapping of the returned instance are shifted by the given \c offset, in comparison to the

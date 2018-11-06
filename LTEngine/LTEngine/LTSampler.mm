@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<LTSampleValues>)samplesFromParameterizedObject:(id<LTParameterizedObject>)parameterizedObject
                                      usingDiscreteSet:(id<LTFloatSet>)discreteSet
                                              interval:(const lt::Interval<CGFloat> &)interval {
-  CGFloats parametricValues = [discreteSet discreteValuesInInterval:interval];
+  std::vector<CGFloat> parametricValues = [discreteSet discreteValuesInInterval:interval];
 
   if (!parametricValues.size()) {
     return [[LTSampleValues alloc] initWithSampledParametricValues:{} mapping:nil];

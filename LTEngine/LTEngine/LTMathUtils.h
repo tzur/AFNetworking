@@ -22,10 +22,10 @@ NS_INLINE CGFloat LTSmoothstep(CGFloat min, CGFloat max, CGFloat x) {
 
 #ifdef __cplusplus
 
-/// Returns a collection of \c CGFloats representing half a gaussian with the given \c radius and
-/// \c sigma (both must be greater than \c 0). The collection will have \c radius+1 elements, where
-/// the last element is the center of the gaussian. In case \c normalized is \c YES, the sum of all
-/// kernel weights will be \c 1.
-CGFloats LTCreateHalfGaussian(NSUInteger radius, CGFloat sigma, BOOL normalized = YES);
+/// Returns a collection of \c std::vector<CGFloat> representing half a gaussian with the given
+/// \c radius and \c sigma (both must be greater than \c 0). The collection will have \c radius+1
+/// elements, where the last element is the center of the gaussian. In case \c normalized is \c YES,
+/// the sum of all kernel weights will be \c 1.
+std::vector<CGFloat> LTCreateHalfGaussian(NSUInteger radius, CGFloat sigma, BOOL normalized = YES);
 
 #endif

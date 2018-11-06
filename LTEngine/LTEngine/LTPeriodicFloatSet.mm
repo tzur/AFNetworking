@@ -74,12 +74,12 @@ typedef struct {
 #pragma mark LTFloatSet
 #pragma mark -
 
-- (CGFloats)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval {
+- (std::vector<CGFloat>)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval {
   LTDiscreteSequenceStartInfo startInfo = [self startInfoForInterval:interval];
   CGFloat currentValue = startInfo.startValue;
   NSUInteger numberOfRemainingValues = startInfo.numberOfRemainingValues;
 
-  CGFloats result;
+  std::vector<CGFloat> result;
 
   while (currentValue <= interval.sup()) {
     if (interval.contains(currentValue)) {

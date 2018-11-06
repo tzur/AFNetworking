@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats __unused &)values {
+- (LTParameterizationKeyToValues *)
+    mappingForParametricValues:(const std::vector<CGFloat> __unused &)values {
   return self.returnedMapping;
 }
 
@@ -21,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
   return 0;
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats __unused &)values
-                                  key:(NSString __unused *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> __unused &)values
+                                              key:(NSString __unused *)key {
   return {};
 }
 

@@ -78,25 +78,25 @@ context(@"half gaussian", ^{
   });
 
   it(@"should create half gaussian with the given radius", ^{
-    CGFloats gaussian = LTCreateHalfGaussian(4, 2, NO);
+    std::vector<CGFloat> gaussian = LTCreateHalfGaussian(4, 2, NO);
     expect(gaussian.size()).to.equal(5);
   });
 
   it(@"should create half gaussian with the given sigma", ^{
-    CGFloats expected({
+    std::vector<CGFloat> expected({
       1.2151765699650227e-8,
       0.0002676604515298065,
       0.1079819330263797,
       0.7978845608028654
     });
 
-    CGFloats gaussian = LTCreateHalfGaussian(3, 0.5, NO);
+    std::vector<CGFloat> gaussian = LTCreateHalfGaussian(3, 0.5, NO);
     expect(gaussian.size()).to.equal(expected.size());
     for (NSUInteger i = 0; i < expected.size(); ++i) {
       expect(gaussian[i]).to.beCloseToWithin(expected[i], kEpsilon);
     }
 
-    expected = CGFloats({
+    expected = std::vector<CGFloat>({
       0.026995483256594927,
       0.0647587978329471,
       0.12098536225957268,
@@ -111,14 +111,14 @@ context(@"half gaussian", ^{
   });
 
   it(@"should normalize weights of the generated half gaussian", ^{
-    CGFloats expected({
+    std::vector<CGFloat> expected({
       1.341055899866556e-8,
       0.0002953872190732951,
       0.1191677094039017,
       0.880536889966466
     });
 
-    CGFloats gaussian = LTCreateHalfGaussian(3, 0.5, YES);
+    std::vector<CGFloat> gaussian = LTCreateHalfGaussian(3, 0.5, YES);
     expect(gaussian.size()).to.equal(expected.size());
     for (NSUInteger i = 0; i < expected.size(); ++i) {
       expect(gaussian[i]).to.beCloseToWithin(expected[i], kEpsilon);

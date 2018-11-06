@@ -42,7 +42,7 @@ typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 ///
 /// @note This is a convenience method aimed at improving the performance of mapping retrieval for
 /// several parametric values.
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values;
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const std::vector<CGFloat> &)values;
 
 /// Returns the real value for the mapped \c key, for the given parametric \c value. The given
 /// \c key must be in the set of \c parameterizationKeys.
@@ -54,7 +54,8 @@ typedef NSDictionary<NSString *, NSNumber *> LTParameterizationKeyToValue;
 ///
 /// @note This is a convenience method aimed at improving the performance of value retrieval for
 /// several parametric values.
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key;
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key;
 
 /// Keys of the mappings returned by this object. Number of keys does not exceed \c INT_MAX.
 @property (readonly, nonatomic) NSOrderedSet<NSString *> *parameterizationKeys;

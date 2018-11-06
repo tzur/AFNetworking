@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithSampledParametricValues:(const CGFloats &)sampledParametricValues
-                                        mapping:(nullable LTParameterizationKeyToValues *)mapping {
+- (instancetype)
+    initWithSampledParametricValues:(const std::vector<CGFloat> &)sampledParametricValues
+    mapping:(nullable LTParameterizationKeyToValues *)mapping {
   LTParameterAssert(sampledParametricValues.size() <= INT_MAX);
   LTParameterAssert((int)sampledParametricValues.size() == mapping.numberOfValuesPerKey);
 
@@ -47,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)hash {
   size_t seed = 0;
-  lt::hash_combine(seed, std::hash<CGFloats>()(_sampledParametricValues));
+  lt::hash_combine(seed, std::hash<std::vector<CGFloat>>()(_sampledParametricValues));
   lt::hash_combine(seed, self.mappingOfSampledValues.hash);
   return seed;
 }
@@ -67,8 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Given keys (%@) must equal keys (%@) of this instance",
                     sampleValues.mappingOfSampledValues.keys, self.mappingOfSampledValues.keys);
 
-  CGFloats sampledParametricValues = _sampledParametricValues;
-  CGFloats otherSampledParametricValues = sampleValues.sampledParametricValues;
+  std::vector<CGFloat> sampledParametricValues = _sampledParametricValues;
+  std::vector<CGFloat> otherSampledParametricValues = sampleValues.sampledParametricValues;
   sampledParametricValues.insert(sampledParametricValues.end(),
                                  otherSampledParametricValues.cbegin(),
                                  otherSampledParametricValues.cend());

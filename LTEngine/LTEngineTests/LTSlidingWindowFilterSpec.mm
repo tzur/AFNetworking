@@ -27,13 +27,13 @@ context(@"filtering", ^{
   });
 
   it(@"should filter correctly", ^{
-    CGFloats result;
+    std::vector<CGFloat> result;
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:1]);
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:0]);
 
-    CGFloats expected({0, 4, 2, 1});
+    std::vector<CGFloat> expected({0, 4, 2, 1});
     expect(result.size()).to.equal(expected.size());
     for (NSUInteger i = 0; i < expected.size(); ++i) {
       expect(result[i]).to.beCloseToWithin(expected[i], kEpsilon);
@@ -48,13 +48,13 @@ context(@"filtering", ^{
   });
 
   it(@"should fill with the initial value when window is empty", ^{
-    CGFloats result;
+    std::vector<CGFloat> result;
     result.push_back([filter pushValueAndFilter:1]);
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:0]);
 
-    CGFloats expected({7, 3, 1, 0});
+    std::vector<CGFloat> expected({7, 3, 1, 0});
     expect(result.size()).to.equal(expected.size());
     for (NSUInteger i = 0; i < expected.size(); ++i) {
       expect(result[i]).to.beCloseToWithin(expected[i], kEpsilon);
@@ -65,13 +65,13 @@ context(@"filtering", ^{
     expect([filter pushValueAndFilter:1]).to.equal(7);
 
     [filter clear];
-    CGFloats result;
+    std::vector<CGFloat> result;
     result.push_back([filter pushValueAndFilter:2]);
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:0]);
     result.push_back([filter pushValueAndFilter:0]);
 
-    CGFloats expected({14, 6, 2, 0});
+    std::vector<CGFloat> expected({14, 6, 2, 0});
     expect(result.size()).to.equal(expected.size());
     for (NSUInteger i = 0; i < expected.size(); ++i) {
       expect(result[i]).to.beCloseToWithin(expected[i], kEpsilon);

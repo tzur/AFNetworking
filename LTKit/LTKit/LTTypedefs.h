@@ -12,9 +12,6 @@
 #pragma mark CoreGraphics
 #pragma mark -
 
-/// A collection of \c CGFloat.
-typedef std::vector<CGFloat> CGFloats;
-
 /// A collection of \c CGPoint.
 typedef std::vector<CGPoint> CGPoints;
 

@@ -40,8 +40,8 @@ context(@"std containers", ^{
 
   context(@"hashing std::vector", ^{
     it(@"should hash std::vector", ^{
-      size_t hash0 = std::hash<CGFloats>()({1, 2});
-      size_t hash1 = std::hash<CGFloats>()({1, 2});
+      size_t hash0 = std::hash<std::vector<CGFloat>>()({1, 2});
+      size_t hash1 = std::hash<std::vector<CGFloat>>()({1, 2});
       expect(hash0).to.equal(hash1);
     });
   });

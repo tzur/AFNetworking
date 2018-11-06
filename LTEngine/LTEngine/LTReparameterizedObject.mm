@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
           mappingForParametricValue:[self reparameterizedParametricValue:value]];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const std::vector<CGFloat> &)values {
   return [self.parameterizedObject
           mappingForParametricValues:[self reparameterizedParametricValues:values]];
 }
@@ -70,7 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
           floatForParametricValue:[self reparameterizedParametricValue:value] key:key];
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   return [self.parameterizedObject
           floatsForParametricValues:[self reparameterizedParametricValues:values] key:key];
 }
@@ -102,8 +103,8 @@ NS_ASSUME_NONNULL_BEGIN
   return min + result * (max - min);
 }
 
-- (CGFloats)reparameterizedParametricValues:(const CGFloats &)values {
-  CGFloats result(values.size());
+- (std::vector<CGFloat>)reparameterizedParametricValues:(const std::vector<CGFloat> &)values {
+  std::vector<CGFloat> result(values.size());
   std::transform(values.cbegin(), values.cend(), result.begin(), [self](const CGFloat &value) {
     return [self reparameterizedParametricValue:value];
   });

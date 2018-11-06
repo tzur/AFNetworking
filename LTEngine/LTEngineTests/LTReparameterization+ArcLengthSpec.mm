@@ -7,10 +7,10 @@
 #import "LTParameterizedValueObject.h"
 
 @interface LTParameterizedTestObject : NSObject <LTParameterizedValueObject>
-@property (nonatomic) CGFloats receivedValuesForXKey;
-@property (nonatomic) CGFloats receivedValuesForYKey;
-@property (nonatomic) CGFloats returnedValuesForXKey;
-@property (nonatomic) CGFloats returnedValuesForYKey;
+@property (nonatomic) std::vector<CGFloat> receivedValuesForXKey;
+@property (nonatomic) std::vector<CGFloat> receivedValuesForYKey;
+@property (nonatomic) std::vector<CGFloat> returnedValuesForXKey;
+@property (nonatomic) std::vector<CGFloat> returnedValuesForYKey;
 @end
 
 @implementation LTParameterizedTestObject
@@ -23,7 +23,8 @@
   LTMethodNotImplemented();
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats __unused &)values {
+- (LTParameterizationKeyToValues *)
+    mappingForParametricValues:(const std::vector<CGFloat> __unused &)values {
   LTMethodNotImplemented();
 }
 
@@ -31,7 +32,8 @@
   LTMethodNotImplemented();
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   if ([key isEqualToString:@"xCoordinate"]) {
     self.receivedValuesForXKey = values;
     return self.returnedValuesForXKey;
@@ -140,8 +142,13 @@ context(@"valid API calls", ^{
                                                   minParametricValue:desiredMinParametricValue
                                    parameterizationKeyForXCoordinate:@"xCoordinate"
                                    parameterizationKeyForYCoordinate:@"yCoordinate"];
-      CGFloats values{parameterizedObject.minParametricValue, 3, 4, 5,
-                      parameterizedObject.maxParametricValue};
+      std::vector<CGFloat> values{
+        parameterizedObject.minParametricValue,
+        3,
+        4,
+        5,
+        parameterizedObject.maxParametricValue
+      };
       expectedValues = $(values);
     });
 

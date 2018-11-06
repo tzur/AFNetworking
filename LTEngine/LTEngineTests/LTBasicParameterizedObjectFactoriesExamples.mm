@@ -61,7 +61,7 @@ sharedExamplesFor(kLTBasicParameterizedObjectFactoryExamples, ^(NSDictionary *da
   context(@"computation of basic parameterized objects", ^{
     context(@"invalid API calls", ^{
       it(@"should raise when attempting to compute object from values with invalid count", ^{
-        CGFloats valuesWithInvalidCount;
+        std::vector<CGFloat> valuesWithInvalidCount;
         for (NSUInteger i = 0; i < numberOfRequiredValues + 1; ++i) {
           valuesWithInvalidCount.push_back(0);
         }
@@ -80,7 +80,7 @@ sharedExamplesFor(kLTBasicParameterizedObjectFactoryExamples, ^(NSDictionary *da
         initializationValues = data[kLTBasicParameterizedObjectFactoryValues];
         expectedValues = data[kLTBasicParameterizedObjectFactoryComputedValues];
 
-        CGFloats unboxedInitializationValues;
+        std::vector<CGFloat> unboxedInitializationValues;
         for (NSNumber *initializationValue in initializationValues) {
           unboxedInitializationValues.push_back([initializationValue CGFloatValue]);
         }

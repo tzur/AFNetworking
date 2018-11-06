@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// and b) the interval of the intrinsic parametric range of the \c object for which no values have
 /// been returned yet. Returns \c {} if the next parametric values would be outside the intrinsic
 /// parametric range of the \c object. The returned values are monotonically increasing.
-- (CGFloats)nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object;
+- (std::vector<CGFloat>)
+    nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object;
 
 /// Returns an immutable model representing the current state of this object.
 - (id<LTContinuousParametricValueProviderModel>)currentModel;

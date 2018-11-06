@@ -59,7 +59,7 @@ context(@"value retrieval", ^{
   it(@"should retrieve the correct values for a given key", ^{
     cv::Mat1g expectedValues = values.row(0);
 
-    CGFloats retrievedValues = [mapping valuesForKey:kFirstKey];
+    std::vector<CGFloat> retrievedValues = [mapping valuesForKey:kFirstKey];
 
     expect(retrievedValues.size()).to.equal(3);
     expect(retrievedValues[0]).to.equal(expectedValues(0, 0));
@@ -68,10 +68,10 @@ context(@"value retrieval", ^{
   });
 
   it(@"should retrieve the correct values for a given key, at given indices", ^{
-    CGFloats expectedValues = {1, 3};
+    std::vector<CGFloat> expectedValues = {1, 3};
     NSArray<NSNumber *> *boxedExpectedValues = $(expectedValues);
 
-    CGFloats retrievedValues = [mapping valuesForKey:kFirstKey atIndices:{0, 2}];
+    std::vector<CGFloat> retrievedValues = [mapping valuesForKey:kFirstKey atIndices:{0, 2}];
 
     NSArray<NSNumber *> *boxedRetrievedValues = $(retrievedValues);
     expect(boxedRetrievedValues).to.equal(boxedExpectedValues);

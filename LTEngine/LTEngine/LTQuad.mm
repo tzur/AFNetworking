@@ -221,7 +221,7 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
 
 + (CGFloat)minimalDistanceOfPoints:(const LTQuadCorners &)points {
   NSUInteger size = points.size();
-  CGFloats distances((size * (size - 1)) / 2);
+  std::vector<CGFloat> distances((size * (size - 1)) / 2);
   NSUInteger currentIndex = 0;
   for (NSUInteger i = 0; i < size; ++i) {
     for (NSUInteger j = 0; j < i; ++j) {

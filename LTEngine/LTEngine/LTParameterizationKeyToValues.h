@@ -17,11 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
                 valuesPerKey:(const cv::Mat1g &)valuesPerKey NS_DESIGNATED_INITIALIZER;
 
 /// Returns the values of the matrix row determined by the given \c key.
-- (CGFloats)valuesForKey:(NSString *)key;
+- (std::vector<CGFloat>)valuesForKey:(NSString *)key;
 
 /// Returns the values of the matrix row determined by the given \c key, at the given \c indices.
 /// Every index of the given \c indices must be smaller than the number of columns of the matrix.
-- (CGFloats)valuesForKey:(NSString *)key atIndices:(const std::vector<NSUInteger> &)indices;
+- (std::vector<CGFloat>)valuesForKey:(NSString *)key
+                           atIndices:(const std::vector<NSUInteger> &)indices;
 
 /// Keys mapping to the corresponding values, stored in the matrix rows.
 @property (readonly, nonatomic) NSOrderedSet<NSString *> *keys;

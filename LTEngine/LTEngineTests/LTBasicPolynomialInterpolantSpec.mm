@@ -10,13 +10,13 @@ static const CGFloat kEpsilon = 1e-6;
 __block LTBasicPolynomialInterpolant *interpolant;
 
 beforeEach(^{
-  CGFloats coefficients{1, 2, 3, 4};
+  std::vector<CGFloat> coefficients{1, 2, 3, 4};
   interpolant = [[LTBasicPolynomialInterpolant alloc] initWithCoefficients:coefficients];
 });
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
-    CGFloats coefficients = interpolant.coefficients;
+    std::vector<CGFloat> coefficients = interpolant.coefficients;
     expect(coefficients.size()).to.equal(4);
     expect(coefficients[0]).to.equal(1);
     expect(coefficients[1]).to.equal(2);

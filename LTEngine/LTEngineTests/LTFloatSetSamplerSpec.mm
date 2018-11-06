@@ -11,12 +11,12 @@
 #import "LTSamplerTestUtils.h"
 
 @interface LTFloatSetSamplerTestSet : NSObject <LTFloatSet>
-@property (nonatomic) CGFloats values;
+@property (nonatomic) std::vector<CGFloat> values;
 @end
 
 @implementation LTFloatSetSamplerTestSet
 
-- (CGFloats)discreteValuesInInterval:(__unused const lt::Interval<CGFloat> &)interval {
+- (std::vector<CGFloat>)discreteValuesInInterval:(__unused const lt::Interval<CGFloat> &)interval {
   return self.values;
 }
 
@@ -79,7 +79,7 @@ beforeEach(^{
 
 context(@"sampling", ^{
   it(@"should sample a given parameterized object", ^{
-    CGFloats values = {1, 2, 3};
+    std::vector<CGFloat> values = {1, 2, 3};
     floatSet.values = values;
 
     parameterizedObject.expectedParametricValues = values;
@@ -96,7 +96,7 @@ context(@"sampling", ^{
   });
 
   it(@"should provide valid sample values when object is sampled outside parametric range", ^{
-    CGFloats values = {};
+    std::vector<CGFloat> values = {};
     floatSet.values = values;
 
     cv::Mat1g matrix(1, 0);

@@ -88,12 +88,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(__unused BOOL)end {
   LTParameterizationKeyToValues *mapping = samples.mappingOfSampledValues;
-  CGFloats sampledParametricValues = samples.sampledParametricValues;
+  std::vector<CGFloat> sampledParametricValues = samples.sampledParametricValues;
 
   [self validateMapping:mapping];
 
-  CGFloats xCoordinates = [mapping valuesForKey:self.xCoordinateKey];
-  CGFloats yCoordinates = [mapping valuesForKey:self.yCoordinateKey];
+  std::vector<CGFloat> xCoordinates = [mapping valuesForKey:self.xCoordinateKey];
+  std::vector<CGFloat> yCoordinates = [mapping valuesForKey:self.yCoordinateKey];
 
   LTAssert(xCoordinates.size() == yCoordinates.size(),
            @"Number (%lu) of x-coordinates does not match number (%lu) of y-coordinates",
