@@ -38,7 +38,7 @@ it(@"should send updates correctly when authorization status changes", ^{
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusDenied), nil])]);
   expect([manager requestAuthorizationFromViewController:viewController])
       .to.sendValues(@[$(PTNAuthorizationStatusDenied)]);
-  
+
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusRestricted), nil])]);
   expect([manager requestAuthorizationFromViewController:viewController])
@@ -47,7 +47,7 @@ it(@"should send updates correctly when authorization status changes", ^{
 
 it(@"should update property when authorization status changes", ^{
   LLSignalTestRecorder *recorder = [RACObserve(manager, authorizationStatus) testRecorder];
-  
+
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusAuthorized), nil])]);
   [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
@@ -55,11 +55,11 @@ it(@"should update property when authorization status changes", ^{
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusDenied), nil])]);
   [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
-  
+
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusRestricted), nil])]);
   [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
-  
+
   expect(recorder).to.sendValues(@[
     $(PTNAuthorizationStatusNotDetermined),
     $(PTNAuthorizationStatusAuthorized),
