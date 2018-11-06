@@ -1,11 +1,15 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
+#import "PTNAlbum.h"
+#import "PTNCacheInfo.h"
+#import "PTNCacheResponse.h"
+#import "PTNDataBackedImageAsset.h"
+#import "PTNDescriptor.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbum, PTNDataAsset, PTNDataCache, PTNDescriptor, PTNResizingStrategy;
-
-@class PTNCacheInfo;
+@protocol PTNDataAsset, PTNDataCache, PTNResizingStrategy;
 
 /// Protocol representing a cache made for the Photons framework, capable of storing and fetching
 /// Photons entities with associated information as an \c PTNCacheInfo in a thread safe manner.
@@ -27,16 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// not stored in the cache or if they were purged by the caching system to make room for other
 /// objects. The returned signal will err if an error occurred while fetching the album and its
 /// information.
-///
-/// @return RACSignal<nullable PTNCacheResponse<id<PTNAlbum>, PTNCacheInfo *>>
-- (RACSignal *)cachedAlbumForURL:(NSURL *)url;
+- (RACSignal<PTNCacheResponse<id<PTNAlbum>, PTNCacheInfo *> *> *)cachedAlbumForURL:(NSURL *)url;
 
 /// Stores \c descriptor and \c cacheInfo under \c url as the key. This method is non blocking.
 ///
 /// @note Storage is taking place in memory. Therefore the descriptor and it's cache information may
 /// be unserializable, but are assumed to be immutable.
 - (void)storeDescriptor:(id<PTNDescriptor>)descriptor withCacheInfo:(PTNCacheInfo *)cacheInfo
-                forURL:(NSURL *)url;
+                 forURL:(NSURL *)url;
 
 /// Retrieves \c PTNDescriptor and \c PTNCacheInfo previously stored with \c url. The returned
 /// signal will send a single \c PTNCacheResponse and complete if descriptor and its cache
@@ -45,9 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// will not be found if they were not stored in the cache or if they were purged by the caching
 /// system to make room for other objects. The returned signal will err if an error occurred while
 /// fetching the descriptor and its information.
-///
-/// @return RACSignal<nullable PTNCacheResponse<id<PTNDescriptor>, PTNCacheInfo *>>
-- (RACSignal *)cachedDescriptorForURL:(NSURL *)url;
+- (RACSignal<PTNCacheResponse<id<PTNDescriptor>, PTNCacheInfo *> *> *)
+    cachedDescriptorForURL:(NSURL *)url;
 
 /// Stores \c imageAsset and \c cacheInfo under \c url as the key. This method is non blocking.
 ///
@@ -64,10 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// they were not stored in the cache or if they were purged by the caching system to make room for
 /// other objects. The returned signal will err if an error occurred while fetching the descriptor
 /// and its information.
-///
-/// @return RACSignal<nullable PTNCacheResponse<PTNDataBackedAsset *, PTNCacheInfo *>>
-- (RACSignal *)cachedImageAssetForURL:(NSURL *)url
-                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy;
+- (RACSignal<PTNCacheResponse<PTNDataBackedImageAsset *, PTNCacheInfo *> *> *)
+    cachedImageAssetForURL:(NSURL *)url resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy;
 
 /// Clears the cache from all stored data.
 - (void)clearCache;

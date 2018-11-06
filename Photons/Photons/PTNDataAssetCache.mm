@@ -47,7 +47,7 @@ static NSString const * kDescriptorKey = @"com.lightricks.Photons.descriptor";
   [self.cache storeInfo:info forURL:url];
 }
 
-- (RACSignal *)cachedAlbumForURL:(NSURL *)url {
+- (RACSignal<PTNCacheResponse<id<PTNAlbum>, PTNCacheInfo *> *> *)cachedAlbumForURL:(NSURL *)url {
   return [[self.cache cachedDataForURL:url]
       map:^id(PTNCacheResponse<NSData *, NSDictionary *> *response) {
         if (![response.info[kCacheInfoKey] isKindOfClass:[PTNCacheInfo class]] ||
@@ -70,7 +70,8 @@ static NSString const * kDescriptorKey = @"com.lightricks.Photons.descriptor";
   [self.cache storeInfo:info forURL:url];
 }
 
-- (RACSignal *)cachedDescriptorForURL:(NSURL *)url {
+- (RACSignal<PTNCacheResponse<id<PTNDescriptor>, PTNCacheInfo *> *> *)
+    cachedDescriptorForURL:(NSURL *)url {
   return [[self.cache cachedDataForURL:url]
       map:^id(PTNCacheResponse<NSData *, NSDictionary *> *response) {
         if (![response.info[kCacheInfoKey] isKindOfClass:[PTNCacheInfo class]] ||
@@ -94,8 +95,8 @@ static NSString const * kDescriptorKey = @"com.lightricks.Photons.descriptor";
   }];
 }
 
-- (RACSignal *)cachedImageAssetForURL:(NSURL *)url
-                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+- (RACSignal<PTNCacheResponse<PTNDataBackedImageAsset *, PTNCacheInfo *> *> *)
+    cachedImageAssetForURL:(NSURL *)url resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   return [[self.cache cachedDataForURL:url]
       map:^id(PTNCacheResponse<NSData *, NSDictionary *> *response) {
         if (![response.data length] || !response.info[kCacheInfoKey] ||
