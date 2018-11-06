@@ -46,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTNCacheAwarreAssetManager
 #pragma mark -
 
-- (RACSignal *)validateAlbumWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag {
+- (RACSignal<NSValue *> *)validateAlbumWithURL:(NSURL *)url
+                                     entityTag:(nullable NSString *)entityTag {
   RACTuple *urlWithEtag = RACTuplePack(url, entityTag);
 
   if (!self.albumValidationRequests[urlWithEtag]) {
@@ -56,7 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self.albumValidationRequests[urlWithEtag];
 }
 
-- (RACSignal *)validateDescriptorWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag {
+- (RACSignal<NSValue *> *)validateDescriptorWithURL:(NSURL *)url
+                                          entityTag:(nullable NSString *)entityTag {
   RACTuple *urlWithEtag = RACTuplePack(url, entityTag);
 
   if (!self.descriptorValidationRequests[urlWithEtag]) {
@@ -66,10 +68,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self.descriptorValidationRequests[urlWithEtag];
 }
 
-- (RACSignal *)validateImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                          resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
-                                   options:(PTNImageFetchOptions *)options
-                                 entityTag:(nullable NSString *)entityTag {
+- (RACSignal<NSValue *> *)validateImageWithDescriptor:(id<PTNDescriptor>)descriptor
+                                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                                              options:(PTNImageFetchOptions *)options
+                                            entityTag:(nullable NSString *)entityTag {
   PTNImageRequest *request = [[PTNImageRequest alloc] initWithDescriptor:descriptor
                                                         resizingStrategy:resizingStrategy
                                                                  options:options];

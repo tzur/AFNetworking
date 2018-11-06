@@ -20,24 +20,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// originally provided for the album) represents the album that would have been fetched with
 /// \c url. The signal then completes. The signal errs with \c PTNErrorCodeCacheValidationFailed
 /// error code if an error occurred while validating the album.
-- (RACSignal *)validateAlbumWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag;
+- (RACSignal<NSValue *> *)validateAlbumWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag;
 
 /// Returns a signal that sends \c YES if the \c PTNDescriptor identified with \c entityTag (if
 /// originally provided for the descriptor) represents the descriptor that would have been fetched
 /// with \c url. The signal then completes. The signal errs with
 /// \c PTNErrorCodeCacheValidationFailed error code if an error occurred while validating the
 /// descriptor.
-- (RACSignal *)validateDescriptorWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag;
+- (RACSignal<NSValue *> *)validateDescriptorWithURL:(NSURL *)url
+                                          entityTag:(nullable NSString *)entityTag;
 
 /// Returns a signal that sends \c YES if the \c PTNImageAsset identified with \c entityTag (if
 /// originally provided for the image asset) represents the image asset that would have been fetched
 /// with \c descriptor, \c resizingStrategy and \c options. The signal then completes. The signal
 /// errs with \c PTNErrorCodeCacheValidationFailed error code if an error occurred while validating
 /// the image asset.
-- (RACSignal *)validateImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                          resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
-                                   options:(PTNImageFetchOptions *)options
-                                 entityTag:(nullable NSString *)entityTag;
+- (RACSignal<NSValue *> *)validateImageWithDescriptor:(id<PTNDescriptor>)descriptor
+                                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                                              options:(PTNImageFetchOptions *)options
+                                            entityTag:(nullable NSString *)entityTag;
 
 /// Returns a generic representation of the image asset that will be fetched with \c descriptor
 /// \c resizingStrategy and \c options if available or \c nil if no such representation is
