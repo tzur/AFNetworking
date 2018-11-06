@@ -44,12 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSourceMapping:(PTNSchemeToAuthorizerMap *)sourceMapping
               authorizedSchemes:(NSArray<NSString *> *)authorizedSchemes {
   NSMutableDictionary<NSString *, id<PTNAuthorizationManager>> *map = [sourceMapping mutableCopy];
-  
+
   id<PTNAuthorizationManager> acceptingManager = [[PTNAcceptingAuthorizationManager alloc] init];
   for (NSString *scheme in authorizedSchemes) {
     map[scheme] = acceptingManager;
   }
-  
+
   return [self initWithSourceMapping:map];
 }
 
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
                                           description:@"Unsupported scheme: %@", scheme]];
   }
-  
+
   return [authorizationManager requestAuthorizationFromViewController:viewController];
 }
 
@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
                                           description:@"Unsupported scheme: %@", scheme]];
   }
-  
+
   return [authorizationManager revokeAuthorization];
 }
 

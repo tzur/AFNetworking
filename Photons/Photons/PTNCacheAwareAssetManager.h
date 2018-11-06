@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// originally provided for the album) represents the album that would have been fetched with
 /// \c url. The signal then completes. The signal errs with \c PTNErrorCodeCacheValidationFailed
 /// error code if an error occurred while validating the album.
-- (RACSignal<NSValue *> *)validateAlbumWithURL:(NSURL *)url entityTag:(nullable NSString *)entityTag;
+- (RACSignal<NSValue *> *)validateAlbumWithURL:(NSURL *)url
+                                     entityTag:(nullable NSString *)entityTag;
 
 /// Returns a signal that sends \c YES if the \c PTNDescriptor identified with \c entityTag (if
 /// originally provided for the descriptor) represents the descriptor that would have been fetched
