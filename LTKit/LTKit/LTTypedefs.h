@@ -12,9 +12,6 @@
 #pragma mark CoreGraphics
 #pragma mark -
 
-/// A collection of \c CGSize.
-typedef std::vector<CGSize> CGSizes;
-
 /// A collection of \c CGRect.
 typedef std::vector<CGRect> CGRects;
 

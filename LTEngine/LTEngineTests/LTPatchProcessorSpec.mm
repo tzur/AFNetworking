@@ -9,7 +9,7 @@
 
 SpecBegin(LTPatchProcessor)
 
-const CGSizes kWorkingSizes{CGSizeMake(64, 64)};
+const std::vector<CGSize> kWorkingSizes{CGSizeMake(64, 64)};
 
 context(@"initialization", ^{
   const CGSize kSize = CGSizeMake(16, 16);
@@ -61,7 +61,7 @@ context(@"initialization", ^{
 
   it(@"should raise when working size is not a power of two", ^{
     expect(^{
-      CGSizes workingSizes{CGSizeMake(32, 32), CGSizeMake(62, 64)};
+      std::vector<CGSize> workingSizes{CGSizeMake(32, 32), CGSizeMake(62, 64)};
       LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
                                               initWithWorkingSizes:workingSizes
                                               mask:mask
