@@ -1,9 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
-#import "PTNIncrementalChanges.h"
-
 #import "PTNAlbumChangesetMove.h"
+#import "PTNIncrementalChanges.h"
 
 SpecBegin(PTNIncrementalChanges)
 

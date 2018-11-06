@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPhotoLibrary:(id<PTNPhotoLibrary>)photoLibrary {
   if (self = [super init]) {
     _photoLibrary = photoLibrary;
-    
+
     @weakify(self);
     _multicastedPhotoLibraryChanges = [[[RACSignal
         defer:^RACSignal *{
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
     if ([self.photoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
     }
-    
+
     [self.multicastedPhotoLibraryChanges connect];
     return self.multicastedPhotoLibraryChanges.signal;
   }];
