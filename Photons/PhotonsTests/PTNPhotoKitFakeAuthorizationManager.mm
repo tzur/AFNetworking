@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
   LTMethodNotImplemented();
 }
 

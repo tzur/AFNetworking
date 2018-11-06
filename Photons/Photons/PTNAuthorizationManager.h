@@ -16,9 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// been prematurely terminated the signal will err with an appropriate error.
 ///
 /// The signal operates or errs on an arbitrary thread.
-///
-/// @return <tt>RACSignal<PTNAuthorizationStatus *></tt>.
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController *)viewController;
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationFromViewController:(UIViewController *)viewController;
 
 @optional
 
