@@ -4,19 +4,6 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <GLKit/GLKit.h>
 
-#ifdef __cplusplus
-
-#import <vector>
-
-#pragma mark -
-#pragma mark Scalar
-#pragma mark -
-
-/// A collection of \c GLuint.
-typedef std::vector<GLuint> GLuints;
-
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Various typedefs that are applicable across LTKit.
