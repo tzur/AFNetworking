@@ -599,6 +599,13 @@ context(@"relationship point and line/edge", ^{
     expect(LTPointOnLineClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointZero, kEpsilon);
   });
 
+  it(@"should correctly compute the closest point on a degenerated line from a given point", ^{
+    CGPoint a = CGPointMake(7, 8);
+    CGPoint b = a;
+    CGPoint point = CGPointMake(0.5, 0.5);
+    expect(LTPointOnLineClosestToPoint(a, b, point)).to.beCloseToPointWithin(a, kEpsilon);
+  });
+
   it(@"should correctly compute the closest point on an edge from a given point", ^{
     CGPoint a = CGPointZero;
     CGPoint b = CGPointMake(1, 0);
@@ -616,6 +623,13 @@ context(@"relationship point and line/edge", ^{
     b = CGPointMake(0, 1);
     point = CGPointMake(-2, -1);
     expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+  });
+
+  it(@"should correctly compute the closest point on a degenerated edge from a given point", ^{
+    auto a = CGPointMake(-7.1, 5.31);
+    auto b = a;
+    auto point = CGPointMake(-1.5, -0.5);
+    expect(LTPointOnEdgeClosestToPoint(a, b, point)).to.beCloseToPointWithin(a, kEpsilon);
   });
 
   it(@"should correctly compute the two closest points on two given edges", ^{
@@ -776,6 +790,14 @@ context(@"relationship point and line/edge", ^{
         point = CGPointMake(8.5, 0);
         expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(3.5, kEpsilon);
       });
+
+      it(@"should correctly compute the distance from degenerated line", ^{
+        auto a = CGPointMake(2.1, 3.1);
+        auto b = a;
+        auto point = CGPointMake(3, 5);
+        expect(LTDistanceFromLine(a, b, point)).to.beCloseToWithin(CGPointDistance(a, point),
+                                                                   kEpsilon);
+      });
     });
 
     context(@"distance of point from edge", ^{
@@ -815,6 +837,14 @@ context(@"relationship point and line/edge", ^{
         b = CGPointMake(5, -1);
         point = CGPointMake(8.5, 0);
         expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(3.640054944640259, kEpsilon);
+      });
+
+      it(@"should correctly compute the distance from a degenerated edge", ^{
+        auto a = CGPointMake(1.1, 2.2);
+        auto b = a;
+        auto point = CGPointMake(3.3, 4.4);
+        expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(CGPointDistance(a, point),
+                                                                   kEpsilon);
       });
     });
 
