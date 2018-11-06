@@ -41,8 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
           @strongify(self);
           [self.photoLibrary registerChangeObserver:self];
           return [[self rac_signalForSelector:@selector(photoLibraryDidChange:)
-                                fromProtocol:@protocol(PHPhotoLibraryChangeObserver)]
-              reduceEach:^(PHChange *change) {
+                                 fromProtocol:@protocol(PHPhotoLibraryChangeObserver)]
+              reduceEach:(id)^PHChange *(PHChange *change) {
                 return change;
               }];
         }]
