@@ -9,13 +9,6 @@
 #import <vector>
 
 #pragma mark -
-#pragma mark CoreGraphics
-#pragma mark -
-
-/// A collection of \c CGRect.
-typedef std::vector<CGRect> CGRects;
-
-#pragma mark -
 #pragma mark Scalar
 #pragma mark -
 

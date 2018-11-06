@@ -51,7 +51,7 @@ context(@"atlas producing", ^{
 
     it(@"should have correct area x origins", ^{
       it(@"should produce areas with correct origins", ^{
-        CGRects areasSortedByXOrigin;
+        std::vector<CGRect> areasSortedByXOrigin;
 
         for (const auto &keyValue : atlas.spatialDataMap) {
           areasSortedByXOrigin.push_back(keyValue.second.area);

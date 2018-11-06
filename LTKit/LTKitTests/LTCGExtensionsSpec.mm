@@ -214,15 +214,15 @@ context(@"cgrect operations", ^{
     });
 
     it(@"should return the given rect if verticalCount is equal to 0", ^{
-      expect(CGRectRegularGrid(rect, 2, 0) == CGRects{rect}).to.beTruthy();
+      expect(CGRectRegularGrid(rect, 2, 0) == std::vector<CGRect>{rect}).to.beTruthy();
     });
 
     it(@"should return the given rect if horizontalCount is equal to 0", ^{
-      expect(CGRectRegularGrid(rect, 0, 2) == CGRects{rect}).to.beTruthy();
+      expect(CGRectRegularGrid(rect, 0, 2) == std::vector<CGRect>{rect}).to.beTruthy();
     });
 
     it(@"should return the correct rects for non-zero verticalCount and horizontalCount", ^{
-      CGRects rects = CGRectRegularGrid(rect, 2, 4);
+      std::vector<CGRect> rects = CGRectRegularGrid(rect, 2, 4);
       CGSize size = CGSizeMake(1.5, 1);
 
       expect(rects[0] == CGRectFromOriginAndSize(CGPointMake(0, 0), size)).to.beTruthy();
