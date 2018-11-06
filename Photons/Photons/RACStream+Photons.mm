@@ -8,18 +8,18 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation RACStream (Photons)
 
 - (__kindof RACStream *)ptn_identicallyDistinctUntilChanged {
-  Class class = self.class;
+  Class localSelfClass = self.class;
 
-  return [[self bind:^{
+  return [[self bind:^RACStreamBindBlock(){
     __block id lastValue = nil;
     __block BOOL initial = YES;
 
     return ^(id x, BOOL __unused *stop) {
-      if (!initial && (lastValue == x)) return [class empty];
+      if (!initial && (lastValue == x)) return [localSelfClass empty];
 
       initial = NO;
       lastValue = x;
-      return [class return:x];
+      return [localSelfClass return:x];
     };
   }] setNameWithFormat:@"[%@] -ptn_identicallyDistinctUntilChanged", self.name];
 }
