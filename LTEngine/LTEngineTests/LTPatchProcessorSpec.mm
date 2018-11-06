@@ -366,7 +366,8 @@ context(@"processing", ^{
       [target clearColor:LTVector4(0, 0, 1, 1)];
 
       processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
-                                                          source:source target:target output:output];
+                                                          source:source target:target
+                                                          output:output];
       processor.targetQuad =
           [LTQuad quadFromRect:CGRectMake(8, 8, kSourceSize.width, kSourceSize.height)];
       [processor process];

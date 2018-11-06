@@ -2,7 +2,6 @@
 // Created by Rouven Strauss.
 
 #import "LTContinuousParametricValueProvider.h"
-
 #import "LTInterval.h"
 
 NS_ASSUME_NONNULL_BEGIN
