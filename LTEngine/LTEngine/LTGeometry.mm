@@ -24,7 +24,7 @@ LTPointLocation LTPointLocationRelativeToRay(CGPoint point, CGPoint origin, CGPo
   return LTPointLocationLeftOfRay;
 }
 
-BOOL LTPointsAreCollinear(const CGPoints &points) {
+BOOL LTPointsAreCollinear(const std::vector<CGPoint> &points) {
   NSUInteger numPoints = points.size();
   if (numPoints <= 2) {
     return YES;
@@ -35,7 +35,7 @@ BOOL LTPointsAreCollinear(const CGPoints &points) {
   // computed, which is not done at this point for efficiency and simplicity.
   CGPoint furthestPoint = points[1];
   CGFloat furthestPointDistanceSquared = CGPointDistanceSquared(furthestPoint, points[0]);
-  for (CGPoints::size_type i = 2; i < numPoints; ++i) {
+  for (std::vector<CGPoint>::size_type i = 2; i < numPoints; ++i) {
     CGFloat currentDistanceSquared = CGPointDistanceSquared(points[i], points[0]);
     if (currentDistanceSquared > furthestPointDistanceSquared) {
       furthestPoint = points[i];
@@ -66,10 +66,10 @@ static bool LTConvexHullPointComparison(CGPoint p, CGPoint q) {
 }
 
 /// For implementation details, @see http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain.
-CGPoints LTConvexHull(const CGPoints &points) {
+std::vector<CGPoint> LTConvexHull(const std::vector<CGPoint> &points) {
   NSUInteger n = points.size();
-  CGPoints result(2 * n);
-  CGPoints sortedPoints = points;
+  std::vector<CGPoint> result(2 * n);
+  std::vector<CGPoint> sortedPoints = points;
   std::sort(sortedPoints.begin(), sortedPoints.end(), LTConvexHullPointComparison);
 
   // Construct lower hull.
@@ -113,8 +113,8 @@ CGPoints LTConvexHull(const CGPoints &points) {
 #pragma mark Boundary
 #pragma mark -
 
-static CGPoints LTCGPointsFromCVPoints(const std::vector<cv::Point> &points) {
-  CGPoints output(points.size());
+static std::vector<CGPoint> LTCGPointsFromCVPoints(const std::vector<cv::Point> &points) {
+  std::vector<CGPoint> output(points.size());
 
   std::transform(points.begin(), points.end(), output.begin(), [](const cv::Point &point) {
     return CGPointMake(point.x, point.y);
@@ -135,15 +135,15 @@ static std::vector<std::vector<cv::Point>> LTContours(const cv::Mat &mat, int mo
   return contours;
 }
 
-CGPoints LTOuterBoundary(const cv::Mat &mat) {
+std::vector<CGPoint> LTOuterBoundary(const cv::Mat &mat) {
   std::vector<std::vector<cv::Point>> contours = LTContours(mat, cv::RETR_EXTERNAL);
-  return !contours.size() ? CGPoints() : LTCGPointsFromCVPoints(contours[0]);
+  return !contours.size() ? std::vector<CGPoint>() : LTCGPointsFromCVPoints(contours[0]);
 }
 
-std::vector<CGPoints> LTBoundaries(const cv::Mat &mat) {
+std::vector<std::vector<CGPoint>> LTBoundaries(const cv::Mat &mat) {
   std::vector<std::vector<cv::Point>> contours = LTContours(mat, cv::RETR_LIST);
 
-  std::vector<CGPoints> boundaries;
+  std::vector<std::vector<CGPoint>> boundaries;
   for(auto contour : contours) {
     boundaries.push_back(LTCGPointsFromCVPoints(contour));
   }
@@ -171,11 +171,11 @@ CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor) {
 // TODO:(Rouven) This method implements a naive O(n^2) approach. More efficient algorithms are
 // possible and should be implemented if required. E.g. the Bentley Ottmann sweep line algorithm
 // solves this problem in O(n log n).
-BOOL LTIsSelfIntersectingPolyline(const CGPoints &points) {
-  for (CGPoints::size_type i = 0; i + 1 < points.size(); ++i) {
+BOOL LTIsSelfIntersectingPolyline(const std::vector<CGPoint> &points) {
+  for (std::vector<CGPoint>::size_type i = 0; i + 1 < points.size(); ++i) {
     CGPoint p0 = points[i];
     CGPoint p1 = points[i + 1];
-    for (CGPoints::size_type j = i + 1; j + 1 < points.size(); ++j) {
+    for (std::vector<CGPoint>::size_type j = i + 1; j + 1 < points.size(); ++j) {
       CGPoint q0 = points[j];
       CGPoint q1 = points[j + 1];
       CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
@@ -188,12 +188,12 @@ BOOL LTIsSelfIntersectingPolyline(const CGPoints &points) {
 }
 
 // TODO:(Rouven) See comment about efficiency of LTIsSelfIntersectingPolyline.
-CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
-  CGPoints result;
-  for (CGPoints::size_type i = 0; i + 1 < points.size(); ++i) {
+std::vector<CGPoint> LTComputeIntersectionPointsOfPolyLine(const std::vector<CGPoint> &points) {
+  std::vector<CGPoint> result;
+  for (std::vector<CGPoint>::size_type i = 0; i + 1 < points.size(); ++i) {
     CGPoint p0 = points[i];
     CGPoint p1 = points[i + 1];
-    for (CGPoints::size_type j = i + 1; j + 1 < points.size(); ++j) {
+    for (std::vector<CGPoint>::size_type j = i + 1; j + 1 < points.size(); ++j) {
       CGPoint q0 = points[j];
       CGPoint q1 = points[j + 1];
       CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
@@ -206,13 +206,13 @@ CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points) {
 }
 
 // TODO:(Rouven) See comment about efficiency of LTIsSelfIntersectingPolyline.
-CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
-                                                const CGPoints &polyline1) {
-  CGPoints result;
-  for (CGPoints::size_type i = 0; i + 1 < polyline0.size(); ++i) {
+std::vector<CGPoint> LTComputeIntersectionPointsOfPolyLines(const std::vector<CGPoint> &polyline0,
+                                                            const std::vector<CGPoint> &polyline1) {
+  std::vector<CGPoint> result;
+  for (std::vector<CGPoint>::size_type i = 0; i + 1 < polyline0.size(); ++i) {
     CGPoint p0 = polyline0[i];
     CGPoint p1 = polyline0[i + 1];
-    for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
+    for (std::vector<CGPoint>::size_type j = 0; j + 1 < polyline1.size(); ++j) {
       CGPoint q0 = polyline1[j];
       CGPoint q1 = polyline1[j + 1];
       CGPoint intersectionPoint = LTIntersectionPointOfEdges(p0, p1, q0, q1);
@@ -375,10 +375,11 @@ CGPointPair LTPointOnEdgeNearestToPointOnEdge(CGPoint p0, CGPoint p1, CGPoint q0
   return {(p0 + (CGPoint)(s * u)), (q0 + (CGPoint)(t * v))};
 }
 
-CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
-                                                      const CGPoints &polyline1) {
+CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const std::vector<CGPoint> &polyline0,
+                                                      const std::vector<CGPoint> &polyline1) {
   CGPointPair result;
-  CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
+  std::vector<CGPoint> intersectionPoints =
+      LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
   if (intersectionPoints.size()) {
     result.first = intersectionPoints[0];
     result.second = intersectionPoints[0];
@@ -387,10 +388,10 @@ CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
 
   CGFloat minDistance = CGFLOAT_MAX;
 
-  for (CGPoints::size_type i = 0; i + 1 < polyline0.size(); ++i) {
+  for (std::vector<CGPoint>::size_type i = 0; i + 1 < polyline0.size(); ++i) {
     CGPoint p0 = polyline0[i];
     CGPoint p1 = polyline0[i + 1];
-    for (CGPoints::size_type j = 0; j + 1 < polyline1.size(); ++j) {
+    for (std::vector<CGPoint>::size_type j = 0; j + 1 < polyline1.size(); ++j) {
       CGPoint q0 = polyline1[j];
       CGPoint q1 = polyline1[j + 1];
 
@@ -416,14 +417,14 @@ CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point) {
   return CGPointDistance(point, LTPointOnEdgeClosestToPoint(p0, p1, point));
 }
 
-CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point) {
+CGPoint LTPointOnPolylineNearestToPoint(const std::vector<CGPoint> &polyline, CGPoint point) {
   LTParameterAssert(polyline.size() >= 2, @"Given polyline of invalid size: %lu",
                     (unsigned long)polyline.size());
 
   CGPoint result = CGPointNull;
   CGFloat minDistance = CGFLOAT_MAX;
 
-  for(CGPoints::size_type i = 0; i + 1 < polyline.size(); ++i) {
+  for(std::vector<CGPoint>::size_type i = 0; i + 1 < polyline.size(); ++i) {
     CGPoint p0 = polyline[i];
     CGPoint p1 = polyline[i + 1];
 
@@ -439,6 +440,6 @@ CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point)
   return result;
 }
 
-CGFloat LTDistanceFromPolyLine(const CGPoints &polyline, CGPoint point) {
+CGFloat LTDistanceFromPolyLine(const std::vector<CGPoint> &polyline, CGPoint point) {
   return CGPointDistance(LTPointOnPolylineNearestToPoint(polyline, point), point);
 };

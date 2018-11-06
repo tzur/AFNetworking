@@ -2,7 +2,7 @@
 // Created by Rouven Strauss.
 
 /// Block used for sequentially inspecting the elements of a path.
-typedef void (^LTPathInspectionBlock)(CGPathElementType type, CGPoints points);
+typedef void (^LTPathInspectionBlock)(CGPathElementType type, std::vector<CGPoint> points);
 
 /// Iterates over the control points of the given \c path and executes the given \c block for every
 /// path element with the appropriate parameters. The given \c path must not be \c NULL. The given

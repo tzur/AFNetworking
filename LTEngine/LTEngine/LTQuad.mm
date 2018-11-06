@@ -191,7 +191,7 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
   return _quad.boundingRect();
 }
 
-- (CGPoints)convexHull {
+- (std::vector<CGPoint>)convexHull {
   return _quad.convexHull();
 }
 
@@ -429,14 +429,16 @@ static BOOL LTSimpleConcaveQuadContainsPoint(const lt::Quad &quad, CGPoint point
 /// complex.
 static BOOL LTComplexQuadContainsPoint(const lt::Quad &quad, CGPoint point) {
   // Compute intersection point.
-  CGPoints pointsOfClosedPolyLine{quad.v0(), quad.v1(), quad.v2(), quad.v3(), quad.v0()};
-  CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
+  std::vector<CGPoint> pointsOfClosedPolyLine{quad.v0(), quad.v1(), quad.v2(), quad.v3(),
+                                              quad.v0()};
+  std::vector<CGPoint> intersectionPoints =
+      LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
 
   // Compute point inclusion using the two triangles of which the self-intersecting quad consists.
   lt::Triangle triangle0, triangle1;
   lt::Quad::Corners corners = quad.corners();
 
-  if (LTPointsAreCollinear(CGPoints{corners[0], corners[1], intersectionPoints[0]})) {
+  if (LTPointsAreCollinear(std::vector<CGPoint>{corners[0], corners[1], intersectionPoints[0]})) {
     LTTriangleCorners corners0{{intersectionPoints[0], corners[1], corners[2]}};
     triangle0 = lt::Triangle(corners0);
     LTTriangleCorners corners1{{intersectionPoints[0], corners[3], corners[0]}};
@@ -636,8 +638,8 @@ CGPoint Quad::pointOnEdgeClosestToPoint(CGPoint point) const noexcept {
 }
 
 CGPointPair Quad::nearestPoints(Quad quad) const noexcept {
-  CGPoints polyline0{{_v[0], _v[1], _v[2], _v[3], _v[0]}};
-  CGPoints polyline1{{quad.v0(), quad.v1(), quad.v2(), quad.v3(), quad.v0()}};
+  std::vector<CGPoint> polyline0{{_v[0], _v[1], _v[2], _v[3], _v[0]}};
+  std::vector<CGPoint> polyline1{{quad.v0(), quad.v1(), quad.v2(), quad.v3(), quad.v0()}};
   return LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
 }
 
@@ -669,8 +671,9 @@ CGFloat Quad::area() const noexcept {
                    _v[(indexOfConcavePoint + 3) % kNumQuadCorners], _v[indexOfConcavePoint]).area();
     }
     case Quad::Type::Complex: {
-      CGPoints pointsOfClosedPolyLine{_v[0], _v[1], _v[2], _v[3], _v[0]};
-      CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
+      std::vector<CGPoint> pointsOfClosedPolyLine{_v[0], _v[1], _v[2], _v[3], _v[0]};
+      std::vector<CGPoint> intersectionPoints =
+          LTComputeIntersectionPointsOfPolyLine(pointsOfClosedPolyLine);
       return Triangle(_v[0], _v[1], intersectionPoints.front()).area() +
           Triangle(_v[2], _v[3], intersectionPoints.front()).area();
     }

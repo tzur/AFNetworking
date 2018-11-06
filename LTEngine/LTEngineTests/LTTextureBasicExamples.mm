@@ -241,7 +241,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
 
       it(@"should return correct pixel values inside texture", ^{
-        CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
+        std::vector<CGPoint> points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
 
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected;
@@ -253,7 +253,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
 
       it(@"should return correct pixel values outside texture", ^{
-        CGPoints points{CGPointMake(-1, 2), CGPointMake(2, -5), CGPointMake(-1, 49)};
+        std::vector<CGPoint> points{CGPointMake(-1, 2), CGPointMake(2, -5), CGPointMake(-1, 49)};
 
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected{
@@ -266,7 +266,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
 
       it(@"should return a correct pixel value on the boundary", ^{
-        CGPoints points{CGPointMake(0, 0), CGPointMake(67, 48)};
+        std::vector<CGPoint> points{CGPointMake(0, 0), CGPointMake(67, 48)};
 
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected{

@@ -222,7 +222,7 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 @property (readonly, nonatomic) CGRect boundingRect;
 
 /// Points representing the convex hull of this quad.
-@property (readonly, nonatomic) CGPoints convexHull;
+@property (readonly, nonatomic) std::vector<CGPoint> convexHull;
 
 /// Center of this quad. The center is defined to be the average of the coordinates of the corner
 /// points.
@@ -390,7 +390,7 @@ struct Quad {
   }
 
   /// Points representing the convex hull of this quad.
-  CGPoints convexHull() const noexcept {
+  std::vector<CGPoint> convexHull() const noexcept {
     return LTConvexHull({_v[0], _v[1], _v[2], _v[3]});
   }
 

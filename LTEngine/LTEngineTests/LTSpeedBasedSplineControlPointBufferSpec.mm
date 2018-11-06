@@ -9,7 +9,7 @@ static NSArray<LTSplineControlPoint *> *
     LTTestControlPoints(std::vector<std::pair<CGPoint, NSTimeInterval>> values) {
   auto controlPoints = [NSMutableArray<LTSplineControlPoint *> array];
 
-  for (CGPoints::size_type i = 0; i < values.size(); ++i) {
+  for (std::vector<CGPoint>::size_type i = 0; i < values.size(); ++i) {
     CGPoint location = values[i].first;
     NSTimeInterval timestamp = values[i].second;
     auto attributes = @{[LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0};

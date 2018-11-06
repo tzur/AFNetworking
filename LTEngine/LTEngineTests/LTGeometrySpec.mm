@@ -21,10 +21,10 @@ static CGPointPair LTPointOnEdgeNearestToPointOnEdgeTest(CGPoint p0, CGPoint p1,
   CGFloat p0p1Length = CGPointDistance(p0, p1);
   CGFloat q0q1Length = CGPointDistance(q0, q1);
 
-  CGPoints pCandidates{p0, p1,
+  std::vector<CGPoint> pCandidates{p0, p1,
     p0 + std::clamp(LTScalarProjection(q0, p1, p0), 0., p0p1Length) * p0p1Normalized,
     p0 + std::clamp(LTScalarProjection(q1, p1, p0), 0., p0p1Length) * p0p1Normalized};
-  CGPoints qCandidates{q0, q1,
+  std::vector<CGPoint> qCandidates{q0, q1,
     q0 + std::clamp(LTScalarProjection(p0, q1, q0), 0., q0q1Length) * q0q1Normalized,
     q0 + std::clamp(LTScalarProjection(p1, q1, q0), 0., q0q1Length) * q0q1Normalized};
 
@@ -71,47 +71,50 @@ context(@"relative point location in 2D", ^{
 
 context(@"collinearity", ^{
   it(@"should correctly compute whether points are collinear", ^{
-    CGPoints points0{CGPointZero};
+    std::vector<CGPoint> points0{CGPointZero};
     expect(LTPointsAreCollinear(points0)).to.beTruthy();
-    CGPoints points1{CGPointZero, CGPointZero};
+    std::vector<CGPoint> points1{CGPointZero, CGPointZero};
     expect(LTPointsAreCollinear(points1)).to.beTruthy();
-    CGPoints points2{CGPointZero, CGPointMake(1, 1)};
+    std::vector<CGPoint> points2{CGPointZero, CGPointMake(1, 1)};
     expect(LTPointsAreCollinear(points2)).to.beTruthy();
-    CGPoints points3{CGPointZero, CGPointMake(1, 1), CGPointMake(0.5, 0.5)};
+    std::vector<CGPoint> points3{CGPointZero, CGPointMake(1, 1), CGPointMake(0.5, 0.5)};
     expect(LTPointsAreCollinear(points3)).to.beTruthy();
-    CGPoints points4{CGPointMake(1, 1), CGPointMake(M_PI, M_PI), CGPointMake(M_PI_2, M_PI_2)};
+    std::vector<CGPoint> points4{CGPointMake(1, 1), CGPointMake(M_PI, M_PI),
+        CGPointMake(M_PI_2, M_PI_2)};
     expect(LTPointsAreCollinear(points4)).to.beTruthy();
-    CGPoints points5{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 2)};
+    std::vector<CGPoint> points5{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 2)};
     expect(LTPointsAreCollinear(points5)).to.beFalsy();
-    CGPoints points6{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 3), CGPointMake(4, 4)};
+    std::vector<CGPoint> points6{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 3),
+        CGPointMake(4, 4)};
     expect(LTPointsAreCollinear(points6)).to.beTruthy();
-    CGPoints points7{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 3), CGPointMake(4, 4.5)};
+    std::vector<CGPoint> points7{CGPointMake(1, 1), CGPointMake(2, 2), CGPointMake(3, 3),
+        CGPointMake(4, 4.5)};
     expect(LTPointsAreCollinear(points7)).to.beFalsy();
   });
 });
 
 context(@"convex hull", ^{
   it(@"should correctly compute the convex hull of an empty set of points", ^{
-    CGPoints convexHull = LTConvexHull({});
+    std::vector<CGPoint> convexHull = LTConvexHull({});
     expect(convexHull.size()).to.equal(0);
   });
 
   it(@"should correctly compute the convex hull of a set of points consisting of a single point", ^{
-    CGPoints convexHull = LTConvexHull({CGPointMake(1, 2)});
+    std::vector<CGPoint> convexHull = LTConvexHull({CGPointMake(1, 2)});
     expect(convexHull.size()).to.equal(1);
     expect(convexHull[0]).to.equal(CGPointMake(1, 2));
   });
 
   context(@"two points", ^{
     it(@"should correctly compute the convex hull of a set of two points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2)});
+      std::vector<CGPoint> convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2)});
       expect(convexHull.size()).to.equal(2);
       expect(convexHull[0]).to.equal(CGPointMake(1, 2));
       expect(convexHull[1]).to.equal(CGPointMake(2, 3));
     });
 
     it(@"should correctly compute the convex hull of a set of two identical points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(1, 2), CGPointMake(1, 2)});
+      std::vector<CGPoint> convexHull = LTConvexHull({CGPointMake(1, 2), CGPointMake(1, 2)});
       expect(convexHull.size()).to.equal(1);
       expect(convexHull[0]).to.equal(CGPointMake(1, 2));
     });
@@ -119,7 +122,8 @@ context(@"convex hull", ^{
 
   context(@"three points", ^{
     it(@"should correctly compute the convex hull of a set of three non-collinear points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0, 1)});
+      std::vector<CGPoint> convexHull =
+          LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0, 1)});
       expect(convexHull.size()).to.equal(3);
       expect(convexHull[0]).to.equal(CGPointMake(0, 1));
       expect(convexHull[1]).to.equal(CGPointMake(2, 3));
@@ -127,7 +131,8 @@ context(@"convex hull", ^{
     });
 
     it(@"should correctly compute the convex hull of a set of three collinear points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0, 1)});
+      std::vector<CGPoint> convexHull =
+          LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0, 1)});
       expect(convexHull.size()).to.equal(2);
       expect(convexHull[0]).to.equal(CGPointMake(0, 1));
       expect(convexHull[1]).to.equal(CGPointMake(2, 3));
@@ -136,7 +141,8 @@ context(@"convex hull", ^{
 
   context(@"four points", ^{
     it(@"should correctly compute the convex hull of a set of four non-collinear points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0.5, 7),
+      std::vector<CGPoint> convexHull =
+          LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 1), CGPointMake(0.5, 7),
         CGPointMake(0, 1)});
       expect(convexHull.size()).to.equal(4);
       expect(convexHull[0]).to.equal(CGPointMake(0, 1));
@@ -146,7 +152,8 @@ context(@"convex hull", ^{
     });
 
     it(@"should correctly compute the convex hull of a set of four partially collinear points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0.5, 7),
+      std::vector<CGPoint> convexHull =
+          LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(0.5, 7),
         CGPointMake(0, 1)});
       expect(convexHull.size()).to.equal(3);
       expect(convexHull[0]).to.equal(CGPointMake(0, 1));
@@ -155,7 +162,8 @@ context(@"convex hull", ^{
     });
 
     it(@"should correctly compute the convex hull of a set of four collinear points", ^{
-      CGPoints convexHull = LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(3, 4),
+      std::vector<CGPoint> convexHull =
+          LTConvexHull({CGPointMake(2, 3), CGPointMake(1, 2), CGPointMake(3, 4),
         CGPointMake(0, 1)});
       expect(convexHull.size()).to.equal(2);
       expect(convexHull[0]).to.equal(CGPointMake(0, 1));
@@ -167,7 +175,7 @@ context(@"convex hull", ^{
     it(@"should correctly compute the convex hull of a set of points", ^{
       LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
 
-      CGPoints points;
+      std::vector<CGPoint> points;
       NSUInteger size = 1000;
 
       for (NSUInteger i = 0; i < size; ++i) {
@@ -175,7 +183,7 @@ context(@"convex hull", ^{
                                      [random randomDoubleBetweenMin:0 max:1]));
       }
 
-      CGPoints convexHull = LTConvexHull(points);
+      std::vector<CGPoint> convexHull = LTConvexHull(points);
       NSUInteger n = convexHull.size();
       expect(n).to.beGreaterThan(0);
 
@@ -201,14 +209,14 @@ context(@"convex hull", ^{
 context(@"outer boundary calculation", ^{
   it(@"should return no points on an empty mask", ^{
     cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(0);
   });
 
   it(@"should return the correct points for a single center point", ^{
     cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
     mask[1][1] = 255;
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(1);
     expect(points[0]).to.equal(CGPointMake(1, 1));
   });
@@ -216,7 +224,7 @@ context(@"outer boundary calculation", ^{
   it(@"should return the correct points for a single edge point", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask[0][1] = 255;
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(1);
     expect(points[0]).to.equal(CGPointMake(1, 0));
   });
@@ -224,7 +232,7 @@ context(@"outer boundary calculation", ^{
   it(@"should return the correct points for a single corner point", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask[0][0] = 255;
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(1);
     expect(points[0]).to.equal(CGPointMake(0, 0));
   });
@@ -232,7 +240,7 @@ context(@"outer boundary calculation", ^{
   it(@"should return the correct points for a centered rect", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask(cv::Rect(1, 1, 3, 3)).setTo(255);
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(4);
     expect(points[0]).to.equal(CGPointMake(1, 1));
     expect(points[1]).to.equal(CGPointMake(1, 3));
@@ -245,7 +253,7 @@ context(@"outer boundary calculation", ^{
     mask(cv::Rect(1, 1, 8, 6)).setTo(255);
     mask(cv::Rect(3, 3, 4, 2)).setTo(0);
 
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(4);
     expect(points[0]).to.equal(CGPointMake(1, 1));
     expect(points[1]).to.equal(CGPointMake(1, 6));
@@ -258,7 +266,7 @@ context(@"outer boundary calculation", ^{
     mask(cv::Rect(1, 1, 3, 4)).setTo(255);
     mask(cv::Rect(5, 1, 4, 5)).setTo(255);
 
-    CGPoints points = LTOuterBoundary(mask);
+    std::vector<CGPoint> points = LTOuterBoundary(mask);
     expect(points.size()).to.equal(4);
     expect(points[0]).to.equal(CGPointMake(5, 1));
     expect(points[1]).to.equal(CGPointMake(5, 5));
@@ -279,14 +287,14 @@ context(@"outer boundary calculation", ^{
 context(@"boundaries calculations", ^{
   it(@"should return no boundaries on an empty mask", ^{
     cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(0);
   });
 
   it(@"should return the correct points for a single center point", ^{
     cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
     mask[1][1] = 255;
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(1);
     expect(boundaries[0].size()).to.equal(1);
     expect(boundaries[0][0]).to.equal(CGPointMake(1, 1));
@@ -295,7 +303,7 @@ context(@"boundaries calculations", ^{
   it(@"should return the correct points for a single edge point", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask[0][1] = 255;
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(1);
     expect(boundaries[0].size()).to.equal(1);
     expect(boundaries[0][0]).to.equal(CGPointMake(1, 0));
@@ -304,7 +312,7 @@ context(@"boundaries calculations", ^{
   it(@"should return the correct points for a single corner point", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask[0][0] = 255;
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(1);
     expect(boundaries[0].size()).to.equal(1);
     expect(boundaries[0][0]).to.equal(CGPointMake(0, 0));
@@ -316,7 +324,7 @@ context(@"boundaries calculations", ^{
     mask[2][2] = 255;
     mask[3][4] = 255;
 
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(3);
     expect(boundaries[0].size()).to.equal(1);
     expect(boundaries[1].size()).to.equal(1);
@@ -330,9 +338,9 @@ context(@"boundaries calculations", ^{
   it(@"should return the correct points for a centered rect", ^{
     cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
     mask(cv::Rect(1, 1, 3, 3)).setTo(255);
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(1);
-    CGPoints points = boundaries[0];
+    std::vector<CGPoint> points = boundaries[0];
     expect(points.size()).to.equal(4);
     expect(points[0]).to.equal(CGPointMake(1, 1));
     expect(points[1]).to.equal(CGPointMake(1, 3));
@@ -345,16 +353,16 @@ context(@"boundaries calculations", ^{
     mask(cv::Rect(10, 10, 80, 60)).setTo(255);
     mask(cv::Rect(30, 30, 40, 20)).setTo(0);
 
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(2);
-    CGPoints firstBoundary = boundaries[0];
+    std::vector<CGPoint> firstBoundary = boundaries[0];
     expect(firstBoundary.size()).to.equal(4);
     expect(firstBoundary[0]).to.equal(CGPointMake(30, 29));
     expect(firstBoundary[1]).to.equal(CGPointMake(70, 30));
     expect(firstBoundary[2]).to.equal(CGPointMake(69, 50));
     expect(firstBoundary[3]).to.equal(CGPointMake(29, 49));
 
-    CGPoints secondBoundary = boundaries[1];
+    std::vector<CGPoint> secondBoundary = boundaries[1];
     expect(secondBoundary.size()).to.equal(4);
     expect(secondBoundary[0]).to.equal(CGPointMake(10, 10));
     expect(secondBoundary[1]).to.equal(CGPointMake(10, 69));
@@ -367,17 +375,17 @@ context(@"boundaries calculations", ^{
     mask(cv::Rect(10, 10, 30, 40)).setTo(255);
     mask(cv::Rect(50, 10, 40, 50)).setTo(255);
 
-    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    std::vector<std::vector<CGPoint>> boundaries = LTBoundaries(mask);
     expect(boundaries.size()).to.equal(2);
 
-    CGPoints firstBoundary = boundaries[0];
+    std::vector<CGPoint> firstBoundary = boundaries[0];
     expect(firstBoundary.size()).to.equal(4);
     expect(firstBoundary[0]).to.equal(CGPointMake(50, 10));
     expect(firstBoundary[1]).to.equal(CGPointMake(50, 59));
     expect(firstBoundary[2]).to.equal(CGPointMake(89, 59));
     expect(firstBoundary[3]).to.equal(CGPointMake(89, 10));
 
-    CGPoints secondBoundary = boundaries[1];
+    std::vector<CGPoint> secondBoundary = boundaries[1];
     expect(secondBoundary.size()).to.equal(4);
     expect(secondBoundary[0]).to.equal(CGPointMake(10, 10));
     expect(secondBoundary[1]).to.equal(CGPointMake(10, 49));
@@ -422,9 +430,9 @@ context(@"intersection", ^{
     CGPoint p1 = CGPointMake(1, 0);
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0.5, 0.5);
-    CGPoints pointsToCheck{p0, p1, p2, p3};
+    std::vector<CGPoint> pointsToCheck{p0, p1, p2, p3};
     expect(LTIsSelfIntersectingPolyline(pointsToCheck)).to.beTruthy();
-    CGPoints pointsToCheck2{p0, p2, p3, p1};
+    std::vector<CGPoint> pointsToCheck2{p0, p2, p3, p1};
     expect(LTIsSelfIntersectingPolyline(pointsToCheck2)).to.beFalsy();
   });
 
@@ -546,8 +554,9 @@ context(@"intersection", ^{
     CGPoint p2 = CGPointMake(0.5, -0.5);
     CGPoint p3 = CGPointMake(0, 0.5);
     CGPoint p4 = CGPointMake(1, -0.5);
-    CGPoints pointsToCheck{p0, p1, p2, p3, p4};
-    CGPoints expectedIntersectionPoints = LTComputeIntersectionPointsOfPolyLine(pointsToCheck);
+    std::vector<CGPoint> pointsToCheck{p0, p1, p2, p3, p4};
+    std::vector<CGPoint> expectedIntersectionPoints =
+        LTComputeIntersectionPointsOfPolyLine(pointsToCheck);
     expect(expectedIntersectionPoints.size()).to.equal(3);
     expect(expectedIntersectionPoints[0]).to.beCloseToPointWithin(CGPointMake(0.25, 0), kEpsilon);
     expect(expectedIntersectionPoints[1]).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
@@ -556,11 +565,12 @@ context(@"intersection", ^{
   });
 
   it(@"should correctly compute all intersection points of two given polylines", ^{
-    CGPoints polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
+    std::vector<CGPoint> polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
         CGPointMake(2, 1), CGPointMake(1, 2)};
-    CGPoints polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5), CGPointMake(1.5, 0.5),
-        CGPointMake(1.5, 2)};
-    CGPoints intersectionPoints = LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
+    std::vector<CGPoint> polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5),
+        CGPointMake(1.5, 0.5), CGPointMake(1.5, 2)};
+    std::vector<CGPoint> intersectionPoints =
+        LTComputeIntersectionPointsOfPolyLines(polyline0, polyline1);
     expect(intersectionPoints.size()).to.equal(4);
     expect(intersectionPoints[0]).to.beCloseToPointWithin(CGPointMake(0.5, 0), kEpsilon);
     expect(intersectionPoints[1]).to.beCloseToPointWithin(CGPointMake(1, 0.5), kEpsilon);
@@ -719,17 +729,17 @@ context(@"relationship point and line/edge", ^{
   });
 
   it(@"should correctly compute the two closest points on two given polylines", ^{
-    CGPoints polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
+    std::vector<CGPoint> polyline0{CGPointZero, CGPointMake(1, 0), CGPointMake(1, 1),
         CGPointMake(2, 1), CGPointMake(1, 2)};
-    CGPoints polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5), CGPointMake(1.5, 0.5),
-        CGPointMake(1.5, 2)};
+    std::vector<CGPoint> polyline1{CGPointMake(0.5, -0.5), CGPointMake(0.5, 0.5),
+        CGPointMake(1.5, 0.5), CGPointMake(1.5, 2)};
     CGPointPair result = LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
     expect(result.first).to.equal(CGPointMake(0.5, 0));
     expect(result.second).to.equal(CGPointMake(0.5, 0));
 
-    polyline0 = CGPoints{CGPointMake(-0.5, -0.5), CGPointZero, CGPointMake(1, 0),
+    polyline0 = std::vector<CGPoint>{CGPointMake(-0.5, -0.5), CGPointZero, CGPointMake(1, 0),
         CGPointMake(1.5, -0.5)};
-    polyline1 = CGPoints{CGPointMake(0, 2), CGPointMake(0.5, 1), CGPointMake(1, 2)};
+    polyline1 = std::vector<CGPoint>{CGPointMake(0, 2), CGPointMake(0.5, 1), CGPointMake(1, 2)};
     result = LTPointOnPolylineNearestToPointOnPolyline(polyline0, polyline1);
     expect(result.first).to.equal(CGPointMake(0.5, 0));
     expect(result.second).to.equal(CGPointMake(0.5, 1));
@@ -809,10 +819,10 @@ context(@"relationship point and line/edge", ^{
     });
 
     context(@"closest point on polyline from point", ^{
-      __block CGPoints polyline;
+      __block std::vector<CGPoint> polyline;
 
       beforeEach(^{
-        polyline = CGPoints({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
+        polyline = std::vector<CGPoint>({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
       });
 
       it(@"should correctly compute the closest point from a point on the polyline points", ^{
@@ -822,7 +832,7 @@ context(@"relationship point and line/edge", ^{
       });
 
       it(@"should correctly compute the closest point from a point on the polyline edges", ^{
-        CGPoints pointsOnEdges({
+        std::vector<CGPoint> pointsOnEdges({
           0.5 * (polyline[0] + polyline[1]),
           0.25 * polyline[1] + 0.75 * polyline[2]
         });
@@ -847,14 +857,14 @@ context(@"relationship point and line/edge", ^{
 
       it(@"should raise when attempting to compute closest point for non-existing polyline", ^{
         expect(^{
-          CGPoints emptyPolyline;
+          std::vector<CGPoint> emptyPolyline;
           LTPointOnPolylineNearestToPoint(emptyPolyline, CGPointZero);
         }).to.raise(NSInvalidArgumentException);
       });
 
       it(@"should raise when attempting to compute closest point for invalid polyline", ^{
         expect(^{
-          CGPoints invalidPolyline;
+          std::vector<CGPoint> invalidPolyline;
           invalidPolyline.push_back({CGPointZero});
           LTPointOnPolylineNearestToPoint(invalidPolyline, CGPointZero);
         }).to.raise(NSInvalidArgumentException);
@@ -862,10 +872,10 @@ context(@"relationship point and line/edge", ^{
     });
 
     context(@"distance of point from polyline", ^{
-      __block CGPoints polyline;
+      __block std::vector<CGPoint> polyline;
 
       beforeEach(^{
-        polyline = CGPoints({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
+        polyline = std::vector<CGPoint>({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
       });
 
       it(@"should compute the distance of the points of a polyline from the polyline itself", ^{
@@ -875,7 +885,7 @@ context(@"relationship point and line/edge", ^{
       });
 
       it(@"should compute the distance of points on a polyline's edges from the polyline itself", ^{
-        CGPoints pointsOnEdges({
+        std::vector<CGPoint> pointsOnEdges({
           0.5 * (polyline[0] + polyline[1]),
           0.25 * polyline[1] + 0.75 * polyline[2]
         });

@@ -364,7 +364,7 @@
 #pragma mark Overridden methods
 #pragma mark -
 
-- (LTVector4s)pixelValues:(const CGPoints &)locations {
+- (LTVector4s)pixelValues:(const std::vector<CGPoint> &)locations {
   __block LTVector4s values(locations.size());
 
   LTTextureSamplingPoints samplingPoints([self samplingPointsFromLocations:locations]);

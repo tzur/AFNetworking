@@ -269,7 +269,7 @@ typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
 ///
 /// @note This can be a heavy operation since it may require copying the texture pixel data to the
 /// CPU's memory.
-- (LTVector4s)pixelValues:(const CGPoints &)locations;
+- (LTVector4s)pixelValues:(const std::vector<CGPoint> &)locations;
 
 /// Returns the texture data that is contains in the given rect. The \c rect must be contained
 /// inside the texture's bounds (0, 0, size.width, size.height). The resulting image precision and
