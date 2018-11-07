@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with the given properties.
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
-                  stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDS stepCursor:(NSUInteger)stepCursor
+                   stepIDs:(nullable NSArray<NSUUID *> *)stepIDs stepCursor:(NSUInteger)stepCursor
                   userData:(nullable NSData *)userData
                  assetsURL:(NSURL *)assetsURL NS_DESIGNATED_INITIALIZER;
 
@@ -48,10 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// the array is the order of the steps in the project at this snapshot.
 ///
 /// This property is \c nil only if it was fetched without the
-/// \c WHSProjectFetchOptionsFetchStepsIDs flag in \c fetchOptions.
-@property (readonly, nonatomic, nullable) NSArray<NSUUID *> *stepsIDs;
+/// \c WHSProjectFetchOptionsFetchStepIDs flag in \c fetchOptions.
+@property (readonly, nonatomic, nullable) NSArray<NSUUID *> *stepIDs;
 
-/// Index after the current step in the \c stepsIDs array at this snapshot.
+/// Index after the current step in the \c stepIDs array at this snapshot.
 @property (readonly, nonatomic) NSUInteger stepCursor;
 
 /// Data that is application specific for this project snapshot. Can be different between snapshots
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if redo operation can be done on the project. The property refers to the first operation
 /// after the snapshot was fetched. If any operation was done on the project after this snapshot was
-/// fetched, this property is invalid. If \c stepsIDs is \c nil always returns \c NO.
+/// fetched, this property is invalid. If \c stepIDs is \c nil always returns \c NO.
 @property (readonly, nonatomic) BOOL canRedo;
 
 @end

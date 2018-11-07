@@ -19,13 +19,13 @@ LTEnumDeclare(NSUInteger, WHSProjectSortProperty,
 /// properties are not fetched by default. For each of these properties exists a fetching option
 /// that should be passed to the fetching method in order to fetch it.
 typedef NS_OPTIONS(NSUInteger, WHSProjectFetchOptions) {
-  /// Fetch the steps IDs array of the project.
-  WHSProjectFetchOptionsFetchStepsIDs = 1 << 0,
+  /// Fetch the step IDs array of the project.
+  WHSProjectFetchOptionsFetchStepIDs = 1 << 0,
   /// Fetch the user data of the project.
   WHSProjectFetchOptionsFetchUserData = 1 << 1,
   /// Fetch all the properties of the project.
   WHSProjectFetchOptionsFetchAll =
-      WHSProjectFetchOptionsFetchStepsIDs | WHSProjectFetchOptionsFetchUserData
+      WHSProjectFetchOptionsFetchStepIDs | WHSProjectFetchOptionsFetchUserData
 };
 
 /// Protocol for handling notifications from the storage. Each observer that is added to a storage

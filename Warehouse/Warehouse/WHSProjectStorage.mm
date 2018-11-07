@@ -66,8 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// URL of the metadata file inside the project directory that this URL points to.
 @property (readonly, nonatomic) NSURL *whs_metadataURL;
 
-/// URL of the steps IDs file inside the project directory that this URL points to.
-@property (readonly, nonatomic) NSURL *whs_stepsIDsURL;
+/// URL of the step IDs file inside the project directory that this URL points to.
+@property (readonly, nonatomic) NSURL *whs_stepIDsURL;
 
 /// URL of the user data file inside the project or step directory that this URL points to.
 @property (readonly, nonatomic) NSURL *whs_userDataURL;
@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
   return nn([self.whs_dataURL URLByAppendingPathComponent:@"matadata" isDirectory:NO]);
 }
 
-- (NSURL *)whs_stepsIDsURL {
+- (NSURL *)whs_stepIDsURL {
     return nn([self.whs_dataURL URLByAppendingPathComponent:@"stepsIDs" isDirectory:NO]);
 }
 
@@ -180,9 +180,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     return NO;
   }
   auto metadata = @{kWHSStepCursorKey: @0, kWHSBundleIDKey: self.bundleID};
-  auto stepsIDs = @[];
+  auto stepIDs = @[];
   auto userData = [NSData data];
-  auto dataUpdated = [self writeDataOfProject:projectID withMetadata:metadata stepsIDs:stepsIDs
+  auto dataUpdated = [self writeDataOfProject:projectID withMetadata:metadata stepIDs:stepIDs
                                      userData:userData error:error];
   if (!dataUpdated) {
     [self.fileManager removeItemAtURL:projectURL error:nil];
@@ -275,10 +275,10 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   auto stepCursor = ((NSNumber *)metadata[kWHSStepCursorKey]).unsignedIntegerValue;
   NSString *bundleID = metadata[kWHSBundleIDKey];
 
-  NSArray<NSUUID *> * _Nullable stepsIDs;
-  if (fetchOptions & WHSProjectFetchOptionsFetchStepsIDs) {
-    stepsIDs = [self stepsIDsOfProject:projectID error:error];
-    if (!stepsIDs) {
+  NSArray<NSUUID *> * _Nullable stepIDs;
+  if (fetchOptions & WHSProjectFetchOptionsFetchStepIDs) {
+    stepIDs = [self stepIDsOfProject:projectID error:error];
+    if (!stepIDs) {
       if (error) {
         *error = [NSError whs_errorFetchingProjectWithID:projectID underlyingError:*error];
       }
@@ -299,7 +299,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 
   return [[WHSProjectSnapshot alloc] initWithID:projectID bundleID:bundleID
                                    creationDate:creationDate modificationDate:modificationDate
-                                       stepsIDs:stepsIDs stepCursor:stepCursor userData:userData
+                                        stepIDs:stepIDs stepCursor:stepCursor userData:userData
                                       assetsURL:nn(assetsURL)];
 }
 
@@ -343,8 +343,8 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                            error:(NSError *__autoreleasing *)error {
   auto projectID = request.projectID;
   NSDictionary<NSString *, id> * _Nullable metadata;
-  NSArray<NSUUID *> * _Nullable stepsIDs;
-  NSArray<NSUUID *> * _Nullable stepsIDsCreated = @[];
+  NSArray<NSUUID *> * _Nullable stepIDs;
+  NSArray<NSUUID *> * _Nullable stepIDsCreated = @[];
 
   if (request.stepCursor || request.stepIDsToDelete.count || request.stepsContentToAdd.count) {
     metadata = [self metadataOfProject:projectID error:error];
@@ -354,38 +354,38 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
       }
       return NO;
     }
-    stepsIDs = [self stepsIDsOfProject:projectID error:error];
-    if (!stepsIDs) {
+    stepIDs = [self stepIDsOfProject:projectID error:error];
+    if (!stepIDs) {
       if (error) {
         *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
       }
       return NO;
     }
     auto requestValid = [self validateUpdateRequest:request metadata:nn(metadata)
-                                           stepsIDs:nn(stepsIDs) error:error];
+                                            stepIDs:nn(stepIDs) error:error];
     if (!requestValid) {
       return NO;
     }
-    stepsIDsCreated = [self createStepsFrom:request.stepsContentToAdd inProject:projectID
+    stepIDsCreated = [self createStepsFrom:request.stepsContentToAdd inProject:projectID
                                       error:error];
-    if (!stepsIDsCreated) {
+    if (!stepIDsCreated) {
       if (error) {
         *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
       }
       return NO;
     }
 
-    stepsIDs = [self addStepsIDs:nn(stepsIDsCreated) toStepsIDs:nn(stepsIDs) metadata:nn(metadata)];
-    stepsIDs = [self removeStepsIDs:request.stepIDsToDelete fromStepsIDs:nn(stepsIDs)];
+    stepIDs = [self addStepIDs:nn(stepIDsCreated) toStepIDs:nn(stepIDs) metadata:nn(metadata)];
+    stepIDs = [self removeStepIDs:request.stepIDsToDelete fromStepIDs:nn(stepIDs)];
     if (request.stepCursor) {
       metadata = [self changeStepCursorTo:nn(request.stepCursor) inMetadata:nn(metadata)];
     }
   }
 
-  auto dataWritten = [self writeDataOfProject:projectID withMetadata:metadata stepsIDs:stepsIDs
+  auto dataWritten = [self writeDataOfProject:projectID withMetadata:metadata stepIDs:stepIDs
                                      userData:request.userData error:error];
   if (!dataWritten) {
-    [self removeContentOfSteps:nn(stepsIDsCreated) fromProject:projectID];
+    [self removeContentOfSteps:nn(stepIDsCreated) fromProject:projectID];
     if (error) {
       *error = [NSError whs_errorUpdatingProjectWithRequest:request underlyingError:*error];
     }
@@ -407,7 +407,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 
 - (BOOL)writeDataOfProject:(NSUUID *)projectID
               withMetadata:(nullable NSDictionary<NSString *, id> *)metadata
-                  stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs
+                   stepIDs:(nullable NSArray<NSUUID *> *)stepIDs
                   userData:(nullable NSData *)userData error:(NSError *__autoreleasing *)error {
   auto projectURL = [self URLOfProject:projectID];
   auto _Nullable tempURL = [self createTempURLWithError:error];
@@ -429,9 +429,9 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   if (!metadataWritten) {
     return NO;
   }
-  auto stepsIDsWritten = [self writeStepsIDs:stepsIDs fromProjectURL:projectURL to:nn(tempURL)
-                                       error:error];
-  if (!stepsIDsWritten) {
+  auto stepIDsWritten = [self writeStepIDs:stepIDs fromProjectURL:projectURL to:nn(tempURL)
+                                     error:error];
+  if (!stepIDsWritten) {
     return NO;
   }
   auto userDataWritten = [self writeUserData:userData fromProjectURL:projectURL to:nn(tempURL)
@@ -457,20 +457,20 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
                                        format:NSPropertyListBinaryFormat_v1_0 error:error];
 }
 
-- (BOOL)writeStepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs fromProjectURL:(NSURL *)projectURL
-                   to:(NSURL *)URL error:(NSError *__autoreleasing *)error {
-  if (!stepsIDs) {
-    return [self.fileManager copyItemAtURL:projectURL.whs_stepsIDsURL toURL:URL.whs_stepsIDsURL
+- (BOOL)writeStepIDs:(nullable NSArray<NSUUID *> *)stepIDs fromProjectURL:(NSURL *)projectURL
+                  to:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+  if (!stepIDs) {
+    return [self.fileManager copyItemAtURL:projectURL.whs_stepIDsURL toURL:URL.whs_stepIDsURL
                                      error:error];
   }
-  auto stepsData = [[NSMutableData alloc] initWithCapacity:stepsIDs.count * kWHSBytesInUUID];
-  for (NSUInteger i = 0; i < stepsIDs.count; ++i) {
+  auto stepsData = [[NSMutableData alloc] initWithCapacity:stepIDs.count * kWHSBytesInUUID];
+  for (NSUInteger i = 0; i < stepIDs.count; ++i) {
     uuid_t UUID;
-    [stepsIDs[i] getUUIDBytes:UUID];
+    [stepIDs[i] getUUIDBytes:UUID];
     [stepsData replaceBytesInRange:NSMakeRange(i * kWHSBytesInUUID, kWHSBytesInUUID)
                          withBytes:UUID];
   }
-  return [stepsData writeToURL:URL.whs_stepsIDsURL options:0 error:error];
+  return [stepsData writeToURL:URL.whs_stepIDsURL options:0 error:error];
 }
 
 - (BOOL)writeUserData:(nullable NSData *)userData fromProjectURL:(NSURL *)projectURL to:(NSURL *)URL
@@ -488,32 +488,31 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   return [self.fileManager lt_dictionaryWithContentsOfFile:metadataPath error:error];
 }
 
-- (nullable NSArray<NSUUID *> *)stepsIDsOfProject:(NSUUID *)projectID
-                                            error:(NSError *__autoreleasing *)error {
-  auto stepsIDsURL = [self URLOfProject:projectID].whs_stepsIDsURL;
-  auto _Nullable stepsData = [NSData dataWithContentsOfURL:stepsIDsURL options:0 error:error];
+- (nullable NSArray<NSUUID *> *)stepIDsOfProject:(NSUUID *)projectID
+                                           error:(NSError *__autoreleasing *)error {
+  auto stepIDsURL = [self URLOfProject:projectID].whs_stepIDsURL;
+  auto _Nullable stepsData = [NSData dataWithContentsOfURL:stepIDsURL options:0 error:error];
   if (!stepsData) {
     return nil;
   }
   auto numberOfSteps = stepsData.length / kWHSBytesInUUID;
-  NSMutableArray *stepsIDs = [[NSMutableArray alloc] init];
+  NSMutableArray *stepIDs = [[NSMutableArray alloc] init];
   for (NSUInteger i = 0; i < numberOfSteps; ++i) {
     uuid_t UUID;
     [stepsData getBytes:UUID range:NSMakeRange(i * kWHSBytesInUUID, kWHSBytesInUUID)];
-    [stepsIDs addObject:[[NSUUID alloc] initWithUUIDBytes:UUID]];
+    [stepIDs addObject:[[NSUUID alloc] initWithUUIDBytes:UUID]];
   }
-  return stepsIDs;
+  return stepIDs;
 }
 
 - (BOOL)validateUpdateRequest:(WHSProjectUpdateRequest *)request
                      metadata:(NSDictionary<NSString *, id> *)metadata
-                     stepsIDs:(NSArray<NSUUID *> *)stepsIDs
-                        error:(NSError *__autoreleasing *)error {
+                      stepIDs:(NSArray<NSUUID *> *)stepIDs error:(NSError *__autoreleasing *)error {
   auto currentStepCursor = (NSNumber *)metadata[kWHSStepCursorKey];
   auto newStepCursor = request.stepCursor ?: currentStepCursor;
   auto numberOfStepsToAdd = request.stepsContentToAdd.count;
   auto numberOfStepsDelta = numberOfStepsToAdd - request.stepIDsToDelete.count;
-  auto newNumberOfSteps = stepsIDs.count + numberOfStepsDelta;
+  auto newNumberOfSteps = stepIDs.count + numberOfStepsDelta;
   auto isValid = newStepCursor.unsignedIntegerValue <= newNumberOfSteps;
   if (isValid) {
     return YES;
@@ -533,20 +532,20 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 - (nullable NSArray<NSUUID *> *)createStepsFrom:(NSArray<WHSStepContent *> *)stepsContent
                                       inProject:(NSUUID *)projectID
                                           error:(NSError *__autoreleasing *)error {
-  auto stepsIDsCreated = [[NSMutableArray<NSUUID *> alloc] init];
+  auto stepIDsCreated = [[NSMutableArray<NSUUID *> alloc] init];
   for (NSUInteger i = 0; i < stepsContent.count; ++i) {
     auto stepID = [NSUUID UUID];
     auto stepURL = [self URLOfStep:stepID inProject:projectID];
     auto stepCreated = [self.fileManager createDirectoryAtURL:stepURL.whs_dataURL
                                   withIntermediateDirectories:YES attributes:nil error:error];
     if (!stepCreated) {
-      [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
+      [self removeContentOfSteps:stepIDsCreated fromProject:projectID];
       return nil;
     }
     auto userDataUpdated = [stepsContent[i].userData writeToURL:stepURL.whs_userDataURL options:0
                                                           error:error];
     if (!userDataUpdated) {
-      [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
+      [self removeContentOfSteps:stepIDsCreated fromProject:projectID];
       return nil;
     }
     auto _Nullable stepAssetsSourceURL = stepsContent[i].assetsSourceURL;
@@ -554,7 +553,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     if (!stepAssetsSourceURL) {
       emptyURL = [self createTempURLWithError:error];
       if (!emptyURL) {
-        [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
+        [self removeContentOfSteps:stepIDsCreated fromProject:projectID];
         return nil;
       }
     }
@@ -566,12 +565,12 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
     if (![self copyAssetsOfProject:projectID step:stepID from:nn(stepAssetsSourceURL ?: emptyURL)
                              error:error])
     {
-      [self removeContentOfSteps:stepsIDsCreated fromProject:projectID];
+      [self removeContentOfSteps:stepIDsCreated fromProject:projectID];
       return nil;
     }
-    [stepsIDsCreated addObject:stepID];
+    [stepIDsCreated addObject:stepID];
   }
-  return stepsIDsCreated;
+  return stepIDsCreated;
 }
 
 - (BOOL)copyAssetsOfProject:(NSUUID *)projectID step:(NSUUID *)stepID from:(NSURL *)sourceURL
@@ -580,21 +579,21 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
   return [self.fileManager copyItemAtURL:sourceURL toURL:destination error:error];
 }
 
-- (NSArray<NSUUID *> *)addStepsIDs:(NSArray<NSUUID *> *)stepsIDsToAdd
-                        toStepsIDs:(NSArray<NSUUID *> *)stepsIDs
-                          metadata:(NSDictionary<NSString *, id> *)metadata {
+- (NSArray<NSUUID *> *)addStepIDs:(NSArray<NSUUID *> *)stepIDsToAdd
+                        toStepIDs:(NSArray<NSUUID *> *)stepIDs
+                         metadata:(NSDictionary<NSString *, id> *)metadata {
   auto stepCursor = ((NSNumber *)metadata[kWHSStepCursorKey]).unsignedIntegerValue;
-  auto addingRange = NSMakeRange(stepCursor, stepsIDsToAdd.count);
-  NSMutableArray<NSUUID *> *updatedStepsIDs = stepsIDs.mutableCopy;
-  [updatedStepsIDs insertObjects:stepsIDsToAdd
-                       atIndexes:[NSIndexSet indexSetWithIndexesInRange:addingRange]];
-  return updatedStepsIDs;
+  auto addingRange = NSMakeRange(stepCursor, stepIDsToAdd.count);
+  NSMutableArray<NSUUID *> *updatedStepIDs = stepIDs.mutableCopy;
+  [updatedStepIDs insertObjects:stepIDsToAdd
+                      atIndexes:[NSIndexSet indexSetWithIndexesInRange:addingRange]];
+  return updatedStepIDs;
 }
 
-- (NSArray<NSUUID *> *)removeStepsIDs:(NSArray<NSUUID *> *)stepsIDsToDelete
-                         fromStepsIDs:(NSArray<NSUUID *> *)stepsIDs {
-  return [stepsIDs lt_filter:^BOOL(NSUUID *step) {
-    return ![stepsIDsToDelete containsObject:step];
+- (NSArray<NSUUID *> *)removeStepIDs:(NSArray<NSUUID *> *)stepIDsToDelete
+                         fromStepIDs:(NSArray<NSUUID *> *)stepIDs {
+  return [stepIDs lt_filter:^BOOL(NSUUID *step) {
+    return ![stepIDsToDelete containsObject:step];
   }];
 }
 

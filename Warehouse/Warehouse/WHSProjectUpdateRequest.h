@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// new step at the step cursor with the given \c stepContent as its content, and increment the step
 /// cursor by one.
 ///
-/// Returns \c nil if \c stepsIDs is \c nil in the given \c projectSnapshot.
+/// Returns \c nil if \c stepIDs is \c nil in the given \c projectSnapshot.
 + (nullable WHSProjectUpdateRequest *)requestForAddStep:(WHSProjectSnapshot *)projectSnapshot
                                             stepContent:(WHSStepContent *)stepContent;
 

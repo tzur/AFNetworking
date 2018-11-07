@@ -9,14 +9,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithID:(NSUUID *)ID bundleID:(NSString *)bundleID
               creationDate:(NSDate *)creationDate modificationDate:(NSDate *)modificationDate
-                  stepsIDs:(nullable NSArray<NSUUID *> *)stepsIDs stepCursor:(NSUInteger)stepCursor
+                   stepIDs:(nullable NSArray<NSUUID *> *)stepIDs stepCursor:(NSUInteger)stepCursor
                   userData:(nullable NSData *)userData assetsURL:(NSURL *)assetsURL {
   if (self = [super init]) {
     _ID = ID;
     _bundleID = bundleID;
     _creationDate = creationDate;
     _modificationDate = modificationDate;
-    _stepsIDs = stepsIDs;
+    _stepIDs = stepIDs;
     _stepCursor = stepCursor;
     _userData = userData;
     _assetsURL = assetsURL;
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)canRedo {
-  return self.stepCursor < self.stepsIDs.count;
+  return self.stepCursor < self.stepIDs.count;
 }
 
 @end

@@ -79,7 +79,7 @@ context(@"create project", ^{
     });
 
     it(@"should create project with no steps", ^{
-      expect(project.stepsIDs).to.beEmpty();
+      expect(project.stepIDs).to.beEmpty();
     });
 
     it(@"should create project with step cursor at zero", ^{
@@ -225,7 +225,7 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.stepsIDs).to.beNil();
+    expect(project.stepIDs).to.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).to.beNil();
     expect(project.assetsURL).notTo.beNil();
@@ -240,7 +240,7 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.stepsIDs).notTo.beNil();
+    expect(project.stepIDs).notTo.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).notTo.beNil();
     expect(project.assetsURL).notTo.beNil();
@@ -255,22 +255,22 @@ context(@"fetch project snapshot", ^{
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.stepsIDs).to.beNil();
+    expect(project.stepIDs).to.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).notTo.beNil();
     expect(project.assetsURL).notTo.beNil();
   });
 
-  it(@"should fetch in default mode plus steps IDs with WHSProjectFetchOptionsFetchStepsIDs", ^{
+  it(@"should fetch in default mode plus step IDs with WHSProjectFetchOptionsFetchStepIDs", ^{
     auto _Nullable project = [storage
                               fetchSnapshotOfProjectWithID:projectID
-                              options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
+                              options:WHSProjectFetchOptionsFetchStepIDs error:nil];
 
     expect(project.ID).to.equal(projectID);
     expect(project.bundleID).to.equal(bundleID);
     expect(project.creationDate).notTo.beNil();
     expect(project.modificationDate).notTo.beNil();
-    expect(project.stepsIDs).notTo.beNil();
+    expect(project.stepIDs).notTo.beNil();
     expect(project.stepCursor).to.beGreaterThanOrEqualTo(0);
     expect(project.userData).to.beNil();
     expect(project.assetsURL).notTo.beNil();
@@ -383,8 +383,8 @@ context(@"update project", ^{
     expect(result).to.beTruthy();
     auto _Nullable projectAfterAdding = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterAdding.stepsIDs).to.haveCountOf(1);
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterAdding.stepIDs).to.haveCountOf(1);
   });
 
   it(@"should add a step with the given user data", ^{
@@ -395,8 +395,8 @@ context(@"update project", ^{
 
     auto projectAfterAdding = nn([storage
                                   fetchSnapshotOfProjectWithID:projectID
-                                  options:WHSProjectFetchOptionsFetchStepsIDs error:nil]);
-    auto _Nullable step = [storage fetchStepWithID:nn(projectAfterAdding.stepsIDs)[0]
+                                  options:WHSProjectFetchOptionsFetchStepIDs error:nil]);
+    auto _Nullable step = [storage fetchStepWithID:nn(projectAfterAdding.stepIDs)[0]
                                  fromProjectWithID:projectID error:nil];
     expect(step.userData).to.equal(stepContent.userData);
   });
@@ -409,8 +409,8 @@ context(@"update project", ^{
 
     auto projectAfterAdding = nn([storage
                                   fetchSnapshotOfProjectWithID:projectID
-                                  options:WHSProjectFetchOptionsFetchStepsIDs error:nil]);
-    auto step = nn([storage fetchStepWithID:nn(projectAfterAdding.stepsIDs)[0]
+                                  options:WHSProjectFetchOptionsFetchStepIDs error:nil]);
+    auto step = nn([storage fetchStepWithID:nn(projectAfterAdding.stepIDs)[0]
                           fromProjectWithID:projectID error:nil]);
     auto AddedAssetPath = nn([step.assetsURL URLByAppendingPathComponent:stepAssetName].path);
     expect([[NSFileManager defaultManager] fileExistsAtPath:AddedAssetPath]).to.beTruthy();
@@ -433,8 +433,8 @@ context(@"update project", ^{
     expect(result).to.beTruthy();
     auto _Nullable projectAfterAdding = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterAdding.stepsIDs).to.haveCountOf(2);
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterAdding.stepIDs).to.haveCountOf(2);
   });
 
   it(@"should not add steps when added steps content array is empty", ^{
@@ -442,9 +442,9 @@ context(@"update project", ^{
     addRequest.stepsContentToAdd = @[stepContent];
     addRequest.stepCursor = @(1);
     [storage updateProjectWithRequest:addRequest error:nil];
-    auto expectedStepsIDs = nn([storage
-                                fetchSnapshotOfProjectWithID:projectID
-                                options:WHSProjectFetchOptionsFetchStepsIDs error:nil]).stepsIDs;
+    auto expectedStepIDs = nn([storage
+                               fetchSnapshotOfProjectWithID:projectID
+                               options:WHSProjectFetchOptionsFetchStepIDs error:nil]).stepIDs;
     auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     request.stepsContentToAdd = @[];
 
@@ -453,8 +453,8 @@ context(@"update project", ^{
     expect(result).to.beTruthy();
     auto _Nullable projectAfterAdding = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterAdding.stepsIDs).to.equal(expectedStepsIDs);
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterAdding.stepIDs).to.equal(expectedStepIDs);
   });
 
   it(@"should return NO and set WHSErrorCodeWriteFailed if added step has invalid assets URL", ^{
@@ -480,7 +480,7 @@ context(@"update project", ^{
     [storage updateProjectWithRequest:addRequest error:nil];
     auto stepsBeforeDelete = nn([storage
                                  fetchSnapshotOfProjectWithID:projectID
-                                 options:WHSProjectFetchOptionsFetchStepsIDs error:nil].stepsIDs);
+                                 options:WHSProjectFetchOptionsFetchStepIDs error:nil].stepIDs);
     auto delRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     delRequest.stepIDsToDelete = @[stepsBeforeDelete[0]];
 
@@ -489,8 +489,8 @@ context(@"update project", ^{
     expect(result).to.beTruthy();
     auto _Nullable projectAfterDelete = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterDelete.stepsIDs).to.equal(@[stepsBeforeDelete[1]]);
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterDelete.stepIDs).to.equal(@[stepsBeforeDelete[1]]);
   });
 
   it(@"should delete multiple steps", ^{
@@ -502,16 +502,16 @@ context(@"update project", ^{
     auto delRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     delRequest.stepIDsToDelete = nn([storage
                                      fetchSnapshotOfProjectWithID:projectID
-                                     options:WHSProjectFetchOptionsFetchStepsIDs
-                                     error:nil].stepsIDs);
+                                     options:WHSProjectFetchOptionsFetchStepIDs
+                                     error:nil].stepIDs);
 
     auto result = [storage updateProjectWithRequest:delRequest error:nil];
 
     expect(result).to.beTruthy();
     auto _Nullable projectAfterDelete = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterDelete.stepsIDs).to.beEmpty();
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterDelete.stepIDs).to.beEmpty();
   });
 
   it(@"shoulds ignore step to delete that is not in project", ^{
@@ -520,7 +520,7 @@ context(@"update project", ^{
     [storage updateProjectWithRequest:addRequest error:nil];
     auto stepsBeforeDelete = nn([storage
                                  fetchSnapshotOfProjectWithID:projectID
-                                 options:WHSProjectFetchOptionsFetchStepsIDs error:nil].stepsIDs);
+                                 options:WHSProjectFetchOptionsFetchStepIDs error:nil].stepIDs);
     auto delRequest = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectID];
     delRequest.stepIDsToDelete = @[[NSUUID UUID]];
 
@@ -529,8 +529,8 @@ context(@"update project", ^{
     expect(result).to.beTruthy();
     auto _Nullable projectAfterDelete = [storage
                                          fetchSnapshotOfProjectWithID:projectID
-                                         options:WHSProjectFetchOptionsFetchStepsIDs error:nil];
-    expect(projectAfterDelete.stepsIDs).to.equal(stepsBeforeDelete);
+                                         options:WHSProjectFetchOptionsFetchStepIDs error:nil];
+    expect(projectAfterDelete.stepIDs).to.equal(stepsBeforeDelete);
   });
 
   it(@"should update step cursor", ^{
@@ -688,8 +688,8 @@ context(@"duplicate project", ^{
     expect(duplicatedProject.bundleID).to.equal(originalProject.bundleID);
   });
 
-  it(@"should duplicate steps IDs", ^{
-    expect(duplicatedProject.stepsIDs).to.equal(originalProject.stepsIDs);
+  it(@"should duplicate step IDs", ^{
+    expect(duplicatedProject.stepIDs).to.equal(originalProject.stepIDs);
   });
 
   it(@"should duplicate step cursor", ^{
@@ -716,9 +716,9 @@ context(@"duplicate project", ^{
   });
 
   it(@"should duplicate step", ^{
-    auto originalStep = nn([storage fetchStepWithID:nn(originalProject.stepsIDs)[0]
+    auto originalStep = nn([storage fetchStepWithID:nn(originalProject.stepIDs)[0]
                                   fromProjectWithID:originalProject.ID error:nil]);
-    auto _Nullable duplicatedStep = [storage fetchStepWithID:nn(duplicatedProject.stepsIDs)[0]
+    auto _Nullable duplicatedStep = [storage fetchStepWithID:nn(duplicatedProject.stepIDs)[0]
                                            fromProjectWithID:nn(duplicatedProject).ID error:nil];
 
     expect(duplicatedStep.ID).to.equal(originalStep.ID);
@@ -763,8 +763,8 @@ context(@"fetch step", ^{
     request.stepsContentToAdd = @[stepContent];
     [storage updateProjectWithRequest:request error:nil];
     stepID = nn([storage fetchSnapshotOfProjectWithID:projectID
-                                              options:WHSProjectFetchOptionsFetchStepsIDs
-                                                error:nil].stepsIDs)[0];
+                                              options:WHSProjectFetchOptionsFetchStepIDs
+                                                error:nil].stepIDs)[0];
   });
 
   afterEach(^{
