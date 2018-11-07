@@ -11,7 +11,7 @@
 @interface PTNFakeAuthorizationManager : NSObject <PTNAuthorizationManager>
 
 /// Signal returned for all \c requestAuthorizationFromViewController: requests.
-@property (strong, nonatomic) RACSignal *authorizationSignal;
+@property (strong, nonatomic) RACSignal<PTNAuthorizationStatus *> *authorizationSignal;
 
 /// Signal returned for all \c revokeAuthorization requests.
 @property (strong, nonatomic) RACSignal *revocationSignal;
@@ -23,7 +23,8 @@
 
 @implementation PTNFakeAuthorizationManager
 
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
   return self.authorizationSignal;
 }
 

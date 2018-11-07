@@ -63,7 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTNAuthorizationManager
 #pragma mark -
 
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
   return [RACSignal defer:^RACSignal *{
     RACSignal *statusSignal = [[[RACObserve(self, authorizationStatus)
         skip:1]

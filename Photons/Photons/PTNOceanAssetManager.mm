@@ -444,20 +444,20 @@ NSComparator comparatorByDistanceToPixelCount(NSInteger pixelCount) {
 #pragma mark Caching
 #pragma mark -
 
-- (RACSignal *)validateAlbumWithURL:(NSURL __unused *)url
-                          entityTag:(nullable NSString __unused *)entityTag {
+- (RACSignal<NSValue *> *)validateAlbumWithURL:(NSURL __unused *)url
+                                     entityTag:(nullable NSString __unused *)entityTag {
   return [RACSignal return:@NO];
 }
 
-- (RACSignal *)validateDescriptorWithURL:(NSURL __unused *)url
-                               entityTag:(nullable NSString __unused *)entityTag {
+- (RACSignal<NSValue *> *)validateDescriptorWithURL:(NSURL __unused *)url
+                                          entityTag:(nullable NSString __unused *)entityTag {
   return [RACSignal return:@NO];
 }
 
-- (RACSignal *)validateImageWithDescriptor:(__unused id<PTNDescriptor>)descriptor
-                          resizingStrategy:(__unused id<PTNResizingStrategy>)resizingStrategy
-                                   options:(PTNImageFetchOptions __unused *)options
-                                 entityTag:(nullable NSString __unused *)entityTag {
+- (RACSignal<NSValue *> *)validateImageWithDescriptor:(__unused id<PTNDescriptor>)descriptor
+    resizingStrategy:(__unused id<PTNResizingStrategy>)resizingStrategy
+    options:(PTNImageFetchOptions __unused *)options
+    entityTag:(nullable NSString __unused *)entityTag {
   return [RACSignal return:@NO];
 }
 

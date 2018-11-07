@@ -25,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
   return [RACSignal return:$(PTNAuthorizationStatusAuthorized)];
 }
 
@@ -52,8 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithSourceMapping:map];
 }
 
-- (RACSignal *)requestAuthorizationForScheme:(NSString *)scheme
-                          fromViewController:(UIViewController *)viewController {
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationForScheme:(NSString *)scheme
+    fromViewController:(UIViewController *)viewController {
   _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (!authorizationManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
@@ -73,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [authorizationManager revokeAuthorization];
 }
 
-- (RACSignal *)authorizationStatusForScheme:(NSString *)scheme {
+- (RACSignal<PTNAuthorizationStatus *> *)authorizationStatusForScheme:(NSString *)scheme {
   _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (!authorizationManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme

@@ -19,14 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark URL resizing
 #pragma mark -
 
-- (RACSignal *)resizeImageAtURL:(NSURL *)url toSize:(CGSize)size
-                    contentMode:(PTNImageContentMode)contentMode {
+- (RACSignal<UIImage *> *)resizeImageAtURL:(NSURL *)url toSize:(CGSize)size
+                               contentMode:(PTNImageContentMode)contentMode {
   return [self resizeImageAtURL:url
                resizingStrategy:[PTNResizingStrategy contentMode:contentMode size:size]];
 }
 
-- (RACSignal *)resizeImageAtURL:(NSURL *)url
-               resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+- (RACSignal<UIImage *> *)resizeImageAtURL:(NSURL *)url
+                          resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   if (!url.isFileURL) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
@@ -58,14 +58,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Data resizing
 #pragma mark -
 
-- (RACSignal *)resizeImageFromData:(NSData *)data toSize:(CGSize)size
-                       contentMode:(PTNImageContentMode)contentMode {
+- (RACSignal<UIImage *> *)resizeImageFromData:(NSData *)data toSize:(CGSize)size
+                                  contentMode:(PTNImageContentMode)contentMode {
   return [self resizeImageFromData:data
                   resizingStrategy:[PTNResizingStrategy contentMode:contentMode size:size]];
 }
 
-- (RACSignal *)resizeImageFromData:(NSData *)data
-                  resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+- (RACSignal<UIImage *> *)resizeImageFromData:(NSData *)data
+                             resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     __block CGImageSourceRef sourceRef =
         CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);

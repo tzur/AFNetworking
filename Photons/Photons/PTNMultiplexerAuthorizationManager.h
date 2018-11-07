@@ -41,10 +41,9 @@ typedef NSDictionary<NSString *, id<PTNAuthorizationManager>> PTNSchemeToAuthori
 /// and complete or err if the authorization process has been prematurely terminated.
 ///
 /// The signal operates on an arbitrary thread.
-///
-/// @return <tt>RACSignal<></tt>.
-- (RACSignal *)requestAuthorizationForScheme:(NSString *)scheme
-                          fromViewController:(UIViewController *)viewController;
+- (RACSignal<PTNAuthorizationStatus *> *)
+    requestAuthorizationForScheme:(NSString *)scheme
+    fromViewController:(UIViewController *)viewController;
 
 /// Revokes authorization from the Photons source corresponding to \c scheme in the receiver's
 /// \c mapping, returning the \c authorizationStatus to \c PTNAuthorizationStatusNotDetermined. The
@@ -64,9 +63,7 @@ typedef NSDictionary<NSString *, id<PTNAuthorizationManager>> PTNSchemeToAuthori
 /// \c scheme, followed by any updates to that authorization status or errs with
 /// \c PTNErrorCodeUnrecognizedURLScheme error code if \c scheme does not correspond to any of the
 /// receiver's underlying \c PTNAuthorizationManager objects.
-///
-/// @return <tt>RACSignal<PTNAuthorizationStatus *></tt>.
-- (RACSignal *)authorizationStatusForScheme:(NSString *)scheme;
+- (RACSignal<PTNAuthorizationStatus *> *)authorizationStatusForScheme:(NSString *)scheme;
 
 /// Mapping between \c NSURL schemes this manager supports and the \c PTNAuthorizationManager that
 /// handles them.

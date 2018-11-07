@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Wrapper to objects returned by cache, aggregating cached data and its information into a
 /// single object.
-@interface PTNCacheResponse <DataType :id<NSObject>, InfoType :id<NSObject>> : NSObject
+@interface PTNCacheResponse<DataType: id<NSObject>, InfoType: id<NSObject>> : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
