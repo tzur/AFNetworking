@@ -149,7 +149,7 @@ static NSString * const kWHSBundleIDKey = @"bundleID";
 - (instancetype)initWithBundleID:(NSString *)bundleID baseURL:(NSURL *)baseURL {
   if (self = [super init]) {
     _observers = [NSMapTable weakToStrongObjectsMapTable];
-    _bundleID = bundleID;
+    _bundleID = [bundleID copy];
     _baseURL = baseURL;
     _fileManager = [NSFileManager defaultManager];
     [self.fileManager createDirectoryAtURL:self.baseURL withIntermediateDirectories:YES
