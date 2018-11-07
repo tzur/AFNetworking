@@ -4,6 +4,7 @@
 #import "PTNInterceptingAssetManager.h"
 
 #import <LTKit/LTBidirectionalMap.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSErrorCodes+Photons.h"
@@ -15,7 +16,6 @@
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNIncrementalChanges.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
 
@@ -897,7 +897,7 @@ context(@"image fetching", ^{
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchImageWithDescriptor:descriptor
         resizingStrategy:resizingStrategy options:options] testRecorder];
 
-    PTNProgress *progress = [[PTNProgress alloc] initWithResult:@"foo"];
+    LTProgress *progress = [[LTProgress alloc] initWithResult:@"foo"];
 
     [underlyingAssetManager serveImageRequest:request withProgressObjects:@[progress]];
 
@@ -909,7 +909,7 @@ context(@"image fetching", ^{
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchImageWithDescriptor:descriptor
         resizingStrategy:resizingStrategy options:options] testRecorder];
 
-    PTNProgress *progress = [[PTNProgress alloc] initWithResult:@"foo"];
+    LTProgress *progress = [[LTProgress alloc] initWithResult:@"foo"];
     NSError *error = [NSError lt_errorWithCode:1337];
 
     [underlyingAssetManager serveImageRequest:request withProgressObjects:@[progress]
@@ -941,7 +941,7 @@ context(@"AVAsset fetching", ^{
 
     [underlyingAssetManager serveAVAssetRequest:request withProgress:@[] videoAsset:videoAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:videoAsset]]);
     expect(values).will.complete();
   });
 
@@ -954,7 +954,7 @@ context(@"AVAsset fetching", ^{
 
     [underlyingAssetManager serveAVAssetRequest:request withProgress:@[@0.666] finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.666]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -978,7 +978,7 @@ context(@"image data fetching", ^{
     [underlyingAssetManager serveImageDataRequest:request withProgress:@[]
                                    imageDataAsset:imageDataAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:imageDataAsset]]);
     expect(values).will.complete();
   });
 
@@ -990,7 +990,7 @@ context(@"image data fetching", ^{
     [underlyingAssetManager serveImageDataRequest:request withProgress:@[@0.123]
                                      finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.123]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -1015,7 +1015,7 @@ context(@"AV preview fetching", ^{
 
     [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[] playerItem:playerItem];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:playerItem]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:playerItem]]);
     expect(values).will.complete();
   });
 
@@ -1029,7 +1029,7 @@ context(@"AV preview fetching", ^{
     [underlyingAssetManager serveAVPreviewRequest:request withProgress:@[@0.666]
                                      finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.666]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });
@@ -1051,7 +1051,7 @@ context(@"av data fetching", ^{
 
     [underlyingAssetManager serveAVDataRequest:request withProgress:@[] avDataAsset:avDataAsset];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:avDataAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:avDataAsset]]);
     expect(values).will.complete();
   });
 
@@ -1062,7 +1062,7 @@ context(@"av data fetching", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     [underlyingAssetManager serveAVDataRequest:request withProgress:@[@0.123] finallyError:error];
 
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithProgress:0.123]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });

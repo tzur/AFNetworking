@@ -6,6 +6,7 @@
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVPlayerItem.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSBundle+Path.h>
 
@@ -27,7 +28,6 @@
 #import "PTNOceanAssetSearchResponse.h"
 #import "PTNOceanClient.h"
 #import "PTNOceanEnums.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
 #import "PTNTestResources.h"
@@ -395,12 +395,12 @@ context(@"fetching images", ^{
                                                            resizingStrategy:resizingStrategy
                                                                     options:options] testRecorder];
 
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.25]];
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.25]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5]
         ]);
       });
 
@@ -412,7 +412,7 @@ context(@"fetching images", ^{
             .andReturn([RACSubject empty]);
         OCMStub([client downloadDataWithURL:PTNOceanSmallImageURL()]).andReturn(subject);
         auto data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, nil)];
 
         LLSignalTestRecorder *recorder = [[manager
                                            fetchImageWithDescriptor:descriptor
@@ -422,7 +422,7 @@ context(@"fetching images", ^{
         [subject sendNext:progress];
 
         auto result = PTNAssetCacheProxy(data, resizingStrategy, date);
-        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:result]]);
+        expect(recorder).to.sendValues(@[[[LTProgress alloc] initWithResult:result]]);
       });
 
       it(@"should fetch image in high quality delivery mode", ^{
@@ -433,7 +433,7 @@ context(@"fetching images", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanMediumImageURL()]).andReturn(subject);
         auto data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, nil)];
 
         LLSignalTestRecorder *recorder = [[manager
                                            fetchImageWithDescriptor:descriptor
@@ -443,7 +443,7 @@ context(@"fetching images", ^{
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
+          [[LTProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
         ]);
       });
 
@@ -455,7 +455,7 @@ context(@"fetching images", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanLargeImageURL()]).andReturn(subject);
         auto data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, nil)];
         resizingStrategy = [PTNResizingStrategy identity];
 
         LLSignalTestRecorder *recorder = [[manager
@@ -466,7 +466,7 @@ context(@"fetching images", ^{
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
+          [[LTProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
         ]);
       });
 
@@ -476,13 +476,13 @@ context(@"fetching images", ^{
         RACSubject *lowQuality = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanSmallImageURL()]).andReturn(lowQuality);
         auto lowQualityData = [NSData data];
-        auto lowQualityProgress = [PTNProgress
+        auto lowQualityProgress = [LTProgress
                                    progressWithResult:RACTuplePack(lowQualityData, nil)];
 
         RACSubject *highQuality = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanMediumImageURL()]).andReturn(highQuality);
         auto highQualityData = [NSData data];
-        auto highQualityProgress = [PTNProgress
+        auto highQualityProgress = [LTProgress
                                     progressWithResult:RACTuplePack(highQualityData, nil)];
 
         LLSignalTestRecorder *recorder = [[manager
@@ -498,9 +498,9 @@ context(@"fetching images", ^{
 
         expect(recorder).to.complete();
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc]
+          [[LTProgress alloc]
            initWithResult:PTNAssetCacheProxy(lowQualityData, resizingStrategy, date)],
-          [[PTNProgress alloc]
+          [[LTProgress alloc]
            initWithResult:PTNAssetCacheProxy(highQualityData, resizingStrategy, date)]
         ]);
       });
@@ -516,7 +516,7 @@ context(@"fetching images", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanSmallImageURL()]).andReturn(subject);
         NSData *data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, nil)];
 
         LLSignalTestRecorder *recorder =
             [[manager fetchImageWithDescriptor:(id<PTNDescriptor>)proxy
@@ -527,7 +527,7 @@ context(@"fetching images", ^{
         [subject sendCompleted];
 
         auto result = PTNAssetCacheProxy(data, resizingStrategy, date);
-        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:result]]);
+        expect(recorder).to.sendValues(@[[[LTProgress alloc] initWithResult:result]]);
         expect(recorder).to.complete();
       });
     });
@@ -571,12 +571,12 @@ context(@"fetching image data", ^{
         LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
                                           testRecorder];
 
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.25]];
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.25]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5]
         ]);
       });
 
@@ -584,14 +584,14 @@ context(@"fetching image data", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadDataWithURL:PTNOceanSmallImageURL()]).andReturn(subject);
         NSData *data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, nil)];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, nil)];
 
         LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
                                           testRecorder];
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data,
+          [[LTProgress alloc] initWithResult:PTNAssetCacheProxy(data,
                                                                  [PTNResizingStrategy identity],
                                                                  date)]
         ]);
@@ -601,14 +601,14 @@ context(@"fetching image data", ^{
         RACSubject *subject = [RACSubject subject];
         OCMStub([client downloadDataWithURL:OCMOCK_ANY]).andReturn(subject);
         NSData *data = [NSData data];
-        auto progress = [PTNProgress progressWithResult:RACTuplePack(data, @"foo")];
+        auto progress = [LTProgress progressWithResult:RACTuplePack(data, @"foo")];
 
         LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
                                           testRecorder];
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, @"foo",
+          [[LTProgress alloc] initWithResult:PTNAssetCacheProxy(data, @"foo",
                                                                  [PTNResizingStrategy identity],
                                                                  date)]
         ]);
@@ -668,7 +668,7 @@ context(@"fetching AV preview", ^{
                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
 
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           AVPlayerItem *playerItem = progress.result;
           if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
             return NO;
@@ -682,7 +682,7 @@ context(@"fetching AV preview", ^{
                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeMediumQualityFormat];
 
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           AVPlayerItem *playerItem = progress.result;
           if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
             return NO;
@@ -696,7 +696,7 @@ context(@"fetching AV preview", ^{
                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeHighQualityFormat];
 
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           AVPlayerItem *playerItem = progress.result;
           if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
             return NO;
@@ -709,7 +709,7 @@ context(@"fetching AV preview", ^{
         auto options = [PTNAVAssetFetchOptions
                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:descriptor options:options];
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           AVPlayerItem *playerItem = progress.result;
           if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
             return NO;
@@ -724,7 +724,7 @@ context(@"fetching AV preview", ^{
                         optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
         RACSignal *values = [manager fetchAVPreviewWithDescriptor:partialDescriptor
                                                           options:options];
-        expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+        expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
           AVPlayerItem *playerItem = progress.result;
           if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
             return NO;
@@ -773,12 +773,12 @@ context(@"fetching AV data", ^{
         LLSignalTestRecorder *recorder = [[manager fetchAVDataWithDescriptor:descriptor]
                                           testRecorder];
 
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.25]];
-        [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.25]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithProgress:@0.25],
-          [[PTNProgress alloc] initWithProgress:@0.5]
+          [[LTProgress alloc] initWithProgress:0.25],
+          [[LTProgress alloc] initWithProgress:0.5]
         ]);
       });
 
@@ -797,14 +797,14 @@ context(@"fetching AV data", ^{
         OCMStub([client downloadFileWithURL:PTNOceanCloseTo720pVideoDownloadURL()])
             .andReturn(subject);
         auto path = [LTPath temporaryPathWithExtension:@"tmp"];
-        auto progress = [PTNProgress progressWithResult:path];
+        auto progress = [LTProgress progressWithResult:path];
         auto expectedAsset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
 
         LLSignalTestRecorder *recorder = [[manager fetchAVDataWithDescriptor:descriptor]
                                           testRecorder];
         [subject sendNext:progress];
 
-        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+        expect(recorder).to.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
       });
 
       it(@"should only use video assets with non-nil download URL", ^{
@@ -813,14 +813,14 @@ context(@"fetching AV data", ^{
         OCMStub([client downloadFileWithURL:PTNOceanCloseTo720pVideoDownloadURL()])
             .andReturn(subject);
         auto path = [LTPath temporaryPathWithExtension:@"tmp"];
-        auto progress = [PTNProgress progressWithResult:path];
+        auto progress = [LTProgress progressWithResult:path];
         auto expectedAsset = [[PTNFileBackedAVAsset alloc] initWithFilePath:path];
 
         LLSignalTestRecorder *recorder = [[manager fetchAVDataWithDescriptor:partialDescriptor]
                                           testRecorder];
         [subject sendNext:progress];
 
-        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+        expect(recorder).to.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
       });
     });
   });

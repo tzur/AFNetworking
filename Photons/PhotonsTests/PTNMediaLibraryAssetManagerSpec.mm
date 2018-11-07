@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <MediaPlayer/MPMediaLibrary.h>
@@ -26,7 +27,6 @@
 #import "PTNMediaLibraryAuthorizer.h"
 #import "PTNMediaLibraryCollectionDescriptor.h"
 #import "PTNMediaQueryProvider.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
 
@@ -346,7 +346,7 @@ context(@"fetching", ^{
       auto signal = [manager fetchImageWithDescriptor:item resizingStrategy:resizeStrategy
                                               options:options];
 
-      expect(signal).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+      expect(signal).will.sendValues(@[[[LTProgress alloc] initWithResult:imageAsset]]);
     });
 
     it(@"should err when fetching with invalid descriptor", ^{
@@ -426,7 +426,7 @@ context(@"fetching", ^{
                       authorizationManager:authorizationManager];
       auto signal = [manager fetchAVAssetWithDescriptor:item options:options];
 
-      expect(signal).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+      expect(signal).will.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
     });
 
     it(@"should err when fetching with invalid descriptor", ^{
@@ -486,7 +486,7 @@ context(@"fetching", ^{
       auto signal = [manager fetchAVPreviewWithDescriptor:item options:options];
 
       LLSignalTestRecorder *values = [signal testRecorder];
-      expect(values).will.matchValue(0, ^BOOL(PTNProgress<AVPlayerItem *> *progress) {
+      expect(values).will.matchValue(0, ^BOOL(LTProgress<AVPlayerItem *> *progress) {
         AVPlayerItem *playerItem = progress.result;
         if (![playerItem.asset isKindOfClass:[AVURLAsset class]]) {
           return NO;
@@ -550,7 +550,7 @@ context(@"AV data", ^{
     auto signal = [manager fetchAVDataWithDescriptor:item];
 
     LLSignalTestRecorder *values = [signal testRecorder];
-    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+    expect(values).will.sendValues(@[[[LTProgress alloc] initWithResult:expectedAsset]]);
     expect(values).will.complete();
   });
 

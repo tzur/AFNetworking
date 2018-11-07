@@ -3,8 +3,9 @@
 
 #import "PTNGatewayAlbumDescriptor.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "NSURL+Gateway.h"
-#import "PTNProgress.h"
 #import "PTNStaticImageAsset.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSURL *)identifier localizedTitle:(NSString *)localizedTitle
                              image:(UIImage *)image albumSignal:(RACSignal *)albumSignal {
   id<PTNImageAsset> asset = [[PTNStaticImageAsset alloc] initWithImage:image];
-  PTNProgress *progress = [[PTNProgress alloc] initWithResult:asset];
+  LTProgress *progress = [[LTProgress alloc] initWithResult:asset];
   RACSignal *imageSignal = [RACSignal return:progress];
   return [self initWithIdentifier:identifier localizedTitle:localizedTitle imageSignal:imageSignal
                       albumSignal:albumSignal];

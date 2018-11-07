@@ -5,12 +5,12 @@
 
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVPlayerItem.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <Photons/PTNAVAssetFetchOptions.h>
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNImageAsset.h>
 #import <Photons/PTNImageFetchOptions.h>
-#import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
 
 #import "PTNFakeAssetManager.h"
@@ -76,8 +76,8 @@ context(@"PTNDescriptor", ^{
     OCMStub([otherAsset fetchImage]).andReturn([RACSignal return:otherImage]);
 
     [assetManager serveImageRequest:request withProgressObjects:@[
-      [[PTNProgress alloc] initWithResult:asset],
-      [[PTNProgress alloc] initWithResult:otherAsset]
+      [[LTProgress alloc] initWithResult:asset],
+      [[LTProgress alloc] initWithResult:otherAsset]
     ]];
 
     expect(values).will.sendValues(@[image, otherImage]);

@@ -218,27 +218,27 @@ static FBRHTTPRequestParameters *
       ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeRemoteFetchFailed]];
 }
 
-- (RACSignal<PTNProgress<RACTwoTuple<NSData *, NSString *> *> *> *)
+- (RACSignal<LTProgress<RACTwoTuple<NSData *, NSString *> *> *> *)
     downloadDataWithURL:(NSURL *)url {
   return [[[self.dataClient GET:url.absoluteString withParameters:nil headers:nil]
-      map:^PTNProgress<id<PTNImageAsset>> *(LTProgress<FBRHTTPResponse *> *progress) {
+      map:^LTProgress<id<PTNImageAsset>> *(LTProgress<FBRHTTPResponse *> *progress) {
         if (!progress.result) {
-          return [[PTNProgress alloc] initWithProgress:@(progress.progress)];
+          return [[LTProgress alloc] initWithProgress:progress.progress];
         }
         static LTUTICache *utiCache = [LTUTICache sharedCache];
         auto _Nullable uti = progress.result.metadata.MIMEType ?
             [utiCache preferredUTIForMIMEType:progress.result.metadata.MIMEType] : nil;
 
-        return [[PTNProgress alloc] initWithResult:RACTuplePack(progress.result.content, uti)];
+        return [[LTProgress alloc] initWithResult:RACTuplePack(progress.result.content, uti)];
       }] ptn_wrapErrorWithError:[NSError lt_errorWithCode:PTNErrorCodeRemoteFetchFailed]];
 }
 
-- (RACSignal<PTNProgress<LTPath *> *> *)downloadFileWithURL:(NSURL *)url {
+- (RACSignal<LTProgress<LTPath *> *> *)downloadFileWithURL:(NSURL *)url {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     auto request = [NSURLRequest requestWithURL:url];
     auto progresssBlock = ^(NSProgress *downloadProgress) {
-      [subscriber sendNext:[[PTNProgress alloc]
-                            initWithProgress:@(downloadProgress.fractionCompleted)]];
+      [subscriber sendNext:[[LTProgress alloc]
+                            initWithProgress:downloadProgress.fractionCompleted]];
     };
 
     auto destinationBlock = ^NSURL *(NSURL * __unused targetPath, NSURLResponse *response) {
@@ -275,7 +275,7 @@ static FBRHTTPRequestParameters *
       }
 
       auto _Nullable path = [LTPath pathWithFileURL:nn(fileURL)];
-      [subscriber sendNext:[[PTNProgress alloc] initWithResult:nn(path)]];
+      [subscriber sendNext:[[LTProgress alloc] initWithResult:nn(path)]];
       [subscriber sendCompleted];
     };
 

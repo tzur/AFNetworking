@@ -40,34 +40,34 @@ NS_ASSUME_NONNULL_BEGIN
 /// Skips incomplete progress values and combines the latest image and image metadata signals of
 /// completed progress objects.
 ///
-/// The receiver is assumed to send a sequence of zero or more \c PTNProgress<id<PTNImageAsset>>
-/// values followed by one or more completed \c PTNProgress<id<PTNImageAsset>> values.
+/// The receiver is assumed to send a sequence of zero or more \c LTProgress<id<PTNImageAsset>>
+/// values followed by one or more completed \c LTProgress<id<PTNImageAsset>> values.
 ///
 /// The returned signal sends a \c RACTuple of <tt>(UIImage, PTNImageMetadata)</tt> pairs for each
-/// completed \c PTNProgress object, by combining the latest image and image metadata fetching
+/// completed \c LTProgress object, by combining the latest image and image metadata fetching
 /// signals of the \c id<PTNImageAsset> \c result. It completes when the receiver completes before
-/// sending a completed \c PTNProgress or when the receiver, the image fetching signal and the image
+/// sending a completed \c LTProgress or when the receiver, the image fetching signal and the image
 /// metadata fetching signal complete. It errs when the receiver, the image fetching signal or the
 /// image metadata fetching signal errs.
 - (RACSignal<RACTwoTuple<UIImage *, PTNImageMetadata *> *> *)ptn_imageAndMetadata;
 
 /// Skips incomplete progress values and flattens image signal of completed progress objects.
 ///
-/// The receiver is assumed to send a sequence of zero or more \c PTNProgress<id<PTNImageAsset>>
-/// values followed by one or more completed \c PTNProgress<id<PTNImageAsset>> values.
+/// The receiver is assumed to send a sequence of zero or more \c LTProgress<id<PTNImageAsset>>
+/// values followed by one or more completed \c LTProgress<id<PTNImageAsset>> values.
 ///
-/// The returned signal sends a \c UIImage for each completed \c PTNProgress object, by flattening
+/// The returned signal sends a \c UIImage for each completed \c LTProgress object, by flattening
 /// the image fetching signal of the \c id<PTNImageAsset> \c result. It completes when the receiver
-/// completes before sending a completed \c PTNProgress or when both the receiver and the image
+/// completes before sending a completed \c LTProgress or when both the receiver and the image
 /// fetching signal complete. It errs when the receiver or the image fetching signal errs.
 - (RACSignal<UIImage *> *)ptn_image;
 
 /// Skips incomplete progress values.
 ///
-/// The receiver is assumed to send a sequence of zero or more \c PTNProgress values followed by one
-/// or more completed \c PTNProgress values.
+/// The receiver is assumed to send a sequence of zero or more \c LTProgress values followed by one
+/// or more completed \c LTProgress values.
 ///
-/// The returned signal sends the \c result value for each completed \c PTNProgress sent by
+/// The returned signal sends the \c result value for each completed \c LTProgress sent by
 /// the receiver. It completes or errs when the receiver completes or errs respectively.
 - (RACSignal *)ptn_skipProgress;
 

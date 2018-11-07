@@ -4,6 +4,7 @@
 #import "PTNFakeAssetManager.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "PTNAVAssetFetchOptions.h"
@@ -13,7 +14,6 @@
 #import "PTNImageAsset.h"
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -196,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   PTNAVDataRequest *request = [[PTNAVDataRequest alloc] initWithDescriptor:descriptor];
   if (![self.avDataRequests objectForKey:request]) {
@@ -212,36 +212,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
              withProgress:(NSArray<NSNumber *> *)progress imageAsset:(id<PTNImageAsset>)imageAsset {
-  NSArray *progressObjects = [[progress.rac_sequence map:^id(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }].array arrayByAddingObject:[[PTNProgress alloc] initWithResult:imageAsset]];
+  NSArray *progressObjects = [[progress lt_map:^id(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }] arrayByAddingObject:[[LTProgress alloc] initWithResult:imageAsset]];
 
   [self serveImageRequest:imageRequest withProgressObjects:progressObjects];
 }
 
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
              withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
-  NSArray *progressObjects = [progress.rac_sequence map:^id(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }].array;
+  NSArray *progressObjects = [progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }];
 
   [self serveImageRequest:imageRequest withProgressObjects:progressObjects finallyError:error];
 }
 
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress {
+      withProgressObjects:(NSArray<LTProgress *> *)progress {
   [self serveImageRequest:imageRequest withProgressObjects:progress then:nil];
 }
 
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress finallyError:(NSError *)error {
+      withProgressObjects:(NSArray<LTProgress *> *)progress finallyError:(NSError *)error {
   [self serveImageRequest:imageRequest withProgressObjects:progress then:error];
 }
 
 - (void)serveImageRequest:(PTNImageRequest *)imageRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+      withProgressObjects:(NSArray<LTProgress *> *)progress then:(nullable NSError *)error {
   for (RACSubject *signal in [self requestsMatchingImageRequest:imageRequest]) {
-    for (PTNProgress *progressObject in progress) {
+    for (LTProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
 
@@ -275,26 +275,26 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
                withProgress:(NSArray<NSNumber *> *)progress
                  videoAsset:(id<PTNAudiovisualAsset>)videoAsset {
-  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:videoAsset]];
+  NSArray *progressObjects = [[progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }] arrayByAddingObject:[[LTProgress alloc] initWithResult:videoAsset]];
 
   [self serveAVAssetRequest:request withProgressObjects:progressObjects then:nil];
 }
 
 - (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
                withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
-  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
+  NSArray *progressObjects = [progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
   }];
 
   [self serveAVAssetRequest:request withProgressObjects:progressObjects then:error];
 }
 
 - (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
-        withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+        withProgressObjects:(NSArray<LTProgress *> *)progress then:(nullable NSError *)error {
   for (RACSubject *signal in [self requestsMatchingAVAssetRequest:request]) {
-    for (PTNProgress *progressObject in progress) {
+    for (LTProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
 
@@ -326,26 +326,26 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
                  withProgress:(NSArray<NSNumber *> *)progress
                imageDataAsset:(id<PTNImageDataAsset>)imageDataAsset {
-  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:imageDataAsset]];
+  NSArray *progressObjects = [[progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }] arrayByAddingObject:[[LTProgress alloc] initWithResult:imageDataAsset]];
 
   [self serveImageDataRequest:imageDataRequest withProgressObjects:progressObjects then:nil];
 }
 
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
                  withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
-  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
+  NSArray *progressObjects = [progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
   }];
 
   [self serveImageDataRequest:imageDataRequest withProgressObjects:progressObjects then:error];
 }
 
 - (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
-          withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+          withProgressObjects:(NSArray<LTProgress *> *)progress then:(nullable NSError *)error {
   for (RACSubject *signal in [self requestsMatchingImageDataRequest:imageDataRequest]) {
-    for (PTNProgress *progressObject in progress) {
+    for (LTProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
 
@@ -376,17 +376,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
                  withProgress:(NSArray<NSNumber *> *)progress
                    playerItem:(AVPlayerItem *)playerItem {
-  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:playerItem]];
+  NSArray *progressObjects = [[progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }] arrayByAddingObject:[[LTProgress alloc] initWithResult:playerItem]];
 
   [self serveAVPreviewAssetRequest:request withProgressObjects:progressObjects then:nil];
 }
 
 - (void)serveAVPreviewRequest:(PTNAVPreviewRequest *)request
                  withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
-  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
+  NSArray *progressObjects = [progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
   }];
 
   [self serveAVPreviewAssetRequest:request withProgressObjects:progressObjects then:error];
@@ -394,10 +394,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)serveAVPreviewAssetRequest:(PTNAVPreviewRequest *)request
-               withProgressObjects:(NSArray<PTNProgress *> *)progress
+               withProgressObjects:(NSArray<LTProgress *> *)progress
                               then:(nullable NSError *)error {
   for (RACSubject *signal in [self requestsMatchingAVPreviewRequest:request]) {
-    for (PTNProgress *progressObject in progress) {
+    for (LTProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
 
@@ -429,26 +429,26 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
               withProgress:(NSArray<NSNumber *> *)progress
                avDataAsset:(id<PTNAVDataAsset>)avDataAsset {
-  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
-  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:avDataAsset]];
+  NSArray *progressObjects = [[progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
+  }] arrayByAddingObject:[[LTProgress alloc] initWithResult:avDataAsset]];
 
   [self serveAVDataRequest:avDataRequest withProgressObjects:progressObjects then:nil];
 }
 
 - (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
               withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
-  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
-    return [[PTNProgress alloc] initWithProgress:progressValue];
+  NSArray *progressObjects = [progress lt_map:^LTProgress *(NSNumber *progressValue) {
+    return [[LTProgress alloc] initWithProgress:progressValue.doubleValue];
   }];
 
   [self serveAVDataRequest:avDataRequest withProgressObjects:progressObjects then:error];
 }
 
 - (void)serveAVDataRequest:(PTNAVDataRequest *)avDataRequest
-       withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+       withProgressObjects:(NSArray<LTProgress *> *)progress then:(nullable NSError *)error {
   for (RACSubject *signal in [self requestsMatchingAVDataRequest:avDataRequest]) {
-    for (PTNProgress *progressObject in progress) {
+    for (LTProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
 

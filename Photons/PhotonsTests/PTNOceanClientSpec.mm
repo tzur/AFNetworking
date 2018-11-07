@@ -246,8 +246,8 @@ context(@"data download", ^{
     [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
 
     expect(recorder).to.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0.25],
-      [[PTNProgress alloc] initWithProgress:@0.5]
+      [[LTProgress alloc] initWithProgress:0.25],
+      [[LTProgress alloc] initWithProgress:0.5]
     ]);
   });
 
@@ -261,7 +261,7 @@ context(@"data download", ^{
     [subject sendNext:[[LTProgress alloc] initWithResult:PTNFakeHTTPResponse(data)]];
 
     expect(recorder).to.sendValues(@[
-      [[PTNProgress alloc] initWithResult:RACTuplePack(data, nil)]
+      [[LTProgress alloc] initWithResult:RACTuplePack(data, nil)]
     ]);
   });
 
@@ -275,7 +275,7 @@ context(@"data download", ^{
     [subject sendNext:[[LTProgress alloc] initWithResult:PTNFakeHTTPResponse(data, @"image/jpeg")]];
 
     expect(recorder).to.sendValues(@[
-      [[PTNProgress alloc] initWithResult:RACTuplePack(data, (__bridge NSString *)kUTTypeJPEG)]
+      [[LTProgress alloc] initWithResult:RACTuplePack(data, (__bridge NSString *)kUTTypeJPEG)]
     ]);
   });
 
@@ -334,9 +334,9 @@ context(@"file download", ^{
     progressBlock(progress);
 
     expect(recorder).to.sendValues(@[
-      [[PTNProgress alloc] initWithProgress:@0],
-      [[PTNProgress alloc] initWithProgress:@0.5],
-      [[PTNProgress alloc] initWithProgress:@1]
+      [[LTProgress alloc] initWithProgress:0],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1]
     ]);
     expect(recorder).toNot.complete();
   });
@@ -366,9 +366,9 @@ context(@"file download", ^{
     completionBlock(response, downloadURL, nil);
 
     expect(recorder).to.sendValuesWithCount(1);
-    expect(recorder.values[0]).to.beKindOf([PTNProgress class]);
-    expect(((PTNProgress *)recorder.values[0]).result).to.beKindOf([LTPath class]);
-    LTPath *resultPath = ((PTNProgress *)recorder.values[0]).result;
+    expect(recorder.values[0]).to.beKindOf([LTProgress class]);
+    expect(((LTProgress *)recorder.values[0]).result).to.beKindOf([LTPath class]);
+    LTPath *resultPath = ((LTProgress *)recorder.values[0]).result;
     NSData *fileData = [NSData dataWithContentsOfURL:resultPath.url];
     auto assetData = [NSData dataWithContentsOfURL:PTNOneSecondVideoURL()];
     expect(fileData).equal(assetData);
@@ -402,9 +402,9 @@ context(@"file download", ^{
     completionBlock(response, downloadURL, nil);
 
     expect(recorder).to.sendValuesWithCount(1);
-    expect(recorder.values[0]).to.beKindOf([PTNProgress class]);
-    expect(((PTNProgress *)recorder.values[0]).result).to.beKindOf([LTPath class]);
-    LTPath *resultPath = ((PTNProgress *)recorder.values[0]).result;
+    expect(recorder.values[0]).to.beKindOf([LTProgress class]);
+    expect(((LTProgress *)recorder.values[0]).result).to.beKindOf([LTPath class]);
+    LTPath *resultPath = ((LTProgress *)recorder.values[0]).result;
     expect([resultPath.path pathExtension]).to.equal(@"mp4");
 
     [[NSFileManager defaultManager] removeItemAtURL:downloadURL error:nil];

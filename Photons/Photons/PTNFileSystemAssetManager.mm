@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -22,7 +23,6 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
-#import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -243,7 +243,7 @@ NS_ASSUME_NONNULL_BEGIN
         [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath imageResizer:self.imageResizer
                                          resizingStrategy:resizingStrategy];
 
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+    return [RACSignal return:[[LTProgress alloc] initWithResult:imageAsset]];
   }];
 }
 
@@ -253,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
   AVAsset *videoAsset = [AVAsset assetWithURL:filePath.url];
   PTNAVImageAsset *imageAsset =
       [[PTNAVImageAsset alloc] initWithAsset:videoAsset resizingStrategy:resizingStrategy];
-  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+  return [RACSignal return:[[LTProgress alloc] initWithResult:imageAsset]];
 }
 
 - (BOOL)nonDirectoryExistsAtURL:(NSURL *)url {
@@ -294,7 +294,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     PTNAudiovisualAsset *videoAsset =
         [[PTNAudiovisualAsset alloc] initWithAVAsset:[AVAsset assetWithURL:filePath.url]];
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:videoAsset]];
+    return [RACSignal return:[[LTProgress alloc] initWithResult:videoAsset]];
   }];
 }
 
@@ -331,7 +331,7 @@ NS_ASSUME_NONNULL_BEGIN
         [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath imageResizer:self.imageResizer
                                          resizingStrategy:nil];
 
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+    return [RACSignal return:[[LTProgress alloc] initWithResult:imageAsset]];
   }];
 }
 
@@ -358,7 +358,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:filePath.url];
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:playerItem]];
+    return [RACSignal return:[[LTProgress alloc] initWithResult:playerItem]];
   }];
 }
 
@@ -366,7 +366,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark AV data fetching
 #pragma mark -
 
-- (RACSignal<PTNProgress<id<PTNAVDataAsset>> *>*)
+- (RACSignal<LTProgress<id<PTNAVDataAsset>> *>*)
     fetchAVDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   @weakify(self);
   return [RACSignal defer:^RACSignal *{
@@ -385,7 +385,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     auto asset = [[PTNFileBackedAVAsset alloc] initWithFilePath:filePath];
-    return [RACSignal return:[[PTNProgress alloc] initWithResult:asset]];
+    return [RACSignal return:[[LTProgress alloc] initWithResult:asset]];
   }];
 }
 
