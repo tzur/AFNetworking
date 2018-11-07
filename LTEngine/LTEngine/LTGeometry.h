@@ -90,12 +90,12 @@ CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
 /// Returns the point on the line passing through \c p0 and \c p1 with the smallest distance to the
 /// given \c point.
 ///
-/// @note the line can be degenerated i.e. \c p0 is equal to \c p1, in which case \c p0 is returned.
+/// @note the line can be degenerate i.e. \c p0 is equal to \c p1, in which case \c p0 is returned.
 CGPoint LTPointOnLineClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point);
 
 /// Returns the point on the edge (\c p0, \c p1) with the smallest distance to the given \c point.
 ///
-/// @note the edge can be degenerated i.e. \c p0 is equal to \c p1, in which case \c p0 is returned.
+/// @note the edge can be degenerate i.e. \c p0 is equal to \c p1, in which case \c p0 is returned.
 CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point);
 
 #pragma mark -
@@ -117,12 +117,12 @@ CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const std::vector<CGPoint>
 
 /// Returns the distance of the given \c point from the line passing through \c p0 and \c p1.
 ///
-/// @note the line can be degenerated, i.e. \c p0 is equal to \c p1.
+/// @note the line can be degenerate, i.e. \c p0 is equal to \c p1.
 CGFloat LTDistanceFromLine(CGPoint p0, CGPoint p1, CGPoint point);
 
 /// Returns the distance of the given \c point from the edge (\c p0, \c p1).
 ///
-/// @note the edge can be degenerated, i.e. \c p0 is equal to \c p1.
+/// @note the edge can be degenerate, i.e. \c p0 is equal to \c p1.
 CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point);
 
 /// Returns the point on the given \c polyline with the smallest distance to the given \c point. The
