@@ -193,7 +193,7 @@ context(@"purchasing products", ^{
 
     [storeKitFacade purchaseProduct:product quantity:quantity];
 
-    OCMVerifyAll((id)purchaseManager);
+    OCMVerifyAll(purchaseManager);
   });
 });
 
@@ -204,7 +204,7 @@ context(@"downloading content", ^{
 
     [storeKitFacade downloadContentForTransaction:transaction];
 
-    OCMVerifyAll((id)downloadManager);
+    OCMVerifyAll(downloadManager);
   });
 });
 
@@ -214,7 +214,7 @@ context(@"restoring completed transactions", ^{
 
     [storeKitFacade restoreCompletedTransactions];
 
-    OCMVerifyAll((id)restorationManager);
+    OCMVerifyAll(restorationManager);
   });
 });
 

@@ -178,7 +178,7 @@ context(@"no iCloud account alert", ^{
 
     viewModel.buttons[1].action();
 
-    OCMVerifyAll((id)application);
+    OCMVerifyAll(application);
   });
 });
 

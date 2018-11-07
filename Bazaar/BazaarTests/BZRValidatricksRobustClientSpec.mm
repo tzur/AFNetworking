@@ -77,7 +77,7 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
       expect(recorder).to.complete();
       expect(recorder).to.sendValues(@[successfulResult]);
 
-      OCMVerifyAll((id)succeedingClient);
+      OCMVerifyAll(succeedingClient);
     });
 
     it(@"should call just the first client and fail if the client fails", ^{
@@ -89,7 +89,7 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
 
       expect(recorder).will.sendError(error);
 
-      OCMVerifyAll((id)failingClient);
+      OCMVerifyAll(failingClient);
     });
   });
 
@@ -104,8 +104,8 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
      expect(recorder).will.complete();
      expect(recorder).will.sendValues(@[successfulResult]);
 
-     OCMVerifyAll((id)succeedingClient);
-     OCMVerifyAll((id)failingClient);
+     OCMVerifyAll(succeedingClient);
+     OCMVerifyAll(failingClient);
    });
 
     it(@"should call all the clients and fail if they all fail", ^{
@@ -121,8 +121,8 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
 
       expect(recorder).will.sendError(error);
 
-      OCMVerifyAll((id)failingClient);
-      OCMVerifyAll((id)anotherFailingClient);
+      OCMVerifyAll(failingClient);
+      OCMVerifyAll(anotherFailingClient);
     });
   });
 
@@ -137,8 +137,8 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[successfulResult]);
 
-      OCMVerifyAll((id)failingClient);
-      OCMVerifyAll((id)succeedingClient);
+      OCMVerifyAll(failingClient);
+      OCMVerifyAll(succeedingClient);
     });
 
     it(@"should call all the clients and fail if they all fail", ^{
@@ -154,8 +154,8 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
 
       expect(recorder).will.sendError(error);
 
-      OCMVerifyAll((id)failingClient);
-      OCMVerifyAll((id)anotherFailingClient);
+      OCMVerifyAll(failingClient);
+      OCMVerifyAll(anotherFailingClient);
     });
   });
 
@@ -181,8 +181,8 @@ sharedExamplesFor(kRobustClientSharedExamplesName, ^(NSDictionary *data) {
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[successfulResult]);
 
-      OCMVerifyAll((id)failingTwiceClient);
-      OCMVerifyAll((id)failingThenSucceedingClient);
+      OCMVerifyAll(failingTwiceClient);
+      OCMVerifyAll(failingThenSucceedingClient);
     });
   });
 

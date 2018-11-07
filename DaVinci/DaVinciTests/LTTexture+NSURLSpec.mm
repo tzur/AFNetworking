@@ -44,7 +44,7 @@ it(@"should return nil for unrecognized image", ^{
   LTTexture *texture = [LTTexture dvn_textureForURL:kImageURL imageLoader:imageLoaderMock];
 
   expect(texture).to.beNil();
-  OCMVerifyAll((id)imageLoaderMock);
+  OCMVerifyAll(imageLoaderMock);
 });
 
 it(@"should return texture for image url", ^{

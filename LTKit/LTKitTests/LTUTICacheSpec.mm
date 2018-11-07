@@ -31,7 +31,7 @@ context(@"UTI conformance", ^{
     expect([utiCache isUTI:@"foo" conformsTo:@"bar"]).to.beTruthy();
     OCMExpect([mobileCoreServices isUTI:@"baz" conformsTo:@"bar"]).andReturn(NO);
     expect([utiCache isUTI:@"baz" conformsTo:@"bar"]).to.beFalsy();
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 
@@ -49,7 +49,7 @@ context(@"preferredUTIForFileExtension", ^{
     expect([utiCache preferredUTIForFileExtension:@"foo"]).to.equal(@"baz");
     OCMExpect([mobileCoreServices preferredUTIForFileExtension:@"bar"]).andReturn(@"flip");
     expect([utiCache preferredUTIForFileExtension:@"bar"]).to.equal(@"flip");
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 
@@ -67,7 +67,7 @@ context(@"preferredUTIForMIMEType", ^{
     expect([utiCache preferredUTIForMIMEType:@"foo"]).to.equal(@"baz");
     OCMExpect([mobileCoreServices preferredUTIForMIMEType:@"bar"]).andReturn(@"flip");
     expect([utiCache preferredUTIForMIMEType:@"bar"]).to.equal(@"flip");
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 
@@ -85,7 +85,7 @@ context(@"preferredFileExtensionForUTI", ^{
     expect([utiCache preferredFileExtensionForUTI:@"foo"]).to.equal(@"baz");
     OCMExpect([mobileCoreServices preferredFileExtensionForUTI:@"bar"]);
     expect([utiCache preferredFileExtensionForUTI:@"bar"]).to.beNil();
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 
@@ -103,7 +103,7 @@ context(@"preferredFileExtensionForUTI", ^{
     expect([utiCache preferredFileExtensionForUTI:@"foo"]).to.equal(@"baz");
     OCMExpect([mobileCoreServices preferredFileExtensionForUTI:@"bar"]);
     expect([utiCache preferredFileExtensionForUTI:@"bar"]).to.beNil();
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 
@@ -121,7 +121,7 @@ context(@"preferredMIMETypeForUTI", ^{
     expect([utiCache preferredMIMETypeForUTI:@"foo"]).to.equal(@"baz");
     OCMExpect([mobileCoreServices preferredMIMETypeForUTI:@"bar"]);
     expect([utiCache preferredMIMETypeForUTI:@"bar"]).to.beNil();
-    OCMVerifyAll((id)mobileCoreServices);
+    OCMVerifyAll(mobileCoreServices);
   });
 });
 

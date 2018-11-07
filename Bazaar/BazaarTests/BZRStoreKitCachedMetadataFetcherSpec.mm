@@ -36,7 +36,7 @@ it(@"should send cached products", ^{
 
   expect(firstCallRecorder).to.sendValues(@[@[productWithMetadata]]);
   expect(secondCallRecorder).to.sendValues(@[@[productWithMetadata]]);
-  OCMVerifyAll((id)underlyingFetcher);
+  OCMVerifyAll(underlyingFetcher);
 });
 
 it(@"should refetch the products metadata after cache was cleared", ^{
@@ -53,7 +53,7 @@ it(@"should refetch the products metadata after cache was cleared", ^{
 
   expect(firstCallRecorder).to.sendValues(@[@[productWithMetadata]]);
   expect(secondCallRecorder).to.sendValues(@[@[productWithMetadata]]);
-  OCMVerifyAll((id)underlyingFetcher);
+  OCMVerifyAll(underlyingFetcher);
 });
 
 it(@"should send error if the underlying fetcher sends error", ^{
@@ -91,7 +91,7 @@ it(@"should send cached product with the full price added to it", ^{
       withValue:fullPriceProductWithMetadata.priceInfo.price];
   auto expectedProducts = @[productWithFullPrice, fullPriceProductWithMetadata];
   expect(secondCallRecorder).to.sendValues(@[expectedProducts]);
-  OCMVerifyAll((id)underlyingFetcher);
+  OCMVerifyAll(underlyingFetcher);
 });
 
 context(@"deallocating object", ^{

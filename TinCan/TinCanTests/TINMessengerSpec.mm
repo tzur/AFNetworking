@@ -62,7 +62,7 @@ context(@"message send", ^{
     OCMStub([applicationMock openURL:[OCMArg checkWithBlock:urlCheckBlock] options:OCMOCK_ANY
                    completionHandler:OCMOCK_ANY]);
     [messenger sendMessage:message completion:^(BOOL, NSError *) {}];
-    OCMVerifyAll((id)applicationMock);
+    OCMVerifyAll(applicationMock);
   });
 
   it(@"should invoke the completion block when open URL succeeds", ^{

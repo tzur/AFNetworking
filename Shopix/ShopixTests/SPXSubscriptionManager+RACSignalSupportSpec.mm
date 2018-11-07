@@ -37,7 +37,7 @@ context(@"fetching products info", ^{
 
     auto recorder = [[manager fetchProductsInfo:productIdentifiers] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.sendError(error);
   });
 
@@ -50,7 +50,7 @@ context(@"fetching products info", ^{
 
     auto recorder = [[manager fetchProductsInfo:productIdentifiers] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValues(@[productsInfo]);
   });
@@ -61,7 +61,7 @@ context(@"fetching products info", ^{
 
     auto recorder = [[manager fetchProductsInfo:productIdentifiers] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -75,7 +75,7 @@ context(@"purchasing subscription product", ^{
 
     auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.sendError(error);
   });
 
@@ -86,7 +86,7 @@ context(@"purchasing subscription product", ^{
 
     auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValues(@[subscriptionInfo]);
   });
@@ -98,7 +98,7 @@ context(@"purchasing subscription product", ^{
 
     auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -110,7 +110,7 @@ context(@"purchasing subscription product", ^{
 
     auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -121,7 +121,7 @@ context(@"purchasing subscription product", ^{
 
     auto recorder = [[manager purchaseSubscription:@"foo"] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -135,7 +135,7 @@ context(@"restoring purchases", ^{
 
     auto recorder = [[manager restorePurchases] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.sendError(error);
   });
 
@@ -146,7 +146,7 @@ context(@"restoring purchases", ^{
 
     auto recorder = [[manager restorePurchases] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValues(@[receiptInfo]);
   });
@@ -158,7 +158,7 @@ context(@"restoring purchases", ^{
 
     auto recorder = [[manager restorePurchases] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -169,7 +169,7 @@ context(@"restoring purchases", ^{
 
     auto recorder = [[manager restorePurchases] testRecorder];
 
-    OCMVerifyAll((id)manager);
+    OCMVerifyAll(manager);
     expect(recorder).will.complete();
     expect(recorder).to.sendValuesWithCount(0);
   });

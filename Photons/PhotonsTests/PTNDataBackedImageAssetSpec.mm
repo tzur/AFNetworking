@@ -78,7 +78,7 @@ it(@"should write data to disk", ^{
                                 error:[OCMArg setTo:nil]]);
 
   expect([asset writeToFileAtPath:writePath usingFileManager:fileManager]).will.complete();
-  OCMVerifyAll((id)fileManager);
+  OCMVerifyAll(fileManager);
 });
 
 context(@"unsupported data", ^{

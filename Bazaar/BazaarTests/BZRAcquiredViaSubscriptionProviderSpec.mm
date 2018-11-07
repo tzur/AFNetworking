@@ -24,7 +24,7 @@ context(@"initialization", ^{
     provider = [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 
     expect(provider.productsAcquiredViaSubscription).to.equal([NSSet setWithObject:@"foo"]);
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll(keychainStorage);
   });
 });
 
@@ -103,7 +103,7 @@ context(@"adding acquired via subscription product", ^{
     [provider addAcquiredViaSubscriptionProduct:@"foo"];
     expect(provider.productsAcquiredViaSubscription).to.equal(expectedSet);
 
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll(keychainStorage);
   });
 
   it(@"should add acquired via subscription product identifiers and save set to storage", ^{
@@ -117,7 +117,7 @@ context(@"adding acquired via subscription product", ^{
     [provider addAcquiredViaSubscriptionProducts:[NSSet setWithArray:@[@"foo", @"baz"]]];
     expect(provider.productsAcquiredViaSubscription).to.equal(expectedSet);
 
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll(keychainStorage);
   });
 });
 
@@ -133,7 +133,7 @@ context(@"removing acquired via subscription product", ^{
     [provider removeAcquiredViaSubscriptionProduct:@"foo"];
 
     expect(provider.productsAcquiredViaSubscription).to.equal([NSSet set]);
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll(keychainStorage);
   });
 });
 

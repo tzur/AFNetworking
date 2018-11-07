@@ -25,7 +25,7 @@ it(@"should use the underlying fetcher to get the bundle of the product content"
       .andReturn([RACSignal empty]);
 
   [contentFetcher contentBundleForProduct:product];
-  OCMVerifyAll((id)underlyingContentFetcher);
+  OCMVerifyAll(underlyingContentFetcher);
 });
 
 context(@"content fetching", ^{

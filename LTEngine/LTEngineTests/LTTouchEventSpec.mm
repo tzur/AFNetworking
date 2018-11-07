@@ -82,7 +82,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.timestamp).to.equal(timestamp);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize without previous timestamp", ^{
@@ -98,7 +98,7 @@ context(@"initialization", ^{
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.viewLocation).to.equal(viewLocation);
-      OCMVerifyAll((id)touchMock);
+      OCMVerifyAll(touchMock);
     });
 
     it(@"should initialize using the previous view location of the given touch", ^{
@@ -108,7 +108,7 @@ context(@"initialization", ^{
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.previousViewLocation).to.equal(previousViewLocation);
-      OCMVerifyAll((id)touchMock);
+      OCMVerifyAll(touchMock);
     });
   });
 
@@ -117,7 +117,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.phase).to.equal(phase);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the tap count of the given touch", ^{
@@ -125,7 +125,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.tapCount).to.equal(tapCount);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the major radius of the given touch", ^{
@@ -133,7 +133,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.majorRadius).to.equal(majorRadius);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the major radius tolerance of the given touch", ^{
@@ -141,7 +141,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.majorRadiusTolerance).to.equal(majorRadiusTolerance);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the type of the given touch", ^{
@@ -149,7 +149,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.type).to.equal(type);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the force of the given touch", ^{
@@ -157,7 +157,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.force).to.equal(force);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the maximum possible force of the given touch", ^{
@@ -165,7 +165,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.maximumPossibleForce).to.equal(maximumPossibleForce);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   context(@"azimuth angle", ^{
@@ -175,7 +175,7 @@ context(@"initialization", ^{
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.azimuthAngle).to.equal(azimuthAngle);
-      OCMVerifyAll((id)touchMock);
+      OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the azimuth angle of the given touch if type is not UITouchTypeStylus", ^{
@@ -194,7 +194,7 @@ context(@"initialization", ^{
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.azimuthUnitVector).to.equal(azimuthUnitVector);
-      OCMVerifyAll((id)touchMock);
+      OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the azimuth unit vector if type is not UITouchTypeStylus", ^{
@@ -212,7 +212,7 @@ context(@"initialization", ^{
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.altitudeAngle).to.equal(altitudeAngle);
-      OCMVerifyAll((id)touchMock);
+      OCMVerifyAll(touchMock);
     });
 
     it(@"should not use the altitude angle if type is not UITouchTypeStylus", ^{
@@ -228,7 +228,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.estimationUpdateIndex).to.equal(estimationUpdateIndex);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the estimated properties of the given touch", ^{
@@ -236,7 +236,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.estimatedProperties).to.equal(estimatedProperties);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should initialize using the estimated properties expecting updates of the given touch", ^{
@@ -245,7 +245,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.estimatedPropertiesExpectingUpdates).to.equal(propertiesExpectingUpdates);
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
   });
 
   it(@"should correctly initialize with all required properties of the given touch", ^{
@@ -293,7 +293,7 @@ context(@"initialization", ^{
     expect(touchEvent.estimatedProperties).to.equal(estimatedProperties);
     expect(touchEvent.estimatedPropertiesExpectingUpdates).to.equal(propertiesExpectingUpdates);
 
-    OCMVerifyAll((id)strictTouchMock);
+    OCMVerifyAll(strictTouchMock);
   });
 
   it(@"should initialize using timestamp of the given touch and given previous timestamp", ^{
@@ -304,7 +304,7 @@ context(@"initialization", ^{
                                                            previousTimestamp:@(kPreviousTimestamp)
                                                                   sequenceID:0];
 
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
     expect(touchEvent.timestamp).to.equal(kPreviousTimestamp + 1);
     expect([touchEvent.previousTimestamp doubleValue]).to.equal(kPreviousTimestamp);
   });
@@ -315,7 +315,7 @@ context(@"initialization", ^{
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                            previousTimestamp:nil
                                                                   sequenceID:0];
-    OCMVerifyAll((id)touchMock);
+    OCMVerifyAll(touchMock);
     expect(touchEvent.timestamp).to.equal(timestamp);
     expect(touchEvent.previousTimestamp).to.beNil();
   });

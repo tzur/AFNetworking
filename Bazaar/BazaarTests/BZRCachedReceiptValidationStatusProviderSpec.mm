@@ -121,7 +121,7 @@ context(@"fetching receipt validation status", ^{
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
     expect(validateSignal).will.complete();
-    OCMVerifyAll((id)receiptValidationStatusCache);
+    OCMVerifyAll(receiptValidationStatusCache);
   });
 
   it(@"should err when underlying receipt validitation status provider errs", ^{
@@ -242,7 +242,7 @@ context(@"invalidating cache", ^{
                                                       error:[OCMArg anyObjectRef]]);
 
     expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundleID]).to.finish();
-    OCMVerifyAll((id)receiptValidationStatusCache);
+    OCMVerifyAll(receiptValidationStatusCache);
   });
 
   context(@"invalidation occurred", ^{
@@ -278,7 +278,7 @@ context(@"invalidating cache", ^{
 
       expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundleID])
           .to.finish();
-      OCMVerifyAll((id)receiptValidationStatusCache);
+      OCMVerifyAll(receiptValidationStatusCache);
     });
 
     it(@"should send event upon invalidation", ^{
@@ -311,7 +311,7 @@ context(@"storing first error date", ^{
 
     expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundleID]).to
         .finish();
-    OCMVerifyAll((id)receiptValidationStatusCache);
+    OCMVerifyAll(receiptValidationStatusCache);
   });
 
   it(@"should not store the second error date on failure", ^{
@@ -326,7 +326,7 @@ context(@"storing first error date", ^{
 
     expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundleID]).to.finish();
 
-    OCMVerifyAll((id)receiptValidationStatusCache);
+    OCMVerifyAll(receiptValidationStatusCache);
   });
 
   it(@"should remove the first error date on success", ^{
@@ -336,7 +336,7 @@ context(@"storing first error date", ^{
                                                 applicationBundleID:applicationBundleID]);
     expect([validationStatusProvider fetchReceiptValidationStatus:applicationBundleID]).to.finish();
 
-    OCMVerifyAll((id)receiptValidationStatusCache);
+    OCMVerifyAll(receiptValidationStatusCache);
   });
 });
 

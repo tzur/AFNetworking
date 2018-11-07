@@ -225,7 +225,7 @@ context(@"filtering", ^{
       });
 
       afterEach(^{
-        OCMVerifyAll((id)possiblePredicate);
+        OCMVerifyAll(possiblePredicate);
       });
 
       it(@"should change to active state once predicate accepts a continuation event", ^{
@@ -257,7 +257,7 @@ context(@"filtering", ^{
               [filter filterContentTouchEvents:events
                         withTouchSequenceState:LTTouchEventSequenceStateContinuation];
 
-          OCMVerifyAll((id)activePredicate);
+          OCMVerifyAll(activePredicate);
           expect(filteredEvents).to.haveCountOf(2);
           expect(filteredEvents.firstObject).to.beIdenticalTo(events[3]);
           expect(filteredEvents.lastObject).to.beIdenticalTo(events[5]);
@@ -273,7 +273,7 @@ context(@"filtering", ^{
               [filter filterContentTouchEvents:events
                         withTouchSequenceState:LTTouchEventSequenceStateContinuationStationary];
 
-          OCMVerifyAll((id)activePredicate);
+          OCMVerifyAll(activePredicate);
           expect(filteredEvents).to.haveCountOf(2);
           expect(filteredEvents.firstObject).to.beIdenticalTo(events[3]);
           expect(filteredEvents.lastObject).to.beIdenticalTo(events[5]);
@@ -298,8 +298,8 @@ context(@"filtering", ^{
                 withTouchSequenceState:LTTouchEventSequenceStateContinuation];
       expect(filter.filterState).to.equal(LTContentTouchEventStateFilterStateActive);
 
-      OCMVerifyAll((id)possiblePredicate);
-      OCMVerifyAll((id)activePredicate);
+      OCMVerifyAll(possiblePredicate);
+      OCMVerifyAll(activePredicate);
 
       OCMReject([possiblePredicate isValidEvent:[OCMArg any] givenEvent:[OCMArg any]]);
     });
@@ -386,7 +386,7 @@ context(@"filtering", ^{
       });
 
       afterEach(^{
-        OCMVerifyAll((id)activePredicate);
+        OCMVerifyAll(activePredicate);
       });
 
       it(@"should correctly filter incoming continuation events", ^{

@@ -514,7 +514,7 @@ context(@"collection control", ^{
     [albumView.view layoutIfNeeded];
     [albumView reloadData];
 
-    OCMVerifyAll((id)dataSourceProvider);
+    OCMVerifyAll(dataSourceProvider);
   });
 });
 

@@ -47,7 +47,7 @@ context(@"cache access", ^{
 
     expect(validationStatusCacheEntry.receiptValidationStatus).to.equal(receiptValidationStatus);
     expect(validationStatusCacheEntry.cachingDateTime).to.equal(cachedDate);
-    OCMVerifyAll((id)keychainStorageRoute);
+    OCMVerifyAll(keychainStorageRoute);
   });
 
   it(@"should store receipt validation to cache", ^{
@@ -71,7 +71,7 @@ context(@"cache access", ^{
                                       applicationBundleID:applicationBundleID error:&error];
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStorageRoute);
+    OCMVerifyAll(keychainStorageRoute);
   });
 
   it(@"should store nil to cache", ^{
@@ -88,7 +88,7 @@ context(@"cache access", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStorageRoute);
+    OCMVerifyAll(keychainStorageRoute);
   });
 
   it(@"should return error if failed to store to the storage", ^{
@@ -159,7 +159,7 @@ context(@"cache access", ^{
 
       [validationStatusCache loadCacheEntryOfApplicationWithBundleID:applicationBundleID error:nil];
 
-      OCMVerifyAll((id)keychainStorageRoute);
+      OCMVerifyAll(keychainStorageRoute);
     });
 
     it(@"should return nil if failed to serialize stored receipt validation status to JSON", ^{
@@ -214,7 +214,7 @@ context(@"first error date", ^{
     OCMExpect([keychainStorageRoute valueForKey:kBZRCachedReceiptValidationStatusFirstErrorDateTime
                                     serviceName:applicationBundleID error:nil]);
     [validationStatusCache firstErrorDateTimeForApplicationBundleID:applicationBundleID];
-    OCMVerifyAll((id)keychainStorageRoute);
+    OCMVerifyAll(keychainStorageRoute);
   });
 
   it(@"should store first error date to cache", ^{
@@ -224,7 +224,7 @@ context(@"first error date", ^{
                                  serviceName:applicationBundleID error:nil]);
 
     [validationStatusCache storeFirstErrorDateTime:now applicationBundleID:applicationBundleID];
-    OCMVerifyAll((id)keychainStorageRoute);
+    OCMVerifyAll(keychainStorageRoute);
   });
 });
 

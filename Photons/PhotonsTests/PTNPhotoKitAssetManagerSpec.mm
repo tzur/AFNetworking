@@ -1028,7 +1028,7 @@ context(@"image fetching", ^{
 
     expect([assetManager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
                                           options:options]).will.complete();
-    OCMVerifyAll((id)imageManager);
+    OCMVerifyAll(imageManager);
   });
 
   context(@"fetch image of asset", ^{
@@ -1421,7 +1421,7 @@ context(@"AVAsset fetching", ^{
         }] resultHandler:([OCMArg invokeBlockWithArgs:avasset, audioMix, @{}, nil])]);
 
     expect([assetManager fetchAVAssetWithDescriptor:asset options:options]).will.complete();
-    OCMVerifyAll((id)imageManager);
+    OCMVerifyAll(imageManager);
   });
 
   context(@"Live Photo asset", ^{
@@ -1453,7 +1453,7 @@ context(@"AVAsset fetching", ^{
             return options.isNetworkAccessAllowed;
           }] resultHandler:([OCMArg invokeBlockWithArgs:livePhoto, @{}, nil])]);
       expect([assetManager fetchAVAssetWithDescriptor:asset options:options]).will.complete();
-      OCMVerifyAll((id)imageManager);
+      OCMVerifyAll(imageManager);
     });
 
     context(@"fetch video of asset", ^{
@@ -1668,7 +1668,7 @@ context(@"image data fetching", ^{
         completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], nil])]);
 
     expect([assetManager fetchImageDataWithDescriptor:asset]).will.complete();
-    OCMVerifyAll((id)assetResourceManager);
+    OCMVerifyAll(assetResourceManager);
   });
 
   context(@"fetch image data of asset", ^{
@@ -1829,7 +1829,7 @@ context(@"AV preview fetching", ^{
         }] resultHandler:([OCMArg invokeBlockWithArgs:playerItem, @{}, nil])]);
 
     expect([assetManager fetchAVPreviewWithDescriptor:asset options:options]).will.complete();
-    OCMVerifyAll((id)imageManager);
+    OCMVerifyAll(imageManager);
   });
 
   context(@"Live Photo asset", ^{
@@ -1863,7 +1863,7 @@ context(@"AV preview fetching", ^{
             return options.isNetworkAccessAllowed;
           }] resultHandler:([OCMArg invokeBlockWithArgs:livePhoto, @{}, nil])]);
       expect([assetManager fetchAVPreviewWithDescriptor:asset options:options]).will.complete();
-      OCMVerifyAll((id)imageManager);
+      OCMVerifyAll(imageManager);
     });
 
     context(@"fetch preview of asset", ^{

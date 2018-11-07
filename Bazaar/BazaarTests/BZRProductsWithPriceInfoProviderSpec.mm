@@ -112,7 +112,7 @@ context(@"getting product list", ^{
 
       expect([productsProvider fetchProductList]).will.complete();
 
-      OCMVerifyAll((id)storeKitMetadataFetcher);
+      OCMVerifyAll(storeKitMetadataFetcher);
     });
 
     it(@"should merge subscribers only products with products with price info", ^{
@@ -145,7 +145,7 @@ context(@"getting product list", ^{
             [priceInfoProduct isEqual:nonSubscribersOnlyProductWithPriceInfo] &&
             [sentSubscribersOnlyProduct isEqual:subscribersOnlyProduct];
       });
-      OCMVerifyAll((id)storeKitMetadataFetcher);
+      OCMVerifyAll(storeKitMetadataFetcher);
     });
   });
 

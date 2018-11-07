@@ -55,7 +55,7 @@ it(@"should disable events generation when no active subscription", ^{
   auto disposable1 = [events1 subscribeNext:^(WFVolumeButtonEvent * _Nullable) {}];
   [disposable dispose];
   [disposable1 dispose];
-  OCMVerifyAll((id)applicationMock);
+  OCMVerifyAll(applicationMock);
 });
 
 SpecEnd

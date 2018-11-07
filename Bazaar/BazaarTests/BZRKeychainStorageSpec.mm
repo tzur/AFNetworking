@@ -43,7 +43,7 @@ context(@"keychain storage", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStore);
+    OCMVerifyAll(keychainStore);
   });
 
   it(@"should read values correctly", ^{
@@ -67,7 +67,7 @@ context(@"keychain storage", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStore);
+    OCMVerifyAll(keychainStore);
   });
 
   it(@"should return nil for non-existing values", ^{

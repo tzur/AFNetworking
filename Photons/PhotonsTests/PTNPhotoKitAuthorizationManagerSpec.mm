@@ -25,7 +25,7 @@ it(@"should request authorization from PhotoKit if authorization status is undet
   [[manager requestAuthorizationFromViewController:viewController]
       subscribeNext:^(id __unused x) {}];
 
-  OCMVerifyAll((id)authorizer);
+  OCMVerifyAll(authorizer);
 });
 
 it(@"should send updates correctly when authorization status changes", ^{

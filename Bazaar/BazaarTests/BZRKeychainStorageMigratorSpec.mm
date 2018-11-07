@@ -40,7 +40,7 @@ context(@"migrator", ^{
       BOOL success = [migrator migrateValueForKey:kSourceKey ofClass:[sourceValue class] error:nil];
 
       expect(success).to.equal(YES);
-      OCMVerifyAll((id)targetKeychainStorage);
+      OCMVerifyAll(targetKeychainStorage);
     });
 
     it(@"should not migrate value of key that exists in target keychain storage", ^{
