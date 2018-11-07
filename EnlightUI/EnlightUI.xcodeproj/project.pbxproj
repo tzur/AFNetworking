@@ -42,6 +42,9 @@
 		1983ADE2217F3397004C632A /* EUISMModel+Test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983ADDF217F3397004C632A /* EUISMModel+Test.mm */; };
 		1983ADE4217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983ADE3217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm */; };
 		1983B4422189AD3C004C632A /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1983B43D2189AD15004C632A /* libLLReactiveMatchers.a */; };
+		1983B5162189D174004C632A /* UIColor+EnlightUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B5142189D174004C632A /* UIColor+EnlightUI.mm */; };
+		1983B5172189D174004C632A /* UIFont+EnlightUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B5152189D174004C632A /* UIFont+EnlightUI.mm */; };
+		1983B51F2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B51E2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm */; };
 		19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */; };
 		19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */; };
 		19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F49475216F4F3A0011CFF6 /* UIKit.framework */; };
@@ -625,6 +628,12 @@
 		1983ADDF217F3397004C632A /* EUISMModel+Test.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EUISMModel+Test.mm"; sourceTree = "<group>"; };
 		1983ADE3217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanViewModelSpec.mm; sourceTree = "<group>"; };
 		1983B4372189AD15004C632A /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
+		1983B4D22189D174004C632A /* UIColor+EnlightUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+EnlightUI.h"; sourceTree = "<group>"; };
+		1983B5132189D174004C632A /* UIFont+EnlightUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+EnlightUI.h"; sourceTree = "<group>"; };
+		1983B5142189D174004C632A /* UIColor+EnlightUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+EnlightUI.mm"; sourceTree = "<group>"; };
+		1983B5152189D174004C632A /* UIFont+EnlightUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+EnlightUI.mm"; sourceTree = "<group>"; };
+		1983B51D2189D1A6004C632A /* EUISMFakeYourPlanViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMFakeYourPlanViewModel.h; sourceTree = "<group>"; };
+		1983B51E2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMFakeYourPlanViewModel.mm; sourceTree = "<group>"; };
 		19F4919A216F24E60011CFF6 /* libEnlightUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEnlightUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F491D2216F274C0011CFF6 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		19F491D4216F274C0011CFF6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -841,6 +850,10 @@
 		1983A78F217626B5004C632A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1983B4D22189D174004C632A /* UIColor+EnlightUI.h */,
+				1983B5142189D174004C632A /* UIColor+EnlightUI.mm */,
+				1983B5132189D174004C632A /* UIFont+EnlightUI.h */,
+				1983B5152189D174004C632A /* UIFont+EnlightUI.mm */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -871,6 +884,8 @@
 		1983AB1B217DABA3004C632A /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1983B51D2189D1A6004C632A /* EUISMFakeYourPlanViewModel.h */,
+				1983B51E2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm */,
 				1983ADDD217F3397004C632A /* EUISMModel+Test.h */,
 				1983ADDF217F3397004C632A /* EUISMModel+Test.mm */,
 			);
@@ -1811,6 +1826,8 @@
 			files = (
 				1983A8972178D24D004C632A /* EUISMYourPlanCell.mm in Sources */,
 				1983ABF1217DF54C004C632A /* EUILocalization.mm in Sources */,
+				1983B5172189D174004C632A /* UIFont+EnlightUI.mm in Sources */,
+				1983B5162189D174004C632A /* UIColor+EnlightUI.mm in Sources */,
 				1983ADDC217F3388004C632A /* EUISMYourPlanViewModel.mm in Sources */,
 				1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */,
 			);
@@ -1822,6 +1839,7 @@
 			files = (
 				19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */,
 				1983ADE4217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm in Sources */,
+				1983B51F2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm in Sources */,
 				1983ADE2217F3397004C632A /* EUISMModel+Test.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
