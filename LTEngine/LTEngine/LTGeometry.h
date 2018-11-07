@@ -20,7 +20,7 @@ typedef std::vector<CGPointPair> CGPointPairs;
 LTPointLocation LTPointLocationRelativeToRay (CGPoint point, CGPoint origin, CGPoint direction);
 
 /// Returns \c YES if the provided points are collinear.
-BOOL LTPointsAreCollinear(const CGPoints &points);
+BOOL LTPointsAreCollinear(const std::vector<CGPoint> &points);
 
 #pragma mark -
 #pragma mark Convex hull
@@ -28,7 +28,7 @@ BOOL LTPointsAreCollinear(const CGPoints &points);
 
 /// Returns the subset of the given \c points constituting the convex hull of the given \c points.
 /// Time complexity is O\c n \c log \c n), where \c n is the number of given \c points.
-CGPoints LTConvexHull(const CGPoints &points);
+std::vector<CGPoint> LTConvexHull(const std::vector<CGPoint> &points);
 
 #pragma mark -
 #pragma mark Boundary
@@ -38,14 +38,14 @@ CGPoints LTConvexHull(const CGPoints &points);
 /// \c mat. For computation details and input parameter constraints refer to the documentation of
 /// the \c LTBoundaries function. In case that the given \c mat contains several distinct areas of
 /// non-zero values, the boundary of an arbitrarily chosen, but non-nested area is returned.
-CGPoints LTOuterBoundary(const cv::Mat &mat);
+std::vector<CGPoint> LTOuterBoundary(const cv::Mat &mat);
 
 /// Returns the approximate boundaries of points surrounding the non-zero areas of the given \c mat.
 /// The computation is performed using the k-cosine measure of Teh and Chin (see Teh, C.H. and Chin,
 /// R.T., On the Detection of Dominant Points on Digital Curve. PAMI 11 8, pp 859-872 (1989) for
 /// more details). The \c type() of the given \c mat must be \c CV_8UC1. The order of the boundaries
 /// in the returned collection is arbitrary.
-std::vector<CGPoints> LTBoundaries(const cv::Mat &mat);
+std::vector<std::vector<CGPoint>> LTBoundaries(const cv::Mat &mat);
 
 #pragma mark -
 #pragma mark Rotation
@@ -59,19 +59,19 @@ CGPoint LTRotatePoint(CGPoint point, CGFloat angle, CGPoint anchor = CGPointZero
 #pragma mark Intersection
 #pragma mark -
 
-/// Given a collection of \c CGPoints, returns \c YES if the polyline with edges
+/// Given a collection of \c points, returns \c YES if the polyline with edges
 /// \c (points[0], points[1]), \c (points[1], points[2]), ... is self-intersecting. The provided
 /// polyline is not required to be cyclic.
-BOOL LTIsSelfIntersectingPolyline(const CGPoints &points);
+BOOL LTIsSelfIntersectingPolyline(const std::vector<CGPoint> &points);
 
-/// Given a collection of \c CGPoints representing a polyline, returns a collection containing all
+/// Given a collection of \c points representing a polyline, returns a collection containing all
 /// the intersection points of the polyline.
-CGPoints LTComputeIntersectionPointsOfPolyLine(const CGPoints &points);
+std::vector<CGPoint> LTComputeIntersectionPointsOfPolyLine(const std::vector<CGPoint> &points);
 
-/// Given two collections of \c CGPoints representing two polylines \c polyline0 and \c polyline1,
+/// Given two collections of \c points representing two polylines \c polyline0 and \c polyline1,
 /// returns a collection containing all the intersection points of \c polyline0 with \polyline1.
-CGPoints LTComputeIntersectionPointsOfPolyLines(const CGPoints &polyline0,
-                                                const CGPoints &polyline1);
+std::vector<CGPoint> LTComputeIntersectionPointsOfPolyLines(const std::vector<CGPoint> &polyline0,
+                                                            const std::vector<CGPoint> &polyline1);
 
 /// Returns the intersection point of edge (p0, p1) and (q0, q1), if existing. Otherwise, returns
 /// CGPointNull.
@@ -108,8 +108,8 @@ CGPointPair LTPointOnEdgeNearestToPointOnEdge(CGPoint p0, CGPoint p1, CGPoint q0
 /// \c polyline0 and  \c polyline1, respectively, with the minimum distance. If the given polylines
 /// intersect, the intersection point is used for both elements of the returned pair. If the given
 /// edges conincide or are parallel, any pair of points with minimum distance is returned.
-CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const CGPoints &polyline0,
-                                                      const CGPoints &polyline1);
+CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const std::vector<CGPoint> &polyline0,
+                                                      const std::vector<CGPoint> &polyline1);
 
 /// Returns the distance of the given \c point from the line passing through \c pointOnLine and
 /// \c anotherPointOnLine.
@@ -120,7 +120,7 @@ CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point);
 
 /// Returns the point on the given \c polyline with the smallest distance to the given \c point. The
 /// given \c polyline must consist of two points at least.
-CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point);
+CGPoint LTPointOnPolylineNearestToPoint(const std::vector<CGPoint> &polyline, CGPoint point);
 
 /// Return the distance of the given \c point from the given \c polyline.
-CGFloat LTDistanceFromPolyLine(const CGPoints &polyline, CGPoint point);
+CGFloat LTDistanceFromPolyLine(const std::vector<CGPoint> &polyline, CGPoint point);

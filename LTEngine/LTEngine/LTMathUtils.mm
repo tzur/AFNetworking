@@ -5,11 +5,11 @@
 
 #import <numeric>
 
-CGFloats LTCreateHalfGaussian(NSUInteger radius, CGFloat sigma, BOOL normalized) {
+std::vector<CGFloat> LTCreateHalfGaussian(NSUInteger radius, CGFloat sigma, BOOL normalized) {
   LTParameterAssert(radius);
   LTParameterAssert(sigma > 0);
 
-  CGFloats result;
+  std::vector<CGFloat> result;
   CGFloat invSqrt2SigmaPI = 1.0 / std::sqrt(2.0 * M_PI) / sigma;
   CGFloat inv2SigmaSquare = 1.0 / (2.0 * sigma * sigma);
 

@@ -354,12 +354,12 @@ CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
 /// size <tt>(rect.size.width / horizontalCount, rect.size.height / verticalCount)</tt>. The \c i'th
 /// rect of the returned array corresponds to the \c i'th cell of the grid, when traversing the grid
 /// cells by rows from top left to bottom right.
-CG_INLINE CGRects CGRectRegularGrid(CGRect rect, NSUInteger horizontalCount,
-                                    NSUInteger verticalCount) {
+CG_INLINE std::vector<CGRect> CGRectRegularGrid(CGRect rect, NSUInteger horizontalCount,
+                                                NSUInteger verticalCount) {
   if (horizontalCount == 0 || verticalCount == 0) {
     return {rect};
   }
-  CGRects rects(horizontalCount * verticalCount);
+  std::vector<CGRect> rects(horizontalCount * verticalCount);
   CGSize size = CGSizeMake(rect.size.width / horizontalCount, rect.size.height / verticalCount);
   NSUInteger k = 0;
 

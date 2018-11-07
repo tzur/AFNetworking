@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol which should be implemented by immutable value classes representing a discrete set,
 /// \c S, of \c CGFloat values. Upon queries with an \c lt::Interval, the implementing objects
-/// return an ordered collection of \c CGFloats constituting the subset of \c S contained by the
-/// given interval.
+/// return an ordered collection of \c std::vector<CGFloat> constituting the subset of \c S
+/// contained by the given interval.
 ///
 /// Example 1: An object conforming to this protocol may represent a discrete set of equidistant
 /// \c CGFloat values.
@@ -17,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// values with increasing distance.
 @protocol LTFloatSet <NSObject>
 
-/// Returns an ordered collection of \c CGFloats belonging to the set represented by this object and
-/// contained by the given \c interval.
-- (CGFloats)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval;
+/// Returns an ordered collection of \c std::vector<CGFloat> belonging to the set represented by
+/// this object and contained by the given \c interval.
+- (std::vector<CGFloat>)discreteValuesInInterval:(const lt::Interval<CGFloat> &)interval;
 
 @end
 

@@ -217,7 +217,7 @@ static NSString * const kKeyForSpeed = [LTSplineControlPoint keyForSpeedInScreen
   std::vector<NSUInteger> indices;
   indices.reserve(originalQuads.size());
 
-  CGFloats sampledParametricValues = samples.sampledParametricValues;
+  std::vector<CGFloat> sampledParametricValues = samples.sampledParametricValues;
   CGFloat minParametricValue = sampledParametricValues.front();
   CGFloat maxParametricValue = sampledParametricValues.back();
   CGFloat desiredLengthOfStartTapering = self.model.lengthOfStartTapering;
@@ -271,7 +271,7 @@ static NSString * const kKeyForSpeed = [LTSplineControlPoint keyForSpeedInScreen
   LTRandom *random = self.random;
   CGFloat speedBasedTaperingFactor = self.model.speedBasedTaperingFactor;
   CGFloat conversionFactor = self.model.conversionFactor;
-  CGFloats speedValues = [samples.mappingOfSampledValues valuesForKey:kKeyForSpeed];
+  std::vector<CGFloat> speedValues = [samples.mappingOfSampledValues valuesForKey:kKeyForSpeed];
 
   for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
     NSUInteger count = [random randomIntegerBetweenMin:countRange.inf() max:countRange.sup()];

@@ -124,7 +124,7 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
     return [[LTSampleValues alloc] initWithSampledParametricValues:{} mapping:nil];
   }
 
-  CGFloats parametricValues = [self.floatSet discreteValuesInInterval:intersection];
+  std::vector<CGFloat> parametricValues = [self.floatSet discreteValuesInInterval:intersection];
 
   self.interval =
       lt::Interval<CGFloat>({intersection.sup(), self.interval.sup()},

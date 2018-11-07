@@ -56,10 +56,10 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
       OCMStub([parameterizedObjectMock minParametricValue]).andReturn(0);
       OCMStub([parameterizedObjectMock maxParametricValue]).andReturn(2);
 
-      CGFloats values =
+      std::vector<CGFloat> values =
           [provider nextParametricValuesForParameterizedObject:parameterizedObjectMock];
 
-      CGFloats expectedValues = {0, 1, 2};
+      std::vector<CGFloat> expectedValues = {0, 1, 2};
       expect($(values)).to.equal($(expectedValues));
     });
 
@@ -67,14 +67,14 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
       id parameterizedObjectMock = OCMProtocolMock(@protocol(LTParameterizedObject));
       OCMExpect([parameterizedObjectMock minParametricValue]).andReturn(0);
       OCMExpect([parameterizedObjectMock maxParametricValue]).andReturn(2);
-      CGFloats values =
+      std::vector<CGFloat> values =
           [provider nextParametricValuesForParameterizedObject:parameterizedObjectMock];
 
       OCMExpect([parameterizedObjectMock minParametricValue]).andReturn(0);
       OCMExpect([parameterizedObjectMock maxParametricValue]).andReturn(7);
       values = [provider nextParametricValuesForParameterizedObject:parameterizedObjectMock];
 
-      CGFloats expectedValues = {3, 4, 5, 6, 7};
+      std::vector<CGFloat> expectedValues = {3, 4, 5, 6, 7};
       expect($(values)).to.equal($(expectedValues));
       OCMVerifyAll(parameterizedObjectMock);
     });
@@ -84,7 +84,8 @@ context(@"LTContinuousParametricValueProvider protocol", ^{
       OCMStub([parameterizedObjectMock minParametricValue]).andReturn(11);
       OCMStub([parameterizedObjectMock maxParametricValue]).andReturn(20);
 
-      CGFloats values = [provider nextParametricValuesForParameterizedObject:parameterizedObjectMock];
+      std::vector<CGFloat> values =
+          [provider nextParametricValuesForParameterizedObject:parameterizedObjectMock];
 
       expect($(values)).to.beEmpty();
     });

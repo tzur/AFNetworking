@@ -91,7 +91,7 @@ NSString * const kQuadSizeKey = @"quadSize";
       (cv::Mat1g(1, 2) << 1.0 / 4, 1.0 / 2);
   LTParameterizationKeyToValues *mapping =
       [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
-  CGFloats sampledParametricValues;
+  std::vector<CGFloat> sampledParametricValues;
   if (!self.state) {
     sampledParametricValues = {0.0, 0.5};
   } else {
@@ -162,7 +162,7 @@ NSString * const kQuadSizeKey = @"quadSize";
 - (dvn::GeometryValues)valuesFromSamples:(id<LTSampleValues>)samples end:(__unused BOOL)end {
   std::vector<lt::Quad> quads;
   std::vector<NSUInteger> indices;
-  CGFloats quadSizes = [samples.mappingOfSampledValues valuesForKey:kQuadSizeKey];
+  std::vector<CGFloat> quadSizes = [samples.mappingOfSampledValues valuesForKey:kQuadSizeKey];
   for (NSUInteger i = 0; i < quadSizes.size(); ++i) {
     CGFloat quadSize = quadSizes[i];
     quads.push_back(lt::Quad(CGRectMake(quadSize, quadSize, quadSize, quadSize)));

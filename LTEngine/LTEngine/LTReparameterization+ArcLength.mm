@@ -22,17 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Key (%@) not contained in parameterization keys (%@)", yKey,
                     object.parameterizationKeys.description);
 
-  CGFloats parametricValues = [self parametricValuesForObject:object
-                                              numberOfSamples:numberOfSamples];
+  std::vector<CGFloat> parametricValues = [self parametricValuesForObject:object
+                                                          numberOfSamples:numberOfSamples];
 
-  CGFloats xCoordinates = [object floatsForParametricValues:parametricValues key:xKey];
-  CGFloats yCoordinates = [object floatsForParametricValues:parametricValues key:yKey];
+  std::vector<CGFloat> xCoordinates = [object floatsForParametricValues:parametricValues key:xKey];
+  std::vector<CGFloat> yCoordinates = [object floatsForParametricValues:parametricValues key:yKey];
   LTParameterAssert(xCoordinates.size() == yCoordinates.size(),
                     @"Size (%lu) of x-coordinates doesn't equal size (%lu) of y-coordinates",
                     (unsigned long)xCoordinates.size(), (unsigned long)yCoordinates.size());
 
-  CGFloats distances = [self distancesForXCoordinates:xCoordinates yCoordinates:yCoordinates
-                                   minParametricValue:minParametricValue];
+  std::vector<CGFloat> distances = [self distancesForXCoordinates:xCoordinates
+                                                     yCoordinates:yCoordinates
+                                               minParametricValue:minParametricValue];
   if (distances.front() == distances.back()) {
     // Object cannot be reparameterized.
     return nil;
@@ -40,9 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[LTReparameterization alloc] initWithMapping:distances];
 }
 
-+ (CGFloats)parametricValuesForObject:(id<LTParameterizedObject>)object
-                      numberOfSamples:(NSUInteger)numberOfSamples {
-  CGFloats values(numberOfSamples);
++ (std::vector<CGFloat>)parametricValuesForObject:(id<LTParameterizedObject>)object
+                                  numberOfSamples:(NSUInteger)numberOfSamples {
+  std::vector<CGFloat> values(numberOfSamples);
   CGFloat min = object.minParametricValue;
   CGFloat max = object.maxParametricValue;
   CGFloat step = 1.0 / (numberOfSamples - 1);
@@ -54,17 +55,17 @@ NS_ASSUME_NONNULL_BEGIN
   return values;
 }
 
-+ (CGFloats)distancesForXCoordinates:(const CGFloats &)xCoordinates
-                        yCoordinates:(const CGFloats &)yCoordinates
++ (std::vector<CGFloat>)distancesForXCoordinates:(const std::vector<CGFloat> &)xCoordinates
+                                    yCoordinates:(const std::vector<CGFloat> &)yCoordinates
                   minParametricValue:(CGFloat)minParametricValue {
   LTParameterAssert(xCoordinates.size() > 0, @"No x-coordinates provided");
 
-  CGFloats distances(xCoordinates.size());
+  std::vector<CGFloat> distances(xCoordinates.size());
   distances[0] = minParametricValue;
 
   CGFloat sumOfDistances = minParametricValue;
 
-  for (CGFloats::size_type i = 1; i < distances.size(); ++i) {
+  for (std::vector<CGFloat>::size_type i = 1; i < distances.size(); ++i) {
     sumOfDistances += CGPointDistance(CGPointMake(xCoordinates[i], yCoordinates[i]),
                                       CGPointMake(xCoordinates[i - 1], yCoordinates[i - 1]));
     distances[i] = sumOfDistances;

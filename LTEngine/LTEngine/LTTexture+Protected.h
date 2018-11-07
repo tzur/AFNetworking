@@ -24,7 +24,7 @@ typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
 /// Returns pixel sampling points in the rect [0, 0, self.size.width - 1, self.size.height - 1]
 /// using symmetric boundary condition from a collection of locations that can be outside the
 /// texture's bounds.
-- (LTTextureSamplingPoints)samplingPointsFromLocations:(const CGPoints &)locations;
+- (LTTextureSamplingPoints)samplingPointsFromLocations:(const std::vector<CGPoint> &)locations;
 
 /// Type of \c cv::Mat according to the current \c precision of the texture.
 @property (readonly, nonatomic) int matType;

@@ -32,7 +32,8 @@
 
 @implementation LTBasicTestFactory
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
+- (id<LTBasicParameterizedObject>)
+    baseParameterizedObjectsFromValues:(__unused std::vector<CGFloat>)values {
   if (self.nextParameterizedObjectIndex < self.parameterizedObjects.count) {
     auto object = self.parameterizedObjects[self.nextParameterizedObjectIndex];
     ++self.nextParameterizedObjectIndex;
@@ -158,8 +159,8 @@ context(@"parameterized object computation", ^{
 
       LTParameterizationKeyToValues *mapping = [result mappingForParametricValues:{1, 2}];
 
-      CGFloats xValues = [mapping valuesForKey:@"x"];
-      CGFloats yValues = [mapping valuesForKey:@"y"];
+      std::vector<CGFloat> xValues = [mapping valuesForKey:@"x"];
+      std::vector<CGFloat> yValues = [mapping valuesForKey:@"y"];
 
       expect([mapping.keys set]).to.equal(keys);
       expect(xValues.size()).to.equal(2);
@@ -177,7 +178,7 @@ context(@"parameterized object computation", ^{
 
       OCMExpect([basicObjectMockForY floatForParametricValue:4]).andReturn(16);
       OCMExpect([basicObjectMockForY floatForParametricValue:5]).andReturn(17);
-      CGFloats values = [result floatsForParametricValues:{4, 5} key:@"y"];
+      std::vector<CGFloat> values = [result floatsForParametricValues:{4, 5} key:@"y"];
       expect(values.size()).to.equal(2);
       expect(values[0]).to.equal(16);
       expect(values[1]).to.equal(17);

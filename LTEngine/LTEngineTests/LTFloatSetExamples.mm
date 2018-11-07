@@ -26,7 +26,7 @@ sharedExamplesFor(kLTFloatSetExamples, ^(NSDictionary *data) {
   });
 
   it(@"should return the correct discrete values", ^{
-    CGFloats values = [set discreteValuesInInterval:interval];
+    std::vector<CGFloat> values = [set discreteValuesInInterval:interval];
     expect(values.size()).to.equal(expectedValues.count);
     [expectedValues enumerateObjectsUsingBlock:^(NSNumber *expectedValue, NSUInteger index,
                                                  BOOL *) {

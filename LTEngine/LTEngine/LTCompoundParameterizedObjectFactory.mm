@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   // TODO(rouven): If required, parallelize the iterations of this loop.
   LTKeyToBaseParameterizedObject *mapping =
       [propertiesToInterpolate lt_map:^LTKeyBasicParameterizedObjectPair *(NSString *propertyName) {
-    CGFloats values;
+    std::vector<CGFloat> values;
     for (NSObject<LTInterpolatableObject> *object in objects) {
       values.push_back([[object valueForKey:propertyName] CGFloatValue]);
     }

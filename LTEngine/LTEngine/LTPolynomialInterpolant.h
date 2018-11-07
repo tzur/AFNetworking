@@ -34,7 +34,8 @@
 ///
 /// @note This is an optimization greately improving the performance of scenarios where a single
 /// property needs to be estimated on lots of keys.
-- (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys;
+- (std::vector<CGFloat>)valuesOfPropertyNamed:(NSString *)name
+                                       atKeys:(const std::vector<CGFloat> &)keys;
 
 /// Returns a dictionary mapping each property to an \c NSArray with its polynomial coefficients (as
 /// \c NSNumbers).

@@ -6,7 +6,7 @@
 #import "LTGLKitExtensions.h"
 
 typedef struct EvaluationStruct {
-  CGPoints points;
+  std::vector<CGPoint> points;
   NSUInteger numberOfPoints;
   NSUInteger numberOfPointsToExpect;
   NSUInteger numberOfClosedSubPaths;
@@ -62,7 +62,7 @@ static void LTCheckCorrectnessOfPath(void *data, const CGPathElement *element) {
 SpecBegin(LTCGPathExtensions)
 
 __block lt::Ref<CGMutablePathRef> mutablePath;
-__block CGPoints initialPoints;
+__block std::vector<CGPoint> initialPoints;
 __block EvaluationStruct evaluation;
 
 beforeEach(^{
@@ -84,7 +84,8 @@ context(@"path inspection", ^{
     lt::Ref<CGPathRef> pathToInspect(CGPathCreateWithRect(CGRectMake(1, 2, 3, 4), NULL));
 
     __block NSUInteger i = 0;
-    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type, CGPoints points) {
+    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type,
+                                                    std::vector<CGPoint> points) {
       switch (i) {
         case 0: {
           expect(type).to.equal(kCGPathElementMoveToPoint);
@@ -124,7 +125,8 @@ context(@"path inspection", ^{
     lt::Ref<CGPathRef> pathToInspect(CGPathCreateWithEllipseInRect(CGRectMake(0, 0, 1, 1), NULL));
     __block NSUInteger i = 0;
 
-    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type, CGPoints points) {
+    LTCGPathInspectWithBlock(pathToInspect.get(), ^(CGPathElementType type,
+                                                    std::vector<CGPoint> points) {
       switch (i) {
         case 0: {
           expect(type).to.equal(kCGPathElementMoveToPoint);
@@ -238,7 +240,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a path for a given acyclic unsmoothened polyline", ^{
-    CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
+    std::vector<CGPoint> points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[1]), LTVector2(points[2])};
     smootheningRadius = 0;
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
@@ -252,7 +254,8 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a path for a given cyclic unsmoothened polyline", ^{
-    CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1), CGPointMake(2, 3)};
+    std::vector<CGPoint> points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1),
+        CGPointMake(2, 3)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[1]), LTVector2(points[2]),
         LTVector2(points[3])};
     smootheningRadius = 0;
@@ -269,8 +272,8 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a path for a given acyclic smoothened polyline", ^{
-    CGPoints points{CGPointMake(0, 0), CGPointMake(0.75, 0), CGPointMake(1, 0),
-        CGPointMake(1 + M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(2, 1)};
+    std::vector<CGPoint> points{ CGPointMake(0, 0), CGPointMake(0.75, 0), CGPointMake(1, 0),
+      CGPointMake(1 + M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(2, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[2]), LTVector2(points[4])};
     smootheningRadius = 0.25;
 
@@ -286,8 +289,9 @@ context(@"creation", ^{
   });
 
   it(@"should create path for given acyclic smoothened polyline with coinciding points", ^{
-    CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0),
-        CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
+    std::vector<CGPoint> points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 0),
+        CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0),
+        CGPointMake(1, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[2]), LTVector2(points[5]),
         LTVector2(points[7])};
     smootheningRadius = 0.25;
@@ -304,12 +308,11 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a path for a given cyclic smoothened polyline", ^{
-    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0),
+    std::vector<CGPoint> points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0),
         CGPointMake(2, 0.25), CGPointMake(2, 1.85), CGPointMake(2, 1.9), CGPointMake(2, 1.95),
         CGPointMake(2, 1.95), CGPointMake(2, 2),
         CGPointMake(2 - M_SQRT1_2 * 0.05, 2 - M_SQRT1_2 * 0.05),
-        CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(0, 0),
-        CGPointMake(0.25, 0)};
+        CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25), CGPointMake(0, 0), CGPointMake(0.25, 0)};
     LTVector2s inputData{LTVector2(points[11]), LTVector2(points[2]), LTVector2(points[5]),
         LTVector2(points[8])};
     smootheningRadius = 0.25;
@@ -326,7 +329,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a closed path with gaps", ^{
-    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+    std::vector<CGPoint> points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
         CGPointMake(2, 1.65), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 1.9), LTVector2(2, 2)};
@@ -343,7 +346,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create an open path with gaps", ^{
-    CGPoints points{CGPointMake(1.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+    std::vector<CGPoint> points{CGPointMake(1.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
         CGPointMake(2, 1.75), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2(1, 0), LTVector2(2, 0), LTVector2(2, 2),
@@ -361,7 +364,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a closed path with gaps on edges", ^{
-    CGPoints points{CGPointMake(1.75, 0), CGPointMake(2, 0), CGPointMake(2, 0.25),
+    std::vector<CGPoint> points{CGPointMake(1.75, 0), CGPointMake(2, 0), CGPointMake(2, 0.25),
       CGPointMake(2, 0), CGPointMake(2, 1.75), CGPointMake(2, 2),
       CGPointMake(1.823223352432251, 1.823223352432251), CGPointMake(2, 2),
       CGPointMake(0.17677669, 0.17677669), CGPointZero, CGPointMake(0.25, 0), CGPointZero,
@@ -382,7 +385,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create a closed path with circles around vertices", ^{
-    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+    std::vector<CGPoint> points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
         CGPointMake(2, 1.75), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25),
         CGPointMake(0.25, 0), CGPointMake(0.25, 0.13807118745769834),
@@ -419,7 +422,7 @@ context(@"creation", ^{
   });
 
   it(@"should correctly create an open path with circles around vertices", ^{
-    CGPoints points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
+    std::vector<CGPoint> points{CGPointMake(0.25, 0), CGPointMake(1.75, 0), CGPointMake(2, 0.25),
         CGPointMake(2, 1.75), CGPointMake(0.25, 0), CGPointMake(0.25, 0.13807118745769834),
         CGPointMake(0.1380711874576983, 0.25), CGPointMake(0, 0.25),
         CGPointMake(-0.1380711874576983, 0.25), CGPointMake(-0.25, 0.13807118745769834),
@@ -456,10 +459,10 @@ context(@"creation", ^{
   it(@"should correctly create a path for a circular sector", ^{
     const CGFloat controlPointCoordinate = 0.5522847;
 
-    CGPoints points{CGPointZero, CGPointMake(1, 0), CGPointMake(1, -controlPointCoordinate),
-        CGPointMake(controlPointCoordinate, -1), CGPointMake(0, -1),
-        CGPointMake(-controlPointCoordinate, -1), CGPointMake(-1, -controlPointCoordinate),
-        CGPointMake(-1, 0)};
+    std::vector<CGPoint> points{CGPointZero, CGPointMake(1, 0),
+        CGPointMake(1, -controlPointCoordinate), CGPointMake(controlPointCoordinate, -1),
+        CGPointMake(0, -1), CGPointMake(-controlPointCoordinate, -1),
+        CGPointMake(-1, -controlPointCoordinate), CGPointMake(-1, 0)};
 
     lt::Ref<CGPathRef> circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1,
                                                                              0, M_PI, YES);
@@ -475,7 +478,7 @@ context(@"creation", ^{
     evaluation.numberOfPoints = 0;
     evaluation.numberOfClosedSubPaths = 0;
 
-    points = CGPoints{CGPointZero, CGPointMake(0, 1), CGPointMake(0.26521644, 1),
+    points = std::vector<CGPoint>{CGPointZero, CGPointMake(0, 1), CGPointMake(0.26521644, 1),
         CGPointMake(0.51957041, 0.894643127), CGPointMake(M_SQRT1_2, M_SQRT1_2)};
 
     circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, M_PI_2, M_PI_4,

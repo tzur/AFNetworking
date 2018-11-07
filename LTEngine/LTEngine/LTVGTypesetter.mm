@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   lt::Ref<CTFrameRef> frame = [self newFrameForAttributedString:attributedString];
   LTAssert(frame, @"frameForAttributedString returned nil CTFrameRef");
 
-  CGPoints lineOrigins = [self originsOfLinesInFrame:frame.get()];
+  std::vector<CGPoint> lineOrigins = [self originsOfLinesInFrame:frame.get()];
   return [self linesInFrame:frame.get() lineOrigins:lineOrigins attributedString:attributedString];
 }
 
@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                       path.get(), NULL));
 }
 
-+ (CGPoints)originsOfLinesInFrame:(CTFrameRef)frameRef {
++ (std::vector<CGPoint>)originsOfLinesInFrame:(CTFrameRef)frameRef {
   // From the documentation of \c CTFramesetterSuggestFrameSizeWithConstraints:
   // A value of CGFLOAT_MAX for either dimension [of the frame size] indicates that it should be
   // treated as unconstrained.
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
   CGPoint lineOrigins[lineCount];
   CTFrameGetLineOrigins(frameRef, CFRangeMake(0, lineCount), lineOrigins);
 
-  CGPoints result(lineCount);
+  std::vector<CGPoint> result(lineCount);
   CGFloat currentLineOriginY = 0;
   for (CFIndex lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
     CTLineRef lineRef = (CTLineRef)CFArrayGetValueAtIndex(linesRef, lineIndex);
@@ -104,7 +104,8 @@ NS_ASSUME_NONNULL_BEGIN
   return result;
 }
 
-+ (LTVGLines *)linesInFrame:(CTFrameRef)frameRef lineOrigins:(const CGPoints &)lineOrigins
++ (LTVGLines *)linesInFrame:(CTFrameRef)frameRef
+                lineOrigins:(const std::vector<CGPoint> &)lineOrigins
            attributedString:(NSAttributedString *)attributedString {
   NSMutableArray *lines = [NSMutableArray array];
   CFArrayRef linesRef = CTFrameGetLines(frameRef);
@@ -135,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   CFIndex glyphCount = CTRunGetGlyphCount(runRef);
   std::vector<CGGlyph> glyphIndices(glyphCount);
-  CGPoints glyphPositions(glyphCount);
+  std::vector<CGPoint> glyphPositions(glyphCount);
 
   CFRange runRange = CFRangeMake(0, glyphCount);
   CTRunGetGlyphs(runRef, CFRangeMake(0, glyphCount), glyphIndices.data());

@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LTBasicParameterizedObjectFactory <NSObject>
 
 /// Returns a basic parameterized object with the given \c values.
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values;
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values;
 
 /// Returns the number of values required to create a basic parameterized object using this
 /// factory. Returned number is positive.

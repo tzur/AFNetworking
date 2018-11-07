@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTReparameterization () {
   /// Mapping used to compute the reparameterization.
-  CGFloats _mapping;
+  std::vector<CGFloat> _mapping;
 }
 
 @end
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithMapping:(CGFloats)mapping {
+- (instancetype)initWithMapping:(std::vector<CGFloat>)mapping {
   if (self = [super init]) {
     [self validateMapping:mapping];
     _mapping = mapping;
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)validateMapping:(const CGFloats &)mapping {
+- (void)validateMapping:(const std::vector<CGFloat> &)mapping {
   LTParameterAssert(mapping.size() >= 2, @"Mapping must consist of at least two values.");
 
   const auto it = std::adjacent_find(mapping.cbegin(), mapping.cend(),
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return std::hash<CGFloats>()(_mapping);
+  return std::hash<std::vector<CGFloat>>()(_mapping);
 }
 
 #pragma mark -
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
   }
 
-  CGFloats shiftedMapping(_mapping.size());
+  std::vector<CGFloat> shiftedMapping(_mapping.size());
   std::transform(_mapping.cbegin(), _mapping.cend(), shiftedMapping.begin(),
                  [offset](CGFloat value) {
     return value + offset;

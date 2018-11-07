@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTBasicDegenerateInterpolantFactory
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTBasicLinearInterpolantFactory
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
@@ -69,7 +69,7 @@ static const GLKMatrix4 kCubicBezierCoefficients = GLKMatrix4MakeAndTranspose(1,
                                                                               3, -6, 3, 0,
                                                                              -1, 3, -3, 1);
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
@@ -104,7 +104,7 @@ static const GLKMatrix4 kCatmullRomCoefficients = GLKMatrix4MakeAndTranspose(0, 
                                                                              1, -2.5, 2, -0.5,
                                                                              -0.5, 1.5, -1.5, 0.5);
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),
@@ -140,7 +140,7 @@ static const GLKMatrix4 kBSplineCoefficients =
                                0.5, -1, 0.5, 0,
                                -1.0 / 6, 0.5, -0.5, 1.0 / 6);
 
-- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(CGFloats)values {
+- (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(std::vector<CGFloat>)values {
   LTParameterAssert(values.size() == [[self class] numberOfRequiredValues],
                     @"Number of provided values (%lu) doesn't correspond to number of required "
                     "values (%lu)", (unsigned long)values.size(),

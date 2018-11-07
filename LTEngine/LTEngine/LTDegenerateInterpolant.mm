@@ -20,10 +20,11 @@
       [[self.keyFrames.firstObject valueForKey:name] CGFloatValue] : 0;
 }
 
-- (CGFloats)valuesOfPropertyNamed:(NSString *)name atKeys:(const CGFloats &)keys {
+- (std::vector<CGFloat>)valuesOfPropertyNamed:(NSString *)name
+                                       atKeys:(const std::vector<CGFloat> &)keys {
   CGFloat value = [[self.keyFrames.firstObject propertiesToInterpolate] containsObject:name] ?
       [[self.keyFrames.firstObject valueForKey:name] doubleValue] : 0;
-  return CGFloats(keys.size(), value);
+  return std::vector<CGFloat>(keys.size(), value);
 }
 
 + (NSUInteger)expectedKeyFrames {

@@ -115,7 +115,8 @@ static const CGFloatInterval::EndpointInclusion kOpen = CGFloatInterval::Endpoin
 static const CGFloatInterval::EndpointInclusion kClosed =
     CGFloatInterval::EndpointInclusion::Closed;
 
-- (CGFloats)nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object {
+- (std::vector<CGFloat>)
+    nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object {
   CGFloatInterval interval({object.minParametricValue, object.maxParametricValue},
                            kClosed, kClosed);
   CGFloatInterval intersection = self.interval.intersectionWith(interval);
@@ -124,7 +125,7 @@ static const CGFloatInterval::EndpointInclusion kClosed =
     return {};
   }
 
-  CGFloats parametricValues = [self.floatSet discreteValuesInInterval:intersection];
+  std::vector<CGFloat> parametricValues = [self.floatSet discreteValuesInInterval:intersection];
 
   self.interval = CGFloatInterval({intersection.sup(), self.interval.sup()},
                                   intersection.supIncluded() ? kOpen : kClosed,

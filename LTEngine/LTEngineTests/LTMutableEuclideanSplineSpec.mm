@@ -19,8 +19,8 @@ static BOOL LTCompareParameterizationKeyToValues(LTParameterizationKeyToValues *
   }
 
   for (NSString *key in mapping.keys) {
-    CGFloats values = [mapping valuesForKey:key];
-    CGFloats expectedValues = [expectedMapping valuesForKey:key];
+    std::vector<CGFloat> values = [mapping valuesForKey:key];
+    std::vector<CGFloat> expectedValues = [expectedMapping valuesForKey:key];
 
     for (NSUInteger i = 0; i < values.size(); ++i) {
       if (std::abs(values[i] - expectedValues[i]) > epsilon) {
@@ -272,15 +272,16 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         });
 
         it(@"should return the correct float values for given parametric values and key", ^{
-          CGFloats expectedValues = {startPoint.xCoordinateOfLocation,
-                                     endPoint.xCoordinateOfLocation};
+          std::vector<CGFloat> expectedValues =
+              {startPoint.xCoordinateOfLocation, endPoint.xCoordinateOfLocation};
 
-          CGFloats values = [spline floatsForParametricValues:{0, spline.maxParametricValue}
-                                                          key:@keypath(initialPoints.firstObject,
-                                                                       xCoordinateOfLocation)];
+          std::vector<CGFloat> values =
+              [spline floatsForParametricValues:{0, spline.maxParametricValue}
+                                            key:@keypath(initialPoints.firstObject,
+                                                         xCoordinateOfLocation)];
 
           expect(values.size()).to.equal(expectedValues.size());
-          for (CGFloats::size_type i = 0; i < values.size(); ++i) {
+          for (std::vector<CGFloat>::size_type i = 0; i < values.size(); ++i) {
             expect(values[i]).to.beCloseToWithin(expectedValues[i], kEpsilon);
           }
         });
@@ -357,15 +358,16 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
         });
 
         it(@"should return the correct float values for given parametric values and key", ^{
-          CGFloats expectedValues = {startPoint.xCoordinateOfLocation,
-                                     endPoint.xCoordinateOfLocation};
+          std::vector<CGFloat> expectedValues =
+              {startPoint.xCoordinateOfLocation, endPoint.xCoordinateOfLocation};
 
-          CGFloats values = [spline floatsForParametricValues:{0, spline.maxParametricValue}
-                                                          key:@keypath(initialPoints.firstObject,
-                                                                       xCoordinateOfLocation)];
+          std::vector<CGFloat> values =
+              [spline floatsForParametricValues:{0, spline.maxParametricValue}
+                                            key:@keypath(initialPoints.firstObject,
+                                                         xCoordinateOfLocation)];
 
           expect(values.size()).to.equal(expectedValues.size());
-          for (CGFloats::size_type i = 0; i < values.size(); ++i) {
+          for (std::vector<CGFloat>::size_type i = 0; i < values.size(); ++i) {
             expect(values[i]).to.beCloseToWithin(expectedValues[i], kEpsilon);
           }
         });

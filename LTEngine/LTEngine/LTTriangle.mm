@@ -91,8 +91,8 @@ BOOL Triangle::containsPoint(CGPoint point) const noexcept {
     case Triangle::Type::Point:
       return point == _v[0];
     case Triangle::Type::Collinear: {
-      CGPoints points{_v[0], _v[1], _v[2]};
-      CGPoints convexHull = LTConvexHull(points);
+      std::vector<CGPoint> points{_v[0], _v[1], _v[2]};
+      std::vector<CGPoint> convexHull = LTConvexHull(points);
       return LTDistanceFromEdge(convexHull.front(), convexHull.back(), point) < kEpsilon;
     }
     case Triangle::Type::Clockwise:

@@ -40,8 +40,8 @@ context(@"std containers", ^{
 
   context(@"hashing std::vector", ^{
     it(@"should hash std::vector", ^{
-      size_t hash0 = std::hash<CGFloats>()({1, 2});
-      size_t hash1 = std::hash<CGFloats>()({1, 2});
+      size_t hash0 = std::hash<std::vector<CGFloat>>()({1, 2});
+      size_t hash1 = std::hash<std::vector<CGFloat>>()({1, 2});
       expect(hash0).to.equal(hash1);
     });
   });
@@ -79,23 +79,23 @@ context(@"structs", ^{
     size_t hash1 = std::hash<CGAffineTransform>()(CGAffineTransformMake(1, 2, 3, 4, 5, 6));
     expect(hash0).to.equal(hash1);
   });
-  
+
   it(@"should hash GLKMatrix2", ^{
     size_t hash0 = std::hash<GLKMatrix2>()(GLKMatrix2{.m00 = 1, .m10 = 2, .m01 = 3, .m11 = 4});
     size_t hash1 = std::hash<GLKMatrix2>()(GLKMatrix2{.m00 = 1, .m10 = 2, .m01 = 3, .m11 = 4});
     expect(hash0).to.equal(hash1);
   });
-  
+
   it(@"should hash GLKMatrix3", ^{
     size_t hash0 = std::hash<GLKMatrix3>()(GLKMatrix3Make(1, 2, 3, 4, 5, 6, 7, 8, 9));
     size_t hash1 = std::hash<GLKMatrix3>()(GLKMatrix3Make(1, 2, 3, 4, 5, 6, 7, 8, 9));
     expect(hash0).to.equal(hash1);
   });
-  
+
   it(@"should hash GLKMatrix4", ^{
     GLKMatrix4 matrix = GLKMatrix4Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
     GLKMatrix4 otherMatrix = matrix;
-    
+
     size_t hash0 = std::hash<GLKMatrix4>()(matrix);
     size_t hash1 = std::hash<GLKMatrix4>()(otherMatrix);
     expect(hash0).to.equal(hash1);

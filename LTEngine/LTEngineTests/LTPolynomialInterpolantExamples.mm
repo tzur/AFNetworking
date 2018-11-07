@@ -219,13 +219,13 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
 
     it(@"should interpolate a single property at multiple keys", ^{
       NSArray *keys = @[@0.25, @0.5, @0.75];
-      CGFloats keysVector;
+      std::vector<CGFloat> keysVector;
       for (NSNumber *key in keys) {
         keysVector.push_back([key doubleValue]);
       }
 
-      CGFloats values = [interpolant valuesOfPropertyNamed:@"pointToInterpolateX"
-                                                    atKeys:keysVector];
+      std::vector<CGFloat> values = [interpolant valuesOfPropertyNamed:@"pointToInterpolateX"
+                                                                atKeys:keysVector];
       expect(values.size()).to.equal(keysVector.size());
       for (NSUInteger i = 0; i < keys.count; ++i) {
         CGFloat key = keysVector[i];

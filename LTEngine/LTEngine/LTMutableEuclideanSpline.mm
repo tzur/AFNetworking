@@ -293,7 +293,7 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   return [self.mutableStack mappingForParametricValue:value];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const std::vector<CGFloat> &)values {
   return [self.mutableStack mappingForParametricValues:values];
 }
 
@@ -301,7 +301,8 @@ static const NSUInteger kNumberOfSamplesForArcLengthApproximation = 50;
   return [self.mutableStack floatForParametricValue:value key:key];
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   return [self.mutableStack floatsForParametricValues:values key:key];
 }
 

@@ -426,7 +426,7 @@ NS_ASSUME_NONNULL_BEGIN
   return LTPixelValueFromImage(image, {0, 0});
 }
 
-- (LTTextureSamplingPoints)samplingPointsFromLocations:(const CGPoints &)locations {
+- (LTTextureSamplingPoints)samplingPointsFromLocations:(const std::vector<CGPoint> &)locations {
   LTTextureSamplingPoints samplingPoints(locations.size());
 
   std::transform(locations.cbegin(), locations.cend(), samplingPoints.begin(),
@@ -456,7 +456,7 @@ NS_ASSUME_NONNULL_BEGIN
   return cv::Point2i(x, y);
 }
 
-- (LTVector4s)pixelValues:(const CGPoints &)locations {
+- (LTVector4s)pixelValues:(const std::vector<CGPoint> &)locations {
   // This is naive implementation which calls -[LTTexture pixelValue:] for each given pixel.
   LTVector4s values(locations.size());
 

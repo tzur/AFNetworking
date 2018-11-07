@@ -24,7 +24,7 @@
 /// @param target target texture used as the base layer. Must have the same number of channels as
 /// \c source.
 /// @param output contains the processing result. Size must be equal to \c target size.
-- (instancetype)initWithWorkingSizes:(CGSizes)workingSizes mask:(LTTexture *)mask
+- (instancetype)initWithWorkingSizes:(std::vector<CGSize>)workingSizes mask:(LTTexture *)mask
                               source:(LTTexture *)source target:(LTTexture *)target
                               output:(LTTexture *)output;
 
@@ -44,7 +44,7 @@
 @property (nonatomic) CGSize workingSize;
 
 /// Set of possible working sizes.
-@property (readonly, nonatomic) CGSizes workingSizes;
+@property (readonly, nonatomic) std::vector<CGSize> workingSizes;
 
 /// Opacity of the source texture in the range <tt>[0, 1]</tt>. Default value is \c 1.
 @property (nonatomic) CGFloat sourceOpacity;

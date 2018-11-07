@@ -7,7 +7,7 @@
 /// \c locations and \c attributes. The number of elements in the given \c timestamps, the number of
 /// elements in the given \c locations and the number of elements in every array in \c values
 /// must all be equal.
-NSArray<LTSplineControlPoint *> * LTCreateSplinePoints(CGFloats timestamps,
+NSArray<LTSplineControlPoint *> * LTCreateSplinePoints(std::vector<CGFloat> timestamps,
                                                        std::vector<CGPoint> locations,
                                                        NSString *attributeKey,
                                                        NSArray<NSNumber *> *values);

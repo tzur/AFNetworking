@@ -136,7 +136,8 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
   return [result copy];
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)parametricValues {
+- (LTParameterizationKeyToValues *)
+    mappingForParametricValues:(const std::vector<CGFloat> &)parametricValues {
   LTParameterAssert(parametricValues.size() <= INT_MAX,
                     @"Number (%lu) of parametric values must not exceed INT_MAX",
                     (unsigned long)parametricValues.size());
@@ -159,9 +160,10 @@ typedef NSMutableDictionary<NSString *, NSNumber *> LTMutableParameterizationKey
   return [object floatForParametricValue:value];
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   id<LTBasicParameterizedObject> object = [self baseParameterizedObjectForKey:key];
-  CGFloats result(values.size());
+  std::vector<CGFloat> result(values.size());
   std::transform(values.begin(), values.end(), result.begin(), [object](const CGFloat &value) {
     return [object floatForParametricValue:value];
   });

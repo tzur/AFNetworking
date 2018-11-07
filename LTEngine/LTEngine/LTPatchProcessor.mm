@@ -209,7 +209,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 @property (strong, nonatomic) NSMutableDictionary *workingSizeToProcessor;
 
 /// Set of possible working sizes.
-@property (readwrite, nonatomic) CGSizes workingSizes;
+@property (readwrite, nonatomic) std::vector<CGSize> workingSizes;
 
 /// Quad copy processor used to copy previous patched quad before drawing a new one.
 @property (strong, nonatomic) LTQuadCopyProcessor *quadCopyProcessor;
@@ -225,7 +225,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithWorkingSizes:(CGSizes)workingSizes mask:(LTTexture *)mask
+- (instancetype)initWithWorkingSizes:(std::vector<CGSize>)workingSizes mask:(LTTexture *)mask
                               source:(LTTexture *)source target:(LTTexture *)target
                               output:(LTTexture *)output {
   LTParameterAssert(target.size == output.size, @"Output size must equal target size");
@@ -297,7 +297,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 #pragma mark Working size
 #pragma mark -
 
-- (void)setWorkingSizes:(CGSizes)workingSizes {
+- (void)setWorkingSizes:(std::vector<CGSize>)workingSizes {
   LTParameterAssert(workingSizes.size(), @"Working sizes must have at least one size");
 
   for (CGSize size : workingSizes) {

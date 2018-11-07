@@ -8,7 +8,7 @@
 
 SpecBegin(LTSampleValues)
 
-static const CGFloats kValues = {1, 2, 3};
+static const std::vector<CGFloat> kValues = {1, 2, 3};
 
 __block NSOrderedSet *keys;
 
@@ -68,7 +68,7 @@ context(@"concatenation", ^{
 
     LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
 
-    CGFloats expectedSampledParametricValues = {1, 2, 3};
+    std::vector<CGFloat> expectedSampledParametricValues = {1, 2, 3};
     cv::Mat1g expectedMatrix = (cv::Mat1g(2, 3) << 0, 1, 2, 3, 4, 5);
     expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
     expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
@@ -87,7 +87,7 @@ context(@"concatenation", ^{
 
       LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
 
-      CGFloats expectedSampledParametricValues = {1};
+      std::vector<CGFloat> expectedSampledParametricValues = {1};
       expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
       expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
       expect(result.mappingOfSampledValues.numberOfValuesPerKey).to.equal(1);
@@ -104,7 +104,7 @@ context(@"concatenation", ^{
 
       LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
 
-      CGFloats expectedSampledParametricValues = {1};
+      std::vector<CGFloat> expectedSampledParametricValues = {1};
       expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
       expect(result.mappingOfSampledValues.keys).to.equal(kKeys);
       expect(result.mappingOfSampledValues.numberOfValuesPerKey).to.equal(1);
@@ -119,7 +119,7 @@ context(@"concatenation", ^{
 
       LTSampleValues *result = [sampleValues concatenatedWithSampleValues:otherSampleValues];
 
-      CGFloats expectedSampledParametricValues = {};
+      std::vector<CGFloat> expectedSampledParametricValues = {};
       expect($(result.sampledParametricValues)).to.equal($(expectedSampledParametricValues));
       expect(result.mappingOfSampledValues).to.beNil();
     });

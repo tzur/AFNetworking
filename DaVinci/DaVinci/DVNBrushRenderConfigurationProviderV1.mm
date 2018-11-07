@@ -149,9 +149,9 @@ typedef NS_ENUM(NSUInteger, DVNBrushV1FshSourceTextureSampleMode) {
     lt::unordered_map<NSString *, CGRect> areas;
 
     CGRect rect = CGRectFromSize(texture.size);
-    CGRects textureRegions = CGRectRegularGrid(rect, gridSize.x, gridSize.y);
+    std::vector<CGRect> textureRegions = CGRectRegularGrid(rect, gridSize.x, gridSize.y);
 
-    for (CGRects::size_type i = 0; i < textureRegions.size(); ++i) {
+    for (std::vector<CGRect>::size_type i = 0; i < textureRegions.size(); ++i) {
       CGRect intersectedRect = CGRectIntersection(textureRegions[i], rect);
       areas.insert({[@(i) stringValue], intersectedRect});
     }

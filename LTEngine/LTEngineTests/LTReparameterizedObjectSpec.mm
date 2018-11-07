@@ -7,7 +7,7 @@
 #import "LTReparameterization.h"
 
 @interface LTReparameterizedObjectTestObject : NSObject <LTParameterizedValueObject>
-@property (nonatomic) CGFloats receivedValues;
+@property (nonatomic) std::vector<CGFloat> receivedValues;
 @property (nonatomic) NSString *receivedKey;
 @property (strong, nonatomic) LTParameterizationKeyToValue *returnedKeyToValue;
 @property (strong, nonatomic) LTParameterizationKeyToValues *returnedKeyToValues;
@@ -28,7 +28,7 @@
   return self.returnedKeyToValue;
 }
 
-- (LTParameterizationKeyToValues *)mappingForParametricValues:(const CGFloats &)values {
+- (LTParameterizationKeyToValues *)mappingForParametricValues:(const std::vector<CGFloat> &)values {
   self.receivedValues = values;
   return self.returnedKeyToValues;
 }
@@ -39,7 +39,8 @@
   return 7;
 }
 
-- (CGFloats)floatsForParametricValues:(const CGFloats &)values key:(NSString *)key {
+- (std::vector<CGFloat>)floatsForParametricValues:(const std::vector<CGFloat> &)values
+                                              key:(NSString *)key {
   self.receivedValues = values;
   self.receivedKey = key;
   return {7, 8};
@@ -163,7 +164,7 @@ context(@"LTParameterizedObject protocol", ^{
     OCMExpect([reparameterizationMock floatForParametricValue:3]).andReturn(0);
     OCMExpect([reparameterizationMock floatForParametricValue:4]).andReturn(1);
 
-    CGFloats parametricValues = {3, 4};
+    std::vector<CGFloat> parametricValues = {3, 4};
     LTParameterizationKeyToValues *mapping =
         [reparameterizedObject mappingForParametricValues:parametricValues];
 
@@ -197,8 +198,9 @@ context(@"LTParameterizedObject protocol", ^{
       OCMExpect([reparameterizationMock floatForParametricValue:3]).andReturn(0);
       OCMExpect([reparameterizationMock floatForParametricValue:4]).andReturn(1);
 
-      CGFloats parametricValues = {3, 4};
-      CGFloats result = [reparameterizedObject floatsForParametricValues:parametricValues key:key];
+      std::vector<CGFloat> parametricValues = {3, 4};
+      std::vector<CGFloat> result =
+          [reparameterizedObject floatsForParametricValues:parametricValues key:key];
 
       expect(result.size()).to.equal(2);
       expect(result[0]).to.equal(7);

@@ -2,7 +2,6 @@
 // Created by Rouven Strauss.
 
 #import "LTContinuousParametricValueProvider.h"
-
 #import "LTInterval.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -47,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// this object. Upon every call to the \c nextParametricValuesForParameterizedObject: method, \c I
 /// is updated to be the intersection of \c K and the initial interval, where \c K equals the
 /// complement of \c J.
-- (CGFloats)nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object;
+- (std::vector<CGFloat>)
+    nextParametricValuesForParameterizedObject:(id<LTParameterizedObject>)object;
 
 /// Returns the current state of this object.
 - (LTFloatSetParametricValueProviderModel *)currentModel;

@@ -604,7 +604,7 @@ context(@"properties", ^{
   it(@"should correctly compute its convex hull", ^{
     LTQuadCorners corners{{v0, v1, v2, v3}};
     quad = [[LTQuad alloc] initWithCorners:corners];
-    CGPoints convexHull = quad.convexHull;
+    std::vector<CGPoint> convexHull = quad.convexHull;
     expect(convexHull.size()).to.equal(4);
     expect(convexHull[0]).to.equal(v0);
     expect(convexHull[1]).to.equal(v3);
@@ -1373,7 +1373,7 @@ context(@"properties", ^{
     it(@"should correctly compute the convex hull of a convex quad", ^{
       lt::Quad::Corners corners{{v0, v1, v2, v3}};
       lt::Quad quad = lt::Quad(corners);
-      CGPoints convexHull = quad.convexHull();
+      std::vector<CGPoint> convexHull = quad.convexHull();
       expect(convexHull.size()).to.equal(4);
       expect(convexHull[0]).to.equal(v0);
       expect(convexHull[1]).to.equal(v3);
@@ -1384,7 +1384,7 @@ context(@"properties", ^{
     it(@"should correctly compute the convex hull of a concave quad", ^{
       lt::Quad::Corners corners = {{v0, v1, w0, v3}};
       lt::Quad quad = lt::Quad(corners);
-      CGPoints convexHull = quad.convexHull();
+      std::vector<CGPoint> convexHull = quad.convexHull();
       expect(convexHull.size()).to.equal(3);
       expect(convexHull[0]).to.equal(v0);
       expect(convexHull[1]).to.equal(v3);

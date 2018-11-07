@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LTBasicPolynomialInterpolant () {
   /// Coefficients determining the polynomial used for interpolation.
-  CGFloats _coefficients;
+  std::vector<CGFloat> _coefficients;
 }
 @end
 
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithCoefficients:(CGFloats)coefficients {
+- (instancetype)initWithCoefficients:(std::vector<CGFloat>)coefficients {
   LTParameterAssert(coefficients.size() > 0, @"At least one coefficient must be provided.");
 
   if (self = [super init]) {
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)hash {
-  return std::hash<CGFloats>()(_coefficients);
+  return std::hash<std::vector<CGFloat>>()(_coefficients);
 }
 
 #pragma mark -

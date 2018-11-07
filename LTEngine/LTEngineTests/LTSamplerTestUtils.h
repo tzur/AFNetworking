@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Values expected as parameters of the \c mappingForParametricValues: method. Upon calls to the
 /// method with different values, \c nil is returned.
-@property (nonatomic) CGFloats expectedParametricValues;
+@property (nonatomic) std::vector<CGFloat> expectedParametricValues;
 
 /// Mapping returned by the \c mappingForParametricValues: method when calling with values equaling
 /// \c expectedParametricValues.

@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c coefficients which must consist of at least one coefficient.
-- (instancetype)initWithCoefficients:(CGFloats)coefficients NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoefficients:(std::vector<CGFloat>)coefficients NS_DESIGNATED_INITIALIZER;
 
 /// Coefficients determining the polynomial used for interpolation.
-@property (readonly, nonatomic) CGFloats coefficients;
+@property (readonly, nonatomic) std::vector<CGFloat> coefficients;
 
 @end
 
