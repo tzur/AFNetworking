@@ -57,7 +57,7 @@ it(@"should create an error with an associated descriptor and description", ^{
 it(@"should create an error with associated descriptors and description", ^{
   NSError *error = [NSError ptn_errorWithCode:1337 associatedDescriptors:@[descriptor, descriptor]
                                   description:@"foo"];
-  
+
   expect(error.code).to.equal(1337);
   expect(error.ptn_associatedDescriptors).to.equal(@[descriptor, descriptor]);
   expect(error.lt_description).to.equal(@"foo");

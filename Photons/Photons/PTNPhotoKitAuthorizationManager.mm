@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
         skip:1]
         take:1]
         replayLast];
-    
+
     [self.authorizer requestAuthorization:^(PHAuthorizationStatus status) {
       self.authorizationStatus = [PTNAuthorizationStatus enumWithPhotoKitStatus:status];
     }];

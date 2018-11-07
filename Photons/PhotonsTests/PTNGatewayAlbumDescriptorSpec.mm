@@ -34,7 +34,7 @@ it(@"should initialize a gateway album descriptor with a signal block", ^{
         givenFetchOptions = options;
         return imageSignal;
       } albumSignal:albumSignal];
-  
+
   expect(descriptor.ptn_identifier).to.equal(identifier);
   expect(descriptor.localizedTitle).to.equal(@"foo");
   expect(descriptor.imageSignalBlock(resizingStrategy, fetchOptions)).to.equal(imageSignal);

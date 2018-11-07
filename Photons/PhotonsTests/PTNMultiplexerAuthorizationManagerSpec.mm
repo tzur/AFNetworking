@@ -58,7 +58,7 @@ __block UIViewController *viewController;
 
 beforeEach(^{
   returnSignal = [[RACSignal alloc] init];
-  
+
   manager = [[PTNFakeAuthorizationManager alloc] init];
   manager.authorizationSignal = returnSignal;
   manager.revocationSignal = returnSignal;
@@ -68,15 +68,15 @@ beforeEach(^{
   [[rejectingManager reject] requestAuthorizationFromViewController:OCMOCK_ANY];
   [[rejectingManager reject] revokeAuthorization];
   [[rejectingManager reject] authorizationStatus];
-  
+
   multiplexerManager = [[PTNMultiplexerAuthorizationManager alloc] initWithSourceMapping:@{
     kScheme: manager,
     kOtherScheme: otherManager,
     kRejectedScheme: rejectingManager
   }];
-  
+
   url = PTNCreateURL(kScheme, nil, nil);
-  
+
   viewController = OCMClassMock(UIViewController.class);
 });
 
@@ -85,7 +85,7 @@ context(@"authorization request", ^{
     expect([multiplexerManager requestAuthorizationForScheme:kScheme
         fromViewController:viewController]).to.equal(returnSignal);
   });
-  
+
   it(@"should error on authorization requests of unconfigured scheme", ^{
     expect([multiplexerManager requestAuthorizationForScheme:kUnconfiguredScheme
                                           fromViewController:viewController])
@@ -99,7 +99,7 @@ context(@"revoke request", ^{
   it(@"should correctly forward revoke requests", ^{
     expect([multiplexerManager revokeAuthorizationForScheme:kScheme]).to.equal(returnSignal);
   });
-  
+
   it(@"should error on revoke requests of unconfigured scheme", ^{
     expect([multiplexerManager revokeAuthorizationForScheme:kUnconfiguredScheme])
         .to.matchError(^BOOL(NSError *error) {
@@ -140,12 +140,12 @@ context(@"authorization status", ^{
 
 context(@"authorized schemes", ^{
   __block PTNMultiplexerAuthorizationManager *authorizingManager;
-  
+
   beforeEach(^{
     authorizingManager = [[PTNMultiplexerAuthorizationManager alloc] initWithSourceMapping:@{}
         authorizedSchemes:@[kScheme]];
   });
-  
+
   it(@"should immediately authorize authorization requests", ^{
     expect([authorizingManager requestAuthorizationForScheme:kScheme
         fromViewController:viewController]).to.sendValues(@[$(PTNAuthorizationStatusAuthorized)]);
