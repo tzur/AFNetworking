@@ -276,11 +276,12 @@ CGPoint LTIntersectionPointOfLines(CGPoint p0, CGPoint p1, CGPoint q0, CGPoint q
 #pragma mark -
 
 /// @see: http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-LTVector2 LTVectorFromPointToClosestPointOnLine(CGPoint point, CGPoint pointOnLine,
-                                                CGPoint anotherPointOnLine) {
-  LTParameterAssert(pointOnLine != anotherPointOnLine);
-  LTVector2 a = LTVector2(pointOnLine);
-  LTVector2 n = (LTVector2(anotherPointOnLine) - a).normalized();
+LTVector2 LTVectorFromPointToClosestPointOnLine(CGPoint point, CGPoint p0, CGPoint p1) {
+  if (p0 == p1) {
+    return LTVector2(p0 - point);
+  }
+  LTVector2 a = LTVector2(p0);
+  LTVector2 n = (LTVector2(p1) - a).normalized();
   LTVector2 ap = a - LTVector2(point);
   return ap - ((ap).dot(n) * n);
 }
@@ -292,7 +293,10 @@ CGPoint LTPointOnLineClosestToPoint(CGPoint pointOnLine, CGPoint anotherPointOnL
 }
 
 CGPoint LTPointOnEdgeClosestToPoint(CGPoint p0, CGPoint p1, CGPoint point) {
-  LTParameterAssert(p0 != p1);
+  if (p0 == p1) {
+    return p0;
+  }
+
   CGPoint pointOnLine = LTPointOnLineClosestToPoint(p0, p1, point);
   CGFloat distanceP0P1 = LTVector2(p0 - p1).length();
   CGFloat distanceP0PointOnLine = LTVector2(p0 - pointOnLine).length();
@@ -409,8 +413,8 @@ CGPointPair LTPointOnPolylineNearestToPointOnPolyline(const std::vector<CGPoint>
   return result;
 }
 
-CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPoint point) {
-  return LTVectorFromPointToClosestPointOnLine(point, pointOnLine, anotherPointOnLine).length();
+CGFloat LTDistanceFromLine(CGPoint p0, CGPoint p1, CGPoint point) {
+  return LTVectorFromPointToClosestPointOnLine(point, p0, p1).length();
 }
 
 CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point) {
