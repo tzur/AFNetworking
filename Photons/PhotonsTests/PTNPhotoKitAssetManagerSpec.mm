@@ -1380,7 +1380,7 @@ context(@"fetch image with metadata", ^{
                        resizingStrategy:resizingStrategy
                                 options:options] subscribeNext:^(id) {}] dispose];
 
-    OCMVerifyAllWithDelay((id)descriptor, 1);
+    OCMVerifyAllWithDelay(descriptor, 1);
   });
 });
 

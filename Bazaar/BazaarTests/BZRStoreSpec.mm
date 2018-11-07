@@ -2052,7 +2052,7 @@ context(@"handling unfinished completed transactions", ^{
     [unhandledSuccessfulTransactionsSubject sendNext:transactions];
     [unhandledSuccessfulTransactionsSubject sendNext:transactions];
 
-    OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
+    OCMVerifyAllWithDelay(receiptValidationStatusProvider, 0.01);
   });
 
   context(@"finishing and sending transactions", ^{
@@ -2076,7 +2076,7 @@ context(@"handling unfinished completed transactions", ^{
 
       [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-      OCMVerifyAllWithDelay((id)storeKitFacade, 0.01);
+      OCMVerifyAllWithDelay(storeKitFacade, 0.01);
     });
 
     it(@"should send transaction on completed transactions signal if it appears in receipt "
