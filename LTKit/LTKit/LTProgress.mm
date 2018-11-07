@@ -28,28 +28,20 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
++ (instancetype)progressWithProgress:(double)progress {
+  return [[LTProgress alloc] initWithProgress:progress];
+}
 
-- (BOOL)isEqual:(LTProgress *)object {
-  if (object == self) {
-    return YES;
-  } else if (![object isKindOfClass:[self class]]) {
-    return NO;
++ (instancetype)progressWithResult:(id<NSObject>)result {
+  return [[LTProgress alloc] initWithResult:result];
+}
+
+- (LTProgress *)map:(NS_NOESCAPE id(^)(id<NSObject> _Nonnull object))block {
+  if (!self.result) {
+    return self;
   }
 
-  return self.progress == object.progress &&
-      (self.result == object.result || [self.result isEqual:object.result]);
-}
-
-- (NSUInteger)hash {
-  return @(self.progress).hash ^ self.result.hash;
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, progress: %g, result: %@>", [self class], self,
-          self.progress, self.result];
+  return [LTProgress progressWithResult:block(nn(self.result))];
 }
 
 #pragma mark -

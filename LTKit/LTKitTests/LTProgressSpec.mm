@@ -74,39 +74,25 @@ context(@"initialization with result", ^{
   });
 });
 
-context(@"equality", ^{
-  __block LTDummyResult *result;
+context(@"map", ^{
+  it(@"should return object with the same progress value if result is nil", ^{
+    LTProgress<NSString *> *progress = [LTProgress progressWithProgress:0.5];
+    LTProgress *mappedProgress = [progress map:^NSNumber *(NSString * __unused object) {
+      return @5;
+    }];
 
-  beforeEach(^{
-    result = [[LTDummyResult alloc] initWithValue:@"foo"];
+    expect(mappedProgress.progress).to.equal(0.5);
+    expect(mappedProgress.result).to.beNil();
   });
 
-  it(@"should indicate that two objects with same progress value and no result are equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:1];
+  it(@"should return object with result of block if result is not nil", ^{
+    LTProgress<NSString *> *progress = [LTProgress progressWithResult:@"A"];
+    LTProgress *mappedProgress = [progress map:^NSString *(NSString *string) {
+      return [string stringByAppendingString:@"B"];
+    }];
 
-    expect([progress isEqual:anotherProgress]).to.beTruthy();
-  });
-
-    it(@"should indicate that two objects with same progress value and result are equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithResult:result];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithResult:result];
-
-    expect([progress isEqual:anotherProgress]).to.beTruthy();
-  });
-
-  it(@"should return the same hash for identical objects", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:1];
-
-    expect(progress.hash).to.equal(anotherProgress.hash);
-  });
-
-  it(@"should indicate that two non identical objects are not equal", ^{
-    LTProgress<LTDummyResult *> *progress = [[LTProgress alloc] initWithProgress:1];
-    LTProgress<LTDummyResult *> *anotherProgress = [[LTProgress alloc] initWithProgress:0.5];
-
-    expect([progress isEqual:anotherProgress]).to.beFalsy();
+    expect(mappedProgress.progress).to.equal(1);
+    expect(mappedProgress.result).to.equal(@"AB");
   });
 });
 
