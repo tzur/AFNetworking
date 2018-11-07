@@ -298,7 +298,7 @@ typedef void (^PTNAssetRequestProgressHandler)(double progress, NSError * _Nulla
         });
       } else if (self.identifierToImageData[identifier]) {
         resultHandler(self.identifierToImageData[identifier], self.identifierToDataUTI[identifier],
-                      self.identifierToOrientation[identifier].intValue, nil);
+                      (UIImageOrientation)self.identifierToOrientation[identifier].intValue, nil);
       }
     }
   });

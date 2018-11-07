@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetch result with the state of the fetched objects after this change.
 @property (strong, nonatomic) PHFetchResult *fakeFetchResultAfterChanges;
 
-/// \c YES if the changes to this fetch result are described by the removed/inserted/changed details.
-/// \c NO indicates that the scope of changes were too large and UI clients should do a full reload
-/// or that incremental changes could not be provided.
+/// \c YES if the changes to this fetch result are described by the removed/inserted/changed
+/// details. \c NO indicates that the scope of changes were too large and UI clients should do a
+/// full reload or that incremental changes could not be provided.
 @property (nonatomic) BOOL fakeHasIncrementalChanges;
 
 /// The indexes of the removed items, relative to the 'before' state of the fetch result. Returns

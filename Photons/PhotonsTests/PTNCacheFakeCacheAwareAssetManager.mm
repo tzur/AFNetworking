@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<RACSubject *> *)validationRequestsMatchingImageRequest:(PTNImageRequest *)imageRequest
                                                         entityTag:(NSString *)etag {
   return [[[self.imageValidationRequests.keyEnumerator.rac_sequence
-      reduceEach:^id(PTNImageRequest *request, NSString __unused *etag) {
+      reduceEach:(id)^PTNImageRequest *(PTNImageRequest *request, NSString __unused *etag) {
         return request;
       }]
       filter:^BOOL(PTNImageRequest *request) {

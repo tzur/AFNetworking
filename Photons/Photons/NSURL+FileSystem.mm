@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  LTPathBaseDirectory base = [baseDirectory unsignedIntegerValue];
+  auto base = (LTPathBaseDirectory)[baseDirectory unsignedIntegerValue];
   NSString *relative = query[@"relative"];
 
   return [LTPath pathWithBaseDirectory:base andRelativePath:relative];
