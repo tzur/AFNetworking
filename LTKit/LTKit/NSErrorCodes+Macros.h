@@ -61,9 +61,11 @@
 #define _LTErrorCodesImplement(PRODUCT_ID, SUBSYSTEM_ID, ...) \
   /* Define a function that will register the codes. */ \
   __attribute__((constructor)) static void metamacro_concat(__registerErrorCodes, __LINE__)() { \
-    [[LTErrorCodesRegistry sharedRegistry] registerErrorCodes:@{ \
-      metamacro_foreach(_LTErrorCodesToDescription,, __VA_ARGS__) \
-    }]; \
+    @autoreleasepool { \
+      [[LTErrorCodesRegistry sharedRegistry] registerErrorCodes:@{ \
+        metamacro_foreach(_LTErrorCodesToDescription,, __VA_ARGS__) \
+      }]; \
+    } \
   } \
   /* Verify the declaration in the header file. */ \
   _LTErrorCodesVerifyDeclaration(PRODUCT_ID, SUBSYSTEM_ID, __VA_ARGS__) \

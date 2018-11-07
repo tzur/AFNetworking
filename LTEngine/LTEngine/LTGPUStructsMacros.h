@@ -44,9 +44,11 @@
 /// @see LTGPUStructMake
 #define LTGPUStructImplement(STRUCT, ...) \
   __attribute__((constructor)) static void __register##STRUCT() { \
-    [[LTGPUStructRegistry sharedInstance] \
-        registerStruct:[[LTGPUStruct alloc] initWithName:@#STRUCT size:sizeof(STRUCT) \
-             andFields:@[metamacro_foreach2(_LTStructDict, STRUCT, _LTComma, __VA_ARGS__)]]]; \
+    @autoreleasepool { \
+      [[LTGPUStructRegistry sharedInstance] \
+          registerStruct:[[LTGPUStruct alloc] initWithName:@#STRUCT size:sizeof(STRUCT) \
+               andFields:@[metamacro_foreach2(_LTStructDict, STRUCT, _LTComma, __VA_ARGS__)]]]; \
+    } \
   }
 
 /// Implements a struct that can be placed on the GPU using \c LTVertexArray.
@@ -55,10 +57,12 @@
 /// @see LTGPUStructMake
 #define LTGPUStructImplementNormalized(STRUCT, ...) \
   __attribute__((constructor)) static void __register##STRUCT() { \
-    [[LTGPUStructRegistry sharedInstance] \
-        registerStruct:[[LTGPUStruct alloc] initWithName:@#STRUCT size:sizeof(STRUCT) \
-             andFields:@[metamacro_foreach3(_LTGPUStructFieldNormalized, STRUCT, _LTComma, \
-                                            __VA_ARGS__)]]]; \
+    @autoreleasepool { \
+      [[LTGPUStructRegistry sharedInstance] \
+          registerStruct:[[LTGPUStruct alloc] initWithName:@#STRUCT size:sizeof(STRUCT) \
+               andFields:@[metamacro_foreach3(_LTGPUStructFieldNormalized, STRUCT, _LTComma, \
+                                              __VA_ARGS__)]]]; \
+    } \
   }
 
 /// Defines a struct that can be placed on the GPU using \c LTVertexArray. The first given parameter
