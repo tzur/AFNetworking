@@ -97,6 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPad";
     case UIDeviceKindIPadPro10_5:
     case UIDeviceKindIPadPro2G12_9:
+    case UIDeviceKindIPadPro11:
+    case UIDeviceKindIPadPro12_93G:
       return @"iPad Pro";
 
     // No camera or N/A
