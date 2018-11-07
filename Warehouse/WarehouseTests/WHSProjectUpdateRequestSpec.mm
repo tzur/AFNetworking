@@ -42,8 +42,8 @@ context(@"requestForRedo", ^{
     expect([WHSProjectUpdateRequest requestForRedo:project]).to.beNil();
   });
 
-  it(@"should return nil if steps IDs are not available", ^{
-    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsIDs];
+  it(@"should return nil if step IDs are not available", ^{
+    auto project = [WHSProjectSnapshot dummyProjectWithNilStepIDs];
 
     expect([WHSProjectUpdateRequest requestForRedo:project]).to.beNil();
   });
@@ -64,7 +64,7 @@ context(@"requestForAddStep", ^{
     auto request = nn([WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent]);
 
     expect(request.stepCursor).to.equal(project.stepCursor + 1);
-    expect(request.stepIDsToDelete).to.equal(project.stepsIDsAfterCursor);
+    expect(request.stepIDsToDelete).to.equal(project.stepIDsAfterCursor);
     expect(request.stepsContentToAdd).to.equal(@[stepContent]);
     expect(request.userData).to.beNil();
     expect(request.projectID).to.equal(project.ID);
@@ -81,8 +81,8 @@ context(@"requestForAddStep", ^{
     expect(request.projectID).to.equal(project.ID);
   });
 
-  it(@"should return nil if steps IDs are not available", ^{
-    auto project = [WHSProjectSnapshot dummyProjectWithNilStepsIDs];
+  it(@"should return nil if step IDs are not available", ^{
+    auto project = [WHSProjectSnapshot dummyProjectWithNilStepIDs];
 
     expect([WHSProjectUpdateRequest requestForAddStep:project stepContent:stepContent]).to.beNil();
   });

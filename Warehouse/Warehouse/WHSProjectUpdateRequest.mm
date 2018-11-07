@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable WHSProjectUpdateRequest *)requestForRedo:(WHSProjectSnapshot *)projectSnapshot {
-  if (!projectSnapshot.stepsIDs || ![projectSnapshot canRedo]) {
+  if (!projectSnapshot.stepIDs || ![projectSnapshot canRedo]) {
     return nil;
   }
   auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectSnapshot.ID];
@@ -60,16 +60,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable WHSProjectUpdateRequest *)requestForAddStep:(WHSProjectSnapshot *)projectSnapshot
                                             stepContent:(WHSStepContent *)stepContent {
-  if (!projectSnapshot.stepsIDs) {
+  if (!projectSnapshot.stepIDs) {
     return nil;
   }
   auto request = [[WHSProjectUpdateRequest alloc] initWithProjectID:projectSnapshot.ID];
   request.stepsContentToAdd = @[stepContent];
   auto currentStepCursor = projectSnapshot.stepCursor;
   request.stepCursor = @(currentStepCursor + 1);
-  auto currentStepsCount = projectSnapshot.stepsIDs.count;
+  auto currentStepsCount = projectSnapshot.stepIDs.count;
   auto rangeToDelete = NSMakeRange(currentStepCursor, currentStepsCount - currentStepCursor);
-  request.stepIDsToDelete = nn([projectSnapshot.stepsIDs subarrayWithRange:rangeToDelete]);
+  request.stepIDsToDelete = nn([projectSnapshot.stepIDs subarrayWithRange:rangeToDelete]);
   return request;
 }
 
