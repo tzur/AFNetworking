@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                         assetsSourceURL:(nullable NSURL *)assetsSourceURL;
 
 /// Data that is application specific for this step.
-@property (strong, nonatomic) NSData *userData;
+@property (copy, nonatomic) NSData *userData;
 
 /// Source directory containing step-related assets to move to the step storage. The resulting step
 /// will contain the target directory. As part of the update request processing, the source
@@ -64,18 +64,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Array containing the IDs of the steps to delete, if a step ID does not exist in the project, it
 /// is ignored.
-@property (strong, nonatomic) NSArray<NSUUID *> *stepIDsToDelete;
+@property (copy, nonatomic) NSArray<NSUUID *> *stepIDsToDelete;
 
 /// Array with the content of the steps to add. The order of the steps addition to the project is
 /// the order of the array elements. The \c userData of the \c WHSStepContent is used as the user
 /// data of the added step. The content of the directory that \c assetsSourceURL of the
 /// \c WHSStepContent is pointing to is moved to the new step's storage and the directory itself is
 /// deleted.
-@property (strong, nonatomic) NSArray<WHSStepContent *> *stepsContentToAdd;
+@property (copy, nonatomic) NSArray<WHSStepContent *> *stepsContentToAdd;
 
 /// User data of the project after the update. If value is \c nil the project user data is not
 /// changed.
-@property (strong, nonatomic, nullable) NSData *userData;
+@property (copy, nonatomic, nullable) NSData *userData;
 
 @end
 

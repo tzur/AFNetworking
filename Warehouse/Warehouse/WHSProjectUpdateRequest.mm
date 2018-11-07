@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    _userData = [NSData data];
+    self.userData = [NSData data];
   }
   return self;
 }
@@ -34,8 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProjectID:(NSUUID *)projectID {
   if (self = [super init]) {
     _projectID = projectID;
-    _stepIDsToDelete = @[];
-    _stepsContentToAdd = @[];
+    self.stepIDsToDelete = @[];
+    self.stepsContentToAdd = @[];
   }
   return self;
 }
