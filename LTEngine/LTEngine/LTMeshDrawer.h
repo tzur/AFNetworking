@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
                        fragmentSource:(NSString *)fragmentSource NS_DESIGNATED_INITIALIZER;
 
 /// When set to \c YES, only the wireframe of the underlying mesh will be drawn.
+///
+/// @important should only be used for debug purposes.
 @property (nonatomic) BOOL drawWireframe;
 
 @end
