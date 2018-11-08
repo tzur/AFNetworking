@@ -6,13 +6,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// Available compression types.
 typedef NS_ENUM(NSUInteger, LTCompressionType) {
   /// LZFSE compression algorithm. Use when speed and compression ratio are equally important.
+  ///
+  /// @see COMPRESSION_LZFSE
   LTCompressionTypeLZFSE,
   /// LZ4 compression algorithm. Use when speed is more important than compression ratio.
+  ///
+  /// @see COMPRESSION_LZ4
   LTCompressionTypeLZ4,
   /// LZMA compression algorithm. Use when compression ratio is more important than speed.
+  /// Compression is done at level 6. Decompression supports any compression level.
+  ///
+  /// @see COMPRESSION_LZMA
   LTCompressionTypeLZMA,
   /// ZLIB compression algorithm. Use when speed and compression ratio are equally important, and
   /// the format need to be decompressed with standard decompressors.
+  /// Compression is done at level 5. Decompression supports any compression level.
+  ///
+  /// @see COMPRESSION_ZLIB
   LTCompressionTypeZLIB
 };
 
