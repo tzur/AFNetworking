@@ -14,3 +14,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#import <LLReactiveMatchers/LLReactiveMatchers.h>
+
+#import "EUISMModel+Test.h"

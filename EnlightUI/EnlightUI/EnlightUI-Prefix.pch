@@ -2,3 +2,7 @@
 // Created by Dekel Avrahami.
 
 #import <Bazaar/Bazaar-Prefix.pch>
+
+#ifdef __cplusplus
+#import "EUILocalization.h"
+#endif

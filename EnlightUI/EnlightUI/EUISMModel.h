@@ -27,8 +27,8 @@ LTEnumDeclare(NSUInteger, EUISMApplication,
 /// The URL scheme to use for deep linking into the application
 @property (readonly, nonatomic) NSString *urlScheme;
 
-/// URL of the application icon
-@property (readonly, nonatomic) NSURL *iconURL;
+/// URL of the application thumbnail
+@property (readonly, nonatomic) NSURL *thumbnailURL;
 
 @end
 
@@ -64,10 +64,11 @@ typedef NS_ENUM(NSUInteger, EUISMSubscriptionType) {
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given properties. The given \c subscriptionGroupProductsInfo must not
-/// include the given \c currentProductInfo.
+/// include the given \c currentProductInfo and the given \c pendingProductInfo.
 - (instancetype)initWithCurrentApplication:(EUISMApplication *)currentApplication
     currentSubscriptionInfo:(nullable BZRReceiptSubscriptionInfo *)currentSubscriptionInfo
     currentProductInfo:(nullable EUISMProductInfo *)currentProductInfo
+    pendingProductInfo:(nullable EUISMProductInfo *)pendingProductInfo
     subscriptionGroupProductsInfo:(NSSet<EUISMProductInfo *> *)subscriptionGroupProductsInfo
     NS_DESIGNATED_INITIALIZER;
 
@@ -80,8 +81,11 @@ typedef NS_ENUM(NSUInteger, EUISMSubscriptionType) {
 /// Information about the current subscription product the user is subscribed to.
 @property (readonly, nonatomic, nullable) EUISMProductInfo *currentProductInfo;
 
+/// Information about the subscription product the user will be subscribd to after the next renewal.
+@property (readonly, nonatomic, nullable) EUISMProductInfo *pendingProductInfo;
+
 /// Information about the subscription products that are in the same subscription group of the
-/// current product. This data structure doesn't contain \c currentProductInfo itself.
+/// current product.
 @property (readonly, nonatomic) NSSet<EUISMProductInfo *> *subscriptionGroupProductsInfo;
 
 @end
