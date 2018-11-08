@@ -83,8 +83,15 @@ static NSString * const kKernelFunctionNearestNeighborScale = @"nearestNeighborS
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
-  [self encodeToCommandBuffer:commandBuffer
-                   inputImage:inputImage inputRegion:{{0, 0, 0}, inputImage.pnk_size}
+  [self encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                  inputRegion:{{0, 0, 0}, inputImage.pnk_size} outputImage:outputImage
+                 outputRegion:{{0, 0, 0}, outputImage.pnk_size}];
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage inputRegion:(MTLRegion)inputRegion
+                  outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
                   outputImage:outputImage outputRegion:{{0, 0, 0}, outputImage.pnk_size}];
 }
 

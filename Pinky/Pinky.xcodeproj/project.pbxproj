@@ -109,13 +109,19 @@
 		285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
 		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
 		28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */; };
+		6418BE722180727500615CCB /* PNKFaceModelProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418BE702180727500615CCB /* PNKFaceModelProcessor.mm */; };
 		6418BF9D2180ACC800615CCB /* PNKUnaryFunctionLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418BF782180ACC800615CCB /* PNKUnaryFunctionLayer.mm */; };
 		6418BFBC2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418BFBB2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm */; };
 		6418BFBD2180BC5D00615CCB /* PNKUnaryFunctionKernel.metal in Sources */ = {isa = PBXBuildFile; fileRef = 6418BF9B2180ACC800615CCB /* PNKUnaryFunctionKernel.metal */; };
+		6418C16A2181D2AA00615CCB /* PNKFaceModelProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6418C1692181D2AA00615CCB /* PNKFaceModelProcessorSpec.mm */; };
+		6418C16E2181E5FC00615CCB /* face_model_processor_fit_input.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6418C16D2181E5FB00615CCB /* face_model_processor_fit_input.jpg */; };
+		6418C1AE2185F52F00615CCB /* face_model_params_1x258.tensor in Resources */ = {isa = PBXBuildFile; fileRef = 6418C18B2185F52F00615CCB /* face_model_params_1x258.tensor */; };
 		64333A42212DBB8700E37691 /* libMetalToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 642A5E792121A0BE004C0288 /* libMetalToolbox.a */; };
 		64633877217F120600945494 /* batch_normalization_variance_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633853217F120500945494 /* batch_normalization_variance_32.weights */; };
 		64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */ = {isa = PBXBuildFile; fileRef = 64633876217F120600945494 /* batch_normalization_mean_32.weights */; };
 		6463399721806A0500945494 /* batch_normalization_epsilon_1.weights in Resources */ = {isa = PBXBuildFile; fileRef = 6463397421806A0500945494 /* batch_normalization_epsilon_1.weights */; };
+		64A1587921908C1D003C43DB /* facemodel.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = 64A1587821908C1D003C43DB /* facemodel.nnmodel */; };
+		64E0AC4E21919D8200AEF7A4 /* MTLRegion+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64E0AC4C21919D8200AEF7A4 /* MTLRegion+Factory.mm */; };
 		881332A41FE932A200E83C1D /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
 		8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
 		C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
@@ -791,14 +797,22 @@
 		28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferTestUtils.h; sourceTree = "<group>"; };
 		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
 		28D89D7A203C6CAA00B6C35D /* PNKColorTransferCDFConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferCDFConstants.h; sourceTree = "<group>"; };
+		6418BE702180727500615CCB /* PNKFaceModelProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKFaceModelProcessor.mm; sourceTree = "<group>"; };
+		6418BE712180727500615CCB /* PNKFaceModelProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKFaceModelProcessor.h; sourceTree = "<group>"; };
 		6418BF782180ACC800615CCB /* PNKUnaryFunctionLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKUnaryFunctionLayer.mm; sourceTree = "<group>"; };
 		6418BF9B2180ACC800615CCB /* PNKUnaryFunctionKernel.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKUnaryFunctionKernel.metal; sourceTree = "<group>"; };
 		6418BF9C2180ACC800615CCB /* PNKUnaryFunctionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKUnaryFunctionLayer.h; sourceTree = "<group>"; };
 		6418BFBB2180BB4700615CCB /* PNKUnaryFunctionLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKUnaryFunctionLayerSpec.mm; sourceTree = "<group>"; };
+		6418C1692181D2AA00615CCB /* PNKFaceModelProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKFaceModelProcessorSpec.mm; sourceTree = "<group>"; };
+		6418C16D2181E5FB00615CCB /* face_model_processor_fit_input.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = face_model_processor_fit_input.jpg; path = Resources/face_model_processor_fit_input.jpg; sourceTree = "<group>"; };
+		6418C18B2185F52F00615CCB /* face_model_params_1x258.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = face_model_params_1x258.tensor; path = Resources/face_model_params_1x258.tensor; sourceTree = "<group>"; };
 		642A5E592121A0BE004C0288 /* MetalToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MetalToolbox.xcodeproj; path = ../MetalToolbox/MetalToolbox.xcodeproj; sourceTree = "<group>"; };
 		64633853217F120500945494 /* batch_normalization_variance_32.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_variance_32.weights; path = Resources/batch_normalization_variance_32.weights; sourceTree = "<group>"; };
 		64633876217F120600945494 /* batch_normalization_mean_32.weights */ = {isa = PBXFileReference; lastKnownFileType = text; name = batch_normalization_mean_32.weights; path = Resources/batch_normalization_mean_32.weights; sourceTree = "<group>"; };
 		6463397421806A0500945494 /* batch_normalization_epsilon_1.weights */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = batch_normalization_epsilon_1.weights; path = Resources/batch_normalization_epsilon_1.weights; sourceTree = "<group>"; };
+		64A1587821908C1D003C43DB /* facemodel.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = facemodel.nnmodel; path = Models/face/facemodel.nnmodel; sourceTree = SOURCE_ROOT; };
+		64E0AC4C21919D8200AEF7A4 /* MTLRegion+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MTLRegion+Factory.mm"; sourceTree = "<group>"; };
+		64E0AC4D21919D8200AEF7A4 /* MTLRegion+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MTLRegion+Factory.h"; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1282,6 +1296,9 @@
 				E417189B20565766009FEF14 /* crop_input_15x16x32.tensor */,
 				E417189C20565767009FEF14 /* crop_output_9x12x32.tensor */,
 				E42F87CE205907BA000A18AE /* echo.nnmodel */,
+				6418C18B2185F52F00615CCB /* face_model_params_1x258.tensor */,
+				6418C16D2181E5FB00615CCB /* face_model_processor_fit_input.jpg */,
+				64A1587821908C1D003C43DB /* facemodel.nnmodel */,
 				E4EBB56D2186ED8C00069DAB /* fieldInput.jpg */,
 				E46EC8C2217326DF008064B1 /* fieldMask.png */,
 				E46EC8C721732AAF008064B1 /* fieldOutput.png */,
@@ -1611,6 +1628,7 @@
 			children = (
 				285D3AFF1FD6ACC6006A55AF /* Color Transfer */,
 				E4D7FCB7219061C90004D8E5 /* Depth */,
+				6418BE4D2180723C00615CCB /* Face Model */,
 				E480A460209856AD00423308 /* Image Motion */,
 				E4404301213C1D7B0092539A /* Inpainting */,
 				E45CA9DE201F275100A0DCCE /* Segmentation */,
@@ -1624,12 +1642,30 @@
 			children = (
 				285D3B481FD6B551006A55AF /* ColorTransfer */,
 				E4BFCD262190AAC900515BC8 /* Depth */,
+				6418C1462181D16100615CCB /* Face Model */,
 				E480A486209856DE00423308 /* Image Motion */,
 				E4404328213C1DB10092539A /* Inpainting */,
 				061C66381FD7E05600F1BF1B /* Segmentation */,
 				06C2F3B7202B4E0D004B7F86 /* StyleTransfer */,
 			);
 			name = Applications;
+			sourceTree = "<group>";
+		};
+		6418BE4D2180723C00615CCB /* Face Model */ = {
+			isa = PBXGroup;
+			children = (
+				6418BE712180727500615CCB /* PNKFaceModelProcessor.h */,
+				6418BE702180727500615CCB /* PNKFaceModelProcessor.mm */,
+			);
+			name = "Face Model";
+			sourceTree = "<group>";
+		};
+		6418C1462181D16100615CCB /* Face Model */ = {
+			isa = PBXGroup;
+			children = (
+				6418C1692181D2AA00615CCB /* PNKFaceModelProcessorSpec.mm */,
+			);
+			name = "Face Model";
 			sourceTree = "<group>";
 		};
 		642A5E5A2121A0BE004C0288 /* Products */ = {
@@ -1855,6 +1891,8 @@
 			children = (
 				E4DA81251FFA2CD700BF8826 /* MPSImage+Size.h */,
 				E4DA81241FFA2CD700BF8826 /* MPSImage+Size.mm */,
+				64E0AC4D21919D8200AEF7A4 /* MTLRegion+Factory.h */,
+				64E0AC4C21919D8200AEF7A4 /* MTLRegion+Factory.mm */,
 				E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */,
 				E4D0B9C61FFCE64800BF5DBF /* PNKActivation.metal.h */,
 				E484D36E1FEF838900DA050C /* PNKAvailability.h */,
@@ -2494,6 +2532,7 @@
 				E41718AB20565768009FEF14 /* gather_input_15x16x32.tensor in Resources */,
 				64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */,
 				E43BF18620614B2000CE1C3A /* argmax_output_15x16x1.tensor in Resources */,
+				64A1587921908C1D003C43DB /* facemodel.nnmodel in Resources */,
 				E483D41920517CF5000D4809 /* instance_normalization_basic_gamma_32.weights in Resources */,
 				E41718AD20565768009FEF14 /* add_primary_input_15x16x32.tensor in Resources */,
 				E483D41D20517CF5000D4809 /* instance_normalization_single_texture_input_15x16x3.tensor in Resources */,
@@ -2530,6 +2569,7 @@
 				E41718A720565768009FEF14 /* crop_input_15x16x32.tensor in Resources */,
 				061C659D1FD6DA6400F1BF1B /* PNKSkyShape512.model in Resources */,
 				06368F5F2031959000D8369E /* Lena128_echo55.png in Resources */,
+				6418C1AE2185F52F00615CCB /* face_model_params_1x258.tensor in Resources */,
 				E483D42020517CF5000D4809 /* instance_normalization_single_texture_output_15x16x3.tensor in Resources */,
 				E42F87CF205907BA000A18AE /* echo.nnmodel in Resources */,
 				E46EC8C4217326DF008064B1 /* fieldMask.png in Resources */,
@@ -2566,6 +2606,7 @@
 				E44666F5200622D1009D7042 /* activation_relu_input_15x16x32.tensor in Resources */,
 				E483D41820517CF5000D4809 /* instance_normalization_basic_beta_32.weights in Resources */,
 				2856897020065B660053FDD8 /* ColorTransferInput.png in Resources */,
+				6418C16E2181E5FC00615CCB /* face_model_processor_fit_input.jpg in Resources */,
 				E48E480A2018C235002B6D55 /* batch_normalization_beta_32.weights in Resources */,
 				E483D41720517CF5000D4809 /* instance_normalization_relu_beta_32.weights in Resources */,
 				E48AD8AA2030479600F52328 /* pooling_max_output_15x16x32.tensor in Resources */,
@@ -2701,6 +2742,7 @@
 				285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */,
 				E49052E2201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm in Sources */,
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
+				6418C16A2181D2AA00615CCB /* PNKFaceModelProcessorSpec.mm in Sources */,
 				E48E44D120BEB2C5003C2CB7 /* PNKImageMotionTreeLayerSpec.mm in Sources */,
 				2835A9621FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm in Sources */,
 				E43774F820E25D2300D78632 /* PNKImageMotionDisplacementProcessorSpec.mm in Sources */,
@@ -2776,6 +2818,7 @@
 				285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */,
 				E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */,
 				E4043C9920C03A7400D27D23 /* PNKImageMotionTreeTipMovement.mm in Sources */,
+				64E0AC4E21919D8200AEF7A4 /* MTLRegion+Factory.mm in Sources */,
 				2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */,
 				E46EC8BE21732679008064B1 /* PNKInpaintingProcessor.mm in Sources */,
 				E4DA81261FFA2CD700BF8826 /* MPSImage+Size.mm in Sources */,
@@ -2784,6 +2827,7 @@
 				E4BED1451FF007C600160C9B /* PNKNetworkSchemeFactory.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				E4590B2720B4367800C7F7F3 /* PNKImageMotionWavePatch.mm in Sources */,
+				6418BE722180727500615CCB /* PNKFaceModelProcessor.mm in Sources */,
 				06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				E43774F620E222DF00D78632 /* PNKImageMotionDisplacementProcessor.mm in Sources */,

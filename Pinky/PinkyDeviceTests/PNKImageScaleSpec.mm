@@ -126,10 +126,9 @@ context(@"resize", ^{
 
     auto outputImage = [MPSImage mtb_unorm8ImageWithDevice:device width:inputImage.width * 2.5
                                                     height:inputImage.height * 2.5 channels:4];
-    auto outputRegion = MTLRegionMake(0, 0, 0, outputImage.pnk_size);
 
     [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage inputRegion:inputRegion
-                     outputImage:outputImage outputRegion:outputRegion];
+                     outputImage:outputImage];
 
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];

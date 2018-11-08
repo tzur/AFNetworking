@@ -434,12 +434,30 @@ struct GraphTraversalData {
                                                   unaryModel:unaryFunctionKernelModel];
     } break;
     case cms::NeuralNetworkLayer::kAdd:
-      kernel = [[PNKArithmetic alloc] initWithDevice:device
-                                           operation:pnk::ArithmeticOperationAddition];
+      if (layer->input_size() == 1) {
+        pnk::ActivationKernelModel model = {
+          .activationType = pnk::ActivationTypeLinear,
+          .alpha = cv::Mat1f::ones(1, 1),
+          .beta = cv::Mat1f(1, 1, layer->add().alpha())
+        };
+        kernel = [[PNKActivationLayer alloc] initWithDevice:device activationModel:model];
+      } else {
+        kernel = [[PNKArithmetic alloc] initWithDevice:device
+                                             operation:pnk::ArithmeticOperationAddition];
+      }
       break;
     case cms::NeuralNetworkLayer::kMultiply:
-      kernel = [[PNKArithmetic alloc] initWithDevice:device
-                                           operation:pnk::ArithmeticOperationMultiplication];
+      if (layer->input_size() == 1) {
+        pnk::ActivationKernelModel model = {
+          .activationType = pnk::ActivationTypeLinear,
+          .alpha = cv::Mat1f(1, 1, layer->multiply().alpha()),
+          .beta = cv::Mat1f::zeros(1, 1)
+        };
+        kernel = [[PNKActivationLayer alloc] initWithDevice:device activationModel:model];
+      } else {
+        kernel = [[PNKArithmetic alloc] initWithDevice:device
+                                             operation:pnk::ArithmeticOperationMultiplication];
+      }
       break;
     case cms::NeuralNetworkLayer::kConcat:
       kernel = [[PNKConcatenation alloc] initWithDevice:device];
