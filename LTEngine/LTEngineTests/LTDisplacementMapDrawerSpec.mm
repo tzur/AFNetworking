@@ -127,8 +127,8 @@ context(@"transformations", ^{
     CGSize  meshSize = displacementMap.size - CGSizeMakeUniform(1);
     CGSize cellSize = input.size / meshSize;
 
-    input.magFilterInterpolation = LTTextureInterpolationNearest;
-    input.minFilterInterpolation = LTTextureInterpolationNearest;
+    input.magFilterInterpolation = LTTextureInterpolationLinear;
+    input.minFilterInterpolation = LTTextureInterpolationLinear;
     [input mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       LTRandom *random = [[LTRandom alloc] initWithSeed:0];
       cv::Mat4b mat = *mapped;
@@ -180,7 +180,7 @@ context(@"transformations", ^{
           LTLoadMat([self class], @"LTDisplacementMapDrawerReshapedWithoutMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 45);
     });
 
     it(@"should resize", ^{
@@ -190,7 +190,7 @@ context(@"transformations", ^{
           LTLoadMat([self class], @"LTDisplacementMapDrawerResizedWithoutMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should unwarp", ^{
@@ -201,7 +201,7 @@ context(@"transformations", ^{
           LTLoadMat([self class], @"LTDisplacementMapDrawerUnwarpedWithoutMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
   });
 
@@ -232,7 +232,7 @@ context(@"transformations", ^{
       cv::Mat4b expected = LTLoadMat([self class], @"LTDisplacementMapDrawerReshapedWithMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should resize with respect to mask", ^{
@@ -241,7 +241,7 @@ context(@"transformations", ^{
       cv::Mat4b expected = LTLoadMat([self class], @"LTDisplacementMapDrawerResizedWithMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should unwarp ignoring mask", ^{
@@ -254,7 +254,7 @@ context(@"transformations", ^{
       cv::Mat4b expected = LTLoadMat([self class], @"LTDisplacementMapDrawerUnwarpedWithMask.png");
 
       [meshProcessor process];
-      expect($(output.image)).to.equalMat($(expected));
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
   });
 });

@@ -328,8 +328,8 @@ context(@"drawing", ^{
           LTCheckerboardPattern(CGSizeMakeUniform(8), 1, cv::Vec4b(0, 0, 0, 255),
                                 cv::Vec4b(255, 255, 255, 255));
       checkerboardTexture = [LTTexture textureWithImage:checkerboard];
-      checkerboardTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-      checkerboardTexture.minFilterInterpolation = LTTextureInterpolationNearest;
+      checkerboardTexture.magFilterInterpolation = LTTextureInterpolationLinear;
+      checkerboardTexture.minFilterInterpolation = LTTextureInterpolationLinear;
     });
 
     afterEach(^{
@@ -338,11 +338,6 @@ context(@"drawing", ^{
 
     context(@"general quad geometry", ^{
       it(@"should draw a perspectively distorted quad", ^{
-        // Use linear interpolation in order to avoid failing due to neglible numerical issues on
-        // 32 Bit systems compared to 64 Bit systems.
-        checkerboardTexture.magFilterInterpolation = LTTextureInterpolationLinear;
-        checkerboardTexture.minFilterInterpolation = LTTextureInterpolationLinear;
-
         lt::Quad quad({{CGPointZero, CGPointMake(1, 0.4), CGPointMake(1, 0.6), CGPointMake(0, 1)}});
         [fbo bindAndDraw:^{
           [drawer drawQuads:{quad} textureMapQuads:{lt::Quad::canonicalSquare()} attributeData:@[]
@@ -366,15 +361,10 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveQuad1.png"));
-        expect($([outputTexture image])).to.equalMat($(expected));
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw a general quad", ^{
-        // Use linear interpolation in order to avoid failing due to neglible numerical issues on
-        // 32 Bit systems compared to 64 Bit systems.
-        checkerboardTexture.magFilterInterpolation = LTTextureInterpolationLinear;
-        checkerboardTexture.minFilterInterpolation = LTTextureInterpolationLinear;
-
         lt::Quad quad({{
           CGPointZero,
           CGPointMake(0.8, 0.2),
@@ -393,11 +383,6 @@ context(@"drawing", ^{
 
     context(@"general texture quads", ^{
       it(@"should draw with a quad portion of a texture", ^{
-        // Use linear interpolation in order to avoid failing due to neglible numerical issues on
-        // 32 Bit systems compared to 64 Bit systems.
-        checkerboardTexture.magFilterInterpolation = LTTextureInterpolationLinear;
-        checkerboardTexture.minFilterInterpolation = LTTextureInterpolationLinear;
-
         lt::Quad quad({{CGPointZero, CGPointMake(1, 0.4), CGPointMake(1, 0.6), CGPointMake(0, 1)}});
         [fbo bindAndDraw:^{
           [drawer drawQuads:{lt::Quad::canonicalSquare()} textureMapQuads:{quad} attributeData:@[]
@@ -421,7 +406,7 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad1.png"));
-        expect($([outputTexture image])).to.equalMat($(expected));
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw with yet another quad portion of a texture", ^{
@@ -437,7 +422,7 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad2.png"));
-        expect($([outputTexture image])).to.equalMat($(expected));
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
     });
 
@@ -462,15 +447,10 @@ context(@"drawing", ^{
 
         cv::Mat expected(LTLoadMat([self class],
                                    @"PerspectiveGeneralQuadWithRectPortionOfTexture.png"));
-        expect($([outputTexture image])).to.equalMat($(expected));
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw a general quad with a quad portion of a texture", ^{
-        // Use linear interpolation in order to avoid failing due to neglible numerical issues on
-        // 32 Bit systems compared to 64 Bit systems.
-        checkerboardTexture.magFilterInterpolation = LTTextureInterpolationLinear;
-        checkerboardTexture.minFilterInterpolation = LTTextureInterpolationLinear;
-
         [fbo bindAndDraw:^{
           [drawer drawQuads:{quad} textureMapQuads:{quad} attributeData:@[]
                     texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
@@ -478,7 +458,7 @@ context(@"drawing", ^{
 
         cv::Mat expected(LTLoadMat([self class],
                                    @"PerspectiveGeneralQuadWithQuadPortionOfTexture0.png"));
-        expect($([outputTexture image])).to.beCloseToMatWithin($(expected), 1);
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw a general quad with another quad portion of a texture", ^{
@@ -495,7 +475,7 @@ context(@"drawing", ^{
 
         cv::Mat expected(LTLoadMat([self class],
                                    @"PerspectiveGeneralQuadWithQuadPortionOfTexture1.png"));
-        expect($([outputTexture image])).to.equalMat($(expected));
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
     });
   });
