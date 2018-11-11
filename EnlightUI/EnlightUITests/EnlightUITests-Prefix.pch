@@ -18,3 +18,5 @@ extern "C" {
 #import <LLReactiveMatchers/LLReactiveMatchers.h>
 
 #import "EUISMModel+Test.h"
+
+#import <Wireframes/UIView+Retrieval.h>
