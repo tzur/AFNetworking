@@ -10,9 +10,36 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@implementation BZRBillingPeriod (EUISMTest)
+
++ (instancetype)eui_billingPeriodMonthly {
+  return [[BZRBillingPeriod alloc] initWithDictionary:@{
+    @"unit": $(BZRBillingPeriodUnitMonths),
+    @"unitCount": @(1)
+  } error:nil];
+}
+
++ (instancetype)eui_billingPeriodBiyearly {
+  return [[BZRBillingPeriod alloc] initWithDictionary:@{
+    @"unit": $(BZRBillingPeriodUnitMonths),
+    @"unitCount": @(6)
+  } error:nil];
+}
+
++ (instancetype)eui_billingPeriodYearly {
+  return [[BZRBillingPeriod alloc] initWithDictionary:@{
+    @"unit": $(BZRBillingPeriodUnitYears),
+    @"unitCount": @(1)
+  } error:nil];
+}
+
+@end
+
 @implementation EUISMModel (Test)
 
-static NSString * const dummyProductID = @"com.lightricks.EnlightEditor_V4.PA.1M.ES_1M.ES";
+static NSString * const monthlyProductID = @"com.lightricks.EnlightEditor_V4.PA.1M.ES_1M.ES";
+static NSString * const yearlyProductID = @"com.lightricks.EnlightEditor_V4.PA.1M.ES_1Y.ES";
+static NSString * const dummyProductID = monthlyProductID;
 
 + (NSDictionary *)dummyProductDictionary {
   return @{
@@ -192,6 +219,61 @@ static NSString * const dummyProductID = @"com.lightricks.EnlightEditor_V4.PA.1M
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
                           subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+}
+
++ (instancetype)modelWithPromotedProductSavePercent:(NSUInteger)savePercent {
+  auto monthlyBillingPeriod = [BZRBillingPeriod eui_billingPeriodMonthly];
+  return [EUISMModel modelWithAvailableYearlyUpradeSavePercent:savePercent
+                                                 billingPeriod:monthlyBillingPeriod];
+}
+
++ (instancetype)modelWithAvailableYearlyUpradeSavePercent:(NSUInteger)savePercent
+                                            billingPeriod:(BZRBillingPeriod *)billingPeriod {
+  LTAssert(savePercent <= 100, @"savePercent can't be larger than 100");
+  auto productDictionary = [self dummyProductDictionary].mutableCopy;
+  productDictionary[@"billingPeriod"] = billingPeriod;
+
+  auto yearlyPeriod = [BZRBillingPeriod eui_billingPeriodYearly];
+  auto productID = [billingPeriod isEqual:yearlyPeriod] ? yearlyProductID : monthlyProductID;
+  productDictionary[@"identifier"] = productID;
+
+  auto decimalPrice = [NSDecimalNumber decimalNumberWithString:@"100"];
+  auto priceDictionary = @{@"price":decimalPrice ,@"localeIdentifier": @"en_US"};
+  auto price = [[BZRProductPriceInfo alloc] initWithDictionary:priceDictionary error:nil];
+  /* TODO:(Dekel) fix once BZR exposes a more accurate price */
+  productDictionary[@"priceInfo"] = price;
+
+  auto product = [[BZRProduct alloc] initWithDictionary:productDictionary error:nil];
+  auto productInfo = [[EUISMProductInfo alloc] initWithProduct:product
+                                              subscriptionType:EUISMSubscriptionTypeSingleApp];
+
+  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
+                          initWithDictionary:[self dummyBzrSubscriptionDictionary] error:nil];
+
+  auto yearlyProductDictionary = [self dummyProductDictionary].mutableCopy;
+  yearlyProductDictionary[@"billingPeriod"] = yearlyPeriod;
+  yearlyProductDictionary[@"identifier"] = yearlyProductID;
+
+  auto yearlyPriceString = [NSString stringWithFormat:@"%lu", 12 * (100 - savePercent)];
+  auto yearlyPriceDecimal = [NSDecimalNumber decimalNumberWithString:yearlyPriceString];
+  auto yearlyPriceDictionary = @{@"price":yearlyPriceDecimal ,@"localeIdentifier": @"en_US"};
+  auto yearlyPrice = [[BZRProductPriceInfo alloc] initWithDictionary:yearlyPriceDictionary
+                                                               error:nil];
+  yearlyProductDictionary[@"priceInfo"] = yearlyPrice;
+
+  auto yearlyProduct = [[BZRProduct alloc] initWithDictionary:yearlyProductDictionary error:nil];
+  auto yearlyProductInfo = [[EUISMProductInfo alloc]
+                             initWithProduct:yearlyProduct
+                             subscriptionType:EUISMSubscriptionTypeSingleApp];
+
+  auto subscriptionGroup = @{
+    productID: productInfo,
+    yearlyProductID: yearlyProductInfo
+  };
+
+  return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
+                                currentSubscriptionInfo:bzrSubscription
+                          subscriptionGroupProductsInfo:subscriptionGroup];
 }
 
 @end

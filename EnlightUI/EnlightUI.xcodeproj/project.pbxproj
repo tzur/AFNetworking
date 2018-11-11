@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192982ED21983FB0003F2B2B /* EUISMYourPlanPromotionViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 192982EB21983FAF003F2B2B /* EUISMYourPlanPromotionViewModel.mm */; };
+		1929840C21987E48003F2B2B /* EUISMYourPlanPromotionViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1929840B21987E48003F2B2B /* EUISMYourPlanPromotionViewModelSpec.mm */; };
 		192A8F472174DA9200EA27B4 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8F422174DA6C00EA27B4 /* libLTKit.a */; };
 		192A8F492174DAD400EA27B4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8F482174DAD400EA27B4 /* MobileCoreServices.framework */; };
 		192A8F552174DBDF00EA27B4 /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8F522174DBB600EA27B4 /* libWireframes.a */; };
@@ -589,6 +591,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		192982EB21983FAF003F2B2B /* EUISMYourPlanPromotionViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanPromotionViewModel.mm; sourceTree = "<group>"; };
+		192982EC21983FB0003F2B2B /* EUISMYourPlanPromotionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMYourPlanPromotionViewModel.h; sourceTree = "<group>"; };
+		1929840B21987E48003F2B2B /* EUISMYourPlanPromotionViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanPromotionViewModelSpec.mm; sourceTree = "<group>"; };
 		192A8E242174BEB200EA27B4 /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		192A8F1C2174C40000EA27B4 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		192A8F3B2174DA6C00EA27B4 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
@@ -874,6 +879,7 @@
 		1983A89121778231004C632A /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				1929840B21987E48003F2B2B /* EUISMYourPlanPromotionViewModelSpec.mm */,
 				1983ADE3217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm */,
 			);
 			name = "View Models";
@@ -1136,6 +1142,8 @@
 		19F495D0216F77D60011CFF6 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				192982EC21983FB0003F2B2B /* EUISMYourPlanPromotionViewModel.h */,
+				192982EB21983FAF003F2B2B /* EUISMYourPlanPromotionViewModel.mm */,
 				1983ADDA217F3388004C632A /* EUISMYourPlanViewModel.h */,
 				1983ADDB217F3388004C632A /* EUISMYourPlanViewModel.mm */,
 			);
@@ -1836,6 +1844,7 @@
 				1983ABF1217DF54C004C632A /* EUILocalization.mm in Sources */,
 				1983B5172189D174004C632A /* UIFont+EnlightUI.mm in Sources */,
 				1983B5162189D174004C632A /* UIColor+EnlightUI.mm in Sources */,
+				192982ED21983FB0003F2B2B /* EUISMYourPlanPromotionViewModel.mm in Sources */,
 				1983ADDC217F3388004C632A /* EUISMYourPlanViewModel.mm in Sources */,
 				1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */,
 				19414387219C37DD00AC1062 /* EUISMModel+ProductInfo.mm in Sources */,
@@ -1849,6 +1858,7 @@
 				19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */,
 				19414389219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm in Sources */,
 				1983ADE4217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm in Sources */,
+				1929840C21987E48003F2B2B /* EUISMYourPlanPromotionViewModelSpec.mm in Sources */,
 				1983B51F2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm in Sources */,
 				1983ADE2217F3397004C632A /* EUISMModel+Test.mm in Sources */,
 			);
