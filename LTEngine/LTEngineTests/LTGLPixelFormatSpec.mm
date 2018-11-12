@@ -30,6 +30,24 @@ it(@"should initialize with components, bit depth and data type correctly", ^{
   }];
 });
 
+it(@"should initialize with all supported metal pixel formats", ^{
+  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *format) {
+    if (format.value == LTGLPixelFormatDepth16Unorm) {
+      // No Metal equivalent format in iOS.
+      return;
+    }
+    auto mtlPixelFormat = format.mtlPixelFormat;
+    LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithMTLPixelFormat:mtlPixelFormat];
+    expect(pixelFormat.mtlPixelFormat).to.equal(mtlPixelFormat);
+  }];
+});
+
+it(@"should return valid metal pixel format for all pixel formats", ^{
+  [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+    expect(pixelFormat.format).notTo.equal(MTLPixelFormatInvalid);
+  }];
+});
+
 it(@"should return valid OpenGL format for all pixel formats", ^{
   [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
     expect(pixelFormat.format).notTo.equal(LTGLInvalidEnum);

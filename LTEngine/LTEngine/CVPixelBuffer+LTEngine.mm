@@ -24,6 +24,30 @@ lt::Ref<CVPixelBufferRef> LTCVPixelBufferCreate(size_t width, size_t height,
   return lt::Ref<CVPixelBufferRef>(pixelBufferRef);
 }
 
+#if COREVIDEO_SUPPORTS_IOSURFACE
+lt::Ref<CVPixelBufferRef>
+    LTCVPixelBufferCreateWithIOSurface(IOSurfaceRef iosurface,
+                                       NSDictionary<NSString *, id> *attributes) {
+  CVPixelBufferRef pixelBufferRef;
+  CVReturn result = CVPixelBufferCreateWithIOSurface(nil, iosurface,
+                                                     (__bridge CFDictionaryRef)attributes,
+                                                     &pixelBufferRef);
+  if (result != kCVReturnSuccess) {
+    [LTGLException raise:kLTCVPixelBufferCreationFailedException
+                  format:@"Failed creating pixel buffer from iosurface %@ with error %d",
+     iosurface, (int)result];
+  }
+
+  return lt::Ref<CVPixelBufferRef>(pixelBufferRef);
+}
+#else
+lt::Ref<CVPixelBufferRef>
+    LTCVPixelBufferCreateWithIOSurface(__unused IOSurfaceRef,
+                                       NSDictionary<NSString *, id> __unused *) {
+  LTAssert(NO, @"IOSurface isn't supported on simulator");
+}
+#endif
+
 void LTCVPixelBufferLockAndExecute(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
                                    NS_NOESCAPE LTVoidBlock block) {
   LTParameterAssert(block);

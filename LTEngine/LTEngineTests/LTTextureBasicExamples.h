@@ -12,3 +12,10 @@ extern NSString * const kLTTextureDefaultValuesExamples;
 
 /// Data dictionary key for instance of \c LTTexture to test.
 extern NSString * const kLTTextureDefaultValuesTexture;
+
+/// Textures Metal examples shared group name.
+extern NSString * const kLTTextureMetalExamples;
+
+/// Data dictionary key for class object of LTTexture subclass to test, for
+/// \c kLTTextureMetalExamples.
+extern NSString * const kLTTextureMetalExamplesTextureClass;

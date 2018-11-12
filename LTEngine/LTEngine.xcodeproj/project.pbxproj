@@ -1061,12 +1061,14 @@
 		B41BF08F1EB22D9800A1FA79 /* NSScanner+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF08D1EB22D9800A1FA79 /* NSScanner+LTEngine.mm */; };
 		B41BF0911EB22DCB00A1FA79 /* NSScanner+LTEngineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF0901EB22DCB00A1FA79 /* NSScanner+LTEngineSpec.mm */; };
 		B42725421F36F01D00AAE3F9 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B427250F1F36F01D00AAE3F9 /* IOSurface.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B42DD7CC218B196E00BA4766 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5120B4237800FDFAC8 /* Metal.framework */; };
 		B434CE1E1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */; };
 		B434CE1F1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */; };
 		B434CE991F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */; };
 		B44241E51EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B44241E41EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm */; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
+		B471E8312189B95B00D0593F /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5320B4237800FDFAC8 /* MetalPerformanceShaders.framework */; };
 		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
 		B48C2BCC1F9744AC008CC04C /* HorizontalStep8bitRGBA.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60761F9742B900560891 /* HorizontalStep8bitRGBA.png */; };
 		B48C2BCD1F9744AC008CC04C /* HorizontalStep16bitRGBA.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60A91F9742C000560891 /* HorizontalStep16bitRGBA.png */; };
@@ -1080,6 +1082,8 @@
 		B4BF16271F41D89D0077726E /* LTImageHEICCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */; };
 		B4BF16281F41D89D0077726E /* LTImageHEICCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */; };
 		B4BF162A1F41DAB00077726E /* LTImageHEICCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */; };
+		B4DD225D216F70D700810CCE /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E407FB5120B4237800FDFAC8 /* Metal.framework */; };
+		B4DD240F217610FC00810CCE /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B427250F1F36F01D00AAE3F9 /* IOSurface.framework */; };
 		B4E4932E1F801EEC00AB6BE3 /* White8bitCMYK.tif in Resources */ = {isa = PBXBuildFile; fileRef = B4E4932D1F801EE600AB6BE3 /* White8bitCMYK.tif */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
@@ -2848,6 +2852,7 @@
 				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8B3DEC1318296D7600EA0C1A /* GLKit.framework in Frameworks */,
 				B42725421F36F01D00AAE3F9 /* IOSurface.framework in Frameworks */,
+				B4DD225D216F70D700810CCE /* Metal.framework in Frameworks */,
 				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
 				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 			);
@@ -2866,8 +2871,11 @@
 				E42E08DA20B4693E00BE4484 /* CoreVideo.framework in Frameworks */,
 				E42E08DB20B4693E00BE4484 /* Foundation.framework in Frameworks */,
 				E42E08DC20B4693E00BE4484 /* GLKit.framework in Frameworks */,
+				B4DD240F217610FC00810CCE /* IOSurface.framework in Frameworks */,
 				E42E08DD20B4693E00BE4484 /* ImageIO.framework in Frameworks */,
 				E42E08DE20B4693E00BE4484 /* Mantle.framework in Frameworks */,
+				B42DD7CC218B196E00BA4766 /* Metal.framework in Frameworks */,
+				B471E8312189B95B00D0593F /* MetalPerformanceShaders.framework in Frameworks */,
 				E42E08DF20B4693E00BE4484 /* MobileCoreServices.framework in Frameworks */,
 				E42E08E020B4693E00BE4484 /* Objection-iOS.framework in Frameworks */,
 				E42E08E120B4693E00BE4484 /* OpenGLES.framework in Frameworks */,

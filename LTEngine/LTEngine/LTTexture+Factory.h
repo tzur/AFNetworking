@@ -169,6 +169,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// GPU - CPU synchronization falls into your responsibility.
 + (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex;
 
+/// Creates a new texture from the given Metal \c texture. If possible, the created texture shares
+/// the same memory as the \c texture. Otherwise, the data is copied into the created texture.
+/// The \c storageMode of the \c texture must be \c MTLStorageModeShared.
+///
+/// Throws \c LTGLException if the texture cannot be created, or if the build target doesn't support
+/// Metal.
+///
+/// @note take extra care when referencing the \c texture outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
+///
+/// @note the content produced by the commited \c MTBCommandBuffers, which renders to the
+/// \c texture, is reflected in the returned texture. This happens automatically without any
+/// explicit synchronization.
++ (instancetype)textureWithMTLTexture:(id<MTLTexture>)texture;
+
 @end
 
 NS_ASSUME_NONNULL_END

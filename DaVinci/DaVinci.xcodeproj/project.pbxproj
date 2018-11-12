@@ -173,6 +173,7 @@
 		8861FDAB1E5A2AE500CA1436 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAA1E5A2AE500CA1436 /* CoreText.framework */; };
 		8861FDAD1E5A2AEA00CA1436 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */; };
 		8BF68AD51D82E9510093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AD41D82E9510093910D /* libcompression.tbd */; };
+		B4A766F92198682A0036A5D8 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4A766D72198682A0036A5D8 /* Metal.framework */; };
 		B4DD1B18216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png in Resources */ = {isa = PBXBuildFile; fileRef = B4DD1B17216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png */; };
 		E4829F631E49D069009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829F621E49D069009F3355 /* libOpenEXR.a */; };
 /* End PBXBuildFile section */
@@ -749,6 +750,7 @@
 		8861FDAA1E5A2AE500CA1436 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8BF68AD41D82E9510093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		B4A766D72198682A0036A5D8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		B4DD1B17216CC11C00810CCE /* DVNBrushModelV1_Smoothing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushModelV1_Smoothing.png; path = Resources/DVNBrushModelV1_Smoothing.png; sourceTree = "<group>"; };
 		E4829F621E49D069009F3355 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -775,6 +777,7 @@
 				8861FDA31E5A2AAE00CA1436 /* GLKit.framework in Frameworks */,
 				8861FDAD1E5A2AEA00CA1436 /* ImageIO.framework in Frameworks */,
 				5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */,
+				B4A766F92198682A0036A5D8 /* Metal.framework in Frameworks */,
 				2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */,
 				282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */,
 				8861FDA51E5A2AB400CA1436 /* OpenGLES.framework in Frameworks */,
@@ -1656,6 +1659,7 @@
 				8861FDA61E5A2AC600CA1436 /* CoreVideo.framework */,
 				8861FDA21E5A2AAE00CA1436 /* GLKit.framework */,
 				8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */,
+				B4A766D72198682A0036A5D8 /* Metal.framework */,
 				8861FDA41E5A2AB400CA1436 /* OpenGLES.framework */,
 				8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */,
 				8861FDA81E5A2ACF00CA1436 /* UIKit.framework */,

@@ -3,6 +3,7 @@
 
 #import "LTMMTexture.h"
 
+#import <Metal/Metal.h>
 #import <stdatomic.h>
 
 #import "CVPixelBuffer+LTEngine.h"
@@ -48,6 +49,10 @@ SpecBegin(LTMMTexture)
 
 itShouldBehaveLike(kLTTextureBasicExamples, @{
   kLTTextureBasicExamplesTextureClass: [LTMMTexture class]
+});
+
+itShouldBehaveLike(kLTTextureMetalExamples, @{
+  kLTTextureMetalExamplesTextureClass: [LTMMTexture class]
 });
 
 __block LTMMTexture *texture;
@@ -496,6 +501,46 @@ context(@"pixel buffer", ^{
     auto returnedPixelBuffer = [texture pixelBuffer];
     expect(glIsSync(texture.readSyncObject)).to.beFalsy();
   });
+});
+
+dcontext(@"metal", ^{
+  __block id<MTLDevice> device;
+
+  beforeEach(^{
+    device = MTLCreateSystemDefaultDevice();
+  });
+
+  it(@"should raise when initialize with buffer backed metal texture", ^{
+    id<MTLBuffer> buffer = [device newBufferWithLength:16
+                                               options:MTLResourceStorageModeShared];
+    auto textureDescriptor = [MTLTextureDescriptor
+                              texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Unorm
+                              width:16 height:1 mipmapped:NO];
+    auto mtlTexture = [buffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:16];
+    expect(^{
+      __unused auto ltTexture = [[LTMMTexture alloc] initWithMTLTexture:mtlTexture];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  if (@available(iOS 11.0, *)) {
+    it(@"should initialize with parent backed metal texture", ^{
+      IOSurface *iosurface = [[IOSurface alloc] initWithProperties:@{
+        IOSurfacePropertyKeyWidth: @16,
+        IOSurfacePropertyKeyHeight: @1,
+        IOSurfacePropertyKeyPixelFormat: @(kCVPixelFormatType_OneComponent8),
+      }];
+      auto descriptor = [MTLTextureDescriptor
+                         texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Snorm width:16 height:1
+                         mipmapped:NO];
+      auto mtlTexture = [device newTextureWithDescriptor:descriptor
+                                               iosurface:(__bridge IOSurfaceRef)iosurface plane:0];
+      auto mtlTexture2 = [mtlTexture newTextureViewWithPixelFormat:MTLPixelFormatR8Unorm];
+      auto ltTexture = [[LTMMTexture alloc] initWithMTLTexture:mtlTexture2];
+      expect(ltTexture.size).to.equal(CGSizeMake(16, 1));
+    });
+  }
+#endif
 });
 
 SpecEnd

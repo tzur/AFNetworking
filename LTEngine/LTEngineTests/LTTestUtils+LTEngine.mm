@@ -3,10 +3,12 @@
 
 #import "LTTestUtils+LTEngine.h"
 
+#import <LTEngine/LTGLPixelFormat.h>
 #import <LTEngine/LTImage.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 #import <LTKit/LTRandom.h>
 #import <LTKit/UIDevice+Hardware.h>
+#import <Metal/Metal.h>
 #import <Specta/SpectaDSL.h>
 #import <Specta/SpectaUtility.h>
 #import <opencv2/imgcodecs.hpp>
@@ -459,6 +461,18 @@ cv::Mat4b LTGenerateCellsMat(CGSize matSize, CGSize cellSize) {
   }
 
   return mat;
+}
+
+cv::Mat LTCVMatByCopyingFromMTLTexture(id<MTLTexture> texture, NSUInteger mipmapLevel) {
+  auto mipmapSize =
+      std::floor(CGSizeMake(texture.width, texture.height) / std::pow(2, mipmapLevel));
+  LTParameterAssert(mipmapSize.width > 0 && mipmapSize.height > 0,
+                    @"Mipmap size (%@) must be positive", NSStringFromCGSize(mipmapSize));
+  auto pixelFormat = [[LTGLPixelFormat alloc] initWithMTLPixelFormat:texture.pixelFormat];
+  cv::Mat image((int)mipmapSize.height, (int)mipmapSize.width, pixelFormat.matType);
+  auto region = MTLRegionMake2D(0, 0, mipmapSize.width, mipmapSize.height);
+  [texture getBytes:image.data bytesPerRow:image.step[0] fromRegion:region mipmapLevel:mipmapLevel];
+  return image;
 }
 
 #pragma mark -

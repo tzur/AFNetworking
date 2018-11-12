@@ -3,6 +3,8 @@
 
 #import "LTTexture.h"
 
+#import <Metal/Metal.h>
+
 #import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
 #import "CVPixelBuffer+LTEngine.h"
@@ -148,6 +150,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Abstract methods
 #pragma mark -
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
+
+- (instancetype)initWithMTLTexture:(__unused id<MTLTexture>)texture {
+  LTMethodNotImplemented();
+}
+
+- (instancetype)initWithPixelBuffer:(__unused CVPixelBufferRef)pixelBuffer {
+  LTMethodNotImplemented();
+}
+
+#pragma clang diagnostic pop
+
 - (void)dispose {
   LTMethodNotImplemented();
 }
@@ -169,6 +184,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  LTMethodNotImplemented();
+}
+
+- (id<MTLTexture>)mtlTextureWithDevice:(id<MTLDevice> __unused)device {
   LTMethodNotImplemented();
 }
 

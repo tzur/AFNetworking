@@ -48,6 +48,7 @@
 		8B10C83B1F3EFA9D00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8381F3EFA9000F76142 /* libLLReactiveMatchers.a */; };
 		8B6867CF1F3B278500F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6862F21F33452A00F0EF4C /* ReactiveObjC.framework */; };
 		8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AA41D82E8200093910D /* libcompression.tbd */; };
+		B4A766D62198680F0036A5D8 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4A766A62198680F0036A5D8 /* Metal.framework */; };
 		BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */; };
 		BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9C1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m */; };
 		BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */; };
@@ -564,6 +565,7 @@
 		8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6862E31F33452A00F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		8BF68AA41D82E8200093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		B4A766A62198680F0036A5D8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		BE0D7A7B1CF49705009899F9 /* CUIMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemView.h; sourceTree = "<group>"; };
 		BE0D7A7C1CF49705009899F9 /* CUIMenuItemTextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemTextButton.h; sourceTree = "<group>"; };
 		BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIMenuItemTextButton.m; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				65061A261D46397F003D45B1 /* Mantle.framework in Frameworks */,
 				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
 				835057F01E150A750005D9C4 /* MediaPlayer.framework in Frameworks */,
+				B4A766D62198680F0036A5D8 /* Metal.framework in Frameworks */,
 				288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
 				8861FD491E5A295400CA1436 /* OpenGLES.framework in Frameworks */,
@@ -725,6 +728,7 @@
 				8861FD461E5A294F00CA1436 /* GLKit.framework */,
 				8861FD541E5A29C300CA1436 /* ImageIO.framework */,
 				835057EF1E150A750005D9C4 /* MediaPlayer.framework */,
+				B4A766A62198680F0036A5D8 /* Metal.framework */,
 				288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */,
 				F965C9BF1CF316E100005627 /* Objection-iOS.framework */,
 				8861FD481E5A295400CA1436 /* OpenGLES.framework */,

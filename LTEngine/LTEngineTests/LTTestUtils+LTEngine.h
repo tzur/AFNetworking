@@ -1,10 +1,9 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <numeric>
-
 #import <LTEngine/LTBlendMode.h>
 #import <LTEngine/LTOpenCVHalfFloat.h>
+#import <numeric>
 
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
@@ -83,6 +82,9 @@ cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
 /// random RGB colors. \c matSize and \c cellSize must be integral. The grid that is obtained from
 /// the cells will be of size <tt>matSize / cellSize</tt>. This size must also be integral.
 cv::Mat4b LTGenerateCellsMat(CGSize matSize, CGSize cellSize);
+
+/// Returns the content of \c texture at \c mipmapLevel, copied into a \c cv::Mat.
+cv::Mat LTCVMatByCopyingFromMTLTexture(id<MTLTexture> texture, NSUInteger mipmapLevel = 0);
 
 /// Returns the mean value of all elements in the given container.
 template <typename Container>

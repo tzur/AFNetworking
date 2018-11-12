@@ -3,6 +3,8 @@
 
 #import "CVPixelBuffer+LTEngine.h"
 
+#import <IOSurface/IOSurfaceObjC.h>
+
 SpecBegin(CVPixelBuffer_LTEngine)
 
 context(@"creation", ^{
@@ -31,6 +33,20 @@ context(@"creation", ^{
     expect(CVPixelBufferGetHeightOfPlane(pixelBufferReference, 0)).to.equal(22);
     expect(CVPixelBufferGetPixelFormatType(pixelBufferReference))
         .to.equal(kCVPixelFormatType_420YpCbCr8Planar);
+  });
+
+  dit(@"should create pixel buffer with iosurface", ^{
+    auto iosurface = [[IOSurface alloc] initWithProperties:@{
+      IOSurfacePropertyKeyWidth: @3,
+      IOSurfacePropertyKeyHeight: @4,
+      IOSurfacePropertyKeyPixelFormat: @(kCVPixelFormatType_32BGRA)
+    }];
+    auto pixelBuffer = LTCVPixelBufferCreateWithIOSurface((__bridge IOSurfaceRef)iosurface, @{});
+
+    expect(CVPixelBufferGetWidth(pixelBuffer.get())).to.equal(iosurface.width);
+    expect(CVPixelBufferGetHeight(pixelBuffer.get())).to.equal(iosurface.height);
+    expect(CVPixelBufferGetPixelFormatType(pixelBuffer.get()))
+        .to.equal(iosurface.pixelFormat);
   });
 });
 

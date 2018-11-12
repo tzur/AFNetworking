@@ -6,12 +6,12 @@
 /// A texture class representing an OpenGL based texture.
 @interface LTGLTexture : LTTexture
 
-/// Allocates a texture with the given \c size, \c pixelFormat and maximal mipmap level.
+/// Initializes a texture with the given \c size, \c pixelFormat and maximal mipmap level.
 /// The texture's memory will be allocated on the GPU but will not be initialized.
 - (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)pixelFormat
               maxMipmapLevel:(GLint)maxMipmapLevel;
 
-/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
+/// Initializes a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture as the base level (0).
 /// The mipmap will be automatically generated based on the given \c image with number of levels
 /// equal to \c log2(MAX(image.size.width, image.size.height)).
@@ -23,7 +23,7 @@
 /// OpenGL ES versions lower than 3.0.
 - (instancetype)initWithBaseLevelMipmapImage:(const cv::Mat &)image;
 
-/// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
+/// Initializes a texture with the \c size, \c precision and \c channels properties of the given \c
 /// images, and loads the \c images one by one to consecutive mipmap levels, starting from the base
 /// level 0.
 ///
@@ -38,6 +38,30 @@
 /// Throws \c LTGLException with \c kLTOpenGLRuntimeErrorException if the texture cannot be created
 /// or if image loading has failed.
 - (instancetype)initWithMipmapImages:(const Matrices &)images;
+
+/// Initializes a texture from the given Metal \c texture by copying \c texture's data. The
+/// \c storageMode of the \c texture must be \c MTLStorageModeShared.
+///
+/// Throws \c LTGLException if the texture cannot be created, or if the build target doesn't support
+/// Metal.
+///
+/// @note take extra care when referencing the \c texture outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
+///
+/// @note the content produced by the commited \c MTBCommandBuffers, which renders to the
+/// \c texture, is reflected in initialized texture. This happens automatically without any explicit
+/// synchronization.
+- (instancetype)initWithMTLTexture:(id<MTLTexture>)texture;
+
+/// Initializes a new texture with size and pixel format derived from the given \c pixelBuffer, by
+/// copying \c pixelBuffer's content into the texture.
+///
+/// Throws \c LTGLException if the texture cannot be created, and \c NSInvalidArgumentException if
+/// \c pixelBuffer is a planar pixel buffer.
+///
+/// @note take take extra care when referencing \c pixelBuffer outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
+- (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 /// Returns a \c Mat object from the given level of the texture. This is a heavy operation since it
 /// requires duplicating the texture to a new memory location. The matrix type and size depends on

@@ -211,6 +211,19 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   {kCVPixelFormatType_16Gray, kCIFormatR16}
 };
 
+/// Maps from pixel format to \c MTLPixelFormat.
+static const LTUnorderedMap<_LTGLPixelFormat, MTLPixelFormat> kFormatToMTLPixelFormat{
+  {LTGLPixelFormatR8Unorm, MTLPixelFormatR8Unorm},
+  {LTGLPixelFormatR16Float, MTLPixelFormatR16Float},
+  {LTGLPixelFormatR32Float, MTLPixelFormatR32Float},
+  {LTGLPixelFormatRG8Unorm, MTLPixelFormatRG8Unorm},
+  {LTGLPixelFormatRG16Float, MTLPixelFormatRG16Float},
+  {LTGLPixelFormatRG32Float, MTLPixelFormatRG32Float},
+  {LTGLPixelFormatRGBA8Unorm, MTLPixelFormatRGBA8Unorm},
+  {LTGLPixelFormatRGBA16Float, MTLPixelFormatRGBA16Float},
+  {LTGLPixelFormatRGBA32Float, MTLPixelFormatRGBA32Float}
+};
+
 @implementation LTGLPixelFormat (Additions)
 
 - (instancetype)initWithTextureInternalFormat:(GLenum)internalFormat {
@@ -249,6 +262,16 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   }
   LTAssert(NO, @"No pixel format value was found for the given components (%lu) and dataType (%lu)",
            (unsigned long)components, (unsigned long)dataType);
+}
+
+- (instancetype)initWithMTLPixelFormat:(MTLPixelFormat)mtlPixelFormat {
+  for (const auto &pair : kFormatToMTLPixelFormat) {
+    if (pair.second == mtlPixelFormat) {
+      return [self initWithValue:pair.first];
+    }
+  }
+  LTAssert(NO, @"No pixel format value was found for the given metal pixel format (%lu)",
+           (unsigned long)mtlPixelFormat);
 }
 
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes {
@@ -358,6 +381,11 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
     }
   }
   return kUnknownType;
+}
+
+- (MTLPixelFormat)mtlPixelFormat {
+  const auto it = kFormatToMTLPixelFormat.find(self.value);
+  return it != kFormatToMTLPixelFormat.cend() ? it->second : MTLPixelFormatInvalid;
 }
 
 - (CIFormat)ciFormatForMatType {

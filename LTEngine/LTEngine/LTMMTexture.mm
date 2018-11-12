@@ -1,16 +1,14 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#if defined(__IPHONE_11_0) && TARGET_OS_IPHONE && TARGET_OS_EMBEDDED
-  #define LTMMTEXTURE_USE_IOSURFACE
-#endif
-
 #import "LTMMTexture.h"
 
-#ifdef LTMMTEXTURE_USE_IOSURFACE
+#if COREVIDEO_SUPPORTS_IOSURFACE
   #import <IOSurface/IOSurfaceObjC.h>
   #import <OpenGLEs/EAGLIOSurface.h>
 #endif
+
+#import <Metal/Metal.h>
 
 #import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
@@ -117,7 +115,7 @@
 
 - (void)setupPixelBuffer:(lt::Ref<CVPixelBufferRef>)pixelBuffer {
   _pixelBuffer = std::move(pixelBuffer);
-#ifdef LTMMTEXTURE_USE_IOSURFACE
+#if COREVIDEO_SUPPORTS_IOSURFACE
   if (@available(iOS 11.0, *)) {
     auto _Nullable backingSurface = CVPixelBufferGetIOSurface(_pixelBuffer.get());
     if (!backingSurface) {
@@ -132,7 +130,7 @@
   [self setupTextureCacheBackedTexture];
 }
 
-#ifdef LTMMTEXTURE_USE_IOSURFACE
+#if COREVIDEO_SUPPORTS_IOSURFACE
 - (void)setupSurfaceBackedTexture {
   auto internalFormat = self.pixelFormat.textureInternalFormat;
   auto format = self.pixelFormat.format;
@@ -222,6 +220,29 @@
 
   _texture.reset(textureRef);
 }
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  - (instancetype)initWithMTLTexture:(id<MTLTexture>)mtlTexture {
+    LTParameterAssert(mtlTexture.storageMode == MTLStorageModeShared,
+                      @"Texture storage mode isn't supported: %@", mtlTexture);
+
+    // iosurface property is part of private API starting from iOS 10.
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    IOSurfaceRef _Nullable iosurface = mtlTexture.iosurface;
+    #pragma clang diagnostic pop
+
+    LTAssert(iosurface, @"MTLTexture backing content isn't supported %@", mtlTexture);
+    return [self initWithPixelBuffer:LTCVPixelBufferCreateWithIOSurface(iosurface, @{
+      (NSString *)kCVPixelBufferOpenGLESCompatibilityKey: @YES,
+      (NSString *)kCVPixelBufferMetalCompatibilityKey: @YES
+    }).get()];
+  }
+#else
+  - (instancetype)initWithMTLTexture:(__unused id<MTLTexture>)mtlTexture {
+    LTAssert(NO, @"Metal isn't supported by simulator");
+  }
+#endif
 
 - (void)dealloc {
   [self dispose];
@@ -359,6 +380,35 @@
 
   return lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(_pixelBuffer.get()));
 }
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  - (id<MTLTexture>)mtlTextureWithDevice:(id<MTLDevice>)device {
+    // Access to [self pixelBuffer] guarantee proper synchronization.
+    lt::Ref<CVPixelBufferRef> pixelBuffer = [self pixelBuffer];
+    IOSurfaceRef _Nullable iosurface = CVPixelBufferGetIOSurface(pixelBuffer.get());
+    LTAssert(iosurface, @"Texture %@ must be backed by iosurface", self);
+
+    auto descriptor =
+        [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:self.pixelFormat.mtlPixelFormat
+                                                           width:self.size.width
+                                                          height:self.size.height
+                                                       mipmapped:NO];
+
+    // Creating an MTLTexture from IOSurface is available from iOS 10 as a private API.
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    id<MTLTexture> mtlTexture = [device newTextureWithDescriptor:descriptor iosurface:iosurface
+                                                           plane:0];
+    #pragma clang diagnostic pop
+
+    LTAssert(mtlTexture, @"Failed creating MTLTexture from %@, on device %@", self, device);
+    return mtlTexture;
+  }
+#else
+  - (id<MTLTexture>)mtlTextureWithDevice:(__unused id<MTLDevice>)device {
+    LTAssert(NO, @"Metal isn't supported by simulator");
+  }
+#endif
 
 #pragma mark -
 #pragma mark Overridden methods

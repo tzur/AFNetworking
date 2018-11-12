@@ -46,6 +46,21 @@
 /// @note \c pixelBuffer is retained by this texture.
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex;
 
+/// Initializes a texture from the given Metal \c texture. The created texture shares the same
+/// memory as the \c texture when possible. \c iosurface property of the \c texture must be set and
+/// \c storageMode of the \c texture must be \c MTLStorageModeShared.
+///
+/// Throws \c LTGLException if the texture cannot be created, or if the build target doesn't support
+/// Metal.
+///
+/// @note take extra care when referencing the \c texture outside of this object.
+/// GPU - CPU synchronization falls into your responsibility.
+///
+/// @note the content produced by the commited \c MTBCommandBuffers, which renders to the
+/// \c texture, is reflected in initialized texture. This happens automatically without any explicit
+/// synchronization.
+- (instancetype)initWithMTLTexture:(id<MTLTexture>)texture;
+
 /// Returns the pixel buffer that backs the content of this texture. This is a zero-copy operation.
 ///
 /// All previous GPU operations involving writes to the texture complete before the pixel buffer is

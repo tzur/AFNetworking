@@ -3,6 +3,8 @@
 
 #import "LTTexture+Factory.h"
 
+#import <Metal/Metal.h>
+
 #import "CVPixelBuffer+LTEngine.h"
 
 SpecBegin(LTTexture_Factory)
@@ -122,6 +124,39 @@ it(@"should initialize with planar pixel buffer", ^{
 
   expect(plane0).to.beKindOf([LTTexture class]);
   expect(plane1).to.beKindOf([LTTexture class]);
+});
+
+dcontext(@"metal", ^{
+  __block id<MTLDevice> device;
+
+  beforeEach(^{
+    device = MTLCreateSystemDefaultDevice();
+  });
+
+  it(@"should initialize with metal texture", ^{
+    auto descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Unorm
+                                                                         width:39 height:47
+                                                                     mipmapped:NO];
+    auto mtlTexture = [device newTextureWithDescriptor:descriptor];
+    auto ltTexture = [LTTexture textureWithMTLTexture:mtlTexture];
+    expect(ltTexture).to.beKindOf(LTTexture.class);
+  });
+
+  it(@"should initialize with metal mipmaped texture", ^{
+    auto descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Unorm
+                                                                         width:39 height:47
+                                                                     mipmapped:YES];
+    descriptor.mipmapLevelCount = 5;
+    auto mtlTexture = [device newTextureWithDescriptor:descriptor];
+    auto commandBuffer = [[device newCommandQueue] commandBuffer];
+    auto blitEncoder = [commandBuffer blitCommandEncoder];
+    [blitEncoder generateMipmapsForTexture:mtlTexture];
+    [blitEncoder endEncoding];
+    [commandBuffer commit];
+
+    auto ltTexture = [LTTexture textureWithMTLTexture:mtlTexture];
+    expect(ltTexture).to.beKindOf(LTTexture.class);
+  });
 });
 
 SpecEnd

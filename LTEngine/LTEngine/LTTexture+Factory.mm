@@ -3,6 +3,8 @@
 
 #import "LTTexture+Factory.h"
 
+#import <Metal/Metal.h>
+
 #import "CVPixelBuffer+LTEngine.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
@@ -128,15 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
-  if ([self isMemoryMappedTextureAvailable]) {
-    return [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer];
-  } else {
-    __block LTTexture *texture;
-    LTCVPixelBufferImageForReading(pixelBuffer, ^(const cv::Mat &image) {
-      texture = [self textureWithImage:image];
-    });
-    return texture;
-  }
+  return [[[self textureClass] alloc] initWithPixelBuffer:pixelBuffer];
 }
 
 + (instancetype)textureWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex {
@@ -149,6 +143,21 @@ NS_ASSUME_NONNULL_BEGIN
     });
     return texture;
   }
+}
+
++ (instancetype)textureWithMTLTexture:(id<MTLTexture>)mtlTexture {
+  #if COREVIDEO_SUPPORTS_IOSURFACE
+    // iosurface property is part of private API starting from iOS 10.
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    IOSurfaceRef _Nullable iosurface = mtlTexture.iosurface;
+    #pragma clang diagnostic pop
+  #else
+    IOSurfaceRef _Nullable iosurface = nil;
+  #endif
+
+  return iosurface ? [[LTMMTexture alloc] initWithMTLTexture:mtlTexture] :
+      [[LTGLTexture alloc] initWithMTLTexture:mtlTexture];
 }
 
 @end

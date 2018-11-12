@@ -77,6 +77,7 @@
 		8D01BCA8FB7F17078FBCC26A /* CAMCameraAuthorizationManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BDDB5DBF6E49068CC060 /* CAMCameraAuthorizationManagerSpec.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
 		8D01BEE7F94A92FDDD41751F /* CAMCameraAuthorizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B1C3A112096CEFA00097 /* CAMCameraAuthorizer.mm */; };
+		B4A766A5219867F80036A5D8 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4A7667B219867F80036A5D8 /* Metal.framework */; };
 		BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */; };
 		BE63760D1D869C81004F3710 /* CAMDeviceLocationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */; };
 		BE63763D1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */; };
@@ -588,6 +589,7 @@
 		8D01B8F90BC9675AF647801B /* CAMFakeAVCaptureDeviceFormat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMFakeAVCaptureDeviceFormat.mm; sourceTree = "<group>"; };
 		8D01BDDB5DBF6E49068CC060 /* CAMCameraAuthorizationManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMCameraAuthorizationManagerSpec.mm; sourceTree = "<group>"; };
 		8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePresetSpec.mm; sourceTree = "<group>"; };
+		B4A7667B219867F80036A5D8 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		BE6375E61D8691A4004F3710 /* CAMDeviceLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceLocation.h; sourceTree = "<group>"; };
 		BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocation.mm; sourceTree = "<group>"; };
 		BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocationSpec.mm; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 				8861FD151E5A28AE00CA1436 /* ImageIO.framework in Frameworks */,
 				0627C4C11D1A6CED00EFEC6B /* Mantle.framework in Frameworks */,
 				835057C21E1507950005D9C4 /* MediaPlayer.framework in Frameworks */,
+				B4A766A5219867F80036A5D8 /* Metal.framework in Frameworks */,
 				2804AAEA1D3BB5D20057F1A0 /* MobileCoreServices.framework in Frameworks */,
 				06C02F6A1D19568600745557 /* Objection-iOS.framework in Frameworks */,
 				8861FD0B1E5A284000CA1436 /* OpenGLES.framework in Frameworks */,
@@ -755,6 +758,7 @@
 				8861FD061E5A27EE00CA1436 /* GLKit.framework */,
 				8861FD141E5A28AE00CA1436 /* ImageIO.framework */,
 				835057C11E1507950005D9C4 /* MediaPlayer.framework */,
+				B4A7667B219867F80036A5D8 /* Metal.framework */,
 				2804AAE91D3BB5D20057F1A0 /* MobileCoreServices.framework */,
 				06C02F691D19568600745557 /* Objection-iOS.framework */,
 				8861FD0A1E5A284000CA1436 /* OpenGLES.framework */,

@@ -3,6 +3,8 @@
 
 #import "LTGLTexture.h"
 
+#import <Metal/Metal.h>
+
 #import "CVPixelBuffer+LTEngine.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
@@ -109,6 +111,66 @@ static void LTVerifyMipmapImages(const Matrices &images) {
   }];
 
   LTGLCheck(@"Error loading texture mipmap levels");
+}
+
+- (instancetype)initWithMTLTexture:(id<MTLTexture>)mtlTexture {
+  LTParameterAssert(mtlTexture.storageMode == MTLStorageModeShared,
+                    @"Texture storage mode isn't supported: %@", mtlTexture);
+
+  lt::Ref<CVPixelBufferRef> pixelBuffer = [LTGLTexture pixelBufferFromMTLTexture:mtlTexture];
+  if (pixelBuffer) {
+    return [self initWithPixelBuffer:pixelBuffer.get()];
+  }
+
+  std::vector<cv::Mat> images = [LTGLTexture readMipmapImagesFromMTLTexture:mtlTexture];
+  return images.size() == 1 ?
+      [self initWithImage:images[0]] : [self initWithMipmapImages:images];
+}
+
+#if COREVIDEO_SUPPORTS_IOSURFACE
+  + (lt::Ref<CVPixelBufferRef>)pixelBufferFromMTLTexture:(id<MTLTexture>)texture {
+    // iosurface property is part of private API starting from iOS 10.
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunguarded-availability-new"
+    IOSurfaceRef _Nullable iosurface = texture.iosurface;
+    #pragma clang diagnostic pop
+
+    if (iosurface) {
+      return LTCVPixelBufferCreateWithIOSurface(iosurface, @{
+        (NSString *)kCVPixelBufferOpenGLESCompatibilityKey: @YES,
+        (NSString *)kCVPixelBufferMetalCompatibilityKey: @YES
+      });
+    }
+    return {};
+  }
+#else
+  + (lt::Ref<CVPixelBufferRef>)pixelBufferFromMTLTexture:(__unused id<MTLTexture>)texture {
+    LTAssert(NO, @"Metal isn't supported by simulator");
+  }
+#endif
+
++ (std::vector<cv::Mat>)readMipmapImagesFromMTLTexture:(id<MTLTexture>)mtlTexture {
+  std::vector<cv::Mat> images(mtlTexture.mipmapLevelCount);
+  auto size = CGSizeMake(mtlTexture.width, mtlTexture.height);
+  auto pixelFormat = [[LTGLPixelFormat alloc] initWithMTLPixelFormat:mtlTexture.pixelFormat];
+  NSUInteger i = 0;
+  while (i < mtlTexture.mipmapLevelCount && size.height && size.width) {
+    cv::Mat image(size.height, size.width, pixelFormat.matType);
+    auto region = MTLRegionMake2D(0, 0, size.width, size.height);
+    [mtlTexture getBytes:image.data bytesPerRow:image.step[0] fromRegion:region mipmapLevel:i];
+    images[i] = image;
+    size = size / 2;
+    ++i;
+  }
+  return images;
+}
+
+- (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+  __block LTGLTexture *texture;
+  LTCVPixelBufferImageForReading(pixelBuffer, ^(const cv::Mat &image) {
+    texture = [self initWithImage:image];
+  });
+  return texture;
 }
 
 - (void)create:(BOOL)allocateMemory {
@@ -337,6 +399,28 @@ static void LTVerifyMipmapImages(const Matrices &images) {
   });
 
   return pixelBuffer;
+}
+
+- (id<MTLTexture>)mtlTextureWithDevice:(id<MTLDevice>)device {
+  auto descriptor =
+      [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:self.pixelFormat.mtlPixelFormat
+                                                         width:self.size.width
+                                                        height:self.size.height
+                                                     mipmapped:self.maxMipmapLevel > 0];
+  if (self.maxMipmapLevel) {
+    descriptor.mipmapLevelCount = self.maxMipmapLevel + 1;
+  }
+
+  auto _Nullable mtlTexture = [device newTextureWithDescriptor:descriptor];
+  LTAssert(mtlTexture, @"Failed creating MTLTexture from descriptor: %@", descriptor);
+
+  for (NSUInteger i = 0; i < mtlTexture.mipmapLevelCount; ++i) {
+    cv::Mat image = [self imageAtLevel:i];
+    auto region = MTLRegionMake2D(0, 0, image.cols, image.rows);
+    [mtlTexture replaceRegion:region mipmapLevel:i withBytes:image.data bytesPerRow:image.step[0]];
+  }
+
+  return mtlTexture;
 }
 
 #pragma mark -
