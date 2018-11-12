@@ -234,6 +234,9 @@
 		A1006D1A1E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */; };
 		A1A1C8711F164828004A4CBF /* NSDictionary+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = A1A1C86F1F164828004A4CBF /* NSDictionary+Operations.h */; };
 		A1A1C8721F164828004A4CBF /* NSDictionary+Operations.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1A1C8701F164828004A4CBF /* NSDictionary+Operations.mm */; };
+		B4D41E2621930DF000F8FADD /* LTDateProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D41E2421930DF000F8FADD /* LTDateProvider.mm */; };
+		B4D41E2721930DF000F8FADD /* LTDateProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D41E2521930DF000F8FADD /* LTDateProvider.h */; };
+		B4D41EF921930F0F00F8FADD /* LTTimeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D41EF821930F0F00F8FADD /* LTTimeProviderSpec.mm */; };
 		BEB7BB8D1E2622D6007EAB73 /* UIColor+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */; };
 		BEB7BB8E1E2622D6007EAB73 /* UIColor+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BB8C1E2622D6007EAB73 /* UIColor+Utilities.mm */; };
 		BEB7BBA81E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */; };
@@ -719,6 +722,9 @@
 		A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDateFormatter+FormattersSpec.mm"; sourceTree = "<group>"; };
 		A1A1C86F1F164828004A4CBF /* NSDictionary+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Operations.h"; sourceTree = "<group>"; };
 		A1A1C8701F164828004A4CBF /* NSDictionary+Operations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Operations.mm"; sourceTree = "<group>"; };
+		B4D41E2421930DF000F8FADD /* LTDateProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDateProvider.mm; sourceTree = "<group>"; };
+		B4D41E2521930DF000F8FADD /* LTDateProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTDateProvider.h; sourceTree = "<group>"; };
+		B4D41EF821930F0F00F8FADD /* LTTimeProviderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimeProviderSpec.mm; sourceTree = "<group>"; };
 		BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
 		BEB7BB8C1E2622D6007EAB73 /* UIColor+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Utilities.mm"; sourceTree = "<group>"; };
 		BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+UtilitiesSpec.mm"; sourceTree = "<group>"; };
@@ -1229,6 +1235,8 @@
 				8BC6B9972016337A00512225 /* LTAppIntegrity.mm */,
 				8B451F39202C7F7E0022A997 /* LTAppIntegrityInternal.h */,
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
+				B4D41E2521930DF000F8FADD /* LTDateProvider.h */,
+				B4D41E2421930DF000F8FADD /* LTDateProvider.mm */,
 				8B6A468F1FA1B64E0034B230 /* LTDefines.h */,
 				8B78CFDC197654A900684B1D /* LTEnum.h */,
 				8BBB14A8194F489B000CF391 /* LTEnumMacros.h */,
@@ -1281,6 +1289,7 @@
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */,
 				8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */,
+				B4D41EF821930F0F00F8FADD /* LTTimeProviderSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
 				885744F01FD20F9F0092E463 /* LTUTICacheSpec.mm */,
 				8482E2DD1D22810D0084D565 /* LTValueObjectSpec.mm */,
@@ -1439,6 +1448,7 @@
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
 				84B63E3E1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h in Headers */,
+				B4D41E2721930DF000F8FADD /* LTDateProvider.h in Headers */,
 				8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */,
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				CDE0081E1E828756007AFD5E /* NSData+Compression.h in Headers */,
@@ -1848,6 +1858,7 @@
 				8B410E8E1CE1F01E007DFF42 /* NSArray+SelectorName.mm in Sources */,
 				255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */,
 				8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */,
+				B4D41E2621930DF000F8FADD /* LTDateProvider.mm in Sources */,
 				8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */,
 				28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */,
 				282CF08A187B030A00904F07 /* NSObject+AddToContainer.m in Sources */,
@@ -1897,6 +1908,7 @@
 				8B95A2001F0CE0C100B641C0 /* LTNullabilitySpec.mm in Sources */,
 				8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */,
 				8B4495A21CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm in Sources */,
+				B4D41EF921930F0F00F8FADD /* LTTimeProviderSpec.mm in Sources */,
 				88DA5AAC1ED05771008162BC /* NSDictionary+FunctionalSpec.mm in Sources */,
 				8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */,
 				885744F11FD20F9F0092E463 /* LTUTICacheSpec.mm in Sources */,
