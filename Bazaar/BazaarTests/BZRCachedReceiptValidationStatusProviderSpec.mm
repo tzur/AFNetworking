@@ -3,6 +3,8 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRReceiptModel.h"
@@ -10,7 +12,6 @@
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRTestUtils.h"
 #import "BZRTimeConversion.h"
-#import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
 BZRReceiptValidationStatusCacheEntry *BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(
@@ -23,7 +24,7 @@ BZRReceiptValidationStatusCacheEntry *BZRCacheEntryWithReceiptValidationStatusAn
 SpecBegin(BZRCachedReceiptValidationStatusProvider)
 
 __block BZRKeychainStorage *keychainStorage;
-__block BZRTimeProvider *timeProvider;
+__block id<LTDateProvider> dateProvider;
 __block NSDate *currentTime;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
@@ -36,7 +37,7 @@ __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
-  timeProvider = OCMClassMock(BZRTimeProvider.class);
+  dateProvider = OCMClassMock(LTDateProvider.class);
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
@@ -48,11 +49,11 @@ beforeEach(^{
       [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive] + 1;
   validationStatusProvider =
       [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                         timeProvider:timeProvider
+                                                         dateProvider:dateProvider
                                                    underlyingProvider:underlyingProvider
                                                 cachedEntryDaysToLive:cachedEntryDaysToLive];
   currentTime = [NSDate date];
-  OCMStub([timeProvider currentTime]).andReturn(currentTime);
+  OCMStub([dateProvider currentDate]).andReturn(currentTime);
 });
 
 context(@"deallocation", ^{
@@ -63,7 +64,7 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto validationStatusProvider = [[BZRCachedReceiptValidationStatusProvider alloc]
                                        initWithCache:receiptValidationStatusCache
-                                       timeProvider:timeProvider
+                                       dateProvider:dateProvider
                                        underlyingProvider:underlyingProvider
                                        cachedEntryDaysToLive:cachedEntryDaysToLive];
       weakValidationStatusProvider = validationStatusProvider;
@@ -79,7 +80,7 @@ context(@"deallocation", ^{
     @autoreleasepool {
       auto validationStatusProvider = [[BZRCachedReceiptValidationStatusProvider alloc]
                                        initWithCache:receiptValidationStatusCache
-                                       timeProvider:timeProvider
+                                       dateProvider:dateProvider
                                        underlyingProvider:underlyingProvider
                                        cachedEntryDaysToLive:cachedEntryDaysToLive];
       weakValidationStatusProvider = validationStatusProvider;
@@ -134,7 +135,7 @@ context(@"fetching receipt validation status", ^{
 
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                           timeProvider:timeProvider
+                                                           dateProvider:dateProvider
                                                      underlyingProvider:underlyingProvider
                                                   cachedEntryDaysToLive:cachedEntryDaysToLive];
     LLSignalTestRecorder *recorder =
@@ -156,7 +157,7 @@ context(@"KVO compliance", ^{
 
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                           timeProvider:timeProvider
+                                                           dateProvider:dateProvider
                                                      underlyingProvider:underlyingProvider
                                                   cachedEntryDaysToLive:cachedEntryDaysToLive];
   });
@@ -228,7 +229,7 @@ context(@"invalidating cache", ^{
 
     auto dateInRecentPast = [NSDate
         dateWithTimeInterval:-[BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive / 2]
-                   sinceDate:timeProvider.currentTime];
+                   sinceDate:[dateProvider currentDate]];
 
     auto cacheEntry = BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, [NSDate date]);
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
@@ -256,7 +257,7 @@ context(@"invalidating cache", ^{
 
       dateFarFromCurrentTime = [[NSDate alloc]
            initWithTimeInterval:-[BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive * 2]
-           sinceDate:timeProvider.currentTime];
+           sinceDate:[dateProvider currentDate]];
 
       cacheEntry =
             BZRCacheEntryWithReceiptValidationStatusAndCachingDateTime(NO, dateFarFromCurrentTime);
@@ -411,7 +412,7 @@ context(@"revalidating invalidated receipt cache", ^{
     receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:receiptValidationStatus
-                       cachingDateTime:[timeProvider currentTime]];
+                       cachingDateTime:[dateProvider currentDate]];
     OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:OCMOCK_ANY
         error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 

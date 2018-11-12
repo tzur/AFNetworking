@@ -4,6 +4,7 @@
 #import "BZRStoreConfiguration.h"
 
 #import <Fiber/FBRHTTPClient.h>
+#import <LTKit/LTDateProvider.h>
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
@@ -38,7 +39,6 @@
 #import "BZRStoreKitCachedMetadataFetcher.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRStoreKitMetadataFetcher.h"
-#import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
 #import "BZRValidatricksRobustClient.h"
 #import "BZRValidatricksSessionConfigurationProvider.h"
@@ -123,7 +123,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
         [bundledApplicationsIDs setByAddingObject:applicationBundleID] :
         [NSSet setWithObject:applicationBundleID];
     auto purchaseHelper = [[BZRPurchaseHelper alloc] init];
-    auto timeProvider = [BZRTimeProvider defaultTimeProvider];
+    auto dateProvider = [LTDateProvider dateProvider];
 
     auto keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
@@ -168,13 +168,13 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          userIDProvider:self.userIDProvider];
 
     auto modifiedExpiryProvider =
-        [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
+        [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithDateProvider:dateProvider
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
          underlyingProvider:validatorProvider];
 
     auto cachedReceiptValidationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                           timeProvider:timeProvider
+                                                           dateProvider:dateProvider
                                                      underlyingProvider:modifiedExpiryProvider
                                                   cachedEntryDaysToLive:60];
 
@@ -204,7 +204,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
           [[BZRPeriodicReceiptValidatorActivator alloc]
            initWithMultiAppValidationStatusProvider:self.multiAppValidationStatusProvider
            validationDateProvider:validationDateProvider
-           timeProvider:timeProvider];
+           dateProvider:dateProvider];
     }
 
     _allowedProductsProvider =

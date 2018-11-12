@@ -3,9 +3,10 @@
 
 #import "BZRPeriodicReceiptValidatorActivator.h"
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRReceiptValidationDateProvider.h"
-#import "BZRTimeProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Validator that is activated and deactivated depending on the receipt validation status.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *receiptValidator;
 
-/// Provider used to provide the current time.
-@property (readonly, nonatomic) BZRTimeProvider *timeProvider;
+/// Provider used to provide the current date.
+@property (readonly, nonatomic) id<LTDateProvider> dateProvider;
 
 /// Time between each periodic validation.
 @property (readwrite, nonatomic) BZRReceiptValidationDateProvider *validationDateProvider;
@@ -31,23 +32,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithMultiAppValidationStatusProvider:
     (BZRMultiAppReceiptValidationStatusProvider *)multiAppReceiptValidationStatusProvider
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(BZRTimeProvider *)timeProvider {
+    dateProvider:(id<LTDateProvider>)dateProvider {
   BZRExternalTriggerReceiptValidator *receiptValidator =
       [[BZRExternalTriggerReceiptValidator alloc]
        initWithValidationStatusProvider:multiAppReceiptValidationStatusProvider];
 
    return [self initWithReceiptValidator:receiptValidator
                   validationDateProvider:validationDateProvider
-                            timeProvider:timeProvider];
+                            dateProvider:dateProvider];
 }
 
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
     validationDateProvider:(id<BZRReceiptValidationDateProvider>)validationDateProvider
-    timeProvider:(BZRTimeProvider *)timeProvider {
+    dateProvider:(id<LTDateProvider>)dateProvider {
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
     _validationDateProvider = validationDateProvider;
-    _timeProvider = timeProvider;
+    _dateProvider = dateProvider;
 
     [self activatePeriodicValidation];
   }
@@ -69,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
 
         [self activatePeriodicValidation:nextValidationDate
-                             currentTime:[self.timeProvider currentTime]];
+                             currentTime:[self.dateProvider currentDate]];
       }];
 }
 

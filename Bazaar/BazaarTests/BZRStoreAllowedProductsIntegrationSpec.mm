@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Yonatan Oren.
 
+#import <LTKit/LTDateProvider.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
@@ -14,14 +15,13 @@
 #import "BZRStore.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRTestUtils.h"
-#import "BZRTimeProvider.h"
 
 SpecBegin(BZRStoreAllowedProductsIntegration)
 
 __block UICKeyChainStore *keychainStore;
 __block NSFileManager *fileManager;
 __block SKPaymentQueue *paymentQueue;
-__block BZRTimeProvider *timeProvider;
+__block id<LTDateProvider> dateProvider;
 __block NSData *dataMock;
 __block LTPath *JSONFilePath;
 
@@ -44,9 +44,9 @@ beforeEach(^{
   paymentQueue = OCMClassMock([SKPaymentQueue class]);
   OCMStub([(id)paymentQueue defaultQueue]).andReturn(paymentQueue);
 
-  timeProvider = OCMClassMock([BZRTimeProvider class]);
-  OCMStub([(id)timeProvider defaultTimeProvider]).andReturn(timeProvider);
-  OCMStub([timeProvider currentTime]).andReturn([NSDate date]);
+  dateProvider = OCMClassMock([LTDateProvider class]);
+  OCMStub([(id)dateProvider dateProvider]).andReturn(dateProvider);
+  OCMStub([dateProvider currentDate]).andReturn([NSDate date]);
 
   dataMock = OCMClassMock([NSData class]);
   BZRStubDataMockReceiptData(dataMock, @"foofile");
@@ -103,7 +103,7 @@ afterEach(^{
   keychainStore = nil;
   fileManager = nil;
   paymentQueue = nil;
-  timeProvider = nil;
+  dateProvider = nil;
   dataMock = nil;
 });
 

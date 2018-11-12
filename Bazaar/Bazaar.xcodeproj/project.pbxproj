@@ -289,8 +289,6 @@
 		B9ED1F4C1D53682C00932EE8 /* BZRContentFetcherParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9ED1F4B1D53682C00932EE8 /* BZRContentFetcherParameters.mm */; };
 		B9EE58A91D5DF76F008B4448 /* BZRTimeConversion.h in Headers */ = {isa = PBXBuildFile; fileRef = B9EE58A71D5DF76F008B4448 /* BZRTimeConversion.h */; };
 		B9EE58AA1D5DF76F008B4448 /* BZRTimeConversion.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EE58A81D5DF76F008B4448 /* BZRTimeConversion.mm */; };
-		B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9EE58AB1D5DFAD7008B4448 /* BZRTimeProvider.h */; };
-		B9EE58AE1D5DFAD7008B4448 /* BZRTimeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EE58AC1D5DFAD7008B4448 /* BZRTimeProvider.mm */; };
 		B9EF55021FCD8E0800083414 /* BZRKeychainStorageRoute.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EF54CB1FCD8E0800083414 /* BZRKeychainStorageRoute.mm */; };
 		B9EF55031FCD8E0800083414 /* BZRKeychainStorageRoute.h in Headers */ = {isa = PBXBuildFile; fileRef = B9EF55011FCD8E0800083414 /* BZRKeychainStorageRoute.h */; };
 		B9EF55451FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EF55111FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm */; };
@@ -1211,8 +1209,6 @@
 		B9ED1F4B1D53682C00932EE8 /* BZRContentFetcherParameters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRContentFetcherParameters.mm; sourceTree = "<group>"; };
 		B9EE58A71D5DF76F008B4448 /* BZRTimeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTimeConversion.h; sourceTree = "<group>"; };
 		B9EE58A81D5DF76F008B4448 /* BZRTimeConversion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeConversion.mm; sourceTree = "<group>"; };
-		B9EE58AB1D5DFAD7008B4448 /* BZRTimeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTimeProvider.h; sourceTree = "<group>"; };
-		B9EE58AC1D5DFAD7008B4448 /* BZRTimeProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeProvider.mm; sourceTree = "<group>"; };
 		B9EF54CB1FCD8E0800083414 /* BZRKeychainStorageRoute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageRoute.mm; sourceTree = "<group>"; };
 		B9EF55011FCD8E0800083414 /* BZRKeychainStorageRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorageRoute.h; sourceTree = "<group>"; };
 		B9EF55111FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageRouteSpec.mm; sourceTree = "<group>"; };
@@ -1765,8 +1761,6 @@
 				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
 				B9EE58A71D5DF76F008B4448 /* BZRTimeConversion.h */,
 				B9EE58A81D5DF76F008B4448 /* BZRTimeConversion.mm */,
-				B9EE58AB1D5DFAD7008B4448 /* BZRTimeProvider.h */,
-				B9EE58AC1D5DFAD7008B4448 /* BZRTimeProvider.mm */,
 				6501EF681D5B4A10007B76CC /* LTProgress+Bazaar.h */,
 				6501EF691D5B4A10007B76CC /* LTProgress+Bazaar.mm */,
 				6526DF141D413BBE0034DE01 /* NSFileManager+Bazaar.h */,
@@ -2461,7 +2455,6 @@
 				63F864DA20B2C5C100F4F807 /* BZRValidatricksModels.h in Headers */,
 				B9AB0C621E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h in Headers */,
 				9FBB888C20D2578A0011BDC2 /* BZRReceiptModel+GenericSubscription.h in Headers */,
-				B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */,
 				B90E7F1C1FCEA0A600781890 /* BZRReceiptDataCache.h in Headers */,
 				B97E6C241D40F44800C02863 /* BZRProductContentFetcher.h in Headers */,
 				65F3F6D31D5A67BE008E3C3A /* BZRContentFetcherParameters.h in Headers */,
@@ -3369,7 +3362,6 @@
 				CD488E801F25FF9900562FCC /* BZRRetryContentFetcher.mm in Sources */,
 				B9FB73E81D8980DA00ED6821 /* BZRStore.mm in Sources */,
 				B9FC5AEE1FD403BA008A835B /* BZRMultiAppReceiptValidationStatusProvider.mm in Sources */,
-				B9EE58AE1D5DFAD7008B4448 /* BZRTimeProvider.mm in Sources */,
 				634866DB20AC4582000ABE2F /* BZRValidatricksClient.mm in Sources */,
 				6502EFA31D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.mm in Sources */,
 				2E1540462A3EF03E5D3A3CB1 /* NSValueTransformer+Bazaar.mm in Sources */,
