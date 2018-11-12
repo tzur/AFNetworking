@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Default implementation of \c BZRStoreKitRequestsFactory.
 @interface BZRStoreKitRequestsFactory : NSObject <BZRStoreKitRequestsFactory>
+
+/// Returns the default implementation of \c BZRStoreKitRequestsFactory.
++ (BZRStoreKitRequestsFactory *)defaultFactory;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -7,6 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStoreKitRequestsFactory
 
++ (BZRStoreKitRequestsFactory *)defaultFactory {
+  return [[BZRStoreKitRequestsFactory alloc] init];
+}
+
 - (SKProductsRequest *)productsRequestWithIdentifiers:
     (NSSet<NSString *> *)productIdentifiers {
   return [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];

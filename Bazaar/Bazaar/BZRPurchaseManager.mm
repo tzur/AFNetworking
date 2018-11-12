@@ -110,18 +110,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<SKPaymentTransaction *> *)transactionUpdatesForPayment:(SKPayment *)payment {
   @weakify(self);
-  return [[[[[self rac_signalForSelector:@selector(receivedTransaction:transactionFinished:)]
+  return [[[[self rac_signalForSelector:@selector(receivedTransaction:transactionFinished:)]
       filter:^BOOL(RACTuple *tuple) {
-        // Filter out updates for transactions that are not associated with the specified payment.
-        return ((SKPaymentTransaction *)tuple.first).bzr_associatedPayment == payment;
-      }]
-      filter:^BOOL(RACTuple *tuple) {
-        /// Filter out the update that inform about finishing the transaction in case the
-        /// transaction failed. This filtering is required to avoid sending completion in case an
-        /// error was previously sent.
         RACTupleUnpack(SKPaymentTransaction *transaction, NSNumber *transactionFinished) = tuple;
-        return !([transactionFinished boolValue] &&
-                 transaction.transactionState == SKPaymentTransactionStateFailed);
+        /// Filter out transactions not associated with the payment and the update that inform
+        /// about finishing the transaction in case the transaction failed. This filtering is
+        /// required to avoid sending completion in case an error was previously sent.
+        return (transaction.bzr_associatedPayment == payment) &&
+            !([transactionFinished boolValue] &&
+              transaction.transactionState == SKPaymentTransactionStateFailed);
       }]
       map:^RACEvent *(RACTuple *tuple) {
         @strongify(self);

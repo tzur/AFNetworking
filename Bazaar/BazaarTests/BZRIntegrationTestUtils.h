@@ -14,6 +14,14 @@ void BZRStubDataMockReceiptData(NSData *dataMock, NSString *receiptString);
 void BZRStubHTTPClientToReturnReceiptValidationStatus
     (BZRReceiptValidationStatus *receiptValidationStatus);
 
+/// Stubs consecutive url requests that contain the string \c @"validateReceipt" to return the
+/// serialization of the statuses in \c receiptValidationStatusArray in the order of the array,
+/// if there are not enough statuses in the array, the last status will repeat in all
+/// consecutive requests.
+/// After using this method, one should call \c [OHHTTPStubs removeAllStubs].
+void BZRStubHTTPClientToReturnReceiptValidationStatusesInOrder
+    (NSArray<BZRReceiptValidationStatus *> *receiptValidationStatusArray);
+
 /// Stubs \c fileManager to return the serialization of the \c products array when reading from
 /// the \c filepath.
 void BZRStubFileManagerToReturnJSONWithProducts(NSFileManager *fileManager, NSString *filepath,

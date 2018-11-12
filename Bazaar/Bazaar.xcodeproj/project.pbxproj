@@ -134,6 +134,7 @@
 		9F4FE02620976B5F00FC64E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4FE02520976B5F00FC64E1 /* MessageUI.framework */; };
 		9F4FE05E20976CA000FC64E1 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBD31A208F5FA800080BEA /* libFBTweak.a */; };
 		9F50B25520AB06BE00334641 /* BZRFakeProductsInfoProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */; };
+		9F526000214FC38F00249722 /* BZRFullIntegrationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F525FFF214FC38F00249722 /* BZRFullIntegrationSpec.mm */; };
 		9F5E3DBC20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E3DBB20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm */; };
 		9F99F74720E8D32F009B9187 /* BZRDeviceUserIDProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F99F74520E8D32F009B9187 /* BZRDeviceUserIDProvider.h */; };
 		9F99F74820E8D32F009B9187 /* BZRDeviceUserIDProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F99F74620E8D32F009B9187 /* BZRDeviceUserIDProvider.mm */; };
@@ -1043,6 +1044,7 @@
 		9F4FE02520976B5F00FC64E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9F50B25320AB06BE00334641 /* BZRFakeProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeProductsInfoProvider.h; sourceTree = "<group>"; };
 		9F50B25420AB06BE00334641 /* BZRFakeProductsInfoProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeProductsInfoProvider.mm; sourceTree = "<group>"; };
+		9F525FFF214FC38F00249722 /* BZRFullIntegrationSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFullIntegrationSpec.mm; sourceTree = "<group>"; };
 		9F5E3DBA20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeTweakCollectionsProvider.h; sourceTree = "<group>"; };
 		9F5E3DBB20C021B200F80BCE /* BZRFakeTweakCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeTweakCollectionsProvider.mm; sourceTree = "<group>"; };
 		9F6BFA1A2085F196002800F9 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
@@ -2125,6 +2127,7 @@
 		B94AF99A203EFE7B005FC9FC /* Integration Tests */ = {
 			isa = PBXGroup;
 			children = (
+				9F525FFF214FC38F00249722 /* BZRFullIntegrationSpec.mm */,
 				9FFA30AC20F4AA3100624216 /* BZRIntegrationTestUtils.h */,
 				9FFA30AD20F4AA3100624216 /* BZRIntegrationTestUtils.mm */,
 				B94AF9D6203EFE97005FC9FC /* BZRReceiptValidationStatusIntegrationSpec.mm */,
@@ -3213,6 +3216,7 @@
 				CD81E0C51E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm in Sources */,
 				6501EF6D1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm in Sources */,
 				B981DBF61FDFC4720085BDCF /* BZRReceiptModel+HelperPropertiesSpec.mm in Sources */,
+				9F526000214FC38F00249722 /* BZRFullIntegrationSpec.mm in Sources */,
 				63F8651220B307AA00F4F807 /* BZRValidatricksClientSpec.mm in Sources */,
 				6562104F1D3779FB00E12FAF /* BZRReceiptValidationParameters+ValidatricksSpec.mm in Sources */,
 				B9D520911D8A9D0D009C8F9E /* BZRCachedReceiptValidationStatusProviderSpec.mm in Sources */,
