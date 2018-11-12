@@ -5,16 +5,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-cv::Mat1f PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels, int outputChannels) {
-  int dims[] = {outputChannels, kernelHeight, kernelWidth, inputChannels};
-  cv::Mat1f kernel(4, dims);
+cv::Mat1f PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels, int outputChannels,
+                        int groups) {
+  int inputChannelsPerGroup = inputChannels / groups;
+  int outputChannelsPerGroup = outputChannels / groups;
+  int dims[] = {groups, outputChannelsPerGroup, kernelHeight, kernelWidth, inputChannelsPerGroup};
+  cv::Mat1f kernel(5, dims);
 
-  for (int i = 0; i < outputChannels; ++i) {
-    for (int j = 0; j < kernelHeight; ++j) {
-      for (int k = 0; k < kernelWidth; ++k) {
-        for (int m = 0; m < inputChannels; ++m) {
-          int index[] = {i, j, k, m};
-          kernel.at<float>(index) = (i + j + k + m) % 5 - 2;
+  for (int i = 0; i < groups; ++i) {
+    for (int j = 0; j < outputChannelsPerGroup; ++j) {
+      for (int k = 0; k < kernelHeight; ++k) {
+        for (int m = 0; m < kernelWidth; ++m) {
+          for (int n = 0; n < inputChannelsPerGroup; ++n) {
+            int index[] = {i, j, k, m, n};
+            kernel.at<float>(index) = (i + j + k + m + n) % 5 - 2;
+          }
         }
       }
     }
@@ -27,13 +32,17 @@ cv::Mat PNKCalculateConvolution(pnk::PaddingType padding, const cv::Mat &inputMa
                                 const cv::Mat &kernel, int dilationX, int dilationY, int strideX,
                                 int strideY, pnk::ActivationType activationType,
                                 const cv::Mat &alpha, const cv::Mat &beta) {
-  LTAssert(kernel.dims == 4);
+  LTAssert(kernel.dims == 5);
   cv::MatSize kernelSize = kernel.size;
 
-  int outputChannels = kernelSize[0];
-  int kernelHeight = kernelSize[1];
-  int kernelWidth = kernelSize[2];
-  int inputChannels = kernelSize[3];
+  int groups = kernelSize[0];
+  int outputChannelsPerGroup = kernelSize[1];
+  int kernelHeight = kernelSize[2];
+  int kernelWidth = kernelSize[3];
+  int inputChannelsPerGroup = kernelSize[4];
+
+  int inputChannels = inputChannelsPerGroup * groups;
+  int outputChannels = outputChannelsPerGroup * groups;
   LTAssert(inputChannels == inputMatrix.channels());
 
   int inputRows = inputMatrix.rows;
@@ -61,28 +70,31 @@ cv::Mat PNKCalculateConvolution(pnk::PaddingType padding, const cv::Mat &inputMa
     paddingTop = 0;
   }
 
-  for (int outputChannel = 0; outputChannel < outputChannels; ++outputChannel) {
-    for (int outputRow = 0; outputRow < outputRows; ++outputRow) {
-      for (int outputColumn = 0; outputColumn < outputColumns; ++outputColumn) {
-        half_float::half result = (half_float::half)0.0;
-        for (int inputChannel = 0; inputChannel < inputChannels; ++inputChannel) {
-          for (int kernelY = 0; kernelY < kernelHeight; ++kernelY) {
-            for (int kernelX = 0; kernelX < kernelWidth; ++kernelX) {
-              int indexInKernel[] = {outputChannel, kernelY, kernelX, inputChannel};
-              float weight = (float)kernel.at<float>(indexInKernel);
-              int inputRow = outputRow * strideY - paddingTop + kernelY * dilationY;
-              int inputColumn = outputColumn * strideX - paddingLeft + kernelX * dilationX;
-              if (inputRow < 0 || inputRow >= inputRows || inputColumn < 0 ||
-                  inputColumn >= inputColumns) {
-                continue;
+  for (int group = 0; group < groups; ++group) {
+    for (int outputChannel = 0; outputChannel < outputChannelsPerGroup; ++outputChannel) {
+      for (int outputRow = 0; outputRow < outputRows; ++outputRow) {
+        for (int outputColumn = 0; outputColumn < outputColumns; ++outputColumn) {
+          half_float::half result = (half_float::half)0.0;
+          for (int inputChannel = 0; inputChannel < inputChannelsPerGroup; ++inputChannel) {
+            for (int kernelY = 0; kernelY < kernelHeight; ++kernelY) {
+              for (int kernelX = 0; kernelX < kernelWidth; ++kernelX) {
+                int indexInKernel[] = {group, outputChannel, kernelY, kernelX, inputChannel};
+                float weight = (float)kernel.at<float>(indexInKernel);
+                int inputRow = outputRow * strideY - paddingTop + kernelY * dilationY;
+                int inputColumn = outputColumn * strideX - paddingLeft + kernelX * dilationX;
+                if (inputRow < 0 || inputRow >= inputRows || inputColumn < 0 ||
+                    inputColumn >= inputColumns) {
+                  continue;
+                }
+                result += weight * input.at<half_float::half>(inputRow * inputColumns + inputColumn,
+                                                              group * inputChannelsPerGroup +
+                                                              inputChannel);
               }
-              result += weight * input.at<half_float::half>(inputRow * inputColumns + inputColumn,
-                                                            inputChannel);
             }
           }
+          output.at<half_float::half>(outputRow * outputColumns + outputColumn,
+                                      group * outputChannelsPerGroup + outputChannel) = result;
         }
-        output.at<half_float::half>(outputRow * outputColumns + outputColumn, outputChannel) =
-            result;
       }
     }
   }
@@ -119,19 +131,20 @@ pnk::ConvolutionKernelModel PNKBuildConvolutionModel(NSUInteger kernelWidth,
                                                      NSUInteger kernelHeight,
                                                      NSUInteger inputChannels,
                                                      NSUInteger outputChannels,
+                                                     NSUInteger groups,
                                                      NSUInteger dilationX,
                                                      NSUInteger dilationY,
                                                      NSUInteger strideX,
                                                      NSUInteger strideY,
                                                      pnk::PaddingType paddingType) {
   cv::Mat kernelWeights = PNKFillKernel((int)kernelWidth, (int)kernelHeight, (int)inputChannels,
-                                        (int)outputChannels);
+                                        (int)outputChannels, (int)groups);
 
   return {
     .kernelWidth = kernelWidth,
     .kernelHeight = kernelHeight,
     .kernelChannels = inputChannels,
-    .groups = 1,
+    .groups = groups,
     .inputFeatureChannels = inputChannels,
     .outputFeatureChannels = outputChannels,
     .strideX = strideX,

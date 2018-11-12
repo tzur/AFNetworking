@@ -15,12 +15,13 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
                                                             NSUInteger kernelHeight,
                                                             NSUInteger inputChannels,
                                                             NSUInteger outputChannels,
+                                                            NSUInteger groups,
                                                             NSUInteger dilationX,
                                                             NSUInteger dilationY,
                                                             pnk::PaddingType paddingType) {
   auto convolutionModel = PNKBuildConvolutionModel(kernelWidth, kernelHeight, inputChannels,
-                                                   outputChannels, dilationX, dilationY, kStrideX,
-                                                   kStrideY, paddingType);
+                                                   outputChannels, groups, dilationX, dilationY,
+                                                   kStrideX, kStrideY, paddingType);
 
   auto convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                             initWithDevice:device convolutionModel:convolutionModel];
@@ -60,7 +61,8 @@ context(@"parameter tests", ^{
   __block pnk::ConvolutionKernelModel convolutionKernelModel;
 
   beforeEach(^{
-    convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, 1, 1, pnk::PaddingTypeSame);
+    convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 1, 2, 2, 1, 1,
+                                                      pnk::PaddingTypeSame);
   });
 
   context(@"instantiation", ^{
@@ -190,7 +192,7 @@ context(@"kernel input region", ^{
   __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
 
   beforeEach(^{
-    auto convolutionModel = PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1,
+    auto convolutionModel = PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1, 1,
                                                      kStrideX, kStrideY, pnk::PaddingTypeSame);
     convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                          initWithDevice:device convolutionModel:convolutionModel];
@@ -227,62 +229,67 @@ context(@"kernel input region", ^{
 
 context(@"dilated convolution", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 1,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 2, 2,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 64, 32, 3, 3, 1, 1, 2, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 64, 32, 3, 3, 1, 1, 1, 2, 2,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 31, 33, 3, 3, 1, 1, 2, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 31, 33, 3, 3, 1, 1, 1, 2, 2,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 3, 3,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 3, 3,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 2, 2, 4, 1,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 2, 2, 1, 4, 1,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 3, 3, 8, 8,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 8, 8, 8, 4, 1,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 3, 5, 4, 4,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 3, 3, 1, 8, 8,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 8, 8, 4, 4,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 3, 5, 1, 4, 4,
                                                   pnk::PaddingTypeSame);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 8, 8, 1, 4, 4,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 2, 2,
                                                   pnk::PaddingTypeValid);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 5, 1, 1, 2, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 5, 1, 1, 1, 2, 2,
                                                   pnk::PaddingTypeValid);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 4, 2,
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 4, 2,
                                                   pnk::PaddingTypeValid);
   });
 });

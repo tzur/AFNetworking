@@ -11,6 +11,10 @@ namespace pnk {
 }
 
 /// Layer performing a convolution operation.
+///
+/// @note Provides partial support of channel grouping (a.k.a. depthwise convolution). If number of
+/// channel groups is more than one then this number is required to be equal to both input channels
+/// count and output channels count. Moreover, it is required to be divisible by 4.
 @interface PNKConvolutionLayer : NSObject <PNKUnaryKernel>
 
 /// Initializes a new layer that runs on \c device and performs a convolution operation described by

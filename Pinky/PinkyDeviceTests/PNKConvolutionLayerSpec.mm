@@ -10,13 +10,14 @@
 static NSDictionary *PNKBuildDataForExamples(id<MTLDevice> device, NSUInteger imageWidth,
                                              NSUInteger imageHeight,  NSUInteger kernelWidth,
                                              NSUInteger kernelHeight, NSUInteger inputChannels,
-                                             NSUInteger outputChannels, NSUInteger dilationX,
-                                             NSUInteger dilationY, NSUInteger strideX,
-                                             NSUInteger strideY, pnk::PaddingType paddingType,
+                                             NSUInteger outputChannels, NSUInteger groups,
+                                             NSUInteger dilationX, NSUInteger dilationY,
+                                             NSUInteger strideX, NSUInteger strideY,
+                                             pnk::PaddingType paddingType,
                                              pnk::ActivationType activationType =
                                                  pnk::ActivationTypeIdentity) {
   auto convolutionModel = PNKBuildConvolutionModel(kernelWidth, kernelHeight, inputChannels,
-                                                   outputChannels, dilationX, dilationY,
+                                                   outputChannels, groups, dilationX, dilationY,
                                                    strideX, strideY, paddingType);
   auto activationModel = PNKBuildActivationModel(outputChannels, activationType);
 
@@ -130,7 +131,7 @@ context(@"tensorflow golden standard", ^{
     };
 
     pnk::ConvolutionKernelModel convolutionModel =
-        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels, 1,
                                  kNoDilation, kNoDilation, kNoStride, kNoStride,
                                  pnk::PaddingTypeSame);
 
@@ -172,7 +173,7 @@ context(@"tensorflow golden standard", ^{
     };
 
     pnk::ConvolutionKernelModel convolutionModel =
-        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels, 1,
                                  kNoDilation, kNoDilation, strideX, strideY, pnk::PaddingTypeSame);
 
     NSBundle *bundle = NSBundle.lt_testBundle;
@@ -213,7 +214,7 @@ context(@"tensorflow golden standard", ^{
     };
 
     pnk::ConvolutionKernelModel convolutionModel =
-        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels, 1,
                                  dilationX, dilationY, kNoStride, kNoStride, pnk::PaddingTypeSame);
 
     NSBundle *bundle = NSBundle.lt_testBundle;
@@ -254,7 +255,12 @@ context(@"convolution", ^{
             for (NSUInteger dilationX = 1; dilationX <= 2; ++dilationX) {
               for (NSUInteger dilationY = 1; dilationY <= 2; ++dilationY) {
                 itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-                  return PNKBuildDataForExamples(device, 32, 32, kernelWidth, kernelHeight, 1, 1,
+                  return PNKBuildDataForExamples(device, 32, 32, kernelWidth, kernelHeight, 1, 1, 1,
+                                                 dilationX, dilationY, strideX, strideY,
+                                                 (pnk::PaddingType)paddingType);
+                });
+                itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+                  return PNKBuildDataForExamples(device, 32, 32, kernelWidth, kernelHeight, 4, 4, 4,
                                                  dilationX, dilationY, strideX, strideY,
                                                  (pnk::PaddingType)paddingType);
                 });
@@ -272,7 +278,7 @@ context(@"activation", ^{
        activationType <= pnk::ActivationTypeParametricSoftplus; ++activationType) {
     for (NSUInteger dilation = 1; dilation <= 2; ++dilation) {
       itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-        return PNKBuildDataForExamples(device, 32, 32, 3, 3, 8, 8, dilation, dilation, 1, 1,
+        return PNKBuildDataForExamples(device, 32, 32, 3, 3, 8, 8, 1, dilation, dilation, 1, 1,
                                        pnk::PaddingTypeSame, (pnk::ActivationType)activationType);
       });
     }

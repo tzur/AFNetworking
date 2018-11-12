@@ -124,8 +124,6 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 - (void)updatePropertiesWithConvolutionModel:(pnk::ConvolutionKernelModel)convolutionModel {
-  LTParameterAssert(convolutionModel.groups == 1, @"Only 1 group is supported, got %lu",
-                    (unsigned long)convolutionModel.groups);
   LTParameterAssert(convolutionModel.padding == pnk::PaddingTypeSame ||
                     convolutionModel.padding == pnk::PaddingTypeValid, @"Unknown padding type %lu",
                     (unsigned long)convolutionModel.padding);
