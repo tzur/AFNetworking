@@ -4,6 +4,7 @@
 #import "PTNOceanAssetManager.h"
 
 #import <AVFoundation/AVPlayerItem.h>
+#import <LTKit/LTDateProvider.h>
 #import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <LTKit/LTUTICache.h>
@@ -20,7 +21,6 @@
 #import "PTNCacheInfo.h"
 #import "PTNCacheProxy.h"
 #import "PTNDataBackedImageAsset.h"
-#import "PTNDateProvider.h"
 #import "PTNFileBackedAVAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNOceanAlbumDescriptor.h"
@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Ocean client used to communicate with Ocean servers.
 @property (readonly, nonatomic) PTNOceanClient *client;
 
-/// Used for initial time reference for the maximum ages of the cached objects.
-@property (readonly, nonatomic) PTNDateProvider *dateProvider;
+/// Used for initial date reference for the maximum ages of the cached objects.
+@property (readonly, nonatomic) id<LTDateProvider> dateProvider;
 
 /// Preferred image data size on image data fetch.
 @property (readonly, nonatomic) NSUInteger preferredImageDataPixelCount;
@@ -64,13 +64,13 @@ NS_ASSUME_NONNULL_BEGIN
   preferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
   preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
   return [self initWithClient:[[PTNOceanClient alloc] initWithAPIKey:APIKey]
-                 dateProvider:[[PTNDateProvider alloc] init]
+                 dateProvider:[LTDateProvider dateProvider]
  preferredImageDataPixelCount:preferredImageDataPixelCount
  preferredVideoDataPixelCount:preferredVideoDataPixelCount];
 }
 
 - (instancetype)initWithClient:(PTNOceanClient *)client
-                  dateProvider:(PTNDateProvider *)dateProvider
+                  dateProvider:(id<LTDateProvider>)dateProvider
   preferredImageDataPixelCount:(NSUInteger)preferredImageDataPixelCount
   preferredVideoDataPixelCount:(NSUInteger)preferredVideoDataPixelCount {
 
@@ -119,7 +119,7 @@ static PTNOceanSearchParameters * _Nullable PTNAlbumURLToSearchParameters(NSURL 
         auto album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:response.results
                                       nextAlbumURL:nextAlbumURL];
         auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAlbumMaxAge
-                                                 responseTime:[self.dateProvider date]
+                                                 responseTime:[self.dateProvider currentDate]
                                                     entityTag:nil];
         auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:album
                                                                           cacheInfo:cacheInfo];
@@ -162,7 +162,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
       auto albumDescriptor = [[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:url];
       auto cacheInfo = [[PTNCacheInfo alloc]
                         initWithMaxAge:[NSDate distantFuture].timeIntervalSince1970
-                        responseTime:[self.dateProvider date] entityTag:nil];
+                        responseTime:[self.dateProvider currentDate] entityTag:nil];
       auto cacheProxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:albumDescriptor
                                                               cacheInfo:cacheInfo];
       return [RACSignal return:cacheProxy];
@@ -176,7 +176,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
       return [[[self.client fetchAssetDescriptorWithParameters:parameters]
           map:^PTNCacheProxy *(PTNOceanAssetDescriptor *descriptor) {
             auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
-                                                     responseTime:[self.dateProvider date]
+                                                     responseTime:[self.dateProvider currentDate]
                                                         entityTag:nil];
             return [[PTNCacheProxy alloc] initWithUnderlyingObject:descriptor cacheInfo:cacheInfo];
           }]
@@ -286,7 +286,7 @@ static PTNOceanAssetFetchParameters * _Nullable PTNAssetURLToAssetFetchParameter
         auto result = [[PTNDataBackedImageAsset alloc] initWithData:data uniformTypeIdentifier:uti
                                                    resizingStrategy:resizingStrategy];
         auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
-                                                 responseTime:[self.dateProvider date]
+                                                 responseTime:[self.dateProvider currentDate]
                                                     entityTag:nil];
         auto cacheProxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:result
                                                                 cacheInfo:cacheInfo];
