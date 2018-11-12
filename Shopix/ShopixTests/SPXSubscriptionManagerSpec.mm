@@ -80,7 +80,7 @@ context(@"fetching products information", ^{
 
     [subscriptionManager fetchProductsInfo:products completionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
   });
 
   it(@"should invoke the completion block with error immediately if no delegate is set", ^{
@@ -130,7 +130,7 @@ context(@"fetching products information", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).to.beFalsy();
       });
 
@@ -140,7 +140,7 @@ context(@"fetching products information", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockProductsInfo).to.equal(productsInfo);
         expect(completionBlockError).to.beNil();
@@ -157,7 +157,7 @@ context(@"fetching products information", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockProductsInfo).to.equal(productsInfo);
         expect(completionBlockError).to.beNil();
@@ -170,7 +170,7 @@ context(@"fetching products information", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
       });
 
       it(@"should invoke the completion block with error when mail composer is dismissed", ^{
@@ -178,7 +178,7 @@ context(@"fetching products information", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockProductsInfo).to.beNil();
         expect(completionBlockError).to.equal(fetchError);
@@ -293,7 +293,7 @@ context(@"purchasing subscription", ^{
 
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
     expect(completionBlockInvoked).to.beFalsy();
   });
 
@@ -316,7 +316,7 @@ context(@"purchasing subscription", ^{
 
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
     expect(completionBlockInvoked).to.beFalsy();
   });
 
@@ -406,7 +406,7 @@ context(@"purchasing subscription", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).to.beFalsy();
       });
 
@@ -415,7 +415,7 @@ context(@"purchasing subscription", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockSubscriptionInfo).to.equal(subscriptionInfo);
         expect(completionBlockError).to.beNil();
@@ -431,7 +431,7 @@ context(@"purchasing subscription", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockSubscriptionInfo).to.equal(subscriptionInfo);
         expect(completionBlockError).to.beNil();
@@ -448,7 +448,7 @@ context(@"purchasing subscription", ^{
         OCMReject([productsManager purchaseProduct:OCMOCK_ANY]);
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).to.beFalsy();
       });
 
@@ -480,7 +480,7 @@ context(@"purchasing subscription", ^{
         viewModel.buttons[0].action();
 
         expect(completionBlockInvoked).to.beTruthy();
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
     });
 
@@ -490,7 +490,7 @@ context(@"purchasing subscription", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
       });
 
       it(@"should invoke the completion block with error when mail composer is dismissed", ^{
@@ -498,7 +498,7 @@ context(@"purchasing subscription", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockSubscriptionInfo).to.beNil();
         expect(completionBlockError).to.equal(purchaseError);
@@ -565,7 +565,7 @@ context(@"restore purchases", ^{
 
     [subscriptionManager restorePurchasesWithCompletionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
     expect(completionBlockInvoked).to.beFalsy();
   });
 
@@ -604,7 +604,7 @@ context(@"restore purchases", ^{
 
     [subscriptionManager restorePurchasesWithCompletionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
     expect(completionBlockInvoked).to.beFalsy();
   });
 
@@ -620,7 +620,7 @@ context(@"restore purchases", ^{
 
     [subscriptionManager restorePurchasesWithCompletionHandler:completionBlock];
 
-    OCMVerifyAll((id)delegate);
+    OCMVerifyAll(delegate);
     expect(completionBlockInvoked).to.beFalsy();
   });
 
@@ -674,7 +674,7 @@ context(@"restore purchases", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).to.beFalsy();
       });
 
@@ -684,7 +684,7 @@ context(@"restore purchases", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockReceiptInfo).to.equal(receiptInfo);
         expect(completionBlockError).to.beNil();
@@ -700,7 +700,7 @@ context(@"restore purchases", ^{
 
         viewModel.buttons[0].action();
 
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockReceiptInfo).to.equal(receiptInfo);
         expect(completionBlockError).to.beNil();
@@ -713,7 +713,7 @@ context(@"restore purchases", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
       });
 
       it(@"should invoke the completion block with error when mail composer is dismissed", ^{
@@ -721,7 +721,7 @@ context(@"restore purchases", ^{
 
         viewModel.buttons[1].action();
 
-        OCMVerifyAll((id)delegate);
+        OCMVerifyAll(delegate);
         expect(completionBlockInvoked).will.beTruthy();
         expect(completionBlockReceiptInfo).to.beNil();
         expect(completionBlockError).to.equal(restorationError);

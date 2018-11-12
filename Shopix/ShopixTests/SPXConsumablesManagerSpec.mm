@@ -154,7 +154,7 @@ context(@"calculating order summary", ^{
                                        consumableItemIDToType:consumableItemIDToType];
 
       expect(signal).will.finish();
-      OCMVerifyAll((id)consumablesManagerDelegate);
+      OCMVerifyAll(consumablesManagerDelegate);
     });
 
     it(@"should send error after present feedback mail composer invokes completion block", ^{
@@ -188,7 +188,7 @@ context(@"calculating order summary", ^{
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValuesWithCount(1);
-      OCMVerifyAll((id)productsManager);
+      OCMVerifyAll(productsManager);
     });
   });
 });
@@ -301,7 +301,7 @@ context(@"placing order", ^{
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[expectedRedeemStatus]);
 
-    OCMVerifyAll((id)productsManager);
+    OCMVerifyAll(productsManager);
   });
 
   it(@"should send redeem status without forwarding to products manager if all items are already "
@@ -386,7 +386,7 @@ context(@"placing order", ^{
           [consumablesManager placeOrder:orderSummaryWithEnoughCredit withProductIdentifier:@"baz"];
 
       expect(signal).will.finish();
-      OCMVerifyAll((id)consumablesManagerDelegate);
+      OCMVerifyAll(consumablesManagerDelegate);
     });
 
     it(@"should send error after present feedback mail composer invokes completion block", ^{
@@ -421,7 +421,7 @@ context(@"placing order", ^{
                              withProductIdentifier:@"baz"];
 
       expect(signal).will.sendError(bazaarError);
-      OCMVerifyAll((id)consumablesManagerDelegate);
+      OCMVerifyAll(consumablesManagerDelegate);
     });
 
     it(@"should pass nil try again action if the error from bazaar is not enough credit", ^{
@@ -443,7 +443,7 @@ context(@"placing order", ^{
                              withProductIdentifier:@"baz"];
 
       expect(signal).will.sendError(bazaarError);
-      OCMVerifyAll((id)consumablesManagerDelegate);
+      OCMVerifyAll(consumablesManagerDelegate);
     });
 
     context(@"try again action", ^{
@@ -489,7 +489,7 @@ context(@"placing order", ^{
 
         expect(recorder).will.complete();
         expect(recorder).will.sendValuesWithCount(1);
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
 
       it(@"should pass try again action with validating transaction and redeem if the transaction "
@@ -520,7 +520,7 @@ context(@"placing order", ^{
 
         expect(recorder).will.complete();
         expect(recorder).will.sendValuesWithCount(1);
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
 
       it(@"should pass try again action with validating transaction and redeem if the transaction "
@@ -548,7 +548,7 @@ context(@"placing order", ^{
 
         expect(recorder).will.complete();
         expect(recorder).will.sendValuesWithCount(1);
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
 
       it(@"should pass try again action with purchase product and redeem if the purchase failed", ^{
@@ -569,7 +569,7 @@ context(@"placing order", ^{
 
         expect(recorder).will.complete();
         expect(recorder).will.sendValuesWithCount(1);
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
 
       it(@"should pass try again action with redeem if the redeem failed", ^{
@@ -587,7 +587,7 @@ context(@"placing order", ^{
 
         expect(recorder).will.complete();
         expect(recorder).will.sendValuesWithCount(1);
-        OCMVerifyAll((id)productsManager);
+        OCMVerifyAll(productsManager);
       });
     });
   });

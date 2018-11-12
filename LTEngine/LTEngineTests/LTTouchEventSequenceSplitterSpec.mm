@@ -52,7 +52,7 @@ context(@"forwarding", ^{
       [splitter receivedTouchEvents:severalTouchEvents predictedEvents:predictedTouchEvents
             touchEventSequenceState:LTTouchEventSequenceStateStart];
 
-      OCMVerifyAll((id)delegateMock);
+      OCMVerifyAll(delegateMock);
     });
 
     it(@"should forward continuing touch event sequences without any change", ^{
@@ -63,7 +63,7 @@ context(@"forwarding", ^{
       [splitter receivedTouchEvents:severalTouchEvents predictedEvents:predictedTouchEvents
             touchEventSequenceState:LTTouchEventSequenceStateContinuation];
 
-      OCMVerifyAll((id)delegateMock);
+      OCMVerifyAll(delegateMock);
     });
 
     it(@"should forward stationary touch event sequences without any change", ^{
@@ -74,7 +74,7 @@ context(@"forwarding", ^{
       [splitter receivedTouchEvents:severalTouchEvents predictedEvents:predictedTouchEvents
             touchEventSequenceState:LTTouchEventSequenceStateContinuationStationary];
 
-      OCMVerifyAll((id)delegateMock);
+      OCMVerifyAll(delegateMock);
     });
   });
 
@@ -87,7 +87,7 @@ context(@"forwarding", ^{
         [splitter receivedTouchEvents:singleTouchEvent predictedEvents:predictedTouchEvents
               touchEventSequenceState:LTTouchEventSequenceStateEnd];
 
-        OCMVerifyAll((id)delegateMock);
+        OCMVerifyAll(delegateMock);
       });
 
       it(@"should forward cancelled touch event sequences without predicted touch events", ^{
@@ -97,7 +97,7 @@ context(@"forwarding", ^{
         [splitter receivedTouchEvents:singleTouchEvent predictedEvents:predictedTouchEvents
               touchEventSequenceState:LTTouchEventSequenceStateCancellation];
 
-        OCMVerifyAll((id)delegateMock);
+        OCMVerifyAll(delegateMock);
       });
     });
 
@@ -118,7 +118,7 @@ context(@"forwarding", ^{
         [splitter receivedTouchEvents:severalTouchEvents predictedEvents:predictedTouchEvents
               touchEventSequenceState:LTTouchEventSequenceStateEnd];
 
-        OCMVerifyAll((id)delegateMock);
+        OCMVerifyAll(delegateMock);
       });
 
       it(@"should forward cancelling touch event sequences in two separate calls", ^{
@@ -133,7 +133,7 @@ context(@"forwarding", ^{
         [splitter receivedTouchEvents:severalTouchEvents predictedEvents:predictedTouchEvents
               touchEventSequenceState:LTTouchEventSequenceStateCancellation];
 
-        OCMVerifyAll((id)delegateMock);
+        OCMVerifyAll(delegateMock);
       });
     });
   });

@@ -71,7 +71,7 @@ context(@"activation", ^{
       [receiptValidator activateWithTrigger:triggerSignal];
     }
 
-    OCMVerifyAllWithDelay((id)validationStatusProvider, 0.1);
+    OCMVerifyAllWithDelay(validationStatusProvider, 0.1);
   });
 
   it(@"should unsubscribe from the trigger signal when reactivated with new trigger signal", ^{

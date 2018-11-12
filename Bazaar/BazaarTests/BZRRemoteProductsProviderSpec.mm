@@ -32,7 +32,7 @@ context(@"fetching JSON products list", ^{
 
     [provider fetchProductList];
 
-    OCMVerifyAll((id)client);
+    OCMVerifyAll(client);
   });
 
   it(@"should send error when GET failed", ^{

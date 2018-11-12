@@ -56,7 +56,7 @@ it(@"should load the current application's App Store locale from cache on initia
                     metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];
 
   expect(localeProvider.appStoreLocale).to.equal(appStoreLocale);
-  OCMVerifyAll((id)appStoreLocaleCache);
+  OCMVerifyAll(appStoreLocaleCache);
 });
 
 it(@"should store the current application's App Store locale to cache after fetching", ^{
@@ -70,7 +70,7 @@ it(@"should store the current application's App Store locale to cache after fetc
                     initWithCache:appStoreLocaleCache productsProvider:productsProvider
                     metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];
 
-  OCMVerifyAll((id)appStoreLocaleCache);
+  OCMVerifyAll(appStoreLocaleCache);
 });
 
 it(@"should not fetch non subscription products when fetching the locale", ^{
@@ -82,7 +82,7 @@ it(@"should not fetch non subscription products when fetching the locale", ^{
                     initWithCache:appStoreLocaleCache productsProvider:productsProvider
                     metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];
 
-  OCMVerifyAll((id)storeKitMetadataFetcher);
+  OCMVerifyAll(storeKitMetadataFetcher);
 });
 
 it(@"should update the locale according to the first subscription product", ^{
@@ -118,7 +118,7 @@ it(@"should fetch only the first product if it was successful", ^{
                     initWithCache:appStoreLocaleCache productsProvider:productsProvider
                     metadataFetcher:storeKitMetadataFetcher currentApplicationBundleID:@"foo"];
 
-  OCMVerifyAll((id)storeKitMetadataFetcher);
+  OCMVerifyAll(storeKitMetadataFetcher);
 });
 
 it(@"should fetch the second product if the first fetch fails", ^{
@@ -133,7 +133,7 @@ it(@"should fetch the second product if the first fetch fails", ^{
 
   expect(localeProvider.appStoreLocale).will
       .equal([[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]);
-  OCMVerifyAll((id)storeKitMetadataFetcher);
+  OCMVerifyAll(storeKitMetadataFetcher);
 });
 
 it(@"should not change the App Store locale if none of the fetches completed successfully", ^{

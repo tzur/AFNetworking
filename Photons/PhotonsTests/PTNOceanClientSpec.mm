@@ -67,7 +67,7 @@ context(@"asset search", ^{
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)oceanClient);
+    OCMVerifyAll(oceanClient);
   });
 
   it(@"should use image search endpoint when searching for videos", ^{
@@ -79,7 +79,7 @@ context(@"asset search", ^{
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)oceanClient);
+    OCMVerifyAll(oceanClient);
   });
 
   it(@"should use parameters from request URL when issuing album search request", ^{
@@ -96,7 +96,7 @@ context(@"asset search", ^{
 
     auto __unused recorder = [[client searchWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)oceanClient);
+    OCMVerifyAll(oceanClient);
   });
 
   it(@"should return search result", ^{
@@ -153,7 +153,7 @@ context(@"asset descriptor fetch", ^{
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)oceanClient);
+    OCMVerifyAll(oceanClient);
   });
 
     it(@"should use video search endpoint when searching for videos", ^{
@@ -169,7 +169,7 @@ context(@"asset descriptor fetch", ^{
 
     auto __unused recorder = [[client fetchAssetDescriptorWithParameters:parameters] testRecorder];
 
-    OCMVerifyAll((id)oceanClient);
+    OCMVerifyAll(oceanClient);
   });
 
   it(@"should fetch image asset descriptor", ^{
@@ -310,7 +310,7 @@ context(@"file download", ^{
     OCMExpect([task resume]);
 
     auto __unused recorder = [[client downloadFileWithURL:url] testRecorder];
-    OCMVerifyAll((id)task);
+    OCMVerifyAll(task);
   });
 
   it(@"should forward progress values when reported by the session", ^{
@@ -487,7 +487,7 @@ context(@"file download", ^{
              completionHandler:OCMOCK_ANY]).andReturn(task);
     [[[client downloadFileWithURL:url] subscribeNext:^(id __unused x) {}] dispose];
 
-    OCMVerifyAll((id)task);
+    OCMVerifyAll(task);
   });
 });
 

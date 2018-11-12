@@ -66,7 +66,7 @@ context(@"storing data to storage", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStorageWithCustomService);
+    OCMVerifyAll(keychainStorageWithCustomService);
   });
 
   it(@"should set error and return NO if no keychain storage with the service name was found", ^{

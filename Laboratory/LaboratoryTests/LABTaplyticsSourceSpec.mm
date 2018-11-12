@@ -176,7 +176,7 @@ context(@"initialized source", ^{
   it(@"should update even without subscriber to the signal", ^{
     OCMExpect([taplytics performLoadPropertiesFromServer:OCMOCK_ANY]);
     [source update];
-    OCMVerifyAllWithDelay((id)taplytics, 1);
+    OCMVerifyAllWithDelay(taplytics, 1);
   });
 
   it(@"should update in the background and send new data if callback reports new data", ^{
@@ -196,7 +196,7 @@ context(@"initialized source", ^{
   it(@"should update in the background even without subscriber to the signal", ^{
     OCMExpect([taplytics refreshPropertiesInBackground:OCMOCK_ANY]);
     [source updateInBackground];
-    OCMVerifyAllWithDelay((id)taplytics, 1);
+    OCMVerifyAllWithDelay(taplytics, 1);
   });
 });
 

@@ -74,7 +74,7 @@ context(@"fetching content", ^{
     auto recorder = [[fallbackContentFetcher fetchProductContent:product] testRecorder];
 
     expect(recorder).will.sendError(error);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 
   it(@"should not call the next fetcher if the first fetcher has completed successfully", ^{
@@ -89,7 +89,7 @@ context(@"fetching content", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[progress]);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 
   it(@"should call the next fetcher if the first fetcher sent error", ^{
@@ -107,7 +107,7 @@ context(@"fetching content", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[progress]);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 });
 
@@ -125,7 +125,7 @@ context(@"getting content bundle", ^{
     auto recorder = [[fallbackContentFetcher contentBundleForProduct:product] testRecorder];
 
     expect(recorder).will.sendValues(@[[NSNull null]]);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 
   it(@"should not call the next fetcher if the first fetcher sent a bundle", ^{
@@ -160,7 +160,7 @@ context(@"getting content bundle", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[bundle]);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 
   it(@"should call the next fetcher if the first fetcher sent nil", ^{
@@ -178,7 +178,7 @@ context(@"getting content bundle", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[bundle]);
-    OCMVerifyAll((id)compositeContentFetcher);
+    OCMVerifyAll(compositeContentFetcher);
   });
 });
 
@@ -204,7 +204,7 @@ context(@"content fetcher parameters specify a single content fetcher", ^{
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[progress]);
-      OCMVerifyAll((id)compositeContentFetcher);
+      OCMVerifyAll(compositeContentFetcher);
     });
 
     it(@"should err if the underlying fetcher errs", ^{
@@ -218,7 +218,7 @@ context(@"content fetcher parameters specify a single content fetcher", ^{
       auto recorder = [[fallbackContentFetcher fetchProductContent:product] testRecorder];
 
       expect(recorder).will.sendError(error);
-      OCMVerifyAll((id)compositeContentFetcher);
+      OCMVerifyAll(compositeContentFetcher);
     });
   });
 
@@ -234,7 +234,7 @@ context(@"content fetcher parameters specify a single content fetcher", ^{
       auto recorder = [[fallbackContentFetcher contentBundleForProduct:product] testRecorder];
 
       expect(recorder).will.sendValues(@[bundle]);
-      OCMVerifyAll((id)compositeContentFetcher);
+      OCMVerifyAll(compositeContentFetcher);
     });
   });
 });
@@ -289,4 +289,3 @@ it(@"should correctly convert from JSON dictionary to BZRFallbackContentFetcherP
 });
 
 SpecEnd
-

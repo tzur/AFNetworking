@@ -72,7 +72,7 @@ context(@"mail composer", ^{
 
     [feedbackComposerRequestedSubject sendNext:^{}];
 
-    OCMVerifyAll((id)viewControllerPartialMock);
+    OCMVerifyAll(viewControllerPartialMock);
   });
 
   it(@"should dismiss the feedback mail composer when requested", ^{
@@ -86,7 +86,7 @@ context(@"mail composer", ^{
     [feedbackComposerRequestedSubject sendNext:^{}];
     [dismissRequestedSubject sendNext:[RACUnit defaultUnit]];
 
-    OCMVerifyAll((id)viewControllerPartialMock);
+    OCMVerifyAll(viewControllerPartialMock);
   });
 
   it(@"should invoke the completion block on mail composer dismissal", ^{

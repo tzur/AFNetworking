@@ -54,7 +54,7 @@ context(@"content fetching", ^{
     [[contentFetcher fetchProductContent:product] testRecorder];
     [[contentFetcher fetchProductContent:product] testRecorder];
 
-    OCMVerifyAll((id)underlyingContentFetcher);
+    OCMVerifyAll(underlyingContentFetcher);
   });
 
   it(@"should return the current progress if the fetching is already in progress", ^{
@@ -92,7 +92,7 @@ context(@"content fetching", ^{
     [subject sendError:[NSError lt_errorWithCode:1337]];
     [[contentFetcher fetchProductContent:product] testRecorder];
 
-    OCMVerifyAll((id)underlyingContentFetcher);
+    OCMVerifyAll(underlyingContentFetcher);
   });
 
   it(@"should refetch content if the fetching has completed before the second call", ^{
@@ -103,7 +103,7 @@ context(@"content fetching", ^{
     [subject sendCompleted];
     [[contentFetcher fetchProductContent:product] testRecorder];
 
-    OCMVerifyAll((id)underlyingContentFetcher);
+    OCMVerifyAll(underlyingContentFetcher);
   });
 
   it(@"should refetch content if the number of subscribers was zero before the second call", ^{
@@ -113,7 +113,7 @@ context(@"content fetching", ^{
     [[[contentFetcher fetchProductContent:product] subscribeNext:^(id) {}] dispose];
     [[contentFetcher fetchProductContent:product] testRecorder];
 
-    OCMVerifyAll((id)underlyingContentFetcher);
+    OCMVerifyAll(underlyingContentFetcher);
   });
 
   it(@"should dispose the underlying signal's disposable if signal was disposed", ^{

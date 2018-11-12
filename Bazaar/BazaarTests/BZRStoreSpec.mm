@@ -176,7 +176,7 @@ context(@"initial receipt validation", ^{
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     appStoreLocaleProvider.appStoreLocale = [NSLocale currentLocale];
     appStoreLocaleProvider.localeFetchedFromProductList = YES;
-    OCMVerifyAll((id)receiptValidationStatusProvider);
+    OCMVerifyAll(receiptValidationStatusProvider);
   });
 
   it(@"should not fetch receipt on initialization if receipt validation status is nil and App "
@@ -565,7 +565,7 @@ context(@"purchasing products", ^{
     auto purchaseSignal = [store purchaseProduct:subscriptionIdentifier];
 
     expect(purchaseSignal).will.complete();
-    OCMVerifyAll((id)storeKitFacade);
+    OCMVerifyAll(storeKitFacade);
   });
 
   it(@"should purchase through StoreKit if product is a non-renewing subscription", ^{
@@ -587,7 +587,7 @@ context(@"purchasing products", ^{
     auto purchaseSignal = [store purchaseProduct:subscriptionIdentifier];
 
     expect(purchaseSignal).will.complete();
-    OCMVerifyAll((id)storeKitFacade);
+    OCMVerifyAll(storeKitFacade);
   });
 
   it(@"should send event upon a successful purchase", ^{
@@ -676,7 +676,7 @@ context(@"purchasing products", ^{
     auto purchaseSignal = [store purchaseProduct:productIdentifier];
 
     expect(purchaseSignal).will.complete();
-    OCMVerifyAll((id)acquiredViaSubscriptionProvider);
+    OCMVerifyAll(acquiredViaSubscriptionProvider);
   });
 
   it(@"should send error if product is a subscribers only product and user doesn't have a"
@@ -789,7 +789,7 @@ context(@"purchasing products", ^{
             .andReturn([RACSignal return:receiptValidationWithPurchasedProduct]);
 
         expect([store purchaseProduct:productIdentifier]).will.complete();
-        OCMVerifyAll((id)storeKitFacade);
+        OCMVerifyAll(storeKitFacade);
       });
 
       context(@"purchase consumable product", ^{
@@ -800,7 +800,7 @@ context(@"purchasing products", ^{
             .andReturn([RACSignal return:receiptValidationStatus]);
 
          expect([store purchaseConsumableProduct:productIdentifier quantity:3]).will.complete();
-         OCMVerifyAll((id)storeKitFacade);
+         OCMVerifyAll(storeKitFacade);
         });
 
         it(@"should send an error if the purchase quantity is invalid", ^{
@@ -1082,7 +1082,7 @@ context(@"getting user credit status", ^{
       OCMExpect([userIDProvider userID]).andReturn(@"bar");
       expect(signal).to.complete();
 
-      OCMVerifyAll((id)userIDProvider);
+      OCMVerifyAll(userIDProvider);
     });
 
     it(@"should send error sent by Validatricks client", ^{
@@ -1116,7 +1116,7 @@ context(@"getting user credit status", ^{
       auto signal = [store getUserCreditStatus:@"bar"];
 
       expect(signal).will.complete();
-      OCMVerifyAll((id)keychainStorage);
+      OCMVerifyAll(keychainStorage);
     });
   });
 
@@ -1133,7 +1133,7 @@ context(@"getting user credit status", ^{
 
       expect([store getUserCreditStatus:@"bar"]).will.complete();
 
-      OCMVerifyAll((id)receiptValidationStatusProvider);
+      OCMVerifyAll(receiptValidationStatusProvider);
     });
 
     it(@"should send error if receipt validation failed", ^{
@@ -1287,7 +1287,7 @@ context(@"redeeming consumable items", ^{
       OCMExpect([userIDProvider userID]).andReturn(@"bar");
       expect(signal).to.complete();
 
-      OCMVerifyAll((id)userIDProvider);
+      OCMVerifyAll(userIDProvider);
     });
 
     it(@"should send error sent by Validatricks client", ^{
@@ -1335,7 +1335,7 @@ context(@"redeeming consumable items", ^{
       expect([store redeemConsumableItems:consumableItemIDToType ofCreditType:@"bar"])
           .will.complete();
 
-      OCMVerifyAll((id)receiptValidationStatusProvider);
+      OCMVerifyAll(receiptValidationStatusProvider);
     });
 
     it(@"should send error if receipt validation failed", ^{
@@ -1400,7 +1400,7 @@ context(@"redeeming consumable items", ^{
       auto redeemSignal =
           [store redeemConsumableItems:consumableItemIDToType ofCreditType:redeemStatus.creditType];
       expect(redeemSignal).will.complete();
-      OCMVerifyAll((id)keychainStorage);
+      OCMVerifyAll(keychainStorage);
     });
 
     it(@"should merge the new data with the old one when there is a cache", ^{
@@ -1432,7 +1432,7 @@ context(@"redeeming consumable items", ^{
       auto redeemSignal =
           [store redeemConsumableItems:consumableItemIDToType ofCreditType:redeemStatus.creditType];
       expect(redeemSignal).will.complete();
-      OCMVerifyAll((id)keychainStorage);
+      OCMVerifyAll(keychainStorage);
     });
   });
 });
@@ -1469,7 +1469,7 @@ context(@"fetching product content", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[progress]);
-    OCMVerifyAll((id)contentFetcher);
+    OCMVerifyAll(contentFetcher);
   });
 
   it(@"should update downloaded content products", ^{
@@ -1498,7 +1498,7 @@ context(@"deleting product content", ^{
         .andReturn([RACSignal empty]);
 
     expect([store deleteProductContent:productIdentifier]).will.complete();
-    OCMVerifyAll((id)contentFetcher);
+    OCMVerifyAll(contentFetcher);
   });
 
   it(@"should update downloaded content products", ^{
@@ -1605,7 +1605,7 @@ context(@"refreshing receipt", ^{
       LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
 
       expect(recorder).will.complete();
-      OCMVerifyAll((id)storeKitFacade);
+      OCMVerifyAll(storeKitFacade);
     });
 
     it(@"should not err if transaction restoration errs", ^{
@@ -1653,7 +1653,7 @@ context(@"refreshing receipt", ^{
           .andReturn([RACSignal return:receiptValidationStatus]);
 
       expect([store refreshReceipt]).will.complete();
-      OCMVerifyAll((id)receiptValidationStatusProvider);
+      OCMVerifyAll(receiptValidationStatusProvider);
     });
 
     it(@"should filter out receipt validation status values", ^{
@@ -1703,7 +1703,7 @@ context(@"getting product list", ^{
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
-    OCMVerifyAll((id)productsProvider);
+    OCMVerifyAll(productsProvider);
   });
 
   context(@"products variants", ^{
@@ -1746,7 +1746,7 @@ context(@"getting product list", ^{
             [productsIdentifiers containsObject:productIdentifier] &&
             [productsIdentifiers containsObject:@"prod2"];
       });
-      OCMVerifyAll((id)variantSelector);
+      OCMVerifyAll(variantSelector);
     });
   });
 
@@ -1787,7 +1787,7 @@ context(@"getting product list", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[[NSSet setWithObject:product]]);
-    OCMVerifyAll((id)productsProvider);
+    OCMVerifyAll(productsProvider);
   });
 
   it(@"should report initial fetching error event via the events signal", ^{
@@ -1967,7 +1967,7 @@ context(@"manually fetching products info", ^{
           .andReturn([RACSignal return:productList]);
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to.complete();
-      OCMVerifyAll((id)storeKitMetadataFetcher);
+      OCMVerifyAll(storeKitMetadataFetcher);
     });
 
     it(@"should not send full price products that were not requested by the user", ^{
@@ -2052,7 +2052,7 @@ context(@"handling unfinished completed transactions", ^{
     [unhandledSuccessfulTransactionsSubject sendNext:transactions];
     [unhandledSuccessfulTransactionsSubject sendNext:transactions];
 
-    OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
+    OCMVerifyAllWithDelay(receiptValidationStatusProvider, 0.01);
   });
 
   context(@"finishing and sending transactions", ^{
@@ -2076,7 +2076,7 @@ context(@"handling unfinished completed transactions", ^{
 
       [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-      OCMVerifyAllWithDelay((id)storeKitFacade, 0.01);
+      OCMVerifyAllWithDelay(storeKitFacade, 0.01);
     });
 
     it(@"should send transaction on completed transactions signal if it appears in receipt "

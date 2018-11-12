@@ -163,7 +163,7 @@ context(@"fetching albums", ^{
 
       auto __unused recorder = [[manager fetchAlbumWithURL:requestURL] testRecorder];
 
-      OCMVerifyAll((id)client);
+      OCMVerifyAll(client);
     });
 
     it(@"should use asset type according to URL", ^{
@@ -176,7 +176,7 @@ context(@"fetching albums", ^{
 
       auto __unused recorder = [[manager fetchAlbumWithURL:imageAlbumRequest] testRecorder];
 
-      OCMVerifyAll((id)client);
+      OCMVerifyAll(client);
     });
 
     it(@"should use page number according to URL", ^{
@@ -189,7 +189,7 @@ context(@"fetching albums", ^{
 
       auto __unused recorder = [[manager fetchAlbumWithURL:imageAlbumRequest] testRecorder];
 
-      OCMVerifyAll((id)client);
+      OCMVerifyAll(client);
     });
 
     it(@"should use phrase according to URL", ^{
@@ -202,7 +202,7 @@ context(@"fetching albums", ^{
 
       auto __unused recorder = [[manager fetchAlbumWithURL:imageAlbumRequest] testRecorder];
 
-      OCMVerifyAll((id)client);
+      OCMVerifyAll(client);
     });
 
     it(@"should fetch album", ^{
@@ -292,7 +292,7 @@ context(@"fetching descriptors", ^{
 
         auto __unused recorder = [[manager fetchDescriptorWithURL:assetRequestURL] testRecorder];
 
-        OCMVerifyAll((id)client);
+        OCMVerifyAll(client);
       });
 
       it(@"should fetch asset descriptor", ^{

@@ -162,7 +162,7 @@ context(@"write to file", ^{
     }] toFile:writePath.path options:NSDataWritingAtomic error:[OCMArg setTo:nil]]).andReturn(YES);
 
     expect([imageAsset writeToFileAtPath:writePath usingFileManager:fileManager]).will.complete();
-    OCMVerifyAll((id)fileManager);
+    OCMVerifyAll(fileManager);
   });
 
   it(@"should err when writing data to disk fails", ^{

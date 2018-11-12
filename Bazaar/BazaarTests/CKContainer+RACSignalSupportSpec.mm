@@ -64,7 +64,7 @@ context(@"account status signal", ^{
     auto recorder = [container.bzr_accountStatus testRecorder];
 
     expect(recorder).to.sendError(nonRetryableError);
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 
   it(@"should deliver the correct account status as provided to the completion block", ^{
@@ -74,7 +74,7 @@ context(@"account status signal", ^{
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[$(BZRCloudKitAccountStatusRestricted)]);
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 
   it(@"should retry the operation 3 times if failed with a retryable error", ^{
@@ -86,7 +86,7 @@ context(@"account status signal", ^{
 
     expect(recorder).will.complete();
     expect(recorder).to.sendValues(@[$(BZRCloudKitAccountStatusAvailable)]);
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 
   it(@"should err if operation failed after 3 retry attempts", ^{
@@ -96,7 +96,7 @@ context(@"account status signal", ^{
     auto recorder = [container.bzr_accountStatus testRecorder];
 
     expect(recorder).will.sendError(retryableError);
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 });
 
@@ -119,7 +119,7 @@ context(@"user record identifier signal", ^{
     auto recorder = [container.bzr_userRecordID testRecorder];
 
     expect(recorder).to.sendError(nonRetryableError);
-    OCMVerifyAll((id)privateDatabase);
+    OCMVerifyAll(privateDatabase);
   });
 
   it(@"should deliver the identifier of the fetched user record", ^{
@@ -129,7 +129,7 @@ context(@"user record identifier signal", ^{
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[recordID]);
-    OCMVerifyAll((id)privateDatabase);
+    OCMVerifyAll(privateDatabase);
   });
 
   it(@"should retry 3 times to fetch the user record if failed with a retryable error", ^{
@@ -140,7 +140,7 @@ context(@"user record identifier signal", ^{
 
     expect(recorder).will.complete();
     expect(recorder).to.sendValues(@[recordID]);
-    OCMVerifyAll((id)privateDatabase);
+    OCMVerifyAll(privateDatabase);
   });
 
   it(@"should err if operation failed after 3 retry attempts", ^{
@@ -149,7 +149,7 @@ context(@"user record identifier signal", ^{
     auto recorder = [container.bzr_userRecordID testRecorder];
 
     expect(recorder).will.sendError(retryableError);
-    OCMVerifyAll((id)privateDatabase);
+    OCMVerifyAll(privateDatabase);
   });
 });
 

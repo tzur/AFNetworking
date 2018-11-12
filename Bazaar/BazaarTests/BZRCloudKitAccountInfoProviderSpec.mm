@@ -92,7 +92,7 @@ context(@"iCloud account is available", ^{
           [accountInfo.containerIdentifier isEqualToString:container.containerIdentifier] &&
           [accountInfo.userRecordIdentifier isEqualToString:userRecordID.recordName];
     });
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 
   it(@"should err if fetching user record failed", ^{
@@ -102,7 +102,7 @@ context(@"iCloud account is available", ^{
     auto recorder = [provider.accountInfo testRecorder];
 
     expect(recorder).will.sendError(error);
-    OCMVerifyAll((id)container);
+    OCMVerifyAll(container);
   });
 });
 
@@ -124,7 +124,7 @@ context(@"handling notifications", ^{
       OCMExpect([container bzr_accountStatus])
           .andReturn([RACSignal return:$(BZRCloudKitAccountStatusNoAccount)]);
       auto recorder = [provider.accountInfo testRecorder];
-      OCMVerifyAll((id)container);
+      OCMVerifyAll(container);
 
       // Post notification state: User is signed in to iCloud and user record is available.
       OCMExpect([container bzr_accountStatus])
@@ -138,7 +138,7 @@ context(@"handling notifications", ^{
         BZRAccountInfo($(BZRCloudKitAccountStatusNoAccount), container, nil),
         BZRAccountInfo($(BZRCloudKitAccountStatusAvailable), container, recordID)
       ]);
-      OCMVerifyAll((id)container);
+      OCMVerifyAll(container);
     });
 
     it(@"should not send account info if account info has not changed", ^{
@@ -155,7 +155,7 @@ context(@"handling notifications", ^{
         BZRAccountInfo($(BZRCloudKitAccountStatusAvailable), container, nil),
         BZRAccountInfo($(BZRCloudKitAccountStatusAvailable), container, recordID)
       ]);
-      OCMVerifyAll((id)container);
+      OCMVerifyAll(container);
     });
   });
 

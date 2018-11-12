@@ -254,8 +254,8 @@ context(@"LTParameterizedObject protocol", ^{
         expect(values1.size()).to.equal(2);
         expect(values1[0]).to.equal(1);
         expect(values1[1]).to.equal(11);
-        OCMVerifyAll((id)strictParameterizedObjectMock);
-        OCMVerifyAll((id)anotherStrictParameterizedObjectMock);
+        OCMVerifyAll(strictParameterizedObjectMock);
+        OCMVerifyAll(anotherStrictParameterizedObjectMock);
       });
     });
 
