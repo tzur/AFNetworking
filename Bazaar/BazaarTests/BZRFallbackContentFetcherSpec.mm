@@ -289,4 +289,3 @@ it(@"should correctly convert from JSON dictionary to BZRFallbackContentFetcherP
 });
 
 SpecEnd
-
