@@ -132,10 +132,6 @@ static const auto kBufferingIntervals = lt::Interval<NSTimeInterval>({0, 0.1});
 
 - (void)renderBrushStrokeAccordingToControlPoints:(NSArray<LTSplineControlPoint *> *)controlPoints
                                        ontoCanvas:(nullable LTTexture *)canvas end:(BOOL)end {
-  if (!controlPoints.count) {
-    return;
-  }
-
   if (canvas) {
     [self validateCanvas:canvas];
     [[[LTFboPool currentPool] fboWithTexture:canvas] bindAndDraw:^{
@@ -150,10 +146,6 @@ static const auto kBufferingIntervals = lt::Interval<NSTimeInterval>({0, 0.1});
                             smoothedWithIntensity:(CGFloat)smoothingIntensity
                                        ontoCanvas:(LTTexture *)canvas
                               withAuxiliaryCanvas:(LTTexture *)auxiliaryCanvas end:(BOOL)end {
-  if (!points.count) {
-    return;
-  }
-
   auto pointsToSmooth = [self.tailBuffer processAndPossiblyBufferControlPoints:points flush:NO];
   auto smoothedPoints = [self.stabilizer pointsForPoints:pointsToSmooth
                                    smoothedWithIntensity:smoothingIntensity preserveState:NO

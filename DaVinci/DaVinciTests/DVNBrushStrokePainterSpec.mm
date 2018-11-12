@@ -306,6 +306,38 @@ context(@"delegate information", ^{
     expect(delegate.brushStroke.brushRenderModel).to.equal(brushRenderModel);
     expect(delegate.brushStroke.endInterval == interval).to.beTruthy();
   });
+
+  it(@"should inform delegate about end of control points processing", ^{
+    brushModel = [brushModel copyWithRandomInitialSeed:YES];
+    delegate.brushRenderModel = [delegate.brushRenderModel copyWithBrushModel:brushModel];
+
+    auto splineAttributes = @{
+      [LTSplineControlPoint keyForSpeedInScreenCoordinates]: @0
+    };
+    NSArray<LTSplineControlPoint *> *controlPoints = @[
+      [[LTSplineControlPoint alloc] initWithTimestamp:0 location:CGPointMake(0.5, 0.5)
+                                           attributes:splineAttributes],
+      [[LTSplineControlPoint alloc] initWithTimestamp:1 location:CGPointMake(0.5, 0.5)
+                                           attributes:splineAttributes]
+    ];
+
+    [painter processControlPoints:controlPoints end:NO];
+
+    expect(delegate.brushStroke).to.beNil();
+
+    [painter processControlPoints:@[] end:YES];
+
+    DVNBrushModel *delegateBrushModel = delegate.brushStroke.brushRenderModel.brushModel;
+    brushModel = [[brushModel copyWithRandomInitialSeed:NO]
+                  copyWithInitialSeed:delegateBrushModel.initialSeed];
+    DVNBrushRenderModel *brushRenderModel =
+        [delegate.brushRenderModel copyWithBrushModel:brushModel];
+
+    expect(delegate.brushStroke).toNot.beNil();
+    expect(delegate.brushStroke.controlPointModel).toNot.beNil();
+    expect(delegate.brushStroke.brushRenderModel).toNot.equal(delegate.brushRenderModel);
+    expect(delegate.brushStroke.brushRenderModel).to.equal(brushRenderModel);
+  });
 });
 
 context(@"properties", ^{
