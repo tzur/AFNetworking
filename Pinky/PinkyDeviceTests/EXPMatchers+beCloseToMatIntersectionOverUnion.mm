@@ -15,6 +15,26 @@ static double PNKIntersectionOverUnion(const cv::Mat1b &first, const cv::Mat1b &
   return cv::sum(intersectionMask)[0] / (1.e-6 + cv::sum(unionMask)[0]);
 }
 
+static void LTAttachMatricesToTest(const cv::Mat &expected, const cv::Mat &actual) {
+  std::vector<std::pair<NSString *, UIImage *>> attachments;
+
+  UIImage * _Nullable expectedImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(expected));
+  if (expectedImage) {
+    attachments.push_back({@"expected", expectedImage});
+  }
+
+  UIImage * _Nullable actualImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(actual));
+  if (actualImage) {
+    attachments.push_back({@"actual", actualImage});
+  }
+
+  if (attachments.size()) {
+    LTAttachImagesToCurrentTest(@"images", attachments);
+  }
+}
+
 EXPMatcherImplementationBegin(_beCloseToMatIntersectionOverUnion, (NSValue *expected, id within)) {
   __block NSString *prerequisiteErrorMessage;
   __block double intersectionOverUnion;
@@ -57,7 +77,7 @@ EXPMatcherImplementationBegin(_beCloseToMatIntersectionOverUnion, (NSValue *expe
 
   failureMessageForTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest([expected matValue], [actual matValue]);
     }
 
     if (prerequisiteErrorMessage) {
@@ -70,7 +90,7 @@ EXPMatcherImplementationBegin(_beCloseToMatIntersectionOverUnion, (NSValue *expe
 
   failureMessageForNotTo(^NSString *(id actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest([expected matValue], [actual matValue]);
     }
 
     if (prerequisiteErrorMessage) {

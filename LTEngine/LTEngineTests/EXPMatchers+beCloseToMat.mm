@@ -16,6 +16,26 @@ static double LTDefaultRangeForMatType(int type) {
   }
 }
 
+static void LTAttachMatricesToTest(const cv::Mat &expected, const cv::Mat &actual) {
+  std::vector<std::pair<NSString *, UIImage *>> attachments;
+
+  UIImage * _Nullable expectedImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(expected));
+  if (expectedImage) {
+    attachments.push_back({@"expected", expectedImage});
+  }
+
+  UIImage * _Nullable actualImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(actual));
+  if (actualImage) {
+    attachments.push_back({@"actual", actualImage});
+  }
+
+  if (attachments.size()) {
+    LTAttachImagesToCurrentTest(@"images", attachments);
+  }
+}
+
 EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within)) {
   __block NSString *prerequisiteErrorMessage;
 
@@ -46,9 +66,9 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
     }
   });
 
-  failureMessageForTo(^NSString *(id actual) {
+  failureMessageForTo(^NSString *(NSValue *actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest(expected.matValue, actual.matValue);
     }
 
     if (prerequisiteErrorMessage) {
@@ -67,9 +87,9 @@ EXPMatcherImplementationBegin(_beCloseToMatWithin, (NSValue *expected, id within
     }
   });
 
-  failureMessageForNotTo(^NSString *(id actual) {
+  failureMessageForNotTo(^NSString *(NSValue *actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest(expected.matValue, actual.matValue);
     }
 
     if (prerequisiteErrorMessage) {
