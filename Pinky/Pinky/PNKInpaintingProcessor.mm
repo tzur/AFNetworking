@@ -143,6 +143,12 @@ static const NSUInteger kNetInputSize = 512;
   LTParameterAssert(inputPixelFormat == outputPixelFormat, @"Input pixel format and output pixel "
                     "format must be equal; got (input: %d, output: %d) ", inputPixelFormat,
                     outputPixelFormat);
+
+  __block BOOL maskHasNonZeroPixels;
+  LTCVPixelBufferImageForReading(mask, ^(const cv::Mat& image) {
+    maskHasNonZeroPixels = cv::countNonZero(image) > 0;
+  });
+  LTParameterAssert(maskHasNonZeroPixels, @"Mask must contain at least one non-zero pixel.");
 }
 
 - (void)doInpaintingWithInput:(CVPixelBufferRef)input mask:(CVPixelBufferRef)mask

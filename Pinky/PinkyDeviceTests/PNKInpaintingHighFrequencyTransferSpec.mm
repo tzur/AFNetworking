@@ -8,7 +8,7 @@
 
 SpecBegin(PNKInpaintingHighFrequencyTransfer)
 
-it(@"should pass when the hole touches the boundary in the top-left corner", ^{
+it(@"should not raise when the hole touches the boundary in the top-left corner", ^{
   cv::Mat4b inputMat(1024, 1024, cv::Scalar::all(127));
 
   cv::Mat1b maskMat(inputMat.size(), (uchar)0);
@@ -23,7 +23,7 @@ it(@"should pass when the hole touches the boundary in the top-left corner", ^{
   }).toNot.raiseAny();
 });
 
-it(@"should pass when the hole touches the boundary in the bottom-right corner", ^{
+it(@"should not raise when the hole touches the boundary in the bottom-right corner", ^{
   cv::Mat4b inputMat(1024, 1024, cv::Scalar::all(127));
 
   cv::Mat1b maskMat(inputMat.size(), (uchar)0);
@@ -49,7 +49,8 @@ it(@"should raise when the hole is empty", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
-it(@"should raise when the hole size is less than half superpixel size", ^{
+it(@"should not raise when one of the hole sides is less than 5 after resizing to low-frequency "
+   "scale", ^{
   cv::Mat4b inputMat(1024, 1024, cv::Scalar::all(127));
 
   cv::Mat1b maskMat(inputMat.size(), (uchar)0);
@@ -61,7 +62,7 @@ it(@"should raise when the hole size is less than half superpixel size", ^{
 
   expect(^{
     pnk_inpainting::transferHighFrequency(inputMat, maskMat, lowFrequencyMat, &outputMat);
-  }).to.raise(NSInvalidArgumentException);
+  }).toNot.raiseAny();
 });
 
 it(@"should raise when the mask size does not match the input size", ^{

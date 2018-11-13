@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 namespace pnk_inpainting {
 
 /// Returns the region of interest given the \c mask that designates the hole to be filled by an
-/// inpainting algorithm.
+/// inpainting algorithm. Returns a region of zero size when the mask is all zeros.
 MTLRegion regionOfInterestAroundHole(const cv::Mat &mask);
 
 } // namespace pnk_inpainting
