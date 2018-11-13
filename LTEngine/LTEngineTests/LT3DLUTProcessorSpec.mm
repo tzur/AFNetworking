@@ -281,7 +281,7 @@ context(@"shader tests", ^{
     [lutProcessor process];
 
     cv::Mat4b blackColorMat(1, 1, cv::Scalar(cv::Vec4b(0, 0, 0, 255)));
-    expect($(output.image)).to.equalMat($(blackColorMat));
+    expect($(output.image)).to.beCloseToMatWithin($(blackColorMat), 2);
   });
 });
 
