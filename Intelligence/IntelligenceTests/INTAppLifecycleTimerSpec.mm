@@ -5,7 +5,7 @@
 
 #import <LTKit/LTTimer.h>
 
-@interface INTFakeTimeProvider : NSObject <LTTimeProvider>
+@interface INTFakeTimeProvider : NSObject <LTTimeIntervalProvider>
 @property (nonatomic) CFTimeInterval currentTime;
 @end
 
