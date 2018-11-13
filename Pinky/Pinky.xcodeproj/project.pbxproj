@@ -164,6 +164,7 @@
 		E41D726A1FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */; };
 		E41D726C1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */; };
 		E41D726D1FFE90F700A2B26D /* PNKActivation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */; };
+		E41E1D5B2194670B0099258B /* depth.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E41E1D5A2194670B0099258B /* depth.nnmodel */; };
 		E41F5C1020BE803A00777B1A /* PNKImageMotionTreeLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E41F5C0F20BE803A00777B1A /* PNKImageMotionTreeLayer.mm */; };
 		E425F78620BD4417006E3639 /* PNKImageMotionGrassLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */; };
 		E425F78820BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E425F78720BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm */; };
@@ -233,6 +234,9 @@
 		E47754AC213E8FD30008BEE7 /* buildingMask.png in Resources */ = {isa = PBXBuildFile; fileRef = E47754AA213E8FD30008BEE7 /* buildingMask.png */; };
 		E47754AE213E916D0008BEE7 /* building384.png in Resources */ = {isa = PBXBuildFile; fileRef = E47754AD213E916D0008BEE7 /* building384.png */; };
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
+		E4807F3421933F5E008B50DC /* PNKDepthProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4807F3321933F5E008B50DC /* PNKDepthProcessorSpec.mm */; };
+		E4807F3721933FD8008B50DC /* city.png in Resources */ = {isa = PBXBuildFile; fileRef = E4807F3521933FD8008B50DC /* city.png */; };
+		E4807F3A2193405B008B50DC /* PNKDepthProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4807F0E219314F4008B50DC /* PNKDepthProcessor.mm */; };
 		E480A485209856CF00423308 /* PNKImageMotionStaticLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */; };
 		E480A488209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E480A487209856EE00423308 /* PNKImageMotionStaticLayerSpec.mm */; };
 		E4810795214A99F9009E20C8 /* buildingMask384.png in Resources */ = {isa = PBXBuildFile; fileRef = E4810794214A99F8009E20C8 /* buildingMask384.png */; };
@@ -270,6 +274,7 @@
 		E49052E0201742DA00D4C252 /* PNKPersonSegmentationProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E49052BD201742D900D4C252 /* PNKPersonSegmentationProcessor.mm */; };
 		E49052E2201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E49052E1201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm */; };
 		E49052E420175C8000D4C252 /* person_processor_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = E49052E320175C8000D4C252 /* person_processor_mask.png */; };
+		E4966AE221946D9E0095B656 /* city_depth.png in Resources */ = {isa = PBXBuildFile; fileRef = E4966ABF21946D9E0095B656 /* city_depth.png */; };
 		E4A781C720CA72AB005C6EF1 /* PNKImageMotionSegmentationNetwork.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4A781A320CA72AA005C6EF1 /* PNKImageMotionSegmentationNetwork.mm */; };
 		E4A781C920CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4A781C820CA76CE005C6EF1 /* PNKImageMotionSegmentationNetworkSpec.mm */; };
 		E4A781CB20CA76F6005C6EF1 /* tree.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A781CA20CA76F6005C6EF1 /* tree.png */; };
@@ -894,6 +899,7 @@
 		E41D72671FFE817A00A2B26D /* PNKActivationCustomInternalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivationCustomInternalLayer.h; sourceTree = "<group>"; };
 		E41D72691FFE89A100A2B26D /* PNKActivationCustomInternalLayer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKActivationCustomInternalLayer.metal; sourceTree = "<group>"; };
 		E41D726B1FFE8C1E00A2B26D /* PNKActivationLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKActivationLayerSpec.mm; sourceTree = "<group>"; };
+		E41E1D5A2194670B0099258B /* depth.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = depth.nnmodel; path = Models/depth/depth.nnmodel; sourceTree = SOURCE_ROOT; };
 		E41F5BEC20BE803900777B1A /* PNKImageMotionTreeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionTreeLayer.h; sourceTree = "<group>"; };
 		E41F5C0F20BE803A00777B1A /* PNKImageMotionTreeLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionTreeLayer.mm; sourceTree = "<group>"; };
 		E425F76020BD4417006E3639 /* PNKImageMotionGrassLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionGrassLayer.mm; sourceTree = "<group>"; };
@@ -990,6 +996,10 @@
 		E47754AA213E8FD30008BEE7 /* buildingMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buildingMask.png; path = Resources/buildingMask.png; sourceTree = "<group>"; };
 		E47754AD213E916D0008BEE7 /* building384.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = building384.png; path = Resources/building384.png; sourceTree = "<group>"; };
 		E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+FactorySpec.mm"; sourceTree = "<group>"; };
+		E4807F0E219314F4008B50DC /* PNKDepthProcessor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDepthProcessor.mm; sourceTree = "<group>"; };
+		E4807F0F219314F4008B50DC /* PNKDepthProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKDepthProcessor.h; sourceTree = "<group>"; };
+		E4807F3321933F5E008B50DC /* PNKDepthProcessorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDepthProcessorSpec.mm; sourceTree = "<group>"; };
+		E4807F3521933FD8008B50DC /* city.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = city.png; path = Resources/city.png; sourceTree = "<group>"; };
 		E480A482209856CE00423308 /* PNKImageMotionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionLayer.h; sourceTree = "<group>"; };
 		E480A483209856CF00423308 /* PNKImageMotionStaticLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionStaticLayer.h; sourceTree = "<group>"; };
 		E480A484209856CF00423308 /* PNKImageMotionStaticLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionStaticLayer.mm; sourceTree = "<group>"; };
@@ -1033,6 +1043,7 @@
 		E49052DF201742D900D4C252 /* PNKPersonSegmentationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPersonSegmentationProcessor.h; sourceTree = "<group>"; };
 		E49052E1201742EF00D4C252 /* PNKPersonSegmentationProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPersonSegmentationProcessorSpec.mm; sourceTree = "<group>"; };
 		E49052E320175C8000D4C252 /* person_processor_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = person_processor_mask.png; path = Resources/person_processor_mask.png; sourceTree = "<group>"; };
+		E4966ABF21946D9E0095B656 /* city_depth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = city_depth.png; path = Resources/city_depth.png; sourceTree = "<group>"; };
 		E49B65C021380F84002DA40A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		E4A781A320CA72AA005C6EF1 /* PNKImageMotionSegmentationNetwork.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKImageMotionSegmentationNetwork.mm; sourceTree = "<group>"; };
 		E4A781C620CA72AB005C6EF1 /* PNKImageMotionSegmentationNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKImageMotionSegmentationNetwork.h; sourceTree = "<group>"; };
@@ -1278,6 +1289,8 @@
 				E47754AD213E916D0008BEE7 /* building384.png */,
 				E47754AA213E8FD30008BEE7 /* buildingMask.png */,
 				E4810794214A99F8009E20C8 /* buildingMask384.png */,
+				E4807F3521933FD8008B50DC /* city.png */,
+				E4966ABF21946D9E0095B656 /* city_depth.png */,
 				E41718A020565767009FEF14 /* concat_output_15x16x64.tensor */,
 				E41718A320565767009FEF14 /* concat_primary_input_15x16x32.tensor */,
 				E41718A220565767009FEF14 /* concat_secondary_input_15x16x32.tensor */,
@@ -1295,6 +1308,7 @@
 				E4BC760C201DE057000477B4 /* conv_stride_output_8x8x8.tensor */,
 				E417189B20565766009FEF14 /* crop_input_15x16x32.tensor */,
 				E417189C20565767009FEF14 /* crop_output_9x12x32.tensor */,
+				E41E1D5A2194670B0099258B /* depth.nnmodel */,
 				E42F87CE205907BA000A18AE /* echo.nnmodel */,
 				6418C18B2185F52F00615CCB /* face_model_params_1x258.tensor */,
 				6418C16D2181E5FB00615CCB /* face_model_processor_fit_input.jpg */,
@@ -2078,7 +2092,8 @@
 		E4BFCD262190AAC900515BC8 /* Depth */ = {
 			isa = PBXGroup;
 			children = (
-				E4BFCD492190AADF00515BC8 /* PNKUnitRangeNormalizationSpec.mm */,
+				E4807F3321933F5E008B50DC /* PNKDepthProcessorSpec.mm */,
+				E4BFCD492190AADF00515BC8 /* PNKUnitRangeNormalization Spec.mm */,
 			);
 			name = Depth;
 			sourceTree = "<group>";
@@ -2103,6 +2118,8 @@
 		E4D7FCB7219061C90004D8E5 /* Depth */ = {
 			isa = PBXGroup;
 			children = (
+				E4807F0F219314F4008B50DC /* PNKDepthProcessor.h */,
+				E4807F0E219314F4008B50DC /* PNKDepthProcessor.mm */,
 				E4D7FCDB219062030004D8E5 /* PNKUnitRangeNormalization.h */,
 				E4D7FCDD219062150004D8E5 /* PNKUnitRangeNormalization.metal */,
 				E4D7FCDA219062030004D8E5 /* PNKUnitRangeNormalization.mm */,
@@ -2529,6 +2546,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4807F3721933FD8008B50DC /* city.png in Resources */,
 				E41718AB20565768009FEF14 /* gather_input_15x16x32.tensor in Resources */,
 				64633878217F120600945494 /* batch_normalization_mean_32.weights in Resources */,
 				E43BF18620614B2000CE1C3A /* argmax_output_15x16x1.tensor in Resources */,
@@ -2536,6 +2554,7 @@
 				E483D41920517CF5000D4809 /* instance_normalization_basic_gamma_32.weights in Resources */,
 				E41718AD20565768009FEF14 /* add_primary_input_15x16x32.tensor in Resources */,
 				E483D41D20517CF5000D4809 /* instance_normalization_single_texture_input_15x16x3.tensor in Resources */,
+				E41E1D5B2194670B0099258B /* depth.nnmodel in Resources */,
 				E483D42120517CF5000D4809 /* instance_normalization_single_texture_gamma_3.weights in Resources */,
 				E4BE102E2058126D00C7EE66 /* baby_echo0.png in Resources */,
 				E47754AE213E916D0008BEE7 /* building384.png in Resources */,
@@ -2546,6 +2565,7 @@
 				E41718A620565768009FEF14 /* add_secondary_input_15x16x32.tensor in Resources */,
 				E41718A920565768009FEF14 /* reflection_padding_input_15x16x32.tensor in Resources */,
 				E4A781CB20CA76F6005C6EF1 /* tree.png in Resources */,
+				E4966AE221946D9E0095B656 /* city_depth.png in Resources */,
 				E44666F6200622D1009D7042 /* activation_relu_output_15x16x32.tensor in Resources */,
 				E4BC761D201DE057000477B4 /* conv_dilation_bias_8.weights in Resources */,
 				E41718A820565768009FEF14 /* crop_output_9x12x32.tensor in Resources */,
@@ -2712,6 +2732,7 @@
 				06C6BC321F7003E6005F57D4 /* PNKConvolutionLayerSpec.mm in Sources */,
 				2856896D200657110053FDD8 /* PNKColorTransferProcessorSpec.mm in Sources */,
 				E42D67A71FD84CF60020F4D8 /* PNKConvolutionTestUtils.mm in Sources */,
+				E4807F3421933F5E008B50DC /* PNKDepthProcessorSpec.mm in Sources */,
 				E440432B213C1DD20092539A /* PNKInpaintingSuperPixelSpec.mm in Sources */,
 				062EEA4F1F25315400AB4958 /* PNKUpsamplingSpec.mm in Sources */,
 				E45E1BCA20B3F56E00EC0B60 /* PNKImageMotionSkyLayerSpec.mm in Sources */,
@@ -2787,6 +2808,7 @@
 				06D36EEA1F6ACA6D00090584 /* NeuralNetwork.proto in Sources */,
 				E45E67222035BD3B00FE281C /* PNKCollectionUtils.mm in Sources */,
 				E49052E0201742DA00D4C252 /* PNKPersonSegmentationProcessor.mm in Sources */,
+				E4807F3A2193405B008B50DC /* PNKDepthProcessor.mm in Sources */,
 				E4527EB21FDE6F05002DC3C0 /* PNKConvolutionInternalLayer.mm in Sources */,
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				E4D719331FE145580047E620 /* PNKGather.mm in Sources */,

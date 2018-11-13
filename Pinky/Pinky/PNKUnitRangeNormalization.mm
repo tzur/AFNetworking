@@ -80,6 +80,11 @@ NS_ASSUME_NONNULL_BEGIN
   auto minMaxSize = MTLSizeMake(2, 1, inputImage.featureChannels);
   auto minMaxImage = [MPSTemporaryImage mtb_float16TemporaryImageWithCommandBuffer:commandBuffer
                                                                               size:minMaxSize];
+
+  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
+    ((MPSTemporaryImage *)inputImage).readCount += 1;
+  }
+
   [self.mpsMinMax encodeToCommandBuffer:commandBuffer sourceImage:inputImage
                        destinationImage:minMaxImage];
   MTBComputeDispatchWithDefaultThreads(self.stateRescaleWithMinAndMax, commandBuffer,
