@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @see http://www.manpagez.com/man/3/clock_gettime/
 /// @see https://bendodson.com/weblog/2013/01/29/ca-current-media-time/
-@interface INTMonotonicTimeProvider : NSObject <LTTimeProvider>
+@interface INTMonotonicTimeProvider : NSObject <LTTimeIntervalProvider>
 @end
 
 @implementation INTMonotonicTimeProvider
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface INTAppLifecycleTimer ()
 
 /// Used for calculating elapsed times.
-@property (readonly, nonatomic) id<LTTimeProvider> timeProvider;
+@property (readonly, nonatomic) id<LTTimeIntervalProvider> timeProvider;
 
 /// \c YES if the timer is running.
 @property (nonatomic) BOOL isRunning;
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithTimeProvider:[[INTMonotonicTimeProvider alloc] init]];
 }
 
-- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider {
+- (instancetype)initWithTimeProvider:(id<LTTimeIntervalProvider>)timeProvider {
   if (self = [super init]) {
     @synchronized (self) {
       _timeProvider = timeProvider;

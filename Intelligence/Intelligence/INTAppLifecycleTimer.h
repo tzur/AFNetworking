@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LTTimeProvider;
+@protocol LTTimeIntervalProvider;
 
 /// Contains time spent in various states of the application since the start of a timer.
 typedef struct {
@@ -29,7 +29,8 @@ typedef struct {
 @interface INTAppLifecycleTimer : NSObject <INTAppLifecycleTimer>
 
 /// Initializes with \c timeProvider used to provide time samples for generating \c appRunTimes.
-- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTimeProvider:(id<LTTimeIntervalProvider>)timeProvider
+    NS_DESIGNATED_INITIALIZER;
 
 /// Starts the timer. Calling this method after it was called once has no effect.
 - (void)start;

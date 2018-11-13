@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTDefaultTimeProvider : NSObject <LTTimeProvider>
+@interface LTDefaultTimeProvider : NSObject <LTTimeIntervalProvider>
 @end
 
 @implementation LTDefaultTimeProvider
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTTimer ()
 
 /// Time provider to use when calculating time intervals.
-@property (nonatomic) id<LTTimeProvider> timeProvider;
+@property (nonatomic) id<LTTimeIntervalProvider> timeProvider;
 
 /// Time the timer started.
 @property (nonatomic) CFTimeInterval startTime;
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithTimeProvider:[[LTDefaultTimeProvider alloc] init]];
 }
 
-- (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider {
+- (instancetype)initWithTimeProvider:(id<LTTimeIntervalProvider>)timeProvider {
   if (self = [super init]) {
     self.timeProvider = timeProvider;
   }
