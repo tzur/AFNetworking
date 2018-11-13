@@ -11,6 +11,10 @@ MTLRegion regionOfInterestAroundHole(const cv::Mat &mask) {
   cv::Mat nonZeroPoints;
   cv::findNonZero(mask, nonZeroPoints);
 
+  if (nonZeroPoints.empty()) {
+    return MTLRegionMake3D(0, 0, 0, 0, 0, 0);
+  }
+
   auto boundingBox = cv::boundingRect(nonZeroPoints);
 
   cv::Mat1b paddedMask = cv::Mat1b::zeros(boundingBox.height + 2, boundingBox.width + 2);

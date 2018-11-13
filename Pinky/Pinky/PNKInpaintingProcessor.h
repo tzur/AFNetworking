@@ -31,7 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param mask a single-channel pixel buffer of a supported type. Supported pixel formats include
 /// \c kCVPixelFormatType_OneComponent8 and \c kCVPixelFormatType_OneComponent16Half. \c mask must
-/// have the same size as \c input. \c mask must be Metal compatible (IOSurface backed).
+/// have the same size as \c input. \c mask must be Metal compatible (IOSurface backed). \c mask
+/// must contain at least one non-zero pixel.
 ///
 /// @param output a pixel buffer of the same type and size as \c input. \c output must be Metal
 /// compatible (IOSurface backed).

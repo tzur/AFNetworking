@@ -81,6 +81,8 @@ void transferHighFrequency(const cv::Mat4b &input, const cv::Mat1b &mask,
   LTParameterAssert(lowFrequency.rows <= input.rows, @"low frequency matrix size must be lower "
                     "than or equal to input matrix size (%d), got %d", input.rows,
                     lowFrequency.rows);
+  LTParameterAssert(cv::countNonZero(mask), @"mask matrix must contain at least one non-zero "
+                    "pixel");
 
   auto fineSize = input.size();
   auto coarseSize = lowFrequency.size();
@@ -128,6 +130,8 @@ static cv::Mat1i segmentationMap(const cv::Mat &image, const cv::Mat1b &mask) {
   cv::findNonZero(mask, maskPoints);
   cv::Rect boundingBox = cv::boundingRect(maskPoints);
 
+  cv::Mat1i superPixelsMap(image.size(), 0);
+
   /// Average segment size (in pixels) for the SLIC segmentation algorithm. This size works well
   /// with 512x512 coarse image size.
   static const int kSLICRegionSize = 10;
@@ -135,13 +139,12 @@ static cv::Mat1i segmentationMap(const cv::Mat &image, const cv::Mat1b &mask) {
   /// Segment compactness factor for the SLIC segmentation algorithm.
   static const float kSLICRuler = 1;
 
-  LTParameterAssert(boundingBox.width >= kSLICRegionSize / 2, @"bounding box of the hole (after "
-                    "resize to the low frequency image size) must have width of at least %d, got "
-                    "%d", kSLICRegionSize / 2, boundingBox.width);
-
-  LTParameterAssert(boundingBox.height >= kSLICRegionSize / 2, @"bounding box of the hole (after "
-                    "resize to the low frequency image size) must have height of at least %d, got "
-                    "%d", kSLICRegionSize / 2, boundingBox.height);
+  /// OpenCV implementation of SLIC algorithm crashes when the input image is too small. In this
+  /// case we perform no segmentation and declare the whole hole a single superpixel.
+  if (boundingBox.width < kSLICRegionSize / 2 || boundingBox.height < kSLICRegionSize / 2) {
+    superPixelsMap(boundingBox).setTo(1, mask(boundingBox));
+    return superPixelsMap;
+  }
 
   auto croppedMask = mask(boundingBox);
   cv::Mat croppedMaskedImage;
@@ -155,10 +158,7 @@ static cv::Mat1i segmentationMap(const cv::Mat &image, const cv::Mat1b &mask) {
   slic->getLabels(croppedSuperPixelsMap);
 
   croppedSuperPixelsMap = croppedSuperPixelsMap + 1;
-
-  cv::Mat1i superPixelsMap(image.size(), 0);
   croppedSuperPixelsMap.copyTo(superPixelsMap(boundingBox), croppedMask);
-
   return superPixelsMap;
 }
 
@@ -238,6 +238,7 @@ static void fixSegmentationMap(cv::Mat1i *map, const cv::Mat1b &mask) {
 static cv::Mat4f sharpenWithinMask(const cv::Mat4f &image, const cv::Mat1b &mask) {
   cv::Mat maskPoints;
   cv::findNonZero(mask, maskPoints);
+
   auto boundingBox = cv::boundingRect(maskPoints);
 
   auto croppedImage = image(boundingBox);

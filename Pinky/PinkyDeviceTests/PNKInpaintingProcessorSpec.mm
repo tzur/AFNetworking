@@ -122,6 +122,28 @@ context(@"inpainting processor", ^{
                              output:outputBuffer.get() completion:^{}];
       }).to.raise(NSInvalidArgumentException);
     });
+
+    it(@"should raise when the mask is all zeros", ^{
+      if (!isSupported) {
+        return;
+      }
+
+      auto inputBuffer = LTCVPixelBufferCreate(kImageWidth, kImageHeight,
+                                               kCVPixelFormatType_32BGRA);
+      auto maskBuffer = LTCVPixelBufferCreate(kImageWidth, kImageHeight,
+                                              kCVPixelFormatType_OneComponent8);
+      auto outputBuffer = LTCVPixelBufferCreate(kImageWidth, kImageHeight,
+                                                kCVPixelFormatType_32BGRA);
+
+      LTCVPixelBufferImageForWriting(maskBuffer.get(), ^(cv::Mat *image) {
+        *image = 0;
+      });
+
+      expect(^{
+        [processor inpaintWithInput:inputBuffer.get() mask:maskBuffer.get()
+                             output:outputBuffer.get() completion:^{}];
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 
   context(@"inpaint", ^{
