@@ -8,7 +8,7 @@ SpecBegin(LTTimer)
 __block id timeProvider;
 
 beforeEach(^{
-  timeProvider = [OCMockObject mockForProtocol:@protocol(LTTimeProvider)];
+  timeProvider = [OCMockObject mockForProtocol:@protocol(LTTimeIntervalProvider)];
 });
 
 it(@"should measure time correctly between start and stop", ^{
