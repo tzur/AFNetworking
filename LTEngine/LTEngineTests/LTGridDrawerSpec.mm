@@ -186,7 +186,7 @@ context(@"drawing", ^{
       gridDrawer.color = LTVector4(rgba);
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, rgba);
-      expect(LTCompareMat(expected, output.image)).to.beTruthy();
+      expect($(output.image)).to.beCloseToMatPSNR($(expected), 50);
     });
 
     it(@"should draw with a custom opacity", ^{

@@ -3,8 +3,8 @@
 
 #import "LTHatPyramidProcessor.h"
 
-#import "LTPyramidTestUtils.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPyramidTestUtils.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTHatPyramidProcessor)
@@ -111,7 +111,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
         cv::Mat expectedImage;
         LTConvertMat(expectedPyramid[i], &expectedImage,
                      CV_MAKETYPE(CV_8U, expectedPyramid[i].channels()));
-        expect($([hatFullPyramid[i] image])).to.beCloseToMat($(expectedImage));
+        expect($([hatFullPyramid[i] image])).to.beCloseToMatPSNR($(expectedImage), 47);
       }
     });
   });

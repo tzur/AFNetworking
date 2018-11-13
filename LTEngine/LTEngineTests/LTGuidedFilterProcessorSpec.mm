@@ -218,7 +218,7 @@ context(@"processing with guide equals input", ^{
                                                            output:nonSquareOutput];
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna67x128_R7S3.png");
-    expect($([nonSquareOutput image])).to.beCloseToMatPSNR($(expected), 50);
+    expect($([nonSquareOutput image])).to.beCloseToMatPSNR($(expected), 47);
   });
 
   it(@"should not fail on one pixel image input", ^{
@@ -253,7 +253,7 @@ context(@"processing with guide different from input", ^{
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterBWMaskResult.png");
 
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   dit(@"should process correctly with different RGBA input and RGBA guide", ^{
@@ -272,7 +272,7 @@ context(@"processing with guide different from input", ^{
     guidedFilter.smoothingDegree = 0.001;
     [guidedFilter process];
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterAmphorasResult.png");
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
   });
 });
 

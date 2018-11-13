@@ -607,7 +607,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           return expectedCIImage;
         }];
 
-        expect($([texture image])).to.equalMat($(expected));
+        expect($([texture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       dit(@"should draw to red channel half float texture", ^{
@@ -659,7 +659,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           return expectedCIImage;
         }];
 
-        expect($(texture.image)).to.equalMat($(expected));
+        expect($(texture.image)).to.beCloseToMatPSNR($(expected), 50);
       });
 
       dit(@"should draw to 4 channel half float texture", ^{
