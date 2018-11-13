@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVPlayerItem.h>
+#import <LTKit/LTDateProvider.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/LTProgress.h>
 #import <LTKit/LTRandomAccessCollection.h>
@@ -19,7 +20,6 @@
 #import "PTNCacheInfo.h"
 #import "PTNCacheProxy.h"
 #import "PTNDataBackedImageAsset.h"
-#import "PTNDateProvider.h"
 #import "PTNFileBackedAVAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNImageMetadata.h"
@@ -139,15 +139,15 @@ static NSString * const kFakeURLString = @"http://foo.bar";
 __block NSURL *requestURL;
 __block PTNOceanClient *client;
 __block PTNOceanAssetManager *manager;
-__block PTNDateProvider *dateProvider;
+__block id<LTDateProvider> dateProvider;
 __block NSDate *date;
 
 beforeEach(^{
   requestURL = PTNFakeAlbumRequestURL();
   client = OCMClassMock([PTNOceanClient class]);
-  dateProvider = OCMClassMock([PTNDateProvider class]);
+  dateProvider = OCMClassMock([LTDateProvider class]);
   date = [NSDate date];
-  OCMStub([dateProvider date]).andReturn(date);
+  OCMStub([dateProvider currentDate]).andReturn(date);
   manager = [[PTNOceanAssetManager alloc] initWithClient:client dateProvider:dateProvider
              preferredImageDataPixelCount:(30 * 50) preferredVideoDataPixelCount:(720 * 1280)];
 });

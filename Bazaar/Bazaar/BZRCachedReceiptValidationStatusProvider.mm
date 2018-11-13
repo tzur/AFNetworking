@@ -3,6 +3,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 
+#import <LTKit/LTDateProvider.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent+AdditionalInfo.h"
@@ -10,15 +11,14 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRTimeConversion.h"
-#import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRCachedReceiptValidationStatusProvider ()
 
-/// Object used to provide the current time.
-@property (readonly, nonatomic) BZRTimeProvider *timeProvider;
+/// Object used to provide the current date.
+@property (readonly, nonatomic) id<LTDateProvider> dateProvider;
 
 /// Provider used to fetch the receipt validation status.
 @property (readonly, nonatomic) id<BZRReceiptValidationStatusProvider> underlyingProvider;
@@ -40,19 +40,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-                 timeProvider:(BZRTimeProvider *)timeProvider
+                 dateProvider:(id<LTDateProvider>)dateProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider {
-  return [self initWithCache:receiptValidationStatusCache timeProvider:timeProvider
+  return [self initWithCache:receiptValidationStatusCache dateProvider:dateProvider
           underlyingProvider:underlyingProvider cachedEntryDaysToLive:14];
 }
 
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
-                 timeProvider:(BZRTimeProvider *)timeProvider
+                 dateProvider:(id<LTDateProvider>)dateProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive {
   if (self = [super init]) {
     _cache = receiptValidationStatusCache;
-    _timeProvider = timeProvider;
+    _dateProvider = dateProvider;
     _underlyingProvider = underlyingProvider;
     _cachedEntryTimeToLive = [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive];
     _eventsSubject = [RACSubject subject];
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         [self storeReceiptValidationStatus:receiptValidationStatus
                        applicationBundleID:applicationBundleID
-                           cachingDateTime:[self.timeProvider currentTime]];
+                           cachingDateTime:[self.dateProvider currentDate]];
         [self removeFirstErrorDateTimeForApplicationWithBundleID:applicationBundleID];
       }]
       doError:^(NSError *) {
@@ -135,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
   auto timeSinceFirstError =
-      [[self.timeProvider currentTime] timeIntervalSinceDate:firstErrorDateTime];
+      [[self.dateProvider currentDate] timeIntervalSinceDate:firstErrorDateTime];
   return timeSinceFirstError > self.cachedEntryTimeToLive;
 }
 
@@ -167,7 +167,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)storeFirstErrorDateTimeIfDoesntExistForApplicationWithBundleID:
     (NSString *)applicationBundleID {
   if ([self isFirstErrorOfApplicationBundleID:applicationBundleID]) {
-    [self.cache storeFirstErrorDateTime:[self.timeProvider currentTime]
+    [self.cache storeFirstErrorDateTime:[self.dateProvider currentDate]
                     applicationBundleID:applicationBundleID];
   }
 }

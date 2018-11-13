@@ -8,8 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRKeychainStorageRoute, BZRReceiptValidationStatus, BZRKeychainStorageMigrator,
     BZRReceiptValidationStatusCache;
 
-@protocol BZRTimeProvider;
-
 /// Key to an \c NSDate in the cached entry specifying the date in which the first validation error,
 /// after the last success, occurred.
 extern NSString * const kBZRCachedReceiptValidationStatusFirstErrorDateTime;

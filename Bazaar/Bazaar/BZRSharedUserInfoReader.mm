@@ -8,7 +8,6 @@
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
-#import "BZRTimeProvider.h"
 
 @implementation BZRSharedUserInfoReader
 

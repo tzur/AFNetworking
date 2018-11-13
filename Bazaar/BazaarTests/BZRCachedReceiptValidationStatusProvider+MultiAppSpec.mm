@@ -1,17 +1,18 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRTestUtils.h"
-#import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(BZRCachedReceiptValidationStatusProvider_MultiApp)
 
-__block BZRTimeProvider *timeProvider;
+__block id<LTDateProvider> dateProvider;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
 __block RACSubject *underlyingEventsSubject;
@@ -19,16 +20,16 @@ __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
-  timeProvider = OCMClassMock(BZRTimeProvider.class);
+  dateProvider = OCMClassMock(LTDateProvider.class);
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
-  OCMStub([timeProvider currentTime]).andReturn([NSDate date]);
+  OCMStub([dateProvider currentDate]).andReturn([NSDate date]);
   validationStatusProvider = OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
                                              initWithCache:receiptValidationStatusCache
-                                             timeProvider:timeProvider
+                                             dateProvider:dateProvider
                                              underlyingProvider:underlyingProvider
                                              cachedEntryDaysToLive:14]);
 });
@@ -45,7 +46,7 @@ context(@"deallocating object", ^{
       BZRCachedReceiptValidationStatusProvider *provider =
           OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
                           initWithCache:receiptValidationStatusCache
-                          timeProvider:timeProvider
+                          dateProvider:dateProvider
                           underlyingProvider:underlyingProvider
                           cachedEntryDaysToLive:14]);
 
@@ -71,7 +72,7 @@ context(@"deallocating object", ^{
       BZRCachedReceiptValidationStatusProvider *provider =
           [[BZRCachedReceiptValidationStatusProvider alloc]
            initWithCache:receiptValidationStatusCache
-           timeProvider:timeProvider
+           dateProvider:dateProvider
            underlyingProvider:underlyingProvider
            cachedEntryDaysToLive:14];
       weakValidationStatusProvider = provider;
@@ -95,7 +96,7 @@ context(@"deallocating object", ^{
       BZRCachedReceiptValidationStatusProvider *provider =
           [[BZRCachedReceiptValidationStatusProvider alloc]
            initWithCache:receiptValidationStatusCache
-           timeProvider:timeProvider
+           dateProvider:dateProvider
            underlyingProvider:underlyingProvider
            cachedEntryDaysToLive:14];
       weakValidationStatusProvider = provider;

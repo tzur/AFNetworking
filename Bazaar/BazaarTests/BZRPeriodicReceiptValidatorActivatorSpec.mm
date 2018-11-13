@@ -3,9 +3,10 @@
 
 #import "BZRPeriodicReceiptValidatorActivator.h"
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRReceiptValidationDateProvider.h"
-#import "BZRTimeProvider.h"
 
 /// Fake receipt validation date provider that initializes \c nextValidationDate to
 /// \c [NSDate date].
@@ -23,18 +24,18 @@ SpecBegin(BZRPeriodicReceiptValidatorActivator)
 
 __block BZRExternalTriggerReceiptValidator *receiptValidator;
 __block BZRFakeReceiptValidationDateProvider *validationDateProvider;
-__block NSDate *currentTime;
-__block BZRTimeProvider *timeProvider;
+__block NSDate *currentDate;
+__block id<LTDateProvider> dateProvider;
 
 beforeEach(^{
   receiptValidator = OCMClassMock([BZRExternalTriggerReceiptValidator class]);
   validationDateProvider = [[BZRFakeReceiptValidationDateProvider alloc] init];
-  currentTime = [NSDate dateWithTimeIntervalSince1970:1337];
-  timeProvider = OCMClassMock(BZRTimeProvider.class);
-  OCMStub([timeProvider currentTime]).andReturn(currentTime);
+  currentDate = [NSDate dateWithTimeIntervalSince1970:1337];
+  dateProvider = OCMClassMock(LTDateProvider.class);
+  OCMStub([dateProvider currentDate]).andReturn(currentDate);
   auto __unused activator = [[BZRPeriodicReceiptValidatorActivator alloc]
       initWithReceiptValidator:receiptValidator
-      validationDateProvider:validationDateProvider timeProvider:timeProvider];
+      validationDateProvider:validationDateProvider dateProvider:dateProvider];
 });
 
 context(@"deallocating object", ^{
@@ -45,7 +46,7 @@ context(@"deallocating object", ^{
       BZRPeriodicReceiptValidatorActivator *receiptValidatorActivator =
           [[BZRPeriodicReceiptValidatorActivator alloc]
            initWithReceiptValidator:receiptValidator
-           validationDateProvider:validationDateProvider timeProvider:timeProvider];
+           validationDateProvider:validationDateProvider dateProvider:dateProvider];
       weakPeriodicValidatorActivator = receiptValidatorActivator;
     }
 
@@ -60,7 +61,7 @@ context(@"subscription exists", ^{
     });
 
     it(@"should activate periodic validation if next validation date is not nil", ^{
-      validationDateProvider.nextValidationDate = [currentTime dateByAddingTimeInterval:1];
+      validationDateProvider.nextValidationDate = [currentDate dateByAddingTimeInterval:1];
 
       OCMVerify([receiptValidator activateWithTrigger:OCMOCK_ANY]);
     });
@@ -73,7 +74,7 @@ context(@"subscription exists", ^{
             [invocation getArgument:&signal atIndex:2];
             validateReceiptSignal = signal;
           });
-      validationDateProvider.nextValidationDate = [currentTime dateByAddingTimeInterval:-1];
+      validationDateProvider.nextValidationDate = [currentDate dateByAddingTimeInterval:-1];
 
       expect(validateReceiptSignal).to.sendValuesWithCount(1);
     });

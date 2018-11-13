@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import <LTKit/LTDateProvider.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
@@ -10,7 +11,6 @@
 #import "BZRStore.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRTestUtils.h"
-#import "BZRTimeProvider.h"
 #import "SKPaymentQueue+Bazaar.h"
 
 SpecBegin(BZRReceiptValidationStatusIntegration)
@@ -18,7 +18,7 @@ SpecBegin(BZRReceiptValidationStatusIntegration)
 __block UICKeyChainStore *keychainStore;
 __block NSFileManager *fileManager;
 __block SKPaymentQueue *paymentQueue;
-__block BZRTimeProvider *timeProvider;
+__block id<LTDateProvider> dateProvider;
 __block NSData *dataMock;
 __block BZRStore *store;
 
@@ -29,8 +29,8 @@ beforeEach(^{
   fileManager = OCMPartialMock([NSFileManager defaultManager]);
   paymentQueue = OCMClassMock([SKPaymentQueue class]);
   OCMStub([(id)paymentQueue defaultQueue]).andReturn(paymentQueue);
-  timeProvider = OCMClassMock([BZRTimeProvider class]);
-  OCMStub([(id)timeProvider defaultTimeProvider]).andReturn(timeProvider);
+  dateProvider = OCMClassMock([LTDateProvider class]);
+  OCMStub([(id)dateProvider dateProvider]).andReturn(dateProvider);
   dataMock = OCMClassMock([NSData class]);
 });
 
@@ -39,7 +39,7 @@ afterEach(^{
   keychainStore = nil;
   fileManager = nil;
   paymentQueue = nil;
-  timeProvider = nil;
+  dateProvider = nil;
   dataMock = nil;
 });
 
@@ -63,7 +63,7 @@ context(@"single app mode", ^{
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
     BZRStubHTTPClientToReturnReceiptValidationStatus(receiptValidationStatus);
     auto expirationDateTime = receiptValidationStatus.receipt.subscription.expirationDateTime;
-    OCMStub([timeProvider currentTime]).andReturn(expirationDateTime);
+    OCMStub([dateProvider currentDate]).andReturn(expirationDateTime);
 
     expect([store validateReceipt]).will.complete();
 
@@ -74,7 +74,7 @@ context(@"single app mode", ^{
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     BZRStubHTTPClientToReturnReceiptValidationStatus(receiptValidationStatus);
     auto expirationDateTime = receiptValidationStatus.receipt.subscription.expirationDateTime;
-    OCMStub([timeProvider currentTime]).andReturn(expirationDateTime);
+    OCMStub([dateProvider currentDate]).andReturn(expirationDateTime);
 
     expect([store validateReceipt]).will.complete();
 

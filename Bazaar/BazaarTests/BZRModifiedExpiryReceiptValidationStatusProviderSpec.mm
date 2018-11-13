@@ -3,31 +3,32 @@
 
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTestUtils.h"
 #import "BZRTimeConversion.h"
-#import "BZRTimeProvider.h"
 
 SpecBegin(BZRModifiedExpiryReceiptValidationStatusProvider)
 
-__block BZRTimeProvider *timeProvider;
+__block id<LTDateProvider> dateProvider;
 __block NSUInteger gracePeriod;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
 __block RACSubject *underlyingEventsSubject;
 __block BZRModifiedExpiryReceiptValidationStatusProvider *modifiedReceiptProvider;
 
 beforeEach(^{
-  timeProvider = OCMClassMock(BZRTimeProvider.class);
+  dateProvider = OCMClassMock(LTDateProvider.class);
   gracePeriod = 7;
   underlyingProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
   modifiedReceiptProvider =
-      [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
+      [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithDateProvider:dateProvider
        expiredSubscriptionGracePeriod:gracePeriod underlyingProvider:underlyingProvider];
 });
 
@@ -37,7 +38,7 @@ context(@"deallocating object", ^{
     RACSignal *fetchSignal;
     RACSignal *eventsSignal;
 
-    OCMStub([timeProvider currentTime]).andReturn([NSDate distantPast]);
+    OCMStub([dateProvider currentDate]).andReturn([NSDate distantPast]);
     BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
@@ -45,7 +46,7 @@ context(@"deallocating object", ^{
     @autoreleasepool {
       auto modifiedReceiptProvider =
           [[BZRModifiedExpiryReceiptValidationStatusProvider alloc]
-           initWithTimeProvider:timeProvider expiredSubscriptionGracePeriod:gracePeriod
+           initWithDateProvider:dateProvider expiredSubscriptionGracePeriod:gracePeriod
            underlyingProvider:underlyingProvider];
 
       weakModifiedReceiptProvider = modifiedReceiptProvider;
@@ -91,7 +92,7 @@ context(@"receipt validation status without subscription", ^{
           @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
         } error:nil];
 
-    OCMStub([timeProvider currentTime]).andReturn([NSDate distantPast]);
+    OCMStub([dateProvider currentDate]).andReturn([NSDate distantPast]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
 
@@ -125,7 +126,7 @@ sharedExamplesFor(kModifiedExpiryProviderExamples, ^(NSDictionary *data) {
     OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal return:receiptValidationStatus]);
     NSDate *currentTime = data[kModifiedExpiryProviderCurrentTimeKey];
-    OCMStub([timeProvider currentTime]).andReturn(currentTime);
+    OCMStub([dateProvider currentDate]).andReturn(currentTime);
     expectedIsExpired = data[kModifiedExpiryProviderExpectedIsExpiredValueKey];
   });
 

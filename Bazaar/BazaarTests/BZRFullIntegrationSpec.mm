@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Yonatan Oren.
 
+#import <LTKit/LTDateProvider.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
@@ -15,7 +16,6 @@
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitRequestsFactory.h"
 #import "BZRTestUtils.h"
-#import "BZRTimeProvider.h"
 #import "SKPaymentQueue+Bazaar.h"
 #import "SKProductsRequest+RACSignalSupport.h"
 
@@ -74,7 +74,7 @@ SpecBegin(BZRFullIntegrationSpec)
   __block UICKeyChainStore *keychainStore;
   __block NSFileManager *fileManager;
   __block SKPaymentQueue *paymentQueue;
-  __block BZRTimeProvider *timeProvider;
+  __block LTDateProvider *dateProvider;
   __block NSData *dataMock;
   __block BZRStoreKitRequestsFactory *requestsFactory;
   __block LTPath *JSONFilePath;
@@ -90,8 +90,8 @@ SpecBegin(BZRFullIntegrationSpec)
     fileManager = OCMPartialMock([NSFileManager defaultManager]);
     paymentQueue = OCMClassMock([SKPaymentQueue class]);
     OCMStub([(id)paymentQueue defaultQueue]).andReturn(paymentQueue);
-    timeProvider = OCMClassMock([BZRTimeProvider class]);
-    OCMStub([(id)timeProvider defaultTimeProvider]).andReturn(timeProvider);
+    dateProvider = OCMClassMock([LTDateProvider class]);
+    OCMStub([(id)dateProvider dateProvider]).andReturn(dateProvider);
     dataMock = OCMClassMock([NSData class]);
     requestsFactory = OCMClassMock([BZRStoreKitRequestsFactory class]);
 
@@ -114,7 +114,7 @@ SpecBegin(BZRFullIntegrationSpec)
              @[subscriptionProduct.identifier].lt_set]).andReturn(productsRequest);
     OCMStub([productsRequest statusSignal]).andReturn([RACSignal return:productsResponse]);
 
-    OCMStub([timeProvider currentTime])
+    OCMStub([dateProvider currentDate])
         .andReturn(receiptValidationStatus.receipt.subscription.expirationDateTime);
   });
 
@@ -123,7 +123,7 @@ SpecBegin(BZRFullIntegrationSpec)
     keychainStore = nil;
     fileManager = nil;
     paymentQueue = nil;
-    timeProvider = nil;
+    dateProvider = nil;
     dataMock = nil;
     [(id)requestsFactory stopMocking];
   });

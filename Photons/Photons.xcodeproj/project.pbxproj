@@ -14,7 +14,6 @@
 		0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF1515E1EAF7330009F3080 /* CoreMedia.framework */; };
 		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 		19D95D1F1FBB1C2500357EB9 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D95D1E1FBB1C2500357EB9 /* libLTKitTestUtils.a */; };
-		2855B0C91FC6EFEF004C2187 /* PTNDateProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2855B0C81FC6EFEF004C2187 /* PTNDateProvider.mm */; };
 		2873C97E1F54648900677B2C /* RACSignal+Mantle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */; };
 		2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */; };
 		2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */; };
@@ -664,8 +663,6 @@
 		0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAVImageGeneratorFactory.h; sourceTree = "<group>"; };
 		0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNAVImageGeneratorFactory.mm; sourceTree = "<group>"; };
 		0DF1515E1EAF7330009F3080 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		2855B0C71FC6EFEF004C2187 /* PTNDateProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTNDateProvider.h; sourceTree = "<group>"; };
-		2855B0C81FC6EFEF004C2187 /* PTNDateProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNDateProvider.mm; sourceTree = "<group>"; };
 		2873C97C1F54648900677B2C /* RACSignal+Mantle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Mantle.h"; sourceTree = "<group>"; };
 		2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+Mantle.mm"; sourceTree = "<group>"; };
 		2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+MantleSpec.mm"; sourceTree = "<group>"; };
@@ -1531,8 +1528,6 @@
 				842A3C281C54C70400BD10C1 /* PTNDataAsset.h */,
 				842A3C421C54D33A00BD10C1 /* PTNDataBackedImageAsset.h */,
 				842A3C431C54D33A00BD10C1 /* PTNDataBackedImageAsset.mm */,
-				2855B0C71FC6EFEF004C2187 /* PTNDateProvider.h */,
-				2855B0C81FC6EFEF004C2187 /* PTNDateProvider.mm */,
 				8B2FD0851B00E81100757B1F /* PTNDescriptor.h */,
 				8430E00C1D8839350071C3C3 /* PTNDescriptor.mm */,
 				885AA7302095EA8000B40FE5 /* PTNFileBackedAVAsset.h */,
@@ -2425,7 +2420,6 @@
 				846341CB1CFC3861001FA199 /* PTNMulticastingSignalCache.mm in Sources */,
 				84ED227C1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm in Sources */,
 				845161691C984B3B00AD8B5B /* PTNGatewayAlbumDescriptor.mm in Sources */,
-				2855B0C91FC6EFEF004C2187 /* PTNDateProvider.mm in Sources */,
 				84E55C3C1C8EC85E00D91339 /* PTNFileSystemAssetManager.mm in Sources */,
 				B4D898931EF6498B00348896 /* MPMediaItem+Photons.mm in Sources */,
 				84E55C411C8EC86900D91339 /* PhotoKit+Photons.mm in Sources */,

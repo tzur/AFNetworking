@@ -3,19 +3,20 @@
 
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 
+#import <LTKit/LTDateProvider.h>
+
 #import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeConversion.h"
-#import "BZRTimeProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRModifiedExpiryReceiptValidationStatusProvider ()
 
 /// Provider used to check if the expired subscription grace period is over.
-@property (readonly, nonatomic) BZRTimeProvider *timeProvider;
+@property (readonly, nonatomic) id<LTDateProvider> dateProvider;
 
 /// Specifies the number of days the user is allowed to use products that he acquired via
 /// subscription after its subscription has been expired.
@@ -32,11 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithTimeProvider:(BZRTimeProvider *)timeProvider
+- (instancetype)initWithDateProvider:(id<LTDateProvider>)dateProvider
     expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
     underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider {
   if (self = [super init]) {
-    _timeProvider = timeProvider;
+    _dateProvider = dateProvider;
     _expiredSubscriptionGracePeriodSeconds =
         [BZRTimeConversion numberOfSecondsInDays:expiredSubscriptionGracePeriod];
     _underlyingProvider = underlyingProvider;
@@ -83,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BZRReceiptValidationStatus *)
     extendedSubscriptionModifer:(BZRReceiptValidationStatus *)receiptValidationStatus {
   return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
-                                           currentTime:[self.timeProvider currentTime]];
+                                           currentTime:[self.dateProvider currentDate]];
   }
 
 - (BZRReceiptValidationStatus *)extendedValidationStatusWithGracePeriod:
