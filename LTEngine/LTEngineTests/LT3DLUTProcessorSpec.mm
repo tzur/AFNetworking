@@ -8,22 +8,6 @@
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
-/// Synthesizes all rgb colors into a 4096x4096 matrix.
-static cv::Mat LTSynthesizeAllColors() {
-  cv::Mat4b colors(4096, 4096);
-
-  for (int y = 0; y < 4096; ++y) {
-    for (int x = 0; x < 4096; ++x) {
-      int sum = y * 4096 + x;
-      uchar r = (uchar)(sum % 256);
-      uchar g = (uchar)((sum / 256) % 256);
-      uchar b = (uchar)(sum / (256 * 256));
-      colors(y, x) = cv::Vec4b(r, g, b, (uchar)255);
-    }
-  }
-  return colors;
-}
-
 SpecBegin(LT3DLUTProcessor)
 
 context(@"initialization", ^{
@@ -105,7 +89,8 @@ context(@"shader tests", ^{
   });
 
   it(@"should apply identity LUT on an input image correctly", ^{
-    LTTexture *colorsTexture = [LTTexture textureWithImage:LTSynthesizeAllColors()];
+    cv::Mat randomColorsImage = LTGenerateCellsMat(CGSizeMakeUniform(1024), CGSizeMakeUniform(1));
+    LTTexture *colorsTexture = [LTTexture textureWithImage:randomColorsImage];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:colorsTexture];
     LT3DLUTProcessor *lutProcessor = [[LT3DLUTProcessor alloc] initWithInput:colorsTexture
                                                                       output:outputTexture];
