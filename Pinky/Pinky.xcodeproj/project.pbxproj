@@ -303,6 +303,7 @@
 		E4BED1421FEFDE3A00160C9B /* PNKRunnableNeuralNetwork.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BED1411FEFDE3A00160C9B /* PNKRunnableNeuralNetwork.mm */; };
 		E4BED1451FF007C600160C9B /* PNKNetworkSchemeFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BED1441FF007C600160C9B /* PNKNetworkSchemeFactory.mm */; };
 		E4BED1471FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BED1461FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm */; };
+		E4BF14A8219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BF14A6219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.mm */; };
 		E4BFCD4A2190AADF00515BC8 /* PNKUnitRangeNormalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BFCD492190AADF00515BC8 /* PNKUnitRangeNormalizationSpec.mm */; };
 		E4BFCD4B219170F400515BC8 /* PNKUnitRangeNormalization.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D7FCDD219062150004D8E5 /* PNKUnitRangeNormalization.metal */; };
 		E4C11CB520318041002CC63E /* person.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = E4C11CB120318040002CC63E /* person.nnmodel */; };
@@ -1078,6 +1079,8 @@
 		E4BED1431FF007C600160C9B /* PNKNetworkSchemeFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNetworkSchemeFactory.h; sourceTree = "<group>"; };
 		E4BED1441FF007C600160C9B /* PNKNetworkSchemeFactory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNetworkSchemeFactory.mm; sourceTree = "<group>"; };
 		E4BED1461FF10B1E00160C9B /* PNKRunnableNeuralNetworkSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKRunnableNeuralNetworkSpec.mm; sourceTree = "<group>"; };
+		E4BF14A6219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToMatIntersectionOverUnion.mm"; sourceTree = "<group>"; };
+		E4BF14A7219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToMatIntersectionOverUnion.h"; sourceTree = "<group>"; };
 		E4BFCD492190AADF00515BC8 /* PNKUnitRangeNormalizationSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKUnitRangeNormalizationSpec.mm; sourceTree = "<group>"; };
 		E4C11CB120318040002CC63E /* person.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = person.nnmodel; path = Models/segmentation/person.nnmodel; sourceTree = SOURCE_ROOT; };
 		E4C11CB220318040002CC63E /* sketch.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sketch.nnmodel; path = Models/style_transfer/sketch.nnmodel; sourceTree = SOURCE_ROOT; };
@@ -1210,6 +1213,8 @@
 				283A4B8E1FE9058C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */,
 				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
+				E4BF14A7219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.h */,
+				E4BF14A6219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.mm */,
 				E4D1BCDE20CEA73100377696 /* EXPMatchers+beCloseToMatNormalizedHamming.h */,
 				E4D1BD0120CEA73100377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm */,
 				E412CE142056958C00147D06 /* EXPMatchers+beCloseToMatPSNR.h */,
@@ -2719,6 +2724,7 @@
 				E4D1BD0220CEA73100377696 /* EXPMatchers+beCloseToMatNormalizedHamming.mm in Sources */,
 				E4590B2A20B442E100C7F7F3 /* PNKImageMotionWaterLayerSpec.mm in Sources */,
 				E43F3D99207B9CBA0017AE3A /* PNKTestComputeState.mm in Sources */,
+				E4BF14A8219ABC62009AAE11 /* EXPMatchers+beCloseToMatIntersectionOverUnion.mm in Sources */,
 				E425F78820BD4C70006E3639 /* PNKImageMotionGrassLayerSpec.mm in Sources */,
 				28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */,
 				E4E28DE920DFBE51001920E6 /* PNKImageMotionSegmentationProcessorSpec.mm in Sources */,
