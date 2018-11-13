@@ -23,7 +23,7 @@ it(@"should return UTI for every compression extension", ^{
   }];
 });
 
-it(@"should support correct formats", ^{
+sit(@"should support correct formats", ^{
   [LTCompressionFormat enumerateEnumUsingBlock:^(LTCompressionFormat *format) {
     if (@available(iOS 11.3, *)) {
       expect(format.isSupported).to.beTruthy();
