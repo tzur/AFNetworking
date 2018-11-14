@@ -2,6 +2,7 @@
 // Created by Ben Yohay.
 
 #import "BZRReceiptValidationStatusProvider.h"
+#import "BZRTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
