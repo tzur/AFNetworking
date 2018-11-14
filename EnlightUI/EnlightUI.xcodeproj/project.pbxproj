@@ -31,6 +31,8 @@
 		192A8FEA2174E26800EA27B4 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8FE32174E25B00EA27B4 /* ZipArchive.framework */; };
 		192A8FEC2174E28700EA27B4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8FEB2174E28700EA27B4 /* StoreKit.framework */; };
 		192A8FF92174E2E900EA27B4 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A8FF62174E2BC00EA27B4 /* libUICKeyChainStore.a */; };
+		19414387219C37DD00AC1062 /* EUISMModel+ProductInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19414385219C37DD00AC1062 /* EUISMModel+ProductInfo.mm */; };
+		19414389219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19414388219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm */; };
 		1983A8972178D24D004C632A /* EUISMYourPlanCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983A8962178D24D004C632A /* EUISMYourPlanCell.mm */; };
 		1983A8FA2178DC6D004C632A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1983A8F92178DC6D004C632A /* Security.framework */; };
 		1983A8FC2178DE6B004C632A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1983A8FB2178DE6B004C632A /* MessageUI.framework */; };
@@ -611,6 +613,9 @@
 		192A8FDB2174E25B00EA27B4 /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ../third_party/SSZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		192A8FEB2174E28700EA27B4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		192A8FED2174E2BC00EA27B4 /* UICKeyChainStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UICKeyChainStore.xcodeproj; path = ../third_party/UICKeyChainStore/Lib/UICKeyChainStore.xcodeproj; sourceTree = "<group>"; };
+		19414385219C37DD00AC1062 /* EUISMModel+ProductInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EUISMModel+ProductInfo.mm"; sourceTree = "<group>"; };
+		19414386219C37DD00AC1062 /* EUISMModel+ProductInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EUISMModel+ProductInfo.h"; sourceTree = "<group>"; };
+		19414388219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "EUISMModel+ProductInfoSpec.mm"; sourceTree = "<group>"; };
 		1983A8952178D24D004C632A /* EUISMYourPlanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMYourPlanCell.h; sourceTree = "<group>"; };
 		1983A8962178D24D004C632A /* EUISMYourPlanCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanCell.mm; sourceTree = "<group>"; };
 		1983A8F92178DC6D004C632A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -877,6 +882,7 @@
 		1983A89221778240004C632A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				19414388219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1141,6 +1147,8 @@
 			children = (
 				1983AB15217DAB43004C632A /* EUISMModel.h */,
 				1983AB16217DAB44004C632A /* EUISMModel.mm */,
+				19414386219C37DD00AC1062 /* EUISMModel+ProductInfo.h */,
+				19414385219C37DD00AC1062 /* EUISMModel+ProductInfo.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1830,6 +1838,7 @@
 				1983B5162189D174004C632A /* UIColor+EnlightUI.mm in Sources */,
 				1983ADDC217F3388004C632A /* EUISMYourPlanViewModel.mm in Sources */,
 				1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */,
+				19414387219C37DD00AC1062 /* EUISMModel+ProductInfo.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1838,6 +1847,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */,
+				19414389219C467600AC1062 /* EUISMModel+ProductInfoSpec.mm in Sources */,
 				1983ADE4217F33A9004C632A /* EUISMYourPlanViewModelSpec.mm in Sources */,
 				1983B51F2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm in Sources */,
 				1983ADE2217F3397004C632A /* EUISMModel+Test.mm in Sources */,

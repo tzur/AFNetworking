@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// type.
 + (instancetype)modelWithEcoSystemSubscription;
 
-/// Creates and returns an EUISMModel with current product in billing retry period if given
+/// Creates and returns an EUISMModel with current subscription in billing retry period if given
 /// \c billingIssues is \c YES, and not in billing retry period if \c billingIssues is \c NO.
 + (instancetype)modelWithBillingIssues:(BOOL)billingIssues;
 
@@ -26,14 +26,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// given \c expired is \c YES, the current subscription is expired, else it is not expired.
 + (instancetype)modelWithBillingPeriod:(BZRBillingPeriod *)billingPeriod expired:(BOOL)expired;
 
-/// Creates and returns an EUISMModel with current product with the given \c billingPeriod, and
-/// pending product (the product that will be current after subscription renews) with the given
-/// \c pendingBillingPeriod.
-+ (instancetype)modelWithBillingPeriod:(BZRBillingPeriod *)billingPeriod
-                  pendingBillingPeriod:(BZRBillingPeriod *)pendingBillingPeriod;
+/// Creates and returns an EUISMModel with current product with the given \c productID.
++ (instancetype)modelWithCurrentProductID:(NSString *)productID;
 
-/// Creates and returns an EUISMModel with \c nil as current product and \c nil as current
-/// subscription.
+/// Creates and returns an EUISMModel with pending product (the product that will be current after
+/// subscription renews) with the given \c pendingProductID.
++ (instancetype)modelWithPendingProductID:(NSString *)pendingProductID;
+
+/// Creates and returns an EUISMModel with \c nil as current subscription.
 + (instancetype)modelWithNoSubscription;
 
 /// Creates and returns an EUISMModel that its current subscription is with auto renewal if the

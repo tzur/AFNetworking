@@ -8,6 +8,7 @@
 #import <Bazaar/BZRReceiptModel.h>
 
 #import "EUISMModel.h"
+#import "EUISMModel+ProductInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -76,13 +77,12 @@ using namespace eui;
 }
 
 + (NSString *)titleFromModel:(EUISMModel *)model {
-  auto _Nullable productInfo = [EUISMYourPlanViewModel relevantProductInfoFromModel:model];
-  return productInfo.subscriptionType == EUISMSubscriptionTypeEcoSystem ?
+  return [model currentProductInfo].subscriptionType == EUISMSubscriptionTypeEcoSystem ?
       @"Enlight PRO Suite" : model.currentApplication.fullName;
 }
 
 + (NSString *)subtitleFromModel:(EUISMModel *)model {
-  auto _Nullable productInfo = [EUISMYourPlanViewModel relevantProductInfoFromModel:model];
+  auto _Nullable productInfo = [model currentProductInfo];
   if (!productInfo || !model.currentSubscriptionInfo) {
     auto notAMemberSubtitle = _LDefault(@"You are not a member yet", @"Text shown when the user is "
                                         "not subscribed to the application");
@@ -129,10 +129,6 @@ using namespace eui;
                                   "the application");
   auto expiredSubtitle = expiredSubtitlePrefix;
   return isExpired ? expiredSubtitle : memberSubtitle;
-}
-
-+ (nullable EUISMProductInfo *)relevantProductInfoFromModel:(EUISMModel *)model {
-  return model.pendingProductInfo ?: model.currentProductInfo;
 }
 
 + (NSString *)bodyFromModel:(EUISMModel *)model {
