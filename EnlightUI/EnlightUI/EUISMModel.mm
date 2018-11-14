@@ -107,14 +107,11 @@ LTEnumImplement(NSUInteger, EUISMApplication,
 
 - (instancetype)initWithCurrentApplication:(EUISMApplication *)currentApplication
     currentSubscriptionInfo:(nullable BZRReceiptSubscriptionInfo *)currentSubscriptionInfo
-    currentProductInfo:(nullable EUISMProductInfo *)currentProductInfo
-    pendingProductInfo:(nullable EUISMProductInfo *)pendingProductInfo
-    subscriptionGroupProductsInfo:(NSSet<EUISMProductInfo *> *)subscriptionGroupProductsInfo {
+    subscriptionGroupProductsInfo:
+        (NSDictionary<NSString *, EUISMProductInfo *> *)subscriptionGroupProductsInfo {
   if (self = [super init]) {
     _currentApplication = currentApplication;
     _currentSubscriptionInfo = currentSubscriptionInfo;
-    _currentProductInfo = currentProductInfo;
-    _pendingProductInfo = pendingProductInfo;
     _subscriptionGroupProductsInfo = subscriptionGroupProductsInfo;
   }
   return self;

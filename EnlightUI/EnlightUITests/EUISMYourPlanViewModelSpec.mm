@@ -155,15 +155,6 @@ context(@"subtitle", ^{
 
     expect(recorder).to.sendValues(@[@"You are not a member yet", @"You are a member"]);
   });
-
-  it(@"should set subtitle according to pending product if different than current product", ^{
-    auto model = [EUISMModel modelWithBillingPeriod:monthlyBillingPeriod
-                               pendingBillingPeriod:yearlyBillingPeriod];
-
-    [modelSubject sendNext:model];
-
-    expect(viewModel.subtitle).to.equal(@"You are a Yearly member");
-  });
 });
 
 context(@"body", ^{
