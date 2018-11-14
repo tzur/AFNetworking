@@ -14,26 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Label for the title.
 @property (readonly, nonatomic) UILabel *titleLabel;
 
-/// Font size of the title.
-@property (nonatomic) CGFloat titleFontSize;
-
 /// Vertical spacer view to seperate the title from the content below it.
 @property (readonly, nonatomic) UIView *titleSpacer;
 
 /// Label for the subtitle.
 @property (readonly, nonatomic) UILabel *subtitleLabel;
 
-/// Font size of the subtitle.
-@property (nonatomic) CGFloat subtitleFontSize;
-
 /// Vertical spacer view to seperate the subtitle from the content below it.
 @property (readonly, nonatomic) UIView *subtitleSpacer;
 
 /// Label for the body.
 @property (readonly, nonatomic) UILabel *bodyLabel;
-
-/// Font size of the body.
-@property (nonatomic) CGFloat bodyFontSize;
 
 /// Image view for the current application thumbnail.
 @property (readonly, nonatomic) UIImageView *currentAppThumbnailView;
@@ -106,10 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
   _titleLabel = [[UILabel alloc] init];
   self.titleLabel.textColor = [[UIColor eui_whiteColor] colorWithAlphaComponent:0.9];
   RAC(self.titleLabel, text) = RACObserve(self, viewModel.title);
-  RAC(self.titleLabel, font) = [RACObserve(self, titleFontSize)
-      map:^UIFont *(NSNumber *fontSize) {
-        return [UIFont eui_secondaryLabelFontWithSize:fontSize.CGFloatValue];
-  }];
 }
 
 - (void)setupTitleSpacer {
@@ -131,10 +118,6 @@ NS_ASSUME_NONNULL_BEGIN
   _subtitleLabel = [[UILabel alloc] init];
   self.subtitleLabel.textColor = [[UIColor eui_mainTextColor] colorWithAlphaComponent:0.9];
   RAC(self.subtitleLabel, text) = RACObserve(self, viewModel.subtitle);
-  RAC(self.subtitleLabel, font) = [RACObserve(self, subtitleFontSize)
-      map:^UIFont *(NSNumber *fontSize) {
-        return [UIFont eui_mainTextFontWithSize:fontSize.CGFloatValue];
-  }];
 }
 
 - (void)setupSubtitleSpacer {
@@ -157,10 +140,6 @@ NS_ASSUME_NONNULL_BEGIN
   _bodyLabel = [[UILabel alloc] init];
   self.bodyLabel.textColor = [UIColor eui_secondaryTextColor];
   RAC(self.bodyLabel, text) = RACObserve(self, viewModel.body);
-  RAC(self.bodyLabel, font) = [RACObserve(self, bodyFontSize)
-      map:^UIFont *(NSNumber *fontSize) {
-        return [UIFont eui_mainTextFontWithSize:fontSize.CGFloatValue];
-  }];
 }
 
 - (void)setupInfoIcons {
@@ -212,9 +191,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)layoutSubviews {
-  self.titleFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.045, 16., 17.);
-  self.subtitleFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.035, 11., 13.);
-  self.bodyFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.035, 11., 13.);
+  auto titleFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.045, 16., 17.);
+  self.titleLabel.font = [UIFont eui_secondaryLabelFontWithSize:titleFontSize];
+  auto subtitleFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.035, 11., 13.);
+  self.subtitleLabel.font = [UIFont eui_mainTextFontWithSize:subtitleFontSize];
+  auto bodyFontSize = std::clamp(CGRectGetWidth(self.bounds) * 0.035, 11., 13.);
+  self.bodyLabel.font = [UIFont eui_mainTextFontWithSize:bodyFontSize];
+  [super layoutSubviews];
 }
 
 @end
