@@ -146,7 +146,7 @@ context(@"compare to OpenCV 2d delta", ^{
     cv::Mat expected;
     cv::GaussianBlur([input image], expected, cv::Size(kKernelSize, kKernelSize), kSigma, kSigma,
         cv::BORDER_REPLICATE);
-    expect($([output image])).to.equalMat($(expected));
+    expect($([output image])).to.beCloseToMatPSNR($(expected), 50);
   });
 
   it(@"should produce correct output for sigma equals 1.5 and a bigger kernel size", ^{

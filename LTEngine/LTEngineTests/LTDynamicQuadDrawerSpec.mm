@@ -345,7 +345,7 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveQuad0.png"));
-        expect($([outputTexture image])).to.beCloseToMatWithin($(expected), 1);
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw another perspectively distorted quad", ^{
@@ -377,7 +377,7 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveGeneralQuad.png"));
-        expect($([outputTexture image])).to.beCloseToMatWithin($(expected), 1);
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
     });
 
@@ -390,7 +390,7 @@ context(@"drawing", ^{
         }];
 
         cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad0.png"));
-        expect($([outputTexture image])).to.beCloseToMatWithin($(expected), 1);
+        expect($([outputTexture image])).to.beCloseToMatPSNR($(expected), 50);
       });
 
       it(@"should draw with another quad portion of a texture", ^{

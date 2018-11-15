@@ -377,7 +377,7 @@ context(@"processing", ^{
     auto combinedOutput = LTGuidedFilterCombine(nonSquareInput, scaleCoefficients,
                                                 shiftCoefficients);
     cv::Mat expected = LTLoadMat([self class], @"GuidedFilterLenna67x128_R7S3.png");
-    expect($([combinedOutput image])).to.beCloseToMatPSNR($(expected), 50);
+    expect($([combinedOutput image])).to.beCloseToMatPSNR($(expected), 47);
   });
 
   it(@"shouldn't raise exceptions when processing with coefficients with aspect ratio very "

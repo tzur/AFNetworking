@@ -90,7 +90,7 @@ context(@"processing", ^{
       processor.constant = kConstant;
       [processor process];
 
-      expect($(output.image)).to.equalMat($(expectedResult));
+      expect($(output.image)).to.beCloseToMatPSNR($(expectedResult), 50);
     });
   });
 
@@ -142,7 +142,7 @@ context(@"processing", ^{
       processor.constant = kConstant;
       [processor process];
 
-      expect($(input.image)).to.equalMat($(expectedResult));
+      expect($(input.image)).to.beCloseToMatPSNR($(expectedResult), 50);
     });
   });
 });

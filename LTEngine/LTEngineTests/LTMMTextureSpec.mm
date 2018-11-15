@@ -510,20 +510,23 @@ dcontext(@"metal", ^{
     device = MTLCreateSystemDefaultDevice();
   });
 
-  it(@"should raise when initialize with buffer backed metal texture", ^{
-    id<MTLBuffer> buffer = [device newBufferWithLength:16
-                                               options:MTLResourceStorageModeShared];
-    auto textureDescriptor = [MTLTextureDescriptor
-                              texture2DDescriptorWithPixelFormat:MTLPixelFormatR8Unorm
-                              width:16 height:1 mipmapped:NO];
-    auto mtlTexture = [buffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:16];
-    expect(^{
-      __unused auto ltTexture = [[LTMMTexture alloc] initWithMTLTexture:mtlTexture];
-    }).to.raise(NSInternalInconsistencyException);
-  });
+  if (@available(iOS 11.0, *)) {
+    it(@"should raise when initialize with buffer backed metal texture", ^{
+      auto format = MTLPixelFormatR8Unorm;
+      NSUInteger length = [device minimumLinearTextureAlignmentForPixelFormat:format];
+      id<MTLBuffer> buffer = [device newBufferWithLength:length
+                                                 options:MTLResourceStorageModeShared];
+      auto textureDescriptor = [MTLTextureDescriptor
+                                texture2DDescriptorWithPixelFormat:format width:length height:1
+                                mipmapped:NO];
+      auto mtlTexture = [buffer newTextureWithDescriptor:textureDescriptor offset:0
+                                             bytesPerRow:length];
+      expect(^{
+        __unused auto ltTexture = [[LTMMTexture alloc] initWithMTLTexture:mtlTexture];
+      }).to.raise(NSInternalInconsistencyException);
+    });
 
 #if COREVIDEO_SUPPORTS_IOSURFACE
-  if (@available(iOS 11.0, *)) {
     it(@"should initialize with parent backed metal texture", ^{
       IOSurface *iosurface = [[IOSurface alloc] initWithProperties:@{
         IOSurfacePropertyKeyWidth: @16,
@@ -539,8 +542,8 @@ dcontext(@"metal", ^{
       auto ltTexture = [[LTMMTexture alloc] initWithMTLTexture:mtlTexture2];
       expect(ltTexture.size).to.equal(CGSizeMake(16, 1));
     });
-  }
 #endif
+  }
 });
 
 SpecEnd

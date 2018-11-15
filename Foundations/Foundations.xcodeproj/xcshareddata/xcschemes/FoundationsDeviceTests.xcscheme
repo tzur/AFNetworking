@@ -48,6 +48,16 @@
                ReferencedContainer = "container:../MetalToolbox/MetalToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B3DEBF318296B6100EA0C1A"
+               BuildableName = "LTEngineTests.xctest"
+               BlueprintName = "LTEngineTests"
+               ReferencedContainer = "container:../LTEngine/LTEngine.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

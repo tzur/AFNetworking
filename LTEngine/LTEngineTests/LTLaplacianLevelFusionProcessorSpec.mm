@@ -339,7 +339,7 @@ context(@"processing", ^{
     cv::Mat outputFloat;
     LTConvertMat([output image], &outputFloat, CV_MAKETYPE(CV_32F, expectedFloat.channels()));
 
-    expect($(outputFloat)).to.beCloseToMatWithin($(expectedFloat), 1.0 / 255.0);
+    expect($(outputFloat)).to.beCloseToMatPSNR($(expectedFloat), 50);
   });
 });
 
