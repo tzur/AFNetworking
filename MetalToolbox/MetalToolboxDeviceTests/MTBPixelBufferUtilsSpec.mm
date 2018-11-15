@@ -45,16 +45,74 @@ afterEach(^{
 });
 
 context(@"MPSImage creation from texture cache", ^{
-  it(@"should create an image from a pixel buffer", ^{
-    auto cache = MTBCVMetalTextureCacheCreate(device);
+  __block lt::Ref<CVMetalTextureCacheRef> cache;
+
+  beforeEach(^{
+    cache = MTBCVMetalTextureCacheCreate(device);
+  });
+
+  afterEach(^{
+    cache = nil;
+  });
+
+  it(@"should create an R8Unorm image from a OneComponent8 pixel buffer", ^{
+    auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_OneComponent8);
+    auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(1);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatR8Unorm);
+  });
+
+  it(@"should create an RG8Unorm image from a TwoComponent8 pixel buffer", ^{
+    auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_TwoComponent8);
+    auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(2);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatRG8Unorm);
+  });
+
+  it(@"should create an RGBA8Unorm image from a 32BGRA pixel buffer", ^{
     auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_32BGRA);
     auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
-    expect(mpsImage).toNot.beNil();
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(4);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatRGBA8Unorm);
+  });
+
+  it(@"should create an R16Float image from a OneComponent16Half pixel buffer", ^{
+    auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight,
+                                              kCVPixelFormatType_OneComponent16Half);
+    auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(1);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatR16Float);
+  });
+
+  it(@"should create an RG16Float image from a TwoComponent16Half pixel buffer", ^{
+    auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight,
+                                              kCVPixelFormatType_TwoComponent16Half);
+    auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(2);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatRG16Float);
+  });
+
+  it(@"should create an RGBA16Float image from a 64RGBAHalf pixel buffer", ^{
+    auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_64RGBAHalf);
+    auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get());
+    expect(mpsImage.width).to.equal(kWidth);
+    expect(mpsImage.height).to.equal(kHeight);
+    expect(mpsImage.featureChannels).to.equal(4);
+    expect(mpsImage.pixelFormat).to.equal(MTLPixelFormatRGBA16Float);
   });
 
   it(@"should create an image with number of feature channels less than number of channels of "
      "pixel buffer", ^{
-    auto cache = MTBCVMetalTextureCacheCreate(device);
     auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_32BGRA);
     auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get(), 3);
     expect(mpsImage).toNot.beNil();
@@ -62,7 +120,6 @@ context(@"MPSImage creation from texture cache", ^{
 
   it(@"should fail to create an image if number of feature channels exceeds number of channels of "
      "pixel buffer", ^{
-     auto cache = MTBCVMetalTextureCacheCreate(device);
      auto pixelBuffer = MTBCVPixelBufferCreate(kWidth, kHeight, kCVPixelFormatType_32BGRA);
      expect(^{
        __unused auto mpsImage = MTBImageFromPixelBuffer(pixelBuffer.get(), cache.get(), 5);
