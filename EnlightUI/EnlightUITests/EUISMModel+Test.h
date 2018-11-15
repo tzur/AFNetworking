@@ -1,11 +1,29 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Dekel Avrahami.
 
+#import <Bazaar/BZRBillingPeriod.h>
+
 #import "EUISMModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRBillingPeriod;
+/// Category to create billing period objects for the purpose of testing EnlightUI subscription
+/// management components
+@interface BZRBillingPeriod (EUISMTest)
+
+/// Creates and returns a BZRBillingPeriod with \c BZRBillingPeriodUnitMonths as unit and \c 1 as
+/// unit count.
++ (instancetype)eui_billingPeriodMonthly;
+
+/// Creates and returns a BZRBillingPeriod with \c BZRBillingPeriodUnitMonths as unit and \c 6 as
+/// unit count.
++ (instancetype)eui_billingPeriodBiyearly;
+
+/// Creates and returns a BZRBillingPeriod with \c BZRBillingPeriodUnitYears as unit and \c 1 as
+/// unit count.
++ (instancetype)eui_billingPeriodYearly;
+
+@end
 
 /// Category to ease the testing of EnlightUI subscription management components.
 @interface EUISMModel (Test)
@@ -43,6 +61,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creates and returns an EUISMModel that its current subscription expires at the given
 /// \c expirationTime.
 + (instancetype)modelWithExpirationTime:(NSDate *)expirationTime;
+
+/// Creates and returns an EUISMModel that has a product in the subscription group of its current
+/// subscription that is promoted (returned by <tt>[EUISMModel promotedProductInfo]</tt>) that is
+/// cheeper per month than the current subscription by the given \c savePercent. The given
+/// \c savePercent must be smaller than or equal to \c 100.
++ (instancetype)modelWithPromotedProductSavePercent:(NSUInteger)savePercent;
+
+/// Creates and returns an EUISMModel that its current subscription is to a product with the given
+/// \c billingPeriod, and the subscription group of the subscription contains a yearly product that
+/// is cheeper per month than the current subscription by the given \c savePercent. The given
+/// \c savePercent must be smaller than or equal to \c 100.
++ (instancetype)modelWithAvailableYearlyUpradeSavePercent:(NSUInteger)savePercent
+                                            billingPeriod:(BZRBillingPeriod *)billingPeriod;
 
 @end
 

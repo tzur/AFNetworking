@@ -50,26 +50,11 @@ context(@"subtitle", ^{
   __block BZRBillingPeriod *monthlyBillingPeriod;
   __block BZRBillingPeriod *biyearlyBillingPeriod;
   __block BZRBillingPeriod *yearlyBillingPeriod;
-  auto monthlyBillingPeriodDictionary = @{
-    @"unit": $(BZRBillingPeriodUnitMonths),
-    @"unitCount": @(1)
-  };
-  auto biyearlyBillingPeriodDictionary = @{
-    @"unit": $(BZRBillingPeriodUnitMonths),
-    @"unitCount": @(6)
-  };
-  auto yearlyBillingPeriodDictionary = @{
-    @"unit": $(BZRBillingPeriodUnitYears),
-    @"unitCount": @(1)
-  };
 
   beforeEach(^{
-    monthlyBillingPeriod = [[BZRBillingPeriod alloc]
-                            initWithDictionary:monthlyBillingPeriodDictionary error:nil];
-    biyearlyBillingPeriod = [[BZRBillingPeriod alloc]
-                             initWithDictionary:biyearlyBillingPeriodDictionary error:nil];
-    yearlyBillingPeriod = [[BZRBillingPeriod alloc] initWithDictionary:yearlyBillingPeriodDictionary
-                                                                 error:nil];
+    monthlyBillingPeriod = [BZRBillingPeriod eui_billingPeriodMonthly];
+    biyearlyBillingPeriod = [BZRBillingPeriod eui_billingPeriodBiyearly];
+    yearlyBillingPeriod = [BZRBillingPeriod eui_billingPeriodYearly];
   });
 
   it(@"should set monthly subtitle when subscription is monthly and not expired", ^{

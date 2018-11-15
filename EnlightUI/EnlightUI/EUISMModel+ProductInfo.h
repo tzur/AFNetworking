@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// available or if the product info for the current product is not available.
 - (nullable EUISMProductInfo *)currentProductInfo;
 
+/// Returns information about the subscription product to promote. The product to promote is a
+/// product from the subscription group of the current product that has a yearly billing period. If
+/// no such product available or the current product's billing period is not monthly returns \c nil.
+- (nullable EUISMProductInfo *)promotedProductInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END
