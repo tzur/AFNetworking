@@ -41,7 +41,7 @@ static const std::unordered_map<OSType, std::pair<MTLPixelFormat, NSUInteger>>
       {kCVPixelFormatType_TwoComponent8, {MTLPixelFormatRG8Unorm, 2}},
       {kCVPixelFormatType_32BGRA, {MTLPixelFormatRGBA8Unorm, 4}},
       {kCVPixelFormatType_OneComponent16Half, {MTLPixelFormatR16Float, 1}},
-      {kCVPixelFormatType_TwoComponent16Half, {MTLPixelFormatRG16Unorm, 2}},
+      {kCVPixelFormatType_TwoComponent16Half, {MTLPixelFormatRG16Float, 2}},
       {kCVPixelFormatType_64RGBAHalf, {MTLPixelFormatRGBA16Float, 4}}
     };
 
