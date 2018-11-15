@@ -184,6 +184,13 @@ context(@"LTEAGLViewDelegate", ^{
     }];
 
     expect(texture.fillColor).toNot.equal(LTVector4::zeros());
+
+    // -eaglView:drawInRect: internally invalidates the currently bound frame buffer. The following
+    // call guarantees that all rendering commands to the \c texture are compleated at the end of
+    // the test, prior to deallocation of the invalidated Fbo. Otherwise when running on IPhone6+
+    // device it crashes with \c EXC_BAD_ACCESS due to internal bug when \c glDeleteFramebuffer is
+    // called.
+    [texture mappedImageForReading:^(const cv::Mat &, BOOL) {}];
   });
 
   it(@"should use its context when performing drawing", ^{
@@ -199,6 +206,13 @@ context(@"LTEAGLViewDelegate", ^{
     }];
 
     OCMVerifyAll(contextMock);
+
+    // -eaglView:drawInRect: internally invalidates the currently bound frame buffer. The following
+    // call guarantees that all rendering commands to the \c texture are compleated at the end of
+    // the test, prior to deallocation of the invalidated Fbo. Otherwise when running on IPhone6+
+    // device it crashes with \c EXC_BAD_ACCESS due to internal bug when \c glDeleteFramebuffer is
+    // called.
+    [texture mappedImageForReading:^(const cv::Mat &, BOOL) {}];
   });
 
 #if defined(DEBUG) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
