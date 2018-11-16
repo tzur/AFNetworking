@@ -14,22 +14,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)eui_billingPeriodMonthly {
   return [[BZRBillingPeriod alloc] initWithDictionary:@{
-    @"unit": $(BZRBillingPeriodUnitMonths),
-    @"unitCount": @(1)
+    @instanceKeypath(BZRBillingPeriod, unit): $(BZRBillingPeriodUnitMonths),
+    @instanceKeypath(BZRBillingPeriod, unitCount): @(1)
   } error:nil];
 }
 
 + (instancetype)eui_billingPeriodBiyearly {
   return [[BZRBillingPeriod alloc] initWithDictionary:@{
-    @"unit": $(BZRBillingPeriodUnitMonths),
-    @"unitCount": @(6)
+    @instanceKeypath(BZRBillingPeriod, unit): $(BZRBillingPeriodUnitMonths),
+    @instanceKeypath(BZRBillingPeriod, unitCount): @(6)
   } error:nil];
 }
 
 + (instancetype)eui_billingPeriodYearly {
   return [[BZRBillingPeriod alloc] initWithDictionary:@{
-    @"unit": $(BZRBillingPeriodUnitYears),
-    @"unitCount": @(1)
+    @instanceKeypath(BZRBillingPeriod, unit): $(BZRBillingPeriodUnitYears),
+    @instanceKeypath(BZRBillingPeriod, unitCount): @(1)
   } error:nil];
 }
 
@@ -41,138 +41,114 @@ static NSString * const monthlyProductID = @"com.lightricks.EnlightEditor_V4.PA.
 static NSString * const yearlyProductID = @"com.lightricks.EnlightEditor_V4.PA.1M.ES_1Y.ES";
 static NSString * const dummyProductID = monthlyProductID;
 
-+ (NSDictionary *)dummyProductDictionary {
-  return @{
-    @"identifier": dummyProductID,
-    @"productType": @(1)
-  };
++ (BZRProduct *)dummyProduct {
+  return nn([[BZRProduct alloc] initWithDictionary:@{
+    @instanceKeypath(BZRProduct, identifier): dummyProductID,
+    @instanceKeypath(BZRProduct, productType): @(1)
+  } error:nil]);
 }
 
-+ (NSDictionary *)dummyBzrPendingRenewalInfoDictionary {
-  return @{@"isInBillingRetryPeriod": @NO, @"willAutoRenew": @YES};
++ (BZRSubscriptionPendingRenewalInfo *)dummyBzrPendingRenewalInfo {
+  return nn([[BZRSubscriptionPendingRenewalInfo alloc] initWithDictionary:@{
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, isInBillingRetryPeriod): @NO,
+    @instanceKeypath(BZRSubscriptionPendingRenewalInfo, willAutoRenew): @YES
+  } error:nil]);
 }
 
-+ (NSDictionary *)dummyBzrSubscriptionDictionary {
++ (BZRReceiptSubscriptionInfo *)dummyBzrSubscription {
   auto now = [NSDate date];
-  auto bzrPendingRenewalInfo = [[BZRSubscriptionPendingRenewalInfo alloc]
-                                initWithDictionary:[self dummyBzrPendingRenewalInfoDictionary]
-                                error:nil];
-  return @{
-    @"isExpired": @NO,
-    @"expirationDateTime": now,
-    @"pendingRenewalInfo": bzrPendingRenewalInfo,
-    @"productId": dummyProductID,
-    @"originalTransactionId": @"dummyTransactionID",
-    @"originalPurchaseDateTime": now,
-  };
+  auto bzrPendingRenewalInfo = [EUISMModel dummyBzrPendingRenewalInfo];
+  return nn([[BZRReceiptSubscriptionInfo alloc] initWithDictionary:@{
+    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @NO,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime): now,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, pendingRenewalInfo): bzrPendingRenewalInfo,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): dummyProductID,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"dummyTransactionID",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): now,
+  } error:nil]);
+}
+
++ (BZRProductPriceInfo *)priceInfoWithPrice:(NSDecimalNumber *)price {
+  return nn([[BZRProductPriceInfo alloc] initWithDictionary: @{
+    @instanceKeypath(BZRProductPriceInfo, price): price,
+    @instanceKeypath(BZRProductPriceInfo, localeIdentifier): @"en_US"
+  } error:nil]);
 }
 
 + (instancetype)modelWithSingleAppSubscriptionForApplication:(EUISMApplication *)application {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary] error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:[self dummyBzrSubscriptionDictionary] error:nil];
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
   return [[EUISMModel alloc] initWithCurrentApplication:application
-                                currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+                                currentSubscriptionInfo:[EUISMModel dummyBzrSubscription]
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithEcoSystemSubscription {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary] error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeEcoSystem];
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:[self dummyBzrSubscriptionDictionary] error:nil];
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeEcoSystem];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
-                                currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+                                currentSubscriptionInfo:[EUISMModel dummyBzrSubscription]
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithBillingIssues:(BOOL)billingIssues {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary] error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
-
-  auto pendingRenewalInfoDictionary = [self dummyBzrPendingRenewalInfoDictionary].mutableCopy;
-  pendingRenewalInfoDictionary[@"isInBillingRetryPeriod"] = @(billingIssues);
-  auto bzrPendingRenewalInfo = [[BZRSubscriptionPendingRenewalInfo alloc]
-                                initWithDictionary:pendingRenewalInfoDictionary
-                                error:nil];
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"pendingRenewalInfo"] = bzrPendingRenewalInfo;
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo,
+                                                          pendingRenewalInfo)
+      withValue:[[EUISMModel dummyBzrPendingRenewalInfo]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRSubscriptionPendingRenewalInfo,
+                                                          isInBillingRetryPeriod)
+      withValue:@(billingIssues)]];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithBillingPeriod:(BZRBillingPeriod *)billingPeriod expired:(BOOL)expired {
-  auto currentProductInfo = [EUISMModel dummyProductInfoWithBillingPeriod:billingPeriod];
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"isExpired"] = @(expired);
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto dummyProduct = [[EUISMModel dummyProduct]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, billingPeriod)
+      withValue:billingPeriod];
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:dummyProduct
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo, isExpired)
+      withValue:@(expired)];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
-}
-
-+ (EUISMProductInfo *)dummyProductInfoWithBillingPeriod:(BZRBillingPeriod *)billingPeriod {
-  auto productDictionary = [self dummyProductDictionary].mutableCopy;
-  productDictionary[@"billingPeriod"] = billingPeriod;
-  auto product = [[BZRProduct alloc] initWithDictionary:productDictionary error:nil];
-  return [[EUISMProductInfo alloc] initWithProduct:product
-                                  subscriptionType:EUISMSubscriptionTypeSingleApp];
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithCurrentProductID:(NSString *)productID {
-  auto productDictionary = [self dummyProductDictionary].mutableCopy;
-  productDictionary[@"identifier"] = productID;
-  auto product = [[BZRProduct alloc] initWithDictionary:productDictionary error:nil];
+  auto product = [[EUISMModel dummyProduct]
+                  modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, identifier)
+                  withValue:productID];
   auto productInfo = [[EUISMProductInfo alloc] initWithProduct:product
                                               subscriptionType:EUISMSubscriptionTypeSingleApp];
-
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"productId"] = productID;
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo, productId)
+      withValue:productID];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
                           subscriptionGroupProductsInfo:@{productID: productInfo}];
 }
 
 + (instancetype)modelWithPendingProductID:(NSString *)pendingProductID {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary] error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto pendingProductInfo = [[EUISMProductInfo alloc] initWithProduct:[[EUISMModel dummyProduct]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, identifier)
+      withValue:pendingProductID] subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto productsInfo = @{dummyProductID: dummyProductInfo, pendingProductID: pendingProductInfo};
 
-  auto pendingProductDictionary = [self dummyProductDictionary].mutableCopy;
-  pendingProductDictionary[@"identifier"] = pendingProductID;
-  auto pendingProduct = [[BZRProduct alloc] initWithDictionary:pendingProductDictionary error:nil];
-  auto pendingProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:pendingProduct
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
-  auto productsInfo = @{dummyProductID: currentProductInfo, pendingProductID: pendingProductInfo};
-
-  auto pendingRenewalInfoDictionary = [self dummyBzrPendingRenewalInfoDictionary].mutableCopy;
-  pendingRenewalInfoDictionary[@"expectedRenewalProductId"] = pendingProductID;
-  auto bzrPendingRenewalInfo = [[BZRSubscriptionPendingRenewalInfo alloc]
-                                initWithDictionary:pendingRenewalInfoDictionary
-                                error:nil];
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"pendingRenewalInfo"] = bzrPendingRenewalInfo;
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo,
+                                                          pendingRenewalInfo)
+      withValue:[[EUISMModel dummyBzrPendingRenewalInfo]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRSubscriptionPendingRenewalInfo,
+                                                          expectedRenewalProductId)
+      withValue:pendingProductID]];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
                           subscriptionGroupProductsInfo:productsInfo];
@@ -184,41 +160,30 @@ static NSString * const dummyProductID = monthlyProductID;
 }
 
 + (instancetype)modelWithAutoRenewal:(BOOL)autoRenewal {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary] error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
-
-  auto pendingRenewalInfoDictionary = [self dummyBzrPendingRenewalInfoDictionary].mutableCopy;
-  pendingRenewalInfoDictionary[@"willAutoRenew"] = @(autoRenewal);
-  auto bzrPendingRenewalInfo = [[BZRSubscriptionPendingRenewalInfo alloc]
-                                initWithDictionary:pendingRenewalInfoDictionary
-                                error:nil];
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"pendingRenewalInfo"] = bzrPendingRenewalInfo;
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo,
+                                                          pendingRenewalInfo)
+      withValue:[[EUISMModel dummyBzrPendingRenewalInfo]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRSubscriptionPendingRenewalInfo,
+                                                          willAutoRenew)
+      withValue:@(autoRenewal)]];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithExpirationTime:(NSDate *)expirationTime {
-  auto product = [[BZRProduct alloc] initWithDictionary:[self dummyProductDictionary]
-                                                  error:nil];
-  auto currentProductInfo = [[EUISMProductInfo alloc]
-                             initWithProduct:product
-                             subscriptionType:EUISMSubscriptionTypeSingleApp];
-
-  auto subscriptionDictionary = [self dummyBzrSubscriptionDictionary].mutableCopy;
-  subscriptionDictionary[@"expirationDateTime"] = expirationTime;
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:subscriptionDictionary error:nil];
-
+  auto dummyProductInfo = [[EUISMProductInfo alloc] initWithProduct:[EUISMModel dummyProduct]
+                                                   subscriptionType:EUISMSubscriptionTypeSingleApp];
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo,
+                                                          expirationDateTime)
+      withValue:expirationTime];
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
-                          subscriptionGroupProductsInfo:@{dummyProductID: currentProductInfo}];
+                          subscriptionGroupProductsInfo:@{dummyProductID: dummyProductInfo}];
 }
 
 + (instancetype)modelWithPromotedProductSavePercent:(NSUInteger)savePercent {
@@ -230,38 +195,30 @@ static NSString * const dummyProductID = monthlyProductID;
 + (instancetype)modelWithAvailableYearlyUpradeSavePercent:(NSUInteger)savePercent
                                             billingPeriod:(BZRBillingPeriod *)billingPeriod {
   LTAssert(savePercent <= 100, @"savePercent can't be larger than 100");
-  auto productDictionary = [self dummyProductDictionary].mutableCopy;
-  productDictionary[@"billingPeriod"] = billingPeriod;
-
+  auto price = [NSDecimalNumber decimalNumberWithString:@"100"];
   auto yearlyPeriod = [BZRBillingPeriod eui_billingPeriodYearly];
   auto productID = [billingPeriod isEqual:yearlyPeriod] ? yearlyProductID : monthlyProductID;
-  productDictionary[@"identifier"] = productID;
 
-  auto decimalPrice = [NSDecimalNumber decimalNumberWithString:@"100"];
-  auto priceDictionary = @{@"price":decimalPrice ,@"localeIdentifier": @"en_US"};
-  auto price = [[BZRProductPriceInfo alloc] initWithDictionary:priceDictionary error:nil];
-  /* TODO:(Dekel) fix once BZR exposes a more accurate price */
-  productDictionary[@"priceInfo"] = price;
-
-  auto product = [[BZRProduct alloc] initWithDictionary:productDictionary error:nil];
+  auto product = [[[[EUISMModel dummyProduct]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, identifier)
+      withValue:productID]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, billingPeriod)
+      withValue:billingPeriod]
+      /* TODO:(Dekel) fix once BZR exposes a more accurate price */
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, priceInfo)
+      withValue:[EUISMModel priceInfoWithPrice:price]];
   auto productInfo = [[EUISMProductInfo alloc] initWithProduct:product
                                               subscriptionType:EUISMSubscriptionTypeSingleApp];
 
-  auto bzrSubscription = [[BZRReceiptSubscriptionInfo alloc]
-                          initWithDictionary:[self dummyBzrSubscriptionDictionary] error:nil];
-
-  auto yearlyProductDictionary = [self dummyProductDictionary].mutableCopy;
-  yearlyProductDictionary[@"billingPeriod"] = yearlyPeriod;
-  yearlyProductDictionary[@"identifier"] = yearlyProductID;
-
   auto yearlyPriceString = [NSString stringWithFormat:@"%lu", 12 * (100 - savePercent)];
-  auto yearlyPriceDecimal = [NSDecimalNumber decimalNumberWithString:yearlyPriceString];
-  auto yearlyPriceDictionary = @{@"price":yearlyPriceDecimal ,@"localeIdentifier": @"en_US"};
-  auto yearlyPrice = [[BZRProductPriceInfo alloc] initWithDictionary:yearlyPriceDictionary
-                                                               error:nil];
-  yearlyProductDictionary[@"priceInfo"] = yearlyPrice;
-
-  auto yearlyProduct = [[BZRProduct alloc] initWithDictionary:yearlyProductDictionary error:nil];
+  auto yearlyPrice = [NSDecimalNumber decimalNumberWithString:yearlyPriceString];
+  auto yearlyProduct = [[[[EUISMModel dummyProduct]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, identifier)
+      withValue:yearlyProductID]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, billingPeriod)
+      withValue:yearlyPeriod]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRProduct, priceInfo)
+      withValue:[EUISMModel priceInfoWithPrice:yearlyPrice]];
   auto yearlyProductInfo = [[EUISMProductInfo alloc]
                              initWithProduct:yearlyProduct
                              subscriptionType:EUISMSubscriptionTypeSingleApp];
@@ -270,6 +227,10 @@ static NSString * const dummyProductID = monthlyProductID;
     productID: productInfo,
     yearlyProductID: yearlyProductInfo
   };
+
+  auto bzrSubscription = [[EUISMModel dummyBzrSubscription]
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptSubscriptionInfo, productId)
+      withValue:productID];
 
   return [[EUISMModel alloc] initWithCurrentApplication:$(EUISMApplicationPhotofox)
                                 currentSubscriptionInfo:bzrSubscription
