@@ -49,6 +49,7 @@
 		1983B5162189D174004C632A /* UIColor+EnlightUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B5142189D174004C632A /* UIColor+EnlightUI.mm */; };
 		1983B5172189D174004C632A /* UIFont+EnlightUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B5152189D174004C632A /* UIFont+EnlightUI.mm */; };
 		1983B51F2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1983B51E2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm */; };
+		199A8BC8219DA80C00489734 /* EUISMYourPlanPromotionCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 199A8BC7219DA80B00489734 /* EUISMYourPlanPromotionCell.mm */; };
 		19F491E4216F283D0011CFF6 /* libEnlightUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F4919A216F24E60011CFF6 /* libEnlightUI.a */; };
 		19F49473216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F49472216F4D2F0011CFF6 /* EUISMYourPlanCellSpec.mm */; };
 		19F49476216F4F3A0011CFF6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F49475216F4F3A0011CFF6 /* UIKit.framework */; };
@@ -644,6 +645,8 @@
 		1983B5152189D174004C632A /* UIFont+EnlightUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+EnlightUI.mm"; sourceTree = "<group>"; };
 		1983B51D2189D1A6004C632A /* EUISMFakeYourPlanViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMFakeYourPlanViewModel.h; sourceTree = "<group>"; };
 		1983B51E2189D1A6004C632A /* EUISMFakeYourPlanViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMFakeYourPlanViewModel.mm; sourceTree = "<group>"; };
+		199A8B86219DA80B00489734 /* EUISMYourPlanPromotionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUISMYourPlanPromotionCell.h; sourceTree = "<group>"; };
+		199A8BC7219DA80B00489734 /* EUISMYourPlanPromotionCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUISMYourPlanPromotionCell.mm; sourceTree = "<group>"; };
 		19F4919A216F24E60011CFF6 /* libEnlightUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEnlightUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F491D2216F274C0011CFF6 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		19F491D4216F274C0011CFF6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -1038,6 +1041,8 @@
 			children = (
 				1983A8952178D24D004C632A /* EUISMYourPlanCell.h */,
 				1983A8962178D24D004C632A /* EUISMYourPlanCell.mm */,
+				199A8B86219DA80B00489734 /* EUISMYourPlanPromotionCell.h */,
+				199A8BC7219DA80B00489734 /* EUISMYourPlanPromotionCell.mm */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1847,6 +1852,7 @@
 				192982ED21983FB0003F2B2B /* EUISMYourPlanPromotionViewModel.mm in Sources */,
 				1983ADDC217F3388004C632A /* EUISMYourPlanViewModel.mm in Sources */,
 				1983AB17217DAB44004C632A /* EUISMModel.mm in Sources */,
+				199A8BC8219DA80C00489734 /* EUISMYourPlanPromotionCell.mm in Sources */,
 				19414387219C37DD00AC1062 /* EUISMModel+ProductInfo.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

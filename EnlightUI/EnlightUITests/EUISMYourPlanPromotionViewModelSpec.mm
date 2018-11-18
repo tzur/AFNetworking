@@ -6,7 +6,7 @@
 #import <Bazaar/BZRBillingPeriod.h>
 #import <Bazaar/BZRProduct.h>
 
-SpecBegin(EUISMYearlyPromotionViewModel)
+SpecBegin(EUISMYourPlanPromotionViewModel)
 
 __block RACSubject<EUISMModel *> *modelSubject;
 __block EUISMYourPlanPromotionViewModel *viewModel;
