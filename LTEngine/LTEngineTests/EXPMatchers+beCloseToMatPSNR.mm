@@ -24,6 +24,26 @@ static double LTPSNRScore(const cv::Mat &first, const cv::Mat &second) {
   return -10.0 * log10(mse);
 }
 
+static void LTAttachMatricesToTest(const cv::Mat &expected, const cv::Mat &actual) {
+  std::vector<std::pair<NSString *, UIImage *>> attachments;
+
+  UIImage * _Nullable expectedImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(expected));
+  if (expectedImage) {
+    attachments.push_back({@"expected", expectedImage});
+  }
+
+  UIImage * _Nullable actualImage =
+      LTUIImageWithCompatibleMat(LTUIImageCompatibleMatWithMat(actual));
+  if (actualImage) {
+    attachments.push_back({@"actual", actualImage});
+  }
+
+  if (attachments.size()) {
+    LTAttachImagesToCurrentTest(@"images", attachments);
+  }
+}
+
 EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
   __block NSString *prerequisiteErrorMessage;
   __block double actualPSNR;
@@ -62,9 +82,9 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
     }
   });
 
-  failureMessageForTo(^NSString *(id actual) {
+  failureMessageForTo(^NSString *(NSValue *actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest(expected.matValue, actual.matValue);
     }
 
     if (prerequisiteErrorMessage) {
@@ -75,9 +95,9 @@ EXPMatcherImplementationBegin(_beCloseToMatPSNR, (NSValue *expected, id psnr)) {
             actualPSNR, [psnr doubleValue]];
   });
 
-  failureMessageForNotTo(^NSString *(id actual) {
+  failureMessageForNotTo(^NSString *(NSValue *actual) {
     if ([expected matValue].dims == 2 && [actual matValue].dims == 2) {
-      LTWriteMatrices([expected matValue], [actual matValue]);
+      LTAttachMatricesToTest(expected.matValue, actual.matValue);
     }
 
     if (prerequisiteErrorMessage) {

@@ -5,6 +5,8 @@
 #import <LTEngine/LTOpenCVHalfFloat.h>
 #import <numeric>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Returns \c YES if the two given matrices are equal. Matrices are equal if their \c size,
 /// \c depth, \c channels and actual data are all equal.
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual,
@@ -26,9 +28,41 @@ BOOL LTCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
 BOOL LTFuzzyCompareMatWithValue(const cv::Scalar &expected, const cv::Mat &actual,
                                 double range = 1, std::vector<int> *firstMismatch = nullptr);
 
-/// Writes the given matrices in the \c /tmp/ folder, using running numbers concatenated to the
-/// current test case for the filenames.
-void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual);
+/// Returns, 2 dimensional, matrix of the following type <tt>{CV_8UC1, CV_8UC4, CV_16UC1,
+/// CV_16UC4}</tt>, by converting the given, 2 dimensional, \c mat as follows:
+/// * \c depth \c CV_16U and \c CV_8U is preserved, otherwise \c mat.depth() will be converted
+///   to \c CV_8U (using \c LTConvertMat).
+/// * Single channel matrix will preserve its number of channels, otherwise the number of channels
+///   will be extended to \c 4. When adding channels, the 4th (alpha) channel will hold \c UCHAR_MAX
+///   or \c USHRT_MAX depending on \c mat.depth(). Other non-alpha channels are added with zeros.
+///
+/// @important raises in case of signed \c mat.depth() or <tt>mat.dims != 2</tt>.
+cv::Mat LTUIImageCompatibleMatWithMat(const cv::Mat &mat);
+
+/// Returns \c UIImage from the given 2 dimensional compatible \c mat, whose \c type is
+/// <tt>{CV_8UC1, CV_8UC4, CV_16UC1, CV_16UC4}</tt>, or \c nil if \c type doesn't match. Returned
+/// image created from single-channel matrix will have device-dependent grayscale color space,
+/// multi-channel matrix will produce device-dependent RGB color space image.
+UIImage * _Nullable LTUIImageWithCompatibleMat(const cv::Mat &mat);
+
+/// Attaches the given \c attachments name-value pairs to the results of the current test case.
+/// In Xcode's report navigator, each attached \c UIImage named with corresponding \c NSString.
+/// All attachments are grouped by \c activityName`.
+void LTAttachImagesToCurrentTest(NSString *activityName,
+                                 const std::vector<std::pair<NSString *, UIImage *>> &attachments);
+
+/// Writes the given, 2 dimensional, \c mat in a PNG fromat to the given \c path. \c mat is
+/// converted using the following table before it's written:
+/// * \c depth \c CV_16U and \c CV_8U is preserved, otherwise \c mat.depth() will be converted
+///   to \c CV_8U (using \c LTConvertMat).
+/// * Single channel matrix will preserve its number of channels, otherwise the number of channels
+///   will be extended to \c 4 (except for \c CV_8UC3 \c mat which is written as is). When adding
+///   channels, the 4th (alpha) channel will hold \c UCHAR_MAX or \c USHRT_MAX depending on
+///   \c mat.depth(). Other non-alpha channels are added with zeros.
+///
+/// @important raises in case of signed \c mat.depth() or <tt>mat.dims != 2</tt> or \c path
+/// extension isn't \c png.
+void LTWriteMatAsPNG(const cv::Mat &mat, NSString *path);
 
 /// Returns a string representation of indicies vector \c indices of length \c length.
 NSString *LTIndicesVectorAsString(const std::vector<int> &indices);
@@ -100,3 +134,5 @@ double LTVariance(const Container &container) {
   double squareSum = std::inner_product(container.begin(), container.end(), container.begin(), 0.0);
   return squareSum / container.size() - mean * mean;
 }
+
+NS_ASSUME_NONNULL_END

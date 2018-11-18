@@ -40,9 +40,6 @@ template <typename T>
 static inline BOOL LTCompareMatCell(const T &expected, const T &actual, const T &fuzziness,
                                     const std::false_type &isFundamental);
 
-static void LTWriteMat(const cv::Mat &mat, NSString *name);
-static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index);
-
 #pragma mark -
 #pragma mark Public methods
 #pragma mark -
@@ -544,45 +541,114 @@ inline BOOL LTCompareMatCell(const half &expected, const half &actual, const hal
   return std::abs(expected - actual) <= fuzziness;
 }
 
-void LTWriteMatrices(const cv::Mat &expected, const cv::Mat &actual) {
-  LTParameterAssert(actual.dims == 2 && expected.dims == 2, @"Non 2-dimenional matrices don't have "
-                    @"writing support. acutal matrix is %d-dimensional and expected matrix is "
-                    @"%d-dimensional", actual.dims, expected.dims);
-
-  static NSMutableDictionary *testCaseCallCount = [NSMutableDictionary dictionary];
-
-  NSString *testCase = [SPTCurrentSpec description];
-  testCaseCallCount[testCase] = @([testCaseCallCount[testCase] unsignedIntegerValue] + 1);
-  NSUInteger index = [testCaseCallCount[testCase] unsignedIntegerValue];
-
-  LTWriteMat(expected, LTMatPathForNameAndIndex(@"expected", index));
-  LTWriteMat(actual, LTMatPathForNameAndIndex(@"actual", index));
-}
-
-static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
-  static NSString * const kMatOutputBasedir = @"/tmp/";
-
-  NSString *filename = [NSString stringWithFormat:@"%@-%lu-%@.png",
-                        [SPTCurrentSpec description], (unsigned long)index, name];
-
-  return [kMatOutputBasedir stringByAppendingPathComponent:filename];
-}
-
 static cv::Mat4b LTFourChannelMatrixFromTwoChannels(const cv::Mat2b &mat) {
   cv::Mat ones = cv::Mat::ones(mat.rows, mat.cols, CV_8U) * 255;
   cv::Mat zeros = cv::Mat::zeros(mat.rows, mat.cols, CV_8U);
   cv::Mat paddedMat(mat.rows, mat.cols, CV_8UC4);
-  const int fromTo[] = {0, 2, 1, 1, 2, 0, 3, 3};
   Matrices inputs{mat, zeros, ones};
   Matrices outputs{paddedMat};
-  cv::mixChannels(inputs, outputs, fromTo, 4);
+  cv::mixChannels(inputs, outputs, {0, 0, 1, 1, 2, 2, 3, 3});
   return paddedMat;
 }
 
-static void LTWriteMat(const cv::Mat &mat, NSString *path) {
+static cv::Mat4b LTFourChannelMatrixFromThreeChannels(const cv::Mat3b &mat) {
+  cv::Mat ones = cv::Mat::ones(mat.rows, mat.cols, CV_8U) * 255;
+  cv::Mat paddedMat(mat.rows, mat.cols, CV_8UC4);
+  Matrices inputs{mat, ones};
+  Matrices outputs{paddedMat};
+  cv::mixChannels(inputs, outputs, {0, 0, 1, 1, 2, 2, 3, 3});
+  return paddedMat;
+}
+
+cv::Mat LTUIImageCompatibleMatWithMat(const cv::Mat &mat) {
+  LTParameterAssert(mat.dims == 2, "Only 2-dimenional matrices are supported, given %d-dimensional "
+                    @"matrix", mat.dims);
+
+  switch (mat.type()) {
+    case CV_8UC1:
+      return mat;
+    case CV_8UC2:
+      return LTFourChannelMatrixFromTwoChannels(mat);
+    case CV_8UC3:
+      return LTFourChannelMatrixFromThreeChannels(mat);
+    case CV_8UC4:
+    case CV_16UC4:
+      return mat;
+    case CV_16FC1: {
+      cv::Mat1b converted;
+      LTConvertMat(mat, &converted, converted.type());
+      return converted;
+    }
+    case CV_16FC2:
+    case CV_32FC2: {
+      cv::Mat2b converted;
+      LTConvertMat(mat, &converted, converted.type());
+      return LTFourChannelMatrixFromTwoChannels(converted);
+    }
+    case CV_16UC1:
+      return mat;
+    case CV_32FC1:
+    case CV_64FC1: {
+      cv::Mat converted;
+      mat.convertTo(converted, CV_8U, 255.0);
+      return converted;
+    }
+    case CV_32FC3: {
+      cv::Mat converted;
+      mat.convertTo(converted, CV_8UC3, 255.0);
+      return LTFourChannelMatrixFromThreeChannels(converted);
+    }
+    case CV_16FC4:
+    case CV_32FC4:
+    case CV_64FC4: {
+      cv::Mat converted;
+      mat.convertTo(converted, CV_8UC4, 255.0);
+      return converted;
+    }
+    default:
+      LTAssert(NO, @"Unsupported mat type given: %d", mat.type());
+  }
+}
+
+UIImage * _Nullable LTUIImageWithCompatibleMat(const cv::Mat &mat) {
+  if (!(mat.depth() == CV_8U && (mat.channels() == 1 || mat.channels() == 4)) &&
+      !(mat.depth() == CV_16U && (mat.channels() == 1 || mat.channels() == 4))) {
+    return nil;
+  }
+
+  lt::Ref<CGColorSpaceRef> colorSpace;
+  switch (mat.channels()) {
+    case 1:
+      colorSpace = lt::makeRef<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
+      break;
+    case 4:
+      colorSpace = lt::makeRef<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
+      break;
+  }
+
+  if (!colorSpace) {
+    return nil;
+  }
+
+  return [[LTImage alloc] initWithMat:mat copy:NO colorSpace:colorSpace.get()].UIImage;
+}
+
+void LTAttachImagesToCurrentTest(NSString *activityName,
+                                 const std::vector<std::pair<NSString *, UIImage *>> &attachments) {
+  [XCTContext runActivityNamed:activityName block:^(id<XCTActivity> activity) {
+    for (const std::pair<NSString *, UIImage *> &attachmentPair : attachments) {
+      auto attachment = [XCTAttachment attachmentWithImage:attachmentPair.second];
+      attachment.name = attachmentPair.first;
+      [activity addAttachment:attachment];
+    }
+  }];
+}
+
+void LTWriteMatAsPNG(const cv::Mat &mat, NSString *path) {
   LTParameterAssert(mat.dims == 2, "Non 2-dimenional matrices don't have writing support. "
                     @"Input matrix is %d-dimensional.", mat.dims);
-
+  LTParameterAssert([[[path pathExtension] lowercaseString] isEqualToString:@"png"],
+                    @"Supportes only PNG format, given (%@)", [path pathExtension]);
   switch (mat.type()) {
     case CV_8UC1:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
@@ -602,29 +668,24 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(mat, bgrMat, cv::COLOR_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
-    case CV_16F: {
+    case CV_16FC1: {
       cv::Mat1b converted;
       LTConvertMat(mat, &converted, converted.type());
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
     } break;
     case CV_16FC2:
-    case CV_32FC2:
-    case CV_32SC2: {
+    case CV_32FC2: {
       cv::Mat2b converted;
       LTConvertMat(mat, &converted, converted.type());
 
       auto paddedMat = LTFourChannelMatrixFromTwoChannels(converted);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], paddedMat);
     } break;
-    case CV_16U:
+    case CV_16UC1:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
       break;
-    case CV_32S: {
-      cv::Mat converted(mat.rows, mat.cols, CV_8UC4, mat.data, mat.step[0]);
-      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
-    } break;
-    case CV_32F:
-    case CV_64F: {
+    case CV_32FC1:
+    case CV_64FC1: {
       cv::Mat converted;
       mat.convertTo(converted, CV_8U, 255.0);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
